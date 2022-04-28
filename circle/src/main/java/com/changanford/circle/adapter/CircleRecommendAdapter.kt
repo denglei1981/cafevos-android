@@ -111,6 +111,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutOne.conOne.visibility = View.VISIBLE
                 binding.layoutOne.ivPlay.visibility = View.VISIBLE
                 binding.ivNine.visibility = View.GONE
+                binding.icMultVeryPost.visibility=View.GONE
                 if (item.videoTime == null) {
                     binding.layoutOne.tvVideoTimes.visibility = View.GONE
                 } else {
@@ -152,22 +153,38 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         } else {
                             binding.btnMore.visibility = View.GONE
                         }
+                        binding.layoutOne.ivVeryPost.visibility=View.GONE
+                        if(item.isGood==1){
+                            binding.icMultVeryPost.visibility=View.VISIBLE
+                        }else{
+                            binding.icMultVeryPost.visibility=View.GONE
+                        }
                     }
                     picList.size == 1 -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
                         GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
                         binding.btnMore.visibility = View.GONE
+                        if(item.isGood==1){
+                            binding.layoutOne.ivVeryPost.visibility=View.VISIBLE
+                        }else{
+                            binding.layoutOne.ivVeryPost.visibility=View.GONE
+                        }
+                        binding.icMultVeryPost.visibility=View.GONE
+
                     }
                     else -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.GONE
                         binding.btnMore.visibility = View.GONE
+                        binding.layoutOne.ivVeryPost.visibility=View.GONE
+                        binding.icMultVeryPost.visibility=View.GONE
                     }
                 }
-
             } else {
                 binding.ivNine.visibility = View.GONE
+                binding.layoutOne.ivVeryPost.visibility=View.GONE
+                binding.icMultVeryPost.visibility=View.GONE
             }
 
         }

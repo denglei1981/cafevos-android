@@ -593,11 +593,19 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
      * 更新底部提交按钮状态
      * */
     private fun updateBtnUi(){
+        val isPrice=getPayLines()
         infoBean.apply {
-            val isPrice=getPayLines()
-            if(!TextUtils.isEmpty(vinCode)){//维保商品
-                binding.inBottom.btnSubmit.updateEnabled(isAgree&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
-            }else binding.inBottom.btnSubmit.updateEnabled(isAgree&&null!=addressId&& (payFb?:"0").toFloat() <=fbBalance?:0&&isPrice)
+            binding.inBottom.btnSubmit.apply {
+                //福币不足
+                if(isPrice&&(payFb?:"0").toFloat()>fbBalance?:0)setStates(8)
+                else {
+                    setText(R.string.str_submitOrder)
+                    var isSubmit:Boolean=isPrice&&isAgree
+                    //非维保商品 需要判断地址是否为空
+                    if(isSubmit&&TextUtils.isEmpty(vinCode))isSubmit=null!=addressId
+                    updateEnabled(isSubmit)
+                }
+            }
         }
     }
 }

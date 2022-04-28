@@ -55,7 +55,17 @@
             app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="10:12" />
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_very_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_11"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:src="@mipmap/circle_very_post"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

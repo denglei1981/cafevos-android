@@ -24,6 +24,7 @@ import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.widget.WaitBindingCarPop
+import com.changanford.my.widget.WaitBindingDialog
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -115,16 +116,19 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyCarAuth.smartCommonLayout
     }
-
+    var waitBindingDialog: WaitBindingDialog? = null
     override fun observe() {
         super.observe()
         viewModel.waitCarLiveData.observe(this, Observer { data ->
             if (data != null && data.isNotEmpty()) {
                 // 弹窗
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
-                    data.forEach {
-                        WaitBindingCarPop(this, this, viewModel, it).apply {
-                            showPopupWindow()
+                    if (waitBindingDialog == null) {
+                        waitBindingDialog = WaitBindingDialog(this, this, data)
+                    }
+                    waitBindingDialog?.let { d ->
+                        if (!d.isVisible && !d.isAdded) {
+                            waitBindingDialog?.show(supportFragmentManager, "waitBindingDialog")
                         }
                     }
 

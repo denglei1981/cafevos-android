@@ -526,6 +526,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             orderDetailsItemV2Adapter.timestamp = time.toString()
 
         }
+        localDataBean.busSource?.let{ s->
+            orderDetailsItemV2Adapter.busSource=s
+
+        }
         orderDetailsItemV2Adapter.setList(localDataBean.skuList)
     }
 

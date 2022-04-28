@@ -60,7 +60,7 @@ class CouponUseInvalidFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding
 
     override fun observe() {
         super.observe()
-        viewModel.couponListLiveData.observe(this, Observer {
+        viewModel.couponInvalidListLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
                     couponCanUseAdapter.loadMoreModule.loadMoreComplete()

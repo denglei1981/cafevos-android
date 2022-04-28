@@ -13,6 +13,7 @@ import com.changanford.common.bean.RefundBean
 import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
@@ -36,6 +37,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
     var receiveTime :String =""
     var timestamp:String=""
     var refundId:String=""
+    var busSource:String?=""
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
         item: OrderItemBean
@@ -105,7 +107,16 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
             }
 
             imgGoodsCover.setOnClickListener {
-                GoodsDetailsActivity.start(item.mallMallspuId)
+                 if(!TextUtils.isEmpty(busSource)){
+                     if(busSource=="HAGGLE"){
+                         JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_BARGAINING,item.mallMallspuId))
+                     }else{
+                         GoodsDetailsActivity.start(item.mallMallspuId)
+                     }
+                 }else{
+                     GoodsDetailsActivity.start(item.mallMallspuId)
+                 }
+
             }
 
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品

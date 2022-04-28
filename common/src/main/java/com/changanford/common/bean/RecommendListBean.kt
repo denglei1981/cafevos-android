@@ -59,7 +59,7 @@ data class RecommendData(
     val postsCreateTime: String,
     val postsId: String,
     val postsIsCheck: Double,
-    val postsIsGood: Double,
+    val postsIsGood: Int?=0,
     val postsIsHot: Double,
     val postsIsPrivate: Double,
     val postsIsPublish: Double,

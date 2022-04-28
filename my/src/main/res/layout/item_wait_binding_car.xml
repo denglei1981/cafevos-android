@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.changanford.common.bean.BindCarBean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_whit5_bg"
+        android:orientation="vertical"
+        >
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_car"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="@dimen/dp_22"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_recommed_default"
+            app:layout_constraintDimensionRatio="159:77"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.42" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_car_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_marginEnd="@dimen/dp_12"
+            android:gravity="start"
+            android:text="@{model.seriesName}"
+            android:textColor="#ff333333"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_car"
+            app:layout_constraintStart_toStartOf="@+id/radio_group"
+            app:layout_constraintTop_toTopOf="@+id/iv_car"
+            tools:text="新一代福睿斯" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rv_tags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_17"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{model.materialName}"
+            android:textColor="#74889D"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_car"
+            app:layout_constraintStart_toStartOf="@id/tv_car_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_car_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_vin_num"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{model.vinStr}"
+            android:textColor="#ff999999"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_car_name"
+            app:layout_constraintTop_toBottomOf="@+id/rv_tags"
+            tools:text="VIN码：21846814774" />
+
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_18"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+            app:layout_constraintTop_toBottomOf="@+id/tv_vin_num">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_weight="1"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="这是我的车"
+                android:textSize="@dimen/sp_13" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox_not"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_weight="1"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="这不是我的车"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/checkbox_again"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_weight="1"
+                android:button="@drawable/my_car_check_box"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dp_4"
+                android:text="下次再提醒我"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_vin_num"
+                app:layout_constraintTop_toBottomOf="@+id/checkbox" />
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_marginTop="18dp"
+            android:background="@color/color_F4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_group" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

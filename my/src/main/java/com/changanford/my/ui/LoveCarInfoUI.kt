@@ -152,7 +152,17 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
     private fun setAuthInfo() {
         binding.cardVin.text = "${auth.vin ?: ""}"
         binding.cardModel.text = "${auth.modelName ?: ""}"
-        binding.cardTime.text = "${TimeUtils.MillisToDayStr(auth.saleDate) ?: 0L}"
+
+        if(auth.saleDate==null||auth.saleDate==0L){
+            binding.cardTime.text = "--"
+        }else{
+            binding.cardTime.text = "${TimeUtils.MillisToDayStr(auth.saleDate) ?: 0L}"
+        }
+
+
+
+
+
         binding.cardDealer.text = "${auth.dealerName ?: ""}"
         binding.cardDealerPhone.text = "${auth.dealerPhone ?: ""}"
         binding.carPic.load(auth.modelUrl, R.mipmap.ic_car_auth_ex)
