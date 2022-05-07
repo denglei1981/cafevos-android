@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/g_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="iv_pic,iv_delete,tv_tips"
+            />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dp_8"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="335:168"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.89"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@mipmap/circle_test_banner" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@mipmap/longposdle"
+            app:layout_constraintEnd_toEndOf="@+id/iv_pic"
+            app:layout_constraintTop_toTopOf="@id/iv_pic" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="长按拖动图片排序"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_pic" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/tv_tex"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top"
+            android:paddingTop="10dp"
+            android:textColor="@color/black"
+            android:lineSpacingMultiplier="1.2"
+            tools:text="@string/test_str"
+            android:textColorHint="#CCCCCC"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.89" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

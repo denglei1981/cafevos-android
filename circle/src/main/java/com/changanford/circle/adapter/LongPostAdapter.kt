@@ -53,7 +53,7 @@ class LongPostAdapter(var layoutManager: LinearLayoutManager) :
         if (binding.tvTex.tag is TextWatcher) {
             binding.tvTex.removeTextChangedListener(binding.tvTex.tag as TextWatcher)
         }
-        if (item.content.isNotEmpty() || item.content != "/null/") {
+        if (item.content?.isNotEmpty()==true || item.content != "/null/") {
             binding.tvTex.setText(item.content)
         } else {
             binding.tvTex.setText("")
