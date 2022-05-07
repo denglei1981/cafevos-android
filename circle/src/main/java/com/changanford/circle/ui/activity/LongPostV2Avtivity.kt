@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -30,10 +29,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
-import com.changanford.circle.adapter.LongPostAdapter
+import com.changanford.circle.adapter.LongPostV2Adapter
 import com.changanford.circle.bean.*
+import com.changanford.circle.databinding.HeaderLongPostBinding
 import com.changanford.circle.databinding.LongpostactivityBinding
-import com.changanford.circle.databinding.LongpostheadBinding
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
@@ -42,8 +41,8 @@ import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -54,33 +53,30 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.logD
-import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
+import com.changanford.common.utilext.*
 import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.yw.li_model.adapter.EmojiAdapter
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
-import com.google.gson.reflect.TypeToken
-import razerdp.basepopup.QuickPopupBuilder
-import razerdp.basepopup.QuickPopupConfig
 
 
-//@Route(path = ARouterCirclePath.LongPostAvtivity)
-class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
+@Route(path = ARouterCirclePath.LongPostAvtivity)
+class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
 
-    private lateinit var headBinding: LongpostheadBinding
+    private lateinit var headBinding: HeaderLongPostBinding
     private val headview by lazy {
-        layoutInflater.inflate(R.layout.longposthead, null)
+        layoutInflater.inflate(R.layout.header_long_post, null)
     }
     private val longpostadapter by lazy {
-        LongPostAdapter(binding.longpostrec.layoutManager as LinearLayoutManager)
+        LongPostV2Adapter(binding.longpostrec.layoutManager as LinearLayoutManager)
     }
 
     private lateinit var plateBean: PlateBean
@@ -91,9 +87,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private var nomalwith = 500;
     private var nomalhight = 500;
     private var selectList = ArrayList<LongPostBean>()
+
     private var type = 0
     private var params = hashMapOf<String, Any>()
     private var FMMeadia: LocalMedia? = null
+
+
     private var locaPostEntity: PostEntity? = null
     private var editText: EditText? = null
     private var iskeybarOpen = false
@@ -159,18 +158,13 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-//            if (isPopup){
-//                iskeybarOpen = true
             binding.bottom.emojirec.visibility = View.GONE
-//            } else{
-//                iskeybarOpen= false
-//            }
+
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             isunSave = false
             FMMeadia = it as LocalMedia
             headBinding.ivFm.visibility = View.VISIBLE
-
             GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
             headBinding.ivAddfm.visibility = View.GONE
             headBinding.tvFm.visibility = View.GONE
@@ -228,11 +222,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
                 }
                 params["province"] = it.province ?: address
-
                 val showCity = it.city.plus("·").plus(it.name)
-
                 buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
-//                binding.tvLocation.text = it.name
             })
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
@@ -245,11 +236,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 params["lon"] = it.lon
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
                 params["province"] = it.province
-
                 val showCity = it.city.plus("·").plus(it.addrName)
                 buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
-
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean.plate.forEach {
@@ -279,27 +268,53 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
-//            selectList.clear()
-//            selectList.addAll(it as Collection<LocalMedia>)
+            // todo  加图片，加一片那种。
             isunSave = false
             val localMedias = it as List<LocalMedia>
-            longpostadapter.addData(LongPostBean(localMedias[0].contentDesc ?: "", localMedias[0]))
-//            postPicAdapter.setList(selectList)
+            if (longpostadapter.selectionIndex > 0) {// 光标位置后追加图片大于0
+                val selectionStr = longpostadapter.getItem(longpostadapter.selectionPosition).content
+                val gindex = longpostadapter.currentTxtView?.selectionStart // 光标位置
+                val gItem = longpostadapter.selectionPosition
+                toastShow("光标位置===" + gindex)
+                LogUtil.e("post", "光标位置===" + gindex)
+                LogUtil.e("post", "光标item===" + gItem)
+                if(gindex!=null&&selectionStr!=null){
+                    if(gindex>selectionStr.length){
+                        toastShow("请更换文本点击位置")
+                        return@Observer
+                    }
+                }
+
+                selectionStr?.let { s ->
+                    val startStr = gindex?.let { it1 -> s.substring(0, it1) }
+                    val endStr = gindex?.let { it1 -> s.substring(it1, s.length) }
+                    val starStrBean = LongPostBean(startStr)
+                    val picPostBean: ArrayList<LongPostBean> = arrayListOf()
+                    localMedias.forEach { m ->
+                        picPostBean.add(LongPostBean("", m))
+                        if (localMedias.indexOf(m) < localMedias.size - 1) {
+                            picPostBean.add(LongPostBean(""))
+                        }
+                    }
+                    longpostadapter.remove(longpostadapter.getItem(longpostadapter.selectionPosition)) //移除之前的
+                    longpostadapter.addData(longpostadapter.selectionPosition, starStrBean)
+                    longpostadapter.addData(longpostadapter.selectionPosition + 1, picPostBean)
+                    val endStrBean = LongPostBean(endStr)
+                    longpostadapter.addData(
+                        longpostadapter.selectionPosition + picPostBean.size + 1,
+                        endStrBean
+                    )
+                }
+                longpostadapter.selectionIndex=-1
+                longpostadapter.selectionPosition=-1
+                longpostadapter.currentTxtView?.clearFocus()//清除光标
+            } else {// 默认在最后加图片
+                localMedias.forEach { m ->
+                    longpostadapter.addData(LongPostBean("", m))
+                    longpostadapter.addData(LongPostBean(""))
+                }
+            }
         })
-//        viewModel.keywords.observe(this, Observer {
-//            buttomlabelAdapter.addData(it)
-//            handleEditPost()
-//            if (locaPostEntity != null) {
-//                if (locaPostEntity!!.keywords.isNotEmpty()) {
-//                    buttomlabelAdapter.data.forEach {
-//                        it.isselect = it.tagName == locaPostEntity!!.keywords
-//                    }
-//                    buttomlabelAdapter.notifyDataSetChanged()
-//                }
-//            }
-//        })
-
-
         viewModel.tagsList.observe(this, Observer { ptList ->
             postTagDataList = ptList
             if (locaPostEntity != null) {
@@ -347,8 +362,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         saveInsertPostent(true)
                     }, true)
 
-            )
-            .show()
+            ).show()
     }
 
 
@@ -375,6 +389,11 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         postEntity.tags = toJsonTags
     }
 
+    fun initEtContent() {
+        val default = LongPostBean(hintStr = "请输入正文内容，字数小于1000")
+        longpostadapter.addData(default)
+    }
+
     override fun initData() {
         initandonclickhead()
         viewModel.getPlate()
@@ -388,7 +407,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         initbuttom()
         onclick()
         initlocaData()
-
         if (isH5Post) {
             postType = intent.extras?.getInt("postType") ?: 0
             jsonStr = intent.extras?.getString("jsonStr") ?: ""
@@ -404,7 +422,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
         }
-
         if (isTopPost) {
             params["topicId"] = intent.extras?.getString("topId") ?: "0"
             params["topicName"] = intent.extras?.getString("topName") ?: ""
@@ -417,7 +434,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     private fun initlocaData() {
         if (locaPostEntity != null) {
             headBinding.etBiaoti.setText(locaPostEntity!!.title)
-            headBinding.etContent.setText(locaPostEntity!!.content)
             params["plate"] = locaPostEntity!!.plate
             platename = locaPostEntity!!.plateName
             params["topicId"] = locaPostEntity!!.topicId
@@ -441,7 +457,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (params["plate"] != 0) {
                 buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                 buttomTypeAdapter.setData(2, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
-
             }
             if (locaPostEntity!!.topicName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
@@ -455,9 +470,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
             }
-
             showLocaPostCity()
-
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
                 try {
                     FMMeadia =
@@ -470,7 +483,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         PictureUtil.getFinallyPath(FMMeadia!!),
                         headBinding.ivFm
                     )
-//                    selectList.add(LongPostBean("", FMMeadia))
                     headBinding.ivAddfm.visibility = View.GONE
                     headBinding.tvFm.visibility = View.GONE
                 } catch (e: Exception) {
@@ -479,6 +491,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
             }
             jsonStr2obj(locaPostEntity!!.longPostDatas)
+        } else {
+            initEtContent()
         }
     }
 
@@ -502,7 +516,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         try {
             val longPostBean: ArrayList<LongPostBean> =
                 Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
-//            selectList.addAll(longPostBean)
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
         } catch (e: Exception) {
@@ -522,8 +535,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 ButtomTypeBean("", 0, 1),
                 ButtomTypeBean("", 0, 2),
                 ButtomTypeBean("", 0, 3),
-
-                )
+            )
         )
         binding.bottom.labelrec.layoutManager = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.HORIZONTAL
@@ -553,24 +565,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 editText = headBinding.etBiaoti
             }
         }
-        headBinding.etContent.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-
-                editText = headBinding.etContent
-
-            }
-        }
         emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 val emoji = emojiAdapter.getItem(position)
                 setEditContent(emoji)
             }
         })
-
-//        binding.tvLocation.setOnClickListener {
-//            startARouter(ARouterCirclePath.ChooseLocationActivity)
-//        }
-
     }
 
     private fun setEditContent(emoJi: String?) {
@@ -624,8 +624,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         binding.bottom.ivEmoj.setOnClickListener {
 
-//            if (!headBinding.etBiaoti.hasFocus()&&iskeybarOpen){
-
             HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
 
             Timer().schedule(80) {
@@ -638,15 +636,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     }
                 }
             }
-//            }else if(!iskeybarOpen) {
-//                Timer().schedule(80) {
-//                    binding.bottom.emojirec.post {
-//                        if (binding.bottom.emojirec.isShown) {
-//                            binding.bottom.emojirec.visibility = View.GONE
-//                        }
-//                    }
-//                }
-//            }
         }
         binding.title.barTvOther.setOnClickListener {
             ispost()
@@ -689,10 +678,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
-                2->{ // 话题
+                2 -> { // 话题
                     toHuati()
                 }
-                3->{// 圈子
+                3 -> {// 圈子
                     toQuanzi()
                 }
                 4 -> { // 选择地址。
@@ -705,30 +694,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
 
             }
-
-//            if (buttomTypeAdapter.getItem(position).itemType == 0 || buttomTypeAdapter.getItem(
-//                    position
-//                ).itemType == 1
-//            ) {
-//                if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
-//                    val sList = mutableListOf<String>()
-//                    for (bean in plateBean.plate) {
-//                        sList.add(bean.name)
-//                    }
-//                    HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
-//                        HomeBottomDialog.OnClickItemListener {
-//                        override fun onClickItem(position: Int, str: String) {
-//                            buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-//                            buttomTypeAdapter.setData(2, ButtomTypeBean(str, 1, 1))
-//                            platename = str
-//                            params["plate"] = plateBean.plate[position].plate
-//                            params["actionCode"] = plateBean.plate[position].actionCode
-//                        }
-//                    }).show()
-//                } else {
-//                    viewModel.getPlate()
-//                }
-//            }
         }
 
 
@@ -745,16 +710,19 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
-            PictureUtil.openGalleryOnePic(this,
+            val meadiaList: ArrayList<LocalMedia> = arrayListOf()
+            PictureUtil.openGallery(this, meadiaList,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
-
-                        val localMedia = result?.get(0)
-                        localMedia?.let {
+                        if (result != null) {
+                            meadiaList.clear()
+                            meadiaList.addAll(result)
+                        }
+                        if (meadiaList.size > 0) {
                             val bundle = Bundle()
-                            bundle.putParcelableArrayList("picList", arrayListOf(localMedia))
+                            bundle.putParcelableArrayList("picList", meadiaList)
                             bundle.putInt("position", 0)
-                            bundle.putInt("showEditType", 0)
+                            bundle.putInt("showEditType", -1)
                             startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
                         }
                     }
@@ -776,9 +744,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             ) {
                 if (view.id == R.id.iv_delete) {
                     longpostadapter.remove(position)
-                } else if (view.id == R.id.iv_addfm) {
+                } else if (view.id == R.id.iv_pic) {
                     isunSave = true
-                    PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
+                    PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
                         object : OnResultCallbackListener<LocalMedia> {
                             override fun onResult(result: MutableList<LocalMedia>?) {
 
@@ -798,7 +766,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                     bundle.putInt("itemPosition", position)
                                     bundle.putBoolean("longpostItemSelect", true)
                                     startARouterForResult(
-                                        this@LongPostAvtivity,
+                                        this@LongPostV2Avtivity,
                                         ARouterCirclePath.PictureeditlActivity,
                                         bundle,
                                         ITEM_SELECTPIC
@@ -816,7 +784,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     val array = ArrayList<String>()
                     array.add("编辑图片")
                     array.add("删除图片")
-                    HomeBottomDialog(this@LongPostAvtivity, *array.toTypedArray())
+                    HomeBottomDialog(this@LongPostV2Avtivity, *array.toTypedArray())
                         .setOnClickItemListener(object :
                             HomeBottomDialog.OnClickItemListener {
                             override fun onClickItem(mposition: Int, str: String) {
@@ -837,7 +805,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                                         bundle.putInt("itemPosition", position)
                                         bundle.putBoolean("longpostItemSelect", true)
                                         startARouterForResult(
-                                            this@LongPostAvtivity,
+                                            this@LongPostV2Avtivity,
                                             ARouterCirclePath.PictureeditlActivity,
                                             bundle,
                                             ITEM_SELECTPIC
@@ -894,6 +862,29 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
                 holder.itemView.alpha = 1f
                 longpostadapter.notifyDataSetChanged()
+//                val longBean = longpostadapter.getItem(pos)
+//                val prePosition = pos - 1
+//                if (prePosition > 0) {
+//                    if (longBean.localMedias != null) {
+//                        // 拖动的是图
+//                        val item = longpostadapter.getItem(prePosition)
+//                        if (item.localMedias != null) {
+//                            longpostadapter.addData(pos, LongPostBean(""))
+//                        }
+//                        if (longpostadapter.data.size == pos+1) {//把图拖动到最后一个了,加一个文本
+//                            longpostadapter.addData(LongPostBean(""))
+//                        }
+//                        // 图之间,要加个文本。
+//                    } else {// 拖动的是文本
+//                        val item = longpostadapter.getItem(prePosition)
+//                        if (item.localMedias == null) { // 是文本，合二唯一
+//                            val currentBean = longpostadapter.getItem(pos)
+//                            currentBean.content = item.content.plus("\n"+currentBean.content)
+//                            longpostadapter.notifyItemChanged(pos)
+//                            longpostadapter.remove(item)
+//                        }
+//                    }
+//                }
             }
         })
     }
@@ -914,7 +905,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     private fun ispost() {
         var biaoti = headBinding.etBiaoti.text.toString()
-        var content = headBinding.etContent.text.toString()
         when {
             FMMeadia == null -> {
                 "请选择封面".toast()
@@ -924,17 +914,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 "请输入1-20字的帖子标题".toast()
                 return
             }
-            content.isNullOrEmpty() -> {
-                "请输入正文内容".toast()
-            }
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
             else -> {
-                params["content"] = content
                 params["title"] = biaoti
                 //埋点
-
                 viewModel.getOSS()
             }
         }
@@ -984,7 +969,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         }
         headBinding.ivFm.setOnClickListener {
             val array = ArrayList<String>()
-
             array.add("重选封面")
             array.add("编辑封面")
             array.add("删除封面")
@@ -995,7 +979,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         isunSave = true
                         when (str) {
                             "重选封面" -> {
-                                PictureUtil.openGalleryOnePic(this@LongPostAvtivity,
+                                PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
                                     object : OnResultCallbackListener<LocalMedia> {
                                         override fun onResult(result: MutableList<LocalMedia>?) {
                                             val localMedia = result?.get(0)
@@ -1041,20 +1025,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                     }
                 }).show()
         }
-
-        headBinding.etContent.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                headBinding.tvEtcount.text = "${headBinding.etContent.length()}/200"
-            }
-
-        })
     }
 
     private fun uploadImgs(
@@ -1077,42 +1047,41 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             val media = selectList[index].localMedias
             ytPath = PictureUtil.getFinallyPath(media!!)
             Log.d("=============", "${ytPath}")
-            var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
-            var exifInterface = ExifInterface(ytPath);
-            var rotation = exifInterface.getAttributeInt(
+            val type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
+            val exifInterface = ExifInterface(ytPath);
+            val rotation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL
             );
-            path =
-                stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
-                    if (media.isCut) {
-                        if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
-                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
-                        } else {
-                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500);
-                        }
+            path = stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
+                if (media.isCut) {
+                    if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
                     } else {
-                        if (media.width == 0) {
-                            nomalwith
-                        } else {
-                            media.width
-                        }
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500);
                     }
-                }_${
-                    if (media.isCut) {
-                        if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
-                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500);
-                        } else {
-                            exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
-                        }
+                } else {
+                    if (media.width == 0) {
+                        nomalwith
                     } else {
-                        if (media.height == 0) {
-                            nomalwith
-                        } else {
-                            media.height
-                        }
+                        media.width
                     }
-                }." + type
+                }
+            }_${
+                if (media.isCut) {
+                    if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 500);
+                    } else {
+                        exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 500)
+                    }
+                } else {
+                    if (media.height == 0) {
+                        nomalwith
+                    } else {
+                        media.height
+                    }
+                }
+            }." + type
             if (index == 0) {
                 params["pics"] = path
             }
@@ -1169,13 +1138,15 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     fun addPost() {
         var tagIds = ""
-        var tagNames=""
-        params["imgUrl"] = upedimgs
+        var tagNames = ""
+        // 移除都是空的情况。
+        val last=  upedimgs.filter { !TextUtils.isEmpty(it.imgDesc)||!TextUtils.isEmpty(it.imgUrl)}
+        params["imgUrl"] = last
         params["isPublish"] = 2
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
-                tagNames +=it.tagName +","
+                tagNames += it.tagName + ","
             }
         }
         params["tagIds"] = tagIds
@@ -1183,8 +1154,8 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
         try {
             val biaoti = params["title"]
-            val content = params["content"]
-            BuriedUtil.instant?.post(biaoti.toString(), content.toString(), tagNames)
+            val content = "" //content 没有用了
+            BuriedUtil.instant?.post(biaoti.toString(), content, tagNames)
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
@@ -1209,8 +1180,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 }
             }
         }, postTagDataList!!, buttomlabelAdapter.data)
-//        circlePostTagDialog?.postTagDataList=postTagDataList
-//        circlePostTagDialog?.initData()
         circlePostTagDialog?.show()
     }
 
@@ -1241,9 +1210,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<EditText>(CircleLiveBusKey.POST_EDIT).observe(this, {
-            editText = it
-        })
+//        LiveDataBus.get().withs<EditText>(CircleLiveBusKey.POST_EDIT).observe(this, {
+//            editText = it
+//        })
     }
 
     fun handleEditPost() {
@@ -1254,7 +1223,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
                         headBinding.etBiaoti.setText(locaPostEntity.title)
-                        headBinding.etContent.setText(locaPostEntity.content)
                         params["plate"] = locaPostEntity!!.plate
                         platename = locaPostEntity!!.plateName
                         params["topicId"] = locaPostEntity!!.topicId
@@ -1267,58 +1235,38 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         params["actionCode"] = locaPostEntity!!.actionCode
                         params["title"] = locaPostEntity!!.title
                         params["address"] = locaPostEntity!!.address ?: ""
-                        if (locaPostEntity!!.address?.isNotEmpty() == true) {
-                            address = locaPostEntity!!.address
+                        if (locaPostEntity.address.isNotEmpty()) {
+                            address = locaPostEntity.address
                         }
-                        params["lat"] = locaPostEntity!!.lat
-                        params["lon"] = locaPostEntity!!.lon
-                        params["province"] = locaPostEntity!!.province
-                        params["cityCode"] = locaPostEntity!!.cityCode
-                        params["city"] = locaPostEntity!!.city
+                        params["lat"] = locaPostEntity.lat
+                        params["lon"] = locaPostEntity.lon
+                        params["province"] = locaPostEntity.province
+                        params["cityCode"] = locaPostEntity.cityCode
+                        params["city"] = locaPostEntity.city
                         if (params["plate"] != 0) {
                             buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(
                                 2,
-                                ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
+                                ButtomTypeBean(locaPostEntity.plateName, 1, 1)
                             )
                         }
-                        if (locaPostEntity!!.topicName?.isNotEmpty() == true) {
+                        if (locaPostEntity.topicName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 3,
-                                ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
+                                ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
                             )
                         }
                         if (locaPostEntity!!.circleName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 4,
-                                ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
+                                ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
                             )
                         }
                         showLocaPostCity()
-
-//                        if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
-//                            try{
-//                                FMMeadia =
-//                                    JSON.parseObject(locaPostEntity!!.longpostFmLocalMeadle, LocalMedia::class.java)
-//                                headBinding.ivFm.visibility = View.VISIBLE
-//                                GlideUtils.loadRoundFilePath(
-//                                    PictureUtil.getFinallyPath(FMMeadia!!),
-//                                    headBinding.ivFm
-//                                )
-//                                headBinding.ivAddfm.visibility = View.GONE
-//                                headBinding.tvFm.visibility = View.GONE
-//                            }catch (e:Exception){
-//
-//                            }
-//
-//                        }
-//
-//                        jsonStr2obj(locaPostEntity!!.longPostDatas)
-
                         //选择的标签
-                        if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
+                        if (locaPostEntity.keywords.isNotEmpty()) {
                             buttomlabelAdapter.data.forEach {
-                                it.isselect = it.tagName == locaPostEntity!!.keywords
+                                it.isselect = it.tagName == locaPostEntity.keywords
                             }
                             buttomlabelAdapter.notifyDataSetChanged()
                         }
@@ -1346,9 +1294,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                             longpostadapter.data.clear()
                             it.forEachIndexed { index, localMedia ->
                                 if (index != 0) {
-                                    var longPostBean = LongPostBean(
-                                        locaPostEntity?.imageList?.get(index - 1)?.imgDesc ?: "",
-                                        if (localMedia?.realPath?.isNullOrEmpty() == true) null else localMedia
+                                    val longPostBean = LongPostBean(
+                                        locaPostEntity.imageList?.get(index - 1)?.imgDesc ?: "",
+                                        if (localMedia.realPath?.isEmpty() == true) null else localMedia
                                     )
                                     //展示选择的图片
                                     longpostadapter.addData(longPostBean)
@@ -1372,8 +1320,6 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
     fun isSave(): Boolean {
         if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
-            return true
-        } else if (headBinding.etContent.text.toString().isNotEmpty()) {
             return true
         } else if (selectList.size > 0) {
             return true
@@ -1418,7 +1364,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         if (postEntity.postsId == 0L) {
             postEntity.postsId = insertPostId
         }
-        postEntity.content = headBinding.etContent.text.toString() //内容
+//        postEntity.content = headBinding.etContent.text.toString() //内容
         postEntity.circleId =
             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
         postEntity.circleName = circlename  //选择圈子的名称
