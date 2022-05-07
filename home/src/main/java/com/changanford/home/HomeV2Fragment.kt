@@ -350,7 +350,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         viewModel.fBBeanLiveData.observe(this) {
             it?.apply {
-                if (isPop != 1) {
+                if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
                         GetFbPop(this@HomeV2Fragment, viewModel, this).apply {
                             setOutSideDismiss(false)
