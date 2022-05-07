@@ -1,6 +1,5 @@
 package com.changanford.home.widget.pop
 
-import android.content.Context
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -13,7 +12,6 @@ import com.changanford.home.bean.FBBean
 import com.changanford.home.databinding.PopGetfbBinding
 import com.changanford.home.request.HomeV2ViewModel
 import com.jakewharton.rxbinding4.view.clicks
-import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -38,6 +36,9 @@ class GetFbPop(val fragment: Fragment, val viewModel: HomeV2ViewModel, private v
                         btnIsUse(false)
                     }
                 }, {})
+            imgClose.setOnClickListener {
+                dismiss()
+            }
         }
         viewModel.responseBeanLiveData.observe(fragment){
             if(it?.isSuccess==true){//表示领取成功则立即跳转到积分明细
