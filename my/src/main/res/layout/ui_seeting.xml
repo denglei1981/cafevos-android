@@ -41,6 +41,7 @@
         android:background="#eeeeee" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/set_notice"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
@@ -64,6 +65,7 @@
     </LinearLayout>
 
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
         android:layout_marginStart="@dimen/dp_20"
