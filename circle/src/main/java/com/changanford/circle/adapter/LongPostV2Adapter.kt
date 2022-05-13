@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginBottom
 import androidx.databinding.DataBindingUtil
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.BaseDraggableModule
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
@@ -22,6 +24,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toast
 import java.util.logging.Handler
 
 
@@ -40,6 +43,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
 
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
         val binding: ItemLongPostIvBinding = DataBindingUtil.bind(holder.itemView)!!
+
         if (item.localMedias == null) {
             showEtContent(binding, item)
         } else {
@@ -77,15 +81,14 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
     fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
         binding.tvTex.visibility = View.VISIBLE
         binding.gPic.visibility = View.GONE
+        binding.tvTex.isEnabled = true
 
         if (binding.tvTex.tag is TextWatcher) {
             binding.tvTex.removeTextChangedListener(binding.tvTex.tag as TextWatcher)
         }
         if (item.content?.isNotEmpty() == true || item.content != "/null/") {
-
             binding.tvTex.hint = item.hintStr
             binding.tvTex.setText(item.content)
-
 
         } else {
             binding.tvTex.setText("")
@@ -122,12 +125,19 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
                     val content = preItem.content
                     val newContent = content.plus("\n" + item.content)
                     item.content = newContent// 新文本内容
+                    binding.tvTex.setText(item.content)
                     remove(preItem) // 移除前一个文本
 
                 }
             }
         }
-
     }
 
+    override fun addDraggableModule(baseQuickAdapter: BaseQuickAdapter<*, *>): BaseDraggableModule {
+        val baseDraggableModule = BaseDraggableModule(baseQuickAdapter)
+        baseDraggableModule.toggleViewId = R.id.iv_pic
+        baseDraggableModule.isDragEnabled = true
+        baseDraggableModule.isDragOnLongPressEnabled = true
+        return baseDraggableModule
+    }
 }
