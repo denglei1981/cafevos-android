@@ -275,9 +275,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 val selectionStr = longpostadapter.getItem(longpostadapter.selectionPosition).content
                 val gindex = longpostadapter.currentTxtView?.selectionStart // 光标位置
                 val gItem = longpostadapter.selectionPosition
-                toastShow("光标位置===" + gindex)
-                LogUtil.e("post", "光标位置===" + gindex)
-                LogUtil.e("post", "光标item===" + gItem)
+//                toastShow("光标位置===" + gindex)
+//                LogUtil.e("post", "光标位置===" + gindex)
+//                LogUtil.e("post", "光标item===" + gItem)
                 if(gindex!=null&&selectionStr!=null){
                     if(gindex>selectionStr.length){
                         toastShow("请更换文本点击位置")
