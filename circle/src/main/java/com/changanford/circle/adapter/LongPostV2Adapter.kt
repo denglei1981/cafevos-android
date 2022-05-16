@@ -123,11 +123,10 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
                 val preItem = getItem(preIndex)
                 if (preItem.localMedias == null) { // 是文本
                     val content = preItem.content
-                    val newContent = content.plus("\n" + item.content)
+                    val newContent = content.plus(item.content)
                     item.content = newContent// 新文本内容
                     binding.tvTex.setText(item.content)
                     remove(preItem) // 移除前一个文本
-
                 }
             }
         }
