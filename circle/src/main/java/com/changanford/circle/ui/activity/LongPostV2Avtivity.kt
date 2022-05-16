@@ -84,8 +84,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private var circlename: String = ""
     private var address: String = ""
     private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
-    private var nomalwith = 500;
-    private var nomalhight = 500;
+    private var nomalwith = 500
+    private var nomalhight = 500
     private var selectList = ArrayList<LongPostBean>()
 
     private var type = 0
