@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_17"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="335:168"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +40,8 @@
             android:padding="5dp"
             android:src="@mipmap/iv_long_posd_delete"
             app:layout_constraintEnd_toEndOf="@+id/iv_pic"
+            app:layout_constraintBottom_toTopOf="@+id/iv_pic"
+            app:layout_constraintStart_toEndOf="@+id/iv_pic"
             app:layout_constraintTop_toTopOf="@id/iv_pic" />
 
         <androidx.appcompat.widget.AppCompatTextView

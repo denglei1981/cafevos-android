@@ -1154,6 +1154,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
         }
         params["tagIds"] = tagIds
+        params["content"]=""
         JSON.toJSONString(params).logD()
 
         try {
