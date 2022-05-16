@@ -1276,9 +1276,9 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         }
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon
-                        params["province"] = locaPostEntity!!.province
+                        params["province"] = locaPostEntity.province
                         params["cityCode"] = locaPostEntity!!.cityCode
-                        params["city"] = locaPostEntity!!.city
+                        params["city"] = locaPostEntity.city
                         if (params["plate"] != 0) {
                             buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(
