@@ -165,6 +165,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             isunSave = false
             FMMeadia = it as LocalMedia
             headBinding.ivFm.visibility = View.VISIBLE
+            headBinding.tvFmTips.visibility = View.VISIBLE
             GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
             headBinding.ivAddfm.visibility = View.GONE
             headBinding.tvFm.visibility = View.GONE
@@ -272,14 +273,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             isunSave = false
             val localMedias = it as List<LocalMedia>
             if (longpostadapter.selectionIndex > 0) {// 光标位置后追加图片大于0
-                val selectionStr = longpostadapter.getItem(longpostadapter.selectionPosition).content
+                val selectionStr =
+                    longpostadapter.getItem(longpostadapter.selectionPosition).content
                 val gindex = longpostadapter.currentTxtView?.selectionStart // 光标位置
                 val gItem = longpostadapter.selectionPosition
 //                toastShow("光标位置===" + gindex)
 //                LogUtil.e("post", "光标位置===" + gindex)
 //                LogUtil.e("post", "光标item===" + gItem)
-                if(gindex!=null&&selectionStr!=null){
-                    if(gindex>selectionStr.length){
+                if (gindex != null && selectionStr != null) {
+                    if (gindex > selectionStr.length) {
                         toastShow("请更换文本点击位置")
                         return@Observer
                     }
@@ -305,8 +307,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         endStrBean
                     )
                 }
-                longpostadapter.selectionIndex=-1
-                longpostadapter.selectionPosition=-1
+                longpostadapter.selectionIndex = -1
+                longpostadapter.selectionPosition = -1
                 longpostadapter.currentTxtView?.clearFocus()//清除光标
             } else {// 默认在最后加图片
                 localMedias.forEach { m ->
@@ -1019,6 +1021,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                 headBinding.ivAddfm.visibility = View.VISIBLE
                                 headBinding.tvFm.visibility = View.VISIBLE
                                 headBinding.ivFm.visibility = View.GONE
+                                headBinding.tvFmTips.visibility = View.GONE
 
                             }
                         }
@@ -1140,7 +1143,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         var tagIds = ""
         var tagNames = ""
         // 移除都是空的情况。
-        val last=  upedimgs.filter { !TextUtils.isEmpty(it.imgDesc)||!TextUtils.isEmpty(it.imgUrl)}
+        val last =
+            upedimgs.filter { !TextUtils.isEmpty(it.imgDesc) || !TextUtils.isEmpty(it.imgUrl) }
         params["imgUrl"] = last
         params["isPublish"] = 2
         buttomlabelAdapter.data.forEach {
@@ -1228,7 +1232,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         params["topicId"] = locaPostEntity.topicId
                         params["postsId"] = locaPostEntity.postsId
                         params["type"] = locaPostEntity.type
-                        locaPostEntity.keywords?.let {k->
+                        locaPostEntity.keywords?.let { k ->
                             params["keywords"] = k
                         }
                         params["circleId"] = locaPostEntity.circleId
@@ -1285,6 +1289,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                             //封面逻辑
                             FMMeadia = it[0]
                             headBinding.ivFm.visibility = View.VISIBLE
+                            headBinding.tvFmTips.visibility = View.VISIBLE
                             GlideUtils.loadRoundFilePath(
                                 PictureUtil.getFinallyPath(FMMeadia!!),
                                 headBinding.ivFm
