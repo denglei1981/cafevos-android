@@ -996,11 +996,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     fun addPost(dialog: LoadDialog) {
         var tagIds = ""
-        var tagNames=""
+        var tagNames = ""
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 tagIds += it.id + ","
-                tagNames+= it.tagName+","
+                tagNames += it.tagName + ","
             }
         }
 //        val take = tagIds.take(tagIds.length - 1)
@@ -1079,12 +1079,22 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         params["topicId"] = locaPostEntity!!.topicId
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
-                        params["keywords"] = locaPostEntity!!.keywords
+                        locaPostEntity.keywords?.let {k->
+                            params["keywords"] = k
+                        }
+
+
                         params["circleId"] = locaPostEntity!!.circleId
                         params["content"] = locaPostEntity!!.content ?: ""
                         params["actionCode"] = locaPostEntity!!.actionCode
                         params["title"] = locaPostEntity!!.title
-                        params["address"] = locaPostEntity!!.address
+
+                        locaPostEntity.address?.let { ad ->
+                            params["address"] = ad
+                        }
+                        if (TextUtils.isEmpty(locaPostEntity.address)) {
+                            params["address"] = ""
+                        }
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon
                         params["province"] = locaPostEntity!!.province

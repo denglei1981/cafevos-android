@@ -1223,20 +1223,22 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
                         headBinding.etBiaoti.setText(locaPostEntity.title)
-                        params["plate"] = locaPostEntity!!.plate
-                        platename = locaPostEntity!!.plateName
-                        params["topicId"] = locaPostEntity!!.topicId
-                        params["postsId"] = locaPostEntity!!.postsId
-                        params["type"] = locaPostEntity!!.type
-                        params["keywords"] = locaPostEntity!!.keywords
-                        params["circleId"] = locaPostEntity!!.circleId
-                        circlename = locaPostEntity!!.circleName ?: ""
-                        params["content"] = locaPostEntity!!.content ?: ""
-                        params["actionCode"] = locaPostEntity!!.actionCode
-                        params["title"] = locaPostEntity!!.title
-                        params["address"] = locaPostEntity!!.address ?: ""
-                        if (locaPostEntity.address.isNotEmpty()) {
-                            address = locaPostEntity.address
+                        params["plate"] = locaPostEntity.plate
+                        platename = locaPostEntity.plateName
+                        params["topicId"] = locaPostEntity.topicId
+                        params["postsId"] = locaPostEntity.postsId
+                        params["type"] = locaPostEntity.type
+                        locaPostEntity.keywords?.let {k->
+                            params["keywords"] = k
+                        }
+                        params["circleId"] = locaPostEntity.circleId
+                        circlename = locaPostEntity.circleName ?: ""
+                        params["content"] = locaPostEntity.content ?: ""
+                        params["actionCode"] = locaPostEntity.actionCode
+                        params["title"] = locaPostEntity.title
+                        params["address"] = locaPostEntity.address ?: ""
+                        if (locaPostEntity.address?.isNotEmpty() == true) {
+                            address = locaPostEntity.address.toString()
                         }
                         params["lat"] = locaPostEntity.lat
                         params["lon"] = locaPostEntity.lon
@@ -1256,7 +1258,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                 ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
                             )
                         }
-                        if (locaPostEntity!!.circleName?.isNotEmpty() == true) {
+                        if (locaPostEntity.circleName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 4,
                                 ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
@@ -1264,7 +1266,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         }
                         showLocaPostCity()
                         //选择的标签
-                        if (locaPostEntity.keywords.isNotEmpty()) {
+                        if (TextUtils.isEmpty(locaPostEntity.keywords)) {
                             buttomlabelAdapter.data.forEach {
                                 it.isselect = it.tagName == locaPostEntity.keywords
                             }

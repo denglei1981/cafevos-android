@@ -1260,15 +1260,19 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         params["topicId"] = locaPostEntity!!.topicId
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
-                        params["keywords"] = locaPostEntity!!.keywords
+                        if(TextUtils.isEmpty(locaPostEntity.keywords)){
+                            params["keywords"] = ""
+                        }else{
+                            params["keywords"] = locaPostEntity.keywords.toString()
+                        }
                         params["circleId"] = locaPostEntity!!.circleId
                         circlename = locaPostEntity!!.circleName ?: ""
                         params["content"] = locaPostEntity!!.content ?: ""
                         params["actionCode"] = locaPostEntity!!.actionCode
                         params["title"] = locaPostEntity!!.title
                         params["address"] = locaPostEntity!!.address ?: ""
-                        if (locaPostEntity!!.address?.isNotEmpty() == true) {
-                            address = locaPostEntity!!.address
+                        if (locaPostEntity.address?.isNotEmpty() == true) {
+                            address = locaPostEntity.address.toString()
                         }
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon

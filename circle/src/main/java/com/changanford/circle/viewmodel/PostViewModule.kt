@@ -198,8 +198,7 @@ class PostViewModule() :PostRoomViewModel(){
                         val destFile = File(appDir, fileName)
                         //把gilde下载得到图片复制到定义好的目录中去
                         copy(file, destFile)
-                        val localMedia =
-                            LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
+                        val localMedia = LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
                         localMedia.androidQToPath = destFile.path
                         localMedia.realPath = destFile.path
                         localMedia
