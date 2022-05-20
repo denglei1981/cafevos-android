@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@mipmap/image_mine"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintDimensionRatio="1125:504"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/my_scan"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/my_message"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_setting"
+            app:layout_constraintEnd_toStartOf="@+id/iv_setting"
+            app:layout_constraintTop_toTopOf="@+id/iv_setting" />
+
+        <ImageView
+            android:id="@+id/my_msg"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/my_message"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_setting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_setting" />
+
+        <ImageView
+            android:id="@+id/message_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_have_bg"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="@+id/my_msg"
+            app:layout_constraintTop_toTopOf="@+id/my_msg"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/app_name"
+            android:padding="8dp"
+            android:src="@mipmap/my_set"
+            app:layout_constraintEnd_toStartOf="@+id/my_msg"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/v_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/bg_white_corner10"
+            app:layout_constraintDimensionRatio="335:165"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_setting"
+            app:layout_constraintWidth_percent="0.91" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/head_default"
+            app:layout_constraintStart_toStartOf="@+id/v_bg"
+            app:layout_constraintTop_toTopOf="@+id/v_bg"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/daySign"
+            style="@style/commonTextView.Small.Black"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:drawableStart="@mipmap/icon_mine_sign"
+            android:background="@drawable/shape_white_24dp"
+            android:drawablePadding="@dimen/dp_8"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:text="@string/my_daySign"
+            android:textColor="#8195C8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_setting"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_setting"
+            />
+
+
+        <include
+            android:id="@+id/my_stateLayout"
+            layout="@layout/my_stateview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintTop_toBottomOf="@id/iv_head" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
