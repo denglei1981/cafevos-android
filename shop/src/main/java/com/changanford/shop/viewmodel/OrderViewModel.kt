@@ -236,11 +236,8 @@ class OrderViewModel: BaseViewModel() {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["isWb"]="NO"
-                }
                 val randomKey = getRandomKey()
-                shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
+                shopApiService.shopOrderRefundListV2(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 refundBeanLiveData.postValue(null)
                 it?.toast()
