@@ -2,6 +2,8 @@ package com.changanford.shop.ui.order
 
 import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderAdapter
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
@@ -33,7 +35,10 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty_order)
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsV2Activity.start(mAdapter.data[position].orderNo)
+            mAdapter.data[position].apply {
+                if("WB"==busSource)JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+                else JumpUtils.instans?.jump(5, orderNo)
+            }
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }
