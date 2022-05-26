@@ -93,6 +93,18 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 JumpUtils.instans?.jump(30)
 
             }
+            h.ddFollow.setOnClickListener{
+                JumpUtils.instans?.jump(25)
+
+            }
+            h.ddPublish.setOnClickListener {
+
+                JumpUtils.instans?.jump(23)
+            }
+            h.ddFans.setOnClickListener {
+
+                JumpUtils.instans?.jump(40)
+            }
 
         }
     }

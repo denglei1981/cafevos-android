@@ -5,13 +5,9 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.changanford.common.bean.MenuBeanItem
 import com.changanford.my.R
 import com.changanford.my.bean.MineMenuData
 import com.changanford.my.databinding.ItemMineMenuBinding
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 
 
 class MineMenuAdapter :
