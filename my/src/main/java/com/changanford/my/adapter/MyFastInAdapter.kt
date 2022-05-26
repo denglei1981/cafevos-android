@@ -10,7 +10,7 @@ import com.changanford.my.R
 class MyFastInAdapter: BaseQuickAdapter<MyFastInData, BaseViewHolder>(R.layout.item_my_fast_in){
     override fun convert(holder: BaseViewHolder, item: MyFastInData) {
         holder.setText(R.id.tv_name,item.name)
-        var imageView = holder.getView<ImageView>(R.id.iv_icon)
+        val imageView = holder.getView<ImageView>(R.id.iv_icon)
         imageView.apply {
             load(item.imgDrawable,R.mipmap.ic_medal_ex)
 

@@ -150,6 +150,14 @@
         <attr name="titleText" format="string" />
         <attr name="image" format="reference|integer" />
     </declare-styleable>
+    <declare-styleable name="DrawDoubleText">
+        <attr name="titleTextSize1" format="dimension" />
+        <attr name="titleTextColor1" format="color" />
+        <attr name="titleText1" format="string" />
+        <attr name="descTextSize" format="dimension" />
+        <attr name="descTextColor" format="color" />
+        <attr name="descText" format="string" />
+    </declare-styleable>
     <style name="w_style_txt_ellipsize">
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>

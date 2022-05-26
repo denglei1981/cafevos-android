@@ -203,6 +203,7 @@ fun OwnerCertificationUnauthorized(dataBean: NewCarInfoBean?=null,isUse:Boolean=
                     }
                     Column(modifier = Modifier.padding(bottom = 24.dp, end = 20.dp, start = 140.dp)) {
                         img?.apply {
+                            var urlStr=GlideUtils.handleNullableUrl(this)
                             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this) ?: R.mipmap.head_default,
                                 builder = {placeholder(R.mipmap.head_default)}),
                                 contentScale = ContentScale.Crop,
