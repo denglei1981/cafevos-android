@@ -1,23 +1,22 @@
-package com.changanford.circle.adapter
+package com.changanford.my.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import com.changanford.circle.R
-import com.changanford.circle.bean.User
 
-import com.changanford.circle.databinding.ItemCircleDetailsPersonalBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.bean.User
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.my.R
+import com.changanford.my.databinding.ItemCircleDetailsPersonalBinding
 
 /**
  *Author lcw
  *Time on 2021/9/22
  *Purpose
  */
-class CircleDetailsPersonalAdapter(context: Context) :
+class CircleDetailsPersonalAdapter(var context: Context) :
     BaseAdapterOneLayout<User>(context, R.layout.item_circle_details_personal) {
     override fun fillData(vdBinding: ViewDataBinding?, item: User, position: Int) {
         val binding = vdBinding as ItemCircleDetailsPersonalBinding
@@ -25,13 +24,12 @@ class CircleDetailsPersonalAdapter(context: Context) :
         if (position == 0) {
             params.leftMargin =
                 0
-        } else params.leftMargin = -(6.toIntPx())
+        } else params.leftMargin = (-(dpToPx(context,6f))).toInt()
 
-        binding.ivPersonal.loadImage(
-            item.avatar,
-            ImageOptions().apply {
-                circleCrop = true
-                error = R.mipmap.head_default
-            })
+        GlideUtils.loadBD(item.avatar,binding.ivPersonal)
+
     }
+}
+fun dpToPx(context: Context, dp: Float): Float {
+    return dp * context.resources.displayMetrics.density
 }

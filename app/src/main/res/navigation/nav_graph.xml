@@ -35,7 +35,7 @@
         android:label="fragment_circle_list" />
     <custom_fragment
         android:id="@+id/myFragment"
-        android:name="com.changanford.my.MyFragment"
+        android:name="com.changanford.my.MineFragment"
         android:label="AboutFragment" />
 
 </navigation>

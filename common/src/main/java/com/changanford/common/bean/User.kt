@@ -12,7 +12,8 @@ package com.changanford.common.bean
 data class User(
     var id: Int = 0,
     val name: String = "",
-    val sotr: String? = null
+    val sotr: String? = null,
+    val avatar: String = "",
 )
 
 

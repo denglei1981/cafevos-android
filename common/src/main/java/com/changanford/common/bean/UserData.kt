@@ -66,7 +66,8 @@ data class UserInfoBean(
     val updateBy: String,
     val updateTime: String,
     val userId: String,
-    val userName: String
+    val userName: String,
+    var couponCount:Int=0,
 ) {
     /**
      * 处理因is开头属性转json丢失数据的问题
@@ -79,11 +80,11 @@ data class UserInfoBean(
 }
 
 data class Count(
-    val collections: Int,
-    val fans: Int,
-    val follows: Int,
-    val likeds: Int,
-    val releases: Int
+    var collections: Int=0,
+    var fans: Int=0,
+    var follows: Int=0,
+    var likeds: Int=0,
+    var releases: Int=0
 )
 
 data class Ext(

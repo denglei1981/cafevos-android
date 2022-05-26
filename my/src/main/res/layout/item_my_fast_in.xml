@@ -8,10 +8,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mytoollayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_10"
-        android:background="@drawable/shape_whit5_bg"
+        android:background="@color/white"
         android:paddingTop="@dimen/dp_24"
         android:paddingBottom="@dimen/dp_24">
 
@@ -19,8 +19,8 @@
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
-            android:src="@mipmap/icon_coupon"
             android:scaleType="matrix"
+            android:src="@mipmap/icon_coupon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

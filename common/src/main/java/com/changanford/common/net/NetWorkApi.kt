@@ -1177,4 +1177,8 @@ interface NetWorkApi {
      * */
     @POST("/userLoginJump/changeJumpStatus")
     suspend fun changeJumpStatus(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<*>
+
+
+    @POST("con/circle/carRecommend")
+    suspend fun carRecommend(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<*>
 }
