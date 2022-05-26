@@ -470,7 +470,7 @@ class OrderViewModel: BaseViewModel() {
     fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
         return when(orderStatus){
             "WAIT_PAY"->"待付款"
-            "WAIT_SEND"->"待发货"
+            "WAIT_SEND","WAIT_SYS_REGIST"->"待发货"
             "WAIT_RECEIVE"->"待收货"
             "FINISH"->{
                 if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价"
