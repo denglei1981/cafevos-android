@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="String" />
+    </data>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/iv_personal"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearance="@dimen/dp_2"
+        app:shapeAppearanceOverlay="@style/circleImageStyle" />
+</layout>

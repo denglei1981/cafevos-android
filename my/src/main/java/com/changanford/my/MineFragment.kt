@@ -11,13 +11,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
+import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.UserManger
+import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
+import com.changanford.my.adapter.CircleDetailsPersonalAdapter
 import com.changanford.my.adapter.MineFastUsedAdapter
 import com.changanford.my.adapter.MineMenuAdapter
 import com.changanford.my.bean.MineMenuData
@@ -88,6 +93,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 JumpUtils.instans?.jump(30)
 
             }
+
         }
     }
 
@@ -116,6 +122,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                     .postValue(userInfoBean.isUnread == 1)
             } else {
                 h.tvNickname.text = "登录/注册"
+                h.ivHead.load(R.mipmap.head_default)
                 h.ddPublish.setPageTitleText("0")
                 h.ddFans.setPageTitleText("0")
                 h.ddFollow.setPageTitleText("0")
@@ -192,23 +199,97 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
         }
         viewModel.carAuthBean.observe(this, Observer {
             setCarInfo(it)
+        })
+        viewModel.recommdCircleLiveData.observe(this, Observer {
+            showCircle(it)
 
         })
     }
 
+    fun showCircle(list: MutableList<MineRecommendCircle>) {
+
+        var showIndex = 0
+        if (list.size > 0) {
+            showIndex = 0
+            val mineRecommendCircle = list[showIndex]
+            showIndexCircle(mineRecommendCircle)
+        }
+        headNewBinding?.let { h ->
+            h.tvChange.setOnClickListener {
+                if (showIndex < list.size) {
+                    showIndex += 1
+                }
+                if (showIndex >= list.size) {
+                    showIndex = 0
+                }
+                showIndexCircle(list[showIndex])
+            }
+
+        }
+
+    }
+
+    val circleDetailsPersonalAdapter: CircleDetailsPersonalAdapter by lazy {
+        CircleDetailsPersonalAdapter(requireContext())
+
+    }
+
+    fun showIndexCircle(recommendCircle: MineRecommendCircle) {
+        headNewBinding?.let { h ->
+            GlideUtils.loadBD(recommendCircle.pic, h.ivCircle)
+            h.tvPeople.text =
+                CountUtils.formatNum(recommendCircle.userCount.toString(), false).toString()
+                    .plus("车友活跃中")
+            h.tvCircleTips.text = recommendCircle.name
+            h.tvCircleDesc.text = recommendCircle.posts[0].getShowTitle()
+            circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
+            h.rvCircle.adapter = circleDetailsPersonalAdapter
+            h.vCircleBg.setOnClickListener {
+                JumpUtils.instans?.jump(6, recommendCircle.circleId.toString())
+
+            }
+        }
+    }
+
     override fun observe() {
         super.observe()
+
         viewModel.menuBean.observe(this, Observer {
             val menu = MineMenuData("常用功能", it)
             val list = arrayListOf<MineMenuData>()
-            list.add(viewModel.myOrders())
             list.add(menu)
-            mineMenuAdapter.setNewInstance(list)
+            viewModel.getOrderKey(list)
+
+
+
+        })
+        viewModel.updateOrderAdLiveData.observe(this, Observer {
+            viewModel.getCarListAds(it.data as ArrayList<MineMenuData>)
+
+        })
+        viewModel.updateCarAdLiveData.observe(this, Observer {
+            mineMenuAdapter.setNewInstance(it.data as MutableList<MineMenuData>?)
         })
         viewModel.adListLiveData.observe(this, Observer {
             showAdView(it)
 
         })
+        viewModel.mOrderTypesLiveData.observe(this, Observer {
+
+
+        })
+        LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+            .observe(this) {
+                if (it) {
+                    viewModel.getUserInfo()
+                }
+            }
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this, {
+                // 收到 登录状态改变回调都要刷新页面
+                viewModel.getAuthCarInfo()// 登录状态改变
+            })
     }
 
     fun showAdView(list: ArrayList<AdBean>?) {

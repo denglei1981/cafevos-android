@@ -3,12 +3,12 @@ package com.changanford.my.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.AdBean
-import com.changanford.common.bean.CarAuthBean
-import com.changanford.common.bean.MenuBeanItem
-import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
+import com.changanford.common.net.response.UpdateUiState
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.R
@@ -77,7 +77,7 @@ class MineViewModel : BaseViewModel() {
             }
         }
     }
-
+    val recommdCircleLiveData = MutableLiveData<MutableList<MineRecommendCircle>>()
     fun getCircleInfo() {
         viewModelScope.launch {
             fetchRequest {
@@ -85,21 +85,49 @@ class MineViewModel : BaseViewModel() {
                 val randomKey = getRandomKey()
                 apiService.carRecommend(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
-
+                recommdCircleLiveData.postValue(it)
             }.onWithMsgFailure {
-
                 it?.toast()
             }
         }
     }
 
+
+
+    val  updateCarAdLiveData  = MutableLiveData<UpdateUiState<List<MineMenuData>>>()
+    fun getCarListAds( allList:ArrayList<MineMenuData>) {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
+            body["posCode"] = "my_info_car"
+            ApiClient.createApi<NetWorkApi>()
+                .getAdList(body.header(rkey), body.body(rkey))
+                .onSuccess {
+//                    carListLiveData.postValue(it)
+                    val list = arrayListOf<MenuBeanItem>()
+                    it?.let {l->
+                    l.forEach { d->
+                        list.add(MenuBeanItem(icon=d.getAdImgUrl(),menuName = d.adName,jumpDataType = d.jumpDataType,jumpDataValue=d.jumpDataValue))
+                    }
+                        val menu = MineMenuData("", list)
+                        allList.add(0,menu)
+                        val updateUiState =UpdateUiState<List<MineMenuData>>(allList,true,"")
+                        updateCarAdLiveData.postValue(updateUiState)
+                    }
+
+                }.onWithMsgFailure {
+                    val updateUiState =UpdateUiState<List<MineMenuData>>(allList,false,"")
+                    updateCarAdLiveData.postValue(updateUiState)
+                }
+        })
+    }
     //广告
     val adListLiveData = MutableLiveData<ArrayList<AdBean>?>()
     fun getBottomAds() {
         launch(false, {
             val body = HashMap<String, Any>()
             val rkey = getRandomKey()
-            body["posCode"] = "recommend_banner"
+            body["posCode"] = "my_info_ads"
             ApiClient.createApi<NetWorkApi>()
                 .getAdList(body.header(rkey), body.body(rkey))
                 .onSuccess {
@@ -114,11 +142,11 @@ class MineViewModel : BaseViewModel() {
 
     fun myOrders(): MineMenuData {
         val orderItemBeanList = mutableListOf<MenuBeanItem>()
-        val menuItemBean = MenuBeanItem(drawInt = R.mipmap.icon_mine_order_car, menuName = "购车订单")
+        val menuItemBean = MenuBeanItem(drawInt = R.mipmap.icon_mine_order_car, menuName = "购车订单",jumpDataType = 1,jumpDataValue = MConstant.H5_BASE_URL.plus("/order/#/vehicleOrder/vehicleOrder") )
         orderItemBeanList.add(menuItemBean)
 
-        val menuItemBean01 = MenuBeanItem(drawInt = R.mipmap.icon_mine_service, menuName = "服务订单")
-        orderItemBeanList.add(menuItemBean01)
+//        val menuItemBean01 = MenuBeanItem(drawInt = R.mipmap.icon_mine_service, menuName = "服务订单")
+//        orderItemBeanList.add(menuItemBean01)
 
         val menuItemBean02 =
             MenuBeanItem(drawInt = R.mipmap.icon_mine_order_shop, menuName = "商品订单",jumpDataType = 52,jumpDataValue = "")
@@ -126,5 +154,34 @@ class MineViewModel : BaseViewModel() {
         val menu = MineMenuData("我的订单", orderItemBeanList)
 
         return menu
+    }
+
+
+
+    /**
+     * 获取订单类型
+     * */
+    //订单类型
+    var  mOrderTypesLiveData: MutableLiveData<MutableList<MenuBeanItem>> = MutableLiveData()
+    val  updateOrderAdLiveData  = MutableLiveData<UpdateUiState<List<MineMenuData>>>()
+    fun getOrderKey( allList:ArrayList<MineMenuData>){
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                val randomKey = getRandomKey()
+                apiService.getOrderKey(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+                val updateUiState =UpdateUiState<List<MineMenuData>>(allList,false,"")
+                updateOrderAdLiveData.postValue(updateUiState)
+            }.onSuccess {
+                val menu = it?.let { it1 -> MineMenuData("我的订单", it1) }
+                if (menu != null) {
+                    allList.add(0,menu)
+                }
+                val updateUiState =UpdateUiState<List<MineMenuData>>(allList,true,"")
+                updateOrderAdLiveData.postValue(updateUiState)
+
+            }
+        }
     }
 }

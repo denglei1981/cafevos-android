@@ -1180,5 +1180,11 @@ interface NetWorkApi {
 
 
     @POST("con/circle/carRecommend")
-    suspend fun carRecommend(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun carRecommend(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<MutableList<MineRecommendCircle>>
+
+    /**
+     * 获取订单类型
+     * */
+    @POST("user/navigaMenu/getUserOrderType")
+    suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<MenuBeanItem>>
 }

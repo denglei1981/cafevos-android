@@ -1,5 +1,7 @@
 package com.changanford.my.adapter
 
+import android.text.TextUtils
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -19,8 +21,14 @@ class MineMenuAdapter :
             val mineFastUsedAdapter = MineFastUsedAdapter()
             mineFastUsedAdapter.setNewInstance(item.list)
             t.rvMenu.adapter = mineFastUsedAdapter
-            t.tvTitle.text = item.title
-            val layoutManager =GridLayoutManager(context,4)
+            if (!TextUtils.isEmpty(item.title)) {
+                t.tvTitle.text = item.title
+                t.tvTitle.visibility = View.VISIBLE
+            } else {
+                t.tvTitle.visibility = View.GONE
+            }
+
+            val layoutManager = GridLayoutManager(context, 4)
             layoutManager.orientation = GridLayoutManager.VERTICAL
             t.rvMenu.layoutManager = layoutManager
         }

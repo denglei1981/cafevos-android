@@ -118,3 +118,12 @@ data class CircleStatusItemBean(
     val surplusNum: Int,
     val updateTime: Long
 )
+
+
+
+/**
+ *  我的推荐圈子
+ * */
+data class  MineRecommendCircle(var circleId:Long,var name:String,var userCount:Long,var pic:String, var avatars:ArrayList<String>,var posts:List<PostDataBean>,var sort:Int){
+
+}

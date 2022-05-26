@@ -6,10 +6,10 @@ import androidx.databinding.ViewDataBinding
 
 
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
-import com.changanford.common.bean.User
+
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.my.R
-import com.changanford.my.databinding.ItemCircleDetailsPersonalBinding
+import com.changanford.my.databinding.ItemMineCirclePersonalBinding
 
 /**
  *Author lcw
@@ -17,16 +17,16 @@ import com.changanford.my.databinding.ItemCircleDetailsPersonalBinding
  *Purpose
  */
 class CircleDetailsPersonalAdapter(var context: Context) :
-    BaseAdapterOneLayout<User>(context, R.layout.item_circle_details_personal) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: User, position: Int) {
-        val binding = vdBinding as ItemCircleDetailsPersonalBinding
+    BaseAdapterOneLayout<String>(context, R.layout.item_mine_circle_personal) {
+    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
+        val binding = vdBinding as ItemMineCirclePersonalBinding
         val params = binding.ivPersonal.layoutParams as ViewGroup.MarginLayoutParams
         if (position == 0) {
             params.leftMargin =
                 0
         } else params.leftMargin = (-(dpToPx(context,6f))).toInt()
 
-        GlideUtils.loadBD(item.avatar,binding.ivPersonal)
+        GlideUtils.loadBD(item,binding.ivPersonal)
 
     }
 }
