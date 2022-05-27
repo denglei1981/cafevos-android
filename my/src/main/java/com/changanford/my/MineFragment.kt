@@ -31,6 +31,7 @@ import com.changanford.my.databinding.FooterMineBinding
 import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
 import com.changanford.my.viewmodel.MineViewModel
+import com.changanford.my.widget.FlyCirclePost
 
 
 class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
@@ -168,6 +169,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)
                 h.daySign.text = "签到"
                 h.messageStatus.visibility = View.GONE
+                h.tvUserTags.text = "0枚勋章"
             }
 
 
@@ -268,14 +270,14 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
 
     fun showIndexCircle(recommendCircle: MineRecommendCircle) {
         headNewBinding?.let { h ->
-            GlideUtils.loadBD(recommendCircle.pic, h.ivCircle)
+//            GlideUtils.loadBD(recommendCircle.pic, h.ivCircle)
             h.tvPeople.text =
                 CountUtils.formatNum(recommendCircle.userCount.toString(), false).toString()
                     .plus("车友活跃中")
             h.tvCircleTips.text = recommendCircle.name
-            h.tvCircleDesc.text = recommendCircle.posts[0].getShowTitle()
+//            h.tvCircleDesc.text = recommendCircle.posts[0].getShowTitle()
             if (recommendCircle.avatars.size > 3) {
-                val subList: MutableList<String> = recommendCircle.avatars.subList(0, 2)
+                val subList: MutableList<String> = recommendCircle.avatars.subList(0, 3)
                 val arrList = ArrayList<String>()
                 subList.forEach { s ->
                     arrList.add(s)
@@ -284,11 +286,19 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
             } else {
                 circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
             }
+            h.vFlipper.removeAllViews()
+            recommendCircle.posts.forEach {p->
+                val postView = FlyCirclePost(requireContext())
+                postView.setThumb(p.pics,p.postsId)
+                postView.setPageTitleText(p.getShowTitle())
+                h.vFlipper.addView(postView)
 
+            }
+            h.vFlipper.flipInterval = 3000
+            h.vFlipper.startFlipping()
             h.rvCircle.adapter = circleDetailsPersonalAdapter
-            h.vCircleBg.setOnClickListener {
+            h.tvInCircle.setOnClickListener {
                 JumpUtils.instans?.jump(6, recommendCircle.circleId.toString())
-
             }
         }
     }
@@ -329,7 +339,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this, {
                 // 收到 登录状态改变回调都要刷新页面
-                viewModel.getAuthCarInfo()// 登录状态改变
+//                viewModel.getAuthCarInfo()// 登录状态改变
             })
     }
 
@@ -438,5 +448,12 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
         super.onResume()
         viewModel.getUserInfo()
         viewModel.getMenuList()
+        viewModel.getAuthCarInfo()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // 停止播放
+        headNewBinding?.vFlipper?.stopFlipping()
     }
 }

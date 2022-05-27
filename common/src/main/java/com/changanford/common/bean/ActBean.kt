@@ -238,7 +238,7 @@ data class PostDataBean(
         if (!TextUtils.isEmpty(title)) {
             return title!!
         }
-        return ""
+        return "12232313123"
     }
 
     var timeAndViewCountResult: String = ""
