@@ -32,9 +32,11 @@ import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
 import com.changanford.my.viewmodel.MineViewModel
 import com.changanford.my.widget.FlyCirclePost
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
-class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
+class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefreshListener {
 
 
     var headNewBinding: HeaderMineBinding? = null
@@ -49,8 +51,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
 
         binding.recyclerView.adapter = mineMenuAdapter
         binding.smartLayout.setEnableLoadMore(false)
+        binding.smartLayout.setOnRefreshListener(this)
         addHeadView()
         addFooterView()
+
 
     }
 
@@ -131,7 +135,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 h.ddFans.setPageTitleText(userInfoBean.count.fans.toString())
                 h.ddFollow.setPageTitleText(userInfoBean.count.follows.toString())
                 h.tvUserLevel.visibility = View.VISIBLE
-                h.tvLoveCarTips.visibility = View.VISIBLE
+
                 h.tvUserTags.visibility = View.VISIBLE
                 val couponStr = "优惠券".plus("\t\t${userInfoBean.couponCount}")
                 val goldStr = "福币".plus("\t\t${userInfoBean.ext.totalIntegral}")
@@ -160,7 +164,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 h.ddFans.setPageTitleText("0")
                 h.ddFollow.setPageTitleText("0")
                 h.tvUserLevel.visibility = View.GONE
-                h.tvLoveCarTips.visibility = View.GONE
                 h.tvCarName.visibility = View.GONE
                 h.tvUserTags.visibility = View.GONE
                 val couponStr = "优惠券".plus("\t\t0")
@@ -455,5 +458,11 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
         super.onDestroy()
         // 停止播放
         headNewBinding?.vFlipper?.stopFlipping()
+    }
+
+    override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getUserInfo()
+        viewModel.getAuthCarInfo()
+        refreshLayout.finishRefresh()
     }
 }
