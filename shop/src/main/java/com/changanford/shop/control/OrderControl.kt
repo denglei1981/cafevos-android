@@ -2,9 +2,11 @@ package com.changanford.shop.control
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderRefundItemBean
 import com.changanford.common.bean.OrderSkuItem
@@ -42,7 +44,8 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
     /**
      * 绑定订单商品基础信息
      * */
-    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderItemBean){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding, itemBean: OrderItemBean){
         dataBinding.apply {
             val params = imgGoodsCover.layoutParams
             params.width=imgWidthPx
@@ -95,15 +98,21 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 recyclerViewImgArr.adapter= mAdapter
                 mAdapter.setList(itemBean.skuOrderVOList)
                 mAdapter.setOnItemClickListener { _, _, _ ->
-                    itemBean.apply {
-                        if(jumpDataType!=null){
-                            JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
-                        }else JumpUtils.instans?.jump(5,orderNo)
-                    }
+                    clickOrderItemJump(itemBean)
                 }
+            }
+            viewProperty.setOnClickListener {
+                clickOrderItemJump(itemBean)
             }
             itemBean.getRMBPrice()
             model0=itemBean
+        }
+    }
+    fun clickOrderItemJump(itemBean: OrderItemBean?){
+        itemBean?.apply {
+            if(jumpDataType!=null)JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+            else if("WB"==busSource)JumpUtils.instans?.jump(1,String.format(MConstant.H5_SHOP_MAINTENANCE,orderNo))
+            else JumpUtils.instans?.jump(5, orderNo)
         }
     }
     fun bindingGoodsInfo(dataBinding:InItemOrderGoodsBinding,itemBean: OrderRefundItemBean){
@@ -138,6 +147,15 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                         adapter= OrderGoodsAttributeAdapter().apply {
                             val specifications=skuItem.specifications?.split(",")?.filter { ""!= it }
                             setList(specifications)
+                            setOnItemClickListener { _, _, _ ->
+                                itemBean.apply {
+                                    //整单退
+                                    if(refundType=="ALL_ORDER")JumpUtils.instans?.jump(124, mallMallRefundId)
+                                    //单SKU退
+                                    else JumpUtils.instans?.jump(126, mallMallRefundId)
+
+                                }
+                            }
                         }
                     }else{
                         visibility= View.INVISIBLE
@@ -295,12 +313,10 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                             JumpUtils.instans?.jump(jumpCode,jumpVal)
                         }
                     }
-
                 }
                 //申请售后-到订单详情
-                3->{
-                    JumpUtils.instans?.jump(5,orderNo)
-                }
+                3->clickOrderItemJump(item)
+
                 //申请退款
                 4->{
                     val gson = Gson()
@@ -310,7 +326,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 }
                 //售后详情
                 5->{
-
+                    //待开发
                 }
             }
         }
