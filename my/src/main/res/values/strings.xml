@@ -19,6 +19,6 @@
     <string name="prompt_bindMobile">进行下一步操作之前需要先绑定手机号，是否前往绑定？</string>
     <string name="str_noBinding">暂不绑定</string>
     <string name="str_immediatelyBinding">立即绑定</string>
-    <string name="mine_love_car">我的爱车</string>
+    <string name="mine_love_car">添加爱车</string>
     <string name="in_circle">进圈</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
@@ -93,7 +94,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 JumpUtils.instans?.jump(30)
 
             }
-            h.ddFollow.setOnClickListener{
+            h.ddFollow.setOnClickListener {
                 JumpUtils.instans?.jump(25)
 
             }
@@ -104,6 +105,17 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
             h.ddFans.setOnClickListener {
 
                 JumpUtils.instans?.jump(40)
+            }
+            h.tvUserLevel.setOnClickListener {
+                JumpUtils.instans?.jump(32)
+            }
+            h.tvUserTags.setOnClickListener {
+                JumpUtils.instans?.jump(29)
+
+            }
+            h.tvCarName.setOnClickListener {
+
+                JumpUtils.instans?.jump(17)
             }
 
         }
@@ -125,8 +137,16 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                 h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.black)
                 h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)
                 h.tvUserLevel.text = userInfoBean.ext.growSeriesName
+
+
                 h.tvCarName.text = userInfoBean.ext.carOwner
-                h.tvCarName.visibility = View.VISIBLE
+                if (TextUtils.isEmpty(userInfoBean.ext.carOwner)) {
+                    h.tvCarName.visibility = View.GONE
+                } else {
+                    h.tvCarName.visibility = View.VISIBLE
+                }
+                h.tvUserTags.text = userInfoBean.medalCount.toString().plus("枚勋章")
+
                 h.daySign.text = if (userInfoBean.isSignIn == 1) "已签到" else "签到"
                 h.messageStatus.visibility =
                     if (userInfoBean.isUnread == 1) View.VISIBLE else View.GONE
@@ -254,7 +274,17 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                     .plus("车友活跃中")
             h.tvCircleTips.text = recommendCircle.name
             h.tvCircleDesc.text = recommendCircle.posts[0].getShowTitle()
-            circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
+            if (recommendCircle.avatars.size > 3) {
+                val subList: MutableList<String> = recommendCircle.avatars.subList(0, 2)
+                val arrList = ArrayList<String>()
+                subList.forEach { s ->
+                    arrList.add(s)
+                }
+                circleDetailsPersonalAdapter.setItems(arrList)
+            } else {
+                circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
+            }
+
             h.rvCircle.adapter = circleDetailsPersonalAdapter
             h.vCircleBg.setOnClickListener {
                 JumpUtils.instans?.jump(6, recommendCircle.circleId.toString())
@@ -271,7 +301,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
             val list = arrayListOf<MineMenuData>()
             list.add(menu)
             viewModel.getOrderKey(list)
-
 
 
         })
@@ -357,7 +386,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                             GlideUtils.loadBD(l[2].getAdImgUrl(), f.ivThreeThree)
                             f.ivThreeThree.setOnClickListener {
                                 JumpUtils.instans?.jump(l[2].jumpDataType, l[2].jumpDataValue)
-
                             }
                         }
 
@@ -375,7 +403,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
         headNewBinding?.let { h ->
             if (carAuthBean?.isCarOwner == 1 && carAuthBean.carList != null) {
                 carAuthBean.carList?.let { l ->
-                    var carInfo = l.get(0)
+                    val carInfo = l[0]
                     GlideUtils.loadBD(carInfo.modelUrl, h.ivCarPic, R.mipmap.head_default)
                     h.tvAddLoveCar.text = carInfo.seriesName
                 }
@@ -386,7 +414,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>() {
                     h.ivCarPic,
                     R.mipmap.head_default
                 )
-                h.tvAddLoveCar.text = "我的爱车"
+                h.tvAddLoveCar.text = "添加爱车"
             }
 
 
