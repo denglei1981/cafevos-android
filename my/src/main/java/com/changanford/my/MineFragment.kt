@@ -157,6 +157,11 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                     if (userInfoBean.isUnread == 1) View.VISIBLE else View.GONE
                 LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT)
                     .postValue(userInfoBean.isUnread == 1)
+                if(TextUtils.isEmpty(userInfoBean.ext.memberIcon)){
+                    h.ivVip.visibility=View.GONE
+                }else{
+                    GlideUtils.loadBD(userInfoBean.ext.memberIcon,h.ivVip)
+                }
             } else {
                 h.tvNickname.text = "登录/注册"
                 h.ivHead.load(R.mipmap.head_default)
@@ -173,6 +178,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                 h.daySign.text = "签到"
                 h.messageStatus.visibility = View.GONE
                 h.tvUserTags.text = "0枚勋章"
+                h.ivVip.visibility=View.GONE
             }
 
 
@@ -295,9 +301,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                 postView.setThumb(p.pics,p.postsId)
                 postView.setPageTitleText(p.getShowTitle())
                 h.vFlipper.addView(postView)
-
             }
-            h.vFlipper.flipInterval = 3000
             h.vFlipper.startFlipping()
             h.rvCircle.adapter = circleDetailsPersonalAdapter
             h.tvInCircle.setOnClickListener {
