@@ -287,12 +287,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
 
     fun showIndexCircle(recommendCircle: MineRecommendCircle) {
         headNewBinding?.let { h ->
-//            GlideUtils.loadBD(recommendCircle.pic, h.ivCircle)
             h.tvPeople.text =
                 CountUtils.formatNum(recommendCircle.userCount.toString(), false).toString()
                     .plus("车友活跃中")
             h.tvCircleTips.text = recommendCircle.name
-//            h.tvCircleDesc.text = recommendCircle.posts[0].getShowTitle()
             if (recommendCircle.avatars.size > 3) {
                 val subList: MutableList<String> = recommendCircle.avatars.subList(0, 3)
                 val arrList = ArrayList<String>()
@@ -465,12 +463,18 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
         viewModel.getCircleInfo()
+        headNewBinding?.vFlipper?.startFlipping()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // 停止播放
+        headNewBinding?.vFlipper?.stopFlipping()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // 停止播放
-        headNewBinding?.vFlipper?.stopFlipping()
+
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
