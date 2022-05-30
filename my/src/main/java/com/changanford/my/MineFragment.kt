@@ -89,6 +89,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
             h.tvNickname.setOnClickListener {
                 JumpUtils.instans?.jump(34)
             }
+            h.tvNotLogin.setOnClickListener {
+                JumpUtils.instans?.jump(34)
+
+            }
             h.vCarBg.setOnClickListener {
                 JumpUtils.instans?.jump(17)
             }
@@ -161,9 +165,14 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                     h.ivVip.visibility=View.GONE
                 }else{
                     GlideUtils.loadBD(userInfoBean.ext.memberIcon,h.ivVip)
+                    h.ivVip.visibility=View.VISIBLE
                 }
+                h.tvNickname.visibility=View.VISIBLE
+                h.tvNotLogin.visibility=View.GONE
             } else {
-                h.tvNickname.text = "登录/注册"
+                h.tvNickname.text = ""
+                h.tvNickname.visibility=View.GONE
+                h.tvNotLogin.visibility=View.VISIBLE
                 h.ivHead.load(R.mipmap.head_default)
                 h.ddPublish.setPageTitleText("0")
                 h.ddFans.setPageTitleText("0")
@@ -220,7 +229,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
         getUserInfo()
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
-        viewModel.getCircleInfo()
         viewModel.getBottomAds()
 
     }
@@ -456,6 +464,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
         viewModel.getUserInfo()
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
+        viewModel.getCircleInfo()
     }
 
     override fun onDestroy() {
