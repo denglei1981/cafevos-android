@@ -92,6 +92,16 @@
             app:layout_constraintTop_toTopOf="@+id/v_bg"
             app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_vip"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintEnd_toEndOf="@+id/iv_head"
+            tools:visibility="visible"
+            android:visibility="gone"
+            app:srcCompat="@mipmap/my_myvicon" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/daySign"
             style="@style/commonTextView.Small.Black"
