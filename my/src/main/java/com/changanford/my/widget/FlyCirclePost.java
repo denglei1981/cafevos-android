@@ -72,7 +72,6 @@ public class FlyCirclePost extends ConstraintLayout {
      */
     public void setPageTitleText(String text) {
         tvNum.setText(text);
-
     }
 
     public void setThumb(String resourceId,int postId) {

@@ -302,6 +302,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                 circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
             }
             h.vFlipper.removeAllViews()
+            h.vFlipper.stopFlipping()
             recommendCircle.posts.forEach {p->
                 val postView = FlyCirclePost(requireContext())
                 postView.setThumb(p.pics,p.postsId)

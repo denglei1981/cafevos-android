@@ -415,6 +415,7 @@
             android:layout_marginTop="4dp"
             android:inAnimation="@anim/anim_marquee_in"
             android:outAnimation="@anim/anim_marquee_out"
+            android:flipInterval="3000"
             android:layout_marginBottom="@dimen/dp_4"
             app:layout_constraintTop_toBottomOf="@+id/tv_circle_tips"
             app:layout_constraintBottom_toTopOf="@+id/tv_in_circle"
