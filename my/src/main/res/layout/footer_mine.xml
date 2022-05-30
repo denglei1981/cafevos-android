@@ -66,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="gone"
             app:constraint_referenced_ids="iv_two_ad,iv_two_ad_two" />
 
 
@@ -73,12 +74,12 @@
             android:id="@+id/iv_three_one"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="@dimen/dp_10"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_mine"
             android:visibility="gone"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_three_three"
             app:layout_constraintEnd_toStartOf="@+id/iv_two_ad_two"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -92,15 +93,15 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="20dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_mine"
             android:visibility="gone"
             app:layout_constraintDimensionRatio="164:78"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_two_ad"
+            app:layout_constraintStart_toEndOf="@+id/iv_three_one"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.43"
+            android:layout_marginStart="8dp"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:visibility="visible" />
 
@@ -108,16 +109,15 @@
             android:id="@+id/iv_three_three"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/dp_8"
+
             android:scaleType="centerCrop"
             android:src="@mipmap/image_mine"
             android:visibility="gone"
             app:layout_constraintDimensionRatio="164:78"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_two_ad"
+            app:layout_constraintEnd_toEndOf="@+id/iv_three_two"
+            app:layout_constraintStart_toStartOf="@+id/iv_three_two"
             app:layout_constraintTop_toBottomOf="@+id/iv_three_two"
-            app:layout_constraintWidth_percent="0.43"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:visibility="visible" />
 
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="iv_three_one,iv_three_two,iv_three_three"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
