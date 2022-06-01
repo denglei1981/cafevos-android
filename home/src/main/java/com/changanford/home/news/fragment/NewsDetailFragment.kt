@@ -353,10 +353,14 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                    }else{
+                        inflateHeader.flRecommend.visibility=View.GONE
                     }
                     if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
+                    }else{
+                        inflateHeader.rvAds.visibility = View.GONE
                     }
                 } else {// 隐藏热门推荐。
                     inflateHeader.flRecommend.visibility = View.GONE

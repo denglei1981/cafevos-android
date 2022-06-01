@@ -218,10 +218,14 @@ class NewsVideoDetailFragment :
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
+                    }else{
+                        inflateHeader.grRecommend.visibility=View.GONE
                     }
                     if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
+                    }else{
+                        inflateHeader.rvAds.visibility=View.GONE
                     }
                 }
             }

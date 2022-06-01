@@ -99,9 +99,6 @@
                 <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
             </intent-filter>
         </service>
-        <!--<meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="56913eab3a5c4f59dd961dbc1b1b909c" />-->
         <service android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"/>

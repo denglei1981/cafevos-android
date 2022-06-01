@@ -85,7 +85,9 @@ object WCommonUtil {
             customView = textView
         }
         tabLayout.addOnTabSelectedListener(object : TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //
+            }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 tab?.customView = null
             }
@@ -141,8 +143,12 @@ object WCommonUtil {
      */
     fun EditText.onTextChanged(onTextChanged: (EditTextBean) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(editable: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(editable: Editable?) {
+                //
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                //
+            }
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 onTextChanged.invoke(EditTextBean(s,start,before,count))
             }
@@ -481,6 +487,38 @@ object WCommonUtil {
         bundle.putSerializable("imgList", imgList)
         bundle.putInt("count", currentPos?:0)
         startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
+    }
+
+    /**
+     * 跳转App通知设置界面
+     */
+    fun openNotificationSetting(_context:Context) {
+        try {
+            val localIntent = Intent()
+            localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            localIntent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            if (Build.VERSION.SDK_INT >= 26) {
+                //这种方案适用于 API 26, 即8.0（含8.0）以上可以用
+                localIntent.putExtra(Settings.EXTRA_APP_PACKAGE, _context.packageName)
+                localIntent.putExtra(Settings.EXTRA_CHANNEL_ID, _context.applicationInfo.uid)
+                //这种方案适用于 API21——25，即 5.0——7.1 之间的版本可以使用
+            } else if (Build.VERSION.SDK_INT <= 25) {
+                localIntent.putExtra("app_package", _context.packageName)
+                localIntent.putExtra("app_uid", _context.applicationInfo.uid)
+            }
+            _context.startActivity(localIntent)
+        } catch (e: java.lang.Exception) {
+            try {
+                // 出现异常则跳转到应用设置界面
+                val intent = Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri = Uri.fromParts("package", _context.packageName, null)
+                intent.data = uri
+                _context.startActivity(intent)
+            } catch (ex: java.lang.Exception) {
+                //
+            }
+        }
     }
 }
 @Synchronized

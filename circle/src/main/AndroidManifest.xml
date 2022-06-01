@@ -3,73 +3,104 @@
     package="com.changanford.circle">
 
     <application>
-        <activity android:name=".ui.activity.PostDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.PostActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.CircleListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.AllReplyActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.CircleDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.PictureeditlActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ChooseLocationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SearchLocActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ChooseConversationActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.PostDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PostActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CircleListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AllReplyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CircleDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PictureeditlActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChooseLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchLocActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChooseConversationActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.activity.PersonalActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.HotTopicActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.TopicDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.ChoseCircleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.VideoPostActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.EditVideoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.PictureEditAudioActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.VideoChoseFMActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.LongPostAvtivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SearchCircleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.SearchTopicActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.ReleaseUpActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.PerfectQuessionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.PerfectQuessionWBActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.MMapActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.ReleaseActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.CreateCircleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.CircleMemberManageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.circle.HotListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.release.LocationMMapActivity"
+        <activity
+            android:name=".ui.activity.PersonalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.HotTopicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TopicDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChoseCircleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VideoPostActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EditVideoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PictureEditAudioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.VideoChoseFMActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.LongPostAvtivity"
             android:screenOrientation="portrait"
-            />
-        <activity android:name=".ui.activity.ChoiceAllCityActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".ui.activity.CreateLocationActivity"/>
-        <activity android:name=".ui.activity.question.QuestionActivity"/>
-        <activity android:name=".ui.ask.activity.CreateQuestionActivity"/>
-        <activity android:name=".ui.ask.activity.MechanicMainActivity"/>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.activity.SearchCircleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchTopicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.ReleaseUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.PerfectQuessionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.PerfectQuessionWBActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.MMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.ReleaseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CreateCircleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CircleMemberManageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.circle.HotListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.release.LocationMMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ChoiceAllCityActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.CreateLocationActivity" />
+        <activity android:name=".ui.activity.question.QuestionActivity" />
+        <activity android:name=".ui.ask.activity.CreateQuestionActivity" />
+        <activity android:name=".ui.ask.activity.MechanicMainActivity" />
+        <activity
+            android:name=".ui.activity.LongPostV2Avtivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

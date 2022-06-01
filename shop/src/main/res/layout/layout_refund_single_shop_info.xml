@@ -10,6 +10,7 @@
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -29,7 +30,6 @@
        <include
            android:id="@+id/layout_shop"
            layout="@layout/layout_item_refund_num"
-
            />
 
         <androidx.constraintlayout.widget.ConstraintLayout

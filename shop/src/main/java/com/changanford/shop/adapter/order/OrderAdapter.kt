@@ -101,15 +101,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                 skuImg=orderImg
             }
             when(item.orderType){
-                1->{//试驾
-                    dataBinding.inGoodsInfo.apply {
-                        recyclerView.visibility=View.GONE
-                        tvCarInfo.visibility = View.VISIBLE
-                        tvCarInfo.text=item.orderBrief
-                    }
-                    dataBinding.tvTotalPrice.visibility=View.GONE
-                }
-                2->{//购车 - orderBrief数据结构待定
+                1,2->{//试驾、购车
                     dataBinding.inGoodsInfo.apply {
                         recyclerView.visibility=View.GONE
                         tvCarInfo.visibility = View.VISIBLE
@@ -378,6 +370,8 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     }
                 }
             }
+            //维保订单没有查看物流
+            if(item.busSource=="WB")dataBinding.btnLogistics.visibility=View.GONE
         }
     }
     /**
@@ -394,12 +388,6 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
             }else  visibility=View.GONE
         }
     }
-    /**
-     * 评价状态
-     * [evalStatus]WAIT_EVAL 待评价 、WAIT_CHECK 待审核 、ON_SHELVE 已上架 、UNDER_SHELVE 已下架 、CHECK_FAILURE 审核不通过
-    * */
-    private fun getEvalStatus(evalStatus:String){}
-
     private fun setOrderType(tv:TypefaceTextView,item: OrderItemBean){
         val orderStatus=item.orderStatus
         tv.apply {

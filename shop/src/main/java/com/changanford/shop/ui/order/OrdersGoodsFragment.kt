@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderAdapter
+import com.changanford.shop.control.OrderControl
 import com.changanford.shop.databinding.FragmentOrdersgoodsListBinding
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -29,11 +30,12 @@ class OrdersGoodsFragment:BaseFragment<FragmentOrdersgoodsListBinding, OrderView
     private val mAdapter by lazy { OrderAdapter(-1,viewModel=viewModel) }
     private var pageNo=1
     private var statesId=-1
+    private val control by lazy { OrderControl(requireContext(),viewModel) }
     override fun initView() {
         binding.recyclerView.adapter=mAdapter
         mAdapter.setEmptyView(R.layout.view_empty_order)
         mAdapter.setOnItemClickListener { _, _, position ->
-            OrderDetailsV2Activity.start(mAdapter.data[position].orderNo)
+            control.clickOrderItemJump(mAdapter.data[position])
         }
         binding.smartRl.setOnRefreshLoadMoreListener(this)
     }

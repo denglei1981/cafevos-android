@@ -213,11 +213,9 @@ class OrderViewModel: BaseViewModel() {
                 body["pageSize"]=pageSize
                 body["queryParams"]=HashMap<String,Any>().also {
                     it["queryType"] = queryType[typeI]
-//                    if(null!=orderStatus&&orderStatus>-1&&orderStatus<3)it["orderStatus"] = orderStatus
-//                    else if(3==orderStatus)it["evalStatus"] =0
                 }
                 val randomKey = getRandomKey()
-                shopApiService.shopOrderList(body.header(randomKey), body.body(randomKey))
+                shopApiService.shopOrderListV2(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 shopOrderData.postValue(null)
                 it?.toast()
@@ -238,11 +236,8 @@ class OrderViewModel: BaseViewModel() {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["isWb"]="NO"
-                }
                 val randomKey = getRandomKey()
-                shopApiService.shopOrderRefundList(body.header(randomKey), body.body(randomKey))
+                shopApiService.shopOrderRefundListV2(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 refundBeanLiveData.postValue(null)
                 it?.toast()
@@ -475,7 +470,7 @@ class OrderViewModel: BaseViewModel() {
     fun getOrderStatus(orderStatus:String,evalStatus:String?):String{
         return when(orderStatus){
             "WAIT_PAY"->"待付款"
-            "WAIT_SEND"->"待发货"
+            "WAIT_SEND","WAIT_SYS_REGIST"->"待发货"
             "WAIT_RECEIVE"->"待收货"
             "FINISH"->{
                 if(evalStatus!=null&&"WAIT_EVAL"==evalStatus)"待评价"

@@ -258,10 +258,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             if (!TextUtils.isEmpty(mData.title)) {
                                 tvTwoTitle.text = Html.fromHtml(mData.title)
                             }
-                            if(mData.isGood==1){
-                                viewLongType.ivVeryPost.visibility=View.VISIBLE
-                            }else{
-                                viewLongType.ivVeryPost.visibility=View.GONE
+                            if (mData.isGood == 1) {
+                                viewLongType.ivVeryPost.visibility = View.VISIBLE
+                            } else {
+                                viewLongType.ivVeryPost.visibility = View.GONE
                             }
                             if (mData.circleName.isNullOrEmpty()) {
                                 tvTwoFrom.visibility = View.GONE
@@ -277,10 +277,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             }
                             tvTalkOut.text = mData.topicName
                             tvTwoTime.text = mData.timeStr
-//                            tvOneContent.text = mData.content
                             //todo
                             if (!TextUtils.isEmpty(mData.content)) {
+                                tvOneContent.visibility = View.VISIBLE
                                 tvOneContent.text = Html.fromHtml(mData.content)
+                            } else {
+                                tvOneContent.visibility = View.GONE
                             }
 
                             val adapter = PostDetailsLongAdapter(requireContext())

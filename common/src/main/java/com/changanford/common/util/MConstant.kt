@@ -29,6 +29,7 @@ import java.io.File
 object MConstant {
     val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
     val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+//    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
     //这里修改默认的环境，isCanQeck字段为true时生效
     val isDebug by lazy {
         if (isCanQeck) SPUtils.getParam(
@@ -148,7 +149,7 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
-    private val H5_BASE_URL by lazy { if (isCanQeck&&isDebug)"https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
+     val H5_BASE_URL by lazy { if (isCanQeck&&isDebug)"https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
     //H5活动
     private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" }
     /**

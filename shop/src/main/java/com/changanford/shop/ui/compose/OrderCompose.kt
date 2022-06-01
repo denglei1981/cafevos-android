@@ -41,10 +41,10 @@ import com.changanford.shop.R
 @Composable
 fun PayWayCompose(){
     val payWayArr=ArrayList<PayWayBean>()
-    for (i in 0..2){
+    (0..2).forEach { i ->
         payWayArr.add(PayWayBean(id = i, isCheck = remember {mutableStateOf(false)}, rmbPrice = "0", fbPrice = "0"))
     }
-    var inputFb = remember { mutableStateOf("") }
+    val inputFb = remember { mutableStateOf("") }
     Column{
         Spacer(modifier = Modifier
             .height(10.dp)
@@ -74,7 +74,7 @@ fun PayWayCompose(){
                            shape = RoundedCornerShape(18.dp)
                        )
                        .background(
-                           color = if (payWayArr[0].isCheck!!.value) colorResource(R.color.color_F2F4F9) else Color.White,
+                           color = if (!payWayArr[0].isCheck!!.value) Color.White else colorResource(R.color.color_F2F4F9),
                            shape = RoundedCornerShape(18.dp)
                        )
                        .padding(horizontal = 16.dp)

@@ -129,9 +129,9 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
                     waitBindingDialog?.let { d ->
                         if (!d.isVisible && !d.isAdded) {
                             waitBindingDialog?.show(supportFragmentManager, "waitBindingDialog")
+
                         }
                     }
-
                 }, 500)
             }
         })

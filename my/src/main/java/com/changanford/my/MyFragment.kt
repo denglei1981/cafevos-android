@@ -52,14 +52,6 @@ class MyFragment : BaseFragment<FragmentMyBinding, SignViewModel>() {
     override fun initView() {
         binding.daySign.setDrawableLeft(R.mipmap.my_daysign, R.dimen.dp_20)
         binding.memberEnter.setDrawableLeft(R.mipmap.my_member, R.dimen.dp_20)
-//        binding.medalRec.isSaveEnabled = false
-//        binding.medalRec.adapter = medalAdapter
-//        myFastInAdapter.addData(MyFastInData(1,R.mipmap.icon_coupon,"优惠券"))
-//        myFastInAdapter.addData(MyFastInData(2,R.mipmap.icon_my_order,"我的订单"))
-//        myFastInAdapter.addData(MyFastInData(3,R.mipmap.icon_my_vip_tag,"我的勋章"))
-
-
-
 
         binding.fastIn.adapter = myFastInAdapter
         binding.menuRec.isSaveEnabled = false

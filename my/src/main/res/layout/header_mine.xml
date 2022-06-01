@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_f2_66">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@mipmap/image_mine"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintDimensionRatio="1125:504"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/my_scan"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginEnd="22dp"
+            android:src="@mipmap/icon_mine_scan"
+            app:layout_constraintBottom_toBottomOf="@+id/my_msg"
+            app:layout_constraintEnd_toStartOf="@+id/iv_setting"
+            app:layout_constraintTop_toTopOf="@+id/my_msg" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/my_msg"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/test_str"
+            android:src="@mipmap/icon_mine_msg"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_setting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/message_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/message_have_bg"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="@+id/my_msg"
+            app:layout_constraintTop_toTopOf="@+id/my_msg"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:layout_marginEnd="22dp"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/icon_mine_setting"
+            app:layout_constraintEnd_toStartOf="@+id/my_msg"
+            app:layout_constraintTop_toTopOf="@+id/my_msg" />
+
+        <View
+            android:id="@+id/v_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/shape_white_corner5"
+            app:layout_constraintDimensionRatio="335:165"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_setting"
+            app:layout_constraintWidth_percent="0.91" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_head"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/head_default"
+            app:layout_constraintStart_toStartOf="@+id/v_bg"
+            app:layout_constraintTop_toTopOf="@+id/v_bg"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_vip"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintEnd_toEndOf="@+id/iv_head"
+            app:srcCompat="@mipmap/my_myvicon"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/daySign"
+            style="@style/commonTextView.Small.Black"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:background="@drawable/shape_white_24dp"
+            android:drawableStart="@mipmap/icon_mine_sign"
+            android:drawablePadding="@dimen/dp_8"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:text="@string/my_daySign"
+            android:textColor="#8195C8"
+            app:layout_constraintBottom_toBottomOf="@+id/my_msg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/my_msg" />
+
+        <com.changanford.common.widget.DrawDoubleTextView
+            android:id="@+id/dd_publish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:descText="发布"
+            app:layout_constraintBottom_toBottomOf="@+id/v_bg"
+            app:layout_constraintEnd_toStartOf="@+id/dd_follow"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="@+id/v_bg"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+        <com.changanford.common.widget.DrawDoubleTextView
+            android:id="@+id/dd_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            app:descText="关注"
+            app:layout_constraintBottom_toBottomOf="@+id/v_bg"
+            app:layout_constraintEnd_toStartOf="@+id/dd_fans"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/dd_publish"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+        <com.changanford.common.widget.DrawDoubleTextView
+            android:id="@+id/dd_fans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:descText="粉丝"
+            app:layout_constraintBottom_toBottomOf="@+id/v_bg"
+            app:layout_constraintEnd_toEndOf="@+id/v_bg"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toEndOf="@+id/dd_follow"
+            app:layout_constraintTop_toBottomOf="@+id/iv_head" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_not_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:singleLine="true"
+            android:text="登录/注册"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:ellipsize="end"
+            android:maxEms="7"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:text="@string/test_str" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/shape_f2c698_24dp"
+            android:gravity="center"
+            android:minWidth="36dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+            app:layout_constraintStart_toEndOf="@+id/tv_nickname"
+            app:layout_constraintTop_toTopOf="@+id/tv_nickname"
+            tools:ignore="SmallSp"
+            tools:text="LV.1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/shape_f8f3f0_corner10"
+            android:drawableStart="@mipmap/icon_mine_medal"
+            android:drawableEnd="@mipmap/icon_mine_next"
+            android:drawablePadding="2dp"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:paddingStart="3dp"
+            android:paddingEnd="3dp"
+            android:textColor="#C39973"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+            tools:text="3枚勋章" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_car_name"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/shape_eef1fa_corner10"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxEms="11"
+            android:maxLines="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#8195C8"
+            android:textSize="@dimen/sp_11"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tv_user_tags"
+            app:layout_constraintTop_toTopOf="@+id/tv_user_tags"
+            tools:text="@string/app_name"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_gold"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_whit5_bg"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#8195C8"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toStartOf="@+id/tv_coupon"
+            app:layout_constraintStart_toStartOf="@+id/v_bg"
+            app:layout_constraintTop_toBottomOf="@+id/v_bg"
+            tools:text="福币 0"
+            tools:visibility="visible" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_coupon"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/shape_whit5_bg"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textColor="#8195C8"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@+id/v_bg"
+            app:layout_constraintStart_toEndOf="@+id/tv_gold"
+            app:layout_constraintTop_toBottomOf="@+id/v_bg"
+            tools:text="优惠券 0"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/l_line"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:background="@color/color_F5"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_gold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_gold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_love_car_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/mine_love_car"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_gold"
+            app:layout_constraintTop_toBottomOf="@+id/tv_gold" />
+
+        <View
+            android:id="@+id/v_car_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_white_corner5"
+            app:layout_constraintDimensionRatio="105:150"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_love_car_tips"
+            app:layout_constraintWidth_percent="0.28" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/iv_car_pic_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="@drawable/shape_home_gradient_corner20_gray_car"
+            app:layout_constraintDimensionRatio="41:38"
+            app:layout_constraintEnd_toEndOf="@+id/v_car_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/v_car_bg"
+            app:layout_constraintTop_toTopOf="@+id/v_car_bg" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_car_pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@mipmap/ic_car_auth_ex"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_car_pic_bg"
+            app:layout_constraintDimensionRatio="83:39"
+            app:layout_constraintEnd_toEndOf="@+id/iv_car_pic_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/iv_car_pic_bg" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_add_love_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_18"
+            android:background="@drawable/shape_my_f5f7fc_corners10"
+            android:drawableEnd="@mipmap/icon_mine_home_next"
+            android:drawablePadding="4dp"
+            android:paddingStart="8dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="@dimen/dp_2"
+            android:text="@string/mine_love_car"
+            android:textColor="@color/color_8195C8"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/v_car_bg"
+            app:layout_constraintEnd_toEndOf="@+id/v_car_bg"
+            app:layout_constraintStart_toStartOf="@+id/v_car_bg" />
+
+        <View
+            android:id="@+id/v_circle_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/shape_white_corner5"
+            app:layout_constraintBottom_toBottomOf="@+id/v_car_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/v_car_bg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_love_car_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:text="换一换"
+            android:textColor="@color/color_8195C8"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
+            app:layout_constraintTop_toTopOf="@+id/v_circle_bg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_circle_tips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="22dp"
+            android:ellipsize="end"
+            android:maxEms="7"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
+            app:layout_constraintEnd_toStartOf="@+id/tv_change"
+            app:layout_constraintStart_toStartOf="@+id/v_circle_bg"
+            app:layout_constraintTop_toTopOf="@+id/v_circle_bg"
+            tools:text="@string/test_str" />
+
+        <ViewFlipper
+            android:id="@+id/v_flipper"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:flipInterval="3000"
+            android:inAnimation="@anim/anim_marquee_in"
+            android:outAnimation="@anim/anim_marquee_out"
+            app:layout_constraintBottom_toTopOf="@+id/tv_in_circle"
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
+            app:layout_constraintStart_toStartOf="@+id/v_circle_bg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle_tips" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_circle"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="@dimen/dp_18"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/tv_circle_tips"
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle_tips"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@mipmap/image_mine" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_circle_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="22dp"
+            android:ellipsize="end"
+            android:maxEms="7"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle"
+            tools:text="@string/test_str" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_in_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="@dimen/dp_18"
+            android:background="@drawable/shape_my_f5f7fc_corners10"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:minWidth="60dp"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="@dimen/dp_2"
+            android:text="@string/in_circle"
+            android:textColor="@color/color_8195C8"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@+id/v_circle_bg"
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_in_circle"
+            app:layout_constraintEnd_toStartOf="@+id/tv_in_circle"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="@+id/tv_in_circle">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_people"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="4dp"
+                android:textColor="#ff666666"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="1.0w车友活跃中" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

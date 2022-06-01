@@ -16,6 +16,7 @@ import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.databinding.ActivityRefundProgressBinding
 import com.changanford.shop.databinding.FooterRefundProgressBinding
 import com.changanford.shop.databinding.HeaderRefundProgressBinding
+import com.changanford.shop.ui.sale.adapter.RefundImgsAdapter
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.view.TopBar
@@ -25,7 +26,10 @@ import com.changanford.shop.view.TopBar
  * */
 @Route(path = ARouterShopPath.RefundProgressActivity)
 class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, RefundViewModel>() {
-
+    //
+    val refundImgsAdapter: RefundImgsAdapter by lazy {
+        RefundImgsAdapter()
+    }
 
     companion object {
         fun start(mallMallRefundId:String){
@@ -130,6 +134,7 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                     ft.tvHandle.visibility = View.GONE
                 }
             }
+
         }
     }
 

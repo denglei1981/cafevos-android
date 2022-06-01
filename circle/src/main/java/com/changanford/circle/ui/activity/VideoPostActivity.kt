@@ -352,39 +352,46 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params["topicId"] = locaPostEntity!!.topicId
                     params["postsId"] = locaPostEntity!!.postsId
                     params["type"] = locaPostEntity.type
-                    params["keywords"] = locaPostEntity.keywords
+                    locaPostEntity.keywords?.let {k->
+                        params["keywords"] = k
+                    }
                     params["circleId"] = locaPostEntity!!.circleId
                     params["content"] = locaPostEntity!!.content ?: ""
                     params["actionCode"] = locaPostEntity!!.actionCode
                     params["title"] = locaPostEntity!!.title
-                    params["address"] = locaPostEntity!!.address
-                    params["lat"] = locaPostEntity!!.lat
-                    params["lon"] = locaPostEntity!!.lon
-                    params["province"] = locaPostEntity!!.province
-                    params["cityCode"] = locaPostEntity!!.cityCode
-                    params["city"] = locaPostEntity!!.city
+                    locaPostEntity.address?.let { ad ->
+                        params["address"] = ad
+                    }
+                    if (TextUtils.isEmpty(locaPostEntity.address)) {
+                        params["address"] = ""
+                    }
+                    params["lat"] = locaPostEntity.lat
+                    params["lon"] = locaPostEntity.lon
+                    params["province"] = locaPostEntity.province
+                    params["cityCode"] = locaPostEntity.cityCode
+                    params["city"] = locaPostEntity.city
                     isHasVideoPath = true
-                    params["videoUrl"] = locaPostEntity!!.videoUrl
+                    params["videoUrl"] = locaPostEntity.videoUrl
 
                     if (params["plate"] != 0) {
                         buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                         buttomTypeAdapter.setData(
                             2,
-                            ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
+                            ButtomTypeBean(locaPostEntity.plateName, 1, 1)
                         )
                     }
-                    if (locaPostEntity!!.topicName?.isNotEmpty() == true) buttomTypeAdapter.setData(
+                    if (locaPostEntity.topicName?.isNotEmpty() == true) buttomTypeAdapter.setData(
                         3,
-                        ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
+                        ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
                     )
-                    if (locaPostEntity!!.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
+                    if (locaPostEntity.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
                         4,
-                        ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
+                        ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
                     )
                     showLocaPostCity()
 //                        jsonStr2obj(locaPostEntity!!.localMeadle)
                     //选择的标签
-                    if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
+                    if (TextUtils.isEmpty(locaPostEntity.keywords)) {
                         buttomlabelAdapter.data.forEach {
                             it.isselect = it.tagName == locaPostEntity!!.keywords
                         }

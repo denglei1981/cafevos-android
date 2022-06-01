@@ -14,20 +14,19 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_icon"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true" />
-
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:lineSpacingMultiplier="1.5"
-            android:text="@{bean.imgDesc}"
+            android:layout_marginTop="15dp"
+            android:lineSpacingMultiplier="1.2"
             android:textColor="@color/color_33"
             android:textSize="14sp" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="true" />
     </LinearLayout>
 </layout>

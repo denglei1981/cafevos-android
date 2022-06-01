@@ -45,7 +45,8 @@ class RefundProgressHasShopActivity :
     val refundProgressAdapter: RefundProgressAdapter by lazy {
         RefundProgressAdapter(viewModel)
     }
-//
+
+    //
     val refundImgsAdapter: RefundImgsAdapter by lazy {
         RefundImgsAdapter()
     }
@@ -85,7 +86,7 @@ class RefundProgressHasShopActivity :
             this.finish()
         })
         LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).observe(this, Observer {
-             // 刷新 进度
+            // 刷新 进度
             mallMallRefundId?.let {
                 viewModel.getRefundProgress(it)
             }
@@ -131,8 +132,8 @@ class RefundProgressHasShopActivity :
                     ft.layoutRefundInfo.tvResonShow
                 )
             }
-            if(TextUtils.isEmpty(refundProgressBean.refundReason)){
-                ft.layoutRefundInfo.tvResonShow.text="--"
+            if (TextUtils.isEmpty(refundProgressBean.refundReason)) {
+                ft.layoutRefundInfo.tvResonShow.text = "--"
             }
 
             showTotalTag(
@@ -175,10 +176,10 @@ class RefundProgressHasShopActivity :
                         startActivity(intent)
                     }
                     when (refundProgressBean.refundDetailStatus) {
-                        "WAIT_CHECK","OVERTIME" -> {
+                        "WAIT_CHECK", "OVERTIME" -> {
                             ft.tvInputOrder.visibility = View.GONE
                         }
-                        "CANCELD_REFUND","WAIT_RECEIVE_RETURNS"->{
+                        "CANCELD_REFUND", "WAIT_RECEIVE_RETURNS" -> {
                             ft.tvInputOrder.visibility = View.GONE
                             ft.tvHandle.visibility = View.GONE
                         }
@@ -194,11 +195,15 @@ class RefundProgressHasShopActivity :
                     ft.tvHandle.visibility = View.GONE
                 }
             }
+            if (refundProgressBean.sku == null) {
+                ft.layoutRefundInfo.layoutShop.layoutGoodsInfo.visibility = View.GONE
+            } else {
+                ft.layoutRefundInfo.layoutShop.layoutGoodsInfo.visibility = View.VISIBLE
+            }
             refundProgressBean.sku?.let { list ->
                 GlideUtils.loadBD(list.skuImg, ft.layoutRefundInfo.layoutShop.imgGoodsCover)
                 val goodsAttributeAdapter = GoodsAttributeAdapter()
                 goodsAttributeAdapter.setList(list.getTagList())
-
                 val layoutManager = FlowLayoutManager(this, false, true)
                 ft.layoutRefundInfo.layoutShop.recyclerView.layoutManager = layoutManager
                 ft.layoutRefundInfo.layoutShop.recyclerView.adapter = goodsAttributeAdapter
@@ -213,19 +218,19 @@ class RefundProgressHasShopActivity :
             }
             ft.layoutRefundInfo.tvContent.text = refundProgressBean.refundDescText
 
-            ft.layoutRefundInfo.rvImg.adapter=refundImgsAdapter
+            ft.layoutRefundInfo.rvImg.adapter = refundImgsAdapter
 
-            val newList=refundProgressBean.refundDescImgs?.filter { it!="" }
+            val newList = refundProgressBean.refundDescImgs?.filter { it != "" }
 
 
-            if(newList!=null&& newList.isNotEmpty()){
+            if (newList != null && newList.isNotEmpty()) {
                 refundImgsAdapter.setNewInstance(newList as MutableList<String>?)
-                ft.layoutRefundInfo.tvSupply.visibility=View.VISIBLE
-                ft.layoutRefundInfo.llSpreak.visibility=View.VISIBLE
-            }else{
+                ft.layoutRefundInfo.tvSupply.visibility = View.VISIBLE
+                ft.layoutRefundInfo.llSpreak.visibility = View.VISIBLE
+            } else {
                 if (TextUtils.isEmpty(refundProgressBean.refundDescText)) {
-                    ft.layoutRefundInfo.llSpreak.visibility=View.GONE
-                 }
+                    ft.layoutRefundInfo.llSpreak.visibility = View.GONE
+                }
             }
 
 

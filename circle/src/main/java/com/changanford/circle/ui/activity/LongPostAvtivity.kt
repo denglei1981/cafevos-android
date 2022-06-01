@@ -72,7 +72,7 @@ import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
 
-@Route(path = ARouterCirclePath.LongPostAvtivity)
+//@Route(path = ARouterCirclePath.LongPostAvtivity)
 class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
 
     private lateinit var headBinding: LongpostheadBinding
@@ -1121,12 +1121,12 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             if (index == 0) {
                 params["pics"] = path
             } else if (index + 1 == selectList.size) {  //最后一个图片为空 开始post
-                upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content))
+                upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content!!))
                 addPost()
                 return
             } else {
                 if (longpostadapter.getItem(index - 1).content?.isNotEmpty() == true) {
-                    upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content))
+                    upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content!!))
                 }
                 uploadImgs(stsBean, scount, dialog, mediacount, indexcount)
                 return
@@ -1139,7 +1139,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
             AliYunOssUploadOrDownFileConfig.OnUploadFile {
             override fun onUploadFileSuccess(info: String) {
                 if (index != 0) {
-                    upedimgs.add(ImageUrlBean(path, longpostadapter.getItem(index - 1).content))
+                    upedimgs.add(ImageUrlBean(path, longpostadapter.getItem(index - 1).content!!))
                 }
                 val mindexpic = indexcount + 1
                 runOnUiThread {
@@ -1260,21 +1260,25 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                         params["topicId"] = locaPostEntity!!.topicId
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
-                        params["keywords"] = locaPostEntity!!.keywords
+                        if(TextUtils.isEmpty(locaPostEntity.keywords)){
+                            params["keywords"] = ""
+                        }else{
+                            params["keywords"] = locaPostEntity.keywords.toString()
+                        }
                         params["circleId"] = locaPostEntity!!.circleId
                         circlename = locaPostEntity!!.circleName ?: ""
                         params["content"] = locaPostEntity!!.content ?: ""
                         params["actionCode"] = locaPostEntity!!.actionCode
                         params["title"] = locaPostEntity!!.title
                         params["address"] = locaPostEntity!!.address ?: ""
-                        if (locaPostEntity!!.address?.isNotEmpty() == true) {
-                            address = locaPostEntity!!.address
+                        if (locaPostEntity.address?.isNotEmpty() == true) {
+                            address = locaPostEntity.address.toString()
                         }
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon
-                        params["province"] = locaPostEntity!!.province
+                        params["province"] = locaPostEntity.province
                         params["cityCode"] = locaPostEntity!!.cityCode
-                        params["city"] = locaPostEntity!!.city
+                        params["city"] = locaPostEntity.city
                         if (params["plate"] != 0) {
                             buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
                             buttomTypeAdapter.setData(

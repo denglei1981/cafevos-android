@@ -2,6 +2,8 @@ package com.changanford.circle.adapter
 
 import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.ImageList
@@ -34,8 +36,18 @@ class PostDetailsLongAdapter(context: Context) :
             startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
         }
         binding.bean = item
+        if(TextUtils.isEmpty(item.imgUrl)){
+            binding.ivIcon.visibility= View.GONE
+        }else{
+            binding.ivIcon.visibility= View.VISIBLE
+            binding.ivIcon.load(item.imgUrl)
+        }
+        if(TextUtils.isEmpty(item.imgDesc)){
+            binding.tvDesc.visibility=View.GONE
+        }else{
+            binding.tvDesc.visibility=View.VISIBLE
+            binding.tvDesc.text=item.imgDesc
+        }
 
-
-        binding.ivIcon.load(item.imgUrl)
     }
 }

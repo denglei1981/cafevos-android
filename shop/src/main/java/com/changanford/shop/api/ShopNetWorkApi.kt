@@ -89,10 +89,20 @@ interface ShopNetWorkApi {
     @POST("/mall/order/list")
     suspend fun shopOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
     /**
+     *商城订单列表
+     * */
+    @POST("/mall/order/list/v2")
+    suspend fun shopOrderListV2(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    /**
      *商城订单列表-退款
      * */
     @POST("/mall/orderRefund/list")
     suspend fun shopOrderRefundList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderRefundBean>
+    /**
+     *商城订单列表-退款
+     * */
+    @POST("/mall/orderRefund/list/v2")
+    suspend fun shopOrderRefundListV2(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderRefundBean>
     /**
      *所有订单
      * */

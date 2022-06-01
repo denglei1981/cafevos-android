@@ -168,7 +168,7 @@
             android:orientation="vertical"
             android:scaleType="centerCrop"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintDimensionRatio="669:388"
+            app:layout_constraintDimensionRatio="669:320"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_special"
