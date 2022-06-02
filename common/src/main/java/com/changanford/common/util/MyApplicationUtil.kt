@@ -19,6 +19,10 @@ import com.alibaba.sdk.android.push.register.MeizuRegister
 import com.alibaba.sdk.android.push.register.MiPushRegister
 import com.alibaba.sdk.android.push.register.OppoRegister
 import com.alibaba.sdk.android.push.register.VivoRegister
+import com.baidu.location.LocationClient
+import com.baidu.mapapi.CoordType
+import com.baidu.mapapi.SDKInitializer
+import com.baidu.mapapi.common.BaiduMapSDKException
 import com.changanford.common.R
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
@@ -40,6 +44,20 @@ object MyApplicationUtil {
     }
 
     fun init(){
+        //阿里云push初始化
+        PushServiceFactory.init(applicationContext)
+        initBaiduSdk()
+        // 在SDK初始化时捕获抛出的异常
+        try {
+            // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+            SDKInitializer.initialize(applicationContext)
+        } catch (e: BaiduMapSDKException) {
+            //
+        }
+//        SDKInitializer.initialize(this);
+        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+        SDKInitializer.setCoordType(CoordType.BD09LL);
         initCloudChannel(applicationContext)
         initThirdPush()
         initshare()
@@ -47,6 +65,15 @@ object MyApplicationUtil {
             initBugfy()
         }
 
+    }
+    private fun initBaiduSdk(){
+        /**
+         * 隐私政策统一接口：：该接口必须在调用SDK初始化接口之前设置
+         * 设为false不同意隐私政策：不支持发起检索、路线规划等数据请求，SDK抛出异常；
+         * 设为true同意隐私政策：支持发起检索、路线规划等数据请求
+         */
+        SDKInitializer.setAgreePrivacy(applicationContext, true)
+        LocationClient.setAgreePrivacy(true)
     }
     @RequiresApi(Build.VERSION_CODES.P)
     private fun initBugfy() {
@@ -132,7 +159,7 @@ object MyApplicationUtil {
         pushService.register(applicationContext, object : CommonCallback {
             override fun onSuccess(response: String) {
                 Log.d("MyApplication", "init cloudchannel success")
-                var deviceid = pushService.deviceId
+                val deviceid = pushService.deviceId
                 deviceid?.let {
                     SPUtils.setParam(applicationContext, MConstant.PUSH_ID, deviceid)
                 }
