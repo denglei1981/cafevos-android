@@ -24,7 +24,7 @@ class CircleDetailsPersonalAdapter(var context: Context) :
         if (position == 0) {
             params.leftMargin =
                 0
-        } else params.leftMargin = (-(dpToPx(context,6f))).toInt()
+        } else params.leftMargin = (-(dpToPx(context,12f))).toInt()
 
         GlideUtils.loadBD(item,binding.ivPersonal)
 

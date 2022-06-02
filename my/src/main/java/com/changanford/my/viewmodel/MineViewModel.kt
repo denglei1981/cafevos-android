@@ -133,9 +133,9 @@ class MineViewModel : BaseViewModel() {
                 .onSuccess {
                     adListLiveData.postValue(it)
                 }.onWithMsgFailure {
-                    if (it != null) {
-                        toastShow(it)
-                    }
+//                    if (it != null) {
+//                        toastShow(it)
+//                    }
                 }
         })
     }

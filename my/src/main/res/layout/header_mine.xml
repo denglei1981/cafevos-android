@@ -96,11 +96,11 @@
             android:id="@+id/iv_vip"
             android:layout_width="@dimen/dp_24"
             android:layout_height="@dimen/dp_24"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintEnd_toEndOf="@+id/iv_head"
-            tools:visibility="visible"
-            android:visibility="gone"
-            app:srcCompat="@mipmap/my_myvicon" />
+            app:srcCompat="@mipmap/my_myvicon"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/daySign"
@@ -132,9 +132,9 @@
             android:id="@+id/dd_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:descText="关注"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
+            app:descText="关注"
             app:layout_constraintBottom_toBottomOf="@+id/v_bg"
             app:layout_constraintEnd_toStartOf="@+id/dd_fans"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -156,17 +156,17 @@
             android:id="@+id/tv_not_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             android:layout_marginStart="15dp"
-            android:text="登录/注册"
             android:singleLine="true"
+            android:text="登录/注册"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_18"
             android:visibility="gone"
-            tools:visibility="visible"
-            />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintStart_toEndOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/iv_head"
+            tools:visibility="visible" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
@@ -227,15 +227,15 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="9dp"
             android:background="@drawable/shape_eef1fa_corner10"
+            android:ellipsize="end"
             android:gravity="center"
             android:includeFontPadding="false"
+            android:maxEms="11"
+            android:maxLines="1"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#8195C8"
             android:textSize="@dimen/sp_11"
-            android:maxEms="11"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/tv_user_tags"
             app:layout_constraintTop_toTopOf="@+id/tv_user_tags"
@@ -260,7 +260,6 @@
             app:layout_constraintTop_toBottomOf="@+id/v_bg"
             tools:text="福币 0"
             tools:visibility="visible" />
-
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -320,26 +319,26 @@
             android:id="@+id/iv_car_pic_bg"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="41:38"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_8"
             android:background="@drawable/shape_home_gradient_corner20_gray_car"
+            app:layout_constraintDimensionRatio="41:38"
             app:layout_constraintEnd_toEndOf="@+id/v_car_bg"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="@+id/v_car_bg"
             app:layout_constraintTop_toTopOf="@+id/v_car_bg" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_car_pic"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="83:39"
             android:src="@mipmap/ic_car_auth_ex"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_car_pic_bg"
+            app:layout_constraintDimensionRatio="83:39"
             app:layout_constraintEnd_toEndOf="@+id/iv_car_pic_bg"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/iv_car_pic_bg"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_car_pic_bg" />
-
+            app:layout_constraintStart_toStartOf="@+id/iv_car_pic_bg" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -398,6 +397,7 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
             app:layout_constraintEnd_toStartOf="@+id/tv_change"
             app:layout_constraintStart_toStartOf="@+id/v_circle_bg"
@@ -408,18 +408,17 @@
             android:id="@+id/v_flipper"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="@+id/v_circle_bg"
-            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:flipInterval="3000"
             android:inAnimation="@anim/anim_marquee_in"
             android:outAnimation="@anim/anim_marquee_out"
-            android:flipInterval="3000"
-            android:layout_marginBottom="@dimen/dp_4"
-            app:layout_constraintTop_toBottomOf="@+id/tv_circle_tips"
             app:layout_constraintBottom_toTopOf="@+id/tv_in_circle"
-            />
+            app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
+            app:layout_constraintStart_toStartOf="@+id/v_circle_bg"
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle_tips" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_circle"
@@ -443,8 +442,8 @@
             android:maxEms="7"
             android:singleLine="true"
             android:textColor="@color/black"
-            android:visibility="gone"
             android:textSize="14sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
             app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
             app:layout_constraintStart_toEndOf="@+id/iv_circle"
@@ -472,29 +471,36 @@
             app:layout_constraintBottom_toBottomOf="@+id/v_circle_bg"
             app:layout_constraintEnd_toEndOf="@+id/v_circle_bg" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_people"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_16"
-            android:gravity="center"
-            android:textColor="#ff666666"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_in_circle"
-            app:layout_constraintEnd_toStartOf="@+id/tv_in_circle"
-            app:layout_constraintTop_toTopOf="@+id/tv_in_circle"
-            tools:text="1.0w车友活跃中" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_circle"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@+id/tv_in_circle"
-            app:layout_constraintEnd_toStartOf="@+id/tv_people"
+            app:layout_constraintEnd_toStartOf="@+id/tv_in_circle"
             app:layout_constraintStart_toStartOf="@+id/iv_circle"
-            app:layout_constraintTop_toTopOf="@+id/tv_in_circle" />
+            app:layout_constraintTop_toTopOf="@+id/tv_in_circle">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_people"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:layout_marginStart="4dp"
+                android:textColor="#ff666666"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="1.0w车友活跃中" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
