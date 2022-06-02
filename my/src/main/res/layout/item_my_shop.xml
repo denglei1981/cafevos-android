@@ -2,7 +2,8 @@
 
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -66,25 +67,30 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_integral"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dp_17"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text=""
-                    android:textColor="#1B3B89"
+                    android:textColor="@color/color_33"
                     android:textSize="@dimen/sp_15"
                     app:layout_constraintRight_toLeftOf="@+id/item_collect_num" />
-
+                <com.changanford.common.ui.view.WTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_since"
+                    android:textSize="@dimen/sp_9"
+                    android:textColor="@color/color_33"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_collect_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="100人收藏"
-                    android:textColor="#999999"
+                    tools:text="100人收藏"
+                    android:textColor="@color/color_99"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
 
