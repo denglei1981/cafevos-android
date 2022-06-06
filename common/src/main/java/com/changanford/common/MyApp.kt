@@ -66,8 +66,10 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         mContext = this
         if(!BuildConfig.DEBUG)CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
-        LanSoEditor.initSDK(this, "ft")
-        LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
+        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
+            LanSoEditor.initSDK(this, "ft")
+            LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
+        }
         UserManger.getSysUserInfo()?.let {
             MConstant.userId = it.uid
             MConstant.token = SPUtils.getToken()

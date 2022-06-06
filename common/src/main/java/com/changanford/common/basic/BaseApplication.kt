@@ -35,20 +35,17 @@ abstract class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANT = this
-        //Arouter Initial
-        if (MConstant.isDebug) {
-            ARouter.openLog()
-            ARouter.openDebug()
-        }
-        ARouter.init(this)
-        //友盟预初始化,不会传数据给后台
-//        UMConfigure.preInit(INSTANT,UmengKey,
-//            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
-
         // 获取隐私政策签署状态
         if ((SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()
         } else {
+            //Arouter Initial
+            if (MConstant.isDebug) {
+                ARouter.openLog()
+                ARouter.openDebug()
+            }
+            ARouter.init(this)
+
             //阿里云push初始化
             PushServiceFactory.init(this)
             initBaiduSdk()

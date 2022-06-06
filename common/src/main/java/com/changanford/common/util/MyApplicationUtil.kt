@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.multidex.MultiDexApplication
+import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.sdk.android.push.CommonCallback
 import com.alibaba.sdk.android.push.huawei.HuaWeiRegister
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory
@@ -26,6 +27,8 @@ import com.baidu.mapapi.common.BaiduMapSDKException
 import com.changanford.common.R
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
+import com.lansosdk.videoeditor.LanSoEditor
+import com.lansosdk.videoeditor.LanSongFileUtil
 import com.tencent.bugly.crashreport.CrashReport
 
 /**********************************************************************************
@@ -44,6 +47,14 @@ object MyApplicationUtil {
     }
 
     fun init(){
+        //Arouter Initial
+        if (MConstant.isDebug) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(applicationContext)
+        LanSoEditor.initSDK(applicationContext, "ft")
+        LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
         //阿里云push初始化
         PushServiceFactory.init(applicationContext)
         initBaiduSdk()
