@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.startARouterFinish
 import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
@@ -23,8 +20,6 @@ import com.changanford.evos.databinding.FragmentSplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
-import java.util.*
-import kotlin.concurrent.schedule
 import kotlin.math.ceil
 
 class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
@@ -115,6 +110,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                 binding.splashimg.visibility = View.GONE
                 binding.splashVideo.holder.addCallback(object : SurfaceHolder.Callback {
                     override fun surfaceCreated(holder: SurfaceHolder) {
+                        //
                     }
 
                     override fun surfaceChanged(
@@ -127,6 +123,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                     }
 
                     override fun surfaceDestroyed(holder: SurfaceHolder) {
+                        //
                     }
 
                 })
