@@ -44,7 +44,8 @@ class GoodsListFragment: BaseFragment<FragmentExchangeBinding, GoodsViewModel>()
             viewModel.getGoodsList(tagId,pageNo,tagType=tagType,mallSortType=mallSortType, ascOrDesc = ascOrDesc)
             isRequest=true
         }
-        sortControl=SortControl(requireContext(),binding,this)
+        val viewArr =arrayOf(binding.inSort.rb0,binding.inSort.rb1,binding.inSort.rb2)
+        sortControl=SortControl(requireContext(),viewArr,this)
         viewModel.goodsListData.observe(this) {
             isRequest = false
             bindingData(it)

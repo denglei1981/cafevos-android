@@ -72,7 +72,7 @@ fun HomeMyIntegralCompose(fbNumber:String?=null){
             Button(onClick = {
                 if(isLogin){
                     WBuriedUtil.clickShopIntegral()
-                    JumpUtils.instans?.jump(16)
+                    JumpUtils.instans?.jump(129)
                 }else JumpUtils.instans?.jump(100)
             },shape = RoundedCornerShape(16.dp), contentPadding = PaddingValues(horizontal = 14.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_01025C)),

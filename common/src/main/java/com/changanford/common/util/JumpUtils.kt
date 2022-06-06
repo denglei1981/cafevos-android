@@ -745,6 +745,9 @@ class JumpUtils {
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }
+            129 -> { //爱车养护
+                startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {

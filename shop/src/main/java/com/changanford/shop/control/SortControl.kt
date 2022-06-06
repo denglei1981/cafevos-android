@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import com.changanford.shop.R
-import com.changanford.shop.databinding.FragmentExchangeBinding
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
@@ -16,8 +16,8 @@ import java.util.concurrent.TimeUnit
  * @Time : 2022/3/17 0017
  * @Description : SortControl
  */
-class SortControl(val context: Context, binding: FragmentExchangeBinding,val listener:OnSelectSortListener){
-    private val viewArr by lazy { arrayOf(binding.inSort.rb0,binding.inSort.rb1,binding.inSort.rb2) }
+class SortControl(val context: Context, private val viewArr: Array<AppCompatRadioButton>, val listener:OnSelectSortListener){
+//    private val viewArr by lazy { arrayOf(binding.inSort.rb0,binding.inSort.rb1,binding.inSort.rb2) }
     private val drawableEnd1 by lazy { ContextCompat.getDrawable(context,R.mipmap.ic_sort_1) }
     private val drawableEnd2 by lazy { ContextCompat.getDrawable(context,R.mipmap.ic_sort_2) }
     private var drawableEnd: Drawable?=null
