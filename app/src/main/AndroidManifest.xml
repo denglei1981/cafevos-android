@@ -172,7 +172,9 @@
         <activity
             android:name="com.changanford.my.MyPostUI"
             android:screenOrientation="portrait" />
-
+        <activity android:name="com.changanford.my.PersonCenterActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
             android:launchMode="singleTask"
             android:taskAffinity="com.changanford.evos">

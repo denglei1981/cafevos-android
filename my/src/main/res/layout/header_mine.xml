@@ -167,37 +167,63 @@
             app:layout_constraintTop_toTopOf="@+id/iv_head"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_nickname"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/ll_user_info"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:ellipsize="end"
-            android:maxEms="7"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_18"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/tv_next_person"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toTopOf="@+id/iv_head"
-            tools:text="@string/test_str" />
+            app:layout_constraintTop_toTopOf="@+id/iv_head">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:maxEms="7"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_18"
+                tools:text="@string/test_str" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_user_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/shape_f2c698_24dp"
+                android:gravity="center"
+                android:minWidth="36dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="LV.1" />
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_user_level"
+            android:id="@+id/tv_next_person"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/shape_f2c698_24dp"
-            android:gravity="center"
-            android:minWidth="36dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:textColor="@color/white"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
-            app:layout_constraintStart_toEndOf="@+id/tv_nickname"
-            app:layout_constraintTop_toTopOf="@+id/tv_nickname"
-            tools:ignore="SmallSp"
-            tools:text="LV.1" />
+            android:layout_marginEnd="8dp"
+            android:drawableEnd="@mipmap/icon_mine_person_next"
+            android:text="主页"
+            android:textColor="@color/color_66"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_user_info"
+            app:layout_constraintEnd_toEndOf="@+id/v_bg"
+            app:layout_constraintStart_toEndOf="@+id/ll_user_info"
+            app:layout_constraintTop_toTopOf="@+id/ll_user_info"
+
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_user_tags"
@@ -217,7 +243,7 @@
             android:textColor="#C39973"
             android:textSize="@dimen/sp_11"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
+            app:layout_constraintTop_toBottomOf="@+id/ll_user_info"
             tools:text="3枚勋章" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -493,9 +519,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:layout_marginStart="4dp"
                 android:textColor="#ff666666"
                 android:textSize="10sp"
                 tools:ignore="SmallSp"

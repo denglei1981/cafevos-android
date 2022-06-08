@@ -246,35 +246,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     var fragmentList: ArrayList<Fragment> = arrayListOf()
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
-//            adapter = object : FragmentPagerAdapter(
-//                childFragmentManager,
-//                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-//            ) {
-//                override fun getCount(): Int {
-//                    return tabList.size
-//                }
-//
-//                override fun getItem(position: Int): Fragment {
-//
-//                    return when(position){
-//                        0->{//帖子推荐
-//                            circleSquareFragment
-//                        }
-//                        1->{//圈子
-//                            newCircleFragment
-//                        }
-//                        2->{// 问答
-//                            askRecommendFragment
-//                        }
-//                        else -> {
-//                            circleSquareFragment
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-
             offscreenPageLimit = 1
         }
         fragmentList.add(circleSquareFragment)
@@ -365,35 +336,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
 
         })
-//        binding.viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
-//            override fun onPageScrolled(
-//                position: Int,
-//                positionOffset: Float,
-//                positionOffsetPixels: Int
-//            ) {
-//                magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//                // 埋点
-//                when(position){
-//                    0->{
-//                        BuriedUtil.instant?.communityMainTopMenu("广场")
-//                    }
-//                    1->{
-//                        BuriedUtil.instant?.communityMainTopMenu("圈子")
-//                    }
-//                    2->{
-//                        BuriedUtil.instant?.communityMainTopMenu("问答")
-//                    }
-//                }
-//            }
-//
-//            override fun onPageScrollStateChanged(state: Int) {
-//                magicIndicator.onPageScrollStateChanged(state)
-//            }
-//
-//        })
+
 
 
 

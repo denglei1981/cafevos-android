@@ -36,10 +36,10 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
 
     companion object {
         fun newInstance(value: String, userId: String = ""): PostFragment {
-            var bundle: Bundle = Bundle()
+            val bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
             bundle.putString(RouterManger.KEY_TO_ID, userId)
-            var medalFragment = PostFragment()
+            val medalFragment = PostFragment()
             medalFragment.arguments = bundle
             return medalFragment
         }

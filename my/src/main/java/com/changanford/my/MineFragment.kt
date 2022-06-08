@@ -126,6 +126,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
 
                 JumpUtils.instans?.jump(17)
             }
+            h.tvNextPerson.setOnClickListener {
+
+                JumpUtils.instans?.jump(129)
+            }
 
         }
     }

@@ -1,6 +1,7 @@
 package com.changanford.my.adapter
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 
@@ -26,7 +27,9 @@ class CircleDetailsPersonalAdapter(var context: Context) :
                 0
         } else params.leftMargin = (-(dpToPx(context,12f))).toInt()
 
-        GlideUtils.loadBD(item,binding.ivPersonal)
+        if(!TextUtils.isEmpty(item)){
+            GlideUtils.loadBD(item,binding.ivPersonal)
+        }
 
     }
 }

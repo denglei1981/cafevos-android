@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -227,3 +228,9 @@ interface OnDownloadListener {
 
     fun onSuccess(file: File)
 }
+
+fun dpToPx(context: Context, dp: Float): Float {
+    return dp * context.resources.displayMetrics.density
+}
+
+fun Int.toIntPx() = dpToPx(MyApp.mContext, this.toFloat()).toInt()

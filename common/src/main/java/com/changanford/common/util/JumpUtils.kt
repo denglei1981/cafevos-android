@@ -745,6 +745,9 @@ class JumpUtils {
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }
+            129->{
+                startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {

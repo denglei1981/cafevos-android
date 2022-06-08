@@ -148,6 +148,8 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //tab
+    implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
 
     implementation(project(":common"))

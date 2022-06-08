@@ -78,6 +78,7 @@ data class NewCircleBean(
     val userCount: String? = "0",
     val userId: String = "0",
     val tags:ArrayList<NewCirceTagBean>?=null,
+    var avatars:ArrayList<String>?= arrayListOf()
 )
 
 data  class SerachUserAddress(
@@ -92,3 +93,18 @@ data  class SerachUserAddress(
     val postsAddrId: Long,
     val province: String,
 )
+
+
+data class Topic(
+    val description: String = "",
+    val likesCount: Int = 0,
+    val name: String = "",
+    val heat: String = "",
+    val pic: String = "",
+    val postsCount: Int = 0,
+    val topicId: Int = 0,
+    val userCount: Int = 0,
+    var  isHot:Int=0,
+    var isNew:String=""
+)
+
