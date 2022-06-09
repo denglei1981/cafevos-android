@@ -108,17 +108,13 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     //开始对contentTv追加名字效果
                     contentTv.append(
                         SpannableStringUtils.getSpannable(
-                            "回复@${pare.nickname}：",
-                            R.color.color_99,
+                            "//@${pare.nickname}：",
+                            R.color.color_8195C8,
                             object : ClickableSpan() {
                                 //设置点击事件
                                 override fun onClick(widget: View) {
-//                                    val bundle = Bundle()
-//                                    bundle.putString("value", pare.userId)
-//                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
                                     JumpUtils.instans?.jump(35,pare.userId)
                                 }
-
                                 override fun updateDrawState(ds: TextPaint) {
                                     ds.isUnderlineText = false
                                 }
