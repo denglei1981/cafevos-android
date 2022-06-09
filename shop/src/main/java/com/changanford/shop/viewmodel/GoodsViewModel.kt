@@ -133,9 +133,9 @@ class GoodsViewModel: BaseViewModel() {
      * 维保商品
      * [tagId]分类id
      * */
-   private fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE"){
+    fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE",showLoading:Boolean=false){
         viewModelScope.launch {
-            fetchRequest {
+            fetchRequest(showLoading = showLoading) {
                 body.clear()
                 body["pageNo"]=pageNo
                 body["pageSize"]=pageSize

@@ -46,6 +46,7 @@
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_10"/>
         <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_rmbPrice"
             app:layout_constraintStart_toStartOf="@id/tv_name"
             app:layout_constraintBottom_toBottomOf="@id/img_cover"
             android:layout_width="wrap_content"
@@ -53,6 +54,16 @@
             android:text="@{model.rmbPrice}"
             app:w_start_txt="@string/str_rmb"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14"/>
+            android:textSize="@dimen/sp_14"
+            tools:text="￥100" />
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toEndOf="@id/tv_rmbPrice"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rmbPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_since"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_9"
+            android:layout_marginBottom="@dimen/dp_2"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

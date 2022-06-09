@@ -290,6 +290,7 @@ class JumpUtils {
             }
             27 -> {//我的收藏',
                 startARouter(ARouterMyPath.MineCollectUI, bundle, true)
+
             }
             28 -> {//我的圈子',
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
@@ -743,6 +744,9 @@ class JumpUtils {
                     bundle.putString("itemBean", value)//CouponsItemBean
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
+            }
+            129 -> { //爱车养护
+                startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
             }
             129->{
                 startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)

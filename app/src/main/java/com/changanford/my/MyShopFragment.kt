@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -100,19 +101,20 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
     inner class ShopAdapter :
         BaseQuickAdapter<MyShopBean, BaseDataBindingHolder<ItemMyShopBinding>>(R.layout.item_my_shop) {
+        @SuppressLint("SetTextI18n")
         override fun convert(holder: BaseDataBindingHolder<ItemMyShopBinding>, item: MyShopBean) {
             holder.dataBinding?.let {
                 try {
-                    item.spuImgs?.let { img ->
+                    item.spuImgs.let { img ->
                         var showImg: String = img
-                        var imgs = img.split(",")
+                        val imgs = img.split(",")
                         if (imgs.size > 1) {
                             showImg = imgs[0]
                         }
                         it.itemIcon.load(showImg, R.mipmap.ic_def_square_img)
                     }
                 } catch (e: Exception) {
-
+                    //
                 }
                 it.itemName.text = item.spuName
                 it.itemIntegral.text = WCommonUtil.getRMB(item.normalFb)

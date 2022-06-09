@@ -74,7 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.changanford.shop.view.TypefaceTextView
-                android:layout_marginEnd="@dimen/dp_6"
                 android:id="@+id/tv_integral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +81,14 @@
                 android:text="@{model.rmbPrice}"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_14" />
+            <com.changanford.common.ui.view.WTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_since"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_9"/>
             <com.changanford.shop.view.TypefaceTextView
+                android:layout_marginStart="@dimen/dp_5"
                 android:id="@+id/tv_orIntegral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

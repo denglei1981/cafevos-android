@@ -102,6 +102,10 @@
         <activity
             android:name=".ui.shoppingcart.request.NoLogisticsInfoActivity"
             android:screenOrientation="portrait" />
+        <!-- 爱车养护-->
+        <activity
+            android:name=".ui.goods.CarMaintenanceActivity"
+            android:screenOrientation="portrait" />
         <!--================================= 商城 End-->
     </application>
 </manifest>
