@@ -177,4 +177,7 @@
     <color name="color_F5">#F5F5F5</color>
     <color name="color_C6CEE4">#C6CEE4</color>
     <color name="color_DBWhite">#DBFFFFFF</color>
+    <color name="color_01">#010101</color>
+    <color name="color_E5">#E5E5EE</color>
+    <color name="color_66F2F4F9">#66F2F4F9</color>
 </resources>

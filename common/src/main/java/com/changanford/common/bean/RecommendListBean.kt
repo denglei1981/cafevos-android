@@ -4,8 +4,6 @@ import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.TimeUtils
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Kevin on 2018/8/7.
@@ -301,9 +299,9 @@ data class HomeAuthorsBean(
     val headFrameImage: String,
     var carOwner: String = ""
 ) {
-    fun getMemberNames(): String {
+    fun getMemberNames(): String? {
         return if (TextUtils.isEmpty(carOwner)) {
-            ""
+            null
         } else {
             carOwner
         }
