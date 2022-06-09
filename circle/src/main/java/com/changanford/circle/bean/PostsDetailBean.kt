@@ -1,7 +1,6 @@
 package com.changanford.circle.bean
 
 import com.changanford.common.bean.HomeAuthorsBean
-import com.changanford.common.bean.Imag
 
 /**
  * @Author: lcw
@@ -41,7 +40,7 @@ data class PostsDetailBean(
     val status: Int = 0,
     val title: String = "",
     val topicId: String = "",
-    val topicName: String? = "",
+    val topicName: String? = null,
     val type: Int = 0,
     val updateTime: Long = 0,
     val userId: String = "",
