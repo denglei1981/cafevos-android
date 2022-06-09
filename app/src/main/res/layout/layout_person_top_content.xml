@@ -119,18 +119,19 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_edit_info"
             android:layout_width="wrap_content"
-            android:layout_height="16dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="9dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:background="@drawable/shape_eef1fa_corner10"
             android:ellipsize="end"
             android:gravity="center"
-            android:includeFontPadding="false"
             android:maxEms="11"
             android:maxLines="1"
             android:paddingStart="8dp"
+            android:paddingTop="4dp"
             android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
             android:text="编辑资料"
             android:textColor="#4E608A"
             android:textSize="@dimen/sp_13"
@@ -138,6 +139,24 @@
             app:layout_constraintBottom_toBottomOf="@+id/iv_head"
             app:layout_constraintEnd_toEndOf="parent"
             tools:visibility="visible" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:background="@drawable/shape_r_8_c_5c_13"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_50"
+            android:minHeight="@dimen/dp_25"
+            android:text="关注"
+            android:textColor="#01025C"
+            android:textSize="@dimen/sp_11"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_car_name"
@@ -217,18 +236,6 @@
 
 
         <com.changanford.common.widget.DrawDoubleHTextView
-            android:id="@+id/dd_publish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            app:descText="发布"
-            app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
-            app:layout_constraintEnd_toStartOf="@+id/dd_follow"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/con_user_info"
-            app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
-
-        <com.changanford.common.widget.DrawDoubleHTextView
             android:id="@+id/dd_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -237,7 +244,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
             app:layout_constraintEnd_toStartOf="@+id/dd_fans"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/dd_publish"
+            app:layout_constraintStart_toStartOf="@+id/con_user_info"
             app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
 
         <com.changanford.common.widget.DrawDoubleHTextView
@@ -249,6 +256,17 @@
             app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/dd_follow"
+            app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
+
+        <com.changanford.common.widget.DrawDoubleHTextView
+            android:id="@+id/dd_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            app:descText="获赞数"
+            app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/dd_fans"
             app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

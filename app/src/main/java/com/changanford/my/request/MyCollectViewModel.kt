@@ -38,81 +38,109 @@ class MyCollectViewModel : BaseViewModel() {
             }
         }
     }
+
+    val  postBeanLiveData= MutableLiveData<UpdateUiState<PostBean>>()
     /**
      * 我收藏的帖子
      */
-    fun queryMineCollectPost(pageNo: Int, searchKeys:String,result: (CommonResponse<PostBean>) -> Unit) {
+    fun queryMineCollectPost() {
         viewModelScope.launch {
-            result(fetchRequest {
-                var body = HashMap<String, Any>()
-                body["pageNo"] = pageNo
-                body["pageSize"] = "20"
-                body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
+            fetchRequest {
+                val paramMaps = HashMap<String, Any>()
+                paramMaps["pageNo"] = 1
+                paramMaps["pageSize"] = 3
+                paramMaps["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =""
                 }
-                var rkey = getRandomKey()
-                apiService.queryMineCollectInfo(body.header(rkey), body.body(rkey))
-            })
+                val rKey = getRandomKey()
+                apiService.queryMineCollectInfo(paramMaps.header(rKey), paramMaps.body(rKey))
+            }.onSuccess { // 成功
+                val updateUiState = UpdateUiState<PostBean>(it, true, "")
+                postBeanLiveData.postValue(updateUiState)
+            }.onWithMsgFailure { // 失败
+                val updateUiState = UpdateUiState<PostBean>( false, it)
+                postBeanLiveData.postValue(updateUiState)
+            }
         }
     }
-
+    val  accLiveData= MutableLiveData<UpdateUiState<AccBean>>()
 
     /**
      * 我收藏的活动
      */
-    fun queryMineCollectAc(pageNo: Int,searchKeys:String, result: (CommonResponse<AccBean>) -> Unit) {
-
+    fun queryMineCollectAc() {
         viewModelScope.launch {
-            result(fetchRequest {
-                var body = HashMap<String, Any>()
-                body["pageNo"] = pageNo
-                body["pageSize"] = "20"
-                body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
-
+            fetchRequest {
+                val paramMaps = HashMap<String, Any>()
+                paramMaps["pageNo"] = 1
+                paramMaps["pageSize"] = 3
+                paramMaps["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =""
                 }
-                var rkey = getRandomKey()
-                apiService.queryMineCollectAc(body.header(rkey), body.body(rkey))
-            })
+                val rKey = getRandomKey()
+                apiService.queryMineCollectAc(paramMaps.header(rKey), paramMaps.body(rKey))
+            }.onSuccess { // 成功
+                val updateUiState = UpdateUiState<AccBean>(it, true, "")
+                accLiveData.postValue(updateUiState)
+            }.onWithMsgFailure { // 失败
+                val updateUiState = UpdateUiState<AccBean>( false, it)
+                accLiveData.postValue(updateUiState)
+            }
         }
-    }
 
+
+
+
+    }
+    val  shopBeanLiveData= MutableLiveData<UpdateUiState<ShopBean>>()
     /**
      * 我的收藏 商品
      */
-    fun queryShopCollect(pageNo: Int, searchKeys:String,result: (CommonResponse<ShopBean>) -> Unit) {
-        viewModelScope.launch {
-            result(fetchRequest {
-                var body = HashMap<String, Any>()
-                body["pageNo"] = pageNo
-                body["pageSize"] = "20"
-                body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
-
+    fun queryShopCollect() {
+            viewModelScope.launch {
+                fetchRequest {
+                    val paramMaps = HashMap<String, Any>()
+                    paramMaps["pageNo"] = 1
+                    paramMaps["pageSize"] = 3
+                    paramMaps["queryParams"] = HashMap<String, Any>().also {
+                        it["searchKeys"] =""
+                    }
+                    val rKey = getRandomKey()
+                    apiService.queryShopCollect(paramMaps.header(rKey), paramMaps.body(rKey))
+                }.onSuccess { // 成功
+                    val updateUiState = UpdateUiState<ShopBean>(it, true, "")
+                    shopBeanLiveData.postValue(updateUiState)
+                }.onWithMsgFailure { // 失败
+                    val updateUiState = UpdateUiState<ShopBean>( false, it)
+                    shopBeanLiveData.postValue(updateUiState)
                 }
-                var rkey = getRandomKey()
-                apiService.queryShopCollect(body.header(rkey), body.body(rkey))
-            })
+            }
         }
-    }
+
 
     /**
      * 我收藏的 资讯 1
      */
-    fun queryMineCollectInfo(pageNo: Int,searchKeys:String, result: (CommonResponse<InfoBean>) -> Unit) {
+
+    val  infoBeanLiveData= MutableLiveData<UpdateUiState<InfoBean>>()
+    fun queryMineCollectInfo() {
         viewModelScope.launch {
-            result(fetchRequest {
-                var body = HashMap<String, Any>()
-                body["pageNo"] = pageNo
-                body["pageSize"] = "20"
-                body["queryParams"] = HashMap<String, Any>().also {
-
-                    it["searchKeys"] =searchKeys
-
+            fetchRequest {
+                val paramMaps = HashMap<String, Any>()
+                paramMaps["pageNo"] = 1
+                paramMaps["pageSize"] = 3
+                paramMaps["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] =""
                 }
-                var rkey = getRandomKey()
-                apiService.queryMineCollectList(body.header(rkey), body.body(rkey))
-            })
+                val rKey = getRandomKey()
+                apiService.queryMineCollectList(paramMaps.header(rKey), paramMaps.body(rKey))
+            }.onSuccess { // 成功
+                val updateUiState = UpdateUiState<InfoBean>(it, true, "")
+                infoBeanLiveData.postValue(updateUiState)
+            }.onWithMsgFailure { // 失败
+                val updateUiState = UpdateUiState<InfoBean>( false, it)
+                infoBeanLiveData.postValue(updateUiState)
+            }
         }
     }
 }

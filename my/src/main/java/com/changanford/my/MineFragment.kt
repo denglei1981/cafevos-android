@@ -86,6 +86,13 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
             h.ivHead.setOnClickListener {
                 JumpUtils.instans?.jump(34)
             }
+            h.tvUserLevel.setOnClickListener {
+                JumpUtils.instans?.jump(32)
+            }
+            h.tvUserTags.setOnClickListener {
+                JumpUtils.instans?.jump(29)
+
+            }
             h.tvNickname.setOnClickListener {
                 JumpUtils.instans?.jump(34)
             }
@@ -115,13 +122,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
 
                 JumpUtils.instans?.jump(40)
             }
-            h.tvUserLevel.setOnClickListener {
-                JumpUtils.instans?.jump(32)
-            }
-            h.tvUserTags.setOnClickListener {
-                JumpUtils.instans?.jump(29)
 
-            }
+
             h.tvCarName.setOnClickListener {
 
                 JumpUtils.instans?.jump(17)

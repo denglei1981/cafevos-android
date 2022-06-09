@@ -290,7 +290,6 @@ class JumpUtils {
             }
             27 -> {//我的收藏',
                 startARouter(ARouterMyPath.MineCollectUI, bundle, true)
-
             }
             28 -> {//我的圈子',
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
@@ -315,7 +314,7 @@ class JumpUtils {
 
             }
             35 -> {//他人主页 需要userId
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle, true)
+                startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
 
             }
             36 -> {//聚合订单列表页

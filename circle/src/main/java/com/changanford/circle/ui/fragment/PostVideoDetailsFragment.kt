@@ -41,6 +41,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
@@ -275,9 +276,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", mData.authorBaseVo?.authorId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", mData.authorBaseVo?.authorId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,mData.authorBaseVo?.authorId)
+
             }
             tvFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {

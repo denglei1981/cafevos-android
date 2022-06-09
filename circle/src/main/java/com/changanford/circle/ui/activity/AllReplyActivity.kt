@@ -24,6 +24,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
@@ -122,9 +123,10 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                 }).show()
             }
             binding.ivHead.setOnClickListener { _ ->
-                val bundle = Bundle()
-                bundle.putString("value", it.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", it.userId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,it.userId.toString())
             }
             binding.llLike.setOnClickListener {
                 this.launchWithCatch {

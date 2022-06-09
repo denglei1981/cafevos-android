@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coord"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -39,7 +40,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/color_withe"
+                        android:background="@color/color_F4"
                         app:layout_collapseMode="pin">
 
                         <RelativeLayout
@@ -64,7 +65,7 @@
                                 android:ellipsize="end"
                                 android:maxWidth="200dp"
                                 android:maxLines="1"
-                                android:text="圈子详情"
+                                android:text="个人主页"
                                 android:textColor="@color/color_00"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -76,8 +77,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="15dp"
-                                android:padding="10dp"
-                              />
+                                android:padding="10dp" />
                         </RelativeLayout>
 
                     </androidx.appcompat.widget.Toolbar>
@@ -85,9 +85,10 @@
 
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/magic_tab"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
+                    android:background="@color/color_F4"
+                    android:paddingStart="@dimen/dp_10"
                     android:paddingBottom="5dp" />
 
             </com.google.android.material.appbar.AppBarLayout>
@@ -99,6 +100,10 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
+        <include
+            android:id="@+id/layout_empty_user"
+            layout="@layout/layout_dismiss_user"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

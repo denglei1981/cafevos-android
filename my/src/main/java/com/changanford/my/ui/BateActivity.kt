@@ -135,6 +135,12 @@ fun TokenHelper(switchDebug: () -> Unit, switchRelease: () -> Unit) {
                     onClick = {
                         if (token.startsWith("user:token:")) {
                             MConstant.token = token
+//                            try {
+//                                val s= token.split(":")
+//                                MConstant.userId=s[3]
+//                            }catch (e:Exception){
+//                                e.printStackTrace()
+//                            }
                             SPUtils.putToken(token)
                             ToastUtils.s(BaseApplication.INSTANT, "应用成功")
                         } else {

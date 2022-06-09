@@ -307,9 +307,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 requireActivity().finish()
             }
             ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", mData.authorBaseVo?.authorId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", mData.authorBaseVo?.authorId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,mData.authorBaseVo?.authorId)
             }
             bottomView.tvTalk.setOnClickListener {
                 ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {

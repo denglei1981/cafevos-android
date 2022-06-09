@@ -19,6 +19,7 @@ import com.changanford.common.bean.Refuse
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -348,7 +349,9 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             }
             checkBox.isChecked = checkMap[item.userId]!!
             icon.setOnClickListener {
-                RouterManger.param("value", item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
+//                RouterManger.param("value", item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
+
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
         }
 

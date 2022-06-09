@@ -24,6 +24,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -83,9 +84,10 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 binding.tvChildCount.text = "${item.childCount}回复"
             }
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", item.userId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
         }
     }

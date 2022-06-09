@@ -16,6 +16,7 @@ import com.changanford.circle.utils.MUtils
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 
 /**
@@ -59,9 +60,12 @@ class PersonalAdapter :
             }
 
             binding.ivIcon.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", item.userId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,item.userId.toString())
+
+
             }
 
             binding.bean = item

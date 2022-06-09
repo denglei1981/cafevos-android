@@ -15,6 +15,9 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.evos.databinding.FragmentHomePageBinding
+import com.changanford.my.activity.MyJoinCircleActivity
+import com.changanford.my.activity.MyJoinTopicActivity
+import com.changanford.my.activity.MyStarPostsActivity
 import com.changanford.my.adapter.MyJoinCircleAdapter
 import com.changanford.my.adapter.MyJoinTopicAdapter
 import com.changanford.my.adapter.MyStarPostAdapter
@@ -33,14 +36,14 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         }
     }
 
+    var userIds = ""
     override fun initView() {
-        val userIds = arguments?.getString("userId")
-        userIds?.let { s ->
+        userIds = arguments?.getString("userId").toString()
+        userIds.let { s ->
             viewModel.getMyCircles(s)
             viewModel.getMyLikedPosts(s)
             viewModel.getMyTopics(s)
         }
-
     }
 
     override fun initData() {
@@ -52,7 +55,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         MyJoinCircleAdapter()
     }
 
-    val myStarAdapter:MyStarPostAdapter by lazy {
+    val myStarAdapter: MyStarPostAdapter by lazy {
         MyStarPostAdapter()
     }
 
@@ -62,35 +65,53 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
 
     fun showCircle(data: UpdateUiState<NewCircleDataBean>) {
         binding.layoutCircle.tvTitle.text = "加入的圈子"
+        binding.layoutCircle.tvMore.setOnClickListener {
+            MyJoinCircleActivity.start(userId = userIds, requireActivity())
+        }
         if (data.isSuccess) {//
-            binding.layoutCircle.rvMenu.adapter = myJoinCircleAdapter
-            myJoinCircleAdapter.setNewInstance(data.data.dataList)
-            binding.layoutCircle.rvMenu.visibility = View.VISIBLE
-            binding.layoutCircle.llEmpty.visibility = View.GONE
-            myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
-                JumpUtils.instans?.jump(
-                    6,
-                    myJoinCircleAdapter.getItem(position).circleId.toString()
-                )
+            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.size!! > 0) {
+                binding.layoutCircle.rvMenu.adapter = myJoinCircleAdapter
+                myJoinCircleAdapter.setNewInstance(data.data.dataList)
+                binding.layoutCircle.rvMenu.visibility = View.VISIBLE
+                binding.layoutCircle.llEmpty.visibility = View.GONE
+                myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
+                    JumpUtils.instans?.jump(
+                        6,
+                        myJoinCircleAdapter.getItem(position).circleId.toString()
+                    )
+                }
+            } else {
+                binding.layoutCircle.rvMenu.visibility = View.GONE
+                binding.layoutCircle.llEmpty.visibility = View.VISIBLE
             }
+
         } else {
             binding.layoutCircle.rvMenu.visibility = View.GONE
             binding.layoutCircle.llEmpty.visibility = View.VISIBLE
         }
     }
 
-    fun showPosts(data: UpdateUiState<PostBean>){
+    fun showPosts(data: UpdateUiState<PostBean>) {
         binding.layoutPosts.tvTitle.text = "点赞的帖子"
+        binding.layoutPosts.tvMore.setOnClickListener {
+            MyStarPostsActivity.start(userIds,requireActivity())
+        }
         if (data.isSuccess) {//
-            binding.layoutPosts.rvMenu.adapter = myStarAdapter
-            myStarAdapter.setNewInstance(data.data.dataList)
-            binding.layoutPosts.rvMenu.visibility = View.VISIBLE
-            binding.layoutPosts.llEmpty.visibility = View.GONE
-            myStarAdapter.setOnItemClickListener { adapter, view, position ->
-                val bundle = Bundle()
-                bundle.putString("postsId", myStarAdapter.getItem(position).postsId.toString())
-                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.size!! > 0) {
+                binding.layoutPosts.rvMenu.adapter = myStarAdapter
+                myStarAdapter.setNewInstance(data.data.dataList)
+                binding.layoutPosts.rvMenu.visibility = View.VISIBLE
+                binding.layoutPosts.llEmpty.visibility = View.GONE
+                myStarAdapter.setOnItemClickListener { adapter, view, position ->
+                    val bundle = Bundle()
+                    bundle.putString("postsId", myStarAdapter.getItem(position).postsId.toString())
+                    startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+                }
+            } else {
+                binding.layoutPosts.rvMenu.visibility = View.GONE
+                binding.layoutPosts.llEmpty.visibility = View.VISIBLE
             }
+
 
         } else {
             binding.layoutPosts.rvMenu.visibility = View.GONE
@@ -98,23 +119,26 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         }
     }
 
-    fun showTopic(data: UpdateUiState<ListMainBean<Topic>>){
+    fun showTopic(data: UpdateUiState<ListMainBean<Topic>>) {
         binding.layoutTopic.tvTitle.text = "参与的话题"
         binding.layoutTopic.tvMore.setOnClickListener {
-            startARouter(ARouterCirclePath.HotTopicActivity)
+            MyJoinTopicActivity.start(userIds,requireActivity())
         }
         if (data.isSuccess) {//
-            binding.layoutTopic.rvMenu.adapter = myJoinTopicAdapter
-
-            myJoinTopicAdapter.setNewInstance(data.data.dataList)
-            binding.layoutTopic.rvMenu.visibility = View.VISIBLE
-            binding.layoutTopic.llEmpty.visibility = View.GONE
-
-            myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
-                val item = myJoinTopicAdapter.getItem(position)
-                val bundle = Bundle()
-                bundle.putString("topicId", item.topicId.toString())
-                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.size!! > 0) {
+                binding.layoutTopic.rvMenu.adapter = myJoinTopicAdapter
+                myJoinTopicAdapter.setNewInstance(data.data.dataList)
+                binding.layoutTopic.rvMenu.visibility = View.VISIBLE
+                binding.layoutTopic.llEmpty.visibility = View.GONE
+                myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
+                    val item = myJoinTopicAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("topicId", item.topicId.toString())
+                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+                }
+            } else {
+                binding.layoutTopic.rvMenu.visibility = View.GONE
+                binding.layoutTopic.llEmpty.visibility = View.VISIBLE
             }
 
         } else {

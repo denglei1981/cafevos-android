@@ -17,6 +17,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
@@ -76,9 +77,11 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", item.userId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
 //            contentSty(binding.tvContent, item)
             binding.tvContent.text = item.content
@@ -107,9 +110,12 @@ class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
                             object : ClickableSpan() {
                                 //设置点击事件
                                 override fun onClick(widget: View) {
-                                    val bundle = Bundle()
-                                    bundle.putString("value", pare.userId)
-                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                                    val bundle = Bundle()
+//                                    bundle.putString("value", pare.userId)
+//                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+
+                                    JumpUtils.instans?.jump(35,pare.userId)
+
                                 }
 
                                 override fun updateDrawState(ds: TextPaint) {
