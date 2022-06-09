@@ -36,7 +36,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
-class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefreshListener {
+class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRefreshListener {
 
 
     var headNewBinding: HeaderMineBinding? = null
@@ -167,18 +167,19 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                     if (userInfoBean.isUnread == 1) View.VISIBLE else View.GONE
                 LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT)
                     .postValue(userInfoBean.isUnread == 1)
-                if(TextUtils.isEmpty(userInfoBean.ext.memberIcon)){
-                    h.ivVip.visibility=View.GONE
-                }else{
-                    GlideUtils.loadBD(userInfoBean.ext.memberIcon,h.ivVip)
-                    h.ivVip.visibility=View.VISIBLE
+                if (TextUtils.isEmpty(userInfoBean.ext.memberIcon)) {
+                    h.ivVip.visibility = View.GONE
+                } else {
+                    GlideUtils.loadBD(userInfoBean.ext.memberIcon, h.ivVip)
+                    h.ivVip.visibility = View.VISIBLE
                 }
-                h.tvNickname.visibility=View.VISIBLE
-                h.tvNotLogin.visibility=View.GONE
+                h.tvNickname.visibility = View.VISIBLE
+                h.tvNotLogin.visibility = View.GONE
+                h.tvNextPerson.visibility = View.VISIBLE
             } else {
                 h.tvNickname.text = ""
-                h.tvNickname.visibility=View.GONE
-                h.tvNotLogin.visibility=View.VISIBLE
+                h.tvNickname.visibility = View.GONE
+                h.tvNotLogin.visibility = View.VISIBLE
                 h.ivHead.load(R.mipmap.head_default)
                 h.ddPublish.setPageTitleText("0")
                 h.ddFans.setPageTitleText("0")
@@ -193,7 +194,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
                 h.daySign.text = "签到"
                 h.messageStatus.visibility = View.GONE
                 h.tvUserTags.text = "0枚勋章"
-                h.ivVip.visibility=View.GONE
+                h.ivVip.visibility = View.GONE
+                h.tvNextPerson.visibility = View.GONE
             }
 
 
@@ -309,9 +311,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
             }
             h.vFlipper.removeAllViews()
             h.vFlipper.stopFlipping()
-            recommendCircle.posts.forEach {p->
+            recommendCircle.posts.forEach { p ->
                 val postView = FlyCirclePost(requireContext())
-                postView.setThumb(p.pics,p.postsId)
+                postView.setThumb(p.pics, p.postsId)
                 postView.setPageTitleText(p.getShowTitle())
                 h.vFlipper.addView(postView)
             }
