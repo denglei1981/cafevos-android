@@ -76,7 +76,7 @@ public class FlyCirclePost extends ConstraintLayout {
     }
 
     public void setThumb(String resourceId,int postId) {
-        GlideUtils.INSTANCE.loadBD(setImgWH(88,88,resourceId),ivThumb);
+        GlideUtils.INSTANCE.loadBD(setImgWH(176,176,resourceId),ivThumb);
           this.setOnClickListener(new OnClickListener() {
               @Override
               public void onClick(View v) {
