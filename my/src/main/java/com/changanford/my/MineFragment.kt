@@ -130,7 +130,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(),OnRefr
             }
             h.tvNextPerson.setOnClickListener {
 
-                JumpUtils.instans?.jump(129)
+                JumpUtils.instans?.jump(35)
             }
 
         }
