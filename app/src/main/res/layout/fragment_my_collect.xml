@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_F4"
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
@@ -18,13 +19,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_f6"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
                 <include
                     android:id="@+id/layout_news"
-
                     layout="@layout/item_home_page"
-                    android:background="@drawable/shape_white_corner5" />
+                 />
 
                 <include
                     android:id="@+id/layout_posts"
@@ -32,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_white_corner5" />
+                    />
 
                 <include
                     android:id="@+id/layout_acts"
@@ -40,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_white_corner5" />
+                  />
 
                 <include
                     android:id="@+id/layout_shop"
@@ -48,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/shape_white_corner5" />
+                     />
             </LinearLayout>
 
 
