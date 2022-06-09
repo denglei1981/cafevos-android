@@ -62,7 +62,6 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
@@ -698,7 +697,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                 .width(68.dp)
                                 .height(23.dp)
                                 .background(colorResource(com.changanford.common.R.color.color_FAFBFD),
-                                    shape = RoundedCornerShape(12.dp))) {
+                                    shape = RoundedCornerShape(12.dp)).clickable {
+                                    // 跳转到搜索
+                                    val bundle = Bundle()
+                                    bundle.putInt(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST)
+                                    bundle.putString(JumpConstant.SEARCH_CONTENT, it.tagName)
+                                    bundle.putString(JumpConstant.SEARCH_TAG_ID, it.id)
+                                    startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+                                }) {
                                 Text(text = it.tagName, fontSize = 12.sp, color= colorResource(com.changanford.common.R.color.color_8195C8), overflow = TextOverflow.Ellipsis, maxLines = 1)
                             }
                             Spacer(modifier = Modifier.width(5.dp))
