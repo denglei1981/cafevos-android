@@ -242,10 +242,10 @@
             android:layout_marginStart="@dimen/dp_24"
             app:descText="关注"
             app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
-            app:layout_constraintEnd_toStartOf="@+id/dd_fans"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/con_user_info"
-            app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
+            app:layout_constraintStart_toEndOf="@+id/dd_fans"
+            app:layout_constraintTop_toBottomOf="@+id/ll_medal"
+            />
 
         <com.changanford.common.widget.DrawDoubleHTextView
             android:id="@+id/dd_fans"
@@ -253,10 +253,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_24"
             app:descText="粉丝"
+
             app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
+            app:layout_constraintEnd_toStartOf="@+id/dd_follow"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/dd_follow"
-            app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
+            app:layout_constraintStart_toStartOf="@+id/con_user_info"
+            app:layout_constraintTop_toBottomOf="@+id/ll_medal"
+     />
 
         <com.changanford.common.widget.DrawDoubleHTextView
             android:id="@+id/dd_likes"
@@ -266,7 +269,7 @@
             app:descText="获赞数"
             app:layout_constraintBottom_toBottomOf="@+id/con_user_info"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/dd_fans"
+            app:layout_constraintStart_toEndOf="@+id/dd_follow"
             app:layout_constraintTop_toBottomOf="@+id/ll_medal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

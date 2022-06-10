@@ -457,6 +457,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(ContextCompat.getColor(this, R.color.color_F4))
         val commonNavigator = CommonNavigator(this)
+
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getCount(): Int {
@@ -468,7 +469,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.text = tabList[index]
                 simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                simplePagerTitleView.setPadding(20.toIntPx(), 0, 20.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(context, R.color.color_33)
                 simplePagerTitleView.selectedColor =
@@ -498,6 +499,8 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
         }
         magicIndicator.navigator = commonNavigator
+
+
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
