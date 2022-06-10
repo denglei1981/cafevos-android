@@ -72,6 +72,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.DKPlayerHelper
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.ScreenUtils
@@ -469,6 +470,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
+                ToastUtils.reToast(R.string.str_shareSuccess)
                 shareBackUpHttp(
                     this, mData.shares, when {
                         MConstant.userId == mData.userId && mData.type == 1 -> 5//自己的帖子没有编辑按钮
