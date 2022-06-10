@@ -134,8 +134,8 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
 
         } else {
-            binding.topContent.tvEditInfo.visibility = View.GONE
-            binding.topContent.ivCover.visibility = View.GONE
+            binding.topContent.tvEditInfo.visibility = View.INVISIBLE
+            binding.topContent.ivCover.visibility = View.INVISIBLE
             binding.topContent.btnFollow.visibility = View.VISIBLE
         }
     }
@@ -164,12 +164,10 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
 
         }
-        binding.topContent.llMedal.setOnClickListener {
+        binding.topContent.tvUserTags.setOnClickListener {
             if(TextUtils.isEmpty(taUserId)||taUserId==userId){
                 JumpUtils.instans?.jump(29)
             }
-
-
         }
     }
 
@@ -368,22 +366,22 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 
 
                     //用户图标
-                    userInfoBean.userMedalList.let { imgs ->
-                        var imgList = arrayListOf<Imag>()
-                        imgs?.forEach { i ->
-                            imgList.add(Imag(i.medalImage, -1, ""))
-
-                        }
-                        binding.topContent.rvMedal.visibility = View.VISIBLE
-                        binding.topContent.rvMedal.adapter = LabelAdapter(20).apply {
-                            addData(imgList)
-                        }
-                    }
+//                    userInfoBean.userMedalList.let { imgs ->
+//                        var imgList = arrayListOf<Imag>()
+//                        imgs?.forEach { i ->
+//                            imgList.add(Imag(i.medalImage, -1, ""))
+//
+//                        }
+//                        binding.topContent.rvMedal.visibility = View.VISIBLE
+//                        binding.topContent.rvMedal.adapter = LabelAdapter(20).apply {
+//                            addData(imgList)
+//                        }
+//                    }
                     if (!TextUtils.isEmpty(userInfoBean.frontCover)) {
                         GlideUtils.loadBD(userInfoBean.frontCover, binding.topContent.ivBg)
                     }
-                    binding.topContent.tvTotal.text =
-                        "共".plus(userInfoBean.medalCount.toString().plus("枚"))
+                    binding.topContent.tvUserTags.text =
+                     userInfoBean.medalCount.toString().plus("枚勋章")
                     binding.topContent.ddFollow.setOnClickListener {
                         if (taUserId == userId || TextUtils.isEmpty(taUserId)) {
                             JumpUtils.instans?.jump(25)
