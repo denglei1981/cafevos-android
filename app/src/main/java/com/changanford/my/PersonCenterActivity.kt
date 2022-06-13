@@ -176,9 +176,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         }
     }
 
-    override fun initData() {
-        initTabAndViewPager()
-        initMagicIndicator()
+    private fun getUserInfo(){
         if (TextUtils.isEmpty(taUserId)) {
             viewModel.queryOtherInfo(userId) {
                 it.onSuccess { user ->
@@ -198,6 +196,11 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                 }
             }
         }
+    }
+    override fun initData() {
+        initTabAndViewPager()
+        initMagicIndicator()
+         getUserInfo()
 
 
     }
@@ -209,6 +212,11 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setLoadingText("图片上传中..")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getUserInfo()
     }
 
     var headIconPath: String = ""//头像地址
@@ -366,22 +374,12 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                         GlideUtils.loadBD(userInfoBean.ext.memberIcon, binding.topContent.ivVip)
                         binding.topContent.ivVip.visibility = View.VISIBLE
                     }
-                    binding.topContent.tvSign.text =
-                        if (userInfoBean.brief.isNullOrEmpty()) "这个人很懒~" else userInfoBean.brief
-
-
-                    //用户图标
-//                    userInfoBean.userMedalList.let { imgs ->
-//                        var imgList = arrayListOf<Imag>()
-//                        imgs?.forEach { i ->
-//                            imgList.add(Imag(i.medalImage, -1, ""))
-//
-//                        }
-//                        binding.topContent.rvMedal.visibility = View.VISIBLE
-//                        binding.topContent.rvMedal.adapter = LabelAdapter(20).apply {
-//                            addData(imgList)
-//                        }
-//                    }
+                    if(!TextUtils.isEmpty(userInfoBean.brief)){
+                        binding.topContent.tvSign.text =  userInfoBean.brief
+                        binding.topContent.tvSign.visibility=View.VISIBLE
+                    }else{
+                        binding.topContent.tvSign.visibility=View.GONE
+                    }
                     if (!TextUtils.isEmpty(userInfoBean.frontCover)) {
                         GlideUtils.loadBD(userInfoBean.frontCover, binding.topContent.ivBg)
                     }

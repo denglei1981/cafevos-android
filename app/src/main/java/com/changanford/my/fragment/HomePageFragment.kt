@@ -83,11 +83,13 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
             } else {
                 binding.layoutCircle.rvMenu.visibility = View.GONE
                 binding.layoutCircle.llEmpty.visibility = View.VISIBLE
+                binding.layoutCircle.tvMore.visibility=View.GONE
             }
 
         } else {
             binding.layoutCircle.rvMenu.visibility = View.GONE
             binding.layoutCircle.llEmpty.visibility = View.VISIBLE
+            binding.layoutCircle.tvMore.visibility=View.GONE
         }
     }
 
@@ -110,12 +112,14 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
             } else {
                 binding.layoutPosts.rvMenu.visibility = View.GONE
                 binding.layoutPosts.llEmpty.visibility = View.VISIBLE
+                binding.layoutPosts.tvMore.visibility=View.GONE
             }
 
 
         } else {
             binding.layoutPosts.rvMenu.visibility = View.GONE
             binding.layoutPosts.llEmpty.visibility = View.VISIBLE
+            binding.layoutPosts.tvMore.visibility=View.GONE
         }
     }
 
@@ -139,11 +143,13 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
             } else {
                 binding.layoutTopic.rvMenu.visibility = View.GONE
                 binding.layoutTopic.llEmpty.visibility = View.VISIBLE
+                binding.layoutTopic.tvMore.visibility=View.GONE
             }
 
         } else {
             binding.layoutTopic.rvMenu.visibility = View.GONE
             binding.layoutTopic.llEmpty.visibility = View.VISIBLE
+            binding.layoutTopic.tvMore.visibility=View.GONE
         }
     }
 

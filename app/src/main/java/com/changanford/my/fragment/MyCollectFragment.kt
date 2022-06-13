@@ -32,6 +32,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     val myColletShopAdapter: MyColletShopAdapter by lazy {
         MyColletShopAdapter()
     }
+    var isOut =false
 
     companion object {
         fun newInstance(value: String, userId: String = ""): MyCollectFragment {
@@ -52,6 +53,17 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        if(isOut){
+            viewModel.queryMineCollectInfo()
+            viewModel.queryMineCollectPost()
+            viewModel.queryMineCollectAc()
+            viewModel.queryShopCollect()
+        }
+
+    }
+
     override fun initData() {
 
 
@@ -60,6 +72,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     fun showInfo(data: UpdateUiState<InfoBean>) {
         binding.layoutNews.tvTitle.text = "资讯"
         binding.layoutNews.tvMore.setOnClickListener {
+            isOut=true
             JumpUtils.instans?.jump(27, "0")
         }
         if (data.isSuccess) {//
@@ -71,6 +84,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutNews.rvMenu.visibility = View.VISIBLE
                 binding.layoutNews.llEmpty.visibility = View.GONE
                 myColletNewsAdapter.setOnItemClickListener { adapter, view, position ->
+                    isOut=true
                     val item = myColletNewsAdapter.getItem(position)
                     JumpUtils.instans?.jump(2, item.artId)
                 }
@@ -87,6 +101,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     fun showPostBean(data: UpdateUiState<PostBean>) {
         binding.layoutPosts.tvTitle.text = "帖子"
         binding.layoutPosts.tvMore.setOnClickListener {
+            isOut=true
             JumpUtils.instans?.jump(27, "1")
         }
         if (data.isSuccess) {
@@ -98,6 +113,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutPosts.rvMenu.visibility = View.VISIBLE
                 binding.layoutPosts.llEmpty.visibility = View.GONE
                 myColletPostAdapter.setOnItemClickListener { adapter, view, position ->
+                    isOut=true
                     val bundle = Bundle()
                     bundle.putString(
                         "postsId",
@@ -118,8 +134,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     fun showAcc(data: UpdateUiState<AccBean>) {
         binding.layoutActs.tvTitle.text = "活动"
         binding.layoutActs.tvMore.setOnClickListener {
-//            startARouter(ARouterCirclePath.HotTopicActivity)
-//            startARouter(ARouterMyPath.MineCollectUI, bundle, true)
+            isOut=true
             JumpUtils.instans?.jump(27, "2")
         }
         if (data.isSuccess) {
@@ -131,6 +146,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutActs.rvMenu.visibility = View.VISIBLE
                 binding.layoutActs.llEmpty.visibility = View.GONE
                 myColletAccAdapter.setOnItemClickListener { adapter, view, position ->
+                    isOut=true
                     val item = myColletAccAdapter.getItem(position)
                     CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
                 }
@@ -147,7 +163,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     fun showShop(data: UpdateUiState<ShopBean>) {
         binding.layoutShop.tvTitle.text = "商品"
         binding.layoutShop.tvMore.setOnClickListener {
-//            startARouter(ARouterCirclePath.HotTopicActivity)
+            isOut=true
             JumpUtils.instans?.jump(27, "3")
         }
         if (data.isSuccess) {
@@ -159,6 +175,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutShop.rvMenu.visibility = View.VISIBLE
                 binding.layoutShop.llEmpty.visibility = View.GONE
                 myColletShopAdapter.setOnItemClickListener { adapter, view, position ->
+                    isOut=true
                     val item = myColletShopAdapter.getItem(position)
                     JumpUtils.instans?.jump(3, item.mallMallSpuId)
                 }

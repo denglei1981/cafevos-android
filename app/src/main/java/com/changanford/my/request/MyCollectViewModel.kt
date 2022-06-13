@@ -102,9 +102,9 @@ class MyCollectViewModel : BaseViewModel() {
                     val paramMaps = HashMap<String, Any>()
                     paramMaps["pageNo"] = 1
                     paramMaps["pageSize"] = 3
-                    paramMaps["queryParams"] = HashMap<String, Any>().also {
-                        it["searchKeys"] =""
-                    }
+//                    paramMaps["queryParams"] = HashMap<String, Any>().also {
+//                        it["searchKeys"] =""
+//                    }
                     val rKey = getRandomKey()
                     apiService.queryShopCollect(paramMaps.header(rKey), paramMaps.body(rKey))
                 }.onSuccess { // 成功
