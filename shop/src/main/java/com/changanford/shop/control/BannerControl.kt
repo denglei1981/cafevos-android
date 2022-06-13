@@ -41,8 +41,8 @@ object BannerControl {
             return
         }
         banner.visibility= View.VISIBLE
-//        val isAutoPlayAbles=advertList.size>1
-//        banner.setAutoPlayAble(isAutoPlayAbles)
+        val isAutoPlayAbles=advertList.size>1
+        banner.setAutoPlayAble(isAutoPlayAbles)
         banner.setAdapter(BGABanner.Adapter<ImageView, String> { _, imageView, item, _ ->
             if (item != null) {
                 GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(item), imageView, round.toFloat(),R.mipmap.image_h_one_default)
