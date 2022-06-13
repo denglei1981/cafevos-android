@@ -21,8 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -455,6 +453,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     "已取消关注".toast()
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER)
                     .postValue(mData.authorBaseVo?.isFollow)
+                binding.composeView.setContent {
+                    PostDetailsCompose(mData)
+                }
             } else {
                 it.msg.toast()
             }
@@ -575,14 +576,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 })
     }
     @Composable
-   private fun PostDetailsCompose(dataBean: PostsDetailBean?){
+    private fun PostDetailsCompose(dataBean: PostsDetailBean?){
         dataBean?.apply {
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(horizontal = 20.dp)) {
                 authorBaseVo?.apply {
-                    val isFollowState = remember{ mutableStateOf(isFollow) }
+//                    val isFollowState = remember{ mutableStateOf(isFollow) }
                     Row(modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -630,9 +631,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                     shape = RoundedCornerShape(13.dp))
                                 .clickable {
                                     addFocusOn()
-                                    isFollowState.value=if(isFollowState.value==1)0 else 1
+//                                    isFollowState.value=if(isFollowState.value==1)0 else 1
                                 }, contentAlignment = Alignment.Center) {
-                                Text(text = if(isFollowState.value ==1)"已关注" else "关注", fontSize = 12.sp, color = colorResource(
+                                Text(text = if(isFollow ==1)"已关注" else "关注", fontSize = 12.sp, color = colorResource(
                                     com.changanford.common.R.color.color_00095B))
                             }
                         }
