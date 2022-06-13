@@ -20,6 +20,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
+import com.changanford.common.util.MConstant.loginBgVideoUrl
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logE
 import com.changanford.my.R
@@ -176,8 +177,8 @@ fun downFile(url: String, listener: OnDownloadListener) {
 //登录和绑定手机号获取权限
 var refusePermission: Boolean = false
 fun downLoginBg(videoUrl: String?) {
-    if (refusePermission)
-        return
+    loginBgVideoUrl=videoUrl
+    if (refusePermission||!SoulPermission.getInstance().checkSinglePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).isGranted)return
     SoulPermission.getInstance().checkAndRequestPermissions(
         Permissions.build(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,

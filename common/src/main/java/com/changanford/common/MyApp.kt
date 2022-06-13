@@ -66,8 +66,10 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         mContext = this
         if(!BuildConfig.DEBUG)CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
-        LanSoEditor.initSDK(this, "ft")
-        LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
+        if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
+            LanSoEditor.initSDK(this, "ft")
+            LanSongFileUtil.setFileDir(MConstant.ftFilesDir)
+        }
         UserManger.getSysUserInfo()?.let {
             MConstant.userId = it.uid
             MConstant.token = SPUtils.getToken()
@@ -116,7 +118,6 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
                 if (mFinalCount == 1 && isRunBack) { //说明从后台回到了前台
                     isRunBack = false
                 }
-//                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStarted>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
             }
             override fun onActivityResumed(activity: Activity) {
             }
@@ -128,7 +129,6 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
                     isRunBack = true
 //                    WidgetTimerUtils.updateDistance(this@MyApplication)
                 }
-//                if(BuildConfig.DEBUG)Log.e("wenke", "onActivityStopped>>>isRunBack:$isRunBack>>>>mFinalCount:$mFinalCount")
             }
 
             override fun onActivitySaveInstanceState(
