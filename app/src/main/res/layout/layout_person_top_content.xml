@@ -96,29 +96,23 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tv_edit_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
                 android:layout_marginStart="9dp"
                 android:layout_marginEnd="@dimen/dp_20"
-                android:background="@drawable/shape_eef1fa_corner10"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:maxEms="11"
-                android:maxLines="1"
-                android:paddingStart="8dp"
-                android:paddingTop="2dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="2dp"
-                android:text="编辑资料"
-                android:textColor="#4E608A"
+                android:padding="@dimen/dp_4"
+                android:src="@mipmap/icon_edit_mine_info"
                 android:textSize="@dimen/sp_13"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="invisible" />
+                tools:visibility="visible" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btn_follow"
                 android:layout_width="wrap_content"
@@ -133,9 +127,9 @@
                 android:textSize="@dimen/sp_11"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -172,7 +166,6 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_user_tags"
             android:layout_width="wrap_content"
@@ -193,11 +186,13 @@
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toBottomOf="@+id/ll_user_info"
             tools:text="3枚勋章" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_car_name"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="@dimen/dp_11"
             android:background="@drawable/shape_eef1fa_corner10"
             android:ellipsize="end"
@@ -208,7 +203,6 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textColor="#8195C8"
-            android:layout_marginStart="4dp"
             android:textSize="@dimen/sp_11"
             android:visibility="gone"
             app:layout_constraintStart_toEndOf="@+id/tv_user_tags"
@@ -230,8 +224,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_head"
             tools:text="哼！你算哪块小饼干～这是个人签名，个性签名~" />
-
-
 
 
         <com.changanford.common.widget.DrawDoubleHTextView
