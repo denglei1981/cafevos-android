@@ -2,27 +2,17 @@ package com.changanford.my.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.text.TextUtils
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.common.basic.BaseLoadSirActivity
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.evos.databinding.LayoutBaseRecyclerviewBinding
-import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.my.adapter.MyJoinCircleAdapter
-import com.changanford.my.adapter.MyJoinTopicAdapter
 import com.changanford.my.adapter.TaMedalAdapter
-import com.changanford.my.request.MyJoinViewModel
 import com.changanford.my.request.OtherMedalViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 class OtherMedalActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, OtherMedalViewModel>(),
