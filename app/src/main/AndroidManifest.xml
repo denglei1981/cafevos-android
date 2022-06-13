@@ -184,6 +184,9 @@
         <activity
             android:name="com.changanford.my.activity.MyStarPostsActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.changanford.my.activity.OtherMedalActivity"
+            android:screenOrientation="portrait"
+            />
 
         <activity
             android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
