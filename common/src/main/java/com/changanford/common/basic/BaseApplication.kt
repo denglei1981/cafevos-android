@@ -35,20 +35,17 @@ abstract class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANT = this
-        //Arouter Initial
-        if (MConstant.isDebug) {           // These two lines must be written before init, otherwise these configurations will be invalid in the init process
-            ARouter.openLog();     // Print log
-            ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
-        }
-        ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
-        //友盟预初始化,不会传数据给后台
-//        UMConfigure.preInit(INSTANT,UmengKey,
-//            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
-
         // 获取隐私政策签署状态
         if ((SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()
         } else {
+            //Arouter Initial
+            if (MConstant.isDebug) {
+                ARouter.openLog()
+                ARouter.openDebug()
+            }
+            ARouter.init(this)
+
             //阿里云push初始化
             PushServiceFactory.init(this)
             initBaiduSdk()

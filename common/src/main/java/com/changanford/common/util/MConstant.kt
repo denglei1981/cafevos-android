@@ -53,6 +53,8 @@ object MConstant {
 
     //登录背景保存地址
     const val loginBgVideoPath = "loginBg.mp4"
+    //登录背景视频地址
+    var loginBgVideoUrl:String?=null
 
     //是否保存成功
     var isDownLoginBgSuccess: Boolean = false

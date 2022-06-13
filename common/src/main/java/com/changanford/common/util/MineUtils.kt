@@ -22,6 +22,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.bean.WeekBean
@@ -34,6 +35,7 @@ import com.changanford.common.util.MConstant.H5_regTerms
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toast
+import com.changanford.common.web.AgentWebActivity
 import com.changanford.common.widget.CallPhoneDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.qw.soul.permission.SoulPermission
@@ -467,7 +469,10 @@ object MineUtils {
         spannable.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    JumpUtils.instans?.jump(1, H5_regTerms)
+//                    JumpUtils.instans?.jump(1, H5_regTerms)
+                    val intent=Intent(BaseApplication.curActivity,AgentWebActivity::class.java)
+                    intent.putExtra("value",H5_regTerms)
+                    BaseApplication.curActivity.startActivity(intent)
                 }
 
                 override fun updateDrawState(ds: TextPaint) {
@@ -483,7 +488,10 @@ object MineUtils {
         spannable.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
-                    JumpUtils.instans?.jump(1, H5_privacy)
+//                    JumpUtils.instans?.jump(1, H5_privacy)
+                    val intent=Intent(BaseApplication.curActivity,AgentWebActivity::class.java)
+                    intent.putExtra("value",H5_privacy)
+                    BaseApplication.curActivity.startActivity(intent)
                 }
 
                 override fun updateDrawState(ds: TextPaint) {

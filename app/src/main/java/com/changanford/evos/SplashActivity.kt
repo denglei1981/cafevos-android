@@ -16,7 +16,7 @@ class SplashActivity : BaseMineUI<ActivitySplashBinding, EmptyViewModel>() {
     }
 
     override fun initData() {
-
+//
     }
 
     override fun isUseFullScreenMode(): Boolean {
