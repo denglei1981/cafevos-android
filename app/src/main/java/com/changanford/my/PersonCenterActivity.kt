@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.Gravity
@@ -36,6 +37,7 @@ import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.SelectDialog
 import com.changanford.evos.databinding.ActivityPersonCenterBinding
+import com.changanford.my.activity.OtherMedalActivity
 import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MtViewPagerAdapter
 import com.changanford.my.fragment.HomePageFragment
@@ -167,7 +169,10 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         binding.topContent.tvUserTags.setOnClickListener {
             if(TextUtils.isEmpty(taUserId)||taUserId==userId){
                 JumpUtils.instans?.jump(29)
+            }else {
+                OtherMedalActivity.start(taUserId,this)
             }
+
         }
     }
 
