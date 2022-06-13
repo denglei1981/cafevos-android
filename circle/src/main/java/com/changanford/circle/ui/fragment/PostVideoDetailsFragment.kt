@@ -597,9 +597,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                     append(nickname)
                                 }
                                 getMemberNames()?.let {
-                                    append("/n")
                                     withStyle(style = SpanStyle(color = colorResource(com.changanford.common.R.color.color_00095B), fontSize = 11.sp)) {
-                                        append(it)
+                                        append("\n$it")
                                     }
                                 }
                             })
