@@ -359,7 +359,6 @@ device	string
 fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: Int=0) {
     when (type) {
         0 -> {
-            toastShow("分享成功")
             if (shareBean != null) {
                 lifecycleOwner.launchWithCatch {
                     val body = HashMap<String, Any>()

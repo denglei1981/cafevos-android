@@ -13,6 +13,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
@@ -144,6 +145,7 @@ class SpecialDetailActivity :
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
+                ToastUtils.reToast(R.string.str_shareSuccess)
                 shareBackUpHttp(this, shares)
             }
         })

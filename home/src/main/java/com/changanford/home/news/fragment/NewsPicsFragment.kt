@@ -162,6 +162,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
+                ToastUtils.reToast(R.string.str_shareSuccess)
                 shareBackUpHttp(this, newsDetailData?.shares)
             }
         })

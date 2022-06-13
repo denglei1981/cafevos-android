@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:gravity="center"
-            android:text="更换封面"
+            android:text="更改封面"
             android:textColor="@color/black"
             android:textSize="13sp"
             tools:ignore="HardcodedText" />

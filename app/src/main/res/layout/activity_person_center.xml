@@ -20,7 +20,7 @@
                 android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/color_F4"
                 android:elevation="0dp"
                 app:layout_behavior="@string/fix_behavior">
 
@@ -85,10 +85,12 @@
 
                 <net.lucode.hackware.magicindicator.MagicIndicator
                     android:id="@+id/magic_tab"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
                     android:background="@color/color_F4"
                     android:paddingStart="@dimen/dp_10"
+                    android:paddingEnd="@dimen/dp_10"
                     android:paddingBottom="5dp" />
 
             </com.google.android.material.appbar.AppBarLayout>
@@ -104,6 +106,6 @@
             android:id="@+id/layout_empty_user"
             layout="@layout/layout_dismiss_user"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

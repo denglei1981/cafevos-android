@@ -49,6 +49,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.webview.CustomWebHelper
@@ -498,6 +499,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
+                ToastUtils.reToast(R.string.str_shareSuccess)
                 shareBackUpHttp(
                     this, mData.shares, when {
                         MConstant.userId == mData.userId && mData.type == 1 -> 5//自己的帖子没有编辑按钮

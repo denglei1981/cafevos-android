@@ -148,6 +148,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
         binding.layoutShop.tvTitle.text = "商品"
         binding.layoutShop.tvMore.setOnClickListener {
 //            startARouter(ARouterCirclePath.HotTopicActivity)
+            JumpUtils.instans?.jump(27, "3")
         }
         if (data.isSuccess) {
             if (data.data != null && data.data.dataList != null && data.data!!.dataList?.isNotEmpty()!!) {
