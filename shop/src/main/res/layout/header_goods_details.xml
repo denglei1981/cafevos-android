@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent"
             style="@style/BannerDefaultStyle"
             app:banner_isNumberIndicator="false"
-            app:banner_pointAutoPlayAble="true"
+            app:banner_pointAutoPlayAble="false"
             app:banner_indicatorGravity="bottom|center_horizontal"
             app:banner_pointDrawable="@null"
             app:banner_aspectRatio="1"/>
