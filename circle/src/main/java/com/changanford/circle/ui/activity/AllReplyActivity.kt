@@ -1,12 +1,10 @@
 package com.changanford.circle.ui.activity
 
-import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ItemCommentAdapter
-import com.changanford.circle.adapter.PostDetailsCommentAdapter
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.config.CircleConfig
+import com.changanford.circle.bean.ChildCommentListBean
 import com.changanford.circle.databinding.ActivityAllReplyBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
@@ -21,15 +19,11 @@ import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toast
-import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -44,6 +38,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
     private var bizId: String = "null"
 
     private var page = 1
+
+    var childCommentListBean: ChildCommentListBean? = null
 
     private val commentAdapter by lazy {
         ItemCommentAdapter(this)
@@ -60,9 +56,27 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                 tvTitle.text = "全部回复"
                 ivBack.setOnClickListener { finish() }
             }
+
         }
 
         initListener()
+        binding.tvTalk.setOnClickListener {
+            ReplyDialog(this, object : ReplyDialog.ReplyListener {
+                override fun getContent(content: String) {
+                    childCommentListBean?.let {
+                        when (type) {
+                            1 -> {
+                                viewModel.addNewsComment(bizId, it.groupId, it.id, content)
+                            }
+                            2 -> {
+                                viewModel.addPostsComment(bizId, it.groupId, it.id, content)
+                            }
+                        }
+                    }
+                }
+            },hintText="回复@"+childCommentListBean?.nickname).show()
+
+        }
     }
 
     override fun initData() {
@@ -75,6 +89,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             initData()
         }
         commentAdapter.setOnItemClickListener { adapter, view, position ->
+            var commentItem=commentAdapter.getItem(position = position)
             ReplyDialog(this, object : ReplyDialog.ReplyListener {
                 override fun getContent(content: String) {
                     val bean = commentAdapter.getItem(position)
@@ -88,7 +103,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                     }
 
                 }
-            }).show()
+            },hintText="回复@"+ commentItem.nickname).show()
         }
     }
 
@@ -96,6 +111,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         super.observe()
         viewModel.commentBean.observe(this, {
             val item = it
+            childCommentListBean = item
+            binding.tvTalk.text = "回复@${item.nickname}"
             binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.tvName.text = item.nickname
             binding.tvTime.text = item.timeStr
@@ -120,13 +137,10 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                         }
 
                     }
-                }).show()
+                },hintText="回复@"+childCommentListBean?.nickname).show()
             }
             binding.ivHead.setOnClickListener { _ ->
-//                val bundle = Bundle()
-//                bundle.putString("value", it.userId)
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
-                JumpUtils.instans?.jump(35,it.userId.toString())
+                JumpUtils.instans?.jump(35, it.userId.toString())
             }
             binding.llLike.setOnClickListener {
                 this.launchWithCatch {
@@ -136,7 +150,6 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also { it1 ->
-//                            it1.msg.toast()
                             if (it1.code == 0) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
