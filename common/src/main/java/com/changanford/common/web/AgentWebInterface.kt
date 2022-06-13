@@ -574,6 +574,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                     activity,
                                     MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
                                 )
+                                "保存成功".toast()
                             } else {
                                 Glide.with(activity!!).asBitmap().load(url)
                                     .into(object : SimpleTarget<Bitmap?>() {
@@ -585,7 +586,6 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
                                         }
                                     })
                             }
-                            "保存成功".toast()
                             agentWeb.jsAccessEntrace.quickCallJs(callback, "1")
                         } catch (e: java.lang.Exception) {
                             "保存失败".toast()
