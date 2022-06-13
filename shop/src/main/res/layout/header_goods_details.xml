@@ -19,8 +19,9 @@
             style="@style/BannerDefaultStyle"
             app:banner_isNumberIndicator="false"
             app:banner_pointAutoPlayAble="false"
+            app:banner_pointLeftRightMargin="@dimen/dp_4"
             app:banner_indicatorGravity="bottom|center_horizontal"
-            app:banner_pointDrawable="@null"
+            app:banner_pointDrawable="@drawable/indicator_style0"
             app:banner_aspectRatio="1"/>
         <!-- 商品秒杀信息           -->
         <include
