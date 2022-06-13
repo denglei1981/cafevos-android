@@ -536,6 +536,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             commentAdapter.notifyItemChanged(checkPosition)
         })
+        LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
+            try {
+                viewModel.getCommendList(mData.postsId,1)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
+        })
     }
 
     fun showTag(isLong: Boolean) {

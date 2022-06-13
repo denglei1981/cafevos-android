@@ -280,5 +280,7 @@ object LiveDataBusKey {
     const val  ADD_TO_SHOPPING_CAR="add_to_shopping_car"
     // 清空购物车
     const val SHOP_DELETE_CAR="SHOP_DELETE_CAR"
+
+    const val  CHILD_COMMENT_STAR="child_comment_star" // 对子评论点赞。
 }
 

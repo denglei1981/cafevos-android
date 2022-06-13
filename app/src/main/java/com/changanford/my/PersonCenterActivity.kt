@@ -391,11 +391,11 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                         } else {
                             mapOf(
                                 RouterManger.KEY_TO_ID to 2,
-                                "userId" to userId,
+                                "userId" to taUserId,
                                 "title" to "TA的关注"
                             )
                             RouterManger.param(RouterManger.KEY_TO_ID, 2)
-                                .param(RouterManger.KEY_TO_OBJ, userId)
+                                .param(RouterManger.KEY_TO_OBJ, taUserId)
                                 .param("title", "TA的关注")
                                 .startARouter(ARouterMyPath.TaFansUI)
                         }
@@ -408,7 +408,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                             JumpUtils.instans?.jump(40)
                         } else {
                             RouterManger.param(RouterManger.KEY_TO_ID, 1)
-                                .param(RouterManger.KEY_TO_OBJ, userId)
+                                .param(RouterManger.KEY_TO_OBJ, taUserId)
                                 .param("title", "TA的粉丝")
                                 .startARouter(ARouterMyPath.TaFansUI)
                         }

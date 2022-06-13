@@ -29,6 +29,8 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -60,6 +62,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {
                             it.msg.toast()
+                            LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).postValue(1)
                             if (it.code == 0) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
@@ -81,9 +84,6 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
             binding.ivHead.setOnClickListener {
-//                val bundle = Bundle()
-//                bundle.putString("value", item.userId)
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
                 JumpUtils.instans?.jump(35,item.userId.toString())
             }
 

@@ -103,7 +103,6 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     private val commentAdapter by lazy {
         PostDetailsCommentAdapter(this)
     }
-//    private val infoBinding by lazy {DataBindingUtil.inflate<InPostVideoDetialsBottomBinding>(LayoutInflater.from(requireContext()), R.layout.in_post_video_detials_bottom, null, false)  }
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.relativeLayout, requireActivity())
         playerHelper = DKPlayerHelper(requireActivity(), binding.videoView)
@@ -324,9 +323,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             ivHead.setOnClickListener {
-//                val bundle = Bundle()
-//                bundle.putString("value", mData.authorBaseVo?.authorId)
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+
                 JumpUtils.instans?.jump(35,mData.authorBaseVo?.authorId)
 
             }
@@ -350,8 +347,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             bundle.putInt("type", 2)// 1 资讯 2 帖子
             bundle.putString("bizId", mData.postsId)
             startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-
             checkPosition = position
+
         }
 
         //点击评论区域外进行关闭评论
@@ -482,6 +479,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
         })
+        LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
+            try {
+                viewModel.getCommendList(mData.postsId,1)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
+        })
     }
 
     private fun bus() {
@@ -538,6 +543,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+
+    }
     private fun tagsClick(circlePostDetailsTagAdapter: CircleVideoPostTagAdapter) {
         circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
             // 跳转到搜索
