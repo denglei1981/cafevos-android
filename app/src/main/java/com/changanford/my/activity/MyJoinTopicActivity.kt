@@ -17,6 +17,7 @@ import com.changanford.home.PageConstant
 import com.changanford.home.R
 
 import com.changanford.my.adapter.MyJoinTopicAdapter
+import com.changanford.my.adapter.MyJoinTopicMoreAdapter
 import com.changanford.my.request.MyJoinViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -26,8 +27,8 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
     OnLoadMoreListener, OnRefreshListener {
 
     var userId = ""
-    val myJoinTopicAdapter: MyJoinTopicAdapter by lazy {
-        MyJoinTopicAdapter()
+    val myJoinTopicAdapter: MyJoinTopicMoreAdapter by lazy {
+        MyJoinTopicMoreAdapter()
     }
     companion object {
         fun start(userId: String,activity: Activity) {
