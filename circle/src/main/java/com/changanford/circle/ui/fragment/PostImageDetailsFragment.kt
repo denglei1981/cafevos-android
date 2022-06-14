@@ -10,8 +10,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LabelAdapter
 import com.changanford.circle.adapter.PostBarBannerAdapter
@@ -23,7 +21,6 @@ import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostGraphicBinding
 import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
@@ -39,7 +36,6 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
@@ -108,7 +104,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 "关注"
             }
             bottomView.run {
-                tvCommentNum.text = "${if (mData.commentCount > 0) mData.commentCount else "0"}"
+                val commentCount=mData.commentCount
+                tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
+                tvCommentsTitle.setText(if(commentCount>0)"  ${mData.commentCount}" else "")
                 tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
                 tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
                 ivLike.setImageResource(
@@ -359,10 +357,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 }
             }
             tvTwoCity.setOnClickListener {
-                StartBaduMap()
+                startBaduMap()
             }
             binding.viewLongType.tvTwoCity.setOnClickListener {
-                StartBaduMap()
+                startBaduMap()
             }
         }
         binding.bottomView.run {
@@ -414,7 +412,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     override fun observe() {
         super.observe()
-        viewModel.commendBean.observe(this, {
+        viewModel.commendBean.observe(this) {
             if (page == 1) {
                 commentAdapter.setList(it.dataList)
                 if (it.dataList.size == 0) {
@@ -427,8 +425,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             if (it.dataList.size != 20) {
                 commentAdapter.loadMoreModule.loadMoreEnd()
             }
-        })
-        viewModel.likePostsBean.observe(this, {
+        }
+        viewModel.likePostsBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 if (mData.isLike == 0) {
@@ -445,8 +443,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     "${if (mData.likesCount > 0) mData.likesCount else "0"}"
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).postValue(mData.isLike)
             }
-        })
-        viewModel.collectionPostsBean.observe(this, {
+        }
+        viewModel.collectionPostsBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 if (mData.isCollection == 0) {
@@ -467,16 +465,17 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     }
                 )
             }
-        })
-        viewModel.addCommendBean.observe(this, {
+        }
+        viewModel.addCommendBean.observe(this) {
             it.msg.toast()
             page = 1
             mData.commentCount++
             binding.bottomView.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
+            binding.tvCommentsTitle.setText("  ${mData.commentCount}")
             initData()
-        })
-        viewModel.followBean.observe(this, {
+        }
+        viewModel.followBean.observe(this) {
             if (it.code == 0) {
                 val isFol = mData.authorBaseVo?.isFollow
                 mData.authorBaseVo?.isFollow = if (isFol == 1) 0 else 1
@@ -494,7 +493,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             } else {
                 it.msg.toast()
             }
-        })
+        }
 
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
@@ -515,7 +514,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this) {
             val bean = commentAdapter.getItem(checkPosition)
             bean.isLike = it
             if (bean.isLike == 1) {
@@ -524,18 +523,18 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 bean.likesCount--
             }
             commentAdapter.notifyItemChanged(checkPosition)
-        })
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
+        }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
-        })
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+        }
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this) {
             val bean = commentAdapter.getItem(checkPosition)
             bean.let { _ ->
                 bean.childCount = it
             }
             commentAdapter.notifyItemChanged(checkPosition)
-        })
+        }
         LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
             try {
                 viewModel.getCommendList(mData.postsId,1)
@@ -546,7 +545,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         })
     }
 
-    fun showTag(isLong: Boolean) {
+    private fun showTag(isLong: Boolean) {
         if (isLong) {
             if (mData.tags == null || mData.tags.size == 0) {
                 binding.viewLongType.postTag.visibility = View.GONE
@@ -574,7 +573,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
     }
 
-    fun showPicTag() {
+    private fun showPicTag() {
         if (mData.tags == null || mData.tags.size == 0) {
             binding.postTagS.visibility = View.GONE
             return
@@ -588,7 +587,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
     }
 
-    fun tagsClick(circlePostDetailsTagAdapter: CirclePostDetailsTagAdapter) {
+    private fun tagsClick(circlePostDetailsTagAdapter: CirclePostDetailsTagAdapter) {
         circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
             // 跳转到搜索
             val item = circlePostDetailsTagAdapter.getItem(position)
@@ -602,7 +601,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
     }
 
-    private fun StartBaduMap() {
+    private fun startBaduMap() {
         SoulPermission.getInstance()
             .checkAndRequestPermission(
                 Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead

@@ -400,12 +400,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
                     android:layout_marginTop="34dp" />
-
+                <com.changanford.common.ui.view.WTextView
+                    android:id="@+id/tv_comments_title"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="评论 1120"
+                    app:w_start_txt="@string/str_comments"
+                    android:textColor="@color/color_33"
+                    android:textSize="@dimen/sp_16"
+                    android:textStyle="bold"
+                    />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ry_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="27dp"
+                    android:layout_marginTop="@dimen/dp_26"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

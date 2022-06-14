@@ -67,4 +67,5 @@
     <string name="str_listName">榜单名称</string>
     <string name="str_since">起</string>
     <string name="fix_behavior">com.changanford.common.widget.FixAppBarLayoutBehavior</string>
+    <string name="str_comments">评论</string>
 </resources>
