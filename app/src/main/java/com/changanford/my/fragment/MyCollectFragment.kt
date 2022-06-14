@@ -83,6 +83,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutNews.rvMenu.layoutManager = lin
                 binding.layoutNews.rvMenu.visibility = View.VISIBLE
                 binding.layoutNews.llEmpty.visibility = View.GONE
+                binding.layoutNews.tvMore.visibility=View.VISIBLE
                 myColletNewsAdapter.setOnItemClickListener { adapter, view, position ->
                     isOut=true
                     val item = myColletNewsAdapter.getItem(position)
@@ -91,10 +92,13 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
             } else {
                 binding.layoutNews.rvMenu.visibility = View.GONE
                 binding.layoutNews.llEmpty.visibility = View.VISIBLE
+                binding.layoutNews.tvMore.visibility=View.GONE
+
             }
         } else {
             binding.layoutNews.rvMenu.visibility = View.GONE
             binding.layoutNews.llEmpty.visibility = View.VISIBLE
+            binding.layoutNews.tvMore.visibility=View.GONE
         }
     }
 
@@ -112,6 +116,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutPosts.rvMenu.layoutManager = lin
                 binding.layoutPosts.rvMenu.visibility = View.VISIBLE
                 binding.layoutPosts.llEmpty.visibility = View.GONE
+                binding.layoutPosts.tvMore.visibility=View.VISIBLE
                 myColletPostAdapter.setOnItemClickListener { adapter, view, position ->
                     isOut=true
                     val bundle = Bundle()
@@ -124,10 +129,12 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
             } else {
                 binding.layoutPosts.rvMenu.visibility = View.GONE
                 binding.layoutPosts.llEmpty.visibility = View.VISIBLE
+                binding.layoutPosts.tvMore.visibility=View.GONE
             }
         } else {
             binding.layoutPosts.rvMenu.visibility = View.GONE
             binding.layoutPosts.llEmpty.visibility = View.VISIBLE
+            binding.layoutPosts.tvMore.visibility=View.GONE
         }
     }
 
@@ -145,6 +152,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutActs.rvMenu.layoutManager = lin
                 binding.layoutActs.rvMenu.visibility = View.VISIBLE
                 binding.layoutActs.llEmpty.visibility = View.GONE
+                binding.layoutActs.tvMore.visibility=View.VISIBLE
                 myColletAccAdapter.setOnItemClickListener { adapter, view, position ->
                     isOut=true
                     val item = myColletAccAdapter.getItem(position)
@@ -153,10 +161,12 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
             } else {
                 binding.layoutActs.rvMenu.visibility = View.GONE
                 binding.layoutActs.llEmpty.visibility = View.VISIBLE
+                binding.layoutActs.tvMore.visibility=View.GONE
             }
         } else {
             binding.layoutActs.rvMenu.visibility = View.GONE
             binding.layoutActs.llEmpty.visibility = View.VISIBLE
+            binding.layoutActs.tvMore.visibility=View.GONE
         }
     }
 
@@ -174,6 +184,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
                 binding.layoutShop.rvMenu.layoutManager = lin
                 binding.layoutShop.rvMenu.visibility = View.VISIBLE
                 binding.layoutShop.llEmpty.visibility = View.GONE
+                binding.layoutShop.tvMore.visibility=View.VISIBLE
                 myColletShopAdapter.setOnItemClickListener { adapter, view, position ->
                     isOut=true
                     val item = myColletShopAdapter.getItem(position)
@@ -182,10 +193,12 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
             } else {
                 binding.layoutShop.rvMenu.visibility = View.GONE
                 binding.layoutShop.llEmpty.visibility = View.VISIBLE
+                binding.layoutShop.tvMore.visibility=View.GONE
             }
         } else {
             binding.layoutShop.rvMenu.visibility = View.GONE
             binding.layoutShop.llEmpty.visibility = View.VISIBLE
+            binding.layoutShop.tvMore.visibility=View.GONE
         }
     }
 

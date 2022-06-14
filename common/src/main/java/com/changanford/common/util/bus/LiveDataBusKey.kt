@@ -282,5 +282,7 @@ object LiveDataBusKey {
     const val SHOP_DELETE_CAR="SHOP_DELETE_CAR"
 
     const val  CHILD_COMMENT_STAR="child_comment_star" // 对子评论点赞。
+
+    const val REFRESH_POST_LIKE = "refreshPostLike"
 }
 

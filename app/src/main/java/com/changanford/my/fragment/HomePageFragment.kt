@@ -14,6 +14,9 @@ import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.evos.databinding.FragmentHomePageBinding
 import com.changanford.my.activity.MyJoinCircleActivity
 import com.changanford.my.activity.MyJoinTopicActivity
@@ -74,6 +77,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 myJoinCircleAdapter.setNewInstance(data.data.dataList)
                 binding.layoutCircle.rvMenu.visibility = View.VISIBLE
                 binding.layoutCircle.llEmpty.visibility = View.GONE
+                binding.layoutCircle.tvMore.visibility=View.VISIBLE
                 myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
                     JumpUtils.instans?.jump(
                         6,
@@ -104,6 +108,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 myStarAdapter.setNewInstance(data.data.dataList)
                 binding.layoutPosts.rvMenu.visibility = View.VISIBLE
                 binding.layoutPosts.llEmpty.visibility = View.GONE
+                binding.layoutPosts.tvMore.visibility=View.VISIBLE
                 myStarAdapter.setOnItemClickListener { adapter, view, position ->
                     val bundle = Bundle()
                     bundle.putString("postsId", myStarAdapter.getItem(position).postsId.toString())
@@ -134,6 +139,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 myJoinTopicAdapter.setNewInstance(data.data.dataList)
                 binding.layoutTopic.rvMenu.visibility = View.VISIBLE
                 binding.layoutTopic.llEmpty.visibility = View.GONE
+                binding.layoutTopic.tvMore.visibility=View.VISIBLE
                 myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
                     val item = myJoinTopicAdapter.getItem(position)
                     val bundle = Bundle()
@@ -164,6 +170,12 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         })
         viewModel.myLikedPostsLiveData.observe(this, Observer {
             showPosts(it)
+        })
+
+        LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, Observer {
+            userIds.let { s ->
+                viewModel.getMyLikedPosts(s)
+            }
         })
     }
 }
