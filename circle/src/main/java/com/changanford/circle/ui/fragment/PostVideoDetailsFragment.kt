@@ -226,7 +226,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
                 if (originText.isNullOrEmpty()) {
                     textView.text = ""
-                    binding.tvExpand.visibility = View.INVISIBLE
+//                    binding.tvExpand.visibility = View.INVISIBLE
                 } else {
                     val ellipsizeStr: CharSequence = TextUtils.ellipsize(
                         originText, paint,
@@ -243,7 +243,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         )
                         textView.text = ssb
                     } else {
-                        binding.tvExpand.visibility = View.INVISIBLE
+//                        binding.tvExpand.visibility = View.INVISIBLE
                         textView.text = originText
                     }
                 }
