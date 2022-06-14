@@ -127,8 +127,8 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     //追加可点击的收缩效果
                     contentTv.append(
                         SpannableStringUtils.getSpannable(
-                            if (item.isOpenParent) " 收起" else " 追踪",
-                            R.color.circle_app_color,
+                            if (item.isOpenParent) " 收起" else " 展开",
+                            R.color.color_8195C8,
                             object : ClickableSpan() {
                                 override fun onClick(widget: View) {
                                     item.isOpenParent = !item.isOpenParent

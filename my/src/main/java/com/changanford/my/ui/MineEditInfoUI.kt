@@ -587,7 +587,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 it
             )
         }
-        var bb: List<String> = bTime.split('-')
+        val bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
             wheelLayout.setDateLabel("年", "月", "日")
