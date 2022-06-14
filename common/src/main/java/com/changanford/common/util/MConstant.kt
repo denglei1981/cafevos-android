@@ -75,7 +75,7 @@ object MConstant {
      * 刷新用户消息  true刷新
      */
     const val REFRESH_USER_INFO = "mine:refresh_user_info"  //
-
+    const val REFRESH_USER_INFO_V2 = "REFRESH_USER_INFO_V2"  //
 
     var pubKey = ""
     var token: String = ""

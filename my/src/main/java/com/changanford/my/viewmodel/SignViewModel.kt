@@ -472,6 +472,9 @@ class SignViewModel : ViewModel() {
     fun saveUniUserInfoV1(body: HashMap<String, String>, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest(showLoading = true) {
+//                LiveDataBus.get().with(MConstant.REFRESH_USER_INFO_V2, Boolean::class.java).postValue(true)
+                LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+                    .postValue(true)
                 var rkey = getRandomKey()
                 apiService.saveUniUserInfo(body.header(rkey), body.body(rkey))
             })

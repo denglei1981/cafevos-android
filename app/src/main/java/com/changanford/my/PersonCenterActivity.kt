@@ -570,6 +570,11 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
 
         })
+        LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java).observe(this) {
+                if (it) {
+                    viewModel.getUserInfo()
+                }
+            }
     }
 
     fun showFollowState(isFollow: Int) {

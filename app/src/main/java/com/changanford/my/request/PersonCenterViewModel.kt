@@ -7,6 +7,7 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.STSBean
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.MConstant
@@ -160,5 +161,29 @@ class PersonCenterViewModel: BaseViewModel() {
                 cancelTip.postValue(cancle.msg)
             }
         }
+    }
+    var userInfo: MutableLiveData<UserInfoBean> = MutableLiveData()
+    fun getUserInfo() {
+        if (UserManger.isLogin()) {
+            viewModelScope.launch {
+                fetchRequest {
+                    val body = HashMap<String, String>()
+                    val rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    it?.let {
+                        saveUserInfo(it)
+                    }
+                }.onFailure {
+                    saveUserInfo(null)
+                }
+            }
+        } else {
+            saveUserInfo(null)
+        }
+    }
+    private fun saveUserInfo(userInfoBean: UserInfoBean?) {
+        userInfo.postValue(userInfoBean)
+        UserManger.updateUserInfo(userInfoBean)
     }
 }

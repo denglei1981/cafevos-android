@@ -675,7 +675,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     full(null)
                 }
             } else {
-                var userInfoBean: UserInfoBean =
+                val userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)
                 full(userInfoBean)
             }

@@ -87,7 +87,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 childAdapter.setNewInstance(item.childVo)
                 binding.rvChild.adapter=childAdapter
 
-                binding.tvChildCount.text = "共${item.childCount}回复"
+                binding.tvChildCount.text = "共${item.childCount}条回复"
                 childAdapter.setOnItemClickListener { _, view, position ->
                     val commentBean = childAdapter.getItem(position)
                     val bundle = Bundle()
