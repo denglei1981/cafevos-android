@@ -8,12 +8,13 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemMysJoinCirlceBinding
+import com.changanford.evos.databinding.ItemMysJoinCirlceMoreBinding
 
 
-class MyJoinCircleAdapter :
-    BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<ItemMysJoinCirlceBinding>>(R.layout.item_mys_join_cirlce) {
+class MyJoinCircleMoreAdapter :
+    BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<ItemMysJoinCirlceMoreBinding>>(R.layout.item_mys_join_cirlce_more) {
     override fun convert(
-        holder: BaseDataBindingHolder<ItemMysJoinCirlceBinding>,
+        holder: BaseDataBindingHolder<ItemMysJoinCirlceMoreBinding>,
         item: NewCircleBean
     ) {
         holder.dataBinding?.let { t ->

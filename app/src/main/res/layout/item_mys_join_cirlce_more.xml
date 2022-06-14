@@ -10,14 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:paddingBottom="8dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_circle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:scaleType="centerCrop"
+            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,9 +34,10 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="15sp"
+            android:layout_marginTop="11dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_circle"
-            app:layout_constraintTop_toTopOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/test_str" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -61,10 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_circle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_circle_desc">
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
+          >
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -77,6 +78,15 @@
                 android:textSize="10sp"
                 tools:ignore="SmallSp"
                 tools:text="112帖子" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_people"

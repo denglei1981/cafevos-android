@@ -12,6 +12,7 @@ import com.changanford.evos.databinding.LayoutBaseRecyclerviewBinding
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.my.adapter.MyJoinCircleAdapter
+import com.changanford.my.adapter.MyJoinCircleMoreAdapter
 import com.changanford.my.request.MyJoinViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -21,8 +22,8 @@ class MyJoinCircleActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, 
     OnLoadMoreListener, OnRefreshListener {
 
     var userId = ""
-    val myJoinCircleAdapter: MyJoinCircleAdapter by lazy {
-        MyJoinCircleAdapter()
+    val myJoinCircleAdapter: MyJoinCircleMoreAdapter by lazy {
+        MyJoinCircleMoreAdapter()
     }
     companion object {
         fun start(userId: String,activity: Activity) {

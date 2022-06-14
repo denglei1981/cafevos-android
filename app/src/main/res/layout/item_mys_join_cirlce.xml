@@ -10,16 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp">
+        >
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_circle"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/dp_10"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:src="@mipmap/image_mine" />
 
@@ -35,7 +35,8 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_circle"
-            app:layout_constraintTop_toTopOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
             tools:text="@string/test_str" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -43,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="9dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxEms="11"
             android:singleLine="true"
@@ -70,7 +71,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
                 android:gravity="center_vertical|start"
                 android:textColor="@color/black"
                 android:textSize="10sp"
@@ -80,7 +80,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_circle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_marginStart="8dp"
