@@ -132,6 +132,27 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            }
+            binding.topContent.ivBg.setOnClickListener {
+                try {
+                    if(TextUtils.isEmpty(taUserId)||taUserId==userId){
+                        SelectCoverDialog(
+                            BaseApplication.curActivity,
+                            object : SelectCoverDialog.CheckedView {
+                                override fun checkGaoDe() {
+                                    changCover()
+                                    selectIcon()
+                                }
+
+                                override fun checkCancel() {
+
+                                }
+                            }).show()
+                    }
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
             }
 
@@ -174,6 +195,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
 
         }
+
     }
 
     private fun getUserInfo(){
