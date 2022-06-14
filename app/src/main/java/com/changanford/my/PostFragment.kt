@@ -2,6 +2,7 @@ package com.changanford.my
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.common.databinding.ViewEmptyTopBinding
@@ -35,10 +36,11 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     }
 
     companion object {
-        fun newInstance(value: String, userId: String = ""): PostFragment {
+        fun newInstance(value: String, userId: String = "",bg:Boolean=false): PostFragment {
             val bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
             bundle.putString(RouterManger.KEY_TO_ID, userId)
+            bundle.putBoolean("bg",bg)
             val medalFragment = PostFragment()
             medalFragment.arguments = bundle
             return medalFragment
@@ -61,8 +63,16 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     }
 
     override fun initView() {
+
+
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
+        }
+        arguments?.getBoolean("bg")?.let {
+           if(it){
+               binding.llBg.background=ContextCompat.getDrawable(requireContext(),R.drawable.shape_gray_f4)
+           }
+
         }
 
         userId = UserManger.getSysUserInfo()?.uid?:""

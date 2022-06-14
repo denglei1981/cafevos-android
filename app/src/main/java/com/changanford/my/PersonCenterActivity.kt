@@ -74,9 +74,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 
     val postFragment: PostFragment by lazy {
         if (TextUtils.isEmpty(taUserId)) {
-            PostFragment.newInstance("centerPost", userId)
+            PostFragment.newInstance("centerPost", userId,true)
         } else {
-            PostFragment.newInstance("centerPost", taUserId)
+            PostFragment.newInstance("centerPost", taUserId,true)
         }
     }
     val homePageFragment: HomePageFragment by lazy {

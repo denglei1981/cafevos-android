@@ -15,9 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_4"
         android:layout_marginBottom="@dimen/dp_2"
-        app:sl_cornerRadius="@dimen/dp_5"
+        app:sl_cornerRadius="@dimen/dp_4"
         app:sl_shadowColor="#88dddddd"
-        app:sl_shadowRadius="@dimen/dp_8">
+        app:sl_shadowRadius="@dimen/dp_2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
