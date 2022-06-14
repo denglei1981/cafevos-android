@@ -418,7 +418,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_26"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_post_details_comment"/>
 
             </LinearLayout>
 
