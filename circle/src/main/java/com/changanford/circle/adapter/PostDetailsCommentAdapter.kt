@@ -23,7 +23,6 @@ import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.createHashMap
@@ -41,7 +40,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.let {
-            binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            it.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.bean = item
             binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
             binding.ivLike.setImageResource(
@@ -88,7 +87,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 binding.rvChild.adapter=childAdapter
 
                 binding.tvChildCount.text = "共${item.childCount}条回复"
-                childAdapter.setOnItemClickListener { _, view, position ->
+                childAdapter.setOnItemClickListener { _, _, position ->
                     val commentBean = childAdapter.getItem(position)
                     val bundle = Bundle()
                     bundle.putString("groupId", commentBean.groupId)

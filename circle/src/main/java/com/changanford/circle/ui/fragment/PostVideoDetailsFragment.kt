@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -101,6 +102,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     private val commentAdapter by lazy {
         PostDetailsCommentAdapter(this)
     }
+    @SuppressLint("SetTextI18n")
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.relativeLayout, requireActivity())
         playerHelper = DKPlayerHelper(requireActivity(), binding.videoView)
@@ -121,7 +123,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 }
             })
             ryComment.adapter = commentAdapter
-            tvCommentNum.text = "${if (mData.commentCount > 0) mData.commentCount else "0"}"
+            val commentCount=mData.commentCount
+            tvCommentNum.text = "${if (commentCount > 0) mData.commentCount else "0"}"
+            if(commentCount>0)commentTitle.text="全部评论 $commentCount"
             tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
             tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
             if(mData.isGood==1){
@@ -377,6 +381,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
         }
     }
+    @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.commendBean.observe(this) {
@@ -461,6 +466,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             mData.commentCount++
             binding.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
+            binding.commentTitle.text="全部评论 ${mData.commentCount}"
             viewModel.getCommendList(mData.postsId, page)
         }
 
