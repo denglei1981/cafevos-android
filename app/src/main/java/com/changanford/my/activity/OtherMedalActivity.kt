@@ -3,15 +3,19 @@ package com.changanford.my.activity
 import android.app.Activity
 import android.content.Intent
 import android.text.TextUtils
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.changanford.common.basic.BaseLoadSirActivity
+import com.changanford.common.loadsir.*
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.evos.databinding.LayoutBaseRecyclerviewBinding
 import com.changanford.home.R
 import com.changanford.my.adapter.TaMedalAdapter
 import com.changanford.my.request.OtherMedalViewModel
+import com.kingja.loadsir.callback.Callback
+import com.kingja.loadsir.core.LoadSir
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
@@ -28,6 +32,30 @@ class OtherMedalActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, Ot
             intent.putExtra("userId",userId)
             intent.setClass(activity,OtherMedalActivity::class.java)
             activity.startActivity(intent)
+        }
+    }
+
+    override fun setLoadSir(view: View?) {
+
+            val loadSir = LoadSir.Builder()
+                .addCallback(ErrorCallback()) //添加各种状态页
+                .addCallback(EmptyMedalCallback())
+                .addCallback(LoadingCallback())
+                .addCallback(TimeoutCallback())
+                .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
+                .build()
+
+            mLoadService = loadSir.register(view, Callback.OnReloadListener { v: View? ->
+
+            })
+
+
+    }
+
+    override fun showEmpty() {
+//        super.showEmpty()
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(EmptyMedalCallback::class.java)
         }
     }
     override fun initView() {

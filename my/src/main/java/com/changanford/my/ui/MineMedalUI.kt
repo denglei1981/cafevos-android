@@ -81,7 +81,6 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                     binding.btnWear.text = "佩戴"
                 } else {
                     binding.btnWear.text = "去点亮勋章"
-//                    binding.btnWear.visibility = View.GONE
                 }
             }
         }
