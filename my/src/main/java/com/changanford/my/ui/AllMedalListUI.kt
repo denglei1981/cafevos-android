@@ -135,7 +135,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     }
 
     private fun nowMedal(item: MedalListBeanItem) {
-        binding.imMedalWithIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
+        binding.imMedalWithIcon.load(item.medalImage, R.mipmap.icon_mine_all_medal)
         binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
     }
 
