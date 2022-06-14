@@ -78,6 +78,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 binding.layoutCircle.rvMenu.visibility = View.VISIBLE
                 binding.layoutCircle.llEmpty.visibility = View.GONE
                 binding.layoutCircle.tvMore.visibility=View.VISIBLE
+                binding.layoutCircle.tvTitle.text = "加入的圈子(${data.data.total})"
                 myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
                     JumpUtils.instans?.jump(
                         6,
@@ -109,6 +110,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 binding.layoutPosts.rvMenu.visibility = View.VISIBLE
                 binding.layoutPosts.llEmpty.visibility = View.GONE
                 binding.layoutPosts.tvMore.visibility=View.VISIBLE
+                binding.layoutPosts.tvTitle.text = "点赞的帖子(${data.data.total})"
                 myStarAdapter.setOnItemClickListener { adapter, view, position ->
                     val bundle = Bundle()
                     bundle.putString("postsId", myStarAdapter.getItem(position).postsId.toString())
@@ -140,6 +142,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
                 binding.layoutTopic.rvMenu.visibility = View.VISIBLE
                 binding.layoutTopic.llEmpty.visibility = View.GONE
                 binding.layoutTopic.tvMore.visibility=View.VISIBLE
+                binding.layoutTopic.tvTitle.text = "参与的话题(${data.data.total})"
                 myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
                     val item = myJoinTopicAdapter.getItem(position)
                     val bundle = Bundle()
