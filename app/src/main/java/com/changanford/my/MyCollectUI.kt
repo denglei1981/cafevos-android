@@ -87,30 +87,51 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     // 搜搜索
     private fun search() {
-        when (binding.viewpager.currentItem) {
-            0 -> {
+
+
                 informationFragment.searchKeys =
                     binding.layoutSearch.searchContent.text.toString().trim()
                 informationFragment.myCollectInfo(1)
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            1 -> {
+
+
                 postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 postFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            2 -> {
+
+
                 actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 actFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            3 -> {
-                myShopFragment.searchKeys =
-                    binding.layoutSearch.searchContent.text.toString().trim()
+
+                myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 myShopFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-        }
+
+
+//        when (binding.viewpager.currentItem) {
+//            0 -> {
+//                informationFragment.searchKeys =
+//                    binding.layoutSearch.searchContent.text.toString().trim()
+//                informationFragment.myCollectInfo(1)
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            1 -> {
+//                postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                postFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            2 -> {
+//                actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                actFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            3 -> {
+//                myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                myShopFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//        }
     }
 
     private fun initViewpager() {
