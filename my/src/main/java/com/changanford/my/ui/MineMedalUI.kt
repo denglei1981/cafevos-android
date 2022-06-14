@@ -87,7 +87,7 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
     }
 
     override fun showEmpty(): View? {
-        emptyBinding.viewStatusIcon.setImageResource(R.mipmap.ic_medal_ex)
+        emptyBinding.viewStatusIcon.setImageResource(R.mipmap.image_common_no_medal)
         emptyBinding.viewStatusText.text = "当前还未获得勋章，快去点亮勋章吧"
         emptyBinding.viewStatusText.textSize = 12f
         return super.showEmpty()
