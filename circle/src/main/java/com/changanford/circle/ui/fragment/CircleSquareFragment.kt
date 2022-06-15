@@ -6,8 +6,10 @@ import com.changanford.circle.adapter.CircleSquareAdapter
 import com.changanford.circle.databinding.FragmentSquareBinding
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.manger.UserManger
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
@@ -63,6 +65,7 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this, {
             binding.refreshLayout.finishRefresh()
         })
+
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
