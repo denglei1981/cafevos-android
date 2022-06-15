@@ -37,6 +37,7 @@ import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.BindingPhoneDialog
 import com.changanford.common.wutil.WCommonUtil
+import com.changanford.common.wutil.wLogE
 import com.just.agentweb.AgentWeb
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -53,7 +54,7 @@ import kotlin.collections.set
 /**
  * H5调用原生方法
  */
-class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?) {
+class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,val jsCallback: JsCallback) {
 
     /**
      * 是否在APP中
@@ -296,14 +297,18 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?)
 
     /**
      * 显示需要隐藏导航栏
-     *
      */
     @JavascriptInterface
     fun isNavigationHidden(bool: Boolean) {
-//        toastShow("显示需要隐藏导航栏".plus(bool))
         LiveDataBus.get().with(LiveDataBusKey.WEB_NAV_HID).postValue(bool)
     }
-
+    /**
+     * 显示需要隐藏导航栏-只针对当前Activity
+     */
+    @JavascriptInterface
+    fun currentPageIsNavigationHidden(bool: Boolean) {
+        jsCallback.jsCallback(0,bool)
+    }
     /**
      * 缓存到本地一个json
      */

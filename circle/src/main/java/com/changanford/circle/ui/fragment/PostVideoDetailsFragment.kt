@@ -118,8 +118,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 //上滑
                 if (scrollY < oldScrollY&&scrollY<150) {
                     isExpand = false
-                    binding.composeView.visibility=if(isExpand)View.VISIBLE else View.GONE
-                    binding.layoutInfo.visibility=if(isExpand)View.GONE else View.VISIBLE
+                    updateInfoUI()
                 }
             })
             ryComment.adapter = commentAdapter
@@ -181,8 +180,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvExpand.setOnClickListener {
                 isExpand = !isExpand
-                binding.composeView.visibility=if(isExpand)View.VISIBLE else View.GONE
-                binding.layoutInfo.visibility=if(isExpand)View.GONE else View.VISIBLE
+                updateInfoUI()
                 showContent()
             }
             if (!mData.city.isNullOrEmpty()) {
@@ -199,7 +197,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         initListener()
         bus()
     }
-
+    private fun updateInfoUI(){
+        binding.apply {
+            composeView.visibility=if(isExpand)View.VISIBLE else View.GONE
+            layoutInfo.visibility=if(isExpand)View.GONE else View.VISIBLE
+            imgInfoBg.setBackgroundResource(if(isExpand)0 else R.mipmap.ic_post_video_bg)
+            llBottom.setBackgroundResource(if(isExpand)R.color.color_00142E else 0)
+        }
+    }
     private fun showContent() {
        val layoutParams= binding.videoView.layoutParams
         layoutParams.height=ScreenUtils.getScreenHeight(requireContext())-ScreenUtils.dp2px(requireContext(),60f)
@@ -216,7 +221,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (isExpand) {
 //                textView.text =mData.content
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
-                    binding.scrollView.smoothScrollTo(0,500)
+                    binding.scrollView.smoothScrollTo(0,800)
                 },200)
 
             } else {
