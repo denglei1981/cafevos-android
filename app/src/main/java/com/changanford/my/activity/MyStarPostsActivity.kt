@@ -70,17 +70,21 @@ class MyStarPostsActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
             if (it.isSuccess) {
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {
-                    postAdapter.addData(dataList)
+                    if (dataList != null) {
+                        postAdapter.addData(dataList)
+                    }
                     binding.smartLayout.finishLoadMore()
                 } else {
-                    if (it.data == null || dataList.size == 0) {
-                        showEmpty()
+                    if (dataList != null) {
+                        if (it.data == null || dataList.size == 0) {
+                            showEmpty()
+                        }
                     }
                     showContent()
                     postAdapter.setNewInstance(dataList)
                     binding.smartLayout.finishRefresh()
                 }
-                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                if (it.data.dataList?.size !! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
                 } else {
                     binding.smartLayout.setEnableLoadMore(true)

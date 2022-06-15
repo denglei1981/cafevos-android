@@ -18,26 +18,26 @@ class MyCollectViewModel : BaseViewModel() {
     val  myTopicsLiveData=MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
     val  myLikedPostsLiveData= MutableLiveData<UpdateUiState<PostBean>>()
 
-    fun getMyCircles(userId: String) {
-        viewModelScope.launch {
-            fetchRequest {
-                val paramMaps = HashMap<String, Any>()
-                paramMaps["pageNo"] = 1
-                paramMaps["pageSize"] = 3
-                paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
-                }
-                val rKey = getRandomKey()
-                apiService.myCircles(paramMaps.header(rKey), paramMaps.body(rKey))
-            }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<NewCircleDataBean>(it, true, "")
-                circlesListData.postValue(updateUiState)
-            }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<NewCircleDataBean>( false, it)
-                circlesListData.postValue(updateUiState)
-            }
-        }
-    }
+//    fun getMyCircles(userId: String) {
+//        viewModelScope.launch {
+//            fetchRequest {
+//                val paramMaps = HashMap<String, Any>()
+//                paramMaps["pageNo"] = 1
+//                paramMaps["pageSize"] = 3
+//                paramMaps["queryParams"] = HashMap<String, Any>().also {
+//                    it["userId"] =userId.toLong()
+//                }
+//                val rKey = getRandomKey()
+//                apiService.myCircles(paramMaps.header(rKey), paramMaps.body(rKey))
+//            }.onSuccess { // 成功
+//                val updateUiState = UpdateUiState<NewCircleDataBean>(it, true, "")
+//                circlesListData.postValue(updateUiState)
+//            }.onWithMsgFailure { // 失败
+//                val updateUiState = UpdateUiState<NewCircleDataBean>( false, it)
+//                circlesListData.postValue(updateUiState)
+//            }
+//        }
+//    }
 
     val  postBeanLiveData= MutableLiveData<UpdateUiState<PostBean>>()
     /**

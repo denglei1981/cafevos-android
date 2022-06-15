@@ -3,10 +3,7 @@ package com.changanford.my.request
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.ListMainBean
-import com.changanford.common.bean.NewCircleDataBean
-import com.changanford.common.bean.PostBean
-import com.changanford.common.bean.Topic
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
 import com.changanford.home.PageConstant
@@ -17,9 +14,9 @@ import kotlinx.coroutines.launch
 class MyJoinViewModel : BaseViewModel() {
 
     //圈子列表
-    val circlesListData=MutableLiveData<UpdateUiState<NewCircleDataBean>>()
+    val circlesListData=MutableLiveData<UpdateUiState<ListMainBean<NewCircleBean>>>()
     val  myTopicsLiveData=MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
-    val  myLikedPostsLiveData= MutableLiveData<UpdateUiState<PostBean>>()
+    val  myLikedPostsLiveData= MutableLiveData<UpdateUiState<ListMainBean<PostDataBean>>>()
     var pageNo: Int = 1
     fun getMyCircles(userId: String,isLoadMore: Boolean) {
         if (isLoadMore) {
@@ -38,10 +35,10 @@ class MyJoinViewModel : BaseViewModel() {
                 val rKey = getRandomKey()
                 apiService.myCircles(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<NewCircleDataBean>(it, true, isLoadMore,"")
+                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>(it, true, isLoadMore,"")
                 circlesListData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<NewCircleDataBean>( false, it,isLoadMore)
+                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>( false, it,isLoadMore)
                 circlesListData.postValue(updateUiState)
             }
         }
@@ -89,10 +86,10 @@ class MyJoinViewModel : BaseViewModel() {
                 val rKey = getRandomKey()
                 apiService.myLikedPosts(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<PostBean>(it, true, isLoadMore,"")
+                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>(it, true, isLoadMore,"")
                 myLikedPostsLiveData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<PostBean>( false, it,isLoadMore)
+                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>( false, it,isLoadMore)
                 myLikedPostsLiveData.postValue(updateUiState)
             }
         }
