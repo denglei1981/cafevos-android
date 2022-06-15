@@ -54,8 +54,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/message_have_bg"
             android:visibility="gone"
-            app:layout_constraintRight_toRightOf="@+id/my_msg"
+            app:layout_constraintEnd_toEndOf="@+id/my_msg"
             app:layout_constraintTop_toTopOf="@+id/my_msg"
+            android:layout_marginEnd="3dp"
             tools:visibility="visible" />
 
         <ImageView
@@ -322,7 +323,7 @@
             android:id="@+id/tv_love_car_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="13dp"
             android:text="@string/mine_love_car"
             android:textColor="@color/black"
             android:textSize="16sp"
