@@ -8,6 +8,9 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.http.SslError
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -61,7 +64,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
  * *********************************************************************************
  */
 @Route(path = ARouterHomePath.AgentWebActivity)
-class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>() {
+class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>(), JsCallback {
 
     private lateinit var shareViewModule: ShareViewModule //分享
     private lateinit var payViewModule: PayViewModule //支付
@@ -520,9 +523,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .createAgentWeb()
             .ready()
             .go(url)
-        agentWeb.jsInterfaceHolder.addJavaObject(
-            "FORDApp",
-            AgentWebInterface(agentWeb, this@AgentWebActivity)
+        agentWeb.jsInterfaceHolder.addJavaObject("FORDApp",AgentWebInterface(agentWeb, this@AgentWebActivity,this)
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
         agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
@@ -882,6 +883,24 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         viewModel.clearAllPost()
     }
 
+    override fun jsCallback(key: Int, value: Any) {
+        Thread {
+            val msg = Message.obtain()
+            msg.what = key
+            msg.obj = value
+            handle.sendMessage(msg)
+        }.start()
+    }
+    private val handle =object : Handler(Looper.myLooper()!!) {
+        override fun handleMessage(msg: Message) {
+           msg.let {
+               when(it.what){
+                   //显示隐藏导航栏
+                   0->setTitleHide(it.obj as Boolean)
+               }
+           }
+        }
+    }
 //    fun getBindMobileJumpDataType(): Boolean {
 //        return viewModel.getBindMobileJumpDataType()
 //    }
