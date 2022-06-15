@@ -53,8 +53,9 @@
                                 android:layout_height="match_parent"
                                 android:paddingStart="12dp"
                                 android:paddingTop="10dp"
+                                android:paddingBottom="10dp"
                                 android:paddingEnd="10dp"
-                                android:src="@mipmap/whit_left"
+                                android:src="@mipmap/shop_back_black"
                                 tools:ignore="RtlSymmetry" />
 
                             <androidx.appcompat.widget.AppCompatTextView
