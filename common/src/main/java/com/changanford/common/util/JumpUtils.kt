@@ -297,8 +297,8 @@ class JumpUtils {
 
             }
             29 -> {//我的勋章,
-                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
-
+                startARouter(ARouterMyPath.MineMedalUI,true)
+//                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
             }
             30 -> {//积分纪录,
                 startARouter(ARouterMyPath.MineIntegralUI, bundle, true)
@@ -747,6 +747,9 @@ class JumpUtils {
             }
             129 -> { //爱车养护
                 startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
+            }
+            130 -> {//所有勋章
+                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
             }
 //            129->{
 //                startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
