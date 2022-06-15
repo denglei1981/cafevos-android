@@ -682,7 +682,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
      * @sample = {"text":"标题","color":"文字颜色","image":"图片地址 / 有标题再设置图片地址不会生效" }
      */
     private fun setStyle(jsonStr: String?) {
-        var style: JSONObject
+        val style: JSONObject
         try {
             style = JSONObject.parseObject(jsonStr)
         } catch (e: Exception) {
@@ -692,9 +692,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         }
         if (style.isNullOrEmpty())
             return
-        var text: String = style["text"] as String
-        var color = style["color"].toString()
-        var image: String = style["image"] as String
+        val text: String = style["text"] as String
+        val color = style["color"].toString()
+        val image: String = style["image"] as String
         if (text.isNullOrEmpty()) {
             if (!image.isNullOrEmpty()) {
                 //设置图片
