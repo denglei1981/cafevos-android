@@ -1189,7 +1189,7 @@ interface NetWorkApi {
     suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<MenuBeanItem>>
 
     @POST("con/circle/myCircles")
-    suspend fun myCircles(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    suspend fun myCircles(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<NewCircleBean>>
 
 
     // 参与的话题。
@@ -1198,5 +1198,5 @@ interface NetWorkApi {
 
     //点赞的帖子
     @POST("con/posts/myLikedPosts")
-    suspend fun myLikedPosts(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<PostBean>
+    suspend fun myLikedPosts(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<PostDataBean>>
 }
