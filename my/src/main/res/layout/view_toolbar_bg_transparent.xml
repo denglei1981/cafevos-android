@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/transparent"
-            app:navigationIcon="@mipmap/ic_arrow_lift_ff">
+            app:navigationIcon="@mipmap/whit_left">
 
             <TextView
                 android:id="@+id/toolbar_title"
