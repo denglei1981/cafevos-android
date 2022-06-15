@@ -80,7 +80,7 @@ class MyStarPostsActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
                     postAdapter.setNewInstance(dataList)
                     binding.smartLayout.finishRefresh()
                 }
-                if (it.data.dataList?.size!! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
                 } else {
                     binding.smartLayout.setEnableLoadMore(true)

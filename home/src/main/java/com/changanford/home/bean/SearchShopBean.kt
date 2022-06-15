@@ -50,5 +50,16 @@ data class SearchShopBean(
     val updateBy: String,
     val updateTime: String,
     val normalFb:String,
-    val spuImgs:String
-)
+    var spuImgs:String?=null
+){
+    /**
+     * 获取图片单个路径
+     * */
+    fun getImgPath(imgUrls: String? = spuImgs): String? {
+        imgUrls?.apply {
+            if (this.contains(",")) return split(",")[0]
+        }
+        return imgUrls
+    }
+}
+

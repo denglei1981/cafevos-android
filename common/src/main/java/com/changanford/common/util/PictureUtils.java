@@ -17,6 +17,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener;
 import com.luck.picture.lib.style.PictureCropParameterStyle;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
+import com.yalantis.ucrop.model.AspectRatio;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,7 +72,25 @@ public class PictureUtils {
         uCrop.start(activity, requestCode);
     }
 
+    public static  UCrop.Options UCropoptions( Activity activity,float aspectRatioX, float aspectRatioY) {
 
+        //初始化UCrop配置
+        UCrop.Options options = new UCrop.Options();
+        //设置裁剪图片可操作的手势
+        options.setAllowedGestures(UCropActivity.SCALE, UCropActivity.ROTATE, UCropActivity.SCALE);
+        //是否隐藏底部容器，默认显示
+        options.setHideBottomControls(true);
+        //设置toolbar颜色
+        options.setToolbarColor(ActivityCompat.getColor(activity, R.color.red));
+        options.setToolbarWidgetColor(ActivityCompat.getColor(activity, R.color.red));
+        //设置状态栏颜色
+        options.setStatusBarColor(ActivityCompat.getColor(activity, R.color.red));
+        //是否能调整裁剪框
+        options.setFreeStyleCropEnabled(true);
+        options.setAspectRatioOptions(1,new AspectRatio("裁剪",aspectRatioX,aspectRatioY));
+        return  options;
+
+    }
     /**
      * 单独打开自定义录制界面
      *
@@ -118,6 +137,7 @@ public class PictureUtils {
                 .videoMaxSecond(maxvideoTime)// 查询多少秒以内的视频
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
                 .isEnableCrop(isEnableCrop)// 是否裁剪
+
                 .setCropTitleBarBackgroundColor(BaseApplication.INSTANT.getResources().getColor(R.color.transparent))
                 .isCompress(isCompress)// 是否压缩
                 .isCamera(true)
@@ -215,6 +235,7 @@ public class PictureUtils {
                 .isMaxSelectEnabledMask(true)// 选择数到了最大阀值列表是否启用蒙层效果
                 .videoMaxSecond(maxvideoTime)// 查询多少秒以内的视频
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
+
                 //.isAutomaticTitleRecyclerTop(false)// 连续点击标题栏RecyclerView是否自动回到顶部,默认true
                 //.loadCacheResourcesCallback(GlideCacheEngine.createCacheEngine())// 获取图片资源缓存，主要是解决华为10部分机型在拷贝文件过多时会出现卡的问题，这里可以判断只在会出现一直转圈问题机型上使用
                 //.setOutputCameraPath()// 自定义相机输出目录，只针对Android Q以下，例如 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +  File.separator + "Camera" + File.separator;
@@ -285,9 +306,10 @@ public class PictureUtils {
     }
 
 
-    public static void openGarlly2(Activity activity, OnResultCallbackListener onResultCallbackListener) {
+    public static void openGarlly2(Activity activity,int  maxNum, OnResultCallbackListener onResultCallbackListener) {
+        // 进入相册 以下是例子：不需要的api可以不写
         PictureSelector.create(activity)
-                .openGallery(PictureMimeType.ofAll())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .openGallery(PictureMimeType.ofImage())// 全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
                 .theme(R.style.picture_WeChat_style)// 主题样式设置 具体参考 values/styles   用法：R.style.picture.white.style v2.3.3后 建议使用setPictureStyle()动态方式
                 .isWeChatStyle(true)// 是否开启微信图片选择风格
@@ -299,11 +321,13 @@ public class PictureUtils {
                 //.loadCacheResourcesCallback(GlideCacheEngine.createCacheEngine())// 获取图片资源缓存，主要是解决华为10部分机型在拷贝文件过多时会出现卡的问题，这里可以判断只在会出现一直转圈问题机型上使用
                 //.setOutputCameraPath()// 自定义相机输出目录，只针对Android Q以下，例如 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +  File.separator + "Camera" + File.separator;
                 //.setButtonFeatures(CustomCameraView.BUTTON_STATE_BOTH)// 设置自定义相机按钮状态
-                .maxSelectNum(9)// 最大图片选择数量
+//                .basicUCropConfig(UCropoptions(activity,16,9))
+                .maxSelectNum(maxNum)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
                 .videoMaxSecond(maxvideoTime)// 查询多少秒以内的视频
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
                 .maxVideoSelectNum(1) // 视频最大选择数量
+
                 //.minVideoSelectNum(1)// 视频最小选择数量
                 //.closeAndroidQChangeVideoWH(!SdkVersionUtils.checkedAndroid_Q())// 关闭在AndroidQ下获取图片或视频宽高相反自动转换
                 .imageSpanCount(4)// 每行显示个数
@@ -328,7 +352,8 @@ public class PictureUtils {
                 //.isMultipleRecyclerAnimation(false)// 多图裁剪底部列表显示动画效果
                 .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
                 //.imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg,Android Q使用PictureMimeType.PNG_Q
-                .isEnableCrop(false)// 是否裁剪
+                .isEnableCrop(true)// 是否裁剪
+                .setPictureCropStyle(PictureCropParameterStyle.ofSelectTotalStyle())
                 //.basicUCropConfig()//对外提供所有UCropOptions参数配制，但如果PictureSelector原本支持设置的还是会使用原有的设置
                 .isCompress(false)// 是否压缩
                 .compressQuality(90)// 图片压缩后输出质量 0~ 100
@@ -337,22 +362,21 @@ public class PictureUtils {
                 //.compressSavePath(getPath())//压缩图片保存地址
                 //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效 注：已废弃
                 //.glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度 注：已废弃
-//                    .withAspectRatio(aspect_ratio_x, aspect_ratio_y)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .withAspectRatio(375, 154)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
 //                    .hideBottomControls(!cb_hide.isChecked())// 是否显示uCrop工具栏，默认不显示
                 .isGif(false)// 是否显示gif图片
                 .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
                 .circleDimmedLayer(false)// 是否圆形裁剪
-                //.setCircleDimmedColor(ContextCompat.getColor(getContext(), R.color.app_color_white))// 设置圆形裁剪背景色值
-                //.setCircleDimmedBorderColor(ContextCompat.getColor(getApplicationContext(), R.color.app_color_white))// 设置圆形裁剪边框色值
-                //.setCircleStrokeWidth(3)// 设置圆形裁剪边框粗细
                 .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
                 .showCropGrid(true)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
                 .isOpenClickSound(true)// 是否开启点击声音
-//                .selectionData(datas)// 是否传入已选图片
                 .isDragFrame(true)// 是否可拖动裁剪框(固定)
+                //.setCircleDimmedColor(ContextCompat.getColor(getContext(), R.color.app_color_white))// 设置圆形裁剪背景色值
+                //.setCircleDimmedBorderColor(ContextCompat.getColor(getApplicationContext(), R.color.app_color_white))// 设置圆形裁剪边框色值
+                //.setCircleStrokeWidth(3)// 设置圆形裁剪边框粗细
                 //.videoMinSecond(10)// 查询多少秒以内的视频
                 //.videoMaxSecond(15)// 查询多少秒以内的视频
-                .recordVideoSecond(maxPaisheTime)//录制视频秒数 默认60s
+                //.recordVideoSecond(10)//录制视频秒数 默认60s
                 //.isPreviewEggs(true)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
                 //.cropCompressQuality(90)// 注：已废弃 改用cutOutQuality()
                 .cutOutQuality(90)// 裁剪输出质量 默认100
@@ -556,11 +580,13 @@ public class PictureUtils {
                 //.loadCacheResourcesCallback(GlideCacheEngine.createCacheEngine())// 获取图片资源缓存，主要是解决华为10部分机型在拷贝文件过多时会出现卡的问题，这里可以判断只在会出现一直转圈问题机型上使用
                 //.setOutputCameraPath()// 自定义相机输出目录，只针对Android Q以下，例如 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) +  File.separator + "Camera" + File.separator;
                 //.setButtonFeatures(CustomCameraView.BUTTON_STATE_BOTH)// 设置自定义相机按钮状态
+//                .basicUCropConfig(UCropoptions(activity,16,9))
                 .maxSelectNum(maxNum)// 最大图片选择数量
                 .minSelectNum(1)// 最小选择数量
                 .videoMaxSecond(maxvideoTime)// 查询多少秒以内的视频
                 .videoMinSecond(minvideTime)// 查询多少秒以内的视频
                 .maxVideoSelectNum(1) // 视频最大选择数量
+
                 //.minVideoSelectNum(1)// 视频最小选择数量
                 //.closeAndroidQChangeVideoWH(!SdkVersionUtils.checkedAndroid_Q())// 关闭在AndroidQ下获取图片或视频宽高相反自动转换
                 .imageSpanCount(4)// 每行显示个数
@@ -595,7 +621,7 @@ public class PictureUtils {
                 //.compressSavePath(getPath())//压缩图片保存地址
                 //.sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效 注：已废弃
                 //.glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度 注：已废弃
-//                    .withAspectRatio(aspect_ratio_x, aspect_ratio_y)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                    .withAspectRatio(16, 9)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
 //                    .hideBottomControls(!cb_hide.isChecked())// 是否显示uCrop工具栏，默认不显示
                 .isGif(false)// 是否显示gif图片
                 .freeStyleCropEnabled(true)// 裁剪框是否可拖拽

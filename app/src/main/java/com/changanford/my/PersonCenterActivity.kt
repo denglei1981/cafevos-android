@@ -326,7 +326,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
      * 选择图片
      */
     private fun pic() {
-        PictureUtils.openGarlly(this, object :
+        PictureUtils.openGarlly2(this,1,object :
             OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 for (media in result) {
@@ -346,20 +346,21 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
      * 点击头像
      */
     private fun selectIcon() {
-        SelectDialog(
-            this,
-            R.style.transparentFrameWindowStyle,
-            MineUtils.listPhoto,
-            "",
-            1,
-            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-
-                when (i) {
-                    0 -> takePhoto()
-                    1 -> pic()
-                }
-            }
-        ).show()
+        pic()
+//        SelectDialog(
+//            this,
+//            R.style.transparentFrameWindowStyle,
+//            MineUtils.listPhoto,
+//            "",
+//            1,
+//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+//
+//                when (i) {
+//                    0 -> takePhoto()
+//                    1 -> pic()
+//                }
+//            }
+//        ).show()
     }
 
     private fun showUserInfo(userInfoBean: UserInfoBean?) {
@@ -367,6 +368,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             when (userInfoBean.status) {
                 2 -> { // 用户已注销。
                     binding.layoutEmptyUser.llEmptyUser.visibility = View.VISIBLE
+                    binding.layoutEmptyUser.collectToolbar.tvTitle.text="个人主页"
                 }
                 else -> {
                     isFollow = userInfoBean.isFollow

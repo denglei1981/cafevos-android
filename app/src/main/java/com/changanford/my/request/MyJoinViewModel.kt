@@ -30,7 +30,7 @@ class MyJoinViewModel : BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
-                paramMaps["pageNo"] = 1
+                paramMaps["pageNo"] = pageNo
                 paramMaps["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
                     it["userId"] =userId.toLong()
@@ -81,7 +81,7 @@ class MyJoinViewModel : BaseViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
-                paramMaps["pageNo"] = 1
+                paramMaps["pageNo"] = pageNo
                 paramMaps["pageSize"] =PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
                     it["userId"] =userId.toLong()

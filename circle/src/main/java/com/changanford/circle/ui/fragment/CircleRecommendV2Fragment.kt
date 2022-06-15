@@ -15,10 +15,12 @@ import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.zhpan.bannerview.constants.PageStyle
@@ -108,6 +110,11 @@ class CircleRecommendV2Fragment :
                 adapter.loadMoreModule.loadMoreEnd()
             }
         })
+        //登录回调
+        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                viewModel.getRecommendPostData(type, 1)
+            }
 
     }
 
