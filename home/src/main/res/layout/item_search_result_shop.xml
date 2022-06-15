@@ -67,8 +67,9 @@
             android:text="@string/str_since"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_66"
             android:textSize="@dimen/sp_9"
+            android:layout_marginStart="@dimen/dp_2"
             android:layout_marginBottom="@dimen/dp_2"
             />
 

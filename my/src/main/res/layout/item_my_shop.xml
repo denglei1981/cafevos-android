@@ -80,8 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/str_since"
+                    android:layout_marginStart="@dimen/dp_2"
                     android:textSize="@dimen/sp_9"
-                    android:textColor="@color/color_33"/>
+                    android:textColor="@color/color_66"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_collect_num"
                     android:layout_width="wrap_content"
