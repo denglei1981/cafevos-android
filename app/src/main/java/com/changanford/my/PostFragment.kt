@@ -79,8 +79,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
         }
-        mCheckForGapMethod =
-            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(

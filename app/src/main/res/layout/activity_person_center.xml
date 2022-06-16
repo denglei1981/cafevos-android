@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_F4"
                 android:elevation="0dp"
-                app:layout_behavior="@string/fix_behavior">
+                app:layout_behavior="@string/circle_behavior_app_bar_layout">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"

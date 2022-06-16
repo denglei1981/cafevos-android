@@ -49,7 +49,15 @@ class MyColletPageAdapter :
                     if (item.infoList != null && item.infoList!!.dataList != null && item.infoList!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletNewsAdapter
                         myColletNewsAdapter.setNewInstance(item.infoList!!.dataList as MutableList<InfoDataBean>?)
-                        val lin = GridLayoutManager(activity, 3)
+                        val lin =object :GridLayoutManager(activity, 3){
+                            override fun canScrollHorizontally(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
                         t.rvMenu.layoutManager = lin
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
@@ -80,7 +88,15 @@ class MyColletPageAdapter :
                     t.tvTitle.text = "帖子"
                     if (item.postList != null && item.postList!!.dataList.size > 0) {
                         t.rvMenu.adapter = myColletPostAdapter
-                        val lin = GridLayoutManager(activity, 3)
+                        val lin =object :GridLayoutManager(activity, 3){
+                            override fun canScrollHorizontally(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
                         t.rvMenu.layoutManager = lin
                         myColletPostAdapter.setNewInstance(item.postList!!.dataList)
                         t.rvMenu.visibility = View.VISIBLE
@@ -114,7 +130,15 @@ class MyColletPageAdapter :
                     if (item.actDataBean != null && item.actDataBean!!.dataList != null && item.actDataBean!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletAccAdapter
                         myColletAccAdapter.setNewInstance(item.actDataBean!!.dataList as MutableList<ActDataBean>?)
-                        val lin = GridLayoutManager(activity, 3)
+                        val lin =object :GridLayoutManager(activity, 3){
+                            override fun canScrollHorizontally(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
                         t.rvMenu.layoutManager = lin
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
@@ -143,7 +167,15 @@ class MyColletPageAdapter :
                     if (item.shopList != null && item.shopList!!.dataList != null && item.shopList!!.dataList?.isNotEmpty()!!) {
                         t.rvMenu.adapter = myColletShopAdapter
                         myColletShopAdapter.setNewInstance(item.shopList!!.dataList as MutableList<MyShopBean>?)
-                        val lin = GridLayoutManager(activity, 3)
+                        val lin =object :GridLayoutManager(activity, 3){
+                            override fun canScrollHorizontally(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
                         t.rvMenu.layoutManager = lin
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE

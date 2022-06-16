@@ -46,6 +46,10 @@ class MyHomePageAdapter :
                             override fun canScrollVertically(): Boolean {
                                 return false
                             }
+
+                            override fun canScrollHorizontally(): Boolean {
+                                return false
+                            }
                         }
                         t.rvMenu.layoutManager = linearLayoutManager
                         t.rvMenu.adapter = myJoinCircleAdapter
@@ -75,6 +79,10 @@ class MyHomePageAdapter :
                     if (item.topicList != null && item.topicList!!.dataList != null && item.topicList!!.dataList!!.size > 0) {
                         val linearLayoutManager =object : LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false) {
                             override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
                         }
@@ -107,6 +115,10 @@ class MyHomePageAdapter :
                     if (item.postList != null && item.postList!!.dataList != null && item.postList!!.dataList!!.size > 0) {
                         val linearLayoutManager =object : LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false) {
                             override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+
+                            override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
                         }

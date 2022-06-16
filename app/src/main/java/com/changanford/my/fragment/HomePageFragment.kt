@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.*
@@ -24,6 +25,7 @@ import com.changanford.my.adapter.MyJoinCircleAdapter
 import com.changanford.my.adapter.MyJoinTopicAdapter
 import com.changanford.my.adapter.MyStarPostAdapter
 import com.changanford.my.request.HomePageViewModel
+import java.lang.reflect.Method
 
 
 class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel>() {
@@ -33,6 +35,8 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     var postListData = HomePageBean(total = 0)
     var topicListData = HomePageBean(total = 0)
     var circleListData = HomePageBean(total = 0)
+    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+    private lateinit var mCheckForGapMethod: Method
 
     val myHomePageAdapter: MyHomePageAdapter by lazy {
         MyHomePageAdapter()
@@ -58,7 +62,14 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     }
 
     override fun initData() {
+        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod.isAccessible = true
 
+        staggeredGridLayoutManager = StaggeredGridLayoutManager(
+            1,
+            StaggeredGridLayoutManager.VERTICAL
+        )
+        binding.recyclerView.layoutManager=staggeredGridLayoutManager
         binding.recyclerView.adapter = myHomePageAdapter
 
 
