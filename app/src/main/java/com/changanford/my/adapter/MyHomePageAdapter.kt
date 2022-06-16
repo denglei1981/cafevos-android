@@ -9,6 +9,7 @@ import com.changanford.common.bean.*
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.SpannableStringUtils
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemHomePageBinding
 import com.changanford.my.activity.MyJoinCircleActivity
@@ -56,6 +57,7 @@ class MyHomePageAdapter :
                             MyJoinCircleActivity.start(userId = userIds, activity)
                         }
                     } else {
+                        t.tvTitle.text = "加入的圈子"
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE
@@ -79,20 +81,22 @@ class MyHomePageAdapter :
                             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
                         }
                     } else {
+                        t.tvTitle.text = "参与的话题"
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE
                     }
                 }
                 2 -> {//帖子
-
                     if (item.postList != null && item.postList!!.dataList != null && item.postList!!.dataList!!.size > 0) {
                         t.rvMenu.adapter = myStarAdapter
                         myStarAdapter.setNewInstance(item.postList!!.dataList)
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        t.tvTitle.text = "点赞的帖子(${item.postList!!.total})"
+                        val str="点赞的帖子 ${item.postList!!.total}"
+
+                        t.tvTitle.text =    SpannableStringUtils.getSizeColor(str,"#999999",14,5,str.length)
                         myStarAdapter.setOnItemClickListener { adapter, view, position ->
                             val bundle = Bundle()
                             bundle.putString(
@@ -105,6 +109,7 @@ class MyHomePageAdapter :
                             MyStarPostsActivity.start(userIds, activity)
                         }
                     } else {
+                        t.tvTitle.text = "点赞的帖子"
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE

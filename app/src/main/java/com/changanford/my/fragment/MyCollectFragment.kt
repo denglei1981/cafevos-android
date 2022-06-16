@@ -20,19 +20,17 @@ import com.changanford.my.request.MyCollectViewModel
 
 class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewModel>() {
 
-    val myColletNewsAdapter: MyColletNewsAdapter by lazy {
-        MyColletNewsAdapter()
+    var infoListData = MyCollectBean(total = 0)
+    var postListData = MyCollectBean(total = 0)
+    var actListData = MyCollectBean(total = 0)
+    var shopListData = MyCollectBean(total = 0)
+
+    var isOut = false
+
+    val myColletPageAdapter: MyColletPageAdapter by lazy {
+        MyColletPageAdapter()
     }
-    val myColletPostAdapter: MyColletPostAdapter by lazy {
-        MyColletPostAdapter()
-    }
-    val myColletAccAdapter: MyColletAccAdapter by lazy {
-        MyColletAccAdapter()
-    }
-    val myColletShopAdapter: MyColletShopAdapter by lazy {
-        MyColletShopAdapter()
-    }
-    var isOut =false
+
 
     companion object {
         fun newInstance(value: String, userId: String = ""): MyCollectFragment {
@@ -46,160 +44,87 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
 
     override fun initView() {
         viewModel.queryMineCollectInfo()
-        viewModel.queryMineCollectPost()
-        viewModel.queryMineCollectAc()
-        viewModel.queryShopCollect()
-
 
     }
 
     override fun onStart() {
         super.onStart()
-        if(isOut){
+        if (isOut) {
+            isOut = false
             viewModel.queryMineCollectInfo()
-            viewModel.queryMineCollectPost()
-            viewModel.queryMineCollectAc()
-            viewModel.queryShopCollect()
         }
-
     }
 
     override fun initData() {
-
+        binding.recyclerView.adapter = myColletPageAdapter
 
     }
 
     fun showInfo(data: UpdateUiState<InfoBean>) {
-        binding.layoutNews.tvTitle.text = "资讯"
-        binding.layoutNews.tvMore.setOnClickListener {
-            isOut=true
-            JumpUtils.instans?.jump(27, "0")
-        }
-        if (data.isSuccess) {//
-            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.size!! > 0) {
-                binding.layoutNews.rvMenu.adapter = myColletNewsAdapter
-                myColletNewsAdapter.setNewInstance(data.data.dataList as MutableList<InfoDataBean>?)
-                val lin = GridLayoutManager(requireContext(), 3)
-                binding.layoutNews.rvMenu.layoutManager = lin
-                binding.layoutNews.rvMenu.visibility = View.VISIBLE
-                binding.layoutNews.llEmpty.visibility = View.GONE
-                binding.layoutNews.tvMore.visibility=View.VISIBLE
-                myColletNewsAdapter.setOnItemClickListener { adapter, view, position ->
-                    isOut=true
-                    val item = myColletNewsAdapter.getItem(position)
-                    JumpUtils.instans?.jump(2, item.artId)
-                }
-            } else {
-                binding.layoutNews.rvMenu.visibility = View.GONE
-                binding.layoutNews.llEmpty.visibility = View.VISIBLE
-                binding.layoutNews.tvMore.visibility=View.GONE
 
+        var total: Int = 0
+        if (data.data != null) {
+            if (data.data.dataList != null) {
+                total = data.data!!.dataList!!.size
             }
-        } else {
-            binding.layoutNews.rvMenu.visibility = View.GONE
-            binding.layoutNews.llEmpty.visibility = View.VISIBLE
-            binding.layoutNews.tvMore.visibility=View.GONE
         }
+        infoListData = MyCollectBean(infoList = data.data, type = 0, total = total)
+
+        viewModel.queryMineCollectPost()
+
+
     }
 
     fun showPostBean(data: UpdateUiState<PostBean>) {
-        binding.layoutPosts.tvTitle.text = "帖子"
-        binding.layoutPosts.tvMore.setOnClickListener {
-            isOut=true
-            JumpUtils.instans?.jump(27, "1")
+        var total: Int = 0
+        if (data.data != null) {
+            total = data.data!!.dataList.size
         }
-        if (data.isSuccess) {
-            if (data.data != null && data.data!!.dataList.size > 0) {
-                binding.layoutPosts.rvMenu.adapter = myColletPostAdapter
-                myColletPostAdapter.setNewInstance(data.data.dataList)
-                val lin = GridLayoutManager(requireContext(), 3)
-                binding.layoutPosts.rvMenu.layoutManager = lin
-                binding.layoutPosts.rvMenu.visibility = View.VISIBLE
-                binding.layoutPosts.llEmpty.visibility = View.GONE
-                binding.layoutPosts.tvMore.visibility=View.VISIBLE
-                myColletPostAdapter.setOnItemClickListener { adapter, view, position ->
-                    isOut=true
-                    val bundle = Bundle()
-                    bundle.putString(
-                        "postsId",
-                        myColletPostAdapter.getItem(position).postsId.toString()
-                    )
-                    startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
-                }
-            } else {
-                binding.layoutPosts.rvMenu.visibility = View.GONE
-                binding.layoutPosts.llEmpty.visibility = View.VISIBLE
-                binding.layoutPosts.tvMore.visibility=View.GONE
-            }
-        } else {
-            binding.layoutPosts.rvMenu.visibility = View.GONE
-            binding.layoutPosts.llEmpty.visibility = View.VISIBLE
-            binding.layoutPosts.tvMore.visibility=View.GONE
-        }
+        postListData = MyCollectBean(postList = data.data, type = 1, total = total)
+        viewModel.queryMineCollectAc()
     }
 
     fun showAcc(data: UpdateUiState<AccBean>) {
-        binding.layoutActs.tvTitle.text = "活动"
-        binding.layoutActs.tvMore.setOnClickListener {
-            isOut=true
-            JumpUtils.instans?.jump(27, "2")
-        }
-        if (data.isSuccess) {
-            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.isNotEmpty()!!) {
-                binding.layoutActs.rvMenu.adapter = myColletAccAdapter
-                myColletAccAdapter.setNewInstance(data.data.dataList as MutableList<ActDataBean>?)
-                val lin = GridLayoutManager(requireContext(), 3)
-                binding.layoutActs.rvMenu.layoutManager = lin
-                binding.layoutActs.rvMenu.visibility = View.VISIBLE
-                binding.layoutActs.llEmpty.visibility = View.GONE
-                binding.layoutActs.tvMore.visibility=View.VISIBLE
-                myColletAccAdapter.setOnItemClickListener { adapter, view, position ->
-                    isOut=true
-                    val item = myColletAccAdapter.getItem(position)
-                    CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-                }
-            } else {
-                binding.layoutActs.rvMenu.visibility = View.GONE
-                binding.layoutActs.llEmpty.visibility = View.VISIBLE
-                binding.layoutActs.tvMore.visibility=View.GONE
+        var total: Int = 0
+        if (data.data != null) {
+            if (data.data.dataList != null) {
+                total = data.data!!.dataList!!.size
             }
-        } else {
-            binding.layoutActs.rvMenu.visibility = View.GONE
-            binding.layoutActs.llEmpty.visibility = View.VISIBLE
-            binding.layoutActs.tvMore.visibility=View.GONE
         }
+        actListData = MyCollectBean(actDataBean = data.data, type = 2, total = total)
+        viewModel.queryShopCollect()
     }
 
+    var homePageBeanList = arrayListOf<MyCollectBean>()
     fun showShop(data: UpdateUiState<ShopBean>) {
-        binding.layoutShop.tvTitle.text = "商品"
-        binding.layoutShop.tvMore.setOnClickListener {
-            isOut=true
-            JumpUtils.instans?.jump(27, "3")
-        }
-        if (data.isSuccess) {
-            if (data.data != null && data.data.dataList != null && data.data!!.dataList?.isNotEmpty()!!) {
-                binding.layoutShop.rvMenu.adapter = myColletShopAdapter
-                myColletShopAdapter.setNewInstance(data.data.dataList as MutableList<MyShopBean>?)
-                val lin = GridLayoutManager(requireContext(), 3)
-                binding.layoutShop.rvMenu.layoutManager = lin
-                binding.layoutShop.rvMenu.visibility = View.VISIBLE
-                binding.layoutShop.llEmpty.visibility = View.GONE
-                binding.layoutShop.tvMore.visibility=View.VISIBLE
-                myColletShopAdapter.setOnItemClickListener { adapter, view, position ->
-                    isOut=true
-                    val item = myColletShopAdapter.getItem(position)
-                    JumpUtils.instans?.jump(3, item.mallMallSpuId)
-                }
-            } else {
-                binding.layoutShop.rvMenu.visibility = View.GONE
-                binding.layoutShop.llEmpty.visibility = View.VISIBLE
-                binding.layoutShop.tvMore.visibility=View.GONE
+
+
+        var total: Int = 0
+        if (data.data != null) {
+            if (data.data.dataList != null) {
+                total = data.data!!.dataList!!.size
             }
-        } else {
-            binding.layoutShop.rvMenu.visibility = View.GONE
-            binding.layoutShop.llEmpty.visibility = View.VISIBLE
-            binding.layoutShop.tvMore.visibility=View.GONE
+
         }
+        shopListData = MyCollectBean(shopList = data.data, type = 3, total = total)
+        homePageBeanList.clear()
+        homePageBeanList.add(infoListData)
+
+        homePageBeanList.add(postListData)
+
+        homePageBeanList.add(actListData)
+
+        homePageBeanList.add(shopListData)
+
+
+        myColletPageAdapter.activity = requireActivity()
+        myColletPageAdapter.myFragment = this
+
+
+        homePageBeanList.sortByDescending { t -> t.total }
+        myColletPageAdapter.setList(homePageBeanList)
+
+
     }
 
     override fun observe() {

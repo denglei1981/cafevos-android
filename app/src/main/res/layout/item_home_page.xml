@@ -6,13 +6,18 @@
     <data>
 
     </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_white_10dp"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,6 +64,7 @@
             android:layout_marginEnd="@dimen/dp_20"
             android:orientation="vertical"
             android:paddingTop="2dp"
+
             android:paddingBottom="2dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -102,5 +108,12 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_F4" />
+</LinearLayout>
 </layout>

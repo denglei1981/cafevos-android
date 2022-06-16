@@ -10,6 +10,7 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
@@ -59,6 +60,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
+import java.lang.reflect.Field
 import java.util.Observer
 import kotlin.math.abs
 
@@ -162,7 +164,19 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             binding.topContent.btnFollow.visibility = View.VISIBLE
         }
     }
-
+    private fun easyViewPager() {
+        try {
+            val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+            recyclerViewField.isAccessible = true
+            val recyclerView: RecyclerView =
+                recyclerViewField.get(binding.viewPager) as RecyclerView
+            val touchSlopField: Field = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+            touchSlopField.isAccessible = true
+            val touchSlop = touchSlopField.get(recyclerView) as Int
+            touchSlopField.set(recyclerView, touchSlop * 4) //6 is empirical value
+        } catch (ignore: Exception) {
+        }
+    }
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.toolbar, this)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutEmptyUser.collectToolbar.conTitle, this)
@@ -220,6 +234,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         }
     }
     override fun initData() {
+        easyViewPager()
         initTabAndViewPager()
         initMagicIndicator()
          getUserInfo()
