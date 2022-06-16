@@ -5,10 +5,7 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.bean.ListMainBean
-import com.changanford.common.bean.NewCircleDataBean
-import com.changanford.common.bean.PostBean
-import com.changanford.common.bean.Topic
+import com.changanford.common.bean.*
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.router.path.ARouterCirclePath
@@ -66,7 +63,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         MyJoinTopicAdapter()
     }
 
-    fun showCircle(data: UpdateUiState<NewCircleDataBean>) {
+    fun showCircle(data: UpdateUiState<ListMainBean<NewCircleBean>>) {
         binding.layoutCircle.tvTitle.text = "加入的圈子"
         binding.layoutCircle.tvMore.setOnClickListener {
             MyJoinCircleActivity.start(userId = userIds, requireActivity())
@@ -98,7 +95,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         }
     }
 
-    fun showPosts(data: UpdateUiState<PostBean>) {
+    fun showPosts(data: UpdateUiState<ListMainBean<PostDataBean>>) {
         binding.layoutPosts.tvTitle.text = "点赞的帖子"
         binding.layoutPosts.tvMore.setOnClickListener {
             MyStarPostsActivity.start(userIds,requireActivity())

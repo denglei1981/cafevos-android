@@ -452,7 +452,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
-                binding.backImg.setImageResource(com.changanford.circle.R.mipmap.whit_left)
+                binding.backImg.setImageResource(com.changanford.circle.R.mipmap.back_xhdpi)
 
                 StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                 isWhite = true

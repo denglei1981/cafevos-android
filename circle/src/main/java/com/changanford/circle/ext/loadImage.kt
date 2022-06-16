@@ -21,6 +21,7 @@ fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(GlideUtils.handleImgUrl(url))
         .error(R.mipmap.ic_def_square_img)
+        .placeholder(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
             DrawableTransitionOptions.with(

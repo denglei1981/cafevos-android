@@ -80,7 +80,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 viewModel.getNewsCommentList(artId, false)
 
             } else {
-//                ToastUtils.showShortToast("没有该资讯类型", this)
                 toastShow("没有该资讯类型")
             }
         }
