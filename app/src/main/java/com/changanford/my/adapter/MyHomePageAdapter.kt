@@ -46,7 +46,8 @@ class MyHomePageAdapter :
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        t.tvTitle.text = "加入的圈子(${item.circleList!!.total})"
+                        val str="加入的圈子 ${item.circleList!!.total}"
+                        t.tvTitle.text =    SpannableStringUtils.getSizeColor(str,"#999999",14,5,str.length)
                         myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
                             JumpUtils.instans?.jump(
                                 6,
@@ -70,7 +71,10 @@ class MyHomePageAdapter :
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        t.tvTitle.text = "参与的话题(${item.topicList!!.total})"
+
+
+                        val str="参与的话题 ${item.topicList!!.total}"
+                        t.tvTitle.text =    SpannableStringUtils.getSizeColor(str,"#999999",14,5,str.length)
                         t.tvMore.setOnClickListener {
                             MyJoinTopicActivity.start(userIds, activity)
                         }
@@ -95,7 +99,6 @@ class MyHomePageAdapter :
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
                         val str="点赞的帖子 ${item.postList!!.total}"
-
                         t.tvTitle.text =    SpannableStringUtils.getSizeColor(str,"#999999",14,5,str.length)
                         myStarAdapter.setOnItemClickListener { adapter, view, position ->
                             val bundle = Bundle()

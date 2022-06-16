@@ -45,6 +45,7 @@ class MyColletPageAdapter :
         holder.dataBinding?.let { t ->
             when (item.type) {
                 0 -> { //资讯
+                    t.tvTitle.text = "资讯"
                     if (item.infoList != null && item.infoList!!.dataList != null && item.infoList!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletNewsAdapter
                         myColletNewsAdapter.setNewInstance(item.infoList!!.dataList as MutableList<InfoDataBean>?)
@@ -53,10 +54,10 @@ class MyColletPageAdapter :
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        val str = "资讯 ${item.infoList!!.total}"
-
-                        t.tvTitle.text =
-                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
+//                        val str = "资讯 ${item.infoList!!.total}"
+//
+//                        t.tvTitle.text =
+//                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
 
                         myColletNewsAdapter.setOnItemClickListener { adapter, view, position ->
                             myFragment.isOut=true
@@ -68,7 +69,7 @@ class MyColletPageAdapter :
                             JumpUtils.instans?.jump(27, "0")
                         }
                     } else {
-                        t.tvTitle.text = "资讯"
+
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE
@@ -76,6 +77,7 @@ class MyColletPageAdapter :
                     }
                 }
                 1 -> {//帖子
+                    t.tvTitle.text = "帖子"
                     if (item.postList != null && item.postList!!.dataList.size > 0) {
                         t.rvMenu.adapter = myColletPostAdapter
                         val lin = GridLayoutManager(activity, 3)
@@ -84,9 +86,9 @@ class MyColletPageAdapter :
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        val str = "帖子 ${item.postList!!.total}"
-                        t.tvTitle.text =
-                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
+//                        val str = "帖子 ${item.postList!!.total}"
+//                        t.tvTitle.text =
+//                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         myColletPostAdapter.setOnItemClickListener { adapter, view, position ->
                             myFragment.isOut=true
                             val bundle = Bundle()
@@ -101,13 +103,14 @@ class MyColletPageAdapter :
                             JumpUtils.instans?.jump(27, "1")
                         }
                     } else {
-                        t.tvTitle.text = "帖子"
+
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE
                     }
                 }
                 2 -> {//活动
+                    t.tvTitle.text = "活动"
                     if (item.actDataBean != null && item.actDataBean!!.dataList != null && item.actDataBean!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletAccAdapter
                         myColletAccAdapter.setNewInstance(item.actDataBean!!.dataList as MutableList<ActDataBean>?)
@@ -120,9 +123,9 @@ class MyColletPageAdapter :
                             myFragment.isOut=true
                             JumpUtils.instans?.jump(27, "2")
                         }
-                        val str = "活动 ${item.actDataBean!!.total}"
-                        t.tvTitle.text =
-                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
+//                        val str = "活动 ${item.actDataBean!!.total}"
+//                        t.tvTitle.text =
+//                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         myColletAccAdapter.setOnItemClickListener { adapter, view, position ->
                          myFragment.isOut=true
                             val item = myColletAccAdapter.getItem(position)
@@ -136,6 +139,7 @@ class MyColletPageAdapter :
                     }
                 }
                 3 -> {//商品
+                    t.tvTitle.text = "商品"
                     if (item.shopList != null && item.shopList!!.dataList != null && item.shopList!!.dataList?.isNotEmpty()!!) {
                         t.rvMenu.adapter = myColletShopAdapter
                         myColletShopAdapter.setNewInstance(item.shopList!!.dataList as MutableList<MyShopBean>?)
@@ -144,9 +148,9 @@ class MyColletPageAdapter :
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-                        val str = "商品 ${item.shopList!!.total}"
-                        t.tvTitle.text =
-                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
+//                        val str = "商品 ${item.shopList!!.total}"
+//                        t.tvTitle.text =
+//                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         t.tvMore.setOnClickListener {
                             myFragment.isOut=true
                             JumpUtils.instans?.jump(27, "3")
@@ -157,7 +161,7 @@ class MyColletPageAdapter :
                             JumpUtils.instans?.jump(3, item.mallMallSpuId)
                         }
                     } else {
-                        t.tvTitle.text = "商品"
+
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE
