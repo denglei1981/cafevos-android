@@ -143,9 +143,9 @@ fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text(buildAnnotatedString {
                         withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 14.sp)) {
-                            append("¥${getRMB(priceFb)}")
+                            append("¥${getRMB(priceFb)} ")
                         }
-                        withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 9.sp)) {
+                        withStyle(style = SpanStyle(color= colorResource(R.color.color_66), fontSize = 9.sp)) {
                             append(stringResource(R.string.str_since))
                         }
                     })
@@ -223,9 +223,9 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
             //价格
             Text(buildAnnotatedString {
                 withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 12.sp)) {
-                    append("¥${getRMB(vipFb)}")
+                    append("¥${getRMB(vipFb)} ")
                 }
-                withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 9.sp)) {
+                withStyle(style = SpanStyle(color= colorResource(R.color.color_66), fontSize = 9.sp)) {
                     append(stringResource(R.string.str_since))
                 }
             })

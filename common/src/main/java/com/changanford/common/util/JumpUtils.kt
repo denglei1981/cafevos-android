@@ -296,9 +296,9 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
 
             }
-            29 -> {//我的勋章,
+            29 -> {//所有勋章
+//                startARouter(ARouterMyPath.MineMedalUI,true)
                 startARouter(ARouterMyPath.AllMedalUI, bundle, true)
-
             }
             30 -> {//积分纪录,
                 startARouter(ARouterMyPath.MineIntegralUI, bundle, true)
@@ -748,9 +748,10 @@ class JumpUtils {
             129 -> { //爱车养护
                 startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
             }
-//            129->{
-//                startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
-//            }
+            130 -> {//我的勋章
+                startARouter(ARouterMyPath.MineMedalUI,true)
+//                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {

@@ -80,12 +80,14 @@
                 app:start_txt="@string/str_rmb"
                 android:text="@{model.rmbPrice}"
                 android:textColor="@color/color_33"
+                tools:text="￥100"
                 android:textSize="@dimen/sp_14" />
             <com.changanford.common.ui.view.WTextView
+                android:layout_marginStart="@dimen/dp_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/str_since"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_66"
                 android:textSize="@dimen/sp_9"/>
             <com.changanford.shop.view.TypefaceTextView
                 android:layout_marginStart="@dimen/dp_5"
