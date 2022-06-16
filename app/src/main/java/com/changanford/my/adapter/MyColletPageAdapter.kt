@@ -43,6 +43,7 @@ class MyColletPageAdapter :
         item: MyCollectBean
     ) {
         holder.dataBinding?.let { t ->
+            t.rvMenu.isNestedScrollingEnabled=false
             when (item.type) {
                 0 -> { //资讯
                     t.tvTitle.text = "资讯"

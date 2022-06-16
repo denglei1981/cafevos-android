@@ -39,6 +39,7 @@ class MyHomePageAdapter :
         item: HomePageBean
     ) {
         holder.dataBinding?.let { t ->
+            t.rvMenu.isNestedScrollingEnabled=false
             when (item.type) {
                 0 -> { //圈子
                     if (item.circleList != null && item.circleList!!.dataList != null && item.circleList!!.dataList!!.size > 0) {
