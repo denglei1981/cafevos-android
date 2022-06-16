@@ -3,6 +3,7 @@ package com.changanford.my.adapter
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.*
@@ -41,6 +42,12 @@ class MyHomePageAdapter :
             when (item.type) {
                 0 -> { //圈子
                     if (item.circleList != null && item.circleList!!.dataList != null && item.circleList!!.dataList!!.size > 0) {
+                        val linearLayoutManager =object : LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false) {
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
+                        t.rvMenu.layoutManager = linearLayoutManager
                         t.rvMenu.adapter = myJoinCircleAdapter
                         myJoinCircleAdapter.setNewInstance(item.circleList!!.dataList)
                         t.rvMenu.visibility = View.VISIBLE
@@ -66,13 +73,18 @@ class MyHomePageAdapter :
                 }
                 1 -> {//话题
                     if (item.topicList != null && item.topicList!!.dataList != null && item.topicList!!.dataList!!.size > 0) {
+                        val linearLayoutManager =object : LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false) {
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
+                        t.rvMenu.layoutManager = linearLayoutManager
                         t.rvMenu.adapter = myJoinTopicAdapter
+
                         myJoinTopicAdapter.setNewInstance(item.topicList!!.dataList)
                         t.rvMenu.visibility = View.VISIBLE
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
-
-
                         val str="参与的话题 ${item.topicList!!.total}"
                         t.tvTitle.text =    SpannableStringUtils.getSizeColor(str,"#999999",14,5,str.length)
                         t.tvMore.setOnClickListener {
@@ -93,6 +105,12 @@ class MyHomePageAdapter :
                 }
                 2 -> {//帖子
                     if (item.postList != null && item.postList!!.dataList != null && item.postList!!.dataList!!.size > 0) {
+                        val linearLayoutManager =object : LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false) {
+                            override fun canScrollVertically(): Boolean {
+                                return false
+                            }
+                        }
+                        t.rvMenu.layoutManager = linearLayoutManager
                         t.rvMenu.adapter = myStarAdapter
                         myStarAdapter.setNewInstance(item.postList!!.dataList)
                         t.rvMenu.visibility = View.VISIBLE

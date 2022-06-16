@@ -132,7 +132,7 @@ class MyColletPageAdapter :
                             CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
                         }
                     } else {
-                        t.tvTitle.text = "活动"
+
                         t.rvMenu.visibility = View.GONE
                         t.llEmpty.visibility = View.VISIBLE
                         t.tvMore.visibility = View.GONE

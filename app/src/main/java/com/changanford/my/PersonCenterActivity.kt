@@ -1,8 +1,6 @@
 package com.changanford.my
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -13,13 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.bean.DialogBottomBean
-import com.changanford.common.bean.Imag
 import com.changanford.common.bean.UserInfoBean
-import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -27,19 +21,14 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.dialog.SelectCoverDialog
-import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.toast.ToastUtils.showToast
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
-import com.changanford.common.widget.SelectDialog
 import com.changanford.evos.databinding.ActivityPersonCenterBinding
 import com.changanford.my.activity.OtherMedalActivity
-import com.changanford.my.adapter.LabelAdapter
 import com.changanford.my.adapter.MtViewPagerAdapter
 import com.changanford.my.fragment.HomePageFragment
 import com.changanford.my.fragment.MyCollectFragment
@@ -61,7 +50,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.lang.reflect.Field
-import java.util.Observer
 import kotlin.math.abs
 
 

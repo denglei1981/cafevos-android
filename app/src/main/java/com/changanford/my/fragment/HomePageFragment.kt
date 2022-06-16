@@ -3,6 +3,7 @@ package com.changanford.my.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.*
@@ -57,7 +58,10 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     }
 
     override fun initData() {
+
         binding.recyclerView.adapter = myHomePageAdapter
+
+
 
     }
 
