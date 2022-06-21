@@ -13,6 +13,7 @@ data class BindCarBean(
     val seriesName: String,
     val vin: String,
     var confirm:Int=-1,
+    var carSalesInfoId:String
 ){
     fun getVinStr():String{
         return "vin码: ".plus(vin)

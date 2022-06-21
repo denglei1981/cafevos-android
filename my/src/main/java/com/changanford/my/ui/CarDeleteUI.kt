@@ -41,10 +41,9 @@ class CarDeleteUI : BaseMineUI<UiCarDeleteBinding, CarAuthViewModel>() {
                     }
                     viewModel.smsCacSmsCode(it)
                 }, onSubmitClick = { mobile, sms ->
-//                    showToast("提交$mobile  $sms")
                     BuriedUtil.instant?.carDelete(mobile)
                     if (vin != null) {
-                        viewModel.deleteCar(vin, mobile, sms) {
+                        viewModel.deleteCar(vin, mobile, sms,id="") {
                             it.onSuccess {
                                 "删除成功".toast()
                                 LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)

@@ -131,6 +131,7 @@ private fun crmHint(
                 RouterManger.param("value", item.vin)
                     .param("plateNum", item.plateNum ?: "")
                     .param("authId",item.authId)
+                    .param("carSalesInfoId",item.carSalesInfoId)
                     .startARouter(ARouterMyPath.AddCardNumTransparentUI)
             }
         }

@@ -234,9 +234,11 @@ class CarAuthViewModel : ViewModel() {
     }
 
     fun deleteCar(
+
         vin: String,
         phone: String? = "",
         smsCode: String? = "",
+        id:String,
         result: (CommonResponse<String>) -> Unit
     ) {
         viewModelScope.launch {
@@ -245,6 +247,7 @@ class CarAuthViewModel : ViewModel() {
                     val body = HashMap<String, Any>()
 //                    body["phone"] = phone ?: ""
 //                    body["smsCode"] = smsCode ?: ""
+                    body["id"]=id
                     body["vin"] = vin
                     val rKey = getRandomKey()
                     apiService.deleteCar(body.header(rKey), body.body(rKey))
