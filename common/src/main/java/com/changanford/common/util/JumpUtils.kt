@@ -417,10 +417,11 @@ class JumpUtils {
                         val vin = json.getString("vin")
                         val authId = json.getString("authId")
                         val status = json.getIntValue("status")
+                        val carSalesInfoId=json.getString("carSalesInfoId")
                         var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
-                            CarItemBean(vin = vin, authId = authId)
+                            CarItemBean(vin = vin, authId = authId,carSalesInfoId = carSalesInfoId)
                         ).startARouter(
                             when {
                                 CommonUtils.isCrmSuccess(status) -> {

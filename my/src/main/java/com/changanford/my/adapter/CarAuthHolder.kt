@@ -88,7 +88,8 @@ fun skipCrmCarInfo(item: CarItemBean) {
                 "vin" to item.vin,
                 "status" to item.authStatus,
                 "isNeedChangeBind" to item.isNeedChangeBind,
-                "authId" to item.authId
+                "authId" to item.authId,
+                "carSalesInfoId" to item.carSalesInfoId
             )
         )
     )
@@ -128,7 +129,7 @@ private fun crmHint(
                 }
             }
             holder.btnAddCarNum.setOnClickListener {
-                RouterManger.param("value", item.vin)
+                RouterManger.param("value", item.carSalesInfoId)
                     .param("plateNum", item.plateNum ?: "")
                     .param("authId",item.authId)
                     .param("carSalesInfoId",item.carSalesInfoId)
