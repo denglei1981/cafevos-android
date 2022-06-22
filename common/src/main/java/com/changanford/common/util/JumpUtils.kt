@@ -561,7 +561,7 @@ class JumpUtils {
                 startARouter(ARouterMyPath.SignUI)
             }
 
-            101 -> {//' |=> |'发现'
+            101 -> {//' 0、推荐  1、活动  2、资讯
                 val bundle = Bundle()
                 bundle.putInt("jumpValue", 1)
                 startARouter(ARouterHomePath.MainActivity, bundle)
