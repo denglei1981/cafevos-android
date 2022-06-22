@@ -418,7 +418,7 @@ class JumpUtils {
                         val authId = json.getString("authId")
                         val status = json.getIntValue("status")
                         val carSalesInfoId = json.getString("carSalesInfoId")
-                        var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        val isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
                             CarItemBean(vin = vin, authId = authId, carSalesInfoId = carSalesInfoId)
@@ -427,8 +427,7 @@ class JumpUtils {
                                 CommonUtils.isCrmSuccess(status) -> {
                                     ARouterMyPath.MineLoveCarInfoUI
                                 }
-                                CommonUtils.isCrmStatusIng(status)
-                                        || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
+                                CommonUtils.isCrmStatusIng(status) || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
                                     isNeedChangeBind
                                 )) -> {
                                     ARouterMyPath.CarAuthIngUI
