@@ -37,7 +37,6 @@ import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -359,22 +358,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     agentWeb.jsAccessEntrace.quickCallJs(h5OrderPayCallback, it.toString())
                 })
 
-        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this,
-            Observer {
-                getMyInfoCallback = it
-                UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
-                    .observe(this) {
-                        it?.toString()?.logE()
-                        var user =
-                            if (MConstant.token.isNullOrEmpty() || it.userJson.isNullOrEmpty()) {
-                                ""
-                            } else {
-                                it.userJson
-                            }
-                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, user)
+        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this) {
+            getMyInfoCallback = it
+            UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
+                .observe(this) { infoBean ->
+                    val userJson=infoBean.userJson
+                    if(!userJson.isNullOrEmpty()){
+                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback,userJson)
                     }
+                }
 //                mineSignViewModel.getUserInfo()
-            })
+        }
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_UNICARDS_LIST, String::class.java)
             .observe(this,
                 Observer {
