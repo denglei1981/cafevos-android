@@ -298,17 +298,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 when (it) {
                     //登录成功
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
                     }
 
                     //取消绑定手机号
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"false")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "false")
                     }
                     //绑定手机号成功
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                     }
                 }

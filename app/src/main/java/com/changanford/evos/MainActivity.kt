@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.buried.BuriedUtil
@@ -127,14 +128,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     }
                     isJumpMenu=false
                 }
-                R.id.circleFragment -> {
+                R.id.circleFragment -> {// 社区
                     // 埋点
-
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                     if(!isJumpMenu){
                         BuriedUtil.instant?.mainButtomMenu("社区")
                     }
                     isJumpMenu=false
+                    val circleFragmentV2 = getFragment(CircleFragmentV2::class.java)
+                    circleFragmentV2?.let { it ->
+                        val circleFragment = it as CircleFragmentV2
+
+                        intent.extras?.let {
+                            val jumpValue = it.getString("value")
+                            circleFragment.setCurrentItem(jumpValue)
+                        }
+                    }
                 }
 
                 R.id.shopFragment -> {
@@ -148,14 +157,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 R.id.homeFragment -> {
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
-                    currentFragment?.let {
+                    currentFragment?.let { it ->
                         val homeV2Fragment = it as HomeV2Fragment
                         homeV2Fragment.closeTwoLevel()// 关掉二楼
+                        intent.extras?.let {
+                            val jumpValue = it.getString("value")
+                            homeV2Fragment.setCurrentItem(jumpValue)
+                        }
                     }
                     if(!isJumpMenu){
                         BuriedUtil.instant?.mainButtomMenu("发现")
                     }
                     isJumpMenu=false
+
+
                 }
                 else -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
@@ -388,28 +403,29 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 if (jumpValue > 0)
                     when (jumpValue) {
                         1 -> {
-                            navController?.navigate(R.id.homeFragment)
+                            navController.navigate(R.id.homeFragment)
+
                         }
                         2 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.white)
-                            navController?.navigate(R.id.circleFragment)
+                            navController.navigate(R.id.circleFragment)
                         }
                         3 -> {
                             setHomBottomNavi(View.VISIBLE)
-                            navController?.navigate(R.id.carFragment)
+                            navController.navigate(R.id.carFragment)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
 
                         }
                         4 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                            navController?.navigate(R.id.shopFragment)
+                            navController.navigate(R.id.shopFragment)
                         }
                         5 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                            navController?.navigate(R.id.myFragment)
+                            navController.navigate(R.id.myFragment)
                         }
                     }
                 try {

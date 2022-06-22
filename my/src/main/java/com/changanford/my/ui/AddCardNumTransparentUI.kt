@@ -77,11 +77,11 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
                     .postValue(inputContent)
                 finish()
             } else {
-                bundle?.getString("value")?.let {
+                bundle?.getString("carSalesInfoId")?.let {
                     if (bundle?.getBoolean("isUni", false)) {
                         addCarUni(it, inputContent)
                     } else {
-                        addCar(it, inputContent)
+                        addCar(carSalesInfoId=it, cardNum=inputContent)
                     }
                 }
             }
@@ -133,13 +133,14 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
     /**
      * 车主认证添加/修改车牌
      */
-    fun addCar(authCarId: String, cardNum: String) {
+    fun addCar(authCarId: String="", cardNum: String,carSalesInfoId:String) {
 
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
                 body["vin"] = authCarId
                 body["plateNum"] = cardNum
+                body["carSalesInfoId"]=carSalesInfoId
                 var rkey = getRandomKey()
                 apiService.addCarCardNum(body.header(rkey), body.body(rkey))
             }.onSuccess {

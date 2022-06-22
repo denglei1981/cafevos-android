@@ -105,7 +105,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                 }
 
                 override fun delete() {
-                    viewModel.deleteCar(auth.vin) {
+                    viewModel.deleteCar(auth.vin,id=auth.authId) {
                         it.onSuccess {
                             try {
                                 BuriedUtil.instant?.carDelete(auth.phone)

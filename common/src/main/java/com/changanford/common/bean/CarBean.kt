@@ -104,8 +104,8 @@ data class CarItemBean(
     val incallAuthRemake: String = "",
     val carName: String = "",
     val seriesName:String="",
-    var isDefault:Int=0 // 是否为默认车辆
-
+    var isDefault:Int=0, // 是否为默认车辆
+    var carSalesInfoId:String=""
     ) : Serializable
 
 

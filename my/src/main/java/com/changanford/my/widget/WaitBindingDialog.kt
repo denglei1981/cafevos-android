@@ -86,7 +86,7 @@ open class WaitBindingDialog(
                 val list: MutableList<BindingCar> = mutableListOf()
                 data.forEach {
                     if (it.confirm != -1) {
-                        list.add(BindingCar(it.confirm, it.vin))
+                        list.add(BindingCar(it.confirm, it.vin,it.carSalesInfoId))
                     }
                 }
                 if (list.size == 0) {

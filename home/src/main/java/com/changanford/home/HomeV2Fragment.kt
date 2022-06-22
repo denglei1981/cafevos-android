@@ -3,6 +3,7 @@ package com.changanford.home
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Looper
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -469,7 +470,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     open fun closeTwoLevel() {
 
-        binding.header.finishTwoLevel()
+//        binding.header.finishTwoLevel()
+    }
+    open fun setCurrentItem(valueItem:String?){
+        try {
+            if(!TextUtils.isEmpty(valueItem)){
+                binding.homeViewpager.currentItem = valueItem!!.toInt()
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 
 //    override fun onRefresh(refreshLayout: RefreshLayout) {

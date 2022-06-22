@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -141,7 +142,16 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         initMagicIndicator()
         viewModel.getInitQuestion()
     }
+    open fun setCurrentItem(valueItem:String?){
+        try {
+            if(!TextUtils.isEmpty(valueItem)){
+                binding.viewPager.currentItem = valueItem!!.toInt()
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
 
+    }
     private fun showMenuPop() {
         CircleMainMenuPop(
             requireContext(),
