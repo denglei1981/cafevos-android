@@ -37,6 +37,7 @@ import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
+import com.changanford.shop.ShopFragment
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
@@ -112,7 +113,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-
                 R.id.carFragment -> {
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
@@ -123,7 +123,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
                 R.id.myFragment -> {
                     // 埋点
-
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("我的")
@@ -140,13 +139,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     val circleFragmentV2 = getFragment(CircleFragmentV2::class.java)
                     circleFragmentV2?.let { it ->
                         val circleFragment = it as CircleFragmentV2
-
-
                         if (!TextUtils.isEmpty(jumpIndex)) {
                             circleFragment.setCurrentItem(jumpIndex)
                             jumpIndex = ""
                         }
-
                     }
                 }
 
@@ -157,27 +153,29 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         BuriedUtil.instant?.mainButtomMenu("商城")
                     }
                     isJumpMenu = false
+                    getFragment(ShopFragment::class.java)?.let { it ->
+                        val shopFragment = it as ShopFragment
+                        if (!TextUtils.isEmpty(jumpIndex)) {
+                            //jumpIndex 为tagName
+                            shopFragment.setCurrentItem(jumpIndex)
+                            jumpIndex = ""
+                        }
+                    }
                 }
                 R.id.homeFragment -> {
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let { it ->
                         val homeV2Fragment = it as HomeV2Fragment
-
-
                         if (!TextUtils.isEmpty(jumpIndex)) {
                             homeV2Fragment.setCurrentItem(jumpIndex)
                             jumpIndex = ""
                         }
-
-
                     }
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("发现")
                     }
                     isJumpMenu = false
-
-
                 }
                 else -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
@@ -407,11 +405,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             intent.extras?.let {
                 val jumpValue = it.getInt("jumpValue")
                 try {
-                    jumpIndex = it.getString("value").toString()
+                    jumpIndex = it.getString("value","")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
                 isJumpMenu = true
                 if (jumpValue > 0)
                     when (jumpValue) {

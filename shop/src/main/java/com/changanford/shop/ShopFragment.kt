@@ -1,5 +1,6 @@
 package com.changanford.shop
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -37,6 +38,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private val mAdapter by lazy { GoodsKillAdapter() }
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
     private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
+    private var defaultTagName:String?=null
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -94,6 +96,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 tab.text = tabs[tabPosition].tagName
             }.attach()
         }
+        setCurrentItem()
     }
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter
@@ -183,6 +186,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     else -> {}
                 }
             }
+    }
+    fun setCurrentItem(tagName:String?=defaultTagName){
+        defaultTagName=tagName
+        if(TextUtils.isEmpty(tagName))return
+        viewModel.shopHomeData.value?.mallTags?.let {
+            val index =it.indexOfFirst { item -> item.tagName == tagName }
+            if(index>-1)binding.viewpager.currentItem=index
+            defaultTagName=null
+        }
     }
 }
 

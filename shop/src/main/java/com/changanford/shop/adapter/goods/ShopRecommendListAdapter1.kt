@@ -18,7 +18,7 @@ class ShopRecommendListAdapter1: BaseQuickAdapter<ShopRecommendBean, BaseDataBin
                 setList(item.spuInfoList)
             }
             tvMore.setOnClickListener {
-                RecommendActivity.start(item.kindId)
+                RecommendActivity.start(item.kindName)
             }
         }
     }
