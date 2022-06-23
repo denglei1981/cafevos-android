@@ -32,6 +32,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import java.net.URLDecoder
 import kotlin.math.abs
 
 /**
@@ -119,7 +120,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
                     val index =if(TextUtils.isEmpty(typeName)) it.indexOfFirst { item -> item.id.toString() == typeId }
-                    else it.indexOfFirst { item -> item.name == typeName }
+                    else it.indexOfFirst { item -> item.name == URLDecoder.decode(typeName, "UTF-8") }
                     if (index > 0) binding.viewPager.currentItem = index
 
                 }

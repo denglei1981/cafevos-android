@@ -48,10 +48,11 @@ data class QuestionInfoBean(
     }
     /**
      * 是否可以提问
-     * 是自己并且不是技师才可以提问
+     * 是自己并且不是技师才可以提问----118版本修改 技师也可以提问
     * */
     fun getIsQuestion():Boolean{
-        return isOneself()&&getIdentity()!=1
+//        return isOneself()&&getIdentity()!=1
+        return isOneself()
     }
     /**
      * 获取tab
