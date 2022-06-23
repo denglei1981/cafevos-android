@@ -134,14 +134,14 @@ class AskRecommendFragment :
                         JumpUtils.instans?.jump(114, param.toString())
                     }
                 }
-                it.cdMyAsk.setOnClickListener {
-                    //  跳转到我的问答
-                    if (isLogin()) {
-                        val param = SPUtils.getParam(requireContext(), "qaUjId", "")
-                        JumpUtils.instans?.jump(114, param.toString())
-                    }
-
-                }
+//                it.cdMyAsk.setOnClickListener {
+//                    //  跳转到我的问答
+//                    if (isLogin()) {
+//                        val param = SPUtils.getParam(requireContext(), "qaUjId", "")
+//                        JumpUtils.instans?.jump(114, param.toString())
+//                    }
+//
+//                }
 
             }
 
