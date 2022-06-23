@@ -559,20 +559,15 @@ class JumpUtils {
             100 -> {//登录页面
                 startARouter(ARouterMyPath.SignUI)
             }
-
             101 -> {
-
                 bundle.putInt("jumpValue", 1)
-
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
             102 -> {//' |=> |'社区',
-
                 bundle.putInt("jumpValue", 2)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
             103 -> {//' |=> |'爱车',
-
                 bundle.putInt("jumpValue", 3)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
@@ -772,7 +767,24 @@ class JumpUtils {
                     }
                 }
 
-
+            }
+            133-> {//圈子分类页    value  = 圈子分类名称
+                startARouter(ARouterCirclePath.CircleListActivity,bundle)
+            }
+            134-> {//创建圈子
+                startARouter(ARouterCirclePath.CreateCircleActivity,true)
+            }
+            135-> {//圈子热门榜单页
+                startARouter(ARouterCirclePath.HotListActivity,bundle)
+            }
+            138-> {//商城-推荐榜单-榜单列表页：type = 138 value = 榜单名称
+                startARouter(ARouterShopPath.RecommendActivity, bundle)
+            }
+            139-> {//勋章详情
+                startARouter(ARouterMyPath.MedalDetailUI, bundle, true)
+            }
+            140-> {//新增收货地址
+                startARouter(ARouterMyPath.EditAddressUI, bundle, true)
             }
             10000 -> {
                 //外部H5

@@ -23,9 +23,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 @Route(path = ARouterShopPath.RecommendActivity)
 class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
     companion object{
-        fun start(kindId:String?="0"){
+        fun start(kindName:String?=""){
             val bundle= Bundle()
-            bundle.putString("kindId", kindId)
+            bundle.putString("value", kindName)
             RouterManger.startARouter(ARouterShopPath.RecommendActivity,bundle)
         }
     }
@@ -35,10 +35,10 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         WCommonUtil.setTabSelectStyle(this,binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
     }
     override fun initData() {
-        val defaultKindId=intent.getStringExtra("kindId")
+        val defaultKindName=intent.getStringExtra("value")
         viewModel.typesBean.observe(this){
             bindTab(it)
-            val index = it.indexOfFirst { item -> item.kindId == defaultKindId }
+            val index =it.indexOfFirst { item -> item.kindName == defaultKindName }
             if (index>0) binding.viewPager2.currentItem =index
         }
         viewModel.getRecommendTypes()

@@ -3,7 +3,7 @@ package com.changanford.circle.ui.activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.Gravity
+import android.text.TextUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -49,6 +49,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
         }
     }
     private var typeId:String="0"//圈子分类ID 默认全部
+    private var typeName:String=""
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
@@ -58,6 +59,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             }
         }
         typeId=intent.getStringExtra("typeId")?:"0"
+        typeName=intent.getStringExtra("value")?:""
         initListener()
     }
 
@@ -116,7 +118,8 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 runOnUiThread {
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
-                    val index = it.indexOfFirst { item -> item.id.toString() == typeId }
+                    val index =if(TextUtils.isEmpty(typeName)) it.indexOfFirst { item -> item.id.toString() == typeId }
+                    else it.indexOfFirst { item -> item.name == typeName }
                     if (index > 0) binding.viewPager.currentItem = index
 
                 }
