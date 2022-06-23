@@ -65,9 +65,10 @@ data class QuestionInfoBean(
             "TECHNICIAN"->{
                 tabs.apply {
                     if(isOneself){
+                        add(QuestionTagBean(context.getString(R.string.str_myQuestions),"QUESTION"))
                         add(QuestionTagBean(context.getString(R.string.str_invitedToAnswer),"TECHNICIAN"))
                         add(QuestionTagBean(context.getString(R.string.str_myAnswer),"ANSWER"))
-                        add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
+//                        add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))//118版本隐藏
                     }else{
                         add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))
