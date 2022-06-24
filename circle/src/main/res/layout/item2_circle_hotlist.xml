@@ -11,10 +11,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
+        android:layout_height="@dimen/dp_80"
         android:layout_marginBottom="@dimen/dp_12">
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="@dimen/dp_60"
+            android:layout_width="@dimen/dp_80"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -24,16 +24,16 @@
             android:src="@color/color_00095B" />
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginStart="@dimen/dp_11"
             app:layout_constraintStart_toEndOf="@id/img_cover"
             app:layout_constraintTop_toTopOf="@id/img_cover"
-            app:layout_constraintBottom_toTopOf="@id/wtv_des"
             app:layout_constraintEnd_toEndOf="parent"
             style="@style/w_style_txt_ellipsize"
+            android:textStyle="bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            app:layout_constraintVertical_weight="1"
             android:text="@{model.name}"
             tools:text="旅游街区"
             android:textColor="@color/color_33"
@@ -41,8 +41,8 @@
         <com.changanford.common.ui.view.WTextView
             android:id="@id/wtv_des"
             style="@style/w_style_txt_ellipsize"
+            android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintStart_toStartOf="@id/wtv_title"
-            app:layout_constraintBottom_toBottomOf="@id/img_cover"
             app:layout_constraintTop_toBottomOf="@id/wtv_title"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
@@ -51,7 +51,17 @@
             app:layout_constraintVertical_weight="1"
             android:text="@{model.description}"
             tools:text="圈子描述"
-            android:textColor="@color/color_74889D"
+            android:textColor="@color/color_66"
             android:textSize="@dimen/sp_12" />
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_count"
+            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            app:layout_constraintStart_toStartOf="@id/wtv_title"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="123 成员  12232 帖子"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_11"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
