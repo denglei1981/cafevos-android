@@ -96,7 +96,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             RouterManger.startARouter(ARouterMyPath.MineMedalUI)
         }
 
-        //弹框领取勋章
+
         viewModel.wearMedal.observe(this, Observer {
             if ("true" == it) {
                 showToast("已点亮")
@@ -214,18 +214,18 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             }.attach()
         }
 
-        medalItem?.let { item ->
-            PopSuccessMedal().apply {
-                binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
-                binding.medalName.text = item.medalName
-                binding.getTitle1.text = item.remark
-                binding.btnGetTake.visibility = View.VISIBLE
-                binding.btnGetTake.setOnClickListener {
-                    dismiss()
-                    viewModel.wearMedal(item.medalId,item.medalKey)
-                }
-            }.showPopupWindow()
-        }
+//        medalItem?.let { item ->
+//            PopSuccessMedal().apply {
+//                binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
+//                binding.medalName.text = item.medalName
+//                binding.getTitle1.text = item.remark
+//                binding.btnGetTake.visibility = View.VISIBLE
+//                binding.btnGetTake.setOnClickListener {
+//                    dismiss()
+////                    viewModel.wearMedal(item.medalId,item.medalKey)
+//                }
+//            }.showPopupWindow()
+//        }
     }
 
     override fun initData() {

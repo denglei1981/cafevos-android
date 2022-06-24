@@ -47,21 +47,15 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                 it.btnGetMedal.setOnClickListener(null)
                 it.imMedalIcon.alpha = 0.3f
                 when {
-                    item.isGet == "0" -> {//获得未领取
-                        it.btnGetMedal.visibility = View.VISIBLE
-                        it.tvMedalDes.visibility = View.GONE
-                        it.btnGetMedal.setOnClickListener {
-                            indexItem = holder.layoutPosition
-                            viewModel.wearMedal(item.medalId, item.medalKey)
-                        }
-                    }
-                    item.isGet.isNullOrEmpty() -> {//未获取
-                        it.btnGetMedal.visibility = View.GONE
-                        it.tvMedalDes.visibility = View.VISIBLE
-                        var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
-                        it.tvMedalDes.text = "暂未点亮\n$r"
-                    }
-                    else -> {//已获取
+//                    item.isGet == "0" -> {//获得未领取
+//                        it.btnGetMedal.visibility = View.VISIBLE
+//                        it.tvMedalDes.visibility = View.GONE
+//                        it.btnGetMedal.setOnClickListener {
+//                            indexItem = holder.layoutPosition
+//                            viewModel.wearMedal(item.medalId, item.medalKey)
+//                        }
+//                    }
+                    item.isGet=="1"-> {//获取
                         var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
@@ -72,6 +66,12 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                             )
                         }点亮\n$r"
                         it.imMedalIcon.alpha = 1.0f
+                    }
+                    else -> {//已获取
+                        it.btnGetMedal.visibility = View.GONE
+                        it.tvMedalDes.visibility = View.VISIBLE
+                        var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
+                        it.tvMedalDes.text = "暂未点亮\n$r"
                     }
                 }
             }

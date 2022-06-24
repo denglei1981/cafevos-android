@@ -190,7 +190,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
         binding.tvCon.text = medal.fillCondition
         if (medal.isGet == "0") {
             binding.btnGetMedal.text = "立即点亮"
-            binding.btnGetMedal.visibility = View.VISIBLE
+            binding.btnGetMedal.visibility = View.GONE
         } else {
             binding.btnGetMedal.visibility = View.GONE
         }

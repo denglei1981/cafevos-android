@@ -57,7 +57,7 @@
             style="@style/login_btn_style"
             android:layout_width="@dimen/dp_230"
             android:layout_height="@dimen/dp_40"
-            android:text="立即点亮"
+            android:text="我知道了"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
