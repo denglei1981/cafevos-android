@@ -221,11 +221,12 @@ class CarAuthViewModel : ViewModel() {
     }
 
 
-    fun setDefalutCar(vin: String, result: (CommonResponse<String>) -> Unit) {
+    fun setDefalutCar(carSalesInfoId: String, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest(true) {
                 val body = HashMap<String, Any>()
-                body["vin"] = vin
+//                body["vin"] = vin
+                body["carSalesInfoId"]=carSalesInfoId
                 val rKey = getRandomKey()
                 apiService.setDefaultCar(body.header(rKey), body.body(rKey))
 

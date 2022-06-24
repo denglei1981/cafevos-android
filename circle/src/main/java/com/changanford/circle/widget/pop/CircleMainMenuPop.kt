@@ -58,10 +58,11 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发长帖"),
             CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
             CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
+            CircleMainMenuBean(R.mipmap.circle_post_question,"提问")
         )
-        if(param!="TECHNICIAN"){
-            list.add(CircleMainMenuBean(R.mipmap.circle_post_question,"提问"))
-        }
+//        if(param!="TECHNICIAN"){
+//
+//        }
         adapter.setItems(list)
         binding.ryManagement.adapter = adapter
 
