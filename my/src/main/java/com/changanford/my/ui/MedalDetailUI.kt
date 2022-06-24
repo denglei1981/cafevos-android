@@ -76,8 +76,8 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
             if (indexMedalItem in 0..medals.size) {
                 var medal = medals[indexMedalItem]
                 if (null != medal && medal?.isGet == "0") {
-                    medal?.medalId?.let {
-                        viewModel.wearMedal(it, "2")
+                    medal.let{
+                        viewModel.wearMedal(it.medalId, it.medalKey)
                     }
                 }
             }

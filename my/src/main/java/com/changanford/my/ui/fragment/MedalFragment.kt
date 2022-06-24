@@ -52,7 +52,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                         it.tvMedalDes.visibility = View.GONE
                         it.btnGetMedal.setOnClickListener {
                             indexItem = holder.layoutPosition
-                            viewModel.wearMedal(item.medalId, "2")
+                            viewModel.wearMedal(item.medalId, item.medalKey)
                         }
                     }
                     item.isGet.isNullOrEmpty() -> {//未获取
