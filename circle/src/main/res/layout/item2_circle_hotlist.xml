@@ -41,7 +41,7 @@
         <com.changanford.common.ui.view.WTextView
             android:id="@id/wtv_des"
             style="@style/w_style_txt_ellipsize"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             app:layout_constraintStart_toStartOf="@id/wtv_title"
             app:layout_constraintTop_toBottomOf="@id/wtv_title"
             app:layout_constraintEnd_toEndOf="parent"
