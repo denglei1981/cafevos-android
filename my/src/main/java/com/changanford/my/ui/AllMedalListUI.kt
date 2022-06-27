@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -50,18 +51,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private var totalNum: Int = 0
 
     private var isRefresh: Boolean = false
-    var nowMedalId: String = ""
+
     var userInfoBean: UserInfoBean? = null
     var medalDatas: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
-        var sysUserInfoBean: SysUserInfoBean? = UserManger.getSysUserInfo()
-        sysUserInfoBean?.userJson?.let {
-            userInfoBean = Gson().fromJson(it, UserInfoBean::class.java)
-            userInfoBean?.ext?.medalId?.let {
-                nowMedalId = "$it"
-            }
-        }
+
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
         binding.medalToolbar.toolbarSave.apply {
             text = "我的勋章"
@@ -84,12 +79,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     if (item.isGet == "0" && null == medalItem) {
                         medalItem = item
                     }
-                    if (item.medalId == "$nowMedalId") {
+                    if (!TextUtils.isEmpty(item.isShow)&&item.isShow=="1") {
                         nowMedal(item)
                     }
                 }
                 if (viewModel.titles.size > 0) {
-                    var medalItem = MedalListBeanItem(medalTypeName = "全部", medalType = 0)
+                    val medalItem = MedalListBeanItem(medalTypeName = "全部", medalType = 0)
                     viewModel.titles.add(0, medalItem)
                     viewModel.medalMap[0] = l
                 }
@@ -101,12 +96,11 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             RouterManger.startARouter(ARouterMyPath.MineMedalUI)
         }
 
-        //弹框领取勋章
+
         viewModel.wearMedal.observe(this, Observer {
             if ("true" == it) {
                 showToast("已点亮")
-                LiveDataBus.get().with("refreshMedal", String::class.java)
-                    .postValue("${medalItem?.medalId},")
+                LiveDataBus.get().with("refreshMedal", String::class.java).postValue("${medalItem?.medalId},")
             } else {
                 showToast(it)
             }
@@ -123,14 +117,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         })
 
         LiveDataBus.get().with("refreshNowMedal", String::class.java).observe(this, Observer {
-            it?.let {
-                nowMedalId = it
-                medalDatas.forEach { item ->
-                    if (item.medalId == "$nowMedalId") {
-                        nowMedal(item)
-                    }
-                }
-            }
+            viewModel.mineMedal()
         })
     }
 
@@ -227,18 +214,18 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
             }.attach()
         }
 
-        medalItem?.let { item ->
-            PopSuccessMedal().apply {
-                binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
-                binding.medalName.text = item?.medalName
-                binding.getTitle1.text = item?.remark
-                binding.btnGetTake.visibility = View.VISIBLE
-                binding.btnGetTake.setOnClickListener {
-                    dismiss()
-                    viewModel.wearMedal(item.medalId, "2")
-                }
-            }.showPopupWindow()
-        }
+//        medalItem?.let { item ->
+//            PopSuccessMedal().apply {
+//                binding.icon.load(item?.medalImage, R.mipmap.ic_medal_ex)
+//                binding.medalName.text = item.medalName
+//                binding.getTitle1.text = item.remark
+//                binding.btnGetTake.visibility = View.VISIBLE
+//                binding.btnGetTake.setOnClickListener {
+//                    dismiss()
+////                    viewModel.wearMedal(item.medalId,item.medalKey)
+//                }
+//            }.showPopupWindow()
+//        }
     }
 
     override fun initData() {

@@ -27,7 +27,9 @@ data class MedalListBeanItem(
     val status: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    var getTime: String = "" // 获取时间
+    var getTime: String = "", // 获取时间
+    var medalTypeStr: String = "",
+    var medalKey: String=""
 ) : Serializable {
     fun timeS(): String {
 

@@ -76,8 +76,8 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
             if (indexMedalItem in 0..medals.size) {
                 var medal = medals[indexMedalItem]
                 if (null != medal && medal?.isGet == "0") {
-                    medal?.medalId?.let {
-                        viewModel.wearMedal(it, "2")
+                    medal.let{
+                        viewModel.wearMedal(it.medalId, it.medalKey)
                     }
                 }
             }
@@ -190,7 +190,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
         binding.tvCon.text = medal.fillCondition
         if (medal.isGet == "0") {
             binding.btnGetMedal.text = "立即点亮"
-            binding.btnGetMedal.visibility = View.VISIBLE
+            binding.btnGetMedal.visibility = View.GONE
         } else {
             binding.btnGetMedal.visibility = View.GONE
         }

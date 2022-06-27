@@ -682,12 +682,13 @@ class SignViewModel : ViewModel() {
      */
     val wearMedal: MutableLiveData<String> = MutableLiveData()
 
-    fun wearMedal(medalId: String, type: String) {
+    fun wearMedal(medalId: String,medalKey:String) {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["medalId"] = medalId
-                body["type"] = type
+                body["type"] = "1"
+                body["medalKey"]=medalKey
                 var rkey = getRandomKey()
                 apiService.wearMedal(body.header(rkey), body.body(rkey))
             }.onSuccess {
