@@ -1,7 +1,9 @@
 package com.changanford.circle.ui.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.PersonalAdapter
@@ -67,9 +69,11 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
         viewModel.getData(circleId, page)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
-        viewModel.personalBean.observe(this, {
+        viewModel.personalBean.observe(this) {
+            binding.tvCount.text="共${it.total}位成员"
             if (page == 1) {
                 adapter.setList(it.dataList)
             } else {
@@ -81,28 +85,31 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
             }
 
             if (it.extend.isStarRole == "1") {
-                binding.title.tvRightMenu.text = "设置"
-                binding.title.tvRightMenu.setOnClickListener { _ ->
-                    val bundle = Bundle()
-                    bundle.putString("circleId", circleId)
-                    bundle.putString("isCircle", it.extend.isCircler)
-                    startARouter(ARouterCirclePath.CircleMemberManageActivity, bundle)
+                binding.title.tvRightMenu.apply {
+                    setTextColor(ContextCompat.getColor(this@PersonalActivity,R.color.color_00095B))
+                    text = "管理"
+                    setOnClickListener { _ ->
+                        val bundle = Bundle()
+                        bundle.putString("circleId", circleId)
+                        bundle.putString("isCircle", it.extend.isCircler)
+                        startARouter(ARouterCirclePath.CircleMemberManageActivity, bundle)
+                    }
                 }
             }
-        })
-        viewModel.quitCircleBean.observe(this, {
+        }
+        viewModel.quitCircleBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 binding.title.tvRightMenu.visibility = View.GONE
             }
-        })
+        }
     }
 
     private fun bus() {
         LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_MEMBER_MANAGE_FINISH)
-            .observe(this, {
+            .observe(this) {
                 page = 1
                 viewModel.getData(circleId, page)
-            })
+            }
     }
 }

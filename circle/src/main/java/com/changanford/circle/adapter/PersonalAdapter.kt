@@ -1,7 +1,5 @@
 package com.changanford.circle.adapter
 
-import android.os.Bundle
-import android.os.UserManager
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,10 +12,7 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.MUtils
 import com.changanford.common.manger.UserManger
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 
 /**
  *Author lcw
@@ -53,7 +48,7 @@ class PersonalAdapter :
             labelAdapter.setItems(item.imags)
             binding.ryImage.adapter = labelAdapter
 
-            if (isApply == "2" && item.userId == UserManger.getSysUserInfo()?.uid?:"") {
+            if (isApply == "2" && item.userId == (UserManger.getSysUserInfo()?.uid ?: "")) {
                 binding.tvOut.visibility = View.VISIBLE
             } else {
                 binding.tvOut.visibility = View.GONE

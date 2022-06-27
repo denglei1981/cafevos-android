@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,7 +16,18 @@
         <include
             android:id="@+id/title"
             layout="@layout/circle_layout_title" />
-
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/dp_31"
+            android:gravity="center_vertical"
+            tools:text="共7位成员"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_12"
+            android:background="@color/color_F5"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_personal"
             android:layout_width="match_parent"
