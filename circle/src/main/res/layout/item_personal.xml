@@ -14,7 +14,8 @@
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="29dp">
+        android:paddingTop="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_15">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
