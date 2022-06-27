@@ -10,7 +10,6 @@ import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.utils.MUtils
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 
@@ -31,7 +30,7 @@ class PersonalAdapter :
     override fun convert(holder: BaseViewHolder, item: CircleMemberBean) {
         val binding = DataBindingUtil.bind<ItemPersonalBinding>(holder.itemView)
         binding?.let {
-            MUtils.setTopMargin(binding.clItem, 27, holder.layoutPosition)
+//            MUtils.setTopMargin(binding.clItem, 27, holder.layoutPosition)
 
             binding.ivIcon.loadImage(item.avatar, ImageOptions().apply {
                 circleCrop = true
