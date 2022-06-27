@@ -1,93 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16.5dp"
-        android:gravity="center"
-        android:text="设置身份"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        tools:ignore="HardcodedText" />
+    <data>
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="18.5dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/bg_f5_cor5"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16.5dp"
+            android:gravity="center"
+            android:text="设置身份"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="18.5dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/bg_f5_cor5"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rl_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.8"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_all_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="25dp"
+                android:textColor="#A6ABB0"
+                android:textSize="12sp"
+                tools:text="等25人" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rl_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.8"
+            android:id="@+id/rl_role_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="26dp"
             android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_circle_member_dialog" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_all_num"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="25dp"
-            android:textColor="#A6ABB0"
-            android:textSize="12sp"
-            tools:text="等25人" />
+            android:layout_marginBottom="22dp"
+            android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_f6_cor2"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="#B0B3B5"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_fc88_cor2"
+                android:gravity="center"
+                android:text="确认"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rl_role_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="26dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="22dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="24dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_f6_cor2"
-            android:gravity="center"
-            android:text="取消"
-            android:textColor="#B0B3B5"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_confirm"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_fc88_cor2"
-            android:gravity="center"
-            android:text="确认"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-</LinearLayout>
+</layout>
