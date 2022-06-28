@@ -414,7 +414,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     when (jumpValue) {
                         1 -> {
                             navController.navigate(R.id.homeFragment)
-
                         }
                         2 -> {
                             setHomBottomNavi(View.VISIBLE)

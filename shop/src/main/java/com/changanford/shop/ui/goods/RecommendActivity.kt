@@ -2,6 +2,7 @@ package com.changanford.shop.ui.goods
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -14,6 +15,7 @@ import com.changanford.shop.databinding.ActRecommendBinding
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import java.net.URLDecoder
 
 /**
  * @Author : wenke
@@ -38,7 +40,7 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         val defaultKindName=intent.getStringExtra("value")
         viewModel.typesBean.observe(this){
             bindTab(it)
-            val index =it.indexOfFirst { item -> item.kindName == defaultKindName }
+            val index =if(!TextUtils.isEmpty(defaultKindName))it.indexOfFirst { item -> item.kindName == URLDecoder.decode(defaultKindName, "UTF-8") } else 0
             if (index>0) binding.viewPager2.currentItem =index
         }
         viewModel.getRecommendTypes()

@@ -28,6 +28,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import java.net.URLDecoder
 
 
 /**
@@ -187,9 +188,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 }
             }
     }
+    /**
+     * [tagName]标签名称  注意：这里需要URL解码
+    * */
     fun setCurrentItem(tagName:String?=defaultTagName){
-        defaultTagName=tagName
         if(TextUtils.isEmpty(tagName))return
+        defaultTagName=URLDecoder.decode(tagName, "UTF-8")
         viewModel.shopHomeData.value?.mallTags?.let {
             val index =it.indexOfFirst { item -> item.tagName == tagName }
             if(index>-1)binding.viewpager.currentItem=index

@@ -230,8 +230,15 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                     crossfade(false)
                                     placeholder(R.mipmap.head_default)
                                 }), contentDescription =null,contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxWidth().fillMaxHeight().clip(RoundedCornerShape(5.dp))
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .clip(RoundedCornerShape(5.dp))
                             )
+                            //是否加星
+//                            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(4.dp)) {
+//                                Image(painter = painterResource(R.mipmap.ic_circle_star_1), contentDescription = "星标")
+//                            }
                             Box(contentAlignment = Alignment.Center,modifier = Modifier
                                 .height(27.dp)
                                 .fillMaxWidth()
@@ -257,12 +264,16 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
     * */
     @Composable
     fun CirclePK(){
-        Column(modifier=Modifier.fillMaxWidth().padding(start = 20.dp,end = 20.dp,top = 30.dp)) {
+        Column(modifier= Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp, top = 30.dp)) {
             Row(modifier=Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.str_circlePK),color = colorResource(R.color.color_34),fontSize = 16.sp,fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f))
                 Text(text = stringResource(R.string.str_all),color = colorResource(R.color.color_74889D),fontSize = 14.sp,
-                    modifier = Modifier.padding(end = 5.dp).clickable {  })
+                    modifier = Modifier
+                        .padding(end = 5.dp)
+                        .clickable { })
                 Image(painter = painterResource(R.mipmap.right_74889d),contentDescription = null)
             }
         }
@@ -272,7 +283,9 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         Row(modifier = Modifier.fillMaxWidth()){
             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData?.pic) ?: R.mipmap.head_default,
                 builder = {placeholder(R.mipmap.head_default)}),
-                contentDescription =null,contentScale = ContentScale.Crop,modifier = Modifier.size(77.dp).clip(RoundedCornerShape(5.dp))
+                contentDescription =null,contentScale = ContentScale.Crop,modifier = Modifier
+                    .size(77.dp)
+                    .clip(RoundedCornerShape(5.dp))
             )
             Spacer(modifier = Modifier.width(11.dp))
             Column(modifier = Modifier.weight(1f)) {
@@ -281,8 +294,10 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 Text(text = "${stringResource(R.string.str_cycle)}----",color = colorResource(R.color.color_74889D),fontSize = 11.sp)
                 Spacer(modifier = Modifier.weight(1f))
                 //按钮状态 PK中 未开始 已结束
-                Box(contentAlignment = Alignment.Center,modifier = Modifier.defaultMinSize(minWidth = 45.dp,minHeight = 18.dp)
-                    .background(colorResource(R.color.color_F2F4F9),shape = RoundedCornerShape(2.5.dp))){
+                Box(contentAlignment = Alignment.Center,modifier = Modifier
+                    .defaultMinSize(minWidth = 45.dp, minHeight = 18.dp)
+                    .background(colorResource(R.color.color_F2F4F9),
+                        shape = RoundedCornerShape(2.5.dp))){
                     Text(text = stringResource(R.string.str_inPk),color = colorResource(R.color.color_00095B),fontSize = 12.sp)
                 }
             }

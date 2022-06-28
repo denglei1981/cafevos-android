@@ -15,6 +15,7 @@ class CircleHotListAdapter2: BaseQuickAdapter<NewCircleBean, BaseDataBindingHold
     override fun convert(holder: BaseDataBindingHolder<Item2CircleHotlistBinding>, itemData: NewCircleBean) {
         holder.dataBinding?.apply {
             imgCover.load(itemData.pic)
+            tvCount.text="${itemData.userCount} 成员  ${itemData.postsCount} 帖子"
             model=itemData
             executePendingBindings()
             root.setOnClickListener {

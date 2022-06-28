@@ -11,7 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
+        android:layout_height="@dimen/dp_80"
         android:layout_marginBottom="@dimen/dp_20"
         android:paddingStart="@dimen/dp_15"
         android:paddingEnd="@dimen/dp_20"
@@ -44,12 +44,13 @@
             app:layout_constraintStart_toEndOf="@id/img_ranking"
             android:layout_marginStart="@dimen/dp_10"
             tools:background="@color/color_00095B"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="match_parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
             android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_5"
             style="@style/w_style_txt_ellipsize"
             app:layout_constraintTop_toTopOf="@id/img_cover"
             app:layout_constraintStart_toEndOf="@id/img_cover"
@@ -59,22 +60,36 @@
             tools:text="美食街区"
             android:text="@{model.name}"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_15" />
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16" />
+
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_des"
-            android:gravity="center_vertical"
             style="@style/w_style_txt_ellipsize"
-            app:layout_constraintStart_toStartOf="@id/wtv_title"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="唯有美食不可辜负"
+            android:layout_marginTop="@dimen/dp_4"
+            android:gravity="center_vertical"
             android:text="@{model.description}"
-            android:textColor="@color/color_74889D"
-            android:textSize="@dimen/sp_13" />
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintTop_toBottomOf="@id/wtv_title"
+            app:layout_constraintStart_toStartOf="@id/wtv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="唯有美食不可辜负" />
+
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_count"
+            app:layout_constraintBottom_toBottomOf="@id/img_cover"
+            app:layout_constraintStart_toStartOf="@id/wtv_title"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="123 成员  12232 帖子"
+            android:textColor="@color/color_cc"
+            android:textSize="@dimen/sp_11"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/img_cover"
             app:layout_constraintStart_toStartOf="@id/wtv_title"
             app:layout_constraintEnd_toEndOf="parent"

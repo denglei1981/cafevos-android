@@ -30,12 +30,14 @@ class CircleTopAdapter: BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<It
                 }
                 setTextColor(ContextCompat.getColor(context,if(position<3)R.color.color_FC5E42 else R.color.color_D1D2D7))
             }
-            item.tags?.let {tags->
-                recyclerView.layoutManager=FlowLayoutManager(context,true,true)
-                recyclerView.adapter=TagAdapter().apply {
-                    setList(tags)
-                }
-            }
+            tvCount.text="${item.userCount} 成员  ${item.postsCount} 帖子"
+            //118隐藏标签
+//            item.tags?.let {tags->
+//                recyclerView.layoutManager=FlowLayoutManager(context,true,true)
+//                recyclerView.adapter=TagAdapter().apply {
+//                    setList(tags)
+//                }
+//            }
             model=item
             executePendingBindings()
         }

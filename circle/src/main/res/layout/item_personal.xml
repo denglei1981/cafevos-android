@@ -14,7 +14,8 @@
         android:id="@+id/cl_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="29dp">
+        android:paddingTop="@dimen/dp_15"
+        android:paddingBottom="@dimen/dp_15">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
@@ -48,8 +49,8 @@
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_0817"
-                android:textSize="13sp"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_15"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="萨瓦迪LaLa" />
@@ -85,14 +86,17 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_out"
-                android:layout_width="60dp"
-                android:layout_height="25dp"
-                android:background="@drawable/circle_819_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_25"
+                android:minWidth="@dimen/dp_50"
+                android:background="@drawable/circle_1a01025c_12"
                 android:gravity="center"
-                android:text="退出"
-                android:textColor="@color/white"
-                android:textSize="12sp"
+                android:text="@string/str_exit"
+                android:textColor="@color/circle_00095"
+                android:textSize="@dimen/sp_12"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -52,4 +52,8 @@
     <string name="str_determine">确定</string>
     <string name="str_redskinsInformation">问答红人信息</string>
     <string name="str_successfullyJoined">已成功加入</string>
+    <string name="str_exit">退出</string>
+    <string name="str_setIdentity">设置身份</string>
+    <string name="str_remainingPlaces">剩余名额：</string>
+    <string name="str_confirm">确认</string>
 </resources>
