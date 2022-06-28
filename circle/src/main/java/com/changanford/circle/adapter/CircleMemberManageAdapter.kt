@@ -29,11 +29,7 @@ class CircleMemberManageAdapter :
             } else {
                 binding.masterTv.visibility = View.GONE
             }
-            GlideUtils.loadCircle(
-                item.avatar,
-                binding.avatarImg,
-                R.mipmap.ic_def_square_img
-            )
+            GlideUtils.loadCircle(item.avatar,binding.avatarImg,R.mipmap.ic_def_square_img)
             binding.checkbox.isChecked = item.isCheck
             binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 item.isCheck = isChecked
