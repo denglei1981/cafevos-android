@@ -570,7 +570,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     1 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
                             it.data?.let {s->
-                                pathMap.put(imgType, OcrRequestBean(s, "ID_CARD", s))
+                                pathMap.put(imgType, OcrRequestBean(s.cmcUrl, "ID_CARD", s.cmcUrl))
                             }
 
                         }
@@ -582,7 +582,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             it.data?.let {s->
                                 pathMap.put(
                                     imgType,
-                                    OcrRequestBean(s, "DRIVER_LICENCE", path)
+                                    OcrRequestBean(s.cmcUrl, "DRIVER_LICENCE", s.cmcUrl)
                                 )
                             }
                         }
@@ -593,7 +593,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             it.data?.let {s->
                                 pathMap.put(
                                     imgType,
-                                    OcrRequestBean(s, "WALK_LICENCE", path)
+                                    OcrRequestBean(s.cmcUrl, "WALK_LICENCE", s.cmcUrl)
                                 )
                             }
                         }
@@ -609,7 +609,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             it.data?.let {s->
                                 pathMap.put(
                                     imgType,
-                                    OcrRequestBean(s, "CAR_INVOICE", path)
+                                    OcrRequestBean(s.cmcUrl, "CAR_INVOICE", s.cmcUrl)
                                 )
                             }
                         }
@@ -868,7 +868,9 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 CarItemBean(
                                     vin = vinNum,
                                     authStatus = it.authStatus,
-                                    isNeedChangeBind = it?.isNeedChangeBind ?: 0
+                                    isNeedChangeBind = it.isNeedChangeBind ?: 0,
+                                    authId = it.authId,
+                                    carSalesInfoId = ""
                                 )
                             )
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)

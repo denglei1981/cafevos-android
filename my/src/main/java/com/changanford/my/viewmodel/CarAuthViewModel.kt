@@ -55,7 +55,7 @@ class CarAuthViewModel : ViewModel() {
     }
 
 
-    fun cmcImageUpload(ossUrl:String,type:Int,result: (CommonResponse<String>) -> Unit){
+    fun cmcImageUpload(ossUrl:String,type:Int,result: (CommonResponse<CmcUrl>) -> Unit){
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()

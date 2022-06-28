@@ -1011,7 +1011,7 @@ interface NetWorkApi {
     suspend fun cmcImageUpload(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<CmcUrl>
 
     //我的足迹 商品
     @POST("mall/myMallFootprint")
@@ -1031,7 +1031,6 @@ interface NetWorkApi {
     /**
      * 添加车牌号
      */
-
     @POST("ser/carAuth/updatePlateNum")
     suspend fun addCarCardNum(
         @HeaderMap headMap: Map<String, String>,

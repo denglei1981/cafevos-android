@@ -32,5 +32,10 @@ data class BindMobileJumpData(val jumpDataType: Int = 0, val jumpDataMsg: String
 data class CarAUthResultBean(
     val authStatus: Int,
     val examineRemakeFront: String? = null,
-    val isNeedChangeBind: Int = 0
+    val isNeedChangeBind: Int = 0,
+    val authId:String,
+    val carSalesInfoId:String,
 )
+
+
+data class  CmcUrl(var cmcUrl:String)

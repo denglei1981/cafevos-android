@@ -74,7 +74,6 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         dialog.setCanceledOnTouchOutside(false)
         dialog.setLoadingText("图片上传中..")
         binding.mineToolbar.toolbarTitle.text = "基本信息"
-//        binding.mineToolbar.toolbarSave.text = "保存"
         binding.mineToolbar.toolbarSave.setOnClickListener {
             //保存
             if (headIconPath.isNullOrEmpty()) {
