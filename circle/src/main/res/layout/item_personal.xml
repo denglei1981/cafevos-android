@@ -55,7 +55,9 @@
                 android:textSize="@dimen/sp_15"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="萨瓦迪LaLa" />
+                tools:text="萨瓦迪LaLa"
+                android:maxWidth="@dimen/dp_150"
+                android:ellipsize="end"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_image"

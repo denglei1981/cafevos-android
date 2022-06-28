@@ -35,7 +35,7 @@ class CircleMemberManageAdapter :
                 item.isCheck = isChecked
                 LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_MEMBER_MANAGE).postValue("")
             }
-            val labelAdapter = LabelAdapter(binding.avatarImg.context, 16)
+            val labelAdapter = LabelAdapter(binding.avatarImg.context, 20)
             labelAdapter.setItems(item.imags)
             binding.rlIdentification.adapter = labelAdapter
             binding.executePendingBindings()

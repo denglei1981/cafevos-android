@@ -51,9 +51,11 @@
                     android:id="@+id/name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/dp_150"
+                    android:ellipsize="end"
                     android:text="@{bean.nickname}"
                     android:textColor="@color/color_33"
-                    android:textSize="@dimen/sp_13"
+                    android:textSize="@dimen/sp_15"
                     tools:text="xxxx"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rl_identification"
