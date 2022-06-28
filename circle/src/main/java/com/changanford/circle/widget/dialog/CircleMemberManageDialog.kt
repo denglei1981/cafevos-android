@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.changanford.circle.R
 import com.changanford.circle.adapter.MemberDialogAdapter
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.CircleDialogBeanItem
 import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.MyApp
@@ -98,9 +97,9 @@ class CircleMemberManageDialog(
             ApiClient.createApi<CircleNetWork>()
                 .getStarsRole(body.header(rKey), body.body(rKey)).also {
                     if (it.code == 0) {
-                        val totalSize=list.size
-                        val newList=it.data?.filter {item-> item.surplusNum.toInt()>= totalSize}
-                        mRoleAdapter.setItems(newList as ArrayList<CircleDialogBeanItem>?)
+//                        val totalSize=list.size
+//                        val newList=it.data?.filter {item-> item.surplusNum.toInt()>= totalSize}
+                        mRoleAdapter.setItems(it.data)
                         rlRoleRecycler?.adapter = mRoleAdapter
                     } else {
                         it.msg.toast()

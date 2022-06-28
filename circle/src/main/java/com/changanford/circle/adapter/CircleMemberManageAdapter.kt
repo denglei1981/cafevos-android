@@ -1,7 +1,6 @@
 package com.changanford.circle.adapter
 
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -25,17 +24,6 @@ class CircleMemberManageAdapter :
         val binding = DataBindingUtil.bind<ItemCircleMemberManageBinding>(holder.itemView)
         binding?.let {
             binding.bean = item
-            //第一个为圈主
-//           binding.masterTv.visibility =
-//                if (holder.adapterPosition == 0) View.VISIBLE else View.GONE
-            binding.masterTv.background =
-                ContextCompat.getDrawable(context, R.drawable.line_fc88_cor8_no_fill)
-            binding.masterTv.setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.circle_app_color
-                )
-            )
             if (item.starOrderNumStr?.isNotEmpty() == true) {
                 binding.masterTv.visibility = View.VISIBLE
             } else {
