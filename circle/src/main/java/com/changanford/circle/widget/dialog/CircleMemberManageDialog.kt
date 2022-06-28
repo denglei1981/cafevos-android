@@ -3,11 +3,11 @@ package com.changanford.circle.widget.dialog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleMemberDialogAdapter
 import com.changanford.circle.adapter.MemberDialogAdapter
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleMemberBean
@@ -40,27 +40,15 @@ class CircleMemberManageDialog(
     private val mRoleAdapter by lazy {
         MemberDialogAdapter(context, size, list)
     }
-
-    private var rlContent: RecyclerView? = null
     private var rlRoleRecycler: RecyclerView? = null
     private var tvCancel: TextView? = null
     private var tvConfirm: TextView? = null
     private var tvAllNum: TextView? = null
-
     override fun getLayoutId() = R.layout.member_manage_set_pop
-
-
-    private val mAdapter by lazy {
-        CircleMemberDialogAdapter(context)
-    }
-
     init {
         window?.setGravity(Gravity.BOTTOM)
         setParamWidthMatch()
         initView()
-        rlContent?.adapter = mAdapter
-        mAdapter.setItems(list)
-        mAdapter.notifyDataSetChanged()
         tvCancel?.setOnClickListener {
             dismiss()
         }
@@ -82,21 +70,19 @@ class CircleMemberManageDialog(
                 dismiss()
             }
         }
-        if (list.size == 1) {
-            tvAllNum?.text = "当前设置"
-        } else {
-            tvAllNum?.text = "等${list.size}人"
-        }
+        tvAllNum?.text = "当前选中${list.size}人"
 
         getCircleUsers()
     }
 
     private fun initView() {
-        rlContent = findViewById(R.id.rl_content)
-        rlRoleRecycler = findViewById(R.id.rl_role_recycler)
+        rlRoleRecycler = findViewById(R.id.recyclerView)
         tvCancel = findViewById(R.id.tv_cancel)
         tvConfirm = findViewById(R.id.tv_confirm)
-        tvAllNum = findViewById(R.id.tv_all_num)
+        tvAllNum = findViewById(R.id.tv_number)
+        findViewById<ImageView>(R.id.img_close).setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun getCircleUsers() {
