@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.changanford.circle.R
 import com.changanford.circle.adapter.MemberDialogAdapter
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.CircleDialogBeanItem
 import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.MyApp
@@ -30,7 +31,6 @@ import com.changanford.common.utilext.toast
 class CircleMemberManageDialog(
     context: Context,
     private val lifecycleOwner: LifecycleOwner,
-    private val size: Int,
     private val circleId: String,
     private val list: ArrayList<CircleMemberBean>,
     private val mSureListener: SureListener
@@ -38,7 +38,7 @@ class CircleMemberManageDialog(
     BaseDialog(context) {
 
     private val mRoleAdapter by lazy {
-        MemberDialogAdapter(context, size, list)
+        MemberDialogAdapter(context, list)
     }
     private var rlRoleRecycler: RecyclerView? = null
     private var tvCancel: TextView? = null
@@ -83,6 +83,10 @@ class CircleMemberManageDialog(
         findViewById<ImageView>(R.id.img_close).setOnClickListener {
             dismiss()
         }
+        mRoleAdapter.let {
+            it.tvHaveNum=findViewById(R.id.tv_remainingPlaces)
+            it.tvConfirm=tvConfirm
+        }
     }
 
     private fun getCircleUsers() {
@@ -94,7 +98,9 @@ class CircleMemberManageDialog(
             ApiClient.createApi<CircleNetWork>()
                 .getStarsRole(body.header(rKey), body.body(rKey)).also {
                     if (it.code == 0) {
-                        mRoleAdapter.setItems(it.data)
+                        val totalSize=list.size
+                        val newList=it.data?.filter {item-> item.surplusNum.toInt()>= totalSize}
+                        mRoleAdapter.setItems(newList as ArrayList<CircleDialogBeanItem>?)
                         rlRoleRecycler?.adapter = mRoleAdapter
                     } else {
                         it.msg.toast()

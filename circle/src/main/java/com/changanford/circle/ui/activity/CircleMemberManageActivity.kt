@@ -81,7 +81,6 @@ class CircleMemberManageActivity :
             CircleMemberManageDialog(
                 this,
                 this,
-                mCheckNum,
                 circleId,
                 list,
                 object : CircleMemberManageDialog.SureListener {
