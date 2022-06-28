@@ -685,7 +685,7 @@ interface NetWorkApi {
     /**
      * 获取全部区域
      */
-    @POST("base/region/getAllProvinceAndCityRegion")
+    @POST("base/region/cmc/getAllProvinceAndCityRegion")
     suspend fun getAllCity(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -725,7 +725,7 @@ interface NetWorkApi {
     /*-------------------圈子---------------------*/
 
     //con/circle/getJoinCircles 我参与的圈子
-    @POST("con/circle/getJoinCircles")
+    @POST("con/community/circleJoin")
     suspend fun queryMineJoinCircleList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -741,7 +741,7 @@ interface NetWorkApi {
 
 
     //我管理的圈子
-    @POST("con/circle/getMyCircles")
+    @POST("con/community/circleMan")
     suspend fun queryMineMangerCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

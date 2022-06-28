@@ -50,6 +50,7 @@ data class CircleItemBean(
     var tagIds:ArrayList<Int>?=null,
     val type:String,
     val needAudit:String,
+    var star:String?=null,
 
 ) : MultiItemEntity,Serializable
 

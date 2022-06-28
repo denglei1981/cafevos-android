@@ -227,7 +227,7 @@ interface CircleNetWork {
     /**
      * 参与的圈子
      */
-    @POST("con/circle/getJoinCircles")
+    @POST("con/community/circleJoin")
     suspend fun getjoinCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
