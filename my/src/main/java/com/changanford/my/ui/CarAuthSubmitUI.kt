@@ -567,10 +567,52 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 uploadDialog.dismiss()
                 showToast("上传成功")
                 when (imgType) {
-                    1, 7 -> {
+                    1 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(imgType, OcrRequestBean(s, "ID_CARD", s))
+                            }
+
+                        }
                         showIdcard(it)
                     }
-                    4, 5 -> {
+
+                    7 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s, "DRIVER_LICENCE", path)
+                                )
+                            }
+                        }
+                        showIdcard(it)
+                    }
+                    4 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s, "WALK_LICENCE", path)
+                                )
+                            }
+                        }
+                        it?.plate_num?.let {
+                            body["plateNum"] = it
+                        }
+                        showVIN(it)
+
+
+                    }
+                    5 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s, "CAR_INVOICE", path)
+                                )
+                            }
+                        }
                         it?.plate_num?.let {
                             body["plateNum"] = it
                         }
