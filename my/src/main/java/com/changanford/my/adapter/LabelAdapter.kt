@@ -22,7 +22,9 @@ class LabelAdapter(var size: Int, var isShow: Boolean = true) :
         val lable_icon =
             baseViewHolder.itemView.findViewById<ImageView>(R.id.label_icon)
         lable_icon.setOnClickListener {
-            JumpUtils.instans?.jump(labelBean.jumpDataType, labelBean.jumpDataValue)
+            if(labelBean.jumpDataType>0){
+                JumpUtils.instans?.jump(labelBean.jumpDataType, labelBean.jumpDataValue)
+            }
         }
         val params = lable_icon.layoutParams
         params.width =

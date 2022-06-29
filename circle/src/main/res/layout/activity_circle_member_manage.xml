@@ -8,45 +8,51 @@
 
     </data>
 
-    <RelativeLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:background="@color/white"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <include
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/title_bar"
+            layout="@layout/circle_layout_title" />
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/title_bar"
-                layout="@layout/circle_layout_title" />
-
-            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                android:id="@+id/refresh_layout"
+            app:srlEnableLoadMore="false"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/title_bar"
+            app:layout_constraintBottom_toTopOf="@id/view_divider"
+            android:layout_marginTop="15dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                style="@style/VScrollbarStyle"
                 android:layout_width="match_parent"
-                app:srlEnableLoadMore="false"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    style="@style/VScrollbarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="50dp"
-                    android:background="@color/white"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-            </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-        </LinearLayout>
-
-        <LinearLayout
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_circle_member_manage"/>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+        <View
+            android:background="@color/color_F5"
+            app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+            android:id="@+id/view_divider"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="21dp"
-            android:orientation="horizontal">
+            android:layout_height="@dimen/dp_0_5"/>
+        <LinearLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="@dimen/dp_7"
+            android:paddingStart="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_20"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dp_30">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_check_num"
@@ -54,36 +60,39 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
                 android:gravity="center_vertical"
-                android:text="已经选择0人"
-                android:textColor="#56585A"
-                android:textSize="13sp"
-                tools:ignore="HardcodedText"
-                tools:text="已经选择3人" />
+                android:text="已选中0人"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/sp_13"
+                tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_set"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"
-                android:background="#2C2C32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="@dimen/dp_98"
+                android:minHeight="@dimen/dp_40"
+                android:background="@drawable/border_0095b_20dp"
                 android:gravity="center"
                 android:visibility="invisible"
                 android:text="设置身份"
-                android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textColor="@color/circle_00095"
+                android:textSize="@dimen/sp_15"
+                tools:visibility="visible"
                 tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_delete"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.23"
-                android:background="#FE3E0A"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dp_40"
+                android:minWidth="@dimen/dp_98"
+                android:background="@drawable/shape_00095b_20dp"
                 android:gravity="center"
                 android:text="删除"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
-    </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -1,5 +1,6 @@
 package com.changanford.shop
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -27,6 +28,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import java.net.URLDecoder
 
 
 /**
@@ -37,6 +39,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private val mAdapter by lazy { GoodsKillAdapter() }
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(),38f) }
     private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
+    private var defaultTagName:String?=null
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
@@ -94,6 +97,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 tab.text = tabs[tabPosition].tagName
             }.attach()
         }
+        setCurrentItem()
     }
     private fun initKill(){
         binding.inTop.recyclerView.adapter=mAdapter
@@ -183,6 +187,18 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     else -> {}
                 }
             }
+    }
+    /**
+     * [tagName]标签名称  注意：这里需要URL解码
+    * */
+    fun setCurrentItem(tagName:String?=defaultTagName){
+        if(TextUtils.isEmpty(tagName))return
+        defaultTagName=URLDecoder.decode(tagName, "UTF-8")
+        viewModel.shopHomeData.value?.mallTags?.let {
+            val index =it.indexOfFirst { item -> item.tagName == tagName }
+            if(index>-1)binding.viewpager.currentItem=index
+            defaultTagName=null
+        }
     }
 }
 

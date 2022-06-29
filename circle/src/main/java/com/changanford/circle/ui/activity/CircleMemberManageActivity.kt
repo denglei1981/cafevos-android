@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleMemberManageAdapter
@@ -44,6 +45,7 @@ class CircleMemberManageActivity :
             AppUtils.setStatusBarMarginTop(binding.titleBar.root, this@CircleMemberManageActivity)
             tvTitle.text = "成员"
             tvRightMenu.text = "完成"
+            tvRightMenu.setTextColor(ContextCompat.getColor(this@CircleMemberManageActivity,R.color.color_00095B))
             ivBack.setOnClickListener { finish() }
             tvRightMenu.setOnClickListener { finish() }
         }
@@ -79,7 +81,6 @@ class CircleMemberManageActivity :
             CircleMemberManageDialog(
                 this,
                 this,
-                mCheckNum,
                 circleId,
                 list,
                 object : CircleMemberManageDialog.SureListener {
@@ -114,10 +115,10 @@ class CircleMemberManageActivity :
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
-        viewModel.total.observe(this, {
+        viewModel.total.observe(this) {
             binding.titleBar.tvTitle.text = "成员($it)"
-        })
-        viewModel.personalBean.observe(this, {
+        }
+        viewModel.personalBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it)
                 if (it.size == 0) {
@@ -130,27 +131,27 @@ class CircleMemberManageActivity :
             if (it.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
-        viewModel.setStarsRoleBean.observe(this, {
+        }
+        viewModel.setStarsRoleBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 page = 1
                 initData()
             }
-        })
-        viewModel.deletePersonalBean.observe(this, {
+        }
+        viewModel.deletePersonalBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
                 page = 1
                 initData()
-                binding.tvCheckNum.text = "已经选择0人"
+                binding.tvCheckNum.text = "已选中0人"
             }
-        })
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun bus() {
-        LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_MEMBER_MANAGE).observe(this, {
+        LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_MEMBER_MANAGE).observe(this) {
             var checkNum = 0
             list.clear()
             adapter.data.forEach { bean ->
@@ -160,8 +161,8 @@ class CircleMemberManageActivity :
                 }
             }
             mCheckNum = checkNum
-            binding.tvCheckNum.text = "已经选择${checkNum}人"
-        })
+            binding.tvCheckNum.text = "已选中${checkNum}人"
+        }
     }
 
     override fun onDestroy() {

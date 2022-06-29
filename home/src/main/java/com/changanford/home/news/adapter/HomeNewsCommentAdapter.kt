@@ -18,6 +18,7 @@ import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
@@ -61,9 +62,11 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
             )
 
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", item.userId)
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
             binding.tvContent.text = item.content
             binding.llLike.setOnClickListener {
@@ -120,9 +123,11 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
                             object : ClickableSpan() {
                                 //设置点击事件
                                 override fun onClick(widget: View) {
-                                    val bundle = Bundle()
-                                    bundle.putString("value", pare.userId)
-                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                                    val bundle = Bundle()
+//                                    bundle.putString("value", pare.userId)
+//                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+
+                                    JumpUtils.instans?.jump(35,pare.userId.toString())
                                 }
 
                                 override fun updateDrawState(ds: TextPaint) {

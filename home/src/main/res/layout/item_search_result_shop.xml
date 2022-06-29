@@ -55,13 +55,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#ff00095b"
+            android:textColor="@color/color_33"
             android:textSize="@dimen/sp_15"
             app:layout_constraintStart_toStartOf="@+id/tv_author_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="车迷级公民" />
-
+            tools:text="￥100" />
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toEndOf="@id/tv_sub_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_sub_title"
+            android:text="@string/str_since"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_9"
+            android:layout_marginStart="@dimen/dp_2"
+            android:layout_marginBottom="@dimen/dp_2"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

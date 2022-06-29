@@ -192,10 +192,10 @@ data class GoodsItemBean(
     }
 
     /**
-     * 销量
+     * 销量-（维保列表销量和其它商品销量字段不统一）
      * */
     fun getSales(): String {
-        return "$salesCount"
+        return if(mallWbGoodsId==null)"$salesCount" else exchageCount?:"0"
     }
 }
 

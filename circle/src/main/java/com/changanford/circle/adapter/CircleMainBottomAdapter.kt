@@ -25,7 +25,10 @@ import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.DensityUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
@@ -81,9 +84,10 @@ class CircleMainBottomAdapter(context: Context) :
 //            }
 
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId.toString())
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+//                val bundle = Bundle()
+//                bundle.putString("value", item.userId.toString())
+//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35, item.userId.toString())
             }
 
             if (item.type == 3) {//视频
@@ -154,6 +158,7 @@ class CircleMainBottomAdapter(context: Context) :
             ApiClient.createApi<CircleNetWork>()
                 .actionLike(body.header(rKey), body.body(rKey)).also {
                     if (it.code == 0) {
+                        LiveDataBus.get().with(LiveDataBusKey.REFRESH_POST_LIKE).postValue(1)
                         if (item.isLike == 0) {
                             item.isLike = 1
                             binding.ivLike.setImageResource(R.mipmap.circle_like_image)

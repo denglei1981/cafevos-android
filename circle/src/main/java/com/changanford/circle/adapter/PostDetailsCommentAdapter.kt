@@ -22,8 +22,9 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -39,7 +40,7 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.let {
-            binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            it.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.bean = item
             binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
             binding.ivLike.setImageResource(
@@ -78,14 +79,26 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
             }
             if (item.childCount == 0) {
                 binding.tvChildCount.visibility = View.GONE
+                binding.rvChild.visibility=View.GONE
             } else {
                 binding.tvChildCount.visibility = View.VISIBLE
-                binding.tvChildCount.text = "${item.childCount}回复"
+                val childAdapter= PostCommentChildAdapter(lifecycleOwner = lifecycleOwner)
+                childAdapter.setNewInstance(item.childVo)
+                binding.rvChild.adapter=childAdapter
+
+                binding.tvChildCount.text = "共${item.childCount}条回复"
+                childAdapter.setOnItemClickListener { _, _, position ->
+                    val commentBean = childAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("groupId", commentBean.groupId)
+                    bundle.putInt("type", 2)// 1 资讯 2 帖子
+                    bundle.putString("bizId", commentBean.bizId)
+                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+                }
+
             }
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
         }
     }

@@ -11,7 +11,7 @@ import com.changanford.common.bean.MenuBeanItem
  */
 data class MangerCircleCheck(var index: Int, var isShow: Boolean)
 
-data class BindingCar(var confirm: Int, var vin: String) {
+data class BindingCar(var confirm: Int, var vin: String,var carSalesInfoId:String) {
 
 
 }

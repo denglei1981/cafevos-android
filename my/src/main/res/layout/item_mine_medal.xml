@@ -14,9 +14,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/medal_icon"
-            android:layout_width="@dimen/dp_54"
-            android:layout_height="@dimen/dp_68"
-            android:scaleType="centerCrop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@mipmap/ic_medal_ex" />
 
         <LinearLayout

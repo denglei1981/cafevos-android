@@ -80,7 +80,6 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 viewModel.getNewsCommentList(artId, false)
 
             } else {
-//                ToastUtils.showShortToast("没有该资讯类型", this)
                 toastShow("没有该资讯类型")
             }
         }
@@ -162,6 +161,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
+                ToastUtils.reToast(R.string.str_shareSuccess)
                 shareBackUpHttp(this, newsDetailData?.shares)
             }
         })

@@ -129,8 +129,8 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
         //监听城市列表
         viewModel.allCity.observe(this, Observer {
-            cityBean?.clear()
-            cityBean?.addAll(it)
+            cityBean.clear()
+            cityBean.addAll(it)
             cityList(cityBean)
         })
 
@@ -205,7 +205,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //            binding.editNickname.rightDesc = it
             body["nickname"] = it.toString()
 
-            var map = HashMap<String, String>()
+            val map = HashMap<String, String>()
             map["nickname"] = it.toString()
             saveUserInfo(true, map)
         })
@@ -587,7 +587,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 it
             )
         }
-        var bb: List<String> = bTime.split('-')
+        val bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
             wheelLayout.setDateLabel("年", "月", "日")
@@ -675,7 +675,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     full(null)
                 }
             } else {
-                var userInfoBean: UserInfoBean =
+                val userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)
                 full(userInfoBean)
             }
@@ -687,7 +687,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         city: CityEntity?,
         county: CountyEntity?
     ) {
-        var map = HashMap<String, String>()
+        val map = HashMap<String, String>()
         var cityA: String = ""
         province?.let {
             body["province"] = it.code

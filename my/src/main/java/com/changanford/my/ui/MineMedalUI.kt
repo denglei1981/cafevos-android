@@ -1,7 +1,9 @@
 package com.changanford.my.ui
 
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
+import androidx.compose.material.Text
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -34,6 +36,9 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
 
     var medalId: String = ""
 
+    var medalKey:String=""
+    var medalType:String=""
+
     override fun initView() {
         binding.medalToolbar.toolbarTitle.text = "我的勋章"
 
@@ -44,7 +49,10 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
             if ("去点亮勋章" == binding.btnWear.text.toString().trim()) {
                 finish()
             } else {
-                viewModel.wearMedal(medalId, "1")
+                if(!TextUtils.isEmpty(medalKey)){
+                    viewModel.wearMedal(medalId,medalKey)
+                }
+
             }
         }
 
@@ -75,20 +83,19 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         viewModel.oneselfMedal() {
-            completeRefresh(it?.data, medalAdapter, 0)
-            it?.data?.let {
+            completeRefresh(it.data, medalAdapter, 0)
+            it.data?.let {
                 if (it.size > 0) {
                     binding.btnWear.text = "佩戴"
                 } else {
                     binding.btnWear.text = "去点亮勋章"
-//                    binding.btnWear.visibility = View.GONE
                 }
             }
         }
     }
 
     override fun showEmpty(): View? {
-        emptyBinding.viewStatusIcon.setImageResource(R.mipmap.ic_medal_ex)
+        emptyBinding.viewStatusIcon.setImageResource(R.mipmap.image_common_no_medal)
         emptyBinding.viewStatusText.text = "当前还未获得勋章，快去点亮勋章吧"
         emptyBinding.viewStatusText.textSize = 12f
         return super.showEmpty()
@@ -105,7 +112,7 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                 it.medalName.text = item.medalName
                 it.checkbox.visibility = if ("1" == item.isShow) View.VISIBLE else View.GONE
                 if (item.isShow == "1") {
-                    medalId = item.medalId
+                    medalId =item.isShow
                 }
             }
 
@@ -113,18 +120,20 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                 if (item.isShow == "1") {
                     return@setOnClickListener
                 }
-                var isItemShow = item.isShow
+                val isItemShow = item.isShow
                 binding.btnWear.isEnabled = true
-                medalId = item.medalId
+                medalKey=item.medalKey
                 data.forEach {
                     it.isShow = "0"
                 }
                 when (isItemShow) {
                     "1" -> {
                         item.isShow = "0"
+                        medalId="0"
                     }
                     else -> {
                         item.isShow = "1"
+                        medalId="1"
                     }
                 }
                 notifyDataSetChanged()

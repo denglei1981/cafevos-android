@@ -6,6 +6,7 @@ import androidx.viewbinding.ViewBinding
 import com.changanford.common.loadsir.EmptyCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
+import com.changanford.common.loadsir.TimeoutCallback
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
@@ -57,6 +58,11 @@ abstract class BaseLoadSirActivity<VB : ViewBinding, VM : ViewModel> :
         if (null != mLoadService) {
             isShowedContent = true
             mLoadService!!.showSuccess()
+        }
+    }
+    open fun showTimeOut() {
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(TimeoutCallback::class.java)
         }
     }
 }

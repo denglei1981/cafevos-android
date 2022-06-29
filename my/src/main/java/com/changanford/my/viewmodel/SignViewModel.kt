@@ -26,8 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 /**
  *  文件名：SignViewModel
@@ -474,6 +472,9 @@ class SignViewModel : ViewModel() {
     fun saveUniUserInfoV1(body: HashMap<String, String>, result: (CommonResponse<String>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest(showLoading = true) {
+//                LiveDataBus.get().with(MConstant.REFRESH_USER_INFO_V2, Boolean::class.java).postValue(true)
+                LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java)
+                    .postValue(true)
                 var rkey = getRandomKey()
                 apiService.saveUniUserInfo(body.header(rkey), body.body(rkey))
             })
@@ -681,12 +682,13 @@ class SignViewModel : ViewModel() {
      */
     val wearMedal: MutableLiveData<String> = MutableLiveData()
 
-    fun wearMedal(medalId: String, type: String) {
+    fun wearMedal(medalId: String,medalKey:String) {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["medalId"] = medalId
-                body["type"] = type
+                body["type"] = "1"
+                body["medalKey"]=medalKey
                 var rkey = getRandomKey()
                 apiService.wearMedal(body.header(rkey), body.body(rkey))
             }.onSuccess {
@@ -1172,19 +1174,20 @@ class SignViewModel : ViewModel() {
             if (MConstant.isDownLoginBgSuccess) {
                 loginBgPath.postValue("${
                     getDiskCachePath(BaseApplication.INSTANT)?.let {
-                        getDiskCacheDir(
-                            it,
-                            MConstant.loginBgVideoPath
-                        )
+                        getDiskCacheDir(it,MConstant.loginBgVideoPath)
                     }
                 }")
             } else {
+                MConstant.loginBgVideoUrl?.apply {
+                    loginBgPath.postValue(GlideUtils.handleImgUrl(this))
+                    return
+                }
                 viewModelScope.launch {
                     fetchRequest {
-                        var body = java.util.HashMap<String, Any>()
+                        val body = HashMap<String, Any>()
                         body["configKey"] = "login_background"
                         body["obj"] = true
-                        var rkey = getRandomKey()
+                        val rkey = getRandomKey()
                         apiService.loginBg(body.header(rkey), body.body(rkey))
                     }.onSuccess {
                         it?.video?.let {

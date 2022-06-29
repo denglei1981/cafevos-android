@@ -27,7 +27,10 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -59,6 +62,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {
                             it.msg.toast()
+                            LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).postValue(1)
                             if (it.code == 0) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
@@ -80,9 +84,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
             binding.ivHead.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("value", item.userId)
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                JumpUtils.instans?.jump(35,item.userId.toString())
             }
 
             contentSty(binding.tvContent, item)
@@ -106,16 +108,13 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     //开始对contentTv追加名字效果
                     contentTv.append(
                         SpannableStringUtils.getSpannable(
-                            "回复@${pare.nickname}：",
-                            R.color.color_99,
+                            "//@${pare.nickname}：",
+                            R.color.color_8195C8,
                             object : ClickableSpan() {
                                 //设置点击事件
                                 override fun onClick(widget: View) {
-                                    val bundle = Bundle()
-                                    bundle.putString("value", pare.userId)
-                                    startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                                    JumpUtils.instans?.jump(35,pare.userId)
                                 }
-
                                 override fun updateDrawState(ds: TextPaint) {
                                     ds.isUnderlineText = false
                                 }
@@ -128,8 +127,8 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     //追加可点击的收缩效果
                     contentTv.append(
                         SpannableStringUtils.getSpannable(
-                            if (item.isOpenParent) " 收起" else " 追踪",
-                            R.color.circle_app_color,
+                            if (item.isOpenParent) " 收起" else " 展开",
+                            R.color.color_8195C8,
                             object : ClickableSpan() {
                                 override fun onClick(widget: View) {
                                     item.isOpenParent = !item.isOpenParent

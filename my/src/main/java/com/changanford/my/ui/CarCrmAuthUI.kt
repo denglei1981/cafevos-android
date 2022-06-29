@@ -69,12 +69,12 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             RouterManger.startARouter(ARouterMyPath.UniCarAuthUI)
         }
 
-//        LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java)
-//            .observe(this, Observer {
-//                "输入车牌--$it".logE()
-//            })
-//        LiveDataBus.get().with(LiveDataBusKey.MINE_ADD_CAR_SUCCESS).observe(this, Observer {
-//        })
+        LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR, Boolean::class.java)
+            .observe(this, Observer {
+                if (it) {
+                    viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
+                }
+            })
         viewModel.isWaitBindingCar()
     }
 

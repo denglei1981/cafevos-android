@@ -45,7 +45,8 @@ class CarAuthSuccessUI : BaseMineUI<UiCarAuthSuccessBinding, SignViewModel>() {
                         mapOf(
                             "vin" to it.vin,
                             "status" to it.authStatus,
-                            "isNeedChangeBind" to it.isNeedChangeBind
+                            "isNeedChangeBind" to it.isNeedChangeBind,
+                            "carSalesInfoId" to it.carSalesInfoId
                         )
                     )
                 )

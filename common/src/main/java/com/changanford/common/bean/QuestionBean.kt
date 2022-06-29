@@ -48,10 +48,11 @@ data class QuestionInfoBean(
     }
     /**
      * 是否可以提问
-     * 是自己并且不是技师才可以提问
+     * 是自己并且不是技师才可以提问----118版本修改 技师也可以提问
     * */
     fun getIsQuestion():Boolean{
-        return isOneself()&&getIdentity()!=1
+//        return isOneself()&&getIdentity()!=1
+        return isOneself()
     }
     /**
      * 获取tab
@@ -64,9 +65,10 @@ data class QuestionInfoBean(
             "TECHNICIAN"->{
                 tabs.apply {
                     if(isOneself){
+                        add(QuestionTagBean(context.getString(R.string.str_myQuestions),"QUESTION"))
                         add(QuestionTagBean(context.getString(R.string.str_invitedToAnswer),"TECHNICIAN"))
                         add(QuestionTagBean(context.getString(R.string.str_myAnswer),"ANSWER"))
-                        add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
+//                        add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))//118版本隐藏
                     }else{
                         add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
                         add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))

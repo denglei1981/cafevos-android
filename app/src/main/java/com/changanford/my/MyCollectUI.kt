@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.graphics.Typeface
+import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
@@ -15,6 +16,7 @@ import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.inputmethod.EditorInfo
+import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.HideKeyboardUtil
 
 
@@ -31,11 +33,11 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private val titles = arrayListOf("资讯", "帖子", "活动", "商品")
     private var oldPosition = 0
 
-    val informationFragment :InformationFragment by lazy {
+    val informationFragment: InformationFragment by lazy {
         InformationFragment.newInstance("collectInformation")
     }
 
-    val postFragment:PostFragment by lazy {
+    val postFragment: PostFragment by lazy {
         PostFragment.newInstance("collectPost")
     }
 
@@ -43,59 +45,93 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         ActFragment.newInstance("collectAct")
     }
 
-    val  myShopFragment:MyShopFragment by lazy{
+    val myShopFragment: MyShopFragment by lazy {
         MyShopFragment.newInstance("collectShop")
     }
 
-
+    var index = 0
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的收藏"
-        initViewpager()
-        binding.layoutSearch.cancel.visibility= View.GONE
-        binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, event ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
-                    search()
-//                    hideKeyboard(binding.editSearch.windowToken)
+        val currentItem = intent.getStringExtra("value")
+
+        if (!TextUtils.isEmpty(currentItem)) {
+            try {
+                if (currentItem != null) {
+                    index = currentItem.toInt()
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        initViewpager()
+        binding.layoutSearch.cancel.visibility = View.GONE
+        binding.layoutSearch.searchContent.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.keyCode == KeyEvent.ACTION_UP)) {
+                search()
+//                    hideKeyboard(binding.editSearch.windowToken)
+            }
             false
         }
         binding.layoutSearch.cancel.setOnClickListener {
             binding.layoutSearch.searchContent.setText("")
-            informationFragment.searchKeys=""
-            postFragment.searchKeys=""
-            myShopFragment.searchKeys=""
-            actFragment.searchKeys=""
+            informationFragment.searchKeys = ""
+            postFragment.searchKeys = ""
+            myShopFragment.searchKeys = ""
+            actFragment.searchKeys = ""
             search()
 
         }
+        binding.viewpager.currentItem = index
     }
 
     // 搜搜索
     private fun search() {
-        when (binding.viewpager.currentItem) {
-            0 -> {
+
+
                 informationFragment.searchKeys =
                     binding.layoutSearch.searchContent.text.toString().trim()
                 informationFragment.myCollectInfo(1)
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            1 -> {
+
+
                 postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 postFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            2 -> {
+
+
                 actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 actFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-            3 -> {
-                myShopFragment.searchKeys =
-                    binding.layoutSearch.searchContent.text.toString().trim()
+
+                myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
                 myShopFragment.mySerachInfo()
                 HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
-            }
-        }
+
+
+//        when (binding.viewpager.currentItem) {
+//            0 -> {
+//                informationFragment.searchKeys =
+//                    binding.layoutSearch.searchContent.text.toString().trim()
+//                informationFragment.myCollectInfo(1)
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            1 -> {
+//                postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                postFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            2 -> {
+//                actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                actFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//            3 -> {
+//                myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+//                myShopFragment.mySerachInfo()
+//                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+//            }
+//        }
     }
 
     private fun initViewpager() {

@@ -1,93 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <data>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16.5dp"
-        android:gravity="center"
-        android:text="设置身份"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        tools:ignore="HardcodedText" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="18.5dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/bg_f5_cor5"
-        android:orientation="horizontal">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rl_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.8"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_all_num"
+        android:background="@color/colorWhite"
+        android:padding="@dimen/dp_20">
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_title"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="25dp"
-            android:textColor="#A6ABB0"
-            android:textSize="12sp"
-            tools:text="等25人" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rl_role_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="26dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="22dp"
-        android:orientation="horizontal">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="24dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_f6_cor2"
+            android:text="@string/str_setIdentity"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_16"/>
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            android:layout_marginStart="@dimen/dp_9"
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="当前选中2人"
+            android:textColor="@color/color_66"
+            android:textSize="@dimen/sp_12"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_close"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingStart="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_close_black_60"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/member_dialog_item"
+            tools:itemCount="2"/>
+        <com.changanford.common.ui.view.WTextView
+            tools:visibility="visible"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/dp_12"
+            android:id="@+id/tv_remainingPlaces"
+            android:minHeight="@dimen/dp_24"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
             android:gravity="center"
-            android:text="取消"
-            android:textColor="#B0B3B5"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText" />
-
-        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintTop_toBottomOf="@id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:w_start_txt="@string/str_remainingPlaces"
+            android:textColor="@color/color_F21C44"
+            android:textSize="@dimen/sp_12"
+            android:background="@drawable/shape_fff6f8_12dp"/>
+        <com.changanford.common.ui.view.WTextView
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:background="@drawable/border_0095b_20dp"
+            android:layout_marginTop="@dimen/dp_18"
+            app:layout_constraintTop_toBottomOf="@id/tv_remainingPlaces"
+            app:layout_constraintEnd_toStartOf="@id/tv_confirm"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tv_cancel"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:text="@string/str_cancel"
+            android:textColor="@color/circle_00095"
+            android:textSize="@dimen/sp_15" />
+        <com.changanford.common.ui.view.WTextView
+            tools:background="@drawable/shape_00095b_20dp"
+            android:background="@drawable/shape_dd_20dp"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@id/tv_cancel"
+            app:layout_constraintStart_toEndOf="@id/tv_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
             android:id="@+id/tv_confirm"
             android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_fc88_cor2"
-            android:gravity="center"
-            android:text="确认"
+            android:layout_height="@dimen/dp_40"
+            android:text="@string/str_confirm"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-</LinearLayout>
+            android:textSize="@dimen/sp_15" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

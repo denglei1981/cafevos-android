@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_circle"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:src="@mipmap/image_mine" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_circle_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:ellipsize="end"
+            android:maxEms="11"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginTop="11dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/test_str" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_circle_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxEms="11"
+            android:singleLine="true"
+            android:textColor="@color/gray_999999"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle"
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle_title"
+            tools:text="@string/test_str" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
+          >
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_post_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical|start"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="112帖子" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginStart="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_people"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="1.0w车友活跃中" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

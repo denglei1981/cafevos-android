@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.changanford.common.util.JumpUtils;
 import com.changanford.common.utilext.GlideUtils;
 import com.changanford.my.R;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class FlyCirclePost extends ConstraintLayout {
     private int titleTextColor;
     private float titleTextSize;
     public  TextView tvNum;
-    public ImageView ivThumb;
+    public ShapeableImageView ivThumb;
     int resourceId = -1;
 
     public FlyCirclePost(Context context) {
@@ -75,7 +76,7 @@ public class FlyCirclePost extends ConstraintLayout {
     }
 
     public void setThumb(String resourceId,int postId) {
-        GlideUtils.INSTANCE.loadBD(resourceId,ivThumb);
+        GlideUtils.INSTANCE.loadBD(setImgWH(176,176,resourceId),ivThumb);
           this.setOnClickListener(new OnClickListener() {
               @Override
               public void onClick(View v) {
@@ -83,6 +84,9 @@ public class FlyCirclePost extends ConstraintLayout {
               }
           });
     }
-
+    public  String setImgWH(Integer w, Integer h, String url){
+        String p = "?x-oss-process=image/resize,m_lfit,h_"+h+",w_"+w+",limit_0/auto-orient,0";
+        return url + p;
+    }
 
 }

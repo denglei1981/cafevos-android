@@ -19,7 +19,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -148,6 +149,29 @@
 
 
         </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/circle_FAFBFD"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_talk"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="19dp"
+                android:layout_marginEnd="19dp"
+                android:layout_weight="1"
+                android:background="@drawable/circle_white_17_bg"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:text="你可以说点什么哦"
+                android:textColor="@color/color_cc"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText,RtlSymmetry" />
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

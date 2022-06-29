@@ -14,11 +14,13 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
+import com.changanford.common.util.MConstant.loginBgVideoUrl
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logE
 import com.changanford.my.R
@@ -175,8 +177,8 @@ fun downFile(url: String, listener: OnDownloadListener) {
 //登录和绑定手机号获取权限
 var refusePermission: Boolean = false
 fun downLoginBg(videoUrl: String?) {
-    if (refusePermission)
-        return
+    loginBgVideoUrl=videoUrl
+    if (refusePermission||!SoulPermission.getInstance().checkSinglePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).isGranted)return
     SoulPermission.getInstance().checkAndRequestPermissions(
         Permissions.build(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -227,3 +229,9 @@ interface OnDownloadListener {
 
     fun onSuccess(file: File)
 }
+
+fun dpToPx(context: Context, dp: Float): Float {
+    return dp * context.resources.displayMetrics.density
+}
+
+fun Int.toIntPx() = dpToPx(MyApp.mContext, this.toFloat()).toInt()

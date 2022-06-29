@@ -23,8 +23,10 @@ data class CommentListBean(
     val role: String,
     val timeStr: String,
     val userId: String,
+    val bizId:String,
     val memberIcon: String,
-    val imags: List<Imag>
+    val imags: List<Imag>,
+    val childVo:MutableList<CommentListBean>
 ) : Serializable {
     override fun toString(): String {
         return "CommentListBean(avatar='$avatar', childCount=$childCount, content='$content', createTime='$createTime', groupId='$groupId', id='$id', isLike=$isLike, likesCount=$likesCount, nickname='$nickname', phoneModel='$phoneModel', role='$role', timeStr='$timeStr', userId=$userId)"

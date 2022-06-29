@@ -296,9 +296,9 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
 
             }
-            29 -> {//我的勋章,
+            29 -> {//所有勋章
+//                startARouter(ARouterMyPath.MineMedalUI,true)
                 startARouter(ARouterMyPath.AllMedalUI, bundle, true)
-
             }
             30 -> {//积分纪录,
                 startARouter(ARouterMyPath.MineIntegralUI, bundle, true)
@@ -315,7 +315,7 @@ class JumpUtils {
 
             }
             35 -> {//他人主页 需要userId
-                startARouter(ARouterMyPath.TaCentreInfoUI, bundle, true)
+                startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
 
             }
             36 -> {//聚合订单列表页
@@ -417,17 +417,17 @@ class JumpUtils {
                         val vin = json.getString("vin")
                         val authId = json.getString("authId")
                         val status = json.getIntValue("status")
-                        var isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        val carSalesInfoId = json.getString("carSalesInfoId")
+                        val isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
-                            CarItemBean(vin = vin, authId = authId)
+                            CarItemBean(vin = vin, authId = authId, carSalesInfoId = carSalesInfoId)
                         ).startARouter(
                             when {
                                 CommonUtils.isCrmSuccess(status) -> {
                                     ARouterMyPath.MineLoveCarInfoUI
                                 }
-                                CommonUtils.isCrmStatusIng(status)
-                                        || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
+                                CommonUtils.isCrmStatusIng(status) || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
                                     isNeedChangeBind
                                 )) -> {
                                     ARouterMyPath.CarAuthIngUI
@@ -559,29 +559,23 @@ class JumpUtils {
             100 -> {//登录页面
                 startARouter(ARouterMyPath.SignUI)
             }
-
-            101 -> {//' |=> |'发现'
-                val bundle = Bundle()
+            101 -> {
                 bundle.putInt("jumpValue", 1)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
-            102 -> {//' |=> |'活动',
-                val bundle = Bundle()
+            102 -> {//' |=> |'社区',
                 bundle.putInt("jumpValue", 2)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
             103 -> {//' |=> |'爱车',
-                val bundle = Bundle()
                 bundle.putInt("jumpValue", 3)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
-            104 -> {//' |=> |'U享',
-                val bundle = Bundle()
+            104 -> {//' |=> |'商城',
                 bundle.putInt("jumpValue", 4)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
             105 -> {//' |=> |'我的',
-                val bundle = Bundle()
                 bundle.putInt("jumpValue", 5)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
@@ -692,27 +686,27 @@ class JumpUtils {
                 val gson = Gson()
                 val orderString = bundle.getString("value")
                 val refundBean: RefundBean = gson.fromJson(orderString, RefundBean::class.java)
-                var orderItemBean:RefundOrderItemBean?=null
-                if(refundBean.skuItem!=null){
-                     orderItemBean= refundBean.skuItem
-                     orderItemBean?.orderNo=refundBean.orderNo
+                var orderItemBean: RefundOrderItemBean? = null
+                if (refundBean.skuItem != null) {
+                    orderItemBean = refundBean.skuItem
+                    orderItemBean?.orderNo = refundBean.orderNo
                 }
                 if (refundBean.refundType == "allOrderRefund") { // 整单退
                     startARouter(ARouterShopPath.RefundNotShippedActivity, bundle, true)
-                } else if(refundBean.refundType=="onlySkuSingleRefund"){
-                    orderItemBean?.singleRefundType="ONLY_COST"
-                    val gson =Gson()
-                    val toJson = gson.toJson(orderItemBean)
-                    instans?.jump(125,toJson)
-                }else if(refundBean.refundType=="onlySkuAllRefund"){
-                    orderItemBean?.singleRefundType="CONTAIN_GOODS"
-                    val gson =Gson()
-                    val toJson = gson.toJson(orderItemBean)
-                    instans?.jump(125,toJson)
-                }else {// 发货了，选一下退货还是退款
+                } else if (refundBean.refundType == "onlySkuSingleRefund") {
+                    orderItemBean?.singleRefundType = "ONLY_COST"
                     val gson = Gson()
                     val toJson = gson.toJson(orderItemBean)
-                    bundle.putString("value",toJson)
+                    instans?.jump(125, toJson)
+                } else if (refundBean.refundType == "onlySkuAllRefund") {
+                    orderItemBean?.singleRefundType = "CONTAIN_GOODS"
+                    val gson = Gson()
+                    val toJson = gson.toJson(orderItemBean)
+                    instans?.jump(125, toJson)
+                } else {// 发货了，选一下退货还是退款
+                    val gson = Gson()
+                    val toJson = gson.toJson(orderItemBean)
+                    bundle.putString("value", toJson)
                     startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
                 }
 
@@ -745,10 +739,57 @@ class JumpUtils {
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }
+            129 -> { //爱车养护
+                startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
+            }
+            130 -> {//我的勋章
+                startARouter(ARouterMyPath.MineMedalUI, true)
+//                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
+            }
+            131 -> { // 发帖----///发帖 1、图文      2、长贴       3、视频
+                //长帖
+                value?.let { s ->
+                    // 图文
+                    when (s.toInt()) {
+                        1 -> {
+                            startARouter(ARouterCirclePath.PostActivity, bundle, true)
+                        }
+                        2 -> {
+                            startARouter(ARouterCirclePath.LongPostAvtivity, bundle, true)
+                        }
+                        3 -> {
+                            // 视频
+                            startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
+                        }
+                        else -> {
+                            startARouter(ARouterCirclePath.PostActivity, bundle, true)
+                        }
+                    }
+                }
+
+            }
+            133-> {//圈子分类页    value  = 圈子分类名称
+                startARouter(ARouterCirclePath.CircleListActivity,bundle)
+            }
+            134-> {//创建圈子
+                startARouter(ARouterCirclePath.CreateCircleActivity,true)
+            }
+            135-> {//圈子热门榜单页
+                startARouter(ARouterCirclePath.HotListActivity,bundle)
+            }
+            138-> {//商城-推荐榜单-榜单列表页：type = 138 value = 榜单名称
+                startARouter(ARouterShopPath.RecommendActivity, bundle)
+            }
+            139-> {//勋章详情
+                startARouter(ARouterMyPath.MedalDetailUI, bundle, true)
+            }
+            140-> {//新增收货地址
+                startARouter(ARouterMyPath.EditAddressUI, bundle, true)
+            }
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {
-                    val url=if(value.startsWith("http"))value else "http://$value"
+                    val url = if (value.startsWith("http")) value else "http://$value"
                     val intent = Intent()
                     intent.action = "android.intent.action.VIEW"
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

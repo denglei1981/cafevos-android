@@ -21,8 +21,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
@@ -104,7 +107,9 @@ fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
         Row(modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp).clickable(indication = null, interactionSource = remember {MutableInteractionSource()}) {
+            .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp)
+            .clickable(indication = null,
+                interactionSource = remember { MutableInteractionSource() }) {
                 GoodsDetailsActivity.start(spuId)
             },
             verticalAlignment = Alignment.CenterVertically) {
@@ -136,7 +141,14 @@ fun RecommendItemCompose(position:Int,itemData:GoodsItemBean?){
                 Text(text = spuName,color= colorResource(R.color.color_33), fontSize = 14.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 //福币价格,销量
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                    Text(text ="$priceFb${stringResource(com.changanford.shop.R.string.str_integral)}",color= colorResource(R.color.color_33), fontSize = 14.sp)
+                    Text(buildAnnotatedString {
+                        withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 14.sp)) {
+                            append("¥${getRMB(priceFb)} ")
+                        }
+                        withStyle(style = SpanStyle(color= colorResource(R.color.color_66), fontSize = 9.sp)) {
+                            append(stringResource(R.string.str_since))
+                        }
+                    })
                     Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),color= colorResource(R.color.color_99), fontSize = 11.sp)
                 }
             }
@@ -185,16 +197,18 @@ fun DetailsWalkCompose(dataBean:MutableList<GoodsItemBean>?=null){
         }
     }
 }
-private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext)-60)/3 }
 /**
  * 逛一逛的item
  */
+private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext)-60)/3 }
 @Composable
 private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
     itemData?.apply {
-        Column(modifier = Modifier.fillMaxWidth().clickable {
-            GoodsDetailsActivity.start(mallMallSpuId)
-        }) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                GoodsDetailsActivity.start(mallMallSpuId)
+            }) {
             //封面
             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(getImgPath()) ?: R.mipmap.head_default,
                 builder = {placeholder(R.mipmap.head_default)}),
@@ -207,7 +221,14 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean?=null){
             Text(text = spuName, color = colorResource(R.color.color_33), fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(modifier = Modifier.height(5.dp))
             //价格
-            Text(text = "￥${getRMB(vipFb)}", color = colorResource(R.color.color_33), fontSize = 12.sp)
+            Text(buildAnnotatedString {
+                withStyle(style = SpanStyle(color= colorResource(R.color.color_33), fontSize = 12.sp)) {
+                    append("¥${getRMB(vipFb)} ")
+                }
+                withStyle(style = SpanStyle(color= colorResource(R.color.color_66), fontSize = 9.sp)) {
+                    append(stringResource(R.string.str_since))
+                }
+            })
             Spacer(modifier = Modifier.height(5.dp))
             Text(text =stringResource(com.changanford.shop.R.string.str_hasChangeXa,"$salesCount"),
                 color = colorResource(R.color.color_33), fontSize = 10.sp)

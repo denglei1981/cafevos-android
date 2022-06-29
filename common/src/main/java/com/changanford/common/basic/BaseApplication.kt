@@ -1,6 +1,5 @@
 package com.changanford.common.basic
 
-import android.app.Activity
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -36,33 +35,32 @@ abstract class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANT = this
-        //Arouter Initial
-        if (MConstant.isDebug) {           // These two lines must be written before init, otherwise these configurations will be invalid in the init process
-            ARouter.openLog();     // Print log
-            ARouter.openDebug();   // Turn on debugging mode (If you are running in InstantRun mode, you must turn on debug mode! Online version needs to be closed, otherwise there is a security risk)
-        }
-        ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
-        //友盟预初始化,不会传数据给后台
-//        UMConfigure.preInit(INSTANT,UmengKey,
-//            DeviceUtils.getMetaData(INSTANT, "CHANNEL_VALUE"))
-        //阿里云push初始化
-        PushServiceFactory.init(this)
-        initBaiduSdk()
-        // 在SDK初始化时捕获抛出的异常
-        // 在SDK初始化时捕获抛出的异常
-        try {
-            // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
-            SDKInitializer.initialize(this)
-        } catch (e: BaiduMapSDKException) {
-        }
-//        SDKInitializer.initialize(this);
-        //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
-        //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
-        SDKInitializer.setCoordType(CoordType.BD09LL);
         // 获取隐私政策签署状态
         if ((SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()
         } else {
+            //Arouter Initial
+            if (MConstant.isDebug) {
+                ARouter.openLog()
+                ARouter.openDebug()
+            }
+            ARouter.init(this)
+
+            //阿里云push初始化
+            PushServiceFactory.init(this)
+            initBaiduSdk()
+            // 在SDK初始化时捕获抛出的异常
+            try {
+                // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
+                SDKInitializer.initialize(this)
+            } catch (e: BaiduMapSDKException) {
+                //
+            }
+//        SDKInitializer.initialize(this);
+            //自4.3.0起，百度地图SDK所有接口均支持百度坐标和国测局坐标，用此方法设置您使用的坐标类型.
+            //包括BD09LL和GCJ02两种坐标，默认是BD09LL坐标。
+            SDKInitializer.setCoordType(CoordType.BD09LL)
+
             MyApplicationUtil.init(this)
             initCloudChannel(this)
             initshare()
@@ -117,7 +115,7 @@ abstract class BaseApplication : MultiDexApplication() {
         pushService.register(applicationContext, object : CommonCallback {
             override fun onSuccess(response: String?) {
                 "init cloudchannel success".logD()
-                var deviceid = pushService.deviceId
+                val deviceid = pushService.deviceId
                 deviceid?.let {
                     SPUtils.setParam(applicationContext, MConstant.PUSH_ID, deviceid)
                 }
@@ -181,7 +179,7 @@ abstract class BaseApplication : MultiDexApplication() {
             .build()
         RetrofitClient.setRetrofitClientConfig(config)
     }
-    fun initBaiduSdk(){
+    private fun initBaiduSdk(){
         /**
          * 隐私政策统一接口：：该接口必须在调用SDK初始化接口之前设置
          * 设为false不同意隐私政策：不支持发起检索、路线规划等数据请求，SDK抛出异常；

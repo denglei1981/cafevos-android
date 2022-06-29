@@ -64,7 +64,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         binding.tvAuth.setOnClickListener {
             // 设置为默认车辆
             if (auth.isDefault == 0) {
-                viewModel.setDefalutCar(auth.vin) {
+                viewModel.setDefalutCar(auth.carSalesInfoId) {
                     it.onSuccess {
                         auth.isDefault = 1
                         setDefalut()
@@ -83,12 +83,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                 initData()
             })
 
-        LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR, Boolean::class.java)
-            .observe(this, Observer {
-                if (it) {
-                    this.finish()
-                }
-            })
+
         binding.deleteCar.setOnClickListener {
             if (!TextUtils.isEmpty(auth.vin)) {
 
@@ -105,9 +100,10 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                 }
 
                 override fun delete() {
-                    viewModel.deleteCar(auth.vin) {
+                    viewModel.deleteCar(auth.vin,id=auth.authId) {
                         it.onSuccess {
                             try {
+                                LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)
                                 BuriedUtil.instant?.carDelete(auth.phone)
                             }catch (e:Exception){
                                 e.printStackTrace()

@@ -2,6 +2,7 @@ package com.changanford.my.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
@@ -136,6 +137,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             status.visibility = View.GONE
                         }
                     }
+                    holder.getView<ImageView>(R.id.img_star).visibility=if(item.star=="YES")View.VISIBLE else View.GONE
                     holder.itemView.setOnClickListener {
                         JumpUtils.instans?.jump(6, item.circleId)
                     }
@@ -150,6 +152,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
+                    holder.getView<ImageView>(R.id.img_star).visibility=if(item.star=="YES")View.VISIBLE else View.GONE
                     val status: TextView = holder.getView(R.id.status_text)
                     val reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
                     reasonLayout.visibility = View.GONE

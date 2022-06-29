@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import com.changanford.common.util.TimeUtils
 import java.io.Serializable
 
 /**
@@ -26,8 +27,15 @@ data class MedalListBeanItem(
     val status: String = "",
     val updateBy: String = "",
     val updateTime: String = "",
-    var getTime: String = "" // 获取时间
-) : Serializable
+    var getTime: String = "", // 获取时间
+    var medalTypeStr: String = "",
+    var medalKey: String=""
+) : Serializable {
+    fun timeS(): String {
+
+        return TimeUtils.InputTimetamp(getTime, "yyyy-MM-dd").plus("点亮")
+    }
+}
 
 data class UserIdCardBeanItem(
     val actionIds: String,

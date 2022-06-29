@@ -8,6 +8,9 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.http.SslError
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -34,7 +37,6 @@ import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -61,7 +63,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
  * *********************************************************************************
  */
 @Route(path = ARouterHomePath.AgentWebActivity)
-class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>() {
+class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>(), JsCallback {
 
     private lateinit var shareViewModule: ShareViewModule //分享
     private lateinit var payViewModule: PayViewModule //支付
@@ -296,17 +298,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 when (it) {
                     //登录成功
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
                     }
 
                     //取消绑定手机号
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"false")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "false")
                     }
                     //绑定手机号成功
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack)
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                     }
                 }
@@ -356,22 +358,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     agentWeb.jsAccessEntrace.quickCallJs(h5OrderPayCallback, it.toString())
                 })
 
-        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this,
-            Observer {
-                getMyInfoCallback = it
-                UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
-                    .observe(this) {
-                        it?.toString()?.logE()
-                        var user =
-                            if (MConstant.token.isNullOrEmpty() || it.userJson.isNullOrEmpty()) {
-                                ""
-                            } else {
-                                it.userJson
-                            }
-                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, user)
+        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this) {
+            getMyInfoCallback = it
+            UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
+                .observe(this) { infoBean ->
+                    val userJson=infoBean.userJson
+                    if(!userJson.isNullOrEmpty()){
+                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback,userJson)
                     }
+                }
 //                mineSignViewModel.getUserInfo()
-            })
+        }
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_UNICARDS_LIST, String::class.java)
             .observe(this,
                 Observer {
@@ -520,9 +517,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .createAgentWeb()
             .ready()
             .go(url)
-        agentWeb.jsInterfaceHolder.addJavaObject(
-            "FORDApp",
-            AgentWebInterface(agentWeb, this@AgentWebActivity)
+        agentWeb.jsInterfaceHolder.addJavaObject("FORDApp",AgentWebInterface(agentWeb, this@AgentWebActivity,this)
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
         agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
@@ -681,7 +676,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
      * @sample = {"text":"标题","color":"文字颜色","image":"图片地址 / 有标题再设置图片地址不会生效" }
      */
     private fun setStyle(jsonStr: String?) {
-        var style: JSONObject
+        val style: JSONObject
         try {
             style = JSONObject.parseObject(jsonStr)
         } catch (e: Exception) {
@@ -691,9 +686,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         }
         if (style.isNullOrEmpty())
             return
-        var text: String = style["text"] as String
-        var color = style["color"].toString()
-        var image: String = style["image"] as String
+        val text: String = style["text"] as String
+        val color = style["color"].toString()
+        val image: String = style["image"] as String
         if (text.isNullOrEmpty()) {
             if (!image.isNullOrEmpty()) {
                 //设置图片
@@ -882,6 +877,24 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         viewModel.clearAllPost()
     }
 
+    override fun jsCallback(key: Int, value: Any) {
+        Thread {
+            val msg = Message.obtain()
+            msg.what = key
+            msg.obj = value
+            handle.sendMessage(msg)
+        }.start()
+    }
+    private val handle =object : Handler(Looper.myLooper()!!) {
+        override fun handleMessage(msg: Message) {
+           msg.let {
+               when(it.what){
+                   //显示隐藏导航栏
+                   0->setTitleHide(it.obj as Boolean)
+               }
+           }
+        }
+    }
 //    fun getBindMobileJumpDataType(): Boolean {
 //        return viewModel.getBindMobileJumpDataType()
 //    }

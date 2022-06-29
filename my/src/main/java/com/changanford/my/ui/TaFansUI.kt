@@ -13,6 +13,7 @@ import com.changanford.common.databinding.ItemFansBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
@@ -112,8 +113,9 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     }
                 }
                 it.itemFansIcon.setOnClickListener {
-                    RouterManger.param("value", item.authorId)
-                        .startARouter(ARouterMyPath.TaCentreInfoUI)
+//                    RouterManger.param("value", item.authorId)
+//                        .startARouter(ARouterMyPath.TaCentreInfoUI)
+                    JumpUtils.instans?.jump(35, item.authorId)
                 }
             }
         }

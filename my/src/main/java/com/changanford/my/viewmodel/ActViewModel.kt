@@ -72,7 +72,6 @@ class ActViewModel : ViewModel() {
                 body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
                     it["searchKeys"] =searchKeys
-
                 }
                 var rkey = getRandomKey()
                 apiService.queryMineCollectInfo(body.header(rkey), body.body(rkey))

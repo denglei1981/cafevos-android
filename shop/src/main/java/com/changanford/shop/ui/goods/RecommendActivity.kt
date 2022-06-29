@@ -2,6 +2,7 @@ package com.changanford.shop.ui.goods
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -14,6 +15,7 @@ import com.changanford.shop.databinding.ActRecommendBinding
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import java.net.URLDecoder
 
 /**
  * @Author : wenke
@@ -23,9 +25,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 @Route(path = ARouterShopPath.RecommendActivity)
 class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
     companion object{
-        fun start(kindId:String?="0"){
+        fun start(kindName:String?=""){
             val bundle= Bundle()
-            bundle.putString("kindId", kindId)
+            bundle.putString("value", kindName)
             RouterManger.startARouter(ARouterShopPath.RecommendActivity,bundle)
         }
     }
@@ -35,10 +37,10 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
         WCommonUtil.setTabSelectStyle(this,binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
     }
     override fun initData() {
-        val defaultKindId=intent.getStringExtra("kindId")
+        val defaultKindName=intent.getStringExtra("value")
         viewModel.typesBean.observe(this){
             bindTab(it)
-            val index = it.indexOfFirst { item -> item.kindId == defaultKindId }
+            val index =if(!TextUtils.isEmpty(defaultKindName))it.indexOfFirst { item -> item.kindName == URLDecoder.decode(defaultKindName, "UTF-8") } else 0
             if (index>0) binding.viewPager2.currentItem =index
         }
         viewModel.getRecommendTypes()

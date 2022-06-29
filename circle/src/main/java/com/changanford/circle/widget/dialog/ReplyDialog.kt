@@ -2,6 +2,7 @@ package com.changanford.circle.widget.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
@@ -20,7 +21,8 @@ import com.changanford.common.utilext.toast
 class ReplyDialog(
     context: Context,
     private val listener: ReplyListener,
-    themeResId: Int = R.style.StyleCommonDialog
+    themeResId: Int = R.style.StyleCommonDialog,
+    var hintText:String?=null
 ) :
     Dialog(context, themeResId) {
 
@@ -47,6 +49,9 @@ class ReplyDialog(
                 listener.getContent(getEditContent())
                 dismiss()
             }
+        }
+        if(!TextUtils.isEmpty(hintText)){
+            binding.etContent.hint = hintText
         }
     }
 

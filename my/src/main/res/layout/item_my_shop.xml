@@ -2,7 +2,8 @@
 
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,9 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_4"
         android:layout_marginBottom="@dimen/dp_2"
-        app:sl_cornerRadius="@dimen/dp_5"
+        app:sl_cornerRadius="@dimen/dp_4"
         app:sl_shadowColor="#88dddddd"
-        app:sl_shadowRadius="@dimen/dp_8">
+        app:sl_shadowRadius="@dimen/dp_2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -58,7 +59,6 @@
                 android:layout_marginStart="@dimen/dp_11"
                 android:layout_marginEnd="@dimen/dp_17"
                 android:layout_marginBottom="@dimen/dp_8"
-                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/item_icon"
                 app:layout_constraintLeft_toRightOf="@+id/item_icon"
@@ -66,25 +66,31 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_integral"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_17"
-                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:text=""
-                    android:textColor="#1B3B89"
+                    android:textColor="@color/color_33"
                     android:textSize="@dimen/sp_15"
+                    tools:text="￥100"
                     app:layout_constraintRight_toLeftOf="@+id/item_collect_num" />
-
+                <com.changanford.common.ui.view.WTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_since"
+                    android:layout_marginStart="@dimen/dp_2"
+                    android:textSize="@dimen/sp_9"
+                    android:textColor="@color/color_66"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_collect_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="100人收藏"
-                    android:textColor="#999999"
+                    tools:text="100人收藏"
+                    android:textColor="@color/color_99"
                     android:textSize="@dimen/sp_12" />
             </LinearLayout>
 

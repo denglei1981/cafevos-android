@@ -685,7 +685,7 @@ interface NetWorkApi {
     /**
      * 获取全部区域
      */
-    @POST("base/region/getAllProvinceAndCityRegion")
+    @POST("base/region/cmc/getAllProvinceAndCityRegion")
     suspend fun getAllCity(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -725,7 +725,7 @@ interface NetWorkApi {
     /*-------------------圈子---------------------*/
 
     //con/circle/getJoinCircles 我参与的圈子
-    @POST("con/circle/getJoinCircles")
+    @POST("con/community/circleJoin")
     suspend fun queryMineJoinCircleList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -741,7 +741,7 @@ interface NetWorkApi {
 
 
     //我管理的圈子
-    @POST("con/circle/getMyCircles")
+    @POST("con/community/circleMan")
     suspend fun queryMineMangerCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -1053,7 +1053,6 @@ interface NetWorkApi {
     /**
      * U享卡添加车牌号
      */
-
     @POST("/uniCard/updateOrderPlateNum")
     suspend fun addCarCardNumUni(
         @HeaderMap headMap: Map<String, String>,
@@ -1187,4 +1186,16 @@ interface NetWorkApi {
      * */
     @POST("user/navigaMenu/getUserOrderType")
     suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<MenuBeanItem>>
+
+    @POST("con/circle/myCircles")
+    suspend fun myCircles(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<NewCircleBean>>
+
+
+    // 参与的话题。
+    @POST("con/topic/myTopics")
+    suspend fun myTopics(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<Topic>>
+
+    //点赞的帖子
+    @POST("con/posts/myLikedPosts")
+    suspend fun myLikedPosts(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<PostDataBean>>
 }

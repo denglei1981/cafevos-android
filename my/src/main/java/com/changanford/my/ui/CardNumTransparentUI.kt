@@ -60,6 +60,7 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
                     } else {
                         val authId = bundle.getString("authId")
                         if (authId != null) {
+                             // it 改为 carSalesInfoId
                             addCar(it, inputContent,authId)
                         }
                     }
@@ -71,14 +72,15 @@ class CardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentV2Binding, SignVi
     /**
      * 车主认证添加/修改车牌
      */
-    fun addCar(authCarId: String, cardNum: String,authId:String) {
+    fun addCar(carSalesInfoId:String,cardNum: String,authId:String) {
 
         lifecycleScope.launch {
             fetchRequest {
                 var body = HashMap<String, String>()
-                body["vin"] = authCarId
+
                 body["plateNum"] = cardNum
                 body["authId"]=authId
+                body["carSalesInfoId"]=carSalesInfoId
                 var rkey = getRandomKey()
                 apiService.addCarCardNum(body.header(rkey), body.body(rkey))
             }.onSuccess {

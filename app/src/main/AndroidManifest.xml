@@ -172,19 +172,35 @@
         <activity
             android:name="com.changanford.my.MyPostUI"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.PersonCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.activity.MyJoinCircleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.activity.MyJoinTopicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changanford.my.activity.MyStarPostsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.changanford.my.activity.OtherMedalActivity"
+            android:screenOrientation="portrait"
+            />
 
-        <activity android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
+        <activity
+            android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
             android:launchMode="singleTask"
             android:taskAffinity="com.changanford.evos">
-<!--            android:taskAffinity="com.chinaums.onlineservice"-->
+            <!--            android:taskAffinity="com.chinaums.onlineservice"-->
             <intent-filter>
                 <!--action.VIEW和category.DEFAULT必须设置-->
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <!--如果需要浏览器支持打开，则category.BROWSABLE-->
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE" />
                 <!--schema的协议类型：可以自行设置，只要按照统一规则，前后端一致就行-->
-                <data android:scheme="hyunionpay"/>
+                <data android:scheme="hyunionpay" />
             </intent-filter>
         </activity>
     </application>

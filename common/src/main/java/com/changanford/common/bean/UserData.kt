@@ -68,7 +68,9 @@ data class UserInfoBean(
     val userId: String,
     val userName: String,
     var couponCount:Int=0,
-    var medalCount:Int=0
+    var medalCount:Int=0,
+    val userMedalList: ArrayList<MedalListBeanItem>? = arrayListOf(),
+    var frontCover:String=""
 ) {
     /**
      * 处理因is开头属性转json丢失数据的问题

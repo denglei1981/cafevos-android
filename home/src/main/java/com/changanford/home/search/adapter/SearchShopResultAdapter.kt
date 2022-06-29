@@ -14,7 +14,7 @@ class SearchShopResultAdapter :
     override fun convert(holder: BaseViewHolder, item: SearchShopBean) {
 
         val ivShopping = holder.getView<ShapeableImageView>(R.id.iv_shopping)
-        GlideUtils.loadBD(item.spuImgs, ivShopping)
+        GlideUtils.loadBD(item.getImgPath(), ivShopping)
         holder.setText(R.id.tv_author_name, item.spuName)
         val tvSubTitle = holder.getView<AppCompatTextView>(R.id.tv_sub_title)
 

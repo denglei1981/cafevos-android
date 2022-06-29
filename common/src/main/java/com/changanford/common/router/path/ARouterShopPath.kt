@@ -45,6 +45,8 @@ object ARouterShopPath {
     const val MultiplePackageActivity ="/shop/MultiplePackageActivity"
 
     const val NoLogisticsInfoActivity="/shop/NoLogisticsInfoActivity"
+
+    const val CarMaintenanceActivity = "/shop/CarMaintenanceActivity"//爱车养护
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

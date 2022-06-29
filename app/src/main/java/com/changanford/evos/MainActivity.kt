@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.buried.BuriedUtil
@@ -36,6 +37,7 @@ import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
+import com.changanford.shop.ShopFragment
 import com.luck.picture.lib.tools.ToastUtils
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
@@ -47,6 +49,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private lateinit var updateViewModel: UpdateViewModel
     lateinit var navController: NavController
+
+    var jumpIndex: String = ""
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
@@ -109,53 +113,69 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
-
                 R.id.carFragment -> {
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                    if(!isJumpMenu){
+                    if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("爱车")
                     }
-                    isJumpMenu=false
+                    isJumpMenu = false
                 }
                 R.id.myFragment -> {
                     // 埋点
-
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                    if(!isJumpMenu){
+                    if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("我的")
                     }
-                    isJumpMenu=false
+                    isJumpMenu = false
                 }
-                R.id.circleFragment -> {
+                R.id.circleFragment -> {// 社区
                     // 埋点
-
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
-                    if(!isJumpMenu){
+                    if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("社区")
                     }
-                    isJumpMenu=false
+                    isJumpMenu = false
+                    val circleFragmentV2 = getFragment(CircleFragmentV2::class.java)
+                    circleFragmentV2?.let { it ->
+                        val circleFragment = it as CircleFragmentV2
+                        if (!TextUtils.isEmpty(jumpIndex)) {
+                            circleFragment.setCurrentItem(jumpIndex)
+                            jumpIndex = ""
+                        }
+                    }
                 }
 
                 R.id.shopFragment -> {
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                    if(!isJumpMenu){
+                    if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("商城")
                     }
-                    isJumpMenu=false
+                    isJumpMenu = false
+                    getFragment(ShopFragment::class.java)?.let { it ->
+                        val shopFragment = it as ShopFragment
+                        if (!TextUtils.isEmpty(jumpIndex)) {
+                            //jumpIndex 为tagName
+                            shopFragment.setCurrentItem(jumpIndex)
+                            jumpIndex = ""
+                        }
+                    }
                 }
                 R.id.homeFragment -> {
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
-                    currentFragment?.let {
+                    currentFragment?.let { it ->
                         val homeV2Fragment = it as HomeV2Fragment
-                        homeV2Fragment.closeTwoLevel()// 关掉二楼
+                        if (!TextUtils.isEmpty(jumpIndex)) {
+                            homeV2Fragment.setCurrentItem(jumpIndex)
+                            jumpIndex = ""
+                        }
                     }
-                    if(!isJumpMenu){
+                    if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("发现")
                     }
-                    isJumpMenu=false
+                    isJumpMenu = false
                 }
                 else -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
@@ -367,7 +387,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     /**
      * 处理外部浏览
      */
-    var isJumpMenu:Boolean=false // 是否要点击 的埋点标志。
+    var isJumpMenu: Boolean = false // 是否要点击 的埋点标志。
     private fun handleViewIntent(intent: Intent) {
         if (Intent.ACTION_VIEW == intent.action) {
             val uri = intent.data
@@ -384,32 +404,37 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         } else {
             intent.extras?.let {
                 val jumpValue = it.getInt("jumpValue")
-                isJumpMenu=true
+                try {
+                    jumpIndex = it.getString("value","")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                isJumpMenu = true
                 if (jumpValue > 0)
                     when (jumpValue) {
                         1 -> {
-                            navController?.navigate(R.id.homeFragment)
+                            navController.navigate(R.id.homeFragment)
                         }
                         2 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.white)
-                            navController?.navigate(R.id.circleFragment)
+                            navController.navigate(R.id.circleFragment)
                         }
                         3 -> {
                             setHomBottomNavi(View.VISIBLE)
-                            navController?.navigate(R.id.carFragment)
+                            navController.navigate(R.id.carFragment)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
 
                         }
                         4 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                            navController?.navigate(R.id.shopFragment)
+                            navController.navigate(R.id.shopFragment)
                         }
                         5 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                            navController?.navigate(R.id.myFragment)
+                            navController.navigate(R.id.myFragment)
                         }
                     }
                 try {
