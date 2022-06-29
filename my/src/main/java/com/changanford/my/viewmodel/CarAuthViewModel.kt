@@ -54,6 +54,23 @@ class CarAuthViewModel : ViewModel() {
         }
     }
 
+
+    fun cmcImageUpload(ossUrl:String,type:Int,result: (CommonResponse<CmcUrl>) -> Unit){
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["fileName"]=System.currentTimeMillis().toString().plus(".jpg")
+                body["type"] =type
+                body["ossUrl"] =ossUrl
+                body["watermark"]="仅用于长安福特私域平台车主认证使用"
+                body["needWatermark"] = true
+                val rkey = getRandomKey()
+                apiService.cmcImageUpload(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+
     /**
      * 提交车主认证
      */

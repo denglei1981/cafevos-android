@@ -567,10 +567,52 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 uploadDialog.dismiss()
                 showToast("上传成功")
                 when (imgType) {
-                    1, 7 -> {
+                    1 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(imgType, OcrRequestBean(s.cmcUrl, "ID_CARD", s.cmcUrl))
+                            }
+
+                        }
                         showIdcard(it)
                     }
-                    4, 5 -> {
+
+                    7 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s.cmcUrl, "DRIVER_LICENCE", s.cmcUrl)
+                                )
+                            }
+                        }
+                        showIdcard(it)
+                    }
+                    4 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s.cmcUrl, "WALK_LICENCE", s.cmcUrl)
+                                )
+                            }
+                        }
+                        it?.plate_num?.let {
+                            body["plateNum"] = it
+                        }
+                        showVIN(it)
+
+
+                    }
+                    5 -> {
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
+                            it.data?.let {s->
+                                pathMap.put(
+                                    imgType,
+                                    OcrRequestBean(s.cmcUrl, "CAR_INVOICE", s.cmcUrl)
+                                )
+                            }
+                        }
                         it?.plate_num?.let {
                             body["plateNum"] = it
                         }
@@ -826,7 +868,9 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 CarItemBean(
                                     vin = vinNum,
                                     authStatus = it.authStatus,
-                                    isNeedChangeBind = it?.isNeedChangeBind ?: 0
+                                    isNeedChangeBind = it.isNeedChangeBind ?: 0,
+                                    authId = it.authId,
+                                    carSalesInfoId = ""
                                 )
                             )
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)
