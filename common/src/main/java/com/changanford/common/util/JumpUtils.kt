@@ -417,8 +417,15 @@ class JumpUtils {
                         val vin = json.getString("vin")
                         val authId = json.getString("authId")
                         val status = json.getIntValue("status")
-                        val carSalesInfoId = json.getString("carSalesInfoId")
-                        val isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        var carSalesInfoId=""
+                        if(json.containsKey("carSalesInfoId")){
+                           carSalesInfoId = json.getString("carSalesInfoId")
+                        }
+                        var isNeedChangeBind=0
+                        if(json.containsKey("isNeedChangeBind")){
+                             isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        }
+
                         RouterManger.param(
                             RouterManger.KEY_TO_OBJ,
                             CarItemBean(vin = vin, authId = authId, carSalesInfoId = carSalesInfoId)
@@ -865,9 +872,9 @@ class JumpUtils {
                                     it.size == 0 -> {
                                         0
                                     }
-                                    failNum == it.size -> {//列表数据全部失败
-                                        1
-                                    }
+//                                    failNum == it.size -> {//列表数据全部失败
+//                                        1
+//                                    }
                                     else -> {
                                         3 //有认证中的数据
                                     }

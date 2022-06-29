@@ -1007,6 +1007,11 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<OcrBean>
 
+    @POST("/ser/carAuth/cmcImageUpload")
+    suspend fun cmcImageUpload(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CmcUrl>
 
     //我的足迹 商品
     @POST("mall/myMallFootprint")
@@ -1026,7 +1031,6 @@ interface NetWorkApi {
     /**
      * 添加车牌号
      */
-
     @POST("ser/carAuth/updatePlateNum")
     suspend fun addCarCardNum(
         @HeaderMap headMap: Map<String, String>,
@@ -1134,6 +1138,7 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
     // 优惠券列表
     @POST("/mall/coupon/receiveList")
     suspend fun receiveList(
@@ -1166,36 +1171,59 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MutableList<MyFastInData>>
+
     /**
      *  登录成功后获取跳转路由
      * */
     @POST("/userLoginJump/getJump")
-    suspend fun loginJump(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<JumpDataBean>
+    suspend fun loginJump(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<JumpDataBean>
+
     /**
      *  表示已经跳转过？？？？？？？？？？
      * */
     @POST("/userLoginJump/changeJumpStatus")
-    suspend fun changeJumpStatus(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun changeJumpStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
 
     @POST("con/circle/carRecommend")
-    suspend fun carRecommend(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<MutableList<MineRecommendCircle>>
+    suspend fun carRecommend(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<MineRecommendCircle>>
 
     /**
      * 获取订单类型
      * */
     @POST("user/navigaMenu/getUserOrderType")
-    suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<MenuBeanItem>>
+    suspend fun getOrderKey(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<MenuBeanItem>>
 
     @POST("con/circle/myCircles")
-    suspend fun myCircles(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<NewCircleBean>>
+    suspend fun myCircles(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<NewCircleBean>>
 
 
     // 参与的话题。
     @POST("con/topic/myTopics")
-    suspend fun myTopics(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<Topic>>
+    suspend fun myTopics(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<Topic>>
 
     //点赞的帖子
     @POST("con/posts/myLikedPosts")
-    suspend fun myLikedPosts(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<ListMainBean<PostDataBean>>
+    suspend fun myLikedPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<PostDataBean>>
 }
