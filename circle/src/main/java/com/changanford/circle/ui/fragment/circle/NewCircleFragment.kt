@@ -236,9 +236,11 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                     .clip(RoundedCornerShape(5.dp))
                             )
                             //是否加星
-//                            Box(modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(4.dp)) {
-//                                Image(painter = painterResource(R.mipmap.ic_circle_star_1), contentDescription = "星标")
-//                            }
+                            if(itemData.star=="YES"){
+                                Box(modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(4.dp)) {
+                                    Image(painter = painterResource(R.mipmap.ic_circle_star_1), contentDescription = "星标")
+                                }
+                            }
                             Box(contentAlignment = Alignment.Center,modifier = Modifier
                                 .height(27.dp)
                                 .fillMaxWidth()

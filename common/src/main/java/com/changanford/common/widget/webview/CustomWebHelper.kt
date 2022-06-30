@@ -80,7 +80,7 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                 ): Boolean {
                     val url = request?.url.toString()
                     // 超链接跳转
-                    if (url.contains("jumpDataType=") && url.contains("jumpDataValue=")) {
+                    if (url.contains("jumpDataType=")) {
                         try {
                             val paramStr = url.indexOf("?")
                             val param = url.subSequence(paramStr, url.length)
