@@ -126,18 +126,24 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
-                    //状态 状态 2待审核  1认证失败 3审核通过
-                    val status: TextView = holder.getView(R.id.status_text)
-                    when (item.checkStatus) {
-                        "2" -> {
-                            status.visibility = View.VISIBLE
-                            status.text = "审核中"
+                    //状态 状态 1待审核  2审核通过
+                    val statusTv: TextView = holder.getView(R.id.status_text)
+                    val status=item.status
+                    when (status) {
+                        "1" -> {
+                            statusTv.visibility = View.VISIBLE
+                            statusTv.text = "审核中"
                         }
                         else -> {
-                            status.visibility = View.GONE
+                            statusTv.visibility = View.GONE
                         }
                     }
-                    holder.getView<ImageView>(R.id.img_star).visibility=if(item.star=="YES")View.VISIBLE else View.GONE
+                    holder.getView<ImageView>(R.id.img_star).apply {
+                        visibility=if(status=="2"){
+                            setImageResource(if(item.star=="YES")R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
+                            View.VISIBLE
+                        }else View.GONE
+                    }
                     holder.itemView.setOnClickListener {
                         JumpUtils.instans?.jump(6, item.circleId)
                     }
@@ -153,22 +159,29 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
                     holder.getView<ImageView>(R.id.img_star).visibility=if(item.star=="YES")View.VISIBLE else View.GONE
-                    val status: TextView = holder.getView(R.id.status_text)
+                    val statusTV: TextView = holder.getView(R.id.status_text)
                     val reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
                     reasonLayout.visibility = View.GONE
 
                     val operation: TextView = holder.getView(R.id.item_operation)
                     operation.setOnClickListener(null)
-                    //状态 状态 2待审核  1认证失败 3审核通过
-                    when (item.checkStatus) {
-                        "2", "1" -> {
+                    val status=item.checkStatus
+                    holder.getView<ImageView>(R.id.img_star).apply {
+                        visibility=if(status=="2"){
+                            setImageResource(if(item.star=="YES")R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
+                            View.VISIBLE
+                        }else View.GONE
+                    }
+                    //状态 状态 1待审核  2审核通过 3认证失败
+                    when (status) {
+                        "3", "1" -> {
                             reasonLayout.visibility =
-                                if (item.checkStatus == "2") View.GONE else View.VISIBLE
-                            status.visibility = View.VISIBLE
-                            status.text = if (item.checkStatus == "2") "审核中" else "未通过"
+                                if (item.checkStatus == "3") View.GONE else View.VISIBLE
+                            statusTV.visibility = View.VISIBLE
+                            statusTV.text = if (item.checkStatus == "1") "审核中" else "未通过"
                             holder.setText(
                                 R.id.item_reason,
-                                if (item.checkStatus == "2") "" else "原因：${item.checkNoReason}"
+                                if (item.checkStatus == "1") "" else "原因：${item.checkNoReason}"
                             )
                             operation.text = "去编辑"
                             operation.setOnClickListener {
@@ -177,9 +190,9 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .startARouter(ARouterCirclePath.CreateCircleActivity)
                             }
                         }
-                        "3" -> {
-                            status.visibility = View.VISIBLE
-                            status.text = "通过"
+                        "2" -> {
+                            statusTV.visibility = View.VISIBLE
+                            statusTV.text = "通过"
                             reasonLayout.visibility =
                                 if (item.applyerCount > 0) View.VISIBLE else View.GONE
                             holder.setText(
@@ -198,7 +211,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             }
                         }
                         else -> {
-                            status.visibility = View.GONE
+                            statusTV.visibility = View.GONE
                         }
                     }
                 }

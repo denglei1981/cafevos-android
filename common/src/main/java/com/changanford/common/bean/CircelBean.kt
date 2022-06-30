@@ -51,6 +51,7 @@ data class CircleItemBean(
     val type:String,
     val needAudit:String,
     var star:String?=null,
+    var status:String?=null,//1审核中 2通过
 
 ) : MultiItemEntity,Serializable
 
