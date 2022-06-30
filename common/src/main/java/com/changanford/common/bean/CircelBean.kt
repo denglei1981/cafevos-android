@@ -36,6 +36,7 @@ data class CircleItemBean(
     val hotIcon: String = "",
     val isHot: String = "",//是否热门 1 是 0 不是
     val isRecommend: String = "",//是否推荐 1是 0 不是
+    val isAudit: Int = 0,//是否推荐 0没有管理权限 1 有管理权限
     val pic: String = "",
     val checkStatus: String = "",//状态 1 审核通过 2 待审核  3认证失败
     val checkPassTime: String = "",

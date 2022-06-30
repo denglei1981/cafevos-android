@@ -182,21 +182,21 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     operation.setOnClickListener(null)
                     val status = item.checkStatus
                     holder.getView<ImageView>(R.id.img_star).apply {
-                        visibility = if (status == "2") {
+                        visibility = if (status == "3") {
                             setImageResource(if (item.star == "YES") R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
                             View.VISIBLE
                         } else View.GONE
                     }
-                    //状态 状态 1待审核  2审核通过 3认证失败
+                    //状态 状态 1待审核  2认证失败 3审核通过
                     when (status) {
-                        "3", "1" -> {
+                        "2", "1" -> {
                             reasonLayout.visibility =
-                                if (item.checkStatus == "3") View.GONE else View.VISIBLE
+                                if (item.checkStatus == "1") View.GONE else View.VISIBLE
                             statusTV.visibility = View.VISIBLE
                             statusTV.text = if (item.checkStatus == "1") "审核中" else "未通过"
                             holder.setText(
                                 R.id.item_reason,
-                                if (item.checkStatus == "1") "" else "原因：${item.checkNoReason}"
+                                if (item.checkStatus == "2") "" else "原因：${item.checkNoReason}"
                             )
                             operation.text = "去编辑"
                             operation.setOnClickListener {
@@ -205,11 +205,11 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .startARouter(ARouterCirclePath.CreateCircleActivity)
                             }
                         }
-                        "2" -> {
+                        "3" -> {
                             statusTV.visibility = View.VISIBLE
                             statusTV.text = "通过"
                             reasonLayout.visibility =
-                                if (item.applyerCount > 0) View.VISIBLE else View.GONE
+                                if (item.applyerCount > 0 && item.isAudit == 1) View.VISIBLE else View.GONE
                             holder.setText(
                                 R.id.item_reason,
                                 "有${item.applyerCount}人申请加入圈子"

@@ -752,7 +752,7 @@ interface NetWorkApi {
     suspend fun queryMineMangerCircle(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<ArrayList<CircleMangerBean>>
+    ): CommonResponse<CircleListBean>
 
 
     //我的圈子 其他状态

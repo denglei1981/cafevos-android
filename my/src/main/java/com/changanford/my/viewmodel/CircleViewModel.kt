@@ -31,35 +31,38 @@ class CircleViewModel : ViewModel() {
                 val rkey = getRandomKey()
                 apiService.queryMineMangerCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                if (null != it && it.size > 0) {
-                    it.forEach {
-                        it.circles?.let { items ->
-                            items[0].typeStr = it.typeStr
-                            items[0].isShowTitle = true
-                            circleItemBeans.addAll(items)
+                if (it?.dataList != null) {
+                    var title = ""
+                    it.dataList?.forEach { circleItemBean ->
+                        if (title != circleItemBean.typeStr) {
+                            circleItemBean.isShowTitle = true
                         }
+                        title = circleItemBean.typeStr
                     }
+                    mMangerCircle.postValue(it.dataList as ArrayList<CircleItemBean>?)
                 }
+            }.onWithMsgFailure {
+                it?.toast()
             }
-            fetchRequest {
-                val body = HashMap<String, Any>()
-                searchKeys?.apply {
-                    body["searchKeys"] = searchKeys
-                }
-                val rkey = getRandomKey()
-                apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
-            }.onSuccess {
-                it?.let {
-                    if (it.size > 0) {
-                        it[0].typeStr = "处理中"
-                        it[0].isShowTitle = true
-                    }
-                    circleItemBeans.addAll(it)
-                }
-                mMangerCircle.postValue(circleItemBeans)
-            }.onFailure {
-                mMangerCircle.postValue(circleItemBeans)
-            }
+//            fetchRequest {
+//                val body = HashMap<String, Any>()
+//                searchKeys?.apply {
+//                    body["searchKeys"] = searchKeys
+//                }
+//                val rkey = getRandomKey()
+//                apiService.queryMineMangerOtherCircle(body.header(rkey), body.body(rkey))
+//            }.onSuccess {
+//                it?.let {
+//                    if (it.size > 0) {
+//                        it[0].typeStr = "处理中"
+//                        it[0].isShowTitle = true
+//                    }
+//                    circleItemBeans.addAll(it)
+//                }
+//                mMangerCircle.postValue(circleItemBeans)
+//            }.onFailure {
+//                mMangerCircle.postValue(circleItemBeans)
+//            }
         }
     }
 
