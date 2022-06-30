@@ -732,6 +732,13 @@ interface NetWorkApi {
     ): CommonResponse<CircleListBean>
 
 
+    //社区-圈子-我的圈子-星标/取消星标
+    @POST("/con/community/circleStar")
+    suspend fun circleStar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     //我创建的圈子
     @POST("con/circle/getCreateCircles")
     suspend fun queryMineCreateCircle(
@@ -1226,4 +1233,11 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<PostDataBean>>
+
+   //领取交车礼积分
+    @POST("/carDeliveryGift/receiveGift")
+    suspend fun receiveGift(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 }

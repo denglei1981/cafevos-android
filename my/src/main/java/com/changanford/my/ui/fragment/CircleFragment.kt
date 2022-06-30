@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.manger.RouterManger
@@ -17,6 +19,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
 import com.changanford.my.databinding.FragmentCollectBinding
@@ -50,7 +53,8 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
             return medalFragment
         }
     }
-    private var searchKeys:String?=null
+
+    private var searchKeys: String? = null
     override fun initView() {
         arguments?.getInt(RouterManger.KEY_TO_ID)?.let {
             index = it
@@ -79,14 +83,23 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 //            searchKeys="${it?:""}"
             initRefreshData(1)
         })
+        circleAdapter.setOnItemChildClickListener { _, view, position ->
+            val bean = circleAdapter.getItem(position)
+            val useState = if (bean.star == "YES") "NO" else "YES"
+            if (view.id == R.id.img_star) {
+                viewModel.circleStar(bean.circleId, useState) { initRefreshData(1) }
+            }
+        }
     }
+
     /**
      * 搜索
-    * */
-    fun startSearch(searchKeys:String?=null){
-        this.searchKeys=searchKeys
+     * */
+    fun startSearch(searchKeys: String? = null) {
+        this.searchKeys = searchKeys
         binding.rcyCollect.smartCommonLayout.autoRefresh()
     }
+
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         when (index) {
@@ -116,6 +129,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         init {
             addItemType(0, R.layout.item_join_circle)
             addItemType(1, R.layout.item_manger_circle)
+            addChildClickViewIds(R.id.img_star)
         }
 
         override fun convert(holder: BaseViewHolder, item: CircleItemBean) {
@@ -128,7 +142,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
                     //状态 状态 1待审核  2审核通过
                     val statusTv: TextView = holder.getView(R.id.status_text)
-                    val status=item.status
+                    val status = item.status
                     when (status) {
                         "1" -> {
                             statusTv.visibility = View.VISIBLE
@@ -139,10 +153,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         }
                     }
                     holder.getView<ImageView>(R.id.img_star).apply {
-                        visibility=if(status=="2"){
-                            setImageResource(if(item.star=="YES")R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
+                        visibility = if (status == "2") {
+                            setImageResource(if (item.star == "YES") R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
                             View.VISIBLE
-                        }else View.GONE
+                        } else View.GONE
                     }
                     holder.itemView.setOnClickListener {
                         JumpUtils.instans?.jump(6, item.circleId)
@@ -158,19 +172,20 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
-                    holder.getView<ImageView>(R.id.img_star).visibility=if(item.star=="YES")View.VISIBLE else View.GONE
+                    holder.getView<ImageView>(R.id.img_star).visibility =
+                        if (item.star == "YES") View.VISIBLE else View.GONE
                     val statusTV: TextView = holder.getView(R.id.status_text)
                     val reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
                     reasonLayout.visibility = View.GONE
 
                     val operation: TextView = holder.getView(R.id.item_operation)
                     operation.setOnClickListener(null)
-                    val status=item.checkStatus
+                    val status = item.checkStatus
                     holder.getView<ImageView>(R.id.img_star).apply {
-                        visibility=if(status=="2"){
-                            setImageResource(if(item.star=="YES")R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
+                        visibility = if (status == "2") {
+                            setImageResource(if (item.star == "YES") R.mipmap.ic_circle_star_1 else R.mipmap.ic_circle_star_0)
                             View.VISIBLE
-                        }else View.GONE
+                        } else View.GONE
                     }
                     //状态 状态 1待审核  2审核通过 3认证失败
                     when (status) {

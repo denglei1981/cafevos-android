@@ -407,5 +407,10 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<*>
 
-
+    //待领取交车礼积分列表
+    @POST("/carDeliveryGift/waitReceiveList")
+    suspend fun waitReceiveList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<WaitReceiveBean>>
 }

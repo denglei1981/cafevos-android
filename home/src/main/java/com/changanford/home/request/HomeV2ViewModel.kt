@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.bean.WResponseBean
+import com.changanford.common.bean.WaitReceiveBean
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -77,6 +78,55 @@ class HomeV2ViewModel : BaseViewModel() {
         })
     }
 
+    val receiveListLiveData = MutableLiveData<MutableList<CouponsItemBean>>()
+
+    /**
+     * 优惠券弹窗
+     */
+    fun receiveList() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            body["popup"] = "YES"
+            ApiClient.createApi<HomeNetWork>()
+                .receiveList(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    if (it != null && it.size > 0) {
+                        receiveListLiveData.postValue(it)
+                    } else waitReceiveList()
+                }.onWithMsgFailure {
+                    waitReceiveList()
+                    it?.toast()
+                }
+        })
+    }
+
+    val waitReceiveListLiveData = MutableLiveData<ArrayList<WaitReceiveBean>>()
+
+    /**
+     * 待领取交车礼积分列表
+     */
+    fun waitReceiveList() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            body["popup"] = "YES"
+            ApiClient.createApi<HomeNetWork>()
+                .waitReceiveList(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    if (it != null && it.size > 0) {
+                        waitReceiveListLiveData.postValue(it)
+                    } else {
+                        loginGetJump()
+                    }
+                }.onWithMsgFailure {
+                    loginGetJump()
+                    it?.toast()
+                }
+        })
+    }
+
+
     /**
      * 领取微客服小程序积分
      * */
@@ -118,24 +168,6 @@ class HomeV2ViewModel : BaseViewModel() {
         })
     }
 
-    val receiveListLiveData = MutableLiveData<MutableList<CouponsItemBean>>()
-    fun receiveList() {
-        launch(false, {
-            val body = HashMap<String, Any>()
-            val randomKey = getRandomKey()
-            body["popup"]="YES"
-            ApiClient.createApi<HomeNetWork>()
-                .receiveList(body.header(randomKey), body.body(randomKey))
-                .onSuccess {
-                    if (it != null && it.size > 0) {
-                        receiveListLiveData.postValue(it)
-                    }else loginGetJump()
-                }.onWithMsgFailure {
-                    loginGetJump()
-                    it?.toast()
-                }
-        })
-    }
     /**
      * 登录成功获取跳转的jump（主要用于H5用户引流）
      */
@@ -147,14 +179,15 @@ class HomeV2ViewModel : BaseViewModel() {
                 apiService.loginJump(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.apply {
-                    if(jumpStatus=="0"){
+                    if (jumpStatus == "0") {
                         changeJumpStatus()
-                        JumpUtils.instans?.jump(jumpDataType,jumpDataValue)
+                        JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
                     }
                 }
             }
         }
     }
+
     private fun changeJumpStatus() {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
@@ -164,11 +197,12 @@ class HomeV2ViewModel : BaseViewModel() {
             }
         }
     }
-    fun receiveCoupon(list:ArrayList<String>) {
+
+    fun receiveCoupon(list: ArrayList<String>) {
         launch(true, {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
-            body["couponSendIds"]=list
+            body["couponSendIds"] = list
             ApiClient.createApi<HomeNetWork>()
                 .receiveList(body.header(randomKey), body.body(randomKey))
                 .onSuccess {

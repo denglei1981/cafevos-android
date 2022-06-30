@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
@@ -22,6 +23,7 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GetCoupopBindingPop
+import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -46,6 +48,7 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
+import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
 
 /**
@@ -358,7 +361,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                             showPopupWindow()
                         }
                     }, 500)
-                }else{
+                } else {
                     viewModel.receiveList()
                 }
             }
@@ -395,10 +398,36 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
                     GetCoupopBindingPop(requireActivity(), this, data).apply {
                         showPopupWindow()
+                        onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                            override fun onDismiss() {
+                                viewModel.waitReceiveList()
+                            }
+
+                        }
+                    }
+                }, 500)
+            } else {
+                viewModel.waitReceiveList()
+            }
+        })
+        viewModel.waitReceiveListLiveData.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    WaitReceiveBindingPop(
+                        requireActivity(),
+                        this,
+                        it[0],
+                        object : WaitReceiveBindingPop.ReceiveSuccessInterface {
+                            override fun receiveSuccess() {
+                                viewModel.waitReceiveList()
+                            }
+                        }
+                    ).apply {
+                        showPopupWindow()
                     }
                 }, 500)
             }
-        })
+        }
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
 //            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
 //                if (t.isSuccess) {
@@ -472,12 +501,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
 //        binding.header.finishTwoLevel()
     }
-    open fun setCurrentItem(valueItem:String?){
+
+    open fun setCurrentItem(valueItem: String?) {
         try {
-            if(!TextUtils.isEmpty(valueItem)){
+            if (!TextUtils.isEmpty(valueItem)) {
                 binding.homeViewpager.currentItem = valueItem!!.toInt()
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
