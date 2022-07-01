@@ -134,8 +134,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         activityTimeStatus: String = ""
     ) // 过期，还是进行中。ON_GOING CLOSED
     {
-        this.allActsCode = activityTimeStatus
-        this.allUnitCode = orderType
+        this.allActsCode = orderType
+        this.allUnitCode = activityTimeStatus
         viewModel.getActList(
             isLoadMore,
             cityId = cityId,
