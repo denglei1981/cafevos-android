@@ -2,6 +2,7 @@ package com.changanford.shop.ui.shoppingcart
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -34,7 +35,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             override fun check() {
                 setTitle()
             }
-        })
+        },singleCheck)
 
     }
     val shoppingCartInvaildAdapter: ShoppingCartInvaildAdapter by lazy {
@@ -46,6 +47,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
 
     }
     private var shoppingEdit: Boolean = false  // 购物车编辑状态
+    private val singleCheck = true
 
     override fun initView() {
         binding.layoutTop.tvTitle.text = "购物车"
@@ -55,11 +57,15 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
         }
         binding.layoutTop.tvRight.text = "编辑"
         binding.layoutTop.tvRight.visibility = View.VISIBLE
+        if (singleCheck) {
+            binding.checkStatus.isVisible = false
+        }
         binding.layoutTop.tvRight.setOnClickListener {
             val menuTxt = binding.layoutTop.tvRight.text
             when (menuTxt) {
                 "编辑" -> {
                     shoppingEdit = true
+                    shoppingCartAdapter.shoppingEdit = true
                     binding.layoutTop.tvRight.text = "完成"
                     if (shoppingCartAdapter.shopList.size > 0) {
                         binding.tvOver.text = "删除(${shoppingCartAdapter.shopList.size})"
@@ -69,11 +75,18 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                         binding.tvOver.isSelected = false
                     }
                     binding.tvBalance.visibility = View.GONE
-
+                    if (singleCheck) {
+                        binding.checkStatus.isVisible = true
+                    }
                 }
                 "完成" -> {
                     shoppingEdit = false
+                    shoppingCartAdapter.shoppingEdit = false
                     binding.layoutTop.tvRight.text = "编辑"
+                    if (singleCheck) {
+                        binding.checkStatus.isVisible = false
+                        allCheck(isCheck = false)
+                    }
                     getOver()
 //                    if (shoppingCartAdapter.shopList.size > 0) {
 //                        binding.tvOver.text = "结算(${shoppingCartAdapter.shopList.size})"

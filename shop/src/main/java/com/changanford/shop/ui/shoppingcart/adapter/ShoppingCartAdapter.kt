@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.shoppingcart.adapter
 
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -25,13 +26,16 @@ import com.changanford.shop.utils.launchWithCatch
  * */
 class ShoppingCartAdapter(
     val lifecycleOwner11: LifecycleOwner,
-    val shopBackListener: ShopBackListener
+    val shopBackListener: ShopBackListener,
+    val singleCheck:Boolean
 ) :
     BaseQuickAdapter<GoodsDetailBean, BaseDataBindingHolder<ItemShoppingCartBinding>>(R.layout.item_shopping_cart),
     LoadMoreModule {
 
     val checkMap: HashMap<Long, Boolean> = HashMap()
     val shopList: MutableList<GoodsDetailBean> = mutableListOf() // 选中的商品
+    var shoppingEdit: Boolean = false
+    var preCheckBox : AppCompatCheckBox? = null
 
     override fun convert(
         holder: BaseDataBindingHolder<ItemShoppingCartBinding>,
@@ -42,8 +46,17 @@ class ShoppingCartAdapter(
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
             tvIntegral.setText("￥" + item.getRMB(item.fbPer))
             checkStatus.setOnCheckedChangeListener { _, isChecked ->
+                if (singleCheck && !shoppingEdit){
+                    preCheckBox?.isChecked = false
+                    preCheckBox = null
+                    checkMap.forEach {
+                        checkMap[it.key] = false
+                    }
+                    shopList.clear()
+                }
                 checkMap[item.mallMallUserSkuId] = isChecked
                 if (isChecked) {
+                    preCheckBox = checkStatus
                     if (!shopList.contains(item)) {
                         shopList.add(item)
                     }
