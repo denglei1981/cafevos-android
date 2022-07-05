@@ -181,26 +181,26 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean?=null){
                                 Text(text = stringResource(R.string.str_modifyData),fontSize = 11.sp, color=colorResource(R.color.color_99))
                             }
                         }
-                        if(identityType==1&&!tagNameArr.isNullOrEmpty()){
-                            Spacer(modifier = Modifier.height(15.dp))
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 20.dp, end = 15.dp)) {
-                                tagNameArr?.forEach {tagName->
-                                    Box(modifier = Modifier
-                                        .size(width = 60.dp, height = 19.dp)
-                                        .border(
-                                            0.5.dp,
-                                            color = colorResource(R.color.color_00095B),
-                                            shape = RoundedCornerShape(2.dp)
-                                        ),
-                                        contentAlignment = Alignment.Center){
-                                        Text(text = tagName, color = colorResource(R.color.color_00095B), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                    }
-                                    Spacer(modifier = Modifier.width(5.dp))
-                                }
-                            }
-                        }
+//                        if(identityType==1&&!tagNameArr.isNullOrEmpty()){
+//                            Spacer(modifier = Modifier.height(15.dp))
+//                            Row(modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(start = 20.dp, end = 15.dp)) {
+//                                tagNameArr?.forEach {tagName->
+//                                    Box(modifier = Modifier
+//                                        .size(width = 60.dp, height = 19.dp)
+//                                        .border(
+//                                            0.5.dp,
+//                                            color = colorResource(R.color.color_00095B),
+//                                            shape = RoundedCornerShape(2.dp)
+//                                        ),
+//                                        contentAlignment = Alignment.Center){
+//                                        Text(text = tagName, color = colorResource(R.color.color_00095B), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+//                                    }
+//                                    Spacer(modifier = Modifier.width(5.dp))
+//                                }
+//                            }
+//                        }
                         if(introduction!=null){
                             Spacer(modifier = Modifier.height(15.dp))
                             //个人简介
