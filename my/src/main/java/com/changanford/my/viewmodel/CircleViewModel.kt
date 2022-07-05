@@ -115,6 +115,11 @@ class CircleViewModel : ViewModel() {
                 apiService.circleStar(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 block.invoke()
+                if(star=="YES"){
+                    "成功设置为星标圈子,将展示在我的圈子最前方".toast()
+                }else{
+                    "已取消星标圈子".toast()
+                }
             }.onWithMsgFailure {
                 it?.toast()
             }
