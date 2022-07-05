@@ -187,16 +187,16 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             View.VISIBLE
                         } else View.GONE
                     }
-                    //状态 状态 1待审核  2认证失败 3审核通过
+                    //状态 1认证失败  2待审核 3审核通过
                     when (status) {
                         "2", "1" -> {
                             reasonLayout.visibility =
-                                if (item.checkStatus == "1") View.GONE else View.VISIBLE
+                                if (item.checkStatus == "2") View.GONE else View.VISIBLE
                             statusTV.visibility = View.VISIBLE
-                            statusTV.text = if (item.checkStatus == "1") "审核中" else "未通过"
+                            statusTV.text = if (item.checkStatus == "2") "审核中" else "未通过"
                             holder.setText(
                                 R.id.item_reason,
-                                if (item.checkStatus == "2") "" else "原因：${item.checkNoReason}"
+                                if (item.checkStatus == "1") "" else "原因：${item.checkNoReason}"
                             )
                             operation.text = "去编辑"
                             operation.setOnClickListener {
