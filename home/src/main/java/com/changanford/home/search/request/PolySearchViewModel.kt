@@ -4,16 +4,15 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.net.*
+import com.changanford.common.util.room.SearchRecordDatabase
+import com.changanford.common.util.room.SearchRecordEntity
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.bean.SearchShopBean
-import com.changanford.home.room.SearchRecordDatabase
-import com.changanford.home.room.SearchRecordEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

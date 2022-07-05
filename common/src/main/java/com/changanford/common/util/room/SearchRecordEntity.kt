@@ -1,7 +1,8 @@
-package com.changanford.home.room
+package com.changanford.common.util.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.Dao
 
 /**
  * @Author: hpb

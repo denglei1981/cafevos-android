@@ -15,8 +15,6 @@ import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.Base64Utils
-import com.huawei.hms.common.ApiException
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.json.JSONObject

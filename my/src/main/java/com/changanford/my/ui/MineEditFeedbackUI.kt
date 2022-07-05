@@ -32,7 +32,6 @@ import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.databinding.UiEditFeedbackBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
-import com.huawei.hms.common.ApiException
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import java.lang.Exception

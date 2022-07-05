@@ -24,7 +24,6 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
-import com.huawei.hms.common.ApiException
 
 /**
  * @Author: lcw

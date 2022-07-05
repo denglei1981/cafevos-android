@@ -1,4 +1,4 @@
-package com.changanford.home.room
+package com.changanford.common.util.room
 
 import android.content.Context
 import androidx.room.Database

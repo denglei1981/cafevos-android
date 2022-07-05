@@ -6,8 +6,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.changanford.common.util.room.SearchRecordEntity;
 import com.changanford.home.R;
-import com.changanford.home.room.SearchRecordEntity;
 import java.util.List;
 public class SearchHistoryAdapter extends BaseQuickAdapter<SearchRecordEntity, BaseViewHolder> {
 

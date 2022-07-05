@@ -23,13 +23,13 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.room.SearchRecordDatabase
+import com.changanford.common.util.room.SearchRecordEntity
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.databinding.ActivityPolySearchBinding
-import com.changanford.home.room.SearchRecordDatabase
-import com.changanford.home.room.SearchRecordEntity
 import com.changanford.home.search.adapter.SearchHistoryAdapter
 import com.changanford.home.search.adapter.SearchHotAdapter
 import com.changanford.home.search.request.PolySearchViewModel
