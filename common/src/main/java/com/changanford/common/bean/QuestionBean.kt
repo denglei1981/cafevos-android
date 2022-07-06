@@ -85,7 +85,7 @@ data class QuestionInfoBean(
                         add(QuestionTagBean(context.getString(R.string.str_taQuestions),"QUESTION"))
                         add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
                     }
-                    add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
+//                    add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))
                 }
             }
         }
