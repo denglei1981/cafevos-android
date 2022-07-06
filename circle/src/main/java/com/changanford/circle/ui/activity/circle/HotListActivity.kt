@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity.circle
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -30,6 +31,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
+import java.net.URLDecoder
 
 /**
  * @Author : wenke
@@ -37,14 +39,17 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  * @Description : 圈子热门榜单
  */
 @Route(path = ARouterCirclePath.HotListActivity)
-class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewModel>(){
-    companion object{
-        fun start(topId:Int=-1){
-            val bundle=Bundle()
+class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleViewModel>() {
+    private var typeName: String = ""
+
+    companion object {
+        fun start(topId: Int = -1) {
+            val bundle = Bundle()
             bundle.putInt("topId", topId)
-            RouterManger.startARouter(ARouterCirclePath.HotListActivity,bundle)
+            RouterManger.startARouter(ARouterCirclePath.HotListActivity, bundle)
         }
     }
+
     override fun initView() {
         binding.run {
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
@@ -53,24 +58,37 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
     }
 
     override fun initData() {
-        val defaultTopId=intent.getIntExtra("topId",-1)
+        val defaultTopId = intent.getIntExtra("topId", -1)
+        typeName = intent.getStringExtra("value") ?: ""
+
         viewModel.hotTypesData.observe(this) {
             it?.apply {
                 initTabAndViewPager(this)
                 initMagicIndicator(this)
-                val index = indexOfFirst { item -> item.topId == defaultTopId }
+                val index =
+                    if (TextUtils.isEmpty(typeName)) indexOfFirst { item -> item.topId == defaultTopId } else indexOfFirst { item ->
+                        item.topName == URLDecoder.decode(
+                            typeName,
+                            "UTF-8"
+                        )
+                    }
                 if (index > 0) binding.viewPager.currentItem = index
             }
 
         }
         viewModel.getHotTypes()
     }
-    private fun initTabAndViewPager(tabs:MutableList<CirCleHotList>) {
+
+    private fun initTabAndViewPager(tabs: MutableList<CirCleHotList>) {
         binding.viewPager.apply {
-            adapter = object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            adapter = object : FragmentPagerAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
                 override fun getCount(): Int {
                     return tabs.size
                 }
+
                 override fun getItem(position: Int): Fragment {
                     return HotListFragment.newInstance(tabs[position].topId)
                 }
@@ -79,7 +97,7 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
         }
     }
 
-    private fun initMagicIndicator(tabs:MutableList<CirCleHotList>) {
+    private fun initMagicIndicator(tabs: MutableList<CirCleHotList>) {
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
@@ -90,15 +108,17 @@ class HotListActivity:BaseActivity<ActivityCircleHotlistBinding, NewCircleViewMo
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
+                val simplePagerTitleView: SimplePagerTitleView =
+                    ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.apply {
-                    gravity=Gravity.CENTER_HORIZONTAL
+                    gravity = Gravity.CENTER_HORIZONTAL
                     text = tabs[index].topName
                     textSize = 18f
                     setPadding(20.toIntPx(), 0, 20.toIntPx(), 0)
 //                    width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
                     normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
-                    selectedColor = ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
+                    selectedColor =
+                        ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
                     return this
                 }

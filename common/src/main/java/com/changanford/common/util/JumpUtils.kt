@@ -393,6 +393,7 @@ class JumpUtils {
             47 -> { //messageType(1->系统消息 2->互动消息 3->交易消息) |消息列表
                 if (!value.isNullOrEmpty()) {
                     bundle.putInt("messageType", value.toInt())
+                    bundle.putInt("value", value.toInt())
                     when (value) {
                         "1" -> startARouter(ARouterMyPath.MineMessageSysInfoUI)
                         "2", "3" -> startARouter(ARouterMyPath.MineMessageInfoUI, bundle)
