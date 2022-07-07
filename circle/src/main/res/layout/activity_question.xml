@@ -57,7 +57,7 @@
                         android:id="@+id/magic_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_30"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_horizontal"/>
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.viewpager.widget.ViewPager
