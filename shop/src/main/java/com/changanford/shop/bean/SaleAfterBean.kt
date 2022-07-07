@@ -50,6 +50,8 @@ data class InvoiceDetails(
 
 
 data class RefundProgressBean(
+
+    val orderNo:String ="",
     val fbRefund: String?=null,
     val fbRefundApply: String,
     val mallMallRefundId: String,

@@ -315,6 +315,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                                         RouterManger
                                             .param("value", carItemBean.carSalesInfoId)
                                             .param("plateNum", it)
+                                            .param("authId",carItemBean.authId)
 
                                             .startARouter(ARouterMyPath.AddCardNumTransparentUI)
                                     }

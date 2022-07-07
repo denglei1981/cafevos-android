@@ -8,9 +8,11 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.PayShowBean
+import com.changanford.common.bean.RefundBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.showTotalTag
+import com.changanford.common.utilext.logE
 import com.changanford.shop.R
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.databinding.ActivityRefundProgressBinding
@@ -20,6 +22,7 @@ import com.changanford.shop.ui.sale.adapter.RefundImgsAdapter
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.view.TopBar
+import com.google.gson.Gson
 
 /**
  *  退款进度整单退---> 未发货前
@@ -128,6 +131,23 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                     ft.tvHandle.setOnClickListener {
                         // 撤销退款申请
                         viewModel.cancelRefund(refundProgressBean.mallMallRefundId)
+                    }
+                }
+                "CLOSED" -> { // 退款关闭
+                    ft.tvHandle.visibility = View.VISIBLE
+                    ft.tvHandle.text = "申请退款"
+                    ft.tvHandle.setOnClickListener {
+                        val gson = Gson()
+                        val refundBean =
+                            RefundBean(
+                                refundProgressBean.orderNo,
+                                refundProgressBean.fbRefundApply,
+                                refundProgressBean.rmbRefundApply,
+                                "allOrderRefund"
+                            )
+                        val refundJson = gson.toJson(refundBean)
+                        refundJson.toString().logE()
+                        JumpUtils.instans?.jump(121, refundJson)
                     }
                 }
                 else -> {

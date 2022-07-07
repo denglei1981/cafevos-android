@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.PayShowBean
+import com.changanford.common.bean.RefundBean
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
@@ -25,6 +27,7 @@ import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
 import com.changanford.shop.view.TopBar
+import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
@@ -188,7 +191,21 @@ class RefundProgressHasShopActivity :
 
                 "CLOSED" -> { // 退款关闭
                     ft.tvInputOrder.visibility = View.GONE
-                    ft.tvHandle.visibility = View.GONE
+                    ft.tvHandle.visibility = View.VISIBLE
+                    ft.tvHandle.text = "申请售后"
+                    ft.tvHandle.setOnClickListener {
+                        var item = refundProgressBean.sku
+                        item?.orderNo = refundProgressBean.orderNo
+                        item?.price = "${refundProgressBean.fbRefundApply.toInt()+refundProgressBean.rmbRefundApply.toInt()*100}"
+                        val gsonItem = Gson()
+                        val gsonItemtoJson = gsonItem.toJson(item)
+                        val refundOrderItemBean: RefundOrderItemBean = Gson().fromJson<RefundOrderItemBean>(gsonItemtoJson,
+                            RefundOrderItemBean::class.java)
+                        val refundBean =RefundBean(refundProgressBean.orderNo,refundProgressBean.fbRefundApply,refundProgressBean.rmbRefundApply,"singleRefund",refundOrderItemBean)
+                        val gson = Gson()
+                        val toJson = gson.toJson(refundBean)
+                        JumpUtils.instans?.jump(121, toJson)
+                    }
                 }
                 else -> {
                     ft.tvInputOrder.visibility = View.GONE

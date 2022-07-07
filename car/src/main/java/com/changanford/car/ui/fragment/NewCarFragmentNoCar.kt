@@ -267,6 +267,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onResume() {
         super.onResume()
         reset()
+        viewModel.getMyCarModelList()
     }
     private fun reset(isHidden:Boolean=hidden){
         if(!isHidden) {
