@@ -284,5 +284,6 @@ object LiveDataBusKey {
     const val  CHILD_COMMENT_STAR="child_comment_star" // 对子评论点赞。
 
     const val REFRESH_POST_LIKE = "refreshPostLike"
+    const val REFRESH_WAIT = "refreshWait"
 }
 

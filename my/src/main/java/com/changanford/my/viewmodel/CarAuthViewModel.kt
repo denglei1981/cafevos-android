@@ -7,12 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -55,14 +58,14 @@ class CarAuthViewModel : ViewModel() {
     }
 
 
-    fun cmcImageUpload(ossUrl:String,type:Int,result: (CommonResponse<CmcUrl>) -> Unit){
+    fun cmcImageUpload(ossUrl: String, type: Int, result: (CommonResponse<CmcUrl>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
-                body["fileName"]=System.currentTimeMillis().toString().plus(".jpg")
-                body["type"] =type
-                body["ossUrl"] =ossUrl
-                body["watermark"]="仅用于长安福特私域平台车主认证使用"
+                body["fileName"] = System.currentTimeMillis().toString().plus(".jpg")
+                body["type"] = type
+                body["ossUrl"] = ossUrl
+                body["watermark"] = "仅用于长安福特私域平台车主认证使用"
                 body["needWatermark"] = true
                 val rkey = getRandomKey()
                 apiService.cmcImageUpload(body.header(rkey), body.body(rkey))
@@ -104,12 +107,16 @@ class CarAuthViewModel : ViewModel() {
         }
     }
 
-    fun queryAuthCarDetail(vin: String, authId:String,result: (CommonResponse<CarItemBean>) -> Unit) {
+    fun queryAuthCarDetail(
+        vin: String,
+        authId: String,
+        result: (CommonResponse<CarItemBean>) -> Unit
+    ) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["vin"] = vin
-                body["authId"]=authId
+                body["authId"] = authId
                 var rkey = getRandomKey()
                 apiService.queryAuthDetail(body.header(rkey), body.body(rkey))
             })
@@ -135,7 +142,7 @@ class CarAuthViewModel : ViewModel() {
 
     fun changePhoneBind(
         vin: String,
-        authId:String,
+        authId: String,
         oldPhone: String? = "",
         smsCode: String? = "",
 
@@ -148,7 +155,7 @@ class CarAuthViewModel : ViewModel() {
                     body["oldPhone"] = oldPhone ?: ""
                     body["smsCode"] = smsCode ?: ""
                     body["vin"] = vin
-                    body["authId"]=authId
+                    body["authId"] = authId
                     var rKey = getRandomKey()
                     if (oldPhone.isNullOrEmpty() || smsCode.isNullOrEmpty()) {
                         apiService.changePhoneBind(body.header(rKey), body.body(rKey))
@@ -243,7 +250,7 @@ class CarAuthViewModel : ViewModel() {
             result(fetchRequest(true) {
                 val body = HashMap<String, Any>()
 //                body["vin"] = vin
-                body["carSalesInfoId"]=carSalesInfoId
+                body["carSalesInfoId"] = carSalesInfoId
                 val rKey = getRandomKey()
                 apiService.setDefaultCar(body.header(rKey), body.body(rKey))
 
@@ -256,7 +263,7 @@ class CarAuthViewModel : ViewModel() {
         vin: String,
         phone: String? = "",
         smsCode: String? = "",
-        id:String,
+        id: String,
         result: (CommonResponse<String>) -> Unit
     ) {
         viewModelScope.launch {
@@ -265,7 +272,7 @@ class CarAuthViewModel : ViewModel() {
                     val body = HashMap<String, Any>()
 //                    body["phone"] = phone ?: ""
 //                    body["smsCode"] = smsCode ?: ""
-                    body["id"]=id
+                    body["id"] = id
                     body["vin"] = vin
                     val rKey = getRandomKey()
                     apiService.deleteCar(body.header(rKey), body.body(rKey))
@@ -316,4 +323,26 @@ class CarAuthViewModel : ViewModel() {
 
     }
 
+    val waitReceiveListLiveData = MutableLiveData<ArrayList<WaitReceiveBean>>()
+
+    /**
+     * 待领取交车礼积分列表
+     */
+    fun waitReceiveList() {
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                body["popup"] = "YES"
+                apiService.waitReceiveList(body.header(randomKey), body.body(randomKey))
+                    .onSuccess {
+                        if (it != null && it.size > 0) {
+                            waitReceiveListLiveData.postValue(it)
+                        }
+                    }.onWithMsgFailure {
+                        it?.toast()
+                    }
+            }
+        }
+    }
 }

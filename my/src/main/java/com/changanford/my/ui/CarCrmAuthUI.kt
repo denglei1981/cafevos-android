@@ -11,6 +11,7 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -26,6 +27,8 @@ import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.widget.WaitBindingCarPop
 import com.changanford.my.widget.WaitBindingDialog
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import java.util.*
+import kotlin.concurrent.schedule
 
 /**
  *  文件名：CarCrmAuthUI  爱车 列表
@@ -76,6 +79,11 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
                 }
             })
         viewModel.isWaitBindingCar()
+        LiveDataBus.get().with(LiveDataBusKey.REFRESH_WAIT).observe(this) {
+            Timer().schedule(3000) {
+                viewModel.waitReceiveList()
+            }
+        }
     }
 
     override fun onPause() {
@@ -116,6 +124,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyCarAuth.smartCommonLayout
     }
+
     var waitBindingDialog: WaitBindingDialog? = null
     override fun observe() {
         super.observe()
@@ -139,6 +148,24 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).observe(this, Observer {
             viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
         })
+        viewModel.waitReceiveListLiveData.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                android.os.Handler(Looper.myLooper()!!).postDelayed({
+                    WaitReceiveBindingPop(
+                        this,
+                        this,
+                        it[0],
+                        object : WaitReceiveBindingPop.ReceiveSuccessInterface {
+                            override fun receiveSuccess() {
+                                viewModel.waitReceiveList()
+                            }
+                        }
+                    ).apply {
+                        showPopupWindow()
+                    }
+                }, 500)
+            }
+        }
     }
 
     inner class AuthCarAdapter :
