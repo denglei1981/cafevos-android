@@ -194,7 +194,7 @@ class RefundProgressHasShopActivity :
                     ft.tvHandle.visibility = View.VISIBLE
                     ft.tvHandle.text = "申请售后"
                     ft.tvHandle.setOnClickListener {
-                        if (refundProgressBean.busSource == "WB") {//如果是维保订单，直接跳转仅退款。历史愿意跳转到了这里
+                        if (refundProgressBean.busSource == "WB" && refundProgressBean.sku == null) {//如果是维保订单，并且没有退过，直接跳转仅退款。历史愿意跳转到了这里
                             val toJson = "{\"orderNo\":\"${refundProgressBean.orderNo}\",\"refundType\":\"allOrderRefund\"}"
                             JumpUtils.instans?.jump(121, toJson)
                         } else {

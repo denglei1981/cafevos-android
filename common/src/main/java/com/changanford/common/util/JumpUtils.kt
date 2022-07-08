@@ -713,11 +713,13 @@ class JumpUtils {
                     instans?.jump(125, toJson)
                 } else {// 发货了，选一下退货还是退款
                     val gson = Gson()
-                    val toJson = gson.toJson(orderItemBean)
                     if (refundBean.busSource == "WB"){//如果是维保订单直接跳仅退款
+                        orderItemBean?.singleRefundType = "ONLY_COST"
+                        val toJson = gson.toJson(orderItemBean)
                         instans?.jump(125,toJson)
                         return
                     }
+                    val toJson = gson.toJson(orderItemBean)
                     bundle.putString("value", toJson)
                     startARouter(ARouterShopPath.AfterSaleActivity, bundle, true)
                 }
