@@ -194,17 +194,33 @@ class RefundProgressHasShopActivity :
                     ft.tvHandle.visibility = View.VISIBLE
                     ft.tvHandle.text = "申请售后"
                     ft.tvHandle.setOnClickListener {
-                        var item = refundProgressBean.sku
-                        item?.orderNo = refundProgressBean.orderNo
-                        item?.price = "${refundProgressBean.fbRefundApply.toInt()+refundProgressBean.rmbRefundApply.toInt()*100}"
-                        val gsonItem = Gson()
-                        val gsonItemtoJson = gsonItem.toJson(item)
-                        val refundOrderItemBean: RefundOrderItemBean = Gson().fromJson<RefundOrderItemBean>(gsonItemtoJson,
-                            RefundOrderItemBean::class.java)
-                        val refundBean =RefundBean(refundProgressBean.orderNo,refundProgressBean.fbRefundApply,refundProgressBean.rmbRefundApply,"singleRefund",refundOrderItemBean,refundProgressBean.busSource)
-                        val gson = Gson()
-                        val toJson = gson.toJson(refundBean)
-                        JumpUtils.instans?.jump(121, toJson)
+                        if (refundProgressBean.busSource == "WB") {//如果是维保订单，直接跳转仅退款。历史愿意跳转到了这里
+                            val toJson = "{\"orderNo\":\"${refundProgressBean.orderNo}\",\"refundType\":\"allOrderRefund\"}"
+                            JumpUtils.instans?.jump(121, toJson)
+                        } else {
+                            var item = refundProgressBean.sku
+                            item?.orderNo = refundProgressBean.orderNo
+                            item?.price =
+                                "${refundProgressBean.fbRefundApply.toInt() + refundProgressBean.rmbRefundApply.toInt() * 100}"
+                            val gsonItem = Gson()
+                            val gsonItemtoJson = gsonItem.toJson(item)
+                            val refundOrderItemBean: RefundOrderItemBean? =
+                                if (gsonItemtoJson == null) null else Gson().fromJson<RefundOrderItemBean>(
+                                    gsonItemtoJson,
+                                    RefundOrderItemBean::class.java
+                                )
+                            val refundBean = RefundBean(
+                                refundProgressBean.orderNo,
+                                refundProgressBean.fbRefundApply,
+                                refundProgressBean.rmbRefundApply,
+                                "singleRefund",
+                                refundOrderItemBean,
+                                refundProgressBean.busSource
+                            )
+                            val gson = Gson()
+                            val toJson = gson.toJson(refundBean)
+                            JumpUtils.instans?.jump(121, toJson)
+                        }
                     }
                 }
                 else -> {

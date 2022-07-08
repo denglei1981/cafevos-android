@@ -47,7 +47,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
 
     }
     private var shoppingEdit: Boolean = false  // 购物车编辑状态
-    private val singleCheck = true
+    private val singleCheck = false
 
     override fun initView() {
         binding.layoutTop.tvTitle.text = "购物车"

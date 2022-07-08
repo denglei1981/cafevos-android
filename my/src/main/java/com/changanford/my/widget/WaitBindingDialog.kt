@@ -148,7 +148,7 @@ open class WaitBindingDialog(
     override fun createObserver() {
         mViewModel.confirmBindLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                "绑定成功".toast()
+                "操作成功".toast()
                 dismiss()
             } else {
                 it?.data?.toast()
