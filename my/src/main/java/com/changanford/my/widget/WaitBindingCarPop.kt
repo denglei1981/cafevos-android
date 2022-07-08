@@ -89,7 +89,7 @@ class WaitBindingCarPop(
         viewModel.confirmCarLiveData.observe(lifecycleOwner) {
             if (isConfirm == 1) {
                 LiveDataBus.get().with(LiveDataBusKey.AGGREE_CAR).postValue(1)
-                "车辆绑定成功".toast()
+                "操作成功".toast()
             } else {
                 "已确认".toast()
             }
