@@ -201,7 +201,7 @@ class RefundProgressHasShopActivity :
                         val gsonItemtoJson = gsonItem.toJson(item)
                         val refundOrderItemBean: RefundOrderItemBean = Gson().fromJson<RefundOrderItemBean>(gsonItemtoJson,
                             RefundOrderItemBean::class.java)
-                        val refundBean =RefundBean(refundProgressBean.orderNo,refundProgressBean.fbRefundApply,refundProgressBean.rmbRefundApply,"singleRefund",refundOrderItemBean)
+                        val refundBean =RefundBean(refundProgressBean.orderNo,refundProgressBean.fbRefundApply,refundProgressBean.rmbRefundApply,"singleRefund",refundOrderItemBean,refundProgressBean.busSource)
                         val gson = Gson()
                         val toJson = gson.toJson(refundBean)
                         JumpUtils.instans?.jump(121, toJson)

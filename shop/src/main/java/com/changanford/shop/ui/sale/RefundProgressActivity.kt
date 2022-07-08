@@ -134,7 +134,7 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                     }
                 }
                 "CLOSED" -> { // 退款关闭
-                    ft.tvHandle.visibility = View.VISIBLE
+                    ft.tvHandle.visibility = View.GONE
                     ft.tvHandle.text = "申请退款"
                     ft.tvHandle.setOnClickListener {
                         val gson = Gson()
