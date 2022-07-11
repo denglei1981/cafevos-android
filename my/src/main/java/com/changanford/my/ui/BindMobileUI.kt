@@ -133,8 +133,12 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
 
         })
         player.setOnPreparedListener {
-            player.setDisplay(binding.loginVideo.holder)
-            player.start()
+            try {
+                player.setDisplay(binding.loginVideo.holder)
+                player.start()
+            }catch (e:Throwable){
+                e.printStackTrace()
+            }
         }
         player.setOnErrorListener { mp, what, extra ->
             binding.loginVideo.visibility = View.GONE
