@@ -362,7 +362,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             getMyInfoCallback = it
             UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
                 .observe(this) { infoBean ->
-                    val userJson=infoBean.userJson
+                    val userJson=infoBean?.userJson
                     if(!userJson.isNullOrEmpty()){
                         agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback,userJson)
                     }
