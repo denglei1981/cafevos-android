@@ -273,7 +273,7 @@ fun QuestionItemUI(itemData: QuestionItemBean? = null,viewWidthDp: Int = 0,isLas
             if(answerInfoBean==null){//无人回答
                 AnswerUI(this@apply,personalPageType) //立即抢答
             }else{//有回答
-                UserInfoUI(this@apply) //用户信息
+                UserInfoUI(this@apply,imgs) //用户信息
             }
             Spacer(modifier = Modifier.height(16.dp))
 //            if(identity!=1&&!isLast){
@@ -443,12 +443,15 @@ private fun AnswerUI(itemData: QuestionItemBean,personalPageType:String?=null){
  * 用户信息
  * */
 @Composable
-private fun UserInfoUI(itemData: QuestionItemBean){
+private fun UserInfoUI(itemData: QuestionItemBean,imgs:String?){
     val answerInfo=itemData.qaAnswer
     val userInfo=answerInfo?.qaUserVO
     if(answerInfo==null||userInfo==null)return
     Column(modifier = Modifier.fillMaxWidth()) {
-        Spacer(modifier = Modifier.height(20.dp))
+        if(!imgs.isNullOrEmpty()){
+//            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+        }
         Row(modifier = Modifier
             .fillMaxWidth()
             .clickable {

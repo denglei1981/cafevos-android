@@ -51,13 +51,28 @@
                         </androidx.appcompat.widget.Toolbar>
                     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-                    <net.lucode.hackware.magicindicator.MagicIndicator
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:background="@color/color_F4"
-                        android:id="@+id/magic_tab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_30"
-                        android:layout_gravity="center_horizontal"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <net.lucode.hackware.magicindicator.MagicIndicator
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:background="@color/color_F4"
+                            android:id="@+id/magic_tab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_30"
+                            android:layout_gravity="center_horizontal"/>
+
+                        <androidx.compose.ui.platform.ComposeView
+                            android:id="@+id/composeView_question"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            android:layout_marginTop="58dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.viewpager.widget.ViewPager
@@ -70,16 +85,7 @@
                     android:background="@color/color_F4"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-            <androidx.compose.ui.platform.ComposeView
-                android:id="@+id/composeView_question"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginEnd="@dimen/dp_11"
-                android:layout_marginBottom="@dimen/dp_100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>
