@@ -74,7 +74,7 @@ fun EmptyCompose(noContext:String?=null,height:Int=0){
 fun EmptyQuestionCompose(height:Int=0){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .height(height.dp)
+//        .height(height.dp)
         .background(colorResource(R.color.color_F4))
         .padding(20.dp, 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
