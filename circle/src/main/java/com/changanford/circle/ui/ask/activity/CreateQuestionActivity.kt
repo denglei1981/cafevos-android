@@ -100,21 +100,21 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         val colorTitle = SpannableStringUtils.colorSpan(
             questionTitle,
             questionTitle.indexOf("("),
-            questionTitle.indexOf(")")+1,
+            questionTitle.indexOf(")") + 1,
             R.color.color_cc
         )
-        binding.tvQuestionTitle.text=colorTitle
+        binding.tvQuestionTitle.text = colorTitle
 
 
-        val questionStr= binding.tvQuestion.text.toString()
+        val questionStr = binding.tvQuestion.text.toString()
 
-        val questionSpan= SpannableStringUtils.colorSpan(
+        val questionSpan = SpannableStringUtils.colorSpan(
             questionStr,
             questionStr.indexOf("("),
-            questionStr.indexOf(")")+1,
+            questionStr.indexOf(")") + 1,
             R.color.color_cc
         )
-        binding.tvQuestion.text=questionSpan
+        binding.tvQuestion.text = questionSpan
 
 
 
@@ -273,7 +273,14 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
             showQuestionType(it)
         })
         viewModel.fordRewardList.observe(this, Observer {
-            showFordType(it)
+            if (it.isNullOrEmpty()) {
+                binding.tvFordReward.visibility = View.GONE
+                binding.ivQuestion.visibility = View.GONE
+            } else {
+                binding.tvFordReward.visibility = View.VISIBLE
+                binding.ivQuestion.visibility = View.VISIBLE
+                showFordType(it)
+            }
 
         })
 
@@ -375,22 +382,30 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请选择问题类型".toast()
                 return
             }
-            labelsReaward.isEmpty() || labelsReaward.size <= 0 -> {
+            !viewModel.fordRewardList.value.isNullOrEmpty() && (labelsReaward.isEmpty() || labelsReaward.size <= 0) -> {
                 "请选择打赏福币".toast()
                 return
             }
 
             else -> {
-                if(TextUtils.isEmpty(content)){
+                if (TextUtils.isEmpty(content)) {
                     params["content"] = ""
-                }else{
+                } else {
                     params["content"] = content
                 }
                 params["title"] = biaoti
-                params["fbReward"] = labelsReaward[0].dictValue.toInt()
+                params["fbReward"] =
+                    if (viewModel.fordRewardList.value.isNullOrEmpty()) 0 else labelsReaward[0].dictValue.toInt()
                 params["questionType"] = questionTypes[0].dictValue
+                val labelReward =
+                    if (viewModel.fordRewardList.value.isNullOrEmpty()) "0" else labelsReaward[0].dictValue
                 //提问埋点
-                BuriedUtil.instant?.communityQuestionPost(biaoti,content,questionTypes[0].dictLabel,labelsReaward[0].dictLabel)
+                BuriedUtil.instant?.communityQuestionPost(
+                    biaoti,
+                    content,
+                    questionTypes[0].dictLabel,
+                    labelReward
+                )
                 if (selectList.size == 0) {
                     viewModel.createQuestion(params)
                 } else if (selectList.size > 0) {
