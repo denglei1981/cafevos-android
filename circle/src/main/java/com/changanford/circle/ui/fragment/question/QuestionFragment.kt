@@ -16,14 +16,19 @@ import com.changanford.common.wutil.ScreenUtils
  * @Time : 2022/1/24 0024
  * @Description : QuestionFragment
  */
-class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>() {
+class QuestionFragment : BaseFragment<FragmentQuestionBinding, QuestionViewModel>() {
     companion object {
         /**
          * [conQaUjId]被查看人的问答参与表id
          * [personalPageType]
          * [isOneself]是否是自己查看
-        * */
-        fun newInstance(conQaUjId:String,personalPageType: String,isOneself:Boolean,identity:Int): QuestionFragment {
+         * */
+        fun newInstance(
+            conQaUjId: String,
+            personalPageType: String,
+            isOneself: Boolean,
+            identity: Int
+        ): QuestionFragment {
             val bundle = Bundle()
             bundle.putString("conQaUjId", conQaUjId)
             bundle.putString("personalPageType", personalPageType)
@@ -34,25 +39,26 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             return fragment
         }
     }
+
     val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
-    private var conQaUjId=""
-    private var personalPageType=""
-    private var isOneself=true
-    private var pageNo=1
-    private var identity=0//身份标识 0 普通  1 技师  2车主
-    private var listener: OnPerformListener?=null
+    private var conQaUjId = ""
+    private var personalPageType = ""
+    private var isOneself = true
+    private var pageNo = 1
+    private var identity = 0//身份标识 0 普通  1 技师  2车主
+    private var listener: OnPerformListener? = null
     override fun initView() {
         arguments?.apply {
-            conQaUjId=getString("conQaUjId","0")
-            personalPageType=getString("personalPageType","0")
-            isOneself=getBoolean("isOneself",false)
-            identity=getInt("identity",0)
+            conQaUjId = getString("conQaUjId", "0")
+            personalPageType = getString("personalPageType", "0")
+            isOneself = getBoolean("isOneself", false)
+            identity = getInt("identity", 0)
         }
         binding.apply {
-            mAdapter.personalPageType=personalPageType
-            mAdapter.identity=identity
+            mAdapter.personalPageType = personalPageType
+            mAdapter.identity = identity
             recyclerView.apply {
-                adapter=mAdapter
+                adapter = mAdapter
 //                setBackgroundResource(if(identity==1)R.color.transparent else R.drawable.circle_white_5_bg)
             }
             smartRl.setOnLoadMoreListener {
@@ -61,15 +67,17 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
             }
         }
     }
+
     override fun initData() {
-        viewModel.questionListBean.observe(this){
+        viewModel.questionListBean.observe(this) {
             it?.dataList?.apply {
-                if (1 == pageNo)mAdapter.setList(this)
+                if (1 == pageNo) mAdapter.setList(this)
                 else mAdapter.addData(this)
             }
             binding.smartRl.apply {
                 listener?.onFinish(mAdapter.data.size)
-                binding.composeView.visibility=if(1==pageNo&&it?.dataList.isNullOrEmpty()) View.VISIBLE else View.GONE
+                binding.composeView.visibility =
+                    if (1 == pageNo && it?.dataList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 if (null == it || mAdapter.data.size >= it.total) setEnableLoadMore(false)
                 else setEnableLoadMore(true)
                 finishLoadMore()
@@ -78,23 +86,40 @@ class QuestionFragment:BaseFragment<FragmentQuestionBinding, QuestionViewModel>(
         }
         getData()
     }
-    private fun getData(){
+
+    private fun getData() {
         //是自己并且是技师，查看邀请回答列表
-        if(personalPageType=="TECHNICIAN"&&isOneself) viewModel.questionOfInvite(pageNo)
-        else viewModel.questionOfPersonal(conQaUjId,personalPageType,pageNo)
+        if (personalPageType == "TECHNICIAN" && isOneself) viewModel.questionOfInvite(pageNo)
+        else viewModel.questionOfPersonal(conQaUjId, personalPageType, pageNo)
     }
-    fun startRefresh(){
-        pageNo=1
+
+    fun startRefresh() {
+        pageNo = 1
         getData()
     }
-    fun setOnPerformListener(listener: OnPerformListener){
-        this.listener=listener
+
+    fun setOnPerformListener(listener: OnPerformListener) {
+        this.listener = listener
     }
-    fun setEmpty(topHeight:Int=1035){
-        val h:Int=ScreenUtils.getScreenHeight(requireContext())-topHeight
+
+    fun setEmpty(topHeight: Int = 1035) {
+        val h: Int = ScreenUtils.getScreenHeight(requireContext()) - topHeight
         binding.composeView.setContent {
-            if(isOneself&&personalPageType=="QUESTION")EmptyQuestionCompose(ScreenUtils.px2dp(requireContext(),h.toFloat())) //是自己并且是提问tab 则展示提问特有缺省页
-            else EmptyCompose(height = ScreenUtils.px2dp(requireContext(),h.toFloat()))//普通缺省页
+            if (isOneself && personalPageType == "QUESTION") EmptyQuestionCompose(
+                ScreenUtils.px2dp(
+                    requireContext(),
+                    h.toFloat()
+                )
+            ) //是自己并且是提问tab 则展示提问特有缺省页
+            else if (isOneself && personalPageType == "ANSWER") EmptyCompose(
+                height = ScreenUtils.px2dp(
+                    requireContext(),
+                    h.toFloat()
+                ),
+                isMyAnswer = true,
+                noContext = "您还没未回答问题，快去答题吧"
+            ) //我的问答
+            else EmptyCompose(height = ScreenUtils.px2dp(requireContext(), h.toFloat()))//普通缺省页
         }
     }
 }

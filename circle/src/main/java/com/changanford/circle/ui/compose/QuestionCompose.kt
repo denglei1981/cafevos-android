@@ -56,13 +56,13 @@ private fun PreviewUI(){
  * 暂无内容
 * */
 @Composable
-fun EmptyCompose(noContext:String?=null,height:Int=0){
+fun EmptyCompose(noContext:String?=null,height:Int=0,isMyAnswer:Boolean=false){
     Column(modifier = Modifier
         .fillMaxWidth()
-        .height(height.dp)
+//        .height(height.dp)
         .background(colorResource(R.color.color_F4))
         .padding(20.dp, 20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(R.mipmap.icon_common_acts_empty), contentDescription =null )
+        Image(painter = painterResource(if (isMyAnswer)R.mipmap.home_no_comment else R.mipmap.icon_common_acts_empty), contentDescription =null )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = noContext?:stringResource(R.string.str_noContent), fontSize = 11.sp,color= colorResource(R.color.color_99))
     }
