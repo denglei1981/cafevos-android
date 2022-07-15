@@ -188,4 +188,6 @@ object MConstant {
      * 优惠券说明
      */
     var COUPON_TASK_RULE = "${H5_BASE_URL_CSCIR}/richTextAp?key=coupon_illustration"
+
+    var conQaUjId=""
 }

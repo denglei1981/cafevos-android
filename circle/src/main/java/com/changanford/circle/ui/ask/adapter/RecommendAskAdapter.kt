@@ -50,6 +50,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
         addItemType(1, R.layout.item_recommend_ask_answer_pic)
         addItemType(2, R.layout.item_recommend_ask_no_answer)
         addItemType(3, R.layout.empty_ask)
+        addChildClickViewIds(R.id.cl_user)
     }
 
     override fun convert(holder: BaseViewHolder, item: AskListMainData) {

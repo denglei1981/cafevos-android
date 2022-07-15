@@ -60,10 +60,11 @@ import com.google.gson.Gson
  * @Time : 2022/1/5
  * @Description : 圈子
  */
-class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
+class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewModel>() {
     private val hotListAdapter by lazy { CircleHotListAdapter() }
     private val myCircleAdapter by lazy { MyCircleAdapter() }
-//    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
+
+    //    private val animatorUtil by lazy { AnimatorUtils(binding.inYouLike.imgInBatch) }
     override fun initView() {
         addLiveDataBus()
         binding.srl.setOnRefreshListener {
@@ -81,7 +82,7 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
             //全部热门榜单
             HotListActivity.start()
         }
-        binding.recyclerViewHot.adapter=hotListAdapter
+        binding.recyclerViewHot.adapter = hotListAdapter
     }
 
     override fun initData() {
@@ -108,28 +109,41 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         getData()
 //        bindingMyCircle()
     }
-    private fun getData(){
+
+    private fun getData() {
         viewModel.getCircleHomeData()
         viewModel.getYouLikeData()
 //        animatorUtil.rotateAnimation()
     }
+
     /**
      * 推荐圈子
-    * */
+     * */
     @Composable
-    private fun RecommendedCompose(allCircles: ArrayList<NewCircleBean>?){
-        var imgSize=(ScreenUtils.getScreenWidth(requireContext())-(ScreenUtils.dp2px(requireContext(),19f)*5)-ScreenUtils.dp2px(requireContext(),12f))/4
-        imgSize=ScreenUtils.px2dp(requireContext(),imgSize.toFloat())
+    private fun RecommendedCompose(allCircles: ArrayList<NewCircleBean>?) {
+        var imgSize = (ScreenUtils.getScreenWidth(requireContext()) - (ScreenUtils.dp2px(
+            requireContext(),
+            19f
+        ) * 5) - ScreenUtils.dp2px(requireContext(), 12f)) / 4
+        imgSize = ScreenUtils.px2dp(requireContext(), imgSize.toFloat())
         allCircles?.let {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(19.dp),contentPadding = PaddingValues(horizontal = 20.dp)){
-                items(allCircles){itemData->
-                    Column (verticalArrangement  = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.clickable(indication = null, interactionSource = remember {MutableInteractionSource()}){
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(19.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp)
+            ) {
+                items(allCircles) { itemData ->
+                    Column(verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }) {
                             WBuriedUtil.clickCircleTop(itemData.name)
                             CircleListActivity.start(itemData.id)
-                        }){
+                        }) {
                         Image(
-                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.icon) ?: R.mipmap.head_default,
+                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
+                                itemData.icon
+                            ) ?: R.mipmap.head_default,
                                 builder = {
                                     crossfade(false)
                                     placeholder(R.mipmap.head_default)
@@ -141,44 +155,81 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                                 .clip(CircleShape)
                         )
                         Spacer(modifier = Modifier.height(11.dp))
-                        Text(text = itemData.name?:"",textAlign = TextAlign.Center,color = colorResource(id = R.color.color_33),fontSize = 14.sp,
-                            modifier = Modifier.fillMaxWidth(),overflow = TextOverflow.Ellipsis,maxLines = 1)
+                        Text(
+                            text = itemData.name ?: "",
+                            textAlign = TextAlign.Center,
+                            color = colorResource(id = R.color.color_33),
+                            fontSize = 14.sp,
+                            modifier = Modifier.fillMaxWidth(),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
                     }
                 }
             }
         }
     }
+
     /**
      * 我的圈子
-    * */
+     * */
     @Composable
-    private fun MyCircleCompose(dataList:List<NewCircleBean>?){
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 30.dp)) {
-            Row(modifier = Modifier
+    private fun MyCircleCompose(dataList: List<NewCircleBean>?) {
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp),verticalAlignment = Alignment.CenterVertically) {
-                Text(text = stringResource(R.string.str_myCircle),fontSize = 16.sp,color = colorResource(R.color.color_34),
-                    fontWeight = FontWeight.Bold,modifier = Modifier.weight(1f))
+                .padding(top = 30.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.str_myCircle),
+                    fontSize = 16.sp,
+                    color = colorResource(R.color.color_34),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
                 //查看更多圈子(我加入的圈子大于4个才显示更多入口)
-                if(null!=dataList&&dataList.size>4){
+                if (null != dataList && dataList.size > 4) {
                     Row(verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
+                        modifier = Modifier.clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }) {
                             startARouter(ARouterMyPath.MineCircleUI, true)
                         }) {
-                        Text(text = stringResource(R.string.str_more),fontSize = 14.sp,color = colorResource(R.color.color_74889D),modifier = Modifier.padding(end = 6.dp))
-                        Image(painter = painterResource(R.mipmap.right_74889d), contentDescription =null)
+                        Text(
+                            text = stringResource(R.string.str_more),
+                            fontSize = 14.sp,
+                            color = colorResource(R.color.color_74889D),
+                            modifier = Modifier.padding(end = 6.dp)
+                        )
+                        Image(
+                            painter = painterResource(R.mipmap.right_74889d),
+                            contentDescription = null
+                        )
                     }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
             //未加入任何圈子
-            if(null==dataList||dataList.isEmpty()){
-                Column(verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally,modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp)) {
-                    Text(text = stringResource(R.string.str_youHavenJoinedCirclesYet),color = colorResource(R.color.color_74889D),fontSize = 12.sp,textAlign = TextAlign.Center)
+            if (null == dataList || dataList.isEmpty()) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.str_youHavenJoinedCirclesYet),
+                        color = colorResource(R.color.color_74889D),
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
                     Box(contentAlignment = Alignment.Center, modifier = Modifier
                         .defaultMinSize(minWidth = 70.dp, minHeight = 25.dp)
@@ -192,67 +243,93 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                             WBuriedUtil.clickCircleJoin()
                             //到全部圈子列表
                             startARouter(ARouterCirclePath.CircleListActivity)
-                        }){
+                        }) {
                         //申请加入
-                        Text(text = stringResource(R.string.str_applyToJoin),color = colorResource(R.color.color_00095B),fontSize = 12.sp,textAlign = TextAlign.Center)
+                        Text(
+                            text = stringResource(R.string.str_applyToJoin),
+                            color = colorResource(R.color.color_00095B),
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
-            }else ItemMyCircle(dataList)
+            } else ItemMyCircle(dataList)
         }
     }
+
     /**
      * 我的圈子Item
-    * */
+     * */
     @Composable
-    private fun ItemMyCircle(dataList:List<NewCircleBean>){
-        val dataListSize=dataList.size
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 10.dp)) {
-            //最多展示4个我圈子
-            for (i in 0 until 4){
-                Row(modifier = Modifier
-                    .padding(end = 10.dp)
-                    .weight(1f)) {
-                    if(i<dataListSize){
-                        val itemData=dataList[i]
-                        Box(modifier = Modifier
-                            .fillMaxWidth()
-                            .height(108.dp)
-                            .clickable {
-                                //到圈子详情
-                                val bundle = Bundle()
-                                bundle.putString("circleId", itemData.circleId)
-                                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
-                            },contentAlignment =Alignment.BottomCenter){
-                            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.pic) ?: R.mipmap.head_default,
-                                builder = {
-                                    crossfade(false)
-                                    placeholder(R.mipmap.head_default)
-                                }), contentDescription =null,contentScale = ContentScale.Crop,
+    private fun ItemMyCircle(dataList: List<NewCircleBean>) {
+        val dataListSize = dataList.size
+        LazyRow(modifier = Modifier.fillMaxWidth().padding(start = 18.dp)) {
+            items(5) { index ->
+                //最多展示5个我圈子
+                Row(
+                    modifier = Modifier
+                        .padding(end = 9.dp)
+                        .width(76.dp)
+                ) {
+                    if (index < dataListSize) {
+                        val itemData = dataList[index]
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(108.dp)
+                                .clickable {
+                                    //到圈子详情
+                                    val bundle = Bundle()
+                                    bundle.putString("circleId", itemData.circleId)
+                                    startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                                }, contentAlignment = Alignment.BottomCenter
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
+                                    itemData.pic
+                                ) ?: R.mipmap.head_default,
+                                    builder = {
+                                        crossfade(false)
+                                        placeholder(R.mipmap.head_default)
+                                    }), contentDescription = null, contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .fillMaxHeight()
                                     .clip(RoundedCornerShape(5.dp))
                             )
                             //是否加星
-                            if(itemData.star=="YES"){
-                                Box(modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(4.dp)) {
-                                    Image(painter = painterResource(R.mipmap.ic_circle_star_1), contentDescription = "星标")
+                            if (itemData.star == "YES") {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth()
+                                        .padding(4.dp)
+                                ) {
+                                    Image(
+                                        painter = painterResource(R.mipmap.ic_circle_star_1),
+                                        contentDescription = "星标"
+                                    )
                                 }
                             }
-                            Box(contentAlignment = Alignment.Center,modifier = Modifier
-                                .height(27.dp)
-                                .fillMaxWidth()
-                                .background(
-                                    colorResource(R.color.color_e6333333),
-                                    shape = RoundedCornerShape(0.dp, 0.dp, 5.dp, 5.dp)
-                                )){
-                                Text(modifier = Modifier
+                            Box(
+                                contentAlignment = Alignment.Center, modifier = Modifier
+                                    .height(27.dp)
                                     .fillMaxWidth()
-                                    .padding(start = 5.dp, end = 5.dp),
-                                    text = itemData.name?:"",color = Color.White,fontSize = 12.sp,textAlign = TextAlign.Center,
-                                    maxLines = 1,overflow = TextOverflow.Ellipsis
+                                    .background(
+                                        colorResource(R.color.color_e6333333),
+                                        shape = RoundedCornerShape(0.dp, 0.dp, 5.dp, 5.dp)
+                                    )
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 5.dp, end = 5.dp),
+                                    text = itemData.name ?: "",
+                                    color = Color.White,
+                                    fontSize = 12.sp,
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -260,104 +337,204 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
                 }
             }
         }
+
     }
+//}
+//        Row(modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(start = 20.dp, end = 10.dp)) {
+//            //最多展示5个我圈子
+//            for (i in 0 until 5){
+//                Row(modifier = Modifier
+//                    .padding(end = 10.dp)
+//                    .width(76.dp)) {
+//                    if(i<dataListSize){
+//                        val itemData=dataList[i]
+//                        Box(modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(108.dp)
+//                            .clickable {
+//                                //到圈子详情
+//                                val bundle = Bundle()
+//                                bundle.putString("circleId", itemData.circleId)
+//                                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+//                            },contentAlignment =Alignment.BottomCenter){
+//                            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData.pic) ?: R.mipmap.head_default,
+//                                builder = {
+//                                    crossfade(false)
+//                                    placeholder(R.mipmap.head_default)
+//                                }), contentDescription =null,contentScale = ContentScale.Crop,
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .fillMaxHeight()
+//                                    .clip(RoundedCornerShape(5.dp))
+//                            )
+//                            //是否加星
+//                            if(itemData.star=="YES"){
+//                                Box(modifier = Modifier
+//                                    .fillMaxHeight()
+//                                    .fillMaxWidth()
+//                                    .padding(4.dp)) {
+//                                    Image(painter = painterResource(R.mipmap.ic_circle_star_1), contentDescription = "星标")
+//                                }
+//                            }
+//                            Box(contentAlignment = Alignment.Center,modifier = Modifier
+//                                .height(27.dp)
+//                                .fillMaxWidth()
+//                                .background(
+//                                    colorResource(R.color.color_e6333333),
+//                                    shape = RoundedCornerShape(0.dp, 0.dp, 5.dp, 5.dp)
+//                                )){
+//                                Text(modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .padding(start = 5.dp, end = 5.dp),
+//                                    text = itemData.name?:"",color = Color.White,fontSize = 12.sp,textAlign = TextAlign.Center,
+//                                    maxLines = 1,overflow = TextOverflow.Ellipsis
+//                                )
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//}
     /**
      * 圈子PK
-    * */
+     * */
     @Composable
-    fun CirclePK(){
-        Column(modifier= Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 30.dp)) {
-            Row(modifier=Modifier.fillMaxWidth(),verticalAlignment = Alignment.CenterVertically) {
-                Text(text = stringResource(R.string.str_circlePK),color = colorResource(R.color.color_34),fontSize = 16.sp,fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f))
-                Text(text = stringResource(R.string.str_all),color = colorResource(R.color.color_74889D),fontSize = 14.sp,
+    fun CirclePK() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 30.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.str_circlePK),
+                    color = colorResource(R.color.color_34),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(text = stringResource(R.string.str_all),
+                    color = colorResource(R.color.color_74889D),
+                    fontSize = 14.sp,
                     modifier = Modifier
                         .padding(end = 5.dp)
                         .clickable { })
-                Image(painter = painterResource(R.mipmap.right_74889d),contentDescription = null)
+                Image(painter = painterResource(R.mipmap.right_74889d), contentDescription = null)
             }
         }
     }
+
     @Composable
-    fun CirclePkItem(itemData:NewCircleBean?){
-        Row(modifier = Modifier.fillMaxWidth()){
-            Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData?.pic) ?: R.mipmap.head_default,
-                builder = {placeholder(R.mipmap.head_default)}),
-                contentDescription =null,contentScale = ContentScale.Crop,modifier = Modifier
+    fun CirclePkItem(itemData: NewCircleBean?) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(itemData?.pic)
+                    ?: R.mipmap.head_default,
+                    builder = { placeholder(R.mipmap.head_default) }),
+                contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier
                     .size(77.dp)
                     .clip(RoundedCornerShape(5.dp))
             )
             Spacer(modifier = Modifier.width(11.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "",color = colorResource(R.color.color_2d),fontSize = 14.sp,overflow = TextOverflow.Ellipsis,maxLines = 1)
+                Text(
+                    text = "",
+                    color = colorResource(R.color.color_2d),
+                    fontSize = 14.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "${stringResource(R.string.str_cycle)}----",color = colorResource(R.color.color_74889D),fontSize = 11.sp)
+                Text(
+                    text = "${stringResource(R.string.str_cycle)}----",
+                    color = colorResource(R.color.color_74889D),
+                    fontSize = 11.sp
+                )
                 Spacer(modifier = Modifier.weight(1f))
                 //按钮状态 PK中 未开始 已结束
-                Box(contentAlignment = Alignment.Center,modifier = Modifier
-                    .defaultMinSize(minWidth = 45.dp, minHeight = 18.dp)
-                    .background(colorResource(R.color.color_F2F4F9),
-                        shape = RoundedCornerShape(2.5.dp))){
-                    Text(text = stringResource(R.string.str_inPk),color = colorResource(R.color.color_00095B),fontSize = 12.sp)
+                Box(
+                    contentAlignment = Alignment.Center, modifier = Modifier
+                        .defaultMinSize(minWidth = 45.dp, minHeight = 18.dp)
+                        .background(
+                            colorResource(R.color.color_F2F4F9),
+                            shape = RoundedCornerShape(2.5.dp)
+                        )
+                ) {
+                    Text(
+                        text = stringResource(R.string.str_inPk),
+                        color = colorResource(R.color.color_00095B),
+                        fontSize = 12.sp
+                    )
                 }
             }
-            Button(contentPadding = PaddingValues(12.dp,6.dp),shape = RoundedCornerShape(12.dp),modifier = Modifier.background(colorResource(R.color.color_00095B)),onClick = {}){
-                Text(stringResource(R.string.str_toPlayList),fontSize = 12.sp,color = Color.White,)
+            Button(
+                contentPadding = PaddingValues(12.dp, 6.dp),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.background(colorResource(R.color.color_00095B)),
+                onClick = {}) {
+                Text(stringResource(R.string.str_toPlayList), fontSize = 12.sp, color = Color.White)
             }
         }
     }
+
     @Preview(backgroundColor = 0xffffff)
     @Composable
-    fun PreviewUI(){
+    fun PreviewUI() {
         MyCircleCompose(arrayListOf())
     }
+
     /**
      * 我的圈子
-    * */
-    private fun bindingMyCircle(){
+     * */
+    private fun bindingMyCircle() {
         binding.inMyCircle.apply {
-            recyclerView.adapter=myCircleAdapter
-            val dataList= arrayListOf<NewCircleBean>()
-            for(i in 0..3){
+            recyclerView.adapter = myCircleAdapter
+            val dataList = arrayListOf<NewCircleBean>()
+            for (i in 0..3) {
                 dataList.add(NewCircleBean("$i"))
             }
             myCircleAdapter.setList(dataList)
         }
     }
+
     /**
      * 猜你喜欢
-    * */
-   private fun bindingYouLike(dataList:MutableList<NewCircleBean>?){
-        if(dataList==null||dataList.size==0){
-            binding.inYouLike.root.visibility= View.GONE
+     * */
+    private fun bindingYouLike(dataList: MutableList<NewCircleBean>?) {
+        if (dataList == null || dataList.size == 0) {
+            binding.inYouLike.root.visibility = View.GONE
             return
         }
         //一页几条
         val pageSize = 4
         //page 总共几页
-        val page:Int = WCommonUtil.getHeatNumUP("${dataList.size/pageSize.toFloat()}",0).toInt()
-        val gson=Gson()
-        val fragments= arrayListOf<Fragment>()
-        val dots= arrayListOf<Int>()
-        for (i in 0 until page){
-            val startIndex=i*pageSize
-            val endIndex=if(i!=page-1)(i+1)*pageSize else dataList.size
-            val itemList=dataList.slice(startIndex until endIndex)
-            val jsonStr=gson.toJson(itemList)
-            fragments.add(YouLikeFragment.newInstance(i,jsonStr))
+        val page: Int = WCommonUtil.getHeatNumUP("${dataList.size / pageSize.toFloat()}", 0).toInt()
+        val gson = Gson()
+        val fragments = arrayListOf<Fragment>()
+        val dots = arrayListOf<Int>()
+        for (i in 0 until page) {
+            val startIndex = i * pageSize
+            val endIndex = if (i != page - 1) (i + 1) * pageSize else dataList.size
+            val itemList = dataList.slice(startIndex until endIndex)
+            val jsonStr = gson.toJson(itemList)
+            fragments.add(YouLikeFragment.newInstance(i, jsonStr))
             dots.add(i)
         }
         binding.inYouLike.apply {
-            var myAdapter:DotAdapter?=null
-            if(dots.size>1){
-                myAdapter=DotAdapter()
+            var myAdapter: DotAdapter? = null
+            if (dots.size > 1) {
+                myAdapter = DotAdapter()
                 myAdapter.setList(dots)
-                recyclerViewDot.adapter=myAdapter
-                recyclerViewDot.visibility=View.VISIBLE
-            }else recyclerViewDot.visibility=View.GONE
-            viewPager2.adapter= ViewPage2AdapterFragment(this@NewCircleFragment,fragments)
+                recyclerViewDot.adapter = myAdapter
+                recyclerViewDot.visibility = View.VISIBLE
+            } else recyclerViewDot.visibility = View.GONE
+            viewPager2.adapter = ViewPage2AdapterFragment(this@NewCircleFragment, fragments)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
@@ -371,15 +548,17 @@ class NewCircleFragment:BaseFragment<FragmentCircleNewBinding, NewCircleViewMode
         super.onStop()
 //        animatorUtil.stopAnimator()
     }
-    private fun addLiveDataBus(){
+
+    private fun addLiveDataBus() {
         //登录回调
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                when(it){
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
                         getData()
                     }
-                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
                         getData()
                     }
                     else -> {}

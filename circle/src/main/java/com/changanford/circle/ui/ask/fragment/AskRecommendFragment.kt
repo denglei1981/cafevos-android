@@ -6,6 +6,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.bean.AskListMainData
@@ -73,8 +74,19 @@ class AskRecommendFragment :
 //            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
             val recommendData = recommendAskAdapter.getItem(position = position)
             // 埋点
-            BuriedUtil.instant?.communityQuestion(recommendData.questionTypeName, recommendData.title)
+            BuriedUtil.instant?.communityQuestion(
+                recommendData.questionTypeName,
+                recommendData.title
+            )
             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
+        }
+        recommendAskAdapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.cl_user -> {
+                    val bean = recommendAskAdapter.getItem(position)
+                    JumpUtils.instans?.jump(114, bean.qaAnswer?.qaUserVO?.conQaUjId.toString())
+                }
+            }
         }
         addHeadView()
         viewModel.getInitQuestion()
@@ -239,7 +251,7 @@ class AskRecommendFragment :
                                     questionTypeNames.add(it.dictLabel)
                                 }
                                 //埋点
-                                if(questionTypes.size>0){
+                                if (questionTypes.size > 0) {
                                     BuriedUtil.instant?.communityScreen(questionTypeNames.toString())
                                 }
                                 viewModel.getQuestionList(false, questionTypes)

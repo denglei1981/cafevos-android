@@ -30,6 +30,7 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
@@ -52,54 +53,65 @@ import kotlin.math.abs
  * @Description : 我的问答、TA的问答
  */
 @Route(path = ARouterCirclePath.QuestionActivity)
-class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(),
+class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel>(),
     OnRefreshListener, OnPerformListener {
-    companion object{
+    companion object {
         /**
          * [conQaUjId]被查看人的问答参与表id
          * [type]0普通用户问答个人页面 、1车主问答个人页面、2技师问答个人页面  3 TA的问答
          * [personalPageType]
-        * */
-        fun start(conQaUjId:String?=null,type:Int?=0,personalPageType:Int?=0){
+         * */
+        fun start(conQaUjId: String? = null, type: Int? = 0, personalPageType: Int? = 0) {
 //            startARouter(ARouterCirclePath.QuestionActivity)
-            JumpUtils.instans?.jump(114,"{\"conQaUjId\": \"$conQaUjId\",\"type\": \"${type?:0}\",\"personalPageType\":\"${personalPageType?:0}\"}")
+            JumpUtils.instans?.jump(
+                114,
+                "{\"conQaUjId\": \"$conQaUjId\",\"type\": \"${type ?: 0}\",\"personalPageType\":\"${personalPageType ?: 0}\"}"
+            )
         }
+
         /**
          * [conQaUjId]被查看人的问答参与表id
          * */
-        fun start(conQaUjId:String?=null){
-            JumpUtils.instans?.jump(114,conQaUjId)
+        fun start(conQaUjId: String? = null) {
+            JumpUtils.instans?.jump(114, conQaUjId)
         }
     }
+
     private var isWhite = true//是否是白色状态
-    private var conQaUjId:String=""
-    private var type=0
-    private val fragments= arrayListOf<QuestionFragment>()
-    private var isOneself=false
-    private var tabs :ArrayList<QuestionTagBean>?=null
-    private var questionInfoBean:QuestionInfoBean?=null
+    private var conQaUjId: String = ""
+    private var type = 0
+    private val fragments = arrayListOf<QuestionFragment>()
+    private var isOneself = false
+    private var tabs: ArrayList<QuestionTagBean>? = null
+    private var questionInfoBean: QuestionInfoBean? = null
     override fun initView() {
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
         initAppbarLayout()
         intent.getStringExtra("value")?.apply {
-            if(this.startsWith("{")){
+            if (this.startsWith("{")) {
                 JSON.parseObject(this)?.apply {
-                    conQaUjId=getString("conQaUjId")
-                    type=getIntValue("type")
+                    conQaUjId = getString("conQaUjId")
+                    type = getIntValue("type")
                 }
-            }else{
-                conQaUjId=this
+            } else {
+                conQaUjId = this
             }
         }
-        if(TextUtils.isEmpty(conQaUjId)){
+        MConstant.conQaUjId = conQaUjId
+        if (TextUtils.isEmpty(conQaUjId)) {
             getString(R.string.str_parametersOfIllegal).toast()
             this.finish()
             return
         }
         binding.inHeader.run {
             imgBack.setOnClickListener { finish() }
-            topBar.setPadding(0,ScreenUtils.getStatusBarHeight(this@QuestionActivity)+10,0,ScreenUtils.dip2px(this@QuestionActivity,10f))
+            topBar.setPadding(
+                0,
+                ScreenUtils.getStatusBarHeight(this@QuestionActivity) + 10,
+                0,
+                ScreenUtils.dip2px(this@QuestionActivity, 10f)
+            )
             tvAskQuestions.setOnClickListener {
                 WBuriedUtil.clickQuestionAskTop()
                 JumpUtils.instans?.jump(116)
@@ -109,91 +121,111 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             BtnQuestionCompose()
         }
     }
+
     override fun initData() {
-        viewModel.questionInfoBean.observe(this){
+        viewModel.questionInfoBean.observe(this) {
             it?.apply {
-                questionInfoBean=this
-                isOneself=isOneself()
-                val identity=getIdentity()
-                if(identity==1){
+                questionInfoBean = this
+                isOneself = isOneself()
+                val identity = getIdentity()
+                if (identity == 1) {
                     viewModel.getQuestionType()
-                }else {
+                } else {
                     binding.composeView.setContent {
-                        ComposeQuestionTop(this@QuestionActivity,this)
+                        ComposeQuestionTop(this@QuestionActivity, this)
                     }
                 }
                 binding.inHeader.apply {
                     //是否显示提问入口
-                    tvAskQuestions.visibility=if(it.getIsQuestion())View.VISIBLE else View.GONE
+                    tvAskQuestions.visibility = if (it.getIsQuestion()) View.VISIBLE else View.GONE
                     tvTitle.setText(
                         when {
                             isOneself -> R.string.str_myQuestionAndAnswer
-                            identity==1 ->R.string.str_redskinsInformation
+                            identity == 1 -> R.string.str_redskinsInformation
                             else -> R.string.str_taQuestionAndAnswer
                         }
                     )
                 }
-                if(fragments.size>0){
+                if (fragments.size > 0) {
                     fragments[binding.viewPager.currentItem].startRefresh()
-                }else{
-                    tabs=it.getTabs(this@QuestionActivity).apply {
+                } else {
+                    tabs = it.getTabs(this@QuestionActivity).apply {
                         initMagicIndicator(this)
-                        initTabAndViewPager(this,isOneself,getIdentity())
+                        initTabAndViewPager(this, isOneself, getIdentity())
                         Handler(Looper.myLooper()!!).postDelayed({
-                            fragments.forEach {fragment-> fragment.setEmpty(binding.magicTab.bottom) }
-                        },100)
+                            fragments.forEach { fragment -> fragment.setEmpty(binding.magicTab.bottom) }
+                        }, 100)
                     }
                 }
             }
             binding.smartRl.finishRefresh()
         }
-        viewModel.questTagList.observe(this){
+        viewModel.questTagList.observe(this) {
             questionInfoBean?.setTagNames()
             binding.composeView.setContent {
-                ComposeQuestionTop(this@QuestionActivity,questionInfoBean)
+                ComposeQuestionTop(this@QuestionActivity, questionInfoBean)
             }
         }
 //        viewModel.personalQA(conQaUjId,true)
     }
-    private fun initSmartRefreshLayout(){
+
+    private fun initSmartRefreshLayout() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
             binding.smartRl.isEnabled = i >= 0
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
         binding.smartRl.setOnRefreshListener(this)
     }
-    private fun initTabAndViewPager(tabs:MutableList<QuestionTagBean>,isOneself:Boolean,identity:Int) {
-        for(position in 0 until tabs.size){
-            val tag=tabs[position].tag?:""
-            val fragment=QuestionFragment.newInstance(conQaUjId,tag,isOneself,identity)
-            if(isOneself&&tag=="QUESTION")fragment.setOnPerformListener(this)
+
+    private fun initTabAndViewPager(
+        tabs: MutableList<QuestionTagBean>,
+        isOneself: Boolean,
+        identity: Int
+    ) {
+        for (position in 0 until tabs.size) {
+            val tag = tabs[position].tag ?: ""
+            val fragment = QuestionFragment.newInstance(conQaUjId, tag, isOneself, identity)
+            if (isOneself && tag == "QUESTION") fragment.setOnPerformListener(this)
             fragments.add(fragment)
         }
         binding.viewPager.apply {
             removeAllViews()
             adapter = @SuppressLint("WrongConstant")
-        object : FragmentPagerAdapter(supportFragmentManager,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+            object : FragmentPagerAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
                 override fun getCount(): Int {
                     return tabs.size
                 }
+
                 override fun getItem(position: Int): Fragment {
                     return fragments[position]
                 }
             }
-            binding.composeViewQuestion.visibility=if(isOneself&&tabs[currentItem].tag=="QUESTION"){
-                addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
-                    override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
-                    override fun onPageSelected(position: Int) {
-                        binding.composeViewQuestion.visibility=if(tabs[position].tag=="QUESTION"&&fragments[position].mAdapter.data.size>0)View.VISIBLE else View.GONE
-                    }
-                    override fun onPageScrollStateChanged(state: Int) {}
-                })
-                if(fragments[currentItem].mAdapter.data.size>0)View.VISIBLE else View.GONE
-            }else View.GONE
+            binding.composeViewQuestion.visibility =
+                if (isOneself && tabs[currentItem].tag == "QUESTION") {
+                    addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                        override fun onPageScrolled(
+                            position: Int,
+                            positionOffset: Float,
+                            positionOffsetPixels: Int
+                        ) {
+                        }
+
+                        override fun onPageSelected(position: Int) {
+                            binding.composeViewQuestion.visibility =
+                                if (tabs[position].tag == "QUESTION" && fragments[position].mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                        }
+
+                        override fun onPageScrollStateChanged(state: Int) {}
+                    })
+                    if (fragments[currentItem].mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                } else View.GONE
         }
     }
 
-    private fun initMagicIndicator(tabs:MutableList<QuestionTagBean>) {
+    private fun initMagicIndicator(tabs: MutableList<QuestionTagBean>) {
         val magicIndicator = binding.magicTab
         magicIndicator.removeAllViews()
         magicIndicator.setBackgroundResource(R.color.color_F4)
@@ -205,15 +237,17 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
+                val simplePagerTitleView: SimplePagerTitleView =
+                    ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.apply {
-                    gravity= Gravity.CENTER_HORIZONTAL
+                    gravity = Gravity.CENTER_HORIZONTAL
                     text = tabs[index].tagName
                     textSize = 18f
                     setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
-                    width= ScreenUtils.getScreenWidth(this@QuestionActivity)/3
+                    width = ScreenUtils.getScreenWidth(this@QuestionActivity) / 3
                     normalColor = ContextCompat.getColor(this@QuestionActivity, R.color.color_33)
-                    selectedColor = ContextCompat.getColor(this@QuestionActivity, R.color.circle_app_color)
+                    selectedColor =
+                        ContextCompat.getColor(this@QuestionActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
                     return this
                 }
@@ -238,7 +272,8 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
         magicIndicator.navigator = commonNavigator
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
-    private fun initAppbarLayout(){
+
+    private fun initAppbarLayout() {
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
@@ -246,8 +281,18 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
                 binding.inHeader.apply {
                     imgBack.setImageResource(R.mipmap.whit_left)
-                    tvAskQuestions.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.colorWhite))
-                    tvTitle.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.colorWhite))
+                    tvAskQuestions.setTextColor(
+                        ContextCompat.getColor(
+                            this@QuestionActivity,
+                            R.color.colorWhite
+                        )
+                    )
+                    tvTitle.setTextColor(
+                        ContextCompat.getColor(
+                            this@QuestionActivity,
+                            R.color.colorWhite
+                        )
+                    )
                 }
                 isWhite = true
             }
@@ -255,8 +300,18 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
                 binding.inHeader.apply {
                     imgBack.setImageResource(R.mipmap.back_xhdpi)
-                    tvAskQuestions.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.color_33))
-                    tvTitle.setTextColor(ContextCompat.getColor(this@QuestionActivity,R.color.color_33))
+                    tvAskQuestions.setTextColor(
+                        ContextCompat.getColor(
+                            this@QuestionActivity,
+                            R.color.color_33
+                        )
+                    )
+                    tvTitle.setTextColor(
+                        ContextCompat.getColor(
+                            this@QuestionActivity,
+                            R.color.color_33
+                        )
+                    )
                 }
                 isWhite = false
             }
@@ -277,11 +332,17 @@ class QuestionActivity:BaseActivity<ActivityQuestionBinding, QuestionViewModel>(
     }
 
     override fun onFinish(code: Int) {
-        binding.composeViewQuestion.visibility=if(code!=0&&isOneself&&tabs?.get(binding.viewPager.currentItem)?.tag =="QUESTION")View.VISIBLE else View.GONE
+        binding.composeViewQuestion.visibility =
+            if (code != 0 && isOneself && tabs?.get(binding.viewPager.currentItem)?.tag == "QUESTION") View.VISIBLE else View.GONE
     }
 
     override fun onStart() {
         super.onStart()
         viewModel.personalQA(conQaUjId)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MConstant.conQaUjId = ""
     }
 }
