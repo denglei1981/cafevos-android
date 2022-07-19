@@ -52,9 +52,9 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
         )
         binding.layoutTitle.vLine.background=ContextCompat.getDrawable(this,R.color.transparent)
 
-        binding.ivHeader.setOnClickListener {
-            selectIcon()
-        }
+//        binding.ivHeader.setOnClickListener {
+//            selectIcon()
+//        }
         binding.layoutTitle.ivBack.setOnClickListener {
             onBackPressed()
         }
