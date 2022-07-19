@@ -71,7 +71,7 @@ data class QuestionInfoBean(
 //                        add(QuestionTagBean(context.getString(R.string.str_answerAccepted),"ADOPT"))//118版本隐藏
                     }else{
                         add(QuestionTagBean(context.getString(R.string.str_taAnswer),"ANSWER"))
-                        add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))
+//                        add(QuestionTagBean(context.getString(R.string.str_accepted),"ADOPT"))
                     }
                 }
             }
