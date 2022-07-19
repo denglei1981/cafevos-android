@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,7 +30,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.ImageLoader
 import coil.compose.rememberImagePainter
+import coil.decode.GifDecoder
 import com.changanford.circle.R
 import com.changanford.common.MyApp
 import com.changanford.common.bean.QuestionInfoBean
@@ -126,14 +129,15 @@ fun EmptyQuestionCompose(height: Int = 0) {
  * */
 @Composable
 fun BtnQuestionCompose() {
-    Column(modifier = Modifier
-        .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
-        .defaultMinSize(minWidth = 45.dp, minHeight = 45.dp)
-        .padding(5.dp)
-        .clickable {
-            WBuriedUtil.clickQuestionAskFloat()
-            JumpUtils.instans?.jump(116)
-        },
+    Column(
+        modifier = Modifier
+            .background(color = colorResource(R.color.color_01025C), shape = CircleShape)
+            .defaultMinSize(minWidth = 45.dp, minHeight = 45.dp)
+            .padding(5.dp)
+            .clickable {
+                WBuriedUtil.clickQuestionAskFloat()
+                JumpUtils.instans?.jump(116)
+            },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -230,11 +234,12 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean? = null) {
                         if (isOneself() && identityType == 1) {
 //                            Spacer(modifier = Modifier.height(5.dp))
                             //修改资料
-                            Row(modifier = Modifier
-                                .padding(start = 92.dp)
-                                .clickable {
-                                    JumpUtils.instans?.jump(115, userInfo.conQaTechnicianId)
-                                }, verticalAlignment = Alignment.CenterVertically
+                            Row(
+                                modifier = Modifier
+                                    .padding(start = 92.dp)
+                                    .clickable {
+                                        JumpUtils.instans?.jump(115, userInfo.conQaTechnicianId)
+                                    }, verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Image(
                                     painter = painterResource(R.mipmap.question_edit),
@@ -448,6 +453,9 @@ private fun TopUI() {
  * */
 @Composable
 private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
+    val imageLoaderM = ImageLoader.Builder(LocalContext.current)
+        .componentRegistry { add(GifDecoder()) }
+        .build()
     imgs?.split(",")?.filter { it != "" }?.apply {
         when (size) {
             0 -> {}
@@ -457,6 +465,7 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                 Image(
                     painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic)
                         ?: R.mipmap.head_default,
+                        imageLoader = imageLoaderM,
                         builder = {
 
                             placeholder(R.mipmap.head_default)
@@ -476,6 +485,7 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                         Image(
                             painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this@apply[i])
                                 ?: R.mipmap.head_default,
+                                imageLoader = imageLoaderM,
                                 builder = {
 
                                     placeholder(R.mipmap.head_default)
@@ -512,6 +522,7 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                                             painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
                                                 itemList[column]
                                             ) ?: R.mipmap.head_default,
+                                                imageLoader = imageLoaderM,
                                                 builder = {
                                                     placeholder(R.mipmap.head_default)
                                                 }),
@@ -615,8 +626,9 @@ private fun UserInfoUI(itemData: QuestionItemBean, imgs: String?) {
                         JumpUtils.instans?.jump(114, userInfo.conQaUjId)
                     }
                 }
-              this
-            }, verticalAlignment = Alignment.CenterVertically) {
+                this
+            }, verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater)
                     ?: R.mipmap.head_default,
