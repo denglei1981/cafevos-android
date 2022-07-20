@@ -64,6 +64,9 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
     private var selectList = ArrayList<LocalMedia>()
     var resonCode: String = ""
     private var ossImageList: MutableList<String> = mutableListOf()
+    var totalNum = 0//订单的总数量
+    var newNum = 0//减退款数量时新的数量
+    val payShowBean = PayShowBean()
 
     lateinit var orderItemBean: RefundOrderItemBean
     val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
@@ -139,6 +142,8 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         }else{
             binding.addSubtractView.setReduceAddGrayOrBlack(true)
         }
+
+        showTotalTag(this, binding.tvRefundMoney, payShowBean, false,orderItemBean.buyNum,num)
     }
 
     override fun initData() {
@@ -181,25 +186,24 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                 }
             }).show()
         }
-        val payShowBean = PayShowBean()
         val finallyNumber = binding.addSubtractView.getNumber() // 最终的数量
         if (TextUtils.isEmpty(orderItemBean.sharedRmb) && !TextUtils.isEmpty(orderItemBean.sharedFb)) {
             payShowBean.payFb =
-                BigDecimal(orderItemBean.sharedFb).multiply(BigDecimal(finallyNumber)).toString()
+                BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
 
         if (TextUtils.isEmpty(orderItemBean.sharedFb) && !TextUtils.isEmpty(orderItemBean.sharedRmb)) {
 
             payShowBean.payRmb =
-                BigDecimal(orderItemBean.sharedRmb).multiply(BigDecimal(finallyNumber)).toString()
+                BigDecimal(orderItemBean.sharedRmb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
         if (!TextUtils.isEmpty(orderItemBean.sharedFb) && !TextUtils.isEmpty(orderItemBean.sharedRmb)) {
             payShowBean.payFb =
-                BigDecimal(orderItemBean.sharedFb).multiply(BigDecimal(finallyNumber)).toString()
+                BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
             payShowBean.payRmb =
-                BigDecimal(orderItemBean.sharedRmb).multiply(BigDecimal(finallyNumber)).toString()
+                BigDecimal(orderItemBean.sharedRmb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
-        showTotalTag(this, binding.tvRefundMoney, payShowBean, false)
+        showTotalTag(this, binding.tvRefundMoney, payShowBean, false,orderItemBean.buyNum,orderItemBean.buyNum)
         initPicAdapter()
     }
 

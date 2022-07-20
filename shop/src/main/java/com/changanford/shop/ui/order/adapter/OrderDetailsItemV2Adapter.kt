@@ -17,6 +17,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.WCommonUtil.getHeatNum
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.databinding.InItemOrderGoodsV2Binding
@@ -24,6 +25,7 @@ import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
 import com.changanford.shop.utils.WCommonUtil
 import com.google.gson.Gson
+import java.math.BigDecimal
 
 /**
  *
@@ -157,7 +159,8 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
         }
         val fbNumber = item.price
 
-        val str = "${WCommonUtil.getRMBBigDecimal(item.price)}([icon] ${item.price})"
+//        val str = "${WCommonUtil.getRMBBigDecimal("${(item.price?.toInt()?:0)/(item.buyNum?.toInt()?:1)}")}([icon] ${(item.price?.toInt()?:0)/(item.buyNum?.toInt()?:1)})"
+        val str = "${WCommonUtil.getRMBBigDecimal("${getHeatNum(item.price, 2).divide(BigDecimal(item.buyNum))}")}([icon] ${getHeatNum(item.price).divide(BigDecimal(item.buyNum))})"
         //先设置原始文本
         text?.text = str
         //使用post方法，在TextView完成绘制流程后在消息队列中被调用

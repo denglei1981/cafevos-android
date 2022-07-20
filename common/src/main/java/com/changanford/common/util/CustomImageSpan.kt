@@ -14,6 +14,9 @@ import androidx.core.content.ContextCompat
 import com.changanford.common.R
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayShowBean
+import com.changanford.common.wutil.WCommonUtil.getHeatNum
+import com.changanford.common.wutil.WCommonUtil.getRoundedNum
+import java.math.BigDecimal
 
 class CustomImageSpan(drawable: Drawable?) : ImageSpan(drawable!!) {
     override fun draw(
@@ -65,7 +68,9 @@ fun showTotalTag(
     context: Context,
     text: AppCompatTextView?,
     item: PayShowBean,
-    isStart: Boolean = true
+    isStart: Boolean = true,
+    totalNum:Int = -1,
+    nuwNum:Int = -1,
 ) {
     if (TextUtils.isEmpty(item.payFb)) {
         showZero(text, item, isStart, context = context)
@@ -73,7 +78,7 @@ fun showTotalTag(
     }
     item.payFb?.let { // 福币为0
         if (it.toInt() <= 0) {
-            showZero(text, item, isStart = isStart, context = context)
+            showZero(text, item, isStart = isStart, context = context,totalNum,nuwNum)
             return
         }
     }
@@ -82,7 +87,7 @@ fun showTotalTag(
     if (isStart) {
         starStr = "合计: "
     }
-    val str = if (TextUtils.isEmpty(item.payRmb)) {
+    var str = if (TextUtils.isEmpty(item.payRmb)) {
         "$starStr[icon] ${item.payFb}"
     } else {
          if(item.payRmb=="0"){
@@ -92,8 +97,20 @@ fun showTotalTag(
          }
 
     }
+    if (totalNum != -1 && nuwNum !=-1){
+        str = if (TextUtils.isEmpty(item.payRmb)) {
+            "$starStr[icon] ${(item.payFb?.toInt()?:0) * nuwNum / totalNum}"
+        } else {
+            if(item.payRmb=="0"||"${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}" == "0.00"){
+                "$starStr[icon] ${(item.payFb?.toInt()?:0) * nuwNum / totalNum}"
+            }else{
+                "$starStr[icon] ${(item.payFb?.toInt()?:0)  * nuwNum / totalNum}+￥${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}"
+            }
+
+        }
+    }
     //先设置原始文本
-    text?.text = str
+//    text?.text = str
     //使用post方法，在TextView完成绘制流程后在消息队列中被调用
     text?.post { //获取第一行的宽度
         val stringBuilder: StringBuilder = StringBuilder(str)
@@ -138,7 +155,7 @@ fun showZeroFb(context: Context, text: AppCompatTextView?) {
 }
 
 @SuppressLint("SetTextI18n")
-fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, context: Context) {
+fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, context: Context,totalNum:Int = -1, nuwNum:Int = -1,) {
     val tagName = item.payRmb
     //先设置原始文本
 //    if(isStart){
@@ -155,7 +172,12 @@ fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, cont
             if(isStart){
                 text?.text = "合计".plus("  ￥${tagName}")
             }else{
-                text?.text = "￥${tagName}"
+                text?.post {
+                    text.text = "￥${tagName}"
+                    if (totalNum != -1 && nuwNum !=-1){
+                        text.text = "¥${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}"
+                    }
+                }
             }
         }
 

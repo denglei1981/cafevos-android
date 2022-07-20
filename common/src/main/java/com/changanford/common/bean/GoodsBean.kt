@@ -1078,7 +1078,8 @@ data class RefundOrderItemBean(
     var sharedRmb: String,
     var orderNo: String,
     var refundType:String,
-    var refundNum:String
+    var refundNum:String,
+    var fbOfUnitPrice:String,
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {

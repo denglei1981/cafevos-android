@@ -18,6 +18,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.WCommonUtil.getRoundedNum
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.bean.RefundProgressBean
@@ -30,6 +31,7 @@ import com.changanford.shop.view.TopBar
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import java.math.BigDecimal
 
 /**
  *  退款进度  已发货， 仅退款 ，退款退货
@@ -201,7 +203,8 @@ class RefundProgressHasShopActivity :
                             var item = refundProgressBean.sku
                             item?.orderNo = refundProgressBean.orderNo
                             item?.price =
-                                "${refundProgressBean.fbRefundApply.toInt() + refundProgressBean.rmbRefundApply.toInt() * 100}"
+//                                "${refundProgressBean.fbRefundApply.toInt() + refundProgressBean.rmbRefundApply.toInt() * 100}"
+                            "${refundProgressBean.fbRefundApply.toInt() + (getRoundedNum(refundProgressBean.rmbRefundApply,2) * BigDecimal(100)).intValueExact()}"
                             val gsonItem = Gson()
                             val gsonItemtoJson = gsonItem.toJson(item)
                             val refundOrderItemBean: RefundOrderItemBean? =
