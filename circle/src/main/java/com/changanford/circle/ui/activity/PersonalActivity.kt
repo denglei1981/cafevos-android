@@ -87,7 +87,7 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
             if (it.extend.isStarRole == "1") {
                 binding.title.tvRightMenu.apply {
                     setTextColor(ContextCompat.getColor(this@PersonalActivity,R.color.color_00095B))
-                    text = "管理"
+                    text = "选择"
                     setOnClickListener { _ ->
                         val bundle = Bundle()
                         bundle.putString("circleId", circleId)
