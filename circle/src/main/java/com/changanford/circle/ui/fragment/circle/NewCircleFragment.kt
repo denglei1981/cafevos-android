@@ -194,7 +194,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                     modifier = Modifier.weight(1f)
                 )
                 //查看更多圈子(我加入的圈子大于4个才显示更多入口)
-                if (null != dataList && dataList.size > 4) {
+                if (null != dataList && dataList.isNotEmpty()) {
                     Row(verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.clickable(
                             indication = null,
