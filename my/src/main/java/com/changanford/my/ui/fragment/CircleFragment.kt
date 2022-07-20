@@ -229,6 +229,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             statusTV.visibility = View.GONE
                         }
                     }
+                    if (item.isGrounding == 1) {//下架隐藏星标
+                        holder.getView<ImageView>(R.id.img_star).visibility = View.GONE
+                    }
+
                 }
             }
         }

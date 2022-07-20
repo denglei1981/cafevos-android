@@ -42,6 +42,7 @@ data class CircleItemBean(
     val checkPassTime: String = "",
     val createTime: String = "",
     val userCount: Int = 0,
+    val isGrounding: Int = 0,//0上架 1下架
     val postsCount: String = "",
     val applyerCount: Int = 0, //申请人数
     val checkNoReason: String = "", //审核不通过原因
