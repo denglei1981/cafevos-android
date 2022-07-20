@@ -897,7 +897,8 @@ class JumpUtils {
                             startARouter(ARouterMyPath.UniCarAuthUI)
                         }
                         2, 3 -> {//有认证成功的数据
-                            instans?.jump(41)
+//                            instans?.jump(41)
+                            startARouter(ARouterMyPath.MineLoveCarListUI, true)
                         }
                     }
 
