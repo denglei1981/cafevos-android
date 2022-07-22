@@ -10,6 +10,7 @@ import com.changanford.common.adapter.CouponItemAdapter
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.databinding.PopGetCouponBinding
 import com.changanford.common.net.*
+import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.logE
@@ -59,42 +60,46 @@ class GetCoupopBindingPop(
             }
             couponItemAdapter.setOnItemClickListener { adapter, view, position ->
                 // 领取优惠券
-                val couPonItem = couponItemAdapter.getItem(position)
-                when (couPonItem.state) {
-                    "PENDING" -> { // 待领取
-                        val list = arrayListOf<String>()
-                        couPonItem.state = "TO_USE"
-                        couponItemAdapter.notifyDataSetChanged()
-                        list.add(couPonItem.couponSendId)
-                        getCoupon(list, couponItemAdapter.data.size)
-                    }
-                    "TO_USE" -> { // 已领取
-                        // 跳转到立即使用的界面
+                if (!FastClickUtils.isFastClick()) {
+                    val couPonItem = couponItemAdapter.getItem(position)
+                    when (couPonItem.state) {
+                        "PENDING" -> { // 待领取
+                            val list = arrayListOf<String>()
+                            couPonItem.state = "TO_USE"
+                            couponItemAdapter.notifyDataSetChanged()
+                            list.add(couPonItem.couponSendId)
+                            getCoupon(list, couponItemAdapter.data.size)
+                        }
+                        "TO_USE" -> { // 已领取
+                            // 跳转到立即使用的界面
 //                        UseCouponsActivity.start(couPonItem)
 //                        val gson = Gson()
 //                        val cou = gson.toJson(couPonItem)
-                        JumpUtils.instans?.jump(118)
-                        dismiss()
-                    }
-                    else -> { // 用不了了
+                            JumpUtils.instans?.jump(118)
+                            dismiss()
+                        }
+                        else -> { // 用不了了
 
+                        }
                     }
                 }
             }
             tvGet.setOnClickListener {
-                // 全部一起领取了
-                val listItem = couponItemAdapter.data
-                val list = arrayListOf<String>()
-                listItem.forEach { l ->
-                    if (l.state == "PENDING") {
-                        list.add(l.couponSendId)
+                if (!FastClickUtils.isFastClick()) {
+                    // 全部一起领取了
+                    val listItem = couponItemAdapter.data
+                    val list = arrayListOf<String>()
+                    listItem.forEach { l ->
+                        if (l.state == "PENDING") {
+                            list.add(l.couponSendId)
+                        }
                     }
-                }
-                if(list.size<=0){
-                    JumpUtils.instans?.jump(118)
-                    dismiss()
-                }else{
-                    getCoupon(list, 0)
+                    if (list.size <= 0) {
+                        JumpUtils.instans?.jump(118)
+                        dismiss()
+                    } else {
+                        getCoupon(list, 0)
+                    }
                 }
             }
 
