@@ -563,18 +563,21 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         }
 
         viewModel.ocr(pathMap[imgType]) {
-            it.onSuccess {
+            it.onSuccess { ocrBean->
                 uploadDialog.dismiss()
-                showToast("上传成功")
                 when (imgType) {
                     1 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
                             it.data?.let {s->
                                 pathMap.put(imgType, OcrRequestBean(s.cmcUrl, "ID_CARD", s.cmcUrl))
                             }
-
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                                showToast("上传失败，请重新上传")
+                            }else{
+                                showToast("上传成功")
+                                showIdcard(ocrBean)
+                            }
                         }
-                        showIdcard(it)
                     }
 
                     7 -> {
@@ -585,8 +588,13 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                     OcrRequestBean(s.cmcUrl, "DRIVER_LICENCE", s.cmcUrl)
                                 )
                             }
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                                showToast("上传失败，请重新上传")
+                            }else{
+                                showToast("上传成功")
+                                showIdcard(ocrBean)
+                            }
                         }
-                        showIdcard(it)
                     }
                     4 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
@@ -596,13 +604,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                     OcrRequestBean(s.cmcUrl, "WALK_LICENCE", s.cmcUrl)
                                 )
                             }
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                                showToast("上传失败，请重新上传")
+                            }else{
+                                showToast("上传成功")
+                                ocrBean?.plate_num?.let {
+                                    body["plateNum"] = it
+                                }
+                                showVIN(ocrBean)
+                            }
                         }
-                        it?.plate_num?.let {
-                            body["plateNum"] = it
-                        }
-                        showVIN(it)
-
-
                     }
                     5 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
@@ -612,11 +623,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                     OcrRequestBean(s.cmcUrl, "CAR_INVOICE", s.cmcUrl)
                                 )
                             }
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                                showToast("上传失败，请重新上传")
+                            }else{
+                                showToast("上传成功")
+                                ocrBean?.plate_num?.let {
+                                    body["plateNum"] = it
+                                }
+                                showVIN(ocrBean)
+                            }
                         }
-                        it?.plate_num?.let {
-                            body["plateNum"] = it
-                        }
-                        showVIN(it)
                     }
                 }
             }
