@@ -13,10 +13,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:text="分享到"
-        android:visibility="visible"
         android:textColor="@color/text_color"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -231,7 +231,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="举报" />
+                    android:text="举报"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -251,7 +252,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="不喜欢" />
+                    android:text="不喜欢"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -273,7 +275,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="下架" />
+                    android:text="下架"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -308,7 +311,8 @@
                     android:id="@+id/jj_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="申请加精" />
+                    android:text="申请加精"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -330,7 +334,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="编辑" />
+                    android:text="编辑"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -350,7 +355,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="删除" />
+                    android:text="删除"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -364,9 +370,9 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
             android:layout_marginBottom="10dp"
-            android:background="#fff6f6f6" />
+            android:background="#fff6f6f6"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
@@ -374,10 +380,10 @@
         android:id="@+id/tvclose"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
+        android:layout_margin="@dimen/dp_20"
         android:background="@drawable/bg_bt_blue_corner39"
         android:gravity="center"
         android:padding="10dp"
-        android:layout_margin="@dimen/dp_20"
         android:text="取消"
         android:textColor="@color/white"
         android:textSize="15sp" />
