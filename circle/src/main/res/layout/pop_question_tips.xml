@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_whit5_bg"
             android:padding="8dp"
+            android:textColor="@color/black"
             android:textSize="@dimen/sp_10"
             android:text="@string/pop_question_tips"/>
 
