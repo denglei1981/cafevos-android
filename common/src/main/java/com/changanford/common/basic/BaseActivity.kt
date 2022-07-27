@@ -25,6 +25,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
 import com.changanford.common.net.*
+import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
@@ -61,7 +62,11 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initView()
 //        StatusBarUtil.setLightStatusBar(this, true)
         ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
-        initData()
+        if (savedInstanceState == null) {
+            initData()
+        } else {
+            FastClickUtils.relaunchApp()
+        }
         observe()
     }
 
@@ -206,7 +211,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         }
         return false
     }
-
 
 
 }
