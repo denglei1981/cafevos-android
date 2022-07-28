@@ -564,7 +564,6 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         viewModel.ocr(pathMap[imgType]) {
             it.onSuccess { ocrBean->
-                uploadDialog.dismiss()
                 when (imgType) {
                     1 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
@@ -577,6 +576,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 showToast("上传成功")
                                 showIdcard(ocrBean)
                             }
+                            uploadDialog.dismiss()
                         }
                     }
 
@@ -594,6 +594,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 showToast("上传成功")
                                 showIdcard(ocrBean)
                             }
+                            uploadDialog.dismiss()
                         }
                     }
                     4 -> {
@@ -613,6 +614,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 }
                                 showVIN(ocrBean)
                             }
+                            uploadDialog.dismiss()
                         }
                     }
                     5 -> {
@@ -632,6 +634,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 }
                                 showVIN(ocrBean)
                             }
+                            uploadDialog.dismiss()
                         }
                     }
                 }
