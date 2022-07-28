@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,16 @@ public class LoadDialog extends Dialog {
         animation = AnimationUtils.loadAnimation(context, R.anim.xuanzhuan);
         animation.setInterpolator(new LinearInterpolator());
         setContentView(rootView);
+        setXiaomi();
+    }
+    private void setXiaomi(){
+        //设置小米手机无法显示Dialog
+        DisplayMetrics dm = new DisplayMetrics();
+        this.getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        android.view.WindowManager.LayoutParams p = this.getWindow().getAttributes();  //获取对话框当前的参数值
+        p.width = (int) (dm.widthPixels*0.3);
+        p.gravity = Gravity.CENTER;
+        this.getWindow().setAttributes(p);     //设置生效
     }
     public void setLoadingText(String text){
         textView.setText(text);
