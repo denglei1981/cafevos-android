@@ -24,8 +24,8 @@ import com.changanford.common.utilext.toast
  */
 class CircleDetailsViewModel : BaseViewModel() {
 
-    val tabList = arrayListOf("推荐", "最新", "精华")
-    val circleType= arrayListOf("4","2","3")
+    val tabList = arrayListOf("推荐", "最新", "精华", "圈主专区")
+    val circleType = arrayListOf("4", "2", "3", "5")
 
     val circleBean = MutableLiveData<PostBean>()
 
@@ -69,7 +69,8 @@ class CircleDetailsViewModel : BaseViewModel() {
                 it["type"] = viewType
             }
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getRecommendPosts(body.header(rKey), body.body(rKey))
+            ApiClient.createApi<CircleNetWork>()
+                .getRecommendPosts(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     recommondBean.value = it
                     LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
@@ -81,11 +82,18 @@ class CircleDetailsViewModel : BaseViewModel() {
     }
 
 
-    fun getListData(viewType: Int, topicId: String, circleId: String, page: Int) {
+    fun getListData(
+        viewType: Int,
+        topicId: String,
+        circleId: String,
+        page: Int,
+        userId: String? = null
+    ) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
+
             body["queryParams"] = HashMap<String, Any>().also {
                 it["viewType"] = viewType
                 if (topicId.isNotEmpty()) {
@@ -93,6 +101,11 @@ class CircleDetailsViewModel : BaseViewModel() {
                 }
                 if (circleId.isNotEmpty()) {
                     it["circleId"] = circleId
+                }
+                if (viewType == 5) {
+                    userId?.let { _ ->
+                        it["userId"] = userId
+                    }
                 }
             }
             val rKey = getRandomKey()
@@ -120,9 +133,9 @@ class CircleDetailsViewModel : BaseViewModel() {
 
     /**
      *申请加入圈子
-    * */
-    fun joinCircle(circleId: String,listener: OnPerformListener?=null) {
-        if(MConstant.token.isEmpty()){
+     * */
+    fun joinCircle(circleId: String, listener: OnPerformListener? = null) {
+        if (MConstant.token.isEmpty()) {
             startARouter(ARouterMyPath.SignUI)
             return
         }
@@ -133,17 +146,17 @@ class CircleDetailsViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>().joinCircle(body.header(rKey), body.body(rKey))
                 .also {
                     joinBean.value = it
-                    if(it.code==0)listener?.onFinish((it.data?.isApply)?:1)
+                    if (it.code == 0) listener?.onFinish((it.data?.isApply) ?: 1)
                     else it.msg.toast()
                 }
 
-        },error = {
+        }, error = {
             it.message.toString().toast()
         })
     }
 
     fun getCircleRoles(circleId: String) {
-        launch( block = {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["circleId"] = circleId
             val rKey = getRandomKey()
@@ -187,12 +200,12 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
-    val circleAdBean =MutableLiveData<List<AdBean>>()
+    val circleAdBean = MutableLiveData<List<AdBean>>()
 
-    fun getRecommendTopic(){
+    fun getRecommendTopic() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
-            body["posCode"]="community_recommend"
+            body["posCode"] = "community_recommend"
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .getRecommendTopic(body.header(rKey), body.body(rKey)).onSuccess {

@@ -53,6 +53,9 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.zhpan.bannerview.constants.IndicatorGravity
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
 
 /**
  *Author lcw
@@ -66,6 +69,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     private var page = 1
     private var checkPosition = 0
+    private var isFirst = true
 
     private val commentAdapter by lazy {
         PostDetailsCommentAdapter(this)
@@ -104,9 +108,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 "关注"
             }
             bottomView.run {
-                val commentCount=mData.commentCount
+                val commentCount = mData.commentCount
                 tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
-                tvCommentsTitle.setText(if(commentCount>0)"  ${mData.commentCount}" else "")
+                tvCommentsTitle.setText(if (commentCount > 0) "  ${mData.commentCount}" else "")
                 tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
                 tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
                 ivLike.setImageResource(
@@ -309,7 +313,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 //                val bundle = Bundle()
 //                bundle.putString("value", mData.authorBaseVo?.authorId)
 //                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
-                JumpUtils.instans?.jump(35,mData.authorBaseVo?.authorId)
+                JumpUtils.instans?.jump(35, mData.authorBaseVo?.authorId)
             }
             bottomView.tvTalk.setOnClickListener {
                 ReplyDialog(requireContext(), object : ReplyDialog.ReplyListener {
@@ -415,6 +419,17 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         viewModel.commendBean.observe(this) {
             if (page == 1) {
                 commentAdapter.setList(it.dataList)
+                if (isFirst) {
+                    val isScroll = activity?.intent?.getBooleanExtra("isScroll", false)
+                    if (isScroll == true) {
+                        Timer().schedule(1000) {
+                            binding.nestScroll.post {
+                                binding.nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
+                            }
+                        }
+                    }
+                    isFirst = false
+                }
                 if (it.dataList.size == 0) {
                     commentAdapter.setEmptyView(R.layout.circle_comment_empty_layout)
                 }
@@ -537,8 +552,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
         LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
             try {
-                viewModel.getCommendList(mData.postsId,1)
-            }catch (e:Exception){
+                viewModel.getCommendList(mData.postsId, 1)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 

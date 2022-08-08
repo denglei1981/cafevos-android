@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.widget.dialog.CircleDislikeDialog
 import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
+import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath

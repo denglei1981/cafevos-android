@@ -1,73 +1,78 @@
 package com.changanford.circle.adapter
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.ReportDislikeBody
+import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
-import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadCircleImage
+import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.utils.TestBeanUtil
+import com.changanford.circle.utils.MUtils.setTopMargin
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.circle.viewmodel.CircleShareModel
+import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.circle.widget.assninegridview.ImageInfo
+import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
-import com.changanford.common.util.SetFollowState
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
+import com.changanford.common.utilext.*
 import com.google.android.material.button.MaterialButton
+import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.xiaomi.push.it
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
+import kotlin.onSuccess
 
 /**
  *Author lcw
  *Time on 2021/9/22
  *Purpose
  */
-class CircleRecommendAdapter(context: Context, private val lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_recommend_one),
+class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: LifecycleOwner) :
+    BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_main_bottom_v2),
     LoadMoreModule {
 
-    private val viewModel by lazy { CircleDetailsViewModel() }
+    private val viewModel by lazy { PostGraphicViewModel() }
 
+    init {
+        addChildClickViewIds(R.id.tv_all_comment)
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
-        val binding = DataBindingUtil.bind<ItemCircleRecommendOneBinding>(holder.itemView)
+        val binding = DataBindingUtil.bind<ItemCircleMainBottomV2Binding>(holder.itemView)
+        setTopMargin(binding?.root, 10, holder.layoutPosition)
         binding?.let {
             binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
@@ -88,7 +93,19 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     }
                 }
             }
-            binding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
+            binding.layoutCount.tvCommentCount.setPageTitleText(item.getShareCountResult())
+            binding.layoutCount.tvCommentCount.setOnClickListener {
+                val activity = BaseApplication.curActivity
+                CircleShareModel.shareDialog(
+                    activity,
+                    0,
+                    item.shares,
+                    ReportDislikeBody(2, item.postsId.toString()),
+                    null,
+                    item.authorBaseVo?.nickname,
+                    item.topicName
+                )
+            }
             binding.layoutHeader.ivHeader.setOnClickListener {
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId.toString())
@@ -201,82 +218,53 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutOne.ivVeryPost.visibility = View.GONE
                 binding.icMultVeryPost.visibility = View.GONE
             }
-            binding.run {
-                if (item.circle == null) {
-                    llCircle.visibility = View.GONE
-                } else {
-                    llCircle.visibility = View.VISIBLE
-
-                    val circleData = item.circle
-
-                    tvCircleName.setOnClickListener {
-                        val bundle = Bundle()
-                        bundle.putString("circleId", circleData?.circleId)
-                        startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
-                    }
-                    tvCircleName.text = circleData?.name
-                    binding.ivCircleHead.loadCircleImage(circleData?.pic)
-                    when (circleData?.isJoin) {
-                        "TOJOIN" -> {//未加入
-                            tvJoinType.text = "  加入"
-                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type)
-
-                            rlCircleType.setOnClickListener {
-                                if (circleData.isJoin != "TOJOIN") {
-                                    return@setOnClickListener
-                                }
-                                //申请加入圈子
-                                viewModel.joinCircle(
-                                    item.circleId.toString(),
-                                    object : OnPerformListener {
-                                        override fun onFinish(code: Int) {
-                                            when (code) {
-                                                1 -> {//状态更新为审核中
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "PENDING"
-                                                        }
-                                                    }
-                                                    notifyDataSetChanged()
-//                                                    tvJoinType.text = "  待审核"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
-                                                2 -> {//已加入
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "JOINED"
-                                                        }
-                                                    }
-                                                    notifyDataSetChanged()
-//                                                    tvJoinType.text = "  已加入"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
-                                                else -> {
-//                                item.isJoin ="TOJOIN"
-                                                }
-                                            }
-                                        }
-                                    })
-                            }
-                        }
-                        "PENDING" -> {//待审核
-                            tvJoinType.text = "  待审核"
-                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                        }
-                        "JOINED" -> {//已加入
-                            tvJoinType.text = "  已加入"
-                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                        }
-                    }
-
-                }
+            if (!item.content.isNullOrEmpty()) {
+                binding.tvContent.visibility = View.VISIBLE
+                binding.tvContent.text = item.content
+            } else {
+                binding.tvContent.visibility = View.GONE
             }
+            if (item.firstComment != null) {
+                binding.llComment.visibility = View.VISIBLE
+                binding.ivCommentHead.loadCircleImage(item.firstComment?.avatar)
+                binding.tvFirstCommentContent.text =
+                    "${item.firstComment?.nickname}:${item.firstComment?.content}"
+            } else {
+                binding.llComment.visibility = View.GONE
+            }
+            if (item.commentCount != 0L) {
+                binding.tvAllComment.visibility = View.VISIBLE
+                binding.tvAllComment.text = "查看全部${item.commentCount}条评论"
+            } else {
+                binding.tvAllComment.visibility = View.GONE
+            }
+            if (item.circle == null || item.circle!!.starName.isNullOrEmpty()) {
+                binding.layoutHeader.tvCircleType.visibility = View.GONE
+            } else {
+                binding.layoutHeader.tvCircleType.visibility = View.VISIBLE
+                binding.layoutHeader.tvCircleType.text = item.circle?.starName
+            }
+            binding.tvComment.setOnClickListener {
+                ReplyDialog(context, object : ReplyDialog.ReplyListener {
+                    override fun getContent(content: String) {
+                        commentPost(
+                            binding,
+                            item.postsId.toString(),
+                            null,
+                            "0",
+                            content,
+                            item.commentCount
+                        )
+//                        viewModel.addPostsCommentOut(item.postsId.toString(), null, "0", content)
+                    }
 
+                }).show()
+            }
         }
     }
 
     private fun likePost(
-        binding: ItemCircleRecommendOneBinding,
+        binding: ItemCircleMainBottomV2Binding,
         item: PostDataBean,
         position: Int
     ) {
@@ -313,6 +301,47 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 }
         }
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun commentPost(
+        binding: ItemCircleMainBottomV2Binding,
+        bizId: String?,
+        groupId: String?,
+        pid: String?,
+        content: String,
+        commentCount: Long
+    ) {
+        val activity = BaseApplication.curActivity
+
+        activity.launchWithCatch {
+            val body = MyApp.mContext.createHashMap()
+            body["bizId"] = bizId ?: ""
+            body["pid"] = pid ?: ""
+            body["groupId"] = groupId ?: ""
+            body["content"] = content
+            body["phoneModel"] = DeviceUtils.getDeviceModel()
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .addPostsComment(body.header(rKey), body.body(rKey)).also {
+                    it.msg.toast()
+                    viewModel.userDatabase.getUniUserInfoDao().getUser()
+                        .observe(activity) { sysBean ->
+                            val userInfoBean: UserInfoBean =
+                                Gson().fromJson(sysBean.userJson, UserInfoBean::class.java)
+                            binding.llComment.visibility = View.VISIBLE
+                            binding.ivCommentHead.loadCircleImage(userInfoBean.avatar)
+                            binding.tvFirstCommentContent.text =
+                                "${userInfoBean.nickname}:${content}"
+
+                            binding.tvAllComment.visibility = View.VISIBLE
+                            binding.tvAllComment.text = "查看全部${commentCount + 1}条评论"
+                        }
+
+                }
+        }
+    }
+
 
     /**
      *  设置关注状态。
@@ -415,5 +444,19 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             ) { SoulPermission.getInstance().goPermissionSettings() }.show()
                     }
                 })
+    }
+
+    /**
+     * 列表第一个item追加margin
+     */
+    private fun setTopMargin(view: View?, margin: Int, position: Int) {
+        view?.let {
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            if (position == 0) {
+                params.topMargin =
+                    margin.toIntPx()
+            } else params.topMargin = 0
+        }
+
     }
 }

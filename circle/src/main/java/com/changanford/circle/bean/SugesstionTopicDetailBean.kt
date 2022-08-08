@@ -1,5 +1,7 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.CircleShareBean
+
 /**
  * @Author: hpb
  * @Date: 2020/5/18
@@ -25,14 +27,4 @@ data class SugesstionTopicDetailBean(
     val topicId: Double,
     val updateTime: Double,
     val shareBeanVO: CircleShareBean?
-)
-
-data class CircleShareBean(
-    val bizId: String,
-    val shareDesc: String,
-    val shareImg: String,
-    val shareTitle: String,
-    val shareUrl: String,
-    val type: String,
-    val wxminiprogramCode: String
 )

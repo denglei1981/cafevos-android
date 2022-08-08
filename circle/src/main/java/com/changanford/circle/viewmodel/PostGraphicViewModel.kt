@@ -12,6 +12,8 @@ import com.changanford.common.net.*
 import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -24,6 +26,10 @@ class PostGraphicViewModel : BaseViewModel() {
     val followBean = MutableLiveData<CommonResponse<Any>>()
     val addCommendBean = MutableLiveData<CommonResponse<Any>>()
     val commendBean = MutableLiveData<HomeDataListBean<CommentListBean>>()
+
+    val userDatabase: UserDatabase by lazy {
+        UserDatabase.getUniUserDatabase(MyApp.mContext)
+    }
 
     fun getData(postsId: String) {
         launch(block = {
@@ -146,6 +152,32 @@ class PostGraphicViewModel : BaseViewModel() {
             ApiClient.createApi<CircleNetWork>()
                 .addPostsComment(body.header(rKey), body.body(rKey)).also {
                     addCommendBean.value = it
+                }
+
+        }, error = {
+            it.message?.toast()
+        })
+    }
+
+    fun addPostsCommentOut(
+        bizId: String?,
+        groupId: String?,
+        pid: String?,
+        content: String
+    ) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["bizId"] = bizId ?: ""
+            body["pid"] = pid ?: ""
+            body["groupId"] = groupId ?: ""
+            body["content"] = content
+            body["phoneModel"] = DeviceUtils.getDeviceModel()
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .addPostsComment(body.header(rKey), body.body(rKey)).also {
+                   it.msg.toast()
+                    LiveDataBus.get().with(LiveDataBusKey.REFRESH_COMMENT_CIRCLE).postValue(false)
                 }
 
         }, error = {

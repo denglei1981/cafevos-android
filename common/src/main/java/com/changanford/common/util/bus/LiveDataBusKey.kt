@@ -285,5 +285,6 @@ object LiveDataBusKey {
 
     const val REFRESH_POST_LIKE = "refreshPostLike"
     const val REFRESH_WAIT = "refreshWait"
+    const val REFRESH_COMMENT_CIRCLE = "refreshCommentCircle"
 }
 

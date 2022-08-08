@@ -1,18 +1,23 @@
 package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.adapter.CircleRecommendAdapterV2
 import com.changanford.circle.databinding.FragmentCircleDetailsBinding
+import com.changanford.circle.databinding.FragmentCircleDetailsV2Binding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.xiaomi.push.it
 import java.lang.reflect.Method
 
@@ -21,18 +26,20 @@ import java.lang.reflect.Method
  *Time on 2021/9/22
  *Purpose
  */
-class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleDetailsViewModel>() {
+class CircleDetailsFragmentV2 :
+    BaseFragment<FragmentCircleDetailsV2Binding, CircleDetailsViewModel>() {
 
-    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+    //    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private lateinit var mCheckForGapMethod: Method
 
     //    private val adapter by lazy { CircleDetailsBarAdapter(requireContext()) }
-    private val adapter by lazy { CircleMainBottomAdapter(requireContext()) }
+    private val adapter by lazy { CircleRecommendAdapterV2(requireContext(), this) }
 
     private var type = "4"
     private var page = 1
     private var topicId = ""
     private var circleId = ""
+    private var userId = ""
 
     private var checkPosition: Int? = null
 
@@ -40,13 +47,15 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         fun newInstance(
             type: String,
             topicId: String,
-            circleId: String = ""
-        ): CircleDetailsFragment {
+            circleId: String = "",
+            userId: String? = ""
+        ): CircleDetailsFragmentV2 {
             val bundle = Bundle()
             bundle.putString("type", type)
             bundle.putString("topicId", topicId)
             bundle.putString("circleId", circleId)
-            val fragment = CircleDetailsFragment()
+            bundle.putString("userId", userId)
+            val fragment = CircleDetailsFragmentV2()
             fragment.arguments = bundle
             return fragment
         }
@@ -62,20 +71,21 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
         type = arguments?.getString("type", "4").toString()
         topicId = arguments?.getString("topicId", "").toString()
         circleId = arguments?.getString("circleId", "").toString()
+        userId = arguments?.getString("userId", "").toString()
 
-        staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
-        staggeredGridLayoutManager.spanCount
-        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                mCheckForGapMethod.invoke(binding.ryCircle.layoutManager) as Boolean
-//                staggeredGridLayoutManager.invalidateSpanAssignments()
-            }
-        })
-        binding.ryCircle.layoutManager = staggeredGridLayoutManager
+//        staggeredGridLayoutManager = StaggeredGridLayoutManager(
+//            2,
+//            StaggeredGridLayoutManager.VERTICAL
+//        )
+//        staggeredGridLayoutManager.spanCount
+//        binding.ryCircle.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+////            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+////                super.onScrollStateChanged(recyclerView, newState)
+////                mCheckForGapMethod.invoke(binding.ryCircle.layoutManager) as Boolean
+//////                staggeredGridLayoutManager.invalidateSpanAssignments()
+////            }
+////        })
+//        binding.ryCircle.layoutManager = staggeredGridLayoutManager
 
         binding.refreshLayout.setOnRefreshListener {
             page = 1
@@ -95,10 +105,19 @@ class CircleDetailsFragment : BaseFragment<FragmentCircleDetailsBinding, CircleD
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             checkPosition = position
         }
+        adapter.setOnItemChildClickListener { _, view, position ->
+            if (view.id == R.id.tv_all_comment) {
+                val bundle = Bundle()
+                bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+                bundle.putBoolean("isScroll", true)
+                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+                checkPosition = position
+            }
+        }
     }
 
     override fun initData() {
-        viewModel.getListData(type.toInt(), topicId, circleId, page)
+        viewModel.getListData(type.toInt(), topicId, circleId, page, userId)
     }
 
     override fun observe() {

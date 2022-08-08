@@ -3,6 +3,8 @@ package com.changanford.circle.ext
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.widget.ImageView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
@@ -10,6 +12,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.R
+import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.utilext.GlideUtils
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -87,6 +90,14 @@ fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
             }
 
         })
+}
+
+fun ImageView.loadCircleImage(url:String?){
+    this.load(GlideUtils.handleImgUrl(url)){
+        transformations(CircleCropTransformation())
+        placeholder(R.mipmap.ic_def_square_img)
+        error(R.mipmap.ic_def_square_img)
+    }
 }
 
 private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply {

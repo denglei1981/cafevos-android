@@ -1,5 +1,6 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.NewCirceTagBean
 
 /**
@@ -19,7 +20,7 @@ data class CircleDetailBean(
     val pic: String = "",
     val postsCount: Int = 0,
     val isViewApplyMan: Int = 0,
-    val shareBeanVO: CircleShareBean? ,
+    val shareBeanVO: CircleShareBean?,
     val userCount: Int = 0,
     val userId: Int = 0,
     val users: ArrayList<User> = arrayListOf(),

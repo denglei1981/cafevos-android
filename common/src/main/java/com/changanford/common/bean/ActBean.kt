@@ -159,10 +159,12 @@ data class PostBean(
 data class PostDataBean(
     val authorBaseVo: AuthorBaseVo? = null,
     val circleId: Int? = 0,
+    val circle: PostCircleDataBean? = null,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0,
     val content: String = "",
+    val firstComment: FirstCommentData? = null,
     val contentLike: Any? = Any(),
     val createBy: Any? = Any(),
     val createTime: Long = 0,
@@ -202,6 +204,7 @@ data class PostDataBean(
     val userId: Int = 0,
     val videoTime: Any? = Any(),
     val videoUrl: Any? = Any(),
+    val shares: CircleShareBean? = null,
     val viewsCount: Long = 0,
     val viewsCountBase: Int = 0,
     val viewsCountMul: Int = 0,
@@ -224,6 +227,15 @@ data class PostDataBean(
             return "评论"
         }
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getShareCountResult(): String {
+        var commentCountResult: String = ""
+        if (shareCount == 0) {
+            return "分享"
+        }
+        commentCountResult = CountUtils.formatNum(shareCount.toString(), false).toString()
         return commentCountResult
     }
 
@@ -273,6 +285,14 @@ data class AcBean(var title: String, var iconUrl: String, var type: Int) : Multi
     override val itemType: Int
         get() = type
 }
+
+data class FirstCommentData(
+    val bizId: String,
+    val content: String,
+    val nickname: String,
+    val avatar: String,
+    val userId: String
+)
 
 data class AccBean(
     val dataList: List<ActDataBean>? = arrayListOf(),
@@ -328,6 +348,30 @@ data class PostKeywordBean(
     var isselect: Boolean = false
 )
 
-data class BackEnumBean(var code:String,var message:String){
+/**
+ * 圈子的加入状态 1:未加入 2:加入中 3:已加入
+TOJOIN("TOJOIN",1, "未加入"),
+PENDING("PENDING",2, "加入中(待审核)"),
+JOINED("JOINED",3, "已加入")
+ */
+data class PostCircleDataBean(
+    val circleId: String,
+    val name: String,
+    var isJoin: String,
+    val pic: String,
+    val starName: String?
+)
+
+data class BackEnumBean(var code: String, var message: String) {
 
 }
+
+data class CircleShareBean(
+    val bizId: String,
+    val shareDesc: String,
+    val shareImg: String,
+    val shareTitle: String,
+    val shareUrl: String,
+    val type: String,
+    val wxminiprogramCode: String
+)

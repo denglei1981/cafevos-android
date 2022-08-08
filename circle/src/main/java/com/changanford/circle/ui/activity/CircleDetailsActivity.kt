@@ -16,7 +16,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
 import com.changanford.circle.adapter.circle.TagAdapter
-import com.changanford.circle.bean.CircleShareBean
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
@@ -24,6 +23,7 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
+import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
@@ -32,6 +32,7 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -64,15 +65,16 @@ import kotlin.math.abs
  */
 @Route(path = ARouterCirclePath.CircleDetailsActivity)
 class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
-    companion object{
-        fun start(circleId:String?){
+    companion object {
+        fun start(circleId: String?) {
             circleId?.apply {
                 val bundle = Bundle()
-                bundle.putString("circleId",this)
+                bundle.putString("circleId", this)
                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
         }
     }
+
     private var isWhite = true//是否是白色状态
 
     private var circleId = ""
@@ -93,8 +95,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
             topContent.recyclerView.apply {
-                layoutManager=FlowLayoutManager(this@CircleDetailsActivity,true)
-                adapter=tagAdapter
+                layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
+                adapter = tagAdapter
             }
         }
         //处理滑动顶部效果
@@ -122,8 +124,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 binding.barTitleTv.alpha = 1.0F
             }
         })
-        initTabAndViewPager()
-        PostDatabase.getInstance(this).getPostDao().findAll().observe(this
+        PostDatabase.getInstance(this).getPostDao().findAll().observe(
+            this
         ) {
             postEntity = it as ArrayList<PostEntity>
         }
@@ -131,7 +133,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private fun initListener(circleName: String) {
         binding.ivPostBar.setOnClickListener {
-            if (MineUtils.getBindMobileJumpDataType()){
+            if (MineUtils.getBindMobileJumpDataType()) {
                 BindDialog(this).show()
                 return@setOnClickListener
             }
@@ -139,31 +141,34 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 initPop(circleName)
             } else {
                 this.let { it1 ->
-                    PostDialog(it1,"发现您还有草稿未发布",postButtonListener = object : PostDialog.PostButtonListener{
-                        override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
-                            var postEntity =  postEntity?.last()
-                            when (postEntity?.type) {
-                                "2" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.PostActivity)
-                                }
-                                "3" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.VideoPostActivity)
-                                }
-                                "4" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.LongPostAvtivity)
+                    PostDialog(
+                        it1,
+                        "发现您还有草稿未发布",
+                        postButtonListener = object : PostDialog.PostButtonListener {
+                            override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+                                var postEntity = postEntity?.last()
+                                when (postEntity?.type) {
+                                    "2" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.PostActivity)
+                                    }
+                                    "3" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.VideoPostActivity)
+                                    }
+                                    "4" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.LongPostAvtivity)
+                                    }
                                 }
                             }
-                        }
 
-                        override fun cancle() {  //不使用草稿
-                            initPop(circleName)
-                        }
+                            override fun cancle() {  //不使用草稿
+                                initPop(circleName)
+                            }
 
 
-                    }).show()
+                        }).show()
                 }
 //                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
 //                    .setNegativeButton("继续编辑") {
@@ -175,6 +180,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
         }
 
+    }
+
+    private fun initMyView(userId: String) {
+        initTabAndViewPager(userId)
     }
 
     private fun initPop(circleName: String) {
@@ -224,7 +233,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         }
     }
 
-    private fun initTabAndViewPager() {
+    private fun initTabAndViewPager(userId: String) {
         binding.viewPager.apply {
 
             adapter = object : FragmentPagerAdapter(
@@ -236,10 +245,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 }
 
                 override fun getItem(position: Int): Fragment {
-                    return CircleDetailsFragment.newInstance(
+                    return CircleDetailsFragmentV2.newInstance(
                         viewModel.circleType[position],
                         "",
-                        circleId
+                        circleId, userId
                     )
                 }
 
@@ -263,6 +272,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
+            initMyView(it.userId.toString())
             setJoinType(it.isApply)
             initListener(it.name)
             tagAdapter.setList(it.tags)
@@ -411,7 +421,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundColor(Color.WHITE)
+//        magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {

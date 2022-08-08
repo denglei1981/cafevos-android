@@ -1,5 +1,6 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.HomeAuthorsBean
 
 /**

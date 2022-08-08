@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="author"
+            type="com.changanford.common.bean.AuthorBaseVo" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="postBean"
+            type="com.changanford.common.bean.PostDataBean" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/layout_header"
+                layout="@layout/include_circle_recommend_bottom_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                binding:author="@{author}"
+                binding:postBean="@{postBean}" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/color_66"
+                android:textSize="15sp"
+                tools:text="帖子详情最多展示2排，帖子详情最多展示2排，帖子详情最多展示2排，帖子详情最多展示2排，帖子详情最多展示2排，帖子1232" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.changanford.circle.widget.assninegridview.AssNineGridView
+                    android:id="@+id/iv_nine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:scaleType="centerCrop"
+                    app:angv_gridSpace="3dp"
+                    app:angv_maxSize="4"
+                    app:angv_singleImgRatio="1"
+                    tools:src="@drawable/image_recommed_default" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_more"
+                    style="@style/materialButton"
+                    android:layout_width="40dp"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:backgroundTint="#66000000"
+                    android:minWidth="@dimen/dp_62"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone"
+                    app:cornerRadius="@dimen/dp_20"
+                    tools:text="+8"
+                    tools:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ic_mult_very_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@mipmap/circle_mult_pic_very_post"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+
+            <include
+                android:id="@+id/layout_one"
+                layout="@layout/include_recommend_one_pics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:visibility="gone"
+                tools:src="@drawable/image_recommed_default"
+                tools:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_count"
+                layout="@layout/include_circle_recommend_bottom_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                binding:postBean="@{postBean}" />
+
+            <LinearLayout
+                android:id="@+id/ll_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_comment_head"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:scaleType="centerCrop" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_first_comment_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/color_33"
+                    android:textSize="13sp"
+                    tools:text="ULM: 一看就很炫酷的福特蒙迪欧一看就很炫酷的福… 一看就很炫酷的福特蒙迪欧一看就很炫酷的福…" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_all_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_f2_12"
+                android:drawableEnd="@mipmap/ic_circle_all_right"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:paddingStart="11dp"
+                android:paddingEnd="5dp"
+                android:textColor="@color/color_00095B"
+                android:textSize="12sp"
+                tools:text="查看全部120条评论" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_f8_18"
+                android:drawableStart="@mipmap/ic_circle_bottom_comment"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:text="你可以说点什么哦~"
+                android:textColor="@color/color_cc"
+                android:textSize="13sp"
+                tools:ignore="RtlSymmetry" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/color_f6"
+            android:layout_height="10dp"/>
+    </LinearLayout>
+</layout>
