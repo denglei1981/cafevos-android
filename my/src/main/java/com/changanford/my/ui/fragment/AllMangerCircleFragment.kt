@@ -50,6 +50,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
     }
 
     var index: Int = 0 // 0 全部 1 待审核
+    var isItemCheck = false
     var circleId: String = ""
     var circleCheck: MangerCircleCheck = MangerCircleCheck(0, false) //显示选择
     private var checkMap = HashMap<String, Boolean>()
@@ -181,8 +182,10 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                 }
             })
 
-        binding.checkboxAll.setOnCheckedChangeListener { _, isChecked ->
-            circleAdapter.allCheck(isChecked)
+        binding.checkboxAll.setOnCheckedChangeListener { view, isChecked ->
+            if (view.isPressed) {
+                circleAdapter.allCheck(isChecked)
+            }
         }
 
         viewModel.agreeStatus.observe(this, Observer {
@@ -351,7 +354,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             icon.setOnClickListener {
 //                RouterManger.param("value", item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
 
-                JumpUtils.instans?.jump(35,item.userId.toString())
+                JumpUtils.instans?.jump(35, item.userId.toString())
             }
         }
 
@@ -389,6 +392,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             }
             checkUserNum = num
             binding.checkboxAll.text = if (checkUserNum == 0) "全选" else "全选(${checkUserNum})"
+            binding.checkboxAll.isChecked = checkUserNum == data.size
         }
 
     }

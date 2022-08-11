@@ -189,7 +189,7 @@ data class PostDataBean(
     val rejectReason: Any? = Any(),
     val remark: Any? = Any(),
     val searchValue: Any? = Any(),
-    val shareCount: Int = 0,
+    var shareCount: Int = 0,
     val sortOrder: Any? = Any(),
     val status: Int = 0,
     val timeStr: String = "",

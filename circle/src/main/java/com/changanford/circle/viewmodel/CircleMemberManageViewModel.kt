@@ -43,7 +43,10 @@ class CircleMemberManageViewModel : BaseViewModel() {
                     }
                     personalBean.value = list
                 }
-                .onFailure { }
+                .onFailure {
+                    val list: ArrayList<CircleMemberBean> = ArrayList()
+                    personalBean.value = list
+                }
         })
     }
 

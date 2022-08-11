@@ -547,4 +547,12 @@ interface CircleNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+    /**
+     * 社区-圈子-发帖选择圈子相关
+     */
+    @POST("/con/community/circleSelectedByPosts")
+    suspend fun circleSelectedByPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CircleSelectedPostsBean>>
 }

@@ -1,25 +1,23 @@
 package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.circle.adapter.CircleRecommendAdapterV2
-import com.changanford.circle.databinding.FragmentCircleDetailsBinding
 import com.changanford.circle.databinding.FragmentCircleDetailsV2Binding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.xiaomi.push.it
+import com.changanford.common.util.toast.ToastUtils
 import java.lang.reflect.Method
+import java.util.*
 
 /**
  *Author lcw
@@ -68,6 +66,10 @@ class CircleDetailsFragmentV2 :
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
 
+        // 解决调用 notifyItemChanged 闪烁问题,取消默认动画
+        (Objects.requireNonNull<RecyclerView.ItemAnimator>(binding.ryCircle.itemAnimator) as SimpleItemAnimator).supportsChangeAnimations =
+            false
+        binding.ryCircle.itemAnimator = null
         type = arguments?.getString("type", "4").toString()
         topicId = arguments?.getString("topicId", "").toString()
         circleId = arguments?.getString("circleId", "").toString()
@@ -156,6 +158,18 @@ class CircleDetailsFragmentV2 :
             checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
             checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
             checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1, adapter.itemCount) }
+        }
+        //分享回调
+        LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this) {
+            val item = adapter.checkPostDataBean
+            item?.let { item ->
+                if (it == 0) {
+                    ToastUtils.reToast(R.string.str_shareSuccess)
+                    shareBackUpHttp(this, item.shares, 1)
+                    item.shareCount += 1
+                    adapter.notifyDataSetChanged()
+                }
+            }
         }
     }
 }

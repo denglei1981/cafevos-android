@@ -45,7 +45,12 @@ class CircleMemberManageActivity :
             AppUtils.setStatusBarMarginTop(binding.titleBar.root, this@CircleMemberManageActivity)
             tvTitle.text = "成员"
             tvRightMenu.text = "完成"
-            tvRightMenu.setTextColor(ContextCompat.getColor(this@CircleMemberManageActivity,R.color.color_00095B))
+            tvRightMenu.setTextColor(
+                ContextCompat.getColor(
+                    this@CircleMemberManageActivity,
+                    R.color.color_00095B
+                )
+            )
             ivBack.setOnClickListener { finish() }
             tvRightMenu.setOnClickListener { finish() }
         }
@@ -128,7 +133,7 @@ class CircleMemberManageActivity :
                 adapter.addData(it)
                 adapter.loadMoreModule.loadMoreComplete()
             }
-            if (it.size != 20) {
+            if (it.size == 0) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
         }

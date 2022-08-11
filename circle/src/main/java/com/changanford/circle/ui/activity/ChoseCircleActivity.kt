@@ -47,7 +47,7 @@ class ChoseCircleActivity : BaseActivity<ChooseCircleBinding, ChooseCircleViewMo
             }
         }
 
-        viewModel.getCreateCircles()
+        viewModel.circleSelectedByPosts()
     }
 
     override fun observe() {

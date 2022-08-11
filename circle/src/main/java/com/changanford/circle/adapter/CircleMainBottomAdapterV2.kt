@@ -27,6 +27,7 @@ import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
+import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.circle.widget.dialog.ReplyDialog
@@ -39,10 +40,13 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.*
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
@@ -64,6 +68,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     LoadMoreModule {
 
     private val viewModel by lazy { PostGraphicViewModel() }
+    var checkPostDataBean :PostDataBean?=null
 
     init {
         addChildClickViewIds(R.id.tv_all_comment)
@@ -72,6 +77,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomV2Binding>(holder.itemView)
+        val activity = BaseApplication.curActivity
         setTopMargin(binding?.root, 10, holder.layoutPosition)
         binding?.let {
             binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
@@ -93,9 +99,14 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     }
                 }
             }
+            if (item.authorBaseVo?.authorId != MConstant.userId) {
+                binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+            } else {
+                binding.layoutHeader.btnFollow.visibility = View.GONE
+            }
             binding.layoutCount.tvCommentCount.setPageTitleText(item.getShareCountResult())
             binding.layoutCount.tvCommentCount.setOnClickListener {
-                val activity = BaseApplication.curActivity
+                checkPostDataBean = item
                 CircleShareModel.shareDialog(
                     activity,
                     0,
@@ -106,6 +117,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     item.topicName
                 )
             }
+
             binding.layoutHeader.ivHeader.setOnClickListener {
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId.toString())
@@ -245,6 +257,10 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                 binding.layoutHeader.tvCircleType.text = item.circle?.starName
             }
             binding.tvComment.setOnClickListener {
+                if (MConstant.token.isNullOrEmpty()) {
+                    startARouter(ARouterMyPath.SignUI)
+                    return@setOnClickListener
+                }
                 ReplyDialog(context, object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
                         commentPost(
@@ -253,7 +269,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             null,
                             "0",
                             content,
-                            item.commentCount
+                            item
                         )
 //                        viewModel.addPostsCommentOut(item.postsId.toString(), null, "0", content)
                     }
@@ -309,7 +325,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         groupId: String?,
         pid: String?,
         content: String,
-        commentCount: Long
+        item: PostDataBean
     ) {
         val activity = BaseApplication.curActivity
 
@@ -335,7 +351,8 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                                 "${userInfoBean.nickname}:${content}"
 
                             binding.tvAllComment.visibility = View.VISIBLE
-                            binding.tvAllComment.text = "查看全部${commentCount + 1}条评论"
+                            item.commentCount += 1
+                            binding.tvAllComment.text = "查看全部${item.commentCount}条评论"
                         }
 
                 }

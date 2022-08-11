@@ -260,7 +260,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             }
                         }
                         "PENDING" -> {//待审核
-                            tvJoinType.text = "  待审核"
+                            tvJoinType.text = "  审核中"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
                         }
                         "JOINED" -> {//已加入
