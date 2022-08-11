@@ -358,21 +358,25 @@ public class AppUtils {
      * @param userid
      */
     public static void binduserid(String userid) {
-        CloudPushService pushService = PushServiceFactory.getCloudPushService();
-        if (MConstant.INSTANCE.isDebug()) {
-            userid = "dev" + userid;
+        try {
+            CloudPushService pushService = PushServiceFactory.getCloudPushService();
+            if (MConstant.INSTANCE.isDebug()) {
+                userid = "dev" + userid;
+            }
+            pushService.bindAccount(userid, new CommonCallback() {
+                @Override
+                public void onSuccess(String s) {
+
+                }
+
+                @Override
+                public void onFailed(String s, String s1) {
+
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        pushService.bindAccount(userid, new CommonCallback() {
-            @Override
-            public void onSuccess(String s) {
-
-            }
-
-            @Override
-            public void onFailed(String s, String s1) {
-
-            }
-        });
     }
 
     /**

@@ -134,8 +134,10 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
         })
         player.setOnPreparedListener {
             try {
-                player.setDisplay(binding.loginVideo.holder)
-                player.start()
+                if (binding.loginVideo.holder.surface.isValid) {
+                    player.setDisplay(binding.loginVideo.holder)
+                    player.start()
+                }
             }catch (e:Throwable){
                 e.printStackTrace()
             }
