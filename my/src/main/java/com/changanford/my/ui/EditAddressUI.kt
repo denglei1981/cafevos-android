@@ -61,7 +61,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                 binding.etAddressName.setText(bean.consignee)
                 binding.etAddressPhone.setText(bean.phone)
                 binding.tvAddressCity.text =
-                    "${bean.provinceName}${bean.cityName}${bean.districtName}"
+                    "${bean.provinceName}${bean.cityName}${bean.districtName?:""}"
                 binding.etAddressDetail.setText(bean.addressName)
                 binding.addressSwitch.isChecked = bean.isDefault == 1
                 body["addressId"] = bean.addressId
@@ -222,6 +222,9 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
             body["district"] = it.code
             body["districtName"] = "${it.name}"
             cityA += it.name
+        }?:run{
+            body.remove("district")
+            body.remove("districtName")
         }
         binding.tvAddressCity.text = cityA
     }
