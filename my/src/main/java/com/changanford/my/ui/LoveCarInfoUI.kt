@@ -197,7 +197,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
 
     private var editPlateNum = View.OnClickListener {
         auth?.let {
-            RouterManger.param("value", auth.vin)
+            RouterManger.param("value", auth.carSalesInfoId)
                 .param("plateNum", auth.plateNum ?: "")
                 .param("authId",auth.authId)
                 .startARouter(ARouterMyPath.AddCardNumTransparentUI)
