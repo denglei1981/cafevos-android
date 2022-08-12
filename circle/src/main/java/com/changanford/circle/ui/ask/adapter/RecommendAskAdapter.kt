@@ -79,9 +79,11 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 
         binding?.let {
             item.qaAnswer?.let { answer ->
-                GlideUtils.loadBD(answer.qaUserVO.avater, it.layoutAnswer.ivHeader)
+                answer.qaUserVO?.let { _ ->
+                    GlideUtils.loadBD(answer.qaUserVO.avater, it.layoutAnswer.ivHeader)
+                }
                 it.layoutAnswer.tvSubTitle.text = TimeUtils.MillisTo_YMDHM(answer.answerTime)
-                it.layoutAnswer.tvAuthorName.text = answer.qaUserVO.nickName
+                it.layoutAnswer.tvAuthorName.text = answer.qaUserVO?.nickName
                 if ("NO" == answer.adopt) {
                     it.layoutAnswer.btnFollow.visibility = View.GONE
                 } else {
@@ -92,7 +94,7 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 it.layoutAnswer.tvContent.text = answer.content
                 it.layoutAnswer.layoutCount.tvCommentCount.text = item.answerCount.toString()
                 it.layoutAnswer.layoutCount.tvLikeCount.setPageTitleText(item.viewVal.toString())
-                if (answer.qaUserVO.identity == "TECHNICIAN") it.layoutAnswer.ivVip.visibility =
+                if (answer.qaUserVO?.identity == "TECHNICIAN") it.layoutAnswer.ivVip.visibility =
                     View.VISIBLE else it.layoutAnswer.ivVip.visibility = View.GONE
             }
 

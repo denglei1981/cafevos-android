@@ -76,7 +76,7 @@ data class QaAnswer(
 )
 
 data class QaUserVO(
-    val avater: String,
+    val avater: String?,
     val conQaTechnicianId: Int,
     val conQaUjId: Int,
     val identity: String,
