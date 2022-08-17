@@ -1,9 +1,11 @@
 package com.changanford.common.net
 
+import android.util.Log
 import com.alipay.android.phone.mrpc.core.HttpException
 import com.changanford.common.basic.ApiException
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.ui.LoadingDialog
+import com.changanford.common.util.MConstant.isCanQeck
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,6 +37,9 @@ suspend fun <T> fetchRequest(
     return try {
         request(ApiClient)
     } catch (e: Throwable) {
+        if (isCanQeck){
+            Log.e("fetchRequest:",e.message.toString())
+        }
         val apiException = getApiException(e)
         CommonResponse(data = null, msg = apiException.errorMessage ?: "报错", code = 1)
     } finally {//处理某些特殊情况

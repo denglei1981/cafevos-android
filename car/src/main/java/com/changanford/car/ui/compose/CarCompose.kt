@@ -9,8 +9,10 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,27 +22,27 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.changanford.car.R
-import com.changanford.common.bean.CarAuthBean
-import com.changanford.common.bean.CarItemBean
-import com.changanford.common.bean.NewCarInfoBean
-import com.changanford.common.bean.NewCarTagBean
+import com.changanford.common.bean.*
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 /**
  * @Author : wenke
@@ -315,7 +317,7 @@ fun CarAuthLayout(carItemBean: CarItemBean,auditBean:CarItemBean?=null) {
                                         RouterManger
                                             .param("value", carItemBean.carSalesInfoId)
                                             .param("plateNum", it)
-                                            .param("authId",carItemBean.authId)
+                                            .param("authId", carItemBean.authId)
 
                                             .startARouter(ARouterMyPath.AddCardNumTransparentUI)
                                     }
@@ -452,4 +454,97 @@ private fun PreviewUI(){
         //车主认证
         OwnerCertification()
     }
+}
+
+@Composable
+fun loveCarActivityList(arrayList: ArrayList<ActivityListBean>) {
+    Column() {
+        Row(
+            modifier =
+            Modifier
+                .fillMaxWidth(1f)
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .clickable {
+                    startARouter(ARouterCarControlPath.LoveCarActivityAll)
+                },
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment =Alignment.CenterVertically
+        ) {
+            Text(text = "推荐活动", style = TextStyle(fontSize = 17.sp))
+            Image(
+                painter = rememberImagePainter(data = R.mipmap.right_black),
+                contentDescription = "",
+                Modifier.size(20.dp)
+            )
+        }
+        arrayList.forEach(){
+            loveCarActivityItem(it)
+        }
+    }
+}
+
+@Composable
+fun loveCarActivityItem(activityListBean: ActivityListBean) {
+    Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(activityListBean.coverImg)),
+        contentDescription = "",
+        modifier =
+        Modifier
+            .padding(vertical = 5.dp, horizontal = 20.dp)
+            .height(height = 140.dp)
+            .fillMaxWidth(1f)
+            .clip(
+                RoundedCornerShape(5.dp)
+            )
+            .clickable {
+
+            },
+        contentScale = ContentScale.FillBounds
+    )
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun loveCarActivityAll(arrayList: ArrayList<LoveCarActivityListBean>) {
+    var pageState = rememberPagerState(pageCount = arrayList.size, initialPage = 0)
+    var coroutineScope = rememberCoroutineScope()
+    Column {
+        ScrollableTabRow(
+            selectedTabIndex = pageState.currentPage,
+            backgroundColor = Color.White,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pageState.currentPage]),
+                    color = Color.White
+                )
+            }, divider = {
+                TabRowDefaults.Divider(color = Color.White)
+            }) {
+            arrayList.forEachIndexed { index, it ->
+                Tab(selected = pageState.currentPage == index,
+                    onClick = {
+                        coroutineScope.launch {
+                            pageState.animateScrollToPage(index)
+                        }
+                    }, text = {
+                        Text(
+                            maxLines = 1,
+                            modifier = Modifier,
+                            text = it.carSeriesName,
+                            fontSize = if (pageState.currentPage == index) 20.sp else 16.sp
+                        )
+                    }, selectedContentColor = colorResource(id = R.color.color_00095B),
+                    unselectedContentColor = colorResource(id = R.color.color_99)
+                )
+
+            }
+        }
+        HorizontalPager(state = pageState) { index ->
+            Column() {
+                arrayList[index].activityList.forEach {
+                    loveCarActivityItem(activityListBean = it)
+                }
+            }
+        }
+    }
+
 }

@@ -173,4 +173,57 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
+
+    /**
+     * 爱车活动
+     */
+    //推荐爱车活动列表
+    fun getLoveCarRecommendList(result: (ArrayList<ActivityListBean>) -> Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                apiService.loveCarRecommendList(hashMap.header(randomKey),hashMap.body(randomKey))
+            }.onSuccess {
+                it?.let {
+                    result(it)
+                }
+            }
+        }
+    }
+    //爱车活动列表
+    fun getLoveCarActivityList(result: (ArrayList<LoveCarActivityListBean>) -> Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                val hashMap = HashMap<String, Any>()
+                val randomKey = getRandomKey()
+                apiService.loveCarActivityList(hashMap.header(randomKey),hashMap.body(randomKey))
+            }.onSuccess {
+                it?.let {
+                    result(it)
+                }
+            }
+        }
+    }
+
+    /**
+     * 爱车活动顶部banner
+     */
+    fun getLoveCarConfig(result:(List<String>)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                var body = java.util.HashMap<String, Any>()
+                body["configKey"] = "love_car_adsense"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.getLoveCarConfig(body.header(rkey),body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    var pics = (it.get("imgList") as String).split(",")
+                    result(pics)
+                }
+            }
+        }
+    }
 }

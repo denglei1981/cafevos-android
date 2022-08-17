@@ -1,5 +1,6 @@
 package com.changanford.common.net
 
+import com.alibaba.fastjson.JSONObject
 import com.changanford.common.bean.*
 import com.changanford.common.buried.BaseBean
 import io.reactivex.Observable
@@ -126,6 +127,33 @@ interface NetWorkApi {
     ): CommonResponse<LocationDataBean>
 
     /**--------------------------------car---------------------------------------**/
+
+    /**
+     * 推荐爱车活动列表
+     */
+    @POST("/loveCar/recommendList")
+    suspend fun loveCarRecommendList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<ActivityListBean>>
+
+    /**
+     * 爱车活动列表
+     */
+    @POST("/loveCar/activityList")
+    suspend fun loveCarActivityList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<LoveCarActivityListBean>>
+
+    /**
+     * 爱车活动顶部配置
+     */
+    @POST("base/config/getConfigValueByKey")
+    suspend fun getLoveCarConfig(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<JSONObject>
 
     @POST("/ser/carAuth/getMyCar")
     suspend fun getMiddlePageInfo(

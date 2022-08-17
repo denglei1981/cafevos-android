@@ -16,6 +16,7 @@ import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.control.CarControl
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
+import com.changanford.car.ui.compose.loveCarActivityList
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.bean.NewCarInfoBean
@@ -68,6 +69,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
         viewModel.getMoreCar()
+        viewModel.getLoveCarRecommendList {
+            headerBinding.caractivity.setContent {
+                loveCarActivityList(it)
+            }
+        }
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {

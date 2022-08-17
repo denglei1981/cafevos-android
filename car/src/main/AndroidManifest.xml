@@ -2,4 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changanford.car">
 
+    <application>
+        <activity android:name=".ui.LoveCarActivityAll" />
+    </application>
 </manifest>
