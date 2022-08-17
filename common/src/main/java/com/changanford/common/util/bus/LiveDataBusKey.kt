@@ -286,5 +286,8 @@ object LiveDataBusKey {
     const val REFRESH_POST_LIKE = "refreshPostLike"
     const val REFRESH_WAIT = "refreshWait"
     const val REFRESH_COMMENT_CIRCLE = "refreshCommentCircle"
+
+    //获取用户认证车辆列表
+    const val GET_USER_APPROVE_CAR="getUserApproveCar"
 }
 

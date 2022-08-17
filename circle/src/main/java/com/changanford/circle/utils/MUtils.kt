@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import anet.channel.util.Utils.context
 import com.bumptech.glide.Glide
 import com.changanford.circle.R
 import com.changanford.circle.ext.toIntPx
@@ -175,4 +176,84 @@ object MUtils {
             }
         })
     }
+
+    private var expand = "展开 ∨"
+    private var collapse = "收起 ∧"
+
+     fun expandText(contentTextView: TextView, msg: String) {
+        val text: CharSequence = contentTextView.text
+        val width: Int = contentTextView.width
+        val paint: TextPaint = contentTextView.paint
+        val layout: Layout = contentTextView.layout
+        val line: Int = layout.lineCount
+        if (line > 4) {
+            val start: Int = layout.getLineStart(3)
+            val end: Int = layout.getLineVisibleEnd(3)
+            val lastLine = text.subSequence(start, end)
+            val expandWidth = paint.measureText(expand)
+            val remain = width - expandWidth
+            val ellipsize: CharSequence = TextUtils.ellipsize(
+                lastLine,
+                paint,
+                remain,
+                TextUtils.TruncateAt.END
+            )
+            val clickableSpan: ClickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    collapseText(contentTextView, msg)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }
+            }
+            val ssb = SpannableStringBuilder()
+            ssb.append(text.subSequence(0, start))
+            ssb.append(ellipsize)
+            ssb.append(expand)
+            ssb.setSpan(
+                clickableSpan,
+                ssb.length - expand.length, ssb.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+            ssb.setSpan(
+                ForegroundColorSpan(contentTextView.resources.getColor(R.color.color_8195C8)),
+                ssb.length - expand.length, ssb.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+            contentTextView.movementMethod = LinkMovementMethod.getInstance()
+            contentTextView.text = ssb
+        }
+    }
+
+     fun collapseText(contentTextView: TextView, msg: String) {
+
+        // 默认此时文本肯定超过行数了，直接在最后拼接文本
+        val clickableSpan: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                expandText(contentTextView, msg)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        val ssb = SpannableStringBuilder()
+        ssb.append(msg)
+        ssb.append(collapse)
+        ssb.setSpan(
+            clickableSpan,
+            ssb.length - collapse.length, ssb.length,
+            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+        ssb.setSpan(
+            ForegroundColorSpan(contentTextView.resources.getColor(R.color.color_8195C8)),
+            ssb.length - collapse.length, ssb.length,
+            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+        contentTextView.text = ssb
+    }
+
 }

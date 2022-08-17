@@ -102,5 +102,8 @@
         <activity
             android:name=".ui.activity.LongPostV2Avtivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.CircleNoticeActivity" />
+        <activity android:name=".ui.activity.MyCircleNoticeActivity" />
+        <activity android:name=".ui.activity.CreateNoticeActivity" />
     </application>
 </manifest>

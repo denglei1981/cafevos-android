@@ -5,5 +5,5 @@ package com.changanford.circle.bean
  *Time on 2021/9/24
  *Purpose
  */
-data class CircleMainMenuBean(val pic: Int, val content: String) {
+data class CircleMainMenuBean(val pic: Int? = 0, val content: String) {
 }

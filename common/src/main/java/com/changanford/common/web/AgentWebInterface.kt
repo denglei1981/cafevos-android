@@ -54,7 +54,11 @@ import kotlin.collections.set
 /**
  * H5调用原生方法
  */
-class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,val jsCallback: JsCallback) {
+class AgentWebInterface(
+    var agentWeb: AgentWeb,
+    var activity: AgentWebActivity?,
+    val jsCallback: JsCallback
+) {
 
     /**
      * 是否在APP中
@@ -302,13 +306,15 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
     fun isNavigationHidden(bool: Boolean) {
         LiveDataBus.get().with(LiveDataBusKey.WEB_NAV_HID).postValue(bool)
     }
+
     /**
      * 显示需要隐藏导航栏-只针对当前Activity
      */
     @JavascriptInterface
     fun currentPageIsNavigationHidden(bool: Boolean) {
-        jsCallback.jsCallback(0,bool)
+        jsCallback.jsCallback(0, bool)
     }
+
     /**
      * 缓存到本地一个json
      */
@@ -433,21 +439,21 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
                 b.putBoolean("isH5Post", true)
                 b.putInt("postType", postType.toInt())
                 b.putString("jsonStr", param)
-                var  h5PostTypeBean = JSON.parseObject(param, H5PostTypeBean::class.java)
+                var h5PostTypeBean = JSON.parseObject(param, H5PostTypeBean::class.java)
 
-                if(h5PostTypeBean.circleId=="0"){
-                    b.putBoolean("isCirclePost",false)
-                }else{
-                    b.putBoolean("isCirclePost",true)
-                    b.putString("circleId",h5PostTypeBean.circleId)
-                    b.putString("circleName",h5PostTypeBean.circleName)
+                if (h5PostTypeBean.circleId == "0") {
+                    b.putBoolean("isCirclePost", false)
+                } else {
+                    b.putBoolean("isCirclePost", true)
+                    b.putString("circleId", h5PostTypeBean.circleId)
+                    b.putString("circleName", h5PostTypeBean.circleName)
                 }
-                if(h5PostTypeBean.topicId=="0"){
-                    b.putBoolean("isTopPost",false)
-                }else{
-                    b.putBoolean("isTopPost",true)
-                    b.putString("topicId",h5PostTypeBean.topicId)
-                    b.putString("topName",h5PostTypeBean.topicName)
+                if (h5PostTypeBean.topicId == "0") {
+                    b.putBoolean("isTopPost", false)
+                } else {
+                    b.putBoolean("isTopPost", true)
+                    b.putString("topicId", h5PostTypeBean.topicId)
+                    b.putString("topName", h5PostTypeBean.topicName)
                 }
 
                 when (postType) {
@@ -508,6 +514,7 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
         }
 //        BuriedUtil.instant!!.click_fatie()
     }
+
     /**
      *
      */
@@ -703,14 +710,16 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
             )
         }
     }
+
     /**
      * 打开PDF文件
      * [pdfUrl]pdf文件地址
      */
     @JavascriptInterface
-    fun opePdf(pdfUrl:String) {
-        JumpUtils.instans?.jump(1,"http://mozilla.github.io/pdf.js/web/viewer.html?file=$pdfUrl")
+    fun opePdf(pdfUrl: String) {
+        JumpUtils.instans?.jump(1, "http://mozilla.github.io/pdf.js/web/viewer.html?file=$pdfUrl")
     }
+
     /**
      * 小程序分享
      * [webpageUrl]兼容低版本的网页链接 限制长度不超过 10KB
@@ -724,29 +733,65 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
      * [shareCallBack]回调
      */
     @JavascriptInterface
-    fun shareSmallProgram(webpageUrl:String,miniprogramType:Int,userName:String,path:String,title:String,description:String,imgPath:String?,shareCallBack:String) {
-        if(BuildConfig.DEBUG){
-            Log.e("wenke","小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path")
-            Log.e("wenke","小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath》》》shareCallBack:$shareCallBack")
+    fun shareSmallProgram(
+        webpageUrl: String,
+        miniprogramType: Int,
+        userName: String,
+        path: String,
+        title: String,
+        description: String,
+        imgPath: String?,
+        shareCallBack: String
+    ) {
+        if (BuildConfig.DEBUG) {
+            Log.e(
+                "wenke",
+                "小程序分享：webpageUrl：$webpageUrl>>>miniprogramType:$miniprogramType>>>userName:$userName>>>path:$path"
+            )
+            Log.e(
+                "wenke",
+                "小程序分享：title：$title>>>description:$description>>>imgPath:$imgPath》》》shareCallBack:$shareCallBack"
+            )
         }
         activity?.apply {
-            if(!TextUtils.isEmpty(imgPath)){
-                WCommonUtil.pathUrlToBitmap(this,imgPath!!,object :OnDownBitmapListener{
+            if (!TextUtils.isEmpty(imgPath)) {
+                WCommonUtil.pathUrlToBitmap(this, imgPath!!, object : OnDownBitmapListener {
                     override fun onFinish(bitmap: Bitmap) {
-                        val thumbData=WCommonUtil.bitmap2Bytes(bitmap)
-                        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
-                        WCommonUtil.shareSmallProgram(this@apply, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+                        val thumbData = WCommonUtil.bitmap2Bytes(bitmap)
+                        LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE)
+                            .postValue(shareCallBack)
+                        WCommonUtil.shareSmallProgram(
+                            this@apply,
+                            webpageUrl,
+                            miniprogramType,
+                            userName,
+                            path,
+                            title,
+                            description,
+                            thumbData
+                        )
                     }
                 })
-            }else{
+            } else {
                 val bmp = BitmapFactory.decodeResource(resources, R.mipmap.fordicon)
-                val thumbData=WCommonUtil.bitmap2Bytes(bmp)
-                LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE).postValue(shareCallBack)
-                WCommonUtil.shareSmallProgram(this, webpageUrl,miniprogramType, userName,path,title,description,thumbData)
+                val thumbData = WCommonUtil.bitmap2Bytes(bmp)
+                LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE)
+                    .postValue(shareCallBack)
+                WCommonUtil.shareSmallProgram(
+                    this,
+                    webpageUrl,
+                    miniprogramType,
+                    userName,
+                    path,
+                    title,
+                    description,
+                    thumbData
+                )
             }
 
         }
     }
+
     /**
      * 银联支付
      * [payType]支付类型 1支付宝、2 微信、3云闪付
@@ -756,22 +801,28 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
      */
     @JavascriptInterface
     fun openUnionPay(payType: Int, appPayRequest: String, callback: String) {
-        openUnionPay(payType,appPayRequest,callback,null)
+        openUnionPay(payType, appPayRequest, callback, null)
     }
+
     @JavascriptInterface
-    fun openUnionPay(payType: Int, appPayRequest: String, callback: String,serverMode:String?) {
-        if(BuildConfig.DEBUG)Log.d("wenke","H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback")
+    fun openUnionPay(payType: Int, appPayRequest: String, callback: String, serverMode: String?) {
+        if (BuildConfig.DEBUG) Log.d(
+            "wenke",
+            "H5调用银联支付：payType:$payType>>>appPayRequest:$appPayRequest>>>callback:$callback"
+        )
         val map = HashMap<String, Any>()
         map["payType"] = payType
         map["appPayRequest"] = appPayRequest
         map["callback"] = callback
-        map["serverMode"] = serverMode?:"00"
+        map["serverMode"] = serverMode ?: "00"
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).postValue(map)
     }
+
     @JavascriptInterface
-    fun openCamera(callback:String){
-        openCamera(isEnableCrop=false,isCompress=true, callback=callback)
+    fun openCamera(callback: String) {
+        openCamera(isEnableCrop = false, isCompress = true, callback = callback)
     }
+
     /**
      * 打开相机
      * [callback]js回调方法
@@ -780,24 +831,31 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
      * 返回 base64Str
      * */
     @JavascriptInterface
-    fun openCamera(isEnableCrop:Boolean=true,isCompress:Boolean=true,callback:String){
-        PictureUtils.opencarcme(activity,isEnableCrop,isCompress, object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
-                if (result.isNotEmpty()) {
-                    for (media in result) {
-                        val path: String = PictureUtil.getFinallyPath(media)
-                        val base64Str = FileHelper.getImageStr(path)
-                        agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+    fun openCamera(isEnableCrop: Boolean = true, isCompress: Boolean = true, callback: String) {
+        PictureUtils.opencarcme(
+            activity,
+            isEnableCrop,
+            isCompress,
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: List<LocalMedia>) {
+                    if (result.isNotEmpty()) {
+                        for (media in result) {
+                            val path: String = PictureUtil.getFinallyPath(media)
+                            val base64Str = FileHelper.getImageStr(path)
+                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                        }
                     }
                 }
-            }
-            override fun onCancel() {}
-        })
+
+                override fun onCancel() {}
+            })
     }
+
     @JavascriptInterface
-    fun openPhoto(maxNum:Int=1,callback:String) {
-        openPhoto(maxNum,false, callback)
+    fun openPhoto(maxNum: Int = 1, callback: String) {
+        openPhoto(maxNum, false, callback)
     }
+
     /**
      * 打开相册
      * [maxNum]最大选择图片数量
@@ -805,32 +863,49 @@ class AgentWebInterface(var agentWeb: AgentWeb, var activity: AgentWebActivity?,
      * [isEnableCrop]是否裁剪
      */
     @JavascriptInterface
-    fun openPhoto(maxNum:Int=1,isEnableCrop:Boolean=true,callback:String) {
-        PictureUtils.openGarlly(500,activity,if(maxNum>0)maxNum else 1,isEnableCrop,object : OnResultCallbackListener<LocalMedia?> {
-            override fun onCancel() {}
-            override fun onResult(result: MutableList<LocalMedia?>?) {
-                if (result != null) {
-                    var base64Str= ""
-                    for (media in result) {
-                        var path = ""
-                        media?.let {
-                            path = if (media.isCut && !media.isCompressed) {
-                                // 裁剪过
-                                media.cutPath
-                            } else if (media.isCompressed || media.isCut && media.isCompressed) {
-                                // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                                media.compressPath
-                            } else {
-                                // 原图
-                                media.path
+    fun openPhoto(maxNum: Int = 1, isEnableCrop: Boolean = true, callback: String) {
+        PictureUtils.openGarlly(
+            500,
+            activity,
+            if (maxNum > 0) maxNum else 1,
+            isEnableCrop,
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onCancel() {}
+                override fun onResult(result: MutableList<LocalMedia?>?) {
+                    if (result != null) {
+                        var base64Str = ""
+                        for (media in result) {
+                            var path = ""
+                            media?.let {
+                                path = if (media.isCut && !media.isCompressed) {
+                                    // 裁剪过
+                                    media.cutPath
+                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                    media.compressPath
+                                } else {
+                                    // 原图
+                                    media.path
+                                }
                             }
+                            val imgPath = FileHelper.getImageStr(path)
+                            base64Str += "$imgPath,"
                         }
-                        val imgPath=FileHelper.getImageStr(path)
-                        base64Str+="$imgPath,"
+                        if (base64Str.isNotEmpty()) agentWeb.jsAccessEntrace.quickCallJs(
+                            callback,
+                            base64Str.substring(0, base64Str.length - 1)
+                        )
                     }
-                    if(base64Str.isNotEmpty())agentWeb.jsAccessEntrace.quickCallJs(callback,base64Str.substring(0,base64Str.length-1))
                 }
-            }
-        })
+            })
+    }
+
+    /**
+     * 获取用户认证车辆列表
+     */
+    @JavascriptInterface
+    fun getUserApproveCar(callback: String) {
+        LiveDataBus.get().with(LiveDataBusKey.GET_USER_APPROVE_CAR, String::class.java)
+            .postValue(callback)
     }
 }

@@ -42,6 +42,9 @@ object ARouterCirclePath {
     const val QuestionActivity = "/circle/QuestionActivity"
     const val CreateQuestionActivity="/circle/CreateQuestionActivity"
     const val MechanicMainActivity="/circle/MechanicMainActivity"
+    const val CircleNoticeActivity="/circle/CircleNoticeActivity"
+    const val MyCircleNoticeActivity="/circle/MyCircleNoticeActivity"
+    const val CreateNoticeActivity="/circle/CreateNoticeActivity"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

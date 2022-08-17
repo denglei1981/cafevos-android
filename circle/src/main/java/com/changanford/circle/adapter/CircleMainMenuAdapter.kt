@@ -21,12 +21,19 @@ class CircleMainMenuAdapter(context: Context) :
         val binding = vdBinding as ItemCircleMainMenuBinding
         MUtils.setTopMargin(binding.llContent, 20, position)
 
-        if (position == 2) {
+        if (position == itemCount - 1) {
             binding.vLine.visibility = View.INVISIBLE
         } else {
             binding.vLine.visibility = View.VISIBLE
         }
-        binding.ivIcon.loadImage(item.pic)
+        item.pic?.let {
+            if (item.pic != 0) {
+                binding.ivIcon.loadImage(item.pic)
+                binding.ivIcon.visibility = View.VISIBLE
+            } else {
+                binding.ivIcon.visibility = View.GONE
+            }
+        }
         binding.tvContent.text = item.content
     }
 }

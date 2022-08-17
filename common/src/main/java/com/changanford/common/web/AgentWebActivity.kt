@@ -177,11 +177,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         LiveDataBus.get().with(LiveDataBusKey.WEB_OPEN_UNION_PAY).observe(this, Observer {
             if (totalWebNum == localWebNum) {
                 val map = it as HashMap<*, *>
-                val payType:Int = map["payType"] as Int
+                val payType: Int = map["payType"] as Int
                 val appPayRequest = map["appPayRequest"].toString()
                 val serverMode = map["serverMode"].toString()
                 payCallback = map["callback"].toString()
-                UnionPayUtils.goUnionPay(this, payType, appPayRequest,serverMode)
+                UnionPayUtils.goUnionPay(this, payType, appPayRequest, serverMode)
             }
         })
         //支付
@@ -298,17 +298,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 when (it) {
                     //登录成功
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
                     }
 
                     //取消绑定手机号
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"false")
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "false")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "false")
                     }
                     //绑定手机号成功
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack,"true")
+                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                     }
                 }
@@ -362,9 +362,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             getMyInfoCallback = it
             UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
                 .observe(this) { infoBean ->
-                    val userJson=infoBean?.userJson
-                    if(!userJson.isNullOrEmpty()){
-                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback,userJson)
+                    val userJson = infoBean?.userJson
+                    if (!userJson.isNullOrEmpty()) {
+                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
                     }
                 }
 //                mineSignViewModel.getUserInfo()
@@ -434,6 +434,19 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //        LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK).observe(this,  {
 //            if("2"==it)this.finish()
 //        })
+
+        //获取用户认证车辆列表
+        LiveDataBus.get().with(LiveDataBusKey.GET_USER_APPROVE_CAR, String::class.java)
+            .observe(
+                this
+            ) {
+                viewModel.getMyBindCarList(object :MyBindCarList{
+                    override fun myBindCarList(string: String) {
+                        agentWeb.jsAccessEntrace.quickCallJs(it, string)
+                    }
+
+                })
+            }
     }
 
     override fun initData() {
@@ -517,7 +530,8 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .createAgentWeb()
             .ready()
             .go(url)
-        agentWeb.jsInterfaceHolder.addJavaObject("FORDApp",AgentWebInterface(agentWeb, this@AgentWebActivity,this)
+        agentWeb.jsInterfaceHolder.addJavaObject(
+            "FORDApp", AgentWebInterface(agentWeb, this@AgentWebActivity, this)
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
         agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
@@ -646,7 +660,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     }
                 }
             }
-            shareBean?.shareWithType=shareWithType
+            shareBean?.shareWithType = shareWithType
             shareBean?.let { shareViewModule.share(this, shareBean = it) }
         } catch (e: Exception) {
 
@@ -885,14 +899,15 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             handle.sendMessage(msg)
         }.start()
     }
-    private val handle =object : Handler(Looper.myLooper()!!) {
+
+    private val handle = object : Handler(Looper.myLooper()!!) {
         override fun handleMessage(msg: Message) {
-           msg.let {
-               when(it.what){
-                   //显示隐藏导航栏
-                   0->setTitleHide(it.obj as Boolean)
-               }
-           }
+            msg.let {
+                when (it.what) {
+                    //显示隐藏导航栏
+                    0 -> setTitleHide(it.obj as Boolean)
+                }
+            }
         }
     }
 //    fun getBindMobileJumpDataType(): Boolean {

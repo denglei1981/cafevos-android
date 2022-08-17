@@ -1275,4 +1275,11 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<WaitReceiveBean>>
+
+    // 领取优惠券
+    @POST("/ser/carAuth/myBindCarList")
+    suspend fun myBindCarList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MyBindCarListBean>>
 }

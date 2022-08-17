@@ -71,11 +71,23 @@
                                 android:id="@+id/share_img"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingTop="10dp"
+                                android:layout_marginEnd="12dp"
+                                android:layout_toStartOf="@+id/tv_post"
+                                android:src="@mipmap/circle_share_image_v" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_post"
+                                android:layout_width="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="15dp"
-                                android:padding="10dp"
-                                android:src="@mipmap/circle_share_image_v" />
+                                android:text="发布"
+                                android:textSize="16sp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/white"
+                                android:layout_marginEnd="25dp"
+                                android:layout_height="wrap_content"/>
                         </RelativeLayout>
 
                     </androidx.appcompat.widget.Toolbar>

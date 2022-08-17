@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -15,6 +16,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
+import com.changanford.circle.adapter.circle.CircleDetailsActivityAdapter
+import com.changanford.circle.adapter.circle.CircleDetailsNoticeAdapter
+import com.changanford.circle.adapter.circle.CircleDetailsTopicAdapter
 import com.changanford.circle.adapter.circle.TagAdapter
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
@@ -27,12 +31,14 @@ import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
+import com.changanford.circle.widget.pop.CircleDetailsMenuPop
 import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleShareBean
+import com.changanford.common.bean.TestBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -41,6 +47,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
@@ -80,11 +87,29 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     private var circleId = ""
     private var isOpenMenuPop = false
     private var shareBeanVO: CircleShareBean? = null
+    private var isFirst = true
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
+
     private val tagAdapter by lazy { TagAdapter() }
+
     private val personalAdapter by lazy {
         CircleDetailsPersonalAdapter(this)
+    }
+
+    //公告
+    private val noticeAdapter by lazy {
+        CircleDetailsNoticeAdapter()
+    }
+
+    //活动
+    private val activityAdapter by lazy {
+        CircleDetailsActivityAdapter()
+    }
+
+    //话题
+    private val topicAdapter by lazy {
+        CircleDetailsTopicAdapter()
     }
 
     override fun initView() {
@@ -98,6 +123,13 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
                 adapter = tagAdapter
             }
+
+            topContent.apply {
+                ryNotice.adapter = noticeAdapter
+                ryActivity.adapter = activityAdapter
+                ryTopic.layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
+                ryTopic.adapter = topicAdapter
+            }
         }
         //处理滑动顶部效果
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
@@ -106,12 +138,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
                 binding.backImg.setImageResource(R.mipmap.whit_left)
                 binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
+                binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.white))
                 isWhite = true
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
                 binding.backImg.setImageResource(R.mipmap.back_xhdpi)
                 binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+                binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.black))
                 isWhite = false
             }
             //改变透明度
@@ -129,6 +163,33 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         ) {
             postEntity = it as ArrayList<PostEntity>
         }
+        initTestData()
+    }
+
+    private fun initTestData() {
+        val noticeList = arrayListOf(
+            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有"),
+            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有"),
+            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有")
+        )
+        noticeAdapter.setList(noticeList)
+
+        val activityList = arrayListOf(
+            TestBean("长安福特未来活动长安福特未…"),
+            TestBean("长安福特未来活动长安福特未…"),
+            TestBean("长安福特未来活动长安福特未…"),
+            TestBean("长安福特未来活动长安福特未…"),
+        )
+        activityAdapter.setList(activityList)
+
+        val topicList = arrayListOf(
+            TestBean("#最新之野"),
+            TestBean("#探寻仲夏之野"),
+            TestBean("#最新之野菜"),
+            TestBean("#“橙”风破浪 热力出逃"),
+            TestBean("#探寻仲夏之野"),
+        )
+        topicAdapter.setList(topicList)
     }
 
     private fun initListener(circleName: String) {
@@ -180,6 +241,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
 
         }
 
+        binding.tvPost.setOnClickListener {
+            showMenuPop()
+        }
+        binding.topContent.apply {
+            tvNoticeMore.setOnClickListener {
+                startARouter(ARouterCirclePath.CircleNoticeActivity)
+            }
+        }
     }
 
     private fun initMyView(userId: String) {
@@ -233,6 +302,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         }
     }
 
+    private fun showMenuPop() {
+        CircleDetailsMenuPop(this).run {
+            setBlurBackgroundEnable(false)
+            showPopupWindow(binding.tvPost)
+            initData()
+        }
+    }
+
     private fun initTabAndViewPager(userId: String) {
         binding.viewPager.apply {
 
@@ -272,7 +349,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
-            initMyView(it.userId.toString())
+            if (isFirst) {
+                initMyView(it.userId.toString())
+                isFirst = false
+            }
             setJoinType(it.isApply)
             initListener(it.name)
             tagAdapter.setList(it.tags)

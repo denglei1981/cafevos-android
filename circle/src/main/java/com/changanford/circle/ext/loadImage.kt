@@ -100,6 +100,13 @@ fun ImageView.loadCircleImage(url:String?){
     }
 }
 
+fun ImageView.loadColLImage(url:String?){
+    this.load(GlideUtils.handleImgUrl(url)){
+        placeholder(R.mipmap.ic_def_square_img)
+        error(R.mipmap.ic_def_square_img)
+    }
+}
+
 private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply {
     imageOptions?.let {
         transform(RoundedCornersTransformation(it.cornersRadius, 0))

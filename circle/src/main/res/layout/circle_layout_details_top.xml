@@ -30,13 +30,14 @@
             app:layout_constraintTop_toTopOf="@+id/iv_bg" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:padding="@dimen/dp_16"
             android:background="@drawable/circle_white_5_bg"
+            android:padding="@dimen/dp_16"
             app:layout_constraintTop_toTopOf="@+id/v_line">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -54,21 +55,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="10dp"
-                tools:text="旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区"
-                android:textStyle="bold"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_15"
+                android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@+id/iv_icon"
                 app:layout_constraintRight_toLeftOf="@+id/tv_join"
-                app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+                app:layout_constraintTop_toTopOf="@+id/iv_icon"
+                tools:text="旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区旅行街区" />
 
             <RelativeLayout
                 android:id="@+id/tv_join"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dp_25"
-                android:minWidth="@dimen/dp_47"
                 android:background="@drawable/circle_follow_bg"
+                android:minWidth="@dimen/dp_47"
+                android:minHeight="@dimen/dp_25"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_title">
 
@@ -90,45 +91,47 @@
                 android:id="@+id/tv_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
                 android:gravity="center_vertical"
-                tools:text="自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切"
                 android:textColor="@color/circle_74889D"
                 android:textSize="@dimen/sp_13"
-                android:layout_marginTop="@dimen/dp_5"
-                app:layout_constraintStart_toStartOf="@id/tv_title"
-                app:layout_constraintEnd_toEndOf="@id/tv_join"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+                app:layout_constraintEnd_toEndOf="@id/tv_join"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                tools:text="自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切自然可以治愈一切" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:layout_marginTop="@dimen/dp_5"
-                app:layout_constraintBottom_toTopOf="@id/tv_num"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/tv_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/tv_num"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:orientation="horizontal"
-                tools:listitem="@layout/item_circle_tag"/>
+                app:layout_constraintTop_toBottomOf="@id/tv_content"
+                tools:listitem="@layout/item_circle_tag" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_num"
-                android:layout_marginTop="@dimen/dp_5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="1233 帖子"
+                android:layout_marginTop="@dimen/dp_5"
                 android:textColor="@color/color_33"
                 android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
                 app:layout_constraintTop_toBottomOf="@id/recyclerView"
-                app:layout_constraintStart_toStartOf="@id/tv_title" />
+                tools:text="1233 帖子" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/circle_f2_17"
-                app:layout_constraintStart_toStartOf="@id/iv_icon"
                 app:layout_constraintEnd_toEndOf="@id/recyclerView"
+                app:layout_constraintStart_toStartOf="@id/iv_icon"
                 app:layout_constraintTop_toBottomOf="@id/tv_num">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -151,11 +154,161 @@
                     android:drawableEnd="@mipmap/circle_right_black_small"
                     android:drawablePadding="7dp"
                     android:gravity="center"
-                    tools:text="3455成员"
                     android:textColor="@color/color_33"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="3455成员" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/cl_top">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_white_5_bg"
+                android:padding="@dimen/dp_16">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公告栏"
+                    android:textColor="@color/color_33"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_notice_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/right_99"
+                    android:text="更多"
+
+                    android:textColor="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_notice"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_notice" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ry_notice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_notice"
+                    app:layout_constraintRight_toRightOf="@+id/tv_notice_more"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_notice" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_white_5_bg"
+                app:layout_constraintTop_toBottomOf="@+id/cl_notice">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="16dp"
+                    android:text="圈内活动"
+                    android:textColor="@color/color_33"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_activity_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/right_99"
+                    android:padding="@dimen/dp_16"
+                    android:text="更多"
+                    android:textColor="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_activity"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_activity" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ry_activity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingBottom="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_activity"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_activity" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/circle_white_5_bg"
+                android:padding="@dimen/dp_16"
+                app:layout_constraintTop_toBottomOf="@+id/cl_activity">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="圈内话题"
+                    android:textColor="@color/color_33"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_topic_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/right_99"
+                    android:text="更多"
+                    android:textColor="@color/color_99"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_topic"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_topic" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ry_topic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_topic"
+                    app:layout_constraintRight_toRightOf="@+id/tv_topic_more"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
