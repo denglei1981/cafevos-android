@@ -169,6 +169,11 @@ object MConstant {
      * */
     val H5_CAR_DEALER ="${H5_BASE_URL}/order/#/fillInformation/selectDealer"
 
+    /**
+     * 爱车活动详情
+     */
+    val H5_CAR_ACTIVITY ="${H5_BASE_URL}/order/#/vehicleActivity/details?activityId="
+
     var isFirstOpenTwoLevel = true // 是首次打开二楼
     var bdLocation = "{}"
 

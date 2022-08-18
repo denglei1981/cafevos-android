@@ -496,7 +496,7 @@ fun loveCarActivityItem(activityListBean: ActivityListBean) {
                 RoundedCornerShape(5.dp)
             )
             .clickable {
-
+                JumpUtils.instans?.jump(1,"${MConstant.H5_CAR_ACTIVITY}${activityListBean.activityId}")
             },
         contentScale = ContentScale.FillBounds
     )
