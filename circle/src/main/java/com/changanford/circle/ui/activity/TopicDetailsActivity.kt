@@ -18,6 +18,7 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.ext.toIntPx
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
+import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.pop.CircleDetailsPop
@@ -101,10 +102,11 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         })
         initTabAndViewPager()
 
-        PostDatabase.getInstance(this).getPostDao().findAll().observe(this,
-            {
-                postEntity = it as ArrayList<PostEntity>
-            })
+        PostDatabase.getInstance(this).getPostDao().findAll().observe(
+            this
+        ) {
+            postEntity = it as ArrayList<PostEntity>
+        }
     }
 
     override fun initData() {
@@ -117,7 +119,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 startARouter(ARouterMyPath.SignUI)
                 return@setOnClickListener
             }
-            if (MineUtils.getBindMobileJumpDataType()){
+            if (MineUtils.getBindMobileJumpDataType()) {
                 BindDialog(this).show()
                 return@setOnClickListener
             }
@@ -125,31 +127,34 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 initPop(topicName)
             } else {
                 this.let { it1 ->
-                    PostDialog(it1,"发现您还有草稿未发布",postButtonListener = object : PostDialog.PostButtonListener{
-                        override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
-                            var postEntity =  postEntity?.last()
-                            when (postEntity?.type) {
-                                "2" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.PostActivity)
-                                }
-                                "3" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.VideoPostActivity)
-                                }
-                                "4" -> {
-                                    RouterManger.param("postEntity", postEntity)
-                                        .startARouter(ARouterCirclePath.LongPostAvtivity)
+                    PostDialog(
+                        it1,
+                        "发现您还有草稿未发布",
+                        postButtonListener = object : PostDialog.PostButtonListener {
+                            override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+                                var postEntity = postEntity?.last()
+                                when (postEntity?.type) {
+                                    "2" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.PostActivity)
+                                    }
+                                    "3" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.VideoPostActivity)
+                                    }
+                                    "4" -> {
+                                        RouterManger.param("postEntity", postEntity)
+                                            .startARouter(ARouterCirclePath.LongPostAvtivity)
+                                    }
                                 }
                             }
-                        }
 
-                        override fun cancle() {  //不使用草稿
-                          initPop(topicName)
-                        }
+                            override fun cancle() {  //不使用草稿
+                                initPop(topicName)
+                            }
 
 
-                    }).show()
+                        }).show()
                 }
 //                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
 //                    .setNegativeButton("继续编辑") {
@@ -211,7 +216,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
-        viewModel.topPicDetailsTopBean.observe(this, {
+        viewModel.topPicDetailsTopBean.observe(this) {
             initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.topContent.run {
@@ -228,7 +233,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     .into(ivBg)
                 ivIcon.setCircular(5)
                 ivIcon.loadImage(it.pic)
-                tvNum.text = "${it.postsCount}帖子       ${it.heat}热度"
+                tvNum.text = "${it.postsCount}帖子       ${it.heat}浏览量"
                 tvType.text = it.name
                 tvContent.text = it.description
             }
@@ -245,7 +250,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     null
                 )
             }
-        })
+        }
     }
 
     private fun initTabAndViewPager() {
@@ -271,7 +276,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                             3
                         }
                     }
-                    return CircleDetailsFragment.newInstance(type.toString(), topicId)
+                    return CircleDetailsFragmentV2.newInstance(type.toString(), topicId)
                 }
 
             }
@@ -283,7 +288,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundColor(Color.WHITE)
+//        magicIndicator.setBackgroundColor(Color.WHITE)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {

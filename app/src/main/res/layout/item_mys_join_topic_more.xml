@@ -18,11 +18,29 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:src="@mipmap/image_mine" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_type"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="3dp"
+            android:backgroundTint="@color/color_33FFFFFF"
+            android:gravity="center"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="通过"
+            android:textColor="@color/color_00095B"
+            android:textSize="11sp"
+            app:cornerRadius="2dp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_circle"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_circle_title"
@@ -63,8 +81,7 @@
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/iv_circle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_circle"
-            >
+            app:layout_constraintStart_toEndOf="@+id/iv_circle">
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -91,5 +108,38 @@
                 tools:ignore="SmallSp"
                 tools:text="1.0w车友活跃中" />
         </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:visibility="gone"
+            android:background="@drawable/circle_f4f4_5"
+            android:paddingBottom="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_circle">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:text="原因：审核不过原因审核不过原因审核不过原因审核不通过原因审核不通过原因审核不通过原因 "
+                android:textColor="@color/color_99"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_re_reason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_reason"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="重新编辑>"
+                android:textColor="@color/color_91A2CE"
+                android:textSize="12sp" />
+        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

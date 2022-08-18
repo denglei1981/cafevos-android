@@ -1,21 +1,17 @@
 package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.HotPicItemBean
-import com.changanford.circle.databinding.ItemHotTopicBinding
 import com.changanford.circle.databinding.ItemMainHotTopicBinding
+import com.changanford.circle.ext.loadColLImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
-import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
 /**
  *Author lcw
@@ -30,30 +26,31 @@ class HotMainTopicAdapter :
         val binding = DataBindingUtil.bind<ItemMainHotTopicBinding>(holder.itemView)
         binding?.let {
             MUtils.setTopMargin(binding.clContent, 18, holder.layoutPosition)
-            binding.tvNum.text = "${item.postsCount}帖子     ${item.heat}热度"
+            binding.tvNum.text = "${item.postsCount}帖子     ${item.userCount}浏览量"
             binding.bean = item
-            val position = holder.layoutPosition + 1
-            when (position) {
+            binding.ivPic.loadColLImage(item.pic)
+            binding.ivPic.setCircular(5)
+            when (val position = holder.layoutPosition + 1) {
                 1 -> {
                     binding.ivIcon.setImageResource(R.drawable.icon_huati_one)
-                    binding.ivIcon.visibility= View.VISIBLE
-                    binding.tvIcon.visibility=View.INVISIBLE
+                    binding.ivIcon.visibility = View.VISIBLE
+                    binding.tvIcon.visibility = View.GONE
                 }
                 2 -> {
                     binding.ivIcon.setImageResource(R.drawable.icon_huati_two)
-                    binding.ivIcon.visibility= View.VISIBLE
-                    binding.tvIcon.visibility=View.INVISIBLE
+                    binding.ivIcon.visibility = View.VISIBLE
+                    binding.tvIcon.visibility = View.GONE
                 }
                 3 -> {
                     binding.ivIcon.setImageResource(R.drawable.icon_huati_three)
-                    binding.ivIcon.visibility= View.VISIBLE
-                    binding.tvIcon.visibility=View.INVISIBLE
+                    binding.ivIcon.visibility = View.VISIBLE
+                    binding.tvIcon.visibility = View.GONE
                 }
-                else->{
+                else -> {
                     binding.ivIcon.setImageResource(R.drawable.icon_huati_three)
-                    binding.ivIcon.visibility= View.INVISIBLE
-                    binding.tvIcon.visibility=View.VISIBLE
-                    binding.tvIcon.text=position.toString()
+                    binding.ivIcon.visibility = View.GONE
+                    binding.tvIcon.visibility = View.VISIBLE
+                    binding.tvIcon.text = position.toString()
                 }
             }
 

@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingBottom="15dp">
+        android:background="@color/white">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_bg"
@@ -73,11 +72,11 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_icon"
             tools:text="当代年轻人喜欢什么样的车呢？科技？实用？炫酷？那我们就来讨论一下。" />
 
-        <include
-            layout="@layout/circle_line_10"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10"
-            android:layout_marginTop="15dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_f6"
             app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

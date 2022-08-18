@@ -19,7 +19,7 @@
                 android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/color_f6"
                 android:elevation="0dp"
                 app:layout_behavior="@string/circle_behavior_app_bar_layout">
 

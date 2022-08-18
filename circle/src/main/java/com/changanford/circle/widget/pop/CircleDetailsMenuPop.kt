@@ -59,10 +59,10 @@ class CircleDetailsMenuPop(private val context: Context) :
     fun initData() {
         val param = SPUtils.getParam(context, "identityType", "").toString()
         val list = arrayListOf(
-            CircleMainMenuBean(content = "发长帖"),
-            CircleMainMenuBean(content = "发长帖"),
-            CircleMainMenuBean(content = "发长帖"),
-            CircleMainMenuBean(content = "发长帖"),
+            CircleMainMenuBean(content = "发公告"),
+            CircleMainMenuBean(content = "创建话题"),
+            CircleMainMenuBean(content = "报名活动"),
+            CircleMainMenuBean(content = "投票活动"),
         )
 //        if(param!="TECHNICIAN"){
 //
@@ -72,7 +72,17 @@ class CircleDetailsMenuPop(private val context: Context) :
 
         adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                startARouter(ARouterCirclePath.CreateNoticeActivity)
+                when (position) {
+                    0 -> {
+                        startARouter(ARouterCirclePath.CreateNoticeActivity)
+                    }
+                    1 -> {
+                        startARouter(ARouterCirclePath.CreateCircleTopicActivity)
+                    }
+                    2 -> {
+
+                    }
+                }
                 dismiss()
             }
 

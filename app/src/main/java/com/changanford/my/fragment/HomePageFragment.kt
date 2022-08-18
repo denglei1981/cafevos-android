@@ -62,16 +62,16 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     }
 
     override fun initData() {
-        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod =
+            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
             1,
             StaggeredGridLayoutManager.VERTICAL
         )
-        binding.recyclerView.layoutManager=staggeredGridLayoutManager
+        binding.recyclerView.layoutManager = staggeredGridLayoutManager
         binding.recyclerView.adapter = myHomePageAdapter
-
 
 
     }
@@ -80,7 +80,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     fun showCircle(data: UpdateUiState<ListMainBean<NewCircleBean>>) {
         var total: Int = 0
         if (data.data != null) {
-            if(data.data.dataList!=null){
+            if (data.data.dataList != null) {
                 total = data.data!!.dataList!!.size
             }
         }
@@ -94,7 +94,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     fun showPosts(data: UpdateUiState<ListMainBean<PostDataBean>>) {
         var total: Int = 0
         if (data.data != null) {
-            if(data.data.dataList!=null){
+            if (data.data.dataList != null) {
                 total = data.data!!.dataList!!.size
             }
         }
@@ -108,14 +108,14 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
     fun showTopic(data: UpdateUiState<ListMainBean<Topic>>) {
         var total: Int = 0
         if (data.data != null) {
-            if(data.data.dataList!=null){
+            if (data.data.dataList != null) {
                 total = data.data!!.dataList!!.size
             }
 
         }
         topicListData = HomePageBean(topicList = data.data, type = 1, total = total)
 
-         homePageBeanList.clear()
+        homePageBeanList.clear()
         homePageBeanList.add(circleListData)
 
 

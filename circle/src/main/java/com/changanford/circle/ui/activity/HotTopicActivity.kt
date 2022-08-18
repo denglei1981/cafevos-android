@@ -11,6 +11,7 @@ import com.changanford.circle.viewmodel.HotTopicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -18,7 +19,7 @@ import com.changanford.common.util.AppUtils
 /**
  *Author lcw
  *Time on 2021/9/23
- *Purpose 热门话题
+ *Purpose 热门话题、圈内话题(IntentKey.TOPIC_TYPE==1圈内话题、0热门话题)
  */
 @Route(path = ARouterCirclePath.HotTopicActivity)
 class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel>() {
@@ -27,10 +28,20 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
         HotMainTopicAdapter()
     }
 
+    private var type = 0
+
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
+        type = intent.getIntExtra(IntentKey.TOPIC_TYPE, 0)
         binding.title.run {
-            tvTitle.text = "热门话题"
+            when (type) {
+                0 -> {
+                    tvTitle.text = "热门话题"
+                }
+                1 -> {
+                    tvTitle.text = "圈内话题"
+                }
+            }
             ivBack.setOnClickListener { finish() }
         }
         binding.ryTopic.adapter = adapter

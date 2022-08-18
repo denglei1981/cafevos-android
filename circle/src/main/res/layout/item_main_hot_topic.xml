@@ -10,69 +10,69 @@
             type="com.changanford.circle.bean.HotPicItemBean" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/cl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="23dp"
-        android:layout_marginBottom="21dp">
+        android:layout_marginBottom="21dp"
+        android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_icon"
-            android:layout_width="wrap_content"
-            tools:text="1"
-            android:textSize="17sp"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
             android:scaleType="centerCrop"
             android:textColor="@color/color_D1D2D7"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/iv_icon"
-            app:layout_constraintEnd_toEndOf="@+id/iv_icon"
-            app:layout_constraintTop_toTopOf="@+id/ll_topic"
-            app:layout_constraintBottom_toBottomOf="@+id/ll_topic"
-            />
+            android:textSize="17sp"
+            tools:text="1" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
-            android:layout_width="wrap_content"
+            android:layout_width="28dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ll_topic"
-            app:layout_constraintBottom_toBottomOf="@+id/ll_topic"
-            tools:src="@drawable/icon_huati_one"
-            />
+            android:layout_marginTop="25dp"
+            tools:src="@drawable/icon_huati_one" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:scaleType="centerCrop" />
+
         <LinearLayout
             android:id="@+id/ll_topic"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            app:layout_constraintStart_toEndOf="@+id/iv_icon"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
+
             <RelativeLayout
                 android:id="@+id/rl_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/circle_main_talk_20_bg"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/iv_icon"
-                app:layout_constraintTop_toTopOf="@+id/iv_icon">
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_hint_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="23dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="@dimen/dp_11"
-                        android:src="@mipmap/circle_main_talk_hint"
-                        android:visibility="visible" />
+                android:background="@drawable/circle_main_talk_20_bg">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_hint_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="23dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:src="@mipmap/circle_main_talk_hint"
+                    android:visibility="visible" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_talk"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
-                    android:layout_toRightOf="@+id/iv_hint_icon"
+                    android:layout_toEndOf="@+id/iv_hint_icon"
                     android:drawablePadding="4dp"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -82,37 +82,32 @@
                     android:textColor="@color/circle_01025c"
                     android:textSize="12sp"
                     tools:ignore="RtlSymmetry,SmallSp"
-                    tools:text="年轻人喜欢什么样的车" />
+                    tools:text="年轻人喜欢什么样的车年轻人喜欢什么样的车" />
 
             </RelativeLayout>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{bean.description}"
+                android:textColor="@color/color_33"
+                android:textSize="13sp"
+                tools:text="这里是描述这里是描述这里是描述这里好是描述" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:textColor="@color/circle_B0BDDD"
+                android:textSize="10sp"
+                tools:ignore="SmallSp"
+                tools:text="1233 帖子     12353 热度" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@{bean.description}"
-            android:textColor="@color/color_33"
-            android:textSize="13sp"
-            app:layout_constraintLeft_toLeftOf="@+id/ll_topic"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_topic"
-            tools:text="这里是描述这里是描述这里是描述这里好是描述" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/circle_B0BDDD"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:textSize="10sp"
-            android:layout_marginTop="@dimen/dp_16"
-            app:layout_constraintTop_toBottomOf="@+id/tv_content"
-            app:layout_constraintStart_toStartOf="@+id/tv_content"
-            tools:text="1233 帖子     12353 热度" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

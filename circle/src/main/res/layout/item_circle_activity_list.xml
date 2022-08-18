@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/circle_circle_activity_bg"
+        android:paddingBottom="11dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="335:193"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/head_default" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/bg_white_2"
+            android:gravity="center"
+            android:paddingStart="4.5dp"
+            android:paddingEnd="4.5dp"
+            android:text="进行中"
+            android:textColor="@color/color_00095B"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_cover" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="长安福特 未来活动体验日未来活动体验日未来活动体验日未来活动体验日未来活动体验日，于2021年9月11日正式上市"
+            android:textColor="@color/color_33"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_cover" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="活动时间：2021.09.15 12:00 - 2021.09.30 12:00"
+            android:textColor="@color/color_66"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="活动地点：重庆市 长安福特重庆体验中心"
+            android:textColor="@color/color_66"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_address">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ry_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:layout_width="100dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:paddingEnd="10dp"
+                android:text="7人参与"
+                android:textColor="@color/color_66"
+                android:textSize="11sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_type"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_gravity="right"
+                android:background="@drawable/bg_dd_14"
+                android:gravity="center"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:text="报名结束"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

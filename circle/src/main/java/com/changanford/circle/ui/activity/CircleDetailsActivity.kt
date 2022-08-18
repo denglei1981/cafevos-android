@@ -39,6 +39,7 @@ import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.TestBean
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -247,6 +248,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         binding.topContent.apply {
             tvNoticeMore.setOnClickListener {
                 startARouter(ARouterCirclePath.CircleNoticeActivity)
+            }
+            tvTopicMore.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putInt(IntentKey.TOPIC_TYPE, 1)
+                startARouter(ARouterCirclePath.HotTopicActivity, bundle)
+            }
+            tvActivityMore.setOnClickListener {
+                startARouter(ARouterCirclePath.CircleActivityListActivity)
             }
         }
     }

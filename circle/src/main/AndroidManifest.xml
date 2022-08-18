@@ -105,5 +105,7 @@
         <activity android:name=".ui.activity.CircleNoticeActivity" />
         <activity android:name=".ui.activity.MyCircleNoticeActivity" />
         <activity android:name=".ui.activity.CreateNoticeActivity" />
+        <activity android:name=".ui.activity.CreateCircleTopicActivity" />
+        <activity android:name=".ui.activity.CircleActivityListActivity" />
     </application>
 </manifest>
