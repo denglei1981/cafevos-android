@@ -257,6 +257,16 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<ActBean>>
 
+    /***
+     * /highlights/getHighlights
+     *  活动列表新22-0819。
+     * */
+    @POST("/highlights/v2/getHighlights")
+    suspend fun getHighlightsV2(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
+
 
     /**
      *

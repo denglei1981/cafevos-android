@@ -72,7 +72,7 @@ class ActsListViewModel : BaseViewModel() {
             }
             var rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
-                .getHighlights(body.header(rkey), body.body(rkey))
+                .getHighlightsV2(body.header(rkey), body.body(rkey))
                 .onSuccess {
                     val updateUiState = UpdateUiState<ListMainBean<ActBean>>(it, true, isLoadMore,"")
                     actsLiveData.postValue(updateUiState)

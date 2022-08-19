@@ -11,6 +11,8 @@ import com.changanford.circle.adapter.CircleMainMenuAdapter
 import com.changanford.circle.bean.CircleMainMenuBean
 import com.changanford.circle.databinding.PopCircleMainMenuBinding
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.SPUtils
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -58,7 +60,8 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发长帖"),
             CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
             CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
-            CircleMainMenuBean(R.mipmap.circle_post_question,"提问")
+            CircleMainMenuBean(R.mipmap.circle_post_question,"提问"),
+            CircleMainMenuBean(R.mipmap.circle_post_question,"发活动")
         )
 //        if(param!="TECHNICIAN"){
 //
@@ -82,6 +85,7 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                     3->{
                         listener.checkQuestion()
                     }
+                    else -> startARouter(ARouterCirclePath.ActivityFabuBaoming)
                 }
                 dismiss()
             }
