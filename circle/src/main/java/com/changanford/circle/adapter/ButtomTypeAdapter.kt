@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.ButtomTypeBean
-import com.changanford.circle.ext.dpToPx
+import com.changanford.common.utilext.dpToPx
 
 class ButtomTypeAdapter() :BaseMultiItemQuickAdapter<ButtomTypeBean,BaseViewHolder>() {
     init {

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_5eb_cor4"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:text="从手机相册选择"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#EDEDED" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_default"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:text="福域默认相册"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+
+        android:background="@color/color_F4" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        tools:ignore="HardcodedText" />
+</LinearLayout>

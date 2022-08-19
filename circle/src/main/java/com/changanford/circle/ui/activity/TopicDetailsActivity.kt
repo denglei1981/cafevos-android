@@ -16,7 +16,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityTopicDetailsBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
@@ -38,6 +38,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntPx
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper

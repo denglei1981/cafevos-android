@@ -14,6 +14,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.R
 import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toPx
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel

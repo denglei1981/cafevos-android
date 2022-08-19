@@ -20,7 +20,7 @@ import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
 import com.changanford.circle.ext.loadCircleImage
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.MUtils.setTopMargin
 import com.changanford.circle.utils.launchWithCatch

@@ -17,7 +17,7 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
@@ -44,6 +44,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.utilext.toIntPx
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter

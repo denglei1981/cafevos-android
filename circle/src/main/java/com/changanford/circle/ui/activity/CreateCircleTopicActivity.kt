@@ -11,7 +11,12 @@ import com.changanford.circle.viewmodel.CreateCircleTopicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterCommonPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
 import com.luck.picture.lib.entity.LocalMedia
@@ -53,32 +58,58 @@ class CreateCircleTopicActivity :
                 inspectContent()
             }
             ivCover.setOnClickListener {
-                PictureUtil.openGalleryOnePic(this@CreateCircleTopicActivity, object :
-                    OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        val bean = result?.get(0)
-                        val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                        path?.let { it1 ->
-                            OSSHelper.init(this@CreateCircleTopicActivity).getOSSToImage(
-                                this@CreateCircleTopicActivity,
-                                it1,
-                                object : OSSHelper.OSSImageListener {
-                                    override fun getPicUrl(url: String) {
-                                        picUrl = url
-                                        ivCover.post {
-                                            ivCover.loadImage(picUrl, ImageOptions().apply {
-                                                placeholder = R.mipmap.add_image
-                                            })
-                                        }
-                                        inspectContent()
+                SelectPicDialog(this@CreateCircleTopicActivity,
+                    object : SelectPicDialog.ChoosePicListener {
+                        override fun chooseByPhone() {
+                            PictureUtil.openGalleryOnePic(this@CreateCircleTopicActivity, object :
+                                OnResultCallbackListener<LocalMedia> {
+                                override fun onResult(result: MutableList<LocalMedia>?) {
+                                    val bean = result?.get(0)
+                                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                                    path?.let { it1 ->
+                                        OSSHelper.init(this@CreateCircleTopicActivity)
+                                            .getOSSToImage(
+                                                this@CreateCircleTopicActivity,
+                                                it1,
+                                                object : OSSHelper.OSSImageListener {
+                                                    override fun getPicUrl(url: String) {
+                                                        picUrl = url
+                                                        ivCover.post {
+                                                            ivCover.loadImage(
+                                                                picUrl,
+                                                                ImageOptions().apply {
+                                                                    placeholder = R.mipmap.add_image
+                                                                })
+                                                        }
+                                                        inspectContent()
+                                                    }
+                                                })
                                     }
-                                })
-                        }
-                    }
+                                }
 
-                    override fun onCancel() {}
-                })
+                                override fun onCancel() {}
+                            })
+                        }
+
+                        override fun chooseByDefault() {
+                            startARouter(ARouterCommonPath.FordAlbumActivity)
+                        }
+
+                    }).show()
+
             }
+        }
+
+        LiveDataBus.get().withs<String>(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
+            picUrl = it
+            binding.ivCover.post {
+                binding.ivCover.loadImage(
+                    picUrl,
+                    ImageOptions().apply {
+                        placeholder = R.mipmap.add_image
+                    })
+            }
+            inspectContent()
         }
     }
 

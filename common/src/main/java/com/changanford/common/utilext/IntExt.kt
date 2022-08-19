@@ -1,4 +1,4 @@
-package com.changanford.circle.ext
+package com.changanford.common.utilext
 
 import android.content.Context
 import com.changanford.common.MyApp

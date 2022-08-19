@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/title_toolbar_layout"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_pic"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/title"
+            android:layout_height="match_parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_set"
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:text="设为封面"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:background="@drawable/shape_00095b_20dp"
+            android:layout_height="40dp"/>
+
+    </RelativeLayout>
+</layout>

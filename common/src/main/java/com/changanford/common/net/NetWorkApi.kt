@@ -1262,7 +1262,7 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<PostDataBean>>
 
-   //领取交车礼积分
+    //领取交车礼积分
     @POST("/carDeliveryGift/receiveGift")
     suspend fun receiveGift(
         @HeaderMap headMap: Map<String, String>,
@@ -1282,4 +1282,11 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<MyBindCarListBean>>
+
+    // 获取福域相册
+    @POST("/highlights/v2/d4tPhotos")
+    suspend fun getFordPhotos(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<FordPhotosBean>
 }

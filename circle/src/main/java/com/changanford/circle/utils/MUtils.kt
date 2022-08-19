@@ -18,9 +18,10 @@ import androidx.recyclerview.widget.RecyclerView
 import anet.channel.util.Utils.context
 import com.bumptech.glide.Glide
 import com.changanford.circle.R
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.utilext.toIntPx
 
 object MUtils {
 

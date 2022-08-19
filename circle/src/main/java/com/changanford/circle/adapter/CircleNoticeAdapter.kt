@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleNoticeBinding
 import com.changanford.circle.ext.loadCircleImage
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.utils.MUtils.expandText
 import com.changanford.circle.utils.MUtils.setTopMargin
 import com.changanford.common.bean.TestBean

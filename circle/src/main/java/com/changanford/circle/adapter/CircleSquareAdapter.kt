@@ -18,7 +18,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
 import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView

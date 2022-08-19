@@ -13,7 +13,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleTypesBean
 import com.changanford.circle.databinding.ActivityCircleListBinding
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.fragment.CircleListFragment
 import com.changanford.circle.viewmodel.CircleListViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -22,6 +22,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import net.lucode.hackware.magicindicator.ViewPagerHelper

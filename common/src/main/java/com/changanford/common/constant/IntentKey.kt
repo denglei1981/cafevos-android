@@ -7,4 +7,6 @@ package com.changanford.common.constant
  */
 object IntentKey {
     const val TOPIC_TYPE = "topicType"
+    const val FORD_ALBUM_POSITION = "fordAlbumPosition"
+    const val FORD_ALBUM_ITEM = "fordAlbumItem"
 }

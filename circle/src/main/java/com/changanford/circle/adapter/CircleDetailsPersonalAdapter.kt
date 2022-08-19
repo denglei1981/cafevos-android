@@ -9,8 +9,9 @@ import com.changanford.circle.bean.User
 import com.changanford.circle.databinding.ItemCircleDetailsPersonalBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.utilext.toIntPx
 
 /**
  *Author lcw

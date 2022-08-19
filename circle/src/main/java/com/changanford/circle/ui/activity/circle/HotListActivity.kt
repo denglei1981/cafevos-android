@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCircleHotlistBinding
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.fragment.circle.HotListFragment
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -22,6 +22,7 @@ import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.wutil.ScreenUtils
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil

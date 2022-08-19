@@ -17,7 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityQuestionBinding
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.compose.BtnQuestionCompose
 import com.changanford.circle.ui.compose.ComposeQuestionTop
 import com.changanford.circle.ui.fragment.question.QuestionFragment
@@ -32,6 +32,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.tools.ScreenUtils

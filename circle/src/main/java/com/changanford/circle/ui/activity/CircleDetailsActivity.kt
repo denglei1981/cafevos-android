@@ -25,7 +25,7 @@ import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.setCircular
-import com.changanford.circle.ext.toIntPx
+
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
@@ -51,6 +51,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 import com.google.android.material.appbar.AppBarLayout
