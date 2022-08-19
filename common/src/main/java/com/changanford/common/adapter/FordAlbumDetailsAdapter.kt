@@ -1,5 +1,6 @@
 package com.changanford.common.adapter
 
+import coil.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.R
@@ -17,7 +18,10 @@ class FordAlbumDetailsAdapter :
     ) {
     override fun convert(holder: BaseDataBindingHolder<ItemFordAlbumDetailsBinding>, item: String) {
         holder.dataBinding?.run {
-            GlideUtils.loadBD(item,ivPic)
+            ivPic.load(GlideUtils.handleImgUrl(item)){
+                placeholder(R.mipmap.ic_def_square_img)
+                error(R.mipmap.ic_def_square_img)
+            }
         }
     }
 }
