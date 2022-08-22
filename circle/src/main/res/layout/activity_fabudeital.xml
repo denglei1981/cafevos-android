@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
 
     <include
         android:id="@+id/title"
@@ -14,39 +14,89 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/red"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/longpostrec"
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
+        android:text="详情"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintStart_toEndOf="@id/red"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/typerec"
+        android:descendantFocusability="beforeDescendants"
+        app:layout_constraintBottom_toTopOf="@+id/iv_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:descendantFocusability="beforeDescendants"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/red">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/typerec"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/longpostrec"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_marginBottom="4dp"
+                android:descendantFocusability="beforeDescendants"
+                android:minHeight="@dimen/dp_100" />
+
+            <include
+                android:id="@+id/bottom"
+                layout="@layout/activity_fabudetailbottom" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/iv_pic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:layout_marginBottom="10dp"
-        android:background="@color/transparent"
+        android:layout_margin="@dimen/dp_10"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/bottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/longpostrec" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="1.5"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <include
-        android:id="@+id/bottom"
-        layout="@layout/post_bottom_ui"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/typerec"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/c_pic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="图片"
+            android:textColor="@color/text_color"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_pic"
+            app:layout_constraintRight_toRightOf="@id/iv_pic"
+            app:layout_constraintTop_toTopOf="@id/iv_pic" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

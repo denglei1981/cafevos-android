@@ -1,12 +1,12 @@
 package com.changanford.circle.ui.activity.baoming
 
+import android.Manifest
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
@@ -14,7 +14,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,33 +22,37 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
+import com.bigkoo.pickerview.builder.TimePickerBuilder
+import com.bigkoo.pickerview.view.TimePickerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.LongPostV2Adapter
 import com.changanford.circle.bean.*
+import com.changanford.circle.bean.H5PostTypeBean
+import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.databinding.ActivityFabudeitalBinding
-import com.changanford.circle.databinding.HeaderLongPostBinding
-import com.changanford.circle.databinding.LongpostactivityBinding
 import com.changanford.circle.ui.activity.PostActivity
+import com.changanford.circle.ui.release.MMapActivity
+import com.changanford.circle.ui.release.ReleaseActivity
+import com.changanford.circle.ui.release.widget.ActivityTypeDialog
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
-import com.changanford.common.bean.CreateLocation
-import com.changanford.common.bean.ImageUrlBean
-import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.*
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -60,12 +64,16 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.tools.DoubleUtils
+import com.luck.picture.lib.tools.ToastUtils
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.scwang.smart.refresh.layout.util.SmartUtil
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.concurrent.schedule
 
 
 /**
@@ -74,19 +82,17 @@ import kotlin.concurrent.schedule
 @Route(path = ARouterCirclePath.ActivityFabuStep2)
 class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule>() {
 
-    private lateinit var headBinding: HeaderLongPostBinding
-    private val headview by lazy {
-        layoutInflater.inflate(R.layout.header_long_post, null)
-    }
     private val longpostadapter by lazy {
         LongPostV2Adapter(binding.longpostrec.layoutManager as LinearLayoutManager)
     }
+
+    private var baoMingViewModel: BaoMingViewModel? = null
 
     private lateinit var plateBean: PlateBean
     private var platename: String = ""
     private var circlename: String = ""
     private var address: String = ""
-    private val upedimgs = ArrayList<ImageUrlBean>()  //上传之后的图片集合地址
+    private val upedimgs = ArrayList<DtoBeanNew.ContentImg>()  //上传之后的图片集合地址
     private var nomalwith = 500
     private var nomalhight = 500
     private var selectList = ArrayList<LongPostBean>()
@@ -120,9 +126,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         }
     }
 
-    private val buttomTypeAdapter by lazy {
-        ButtomTypeAdapter()
-    }
     private val buttomlabelAdapter by lazy {
         ButtomlabelAdapter()
     }
@@ -139,39 +142,26 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             .keyboardEnable(true)
             .init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "发帖"
-        binding.title.barTvOther.visibility = View.VISIBLE
-        binding.title.barTvOther.text = "发布"
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
-        headBinding = DataBindingUtil.bind(headview)!!
+        binding.title.barTvTitle.text = "发布报名活动"
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
         bus()
         isH5Post = intent.extras?.getBoolean("isH5Post") ?: false
         isCirclePost = intent.extras?.getBoolean("isCirclePost") ?: false
         isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
-
-        binding.bottom.tvMore.setOnClickListener {
-            showMoreTag()
-        }
+        baoMingViewModel = createViewModel(BaoMingViewModel::class.java)
+        ActivityFabuBaoming.dto.coverImgUrl?.toast()
     }
 
     override fun observe() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
-            binding.bottom.emojirec.visibility = View.GONE
+            binding.ivPic.isVisible = isPopup
 
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             isunSave = false
             FMMeadia = it as LocalMedia
-            headBinding.ivFm.visibility = View.VISIBLE
-            headBinding.tvFmTips.visibility = View.VISIBLE
-            GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
-            headBinding.ivAddfm.visibility = View.GONE
-            headBinding.tvFm.visibility = View.GONE
         })
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -190,7 +180,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         viewModel.stsBean.observe(this, Observer {
             it?.let {
                 upedimgs.clear()
-                selectList.add(LongPostBean("", FMMeadia))
                 selectList.addAll(longpostadapter.data)
                 var mediacount = 0
                 selectList.forEach {
@@ -209,7 +198,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             .observe(this,
                 Observer {
                     isunSave = false
-                    buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                     params["topicId"] = it.topicId.toString()
                 })
 
@@ -227,7 +215,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 }
                 params["province"] = it.province ?: address
                 val showCity = it.city.plus("·").plus(it.name)
-                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
@@ -241,14 +228,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 viewModel.getCityDetailBylngAndlat(it.lat, it.lon)
                 params["province"] = it.province
                 val showCity = it.city.plus("·").plus(it.addrName)
-                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean.plate.forEach {
                 if (it.name == "社区") {
-                    buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-                    buttomTypeAdapter.setData(2, ButtomTypeBean(it.name, 1, 1))
                     platename = it.name
                     params["plate"] = it.plate
                     params["actionCode"] = it.actionCode
@@ -267,7 +251,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     params.remove("address")
                     params.remove("addrName")
                     address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
                 })
 
@@ -406,7 +389,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         binding.longpostrec.layoutManager = layoutManager
         longpostadapter.draggableModule.isDragEnabled = true
         binding.longpostrec.adapter = longpostadapter
-        longpostadapter.addHeaderView(headview)
         params["type"] = 4
         initbuttom()
         onclick()
@@ -423,21 +405,18 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             params["circleId"] = intent.extras?.getString("circleId") ?: "0"
             circlename = intent.extras?.getString("circleName") ?: ""
             circlename.isNotEmpty().let {
-                buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
         }
         if (isTopPost) {
             params["topicId"] = intent.extras?.getString("topId") ?: "0"
             params["topicName"] = intent.extras?.getString("topName") ?: ""
             (params["topicName"] as String).isNotEmpty().let {
-                buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
         }
     }
 
     private fun initlocaData() {
         if (locaPostEntity != null) {
-            headBinding.etBiaoti.setText(locaPostEntity!!.title)
             params["plate"] = locaPostEntity!!.plate
             platename = locaPostEntity!!.plateName
             params["topicId"] = locaPostEntity!!.topicId
@@ -459,20 +438,10 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             if (params["plate"] != 0) {
-                buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-                buttomTypeAdapter.setData(2, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
             }
             if (locaPostEntity!!.topicName.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    3,
-                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
-                )
             }
             if (locaPostEntity!!.circleName.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    4,
-                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
-                )
             }
             showLocaPostCity()
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
@@ -482,13 +451,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                             locaPostEntity!!.longpostFmLocalMeadle,
                             LocalMedia::class.java
                         )
-                    headBinding.ivFm.visibility = View.VISIBLE
-                    GlideUtils.loadRoundFilePath(
-                        PictureUtil.getFinallyPath(FMMeadia!!),
-                        headBinding.ivFm
-                    )
-                    headBinding.ivAddfm.visibility = View.GONE
-                    headBinding.tvFm.visibility = View.GONE
                 } catch (e: Exception) {
 
                 }
@@ -509,10 +471,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             if (lp.city.isEmpty()) {
                 showCity = "定位"
             }
-            buttomTypeAdapter.setData(
-                0,
-                ButtomTypeBean(showCity, 1, 4)
-            )
         }
     }
 
@@ -528,23 +486,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
     private fun initbuttom() {
-        binding.typerec.layoutManager = LinearLayoutManager(this).apply {
-            orientation = LinearLayoutManager.HORIZONTAL
-        }
-        binding.typerec.adapter = buttomTypeAdapter
-        buttomTypeAdapter.addData(
-            arrayListOf(
-                ButtomTypeBean("定位", 1, 4),
-                ButtomTypeBean("选择模块", 1, 0),
-                ButtomTypeBean("", 0, 1),
-                ButtomTypeBean("", 0, 2),
-                ButtomTypeBean("", 0, 3),
-            )
-        )
-        binding.bottom.labelrec.layoutManager = LinearLayoutManager(this).apply {
-            orientation = LinearLayoutManager.HORIZONTAL
-        }
-        binding.bottom.labelrec.adapter = buttomlabelAdapter
 
         buttomlabelAdapter.setOnItemClickListener { adapter, view, position ->
             buttomlabelAdapter.getItem(position).isselect =
@@ -552,7 +493,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             buttomlabelAdapter.notifyDataSetChanged()
         }
 
-        binding.bottom.emojirec.adapter = emojiAdapter
         val emojiList = ArrayList<String>()
         for (i in EmojiBean.emojiint) {
             getEmojiStringByUnicode(
@@ -564,11 +504,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             }
         }
         emojiAdapter.setItems(emojiList)
-        headBinding.etBiaoti.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                editText = headBinding.etBiaoti
-            }
-        }
         emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 val emoji = emojiAdapter.getItem(position)
@@ -625,94 +560,31 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             savePostDialog()
 
         }
-
-        binding.bottom.ivEmoj.setOnClickListener {
-
-            HideKeyboardUtil.hideKeyboard(binding.bottom.emojirec.windowToken)
-
-            Timer().schedule(80) {
-                binding.bottom.emojirec.post {
-                    if (binding.bottom.emojirec.isShown) {
-
-                        binding.bottom.emojirec.visibility = View.GONE
+        binding.bottom.timelayout.setOnClickListener {
+            setTimePicker()
+        }
+        binding.bottom.leixinglayout.setOnClickListener {
+            if (!DoubleUtils.isFastDoubleClick()) {
+                ActivityTypeDialog(this) { integer: Int ->
+                    actType = integer.toString() + ""
+                    ActivityFabuBaoming.dto.wonderfulType = actType
+                    if (integer == 0) {
+                        binding.bottom.leixing.text = "线下活动"
                     } else {
-                        binding.bottom.emojirec.visibility = View.VISIBLE
+                        binding.bottom.leixing.text = "线上活动"
                     }
-                }
+                    null
+                }.setDefault(Integer.valueOf(actType)).show()
             }
         }
-        binding.title.barTvOther.setOnClickListener {
-            ispost()
+        binding.bottom.placelayout.setOnClickListener {
+            StartBaduMap()
         }
-
-        buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (view.id == R.id.buttom_iv_close) {
-                buttomTypeAdapter.setData(
-                    position,
-                    ButtomTypeBean("", 0, buttomTypeAdapter.getItem(position).itemType)
-                )
-                when (buttomTypeAdapter.getItem(position).itemType) {
-                    2 -> {
-                        params.remove("topicId")
-                        params.remove("topicName")
-                    }
-                    3 -> {
-                        params.remove("circleId")
-                        params.remove("circleName")
-                        circlename = ""
-                    }
-                    4 -> {
-                        params.remove("lat")
-                        params.remove("lon")
-                        params.remove("city")
-                        params.remove("province")
-                        params.remove("cityCode")
-                        params.remove("address")
-                        address = ""
-                    }
-                }
-            }
+        binding.bottom.nickSave.setOnClickListener {
+            viewModel.getOSS()
 
         }
-
-        buttomTypeAdapter.setOnItemClickListener { adapter, view, position ->
-
-            val buttomType = buttomTypeAdapter.getItem(position).itemType
-            when (buttomType) {
-                0, 1 -> { // 选择板块
-                    showPlate()
-                }
-                2 -> { // 话题
-                    toHuati()
-                }
-                3 -> {// 圈子
-                    toQuanzi()
-                }
-                4 -> { // 选择地址。
-                    if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
-                        openLocationService()
-                    } else {
-                        isunSave = true
-                        startARouter(ARouterCirclePath.ChooseLocationActivity)
-                    }
-                }
-
-            }
-        }
-
-
-        binding.bottom.ivQuanzi.setOnClickListener {
-            toQuanzi()
-        }
-
-        binding.bottom.ivLoc.setOnClickListener {
-            isunSave = true
-            startARouter(ARouterCirclePath.ChooseLocationActivity)
-        }
-        binding.bottom.ivHuati.setOnClickListener {
-            toHuati()
-        }
-        binding.bottom.ivPic.setOnClickListener {
+        binding.ivPic.setOnClickListener {
             isunSave = true
             val meadiaList: ArrayList<LocalMedia> = arrayListOf()
             PictureUtil.openGallery(this, meadiaList,
@@ -908,21 +780,15 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
     private fun ispost() {
-        var biaoti = headBinding.etBiaoti.text.toString()
         when {
             FMMeadia == null -> {
                 "请选择封面".toast()
-                return
-            }
-            biaoti.isEmpty() || biaoti.length > 20 -> {
-                "请输入1-20字的帖子标题".toast()
                 return
             }
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
             else -> {
-                params["title"] = biaoti
                 //埋点
                 viewModel.getOSS()
             }
@@ -946,90 +812,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             intend,
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
-        headBinding.etBiaoti.hint = spannableString
-        headBinding.etBiaoti.requestFocus()
-        editText = headBinding.etBiaoti
-
-        headBinding.ivAddfm.setOnClickListener {
-            isunSave = true
-            PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: MutableList<LocalMedia>?) {
-                    val localMedia = result?.get(0)
-                    localMedia?.let {
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList("picList", arrayListOf(localMedia))
-                        bundle.putInt("position", 0)
-                        bundle.putInt("showEditType", -1)
-                        bundle.putBoolean("longPostFM", true)
-                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                    }
-                }
-
-                override fun onCancel() {
-                    isunSave = false
-                }
-
-            })
-        }
-        headBinding.ivFm.setOnClickListener {
-            val array = ArrayList<String>()
-            array.add("重选封面")
-            array.add("编辑封面")
-            array.add("删除封面")
-            HomeBottomDialog(this, *array.toTypedArray())
-                .setOnClickItemListener(object :
-                    HomeBottomDialog.OnClickItemListener {
-                    override fun onClickItem(position: Int, str: String) {
-                        isunSave = true
-                        when (str) {
-                            "重选封面" -> {
-                                PictureUtil.openGalleryOnePic(this@AvtivityFabuStep2,
-                                    object : OnResultCallbackListener<LocalMedia> {
-                                        override fun onResult(result: MutableList<LocalMedia>?) {
-                                            val localMedia = result?.get(0)
-                                            localMedia?.let {
-                                                val bundle = Bundle()
-                                                bundle.putParcelableArrayList(
-                                                    "picList",
-                                                    arrayListOf(localMedia)
-                                                )
-                                                bundle.putInt("position", 0)
-                                                bundle.putInt("showEditType", -1)
-                                                bundle.putBoolean("longPostFM", true)
-                                                startARouter(
-                                                    ARouterCirclePath.PictureeditlActivity,
-                                                    bundle
-                                                )
-                                            }
-                                        }
-
-                                        override fun onCancel() {
-                                            isunSave = false
-                                        }
-
-                                    })
-
-                            }
-                            "编辑封面" -> {
-                                val bundle = Bundle()
-                                bundle.putParcelableArrayList("picList", arrayListOf(FMMeadia))
-                                bundle.putInt("position", 0)
-                                bundle.putInt("showEditType", -1)
-                                bundle.putBoolean("longPostFM", true)
-                                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                            }
-                            "删除封面" -> {
-                                FMMeadia = null
-                                headBinding.ivAddfm.visibility = View.VISIBLE
-                                headBinding.tvFm.visibility = View.VISIBLE
-                                headBinding.ivFm.visibility = View.GONE
-                                headBinding.tvFmTips.visibility = View.GONE
-
-                            }
-                        }
-                    }
-                }).show()
-        }
     }
 
     private fun uploadImgs(
@@ -1095,12 +877,22 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             if (index == 0) {
                 params["pics"] = path
             } else if (index + 1 == selectList.size) {  //最后一个图片为空 开始post
-                upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content!!))
+                upedimgs.add(
+                    DtoBeanNew.ContentImg(
+                        "",
+                        longpostadapter.getItem(index - 1).content!!
+                    )
+                )
                 addPost()
                 return
             } else {
                 if (longpostadapter.getItem(index - 1).content?.isNotEmpty() == true) {
-                    upedimgs.add(ImageUrlBean("", longpostadapter.getItem(index - 1).content!!))
+                    upedimgs.add(
+                        DtoBeanNew.ContentImg(
+                            "",
+                            longpostadapter.getItem(index - 1).content!!
+                        )
+                    )
                 }
                 uploadImgs(stsBean, scount, dialog, mediacount, indexcount)
                 return
@@ -1113,7 +905,12 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             AliYunOssUploadOrDownFileConfig.OnUploadFile {
             override fun onUploadFileSuccess(info: String) {
                 if (index != 0) {
-                    upedimgs.add(ImageUrlBean(path, longpostadapter.getItem(index - 1).content!!))
+                    upedimgs.add(
+                        DtoBeanNew.ContentImg(
+                            path,
+                            longpostadapter.getItem(index - 1).content!!
+                        )
+                    )
                 }
                 val mindexpic = indexcount + 1
                 runOnUiThread {
@@ -1146,7 +943,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         var tagNames = ""
         // 移除都是空的情况。
         val last =
-            upedimgs.filter { !TextUtils.isEmpty(it.imgDesc) || !TextUtils.isEmpty(it.imgUrl) }
+            upedimgs.filter {
+                !TextUtils.isEmpty(
+                    it.contentDesc
+                ) || !TextUtils.isEmpty(it.contentImgUrl)
+            }
         params["imgUrl"] = last
         params["isPublish"] = 2
         buttomlabelAdapter.data.forEach {
@@ -1156,7 +957,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             }
         }
         params["tagIds"] = tagIds
-        params["content"]=""
+        params["content"] = ""
         JSON.toJSONString(params).logD()
 
         try {
@@ -1171,24 +972,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
 
     private var circlePostTagDialog: CirclePostTagDialog? = null
     var postTagDataList: List<PostTagData>? = null
-    fun showMoreTag() {
-        if (postTagDataList == null) {
-            toastShow("没有可选的标签")
-            return
-        }
-        circlePostTagDialog = CirclePostTagDialog(this, object : CirclePostTagDialog.ICallbackTag {
-            override fun callbackTag(
-                cancel: Boolean,
-                tags: MutableList<PostKeywordBean>,
-                totalTags: Int
-            ) {
-                if (!cancel) {
-                    buttomlabelAdapter.setNewInstance(tags)
-                }
-            }
-        }, postTagDataList!!, buttomlabelAdapter.data)
-        circlePostTagDialog?.show()
-    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1200,7 +983,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     if (data != null) {
                         params["circleId"] = data.getIntExtra("circleId", 0)
                         circlename = data.getStringExtra("name").toString()
-                        buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
                 ITEM_SELECTPIC -> {
@@ -1211,6 +993,33 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                         content = media!![0].contentDesc
                     }
                     longpostadapter.notifyDataSetChanged()
+                }
+                ReleaseActivity.ADDRESSBACK -> {
+                    val poiInfo =
+                        data!!.getBundleExtra("mbundaddress")!!.getParcelable<MapReturnBean>("poi")
+                    if (poiInfo != null && poiInfo.poiInfo != null) {
+                        binding.bottom.place.text = poiInfo.poiInfo.getAddress()
+                        ActivityFabuBaoming.dto?.apply {
+                            latitude = poiInfo.poiInfo.getLocation().latitude.toString() + ""
+                            longitude = poiInfo.poiInfo.getLocation().longitude.toString() + ""
+                            townName = poiInfo.poiInfo.area
+                            provinceName = poiInfo.poiInfo.province
+                            cityName = poiInfo.cityName
+                            townId = poiInfo.qid
+                            provinceId = poiInfo.sid
+                            cityId = poiInfo.cid
+                            activityAddr = poiInfo.poiInfo.getAddress()
+                        }
+//                        dtoBean.setActivityAddr(poiInfo.poiInfo.getAddress())
+//                        dtoBean.setCityId(poiInfo.cid)
+//                        dtoBean.setProvinceId(poiInfo.sid)
+//                        dtoBean.setTownId(poiInfo.qid)
+//                        dtoBean.setCityName(poiInfo.cityName)
+//                        dtoBean.setProvinceName(poiInfo.poiInfo.province)
+//                        dtoBean.setTownName(poiInfo.poiInfo.area)
+//                        dtoBean.setLongitude(poiInfo.poiInfo.getLocation().longitude.toString() + "")
+//                        dtoBean.setLatitude(poiInfo.poiInfo.getLocation().latitude.toString() + "")
+                    }
                 }
             }
         }
@@ -1229,7 +1038,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             viewModel.postDetailsBean.observe(this, {
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
-                        headBinding.etBiaoti.setText(locaPostEntity.title)
                         params["plate"] = locaPostEntity.plate
                         platename = locaPostEntity.plateName
                         params["topicId"] = locaPostEntity.topicId
@@ -1253,23 +1061,10 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                         params["cityCode"] = locaPostEntity.cityCode
                         params["city"] = locaPostEntity.city
                         if (params["plate"] != 0) {
-                            buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-                            buttomTypeAdapter.setData(
-                                2,
-                                ButtomTypeBean(locaPostEntity.plateName, 1, 1)
-                            )
                         }
                         if (locaPostEntity.topicName?.isNotEmpty() == true) {
-                            buttomTypeAdapter.setData(
-                                3,
-                                ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
-                            )
                         }
                         if (locaPostEntity.circleName?.isNotEmpty() == true) {
-                            buttomTypeAdapter.setData(
-                                4,
-                                ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
-                            )
                         }
                         showLocaPostCity()
                         //选择的标签
@@ -1291,14 +1086,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                             //选择的图片重置
                             //封面逻辑
                             FMMeadia = it[0]
-                            headBinding.ivFm.visibility = View.VISIBLE
-                            headBinding.tvFmTips.visibility = View.VISIBLE
-                            GlideUtils.loadRoundFilePath(
-                                PictureUtil.getFinallyPath(FMMeadia!!),
-                                headBinding.ivFm
-                            )
-                            headBinding.ivAddfm.visibility = View.GONE
-                            headBinding.tvFm.visibility = View.GONE
                             //长图部分
 //                            selectList.clear()
                             longpostadapter.data.clear()
@@ -1329,28 +1116,10 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
     fun isSave(): Boolean {
-        if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
-            return true
-        } else if (selectList.size > 0) {
-            return true
-        } else if (
-            buttomTypeAdapter.getItem(3).content.isNotEmpty()
-            || buttomTypeAdapter.getItem(4).content.isNotEmpty()
-        ) {
-            return true
-        } else if (buttomTypeAdapter.getItem(0).content.isNotEmpty()) {
-            val bottomStr = buttomTypeAdapter.getItem(0).content
-            if ("定位" == bottomStr) {
-                return false
-            }
-            return true
-        } else if (buttomTypeAdapter.getItem(2).content.isNotEmpty()) {
-            val bottomStr = buttomTypeAdapter.getItem(2).content
-            if ("社区" == bottomStr) {
-                return false
-            }
-            return true
-        }
+//        if (headBinding.etBiaoti.text.toString().isNotEmpty()) {
+//            return true
+//        } else
+//
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
                 return true
@@ -1383,7 +1152,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         postEntity.plateName = platename  //模块名称
         postEntity.topicId =
             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-        postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
         postEntity.keywords =
             if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
@@ -1394,7 +1162,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             if (FMMeadia != null) JSON.toJSONString(FMMeadia) else ""
         postEntity.longPostDatas = JSON.toJSONString(longpostadapter.data)
         postEntity.type = "4"  //长图帖子类型
-        postEntity.title = headBinding.etBiaoti.text.toString()
         postEntity.address =
             if (params["address"] != null) params["address"] as String else ""
 
@@ -1418,50 +1185,130 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
 
     }
 
-    fun showPlate() {
-        if (::plateBean.isInitialized && plateBean.plate.isNotEmpty()) {
-            val sList = mutableListOf<String>()
-            for (bean in plateBean.plate) {
-                sList.add(bean.name)
+    /****************************/
+    private var pvActTime: TimePickerView? = null
+    private var pvActEndTime: TimePickerView? = null
+    var timebegin: Date = Date(System.currentTimeMillis())
+    var datebegin = ""
+    var dateend = ""
+    var actType = "0" //活动类型
+
+
+    fun setTimePicker() {
+        initTimePick1()
+        initTimePickEND()
+        pvActTime?.show()
+    }
+
+    /**
+     * 选择活动时间
+     */
+    private fun initTimePick1() {
+        //时间选择器
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate[2099, 11] = 31
+        //正确设置方式 原因：注意事项有说明
+        if (
+            pvActTime == null
+        ) {
+            pvActTime = TimePickerBuilder(
+                this
+            ) { date, v ->
+                datebegin = TimeUtils.MillisToStr1(date.time)
+                ActivityFabuBaoming.dto.beginTime = datebegin
+                timebegin = date
+                pvActEndTime?.show()
             }
-            HomeBottomDialog(this, *sList.toTypedArray()).setOnClickItemListener(object :
-                HomeBottomDialog.OnClickItemListener {
-                override fun onClickItem(position: Int, str: String) {
-                    buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-                    buttomTypeAdapter.setData(2, ButtomTypeBean(str, 1, 1))
-                    platename = str
-                    params["plate"] = plateBean.plate[position].plate
-                    params["actionCode"] = plateBean.plate[position].actionCode
-                }
-            }).show()
-        } else {
-            viewModel.getPlate()
+                .setCancelText("取消") //取消按钮文字
+                .setSubmitText("确定") //确认按钮文字
+                .setTitleText("开始时间")
+                .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
+                .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(true) //是否循环滚动
+                .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
+                .setCancelColor(resources.getColor(R.color.textgray)) //取消按钮文字颜色
+                .setTitleBgColor(resources.getColor(R.color.color_withe)) //标题背景颜色 Night mode
+                .setBgColor(Color.WHITE) //滚轮背景颜色 Night mode
+                .setType(booleanArrayOf(true, true, true, true, true, false))
+                .setRangDate(startDate, endDate) //起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "") //默认设置为年月日时分秒
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(false)
+                .build()
         }
     }
 
-    fun openLocationService() {
-        QuickPopupBuilder.with(this)
-            .contentView(R.layout.pop_open_location_service)
-            .config(
-                QuickPopupConfig()
-                    .gravity(Gravity.CENTER)
-                    .withClick(R.id.btn_comfir, View.OnClickListener {
-                        showLoctionServicePermission()
-                    }, true)
-                    .withClick(R.id.btn_cancel, View.OnClickListener {
-                        finish()
-                    }, true)
-            )
-            .show()
+    /**
+     * 选择活动时间
+     */
+    private fun initTimePickEND() {
+        //时间选择器
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+        endDate[2099, 11] = 31
+        //正确设置方式 原因：注意事项有说明
+        if (pvActEndTime == null) {
+            pvActEndTime = TimePickerBuilder(
+                this
+            ) { date, v ->
+                dateend = TimeUtils.MillisToStr1(date.time)
+                if (timebegin.time > date.time) {
+                    ToastUtils.s(
+                        BaseApplication.INSTANT.applicationContext,
+                        "结束时间不能小于开始时间"
+                    )
+                    pvActTime!!.show()
+                } else {
+                    ActivityFabuBaoming.dto.endTime = dateend
+                    binding.bottom.time.text = "$datebegin - $dateend"
+                }
+            }
+                .setCancelText("取消") //取消按钮文字
+                .setSubmitText("确定") //确认按钮文字
+                .setTitleText("结束时间")
+                .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
+                .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
+                .isCyclic(true) //是否循环滚动
+                .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
+                .setCancelColor(resources.getColor(R.color.textgray)) //取消按钮文字颜色
+                .setTitleBgColor(resources.getColor(R.color.color_withe)) //标题背景颜色 Night mode
+                .setBgColor(Color.WHITE) //滚轮背景颜色 Night mode
+                .setType(booleanArrayOf(true, true, true, true, true, false))
+                .setRangDate(startDate, endDate) //起始终止年月日设定
+                .setLabel("年", "月", "日", "时", "分", "") //默认设置为年月日时分秒
+                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(false)
+                .build()
+        }
     }
 
-    fun showLoctionServicePermission() {
-        isunSave = true
-        // 没有打开定位服务。
-        LocationServiceUtil.openCurrentAppSystemSettingUI(this)
-        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-        startActivityForResult(intent, PostActivity.REQUEST_LOCATION_SERVICE)
-        return
 
+    /**
+     * 选择地址
+     */
+    private fun StartBaduMap() {
+        SoulPermission.getInstance()
+            .checkAndRequestPermission(
+                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                object : CheckRequestPermissionListener {
+                    override fun onPermissionOk(permission: Permission) {
+                        startActivityForResult(
+                            Intent(
+                                this@AvtivityFabuStep2,
+                                MMapActivity::class.java
+                            ), ReleaseActivity.ADDRESSBACK
+                        )
+                    }
+
+                    override fun onPermissionDenied(permission: Permission) {
+                        AlertDialog(this@AvtivityFabuStep2).builder()
+                            .setTitle("提示")
+                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                            .setNegativeButton("取消") { }.setPositiveButton(
+                                "确定"
+                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+                    }
+                })
     }
 }

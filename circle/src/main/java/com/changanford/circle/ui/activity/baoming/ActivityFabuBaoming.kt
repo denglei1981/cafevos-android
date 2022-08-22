@@ -1,8 +1,6 @@
 package com.changanford.circle.ui.activity.baoming
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -33,6 +31,7 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AttributeBean
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos.AttributeListBean
+import com.changanford.common.bean.DtoBeanNew
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
@@ -60,6 +59,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 
     private var pvActTime: TimePickerView? = null
     private var pvActEndTime: TimePickerView? = null
+
+    companion object {
+        var dto: DtoBeanNew = DtoBeanNew()
+    }
+
     var timebegin: Date = Date(System.currentTimeMillis())
 
     var fordAlbum: (String) -> Unit = {}
@@ -91,7 +95,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                                             object : OSSHelper.OSSImageListener {
                                                 override fun getPicUrl(url: String) {
                                                     it(url)
-                                                    viewModel.baomingReqBean.value?.cover = url
+                                                    dto.coverImgUrl = url
                                                 }
                                             })
                                 }
@@ -160,7 +164,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                viewModel.baomingReqBean.value?.datebegin = TimeUtils.MillisToStr1(date.time)
+                dto.signBeginTime = TimeUtils.MillisToStr1(date.time)
                 timebegin = date
                 pvActEndTime?.show()
             }
@@ -196,7 +200,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActEndTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                viewModel.baomingReqBean.value?.dateend = TimeUtils.MillisToStr1(date.time)
+                dto.signEndTime = TimeUtils.MillisToStr1(date.time)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,
@@ -204,7 +208,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     )
                     pvActTime!!.show()
                 } else {
-                    dateReslut("${viewModel.baomingReqBean.value?.datebegin}-${viewModel.baomingReqBean.value?.dateend}")
+                    dateReslut("${dto.signBeginTime}-${dto.signEndTime}")
                 }
             }
                 .setCancelText("取消") //取消按钮文字
@@ -231,11 +235,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             val a = AttrbultPop(
                 this, attributeListBeans
             ) { `object` ->
-                val m: MutableList<AttributeListBean?> =
+                val m: ArrayList<AttributeListBean> =
                     ArrayList()
                 for (key in `object`.keys) {
                     for (key1 in `object`[key]!!.keys) {
-                        m.add(`object`[key]!![key1])
+                        m.add(`object`[key]!![key1]!!)
                     }
                 }
                 var Showstr = ""
@@ -246,7 +250,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                         }
                     }
                 }
-                viewModel.baomingReqBean.value?.profile = Showstr
+                dto.attributes = m
                 profileResult(Showstr)
             }
             a.showPopupWindow()
@@ -290,6 +294,7 @@ fun fabubaomingCompose(
                 Color.White
             )
             .padding(horizontal = 20.dp)
+            .verticalScroll(state = rememberScrollState())
     ) {
         Box(
             Modifier
@@ -354,15 +359,15 @@ fun fabubaomingCompose(
         }
 
         Column {
-            FabuTitle(name = "标题", true)
             Box(modifier = Modifier.height(20.dp))
+            FabuTitle(name = "标题", true)
             FabuInput(hint = "请输入活动标题", 20) {
-                viewModel.baomingReqBean?.value?.title = it
+                ActivityFabuBaoming.dto.title = it
             }
             FabuLine()
             FabuTitle(name = "描述", false)
             FabuInput(hint = "请输入活动描述", 100) {
-                viewModel.baomingReqBean?.value?.des = it
+                ActivityFabuBaoming.dto.content = it
             }
             FabuLine()
             FabuTitle(name = "报名设置", false)
@@ -495,7 +500,11 @@ fun FabuInputItem(
                 .fillMaxWidth(1f)
                 .weight(1f),
             placeholder = {
-                Text(text = hint, style = TextStyle(color = Color(0xffcccccc), fontSize = 14.sp))
+                Text(
+                    text = hint,
+                    style = TextStyle(color = Color(0xffcccccc), fontSize = 14.sp),
+                    textAlign = TextAlign.Right
+                )
             }
 
         )

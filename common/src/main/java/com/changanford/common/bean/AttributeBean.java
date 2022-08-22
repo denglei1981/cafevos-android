@@ -69,6 +69,15 @@ public class AttributeBean {
              * mustInput : -95104119
              */
             private int checktype ; //标记是否选择中
+            private String attributeContent;//
+
+            public String getAttributeContent() {
+                return attributeContent;
+            }
+
+            public void setAttributeContent(String attributeContent) {
+                this.attributeContent = attributeContent;
+            }
 
             public int getChecktype() {
                 return checktype;

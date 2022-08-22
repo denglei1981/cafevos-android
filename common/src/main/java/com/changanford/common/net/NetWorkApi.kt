@@ -103,6 +103,15 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+    /**
+     * 发布活动-新
+     */
+    @POST("/highlights/v2/addActivity")
+    suspend fun ADDActNew(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
 
     //id获取活动详情
     @POST("/highlights/activityDetail")
