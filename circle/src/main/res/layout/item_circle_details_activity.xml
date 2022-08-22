@@ -26,12 +26,12 @@
             android:layout_height="28dp"
             android:background="@drawable/bg_item_activity_circle"
             android:gravity="center"
-            android:text="报名活动"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
             app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
-            app:layout_constraintRight_toRightOf="@+id/iv_bg" />
+            app:layout_constraintRight_toRightOf="@+id/iv_bg"
+            tools:text="报名活动" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"

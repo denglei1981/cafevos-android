@@ -24,8 +24,28 @@ data class CircleDetailBean(
     val shareBeanVO: CircleShareBean?,
     val userCount: Int = 0,
     val userId: Int = 0,
+    val wonderfulControls: ArrayList<WonderfulControlsBean>?,
+    val circleTopics: ArrayList<Any>?,
+    val circleNotices: ArrayList<CircleNoticesBean>?,
     val users: ArrayList<User> = arrayListOf(),
     val tags: ArrayList<NewCirceTagBean>? = null,
+)
+
+data class WonderfulControlsBean(
+    val title: String,
+    val coverImg: String,
+    val jumpType: Int,
+    val jumpValue: String,
+    val wonderfulId: String,
+    val wonderfulType: String,
+    val circleId: String,
+)
+
+data class CircleNoticesBean(
+    val top: String,
+    val noticeId: String,
+    val noticeName: String,
+    val detailHtml: String
 )
 
 data class ShareBeanVO(

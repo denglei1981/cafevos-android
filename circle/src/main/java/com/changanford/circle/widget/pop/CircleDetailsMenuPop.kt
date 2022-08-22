@@ -101,7 +101,9 @@ class CircleDetailsMenuPop(
 
                     }
                     4 -> {//发布话题
-                        startARouter(ARouterCirclePath.CreateCircleTopicActivity)
+                        val bundle = Bundle()
+                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                        startARouter(ARouterCirclePath.CreateCircleTopicActivity, bundle)
                     }
                 }
                 dismiss()

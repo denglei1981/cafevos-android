@@ -1,8 +1,10 @@
 package com.changanford.common.bean
 
+import android.os.Parcelable
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
+import kotlinx.android.parcel.Parcelize
 
 /**
  *  文件名：ActBean
@@ -113,13 +115,12 @@ data class InfoDataBean(
     }
 }
 
+@Parcelize
 data class AuthorBaseVo(
     val authorId: String,
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
     var isFollow: Int = 0, //1 是已关注
-    val medalImage: Any? = Any(),
-    val medalName: Any? = Any(),
     val memberIcon: String = "",
     val memberId: Int = 0,
     val memberName: String = "",
@@ -129,7 +130,7 @@ data class AuthorBaseVo(
     val headFrameImage: String = "",
     val userId: String = "",
     var carOwner: String = ""
-) {
+): Parcelable {
     fun getMemberNames(): String {
         return if (TextUtils.isEmpty(carOwner)) {
             ""

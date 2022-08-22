@@ -59,4 +59,22 @@ class CircleNoticeViewMode : BaseViewModel() {
         })
     }
 
+    fun updateCircleNotice(noticeId: String, noticeName: String, detailHtml: String, block: () -> Unit) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["noticeId"] = noticeId
+            body["noticeName"] = noticeName
+            body["detailHtml"] = detailHtml
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .updateCircleNotice(body.header(rKey), body.body(rKey))
+                .also {
+                    it.msg.toast()
+                    if (it.code == 0) {
+                        block.invoke()
+                    }
+                }
+        })
+    }
 }

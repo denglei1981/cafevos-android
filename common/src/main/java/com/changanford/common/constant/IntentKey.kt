@@ -11,4 +11,6 @@ object IntentKey {
     const val FORD_ALBUM_ITEM = "fordAlbumItem"
     const val CREATE_NOTICE_CIRCLE_ID = "createNoticeCircleId"
     const val HAS_LOOK_NOTICE = "hasLookNotice"
+    const val REASON_NOTICE = "reasonNotice"
+    const val NOTICE_ID = "noticeId"
 }

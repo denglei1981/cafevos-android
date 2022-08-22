@@ -170,21 +170,6 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     private fun initTestData() {
-        val noticeList = arrayListOf(
-            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有"),
-            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有"),
-            TestBean("福域探险者有活动啦，赶快参加吧福域探险者有")
-        )
-        noticeAdapter.setList(noticeList)
-
-        val activityList = arrayListOf(
-            TestBean("长安福特未来活动长安福特未…"),
-            TestBean("长安福特未来活动长安福特未…"),
-            TestBean("长安福特未来活动长安福特未…"),
-            TestBean("长安福特未来活动长安福特未…"),
-        )
-        activityAdapter.setList(activityList)
-
         val topicList = arrayListOf(
             TestBean("#最新之野"),
             TestBean("#探寻仲夏之野"),
@@ -262,6 +247,19 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             tvActivityMore.setOnClickListener {
                 startARouter(ARouterCirclePath.CircleActivityListActivity)
             }
+        }
+        noticeAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = noticeAdapter.getItem(position)
+            val bundle = Bundle()
+            bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+            bundle.putBoolean(IntentKey.HAS_LOOK_NOTICE, hasLookNotice)
+            bundle.putString(IntentKey.NOTICE_ID, bean.noticeId)
+            startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
+        }
+        activityAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = activityAdapter.getItem(position)
+            JumpUtils.instans?.jump(bean.jumpType, bean.jumpValue)
+
         }
     }
 
@@ -369,6 +367,20 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 initMyView(it.userId.toString())
                 isFirst = false
             }
+            if (!it.wonderfulControls.isNullOrEmpty()) {
+                activityAdapter.setList(it.wonderfulControls)
+                binding.topContent.clActivity.visibility = View.VISIBLE
+            } else {
+                binding.topContent.clActivity.visibility = View.GONE
+            }
+
+            if (it.circleNotices.isNullOrEmpty()) {
+                binding.topContent.clNotice.visibility = View.GONE
+            } else {
+                binding.topContent.clNotice.visibility = View.VISIBLE
+                noticeAdapter.setList(it.circleNotices)
+            }
+
             if (it.permissions.isNullOrEmpty()) {
                 binding.tvPost.visibility = View.GONE
             } else {
