@@ -1,22 +1,15 @@
 package com.changanford.circle.adapter
 
-import android.text.*
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
+import com.changanford.circle.bean.CircleNoticeItem
 import com.changanford.circle.databinding.ItemCircleNoticeBinding
 import com.changanford.circle.ext.loadCircleImage
 
 import com.changanford.circle.utils.MUtils.expandText
 import com.changanford.circle.utils.MUtils.setTopMargin
-import com.changanford.common.bean.TestBean
-import com.changanford.common.constant.TestImageUrl
 
 
 /**
@@ -25,16 +18,22 @@ import com.changanford.common.constant.TestImageUrl
  *Purpose
  */
 class CircleNoticeAdapter :
-    BaseQuickAdapter<TestBean, BaseDataBindingHolder<ItemCircleNoticeBinding>>(
+    BaseQuickAdapter<CircleNoticeItem, BaseDataBindingHolder<ItemCircleNoticeBinding>>(
         R.layout.item_circle_notice
+    ), LoadMoreModule {
+    override fun convert(
+        holder: BaseDataBindingHolder<ItemCircleNoticeBinding>,
+        item: CircleNoticeItem
     ) {
-    override fun convert(holder: BaseDataBindingHolder<ItemCircleNoticeBinding>, item: TestBean) {
         holder.dataBinding?.run {
             setTopMargin(this.root, 19, holder.layoutPosition)
-            ivHead.loadCircleImage(TestImageUrl)
-            tvContent.text = item.testString
+            ivHead.loadCircleImage(item.authorBaseVo.avatar)
+            tvTitle.text = item.noticeName
+            tvName.text = item.authorBaseVo.nickname
+            tvTime.text = item.noticeTimeStr
+            tvContent.text = item.detailHtml
             tvContent.post {
-                expandText(tvContent, item.testString)
+                expandText(tvContent, item.detailHtml)
             }
 
         }

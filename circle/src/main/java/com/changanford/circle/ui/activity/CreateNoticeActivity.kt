@@ -7,6 +7,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCreateNoticeBinding
 import com.changanford.circle.viewmodel.CircleNoticeViewMode
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
@@ -19,8 +20,10 @@ import com.changanford.common.util.toolbar.initTitleBar
 @Route(path = ARouterCirclePath.CreateNoticeActivity)
 class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNoticeViewMode>() {
 
+    private var circleId = ""
 
     override fun initView() {
+        circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateNoticeActivity,
@@ -39,6 +42,13 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
             etContent.addTextChangedListener {
                 tvContentNum.text = "${it?.length}/500"
                 inspectContent()
+            }
+            tvPost.setOnClickListener {
+                val title = etTitle.text.toString()
+                val content = etContent.text.toString()
+                viewModel.createNotice(circleId, title, content) {
+                    finish()
+                }
             }
         }
     }

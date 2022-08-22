@@ -90,6 +90,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     private var isOpenMenuPop = false
     private var shareBeanVO: CircleShareBean? = null
     private var isFirst = true
+    private var hasLookNotice = false
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
@@ -248,7 +249,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         }
         binding.topContent.apply {
             tvNoticeMore.setOnClickListener {
-                startARouter(ARouterCirclePath.CircleNoticeActivity)
+                val bundle = Bundle()
+                bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                bundle.putBoolean(IntentKey.HAS_LOOK_NOTICE, hasLookNotice)
+                startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
             }
             tvTopicMore.setOnClickListener {
                 val bundle = Bundle()
@@ -313,10 +317,12 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     private fun showMenuPop() {
-        CircleDetailsMenuPop(this).run {
-            setBlurBackgroundEnable(false)
-            showPopupWindow(binding.tvPost)
-            initData()
+        viewModel.circleDetailsBean.value?.permissions?.let {
+            CircleDetailsMenuPop(this, circleId, it).run {
+                setBlurBackgroundEnable(false)
+                showPopupWindow(binding.tvPost)
+                initData()
+            }
         }
     }
 
@@ -362,6 +368,16 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             if (isFirst) {
                 initMyView(it.userId.toString())
                 isFirst = false
+            }
+            if (it.permissions.isNullOrEmpty()) {
+                binding.tvPost.visibility = View.GONE
+            } else {
+                it.permissions.forEach { item ->
+                    if (item.dictValue == "ANNOUNCEMENT") {
+                        hasLookNotice = true
+                    }
+                }
+                binding.tvPost.visibility = View.VISIBLE
             }
             setJoinType(it.isApply)
             initListener(it.name)
