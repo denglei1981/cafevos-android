@@ -41,7 +41,7 @@
         android:background="#eeeeee" />
 
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/set_notice"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
@@ -54,9 +54,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="通知设置"
+            android:text="消息推送"
             android:textColor="#071726"
             android:textSize="@dimen/sp_15" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/set_msgenable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_11"
+            android:text="已开启"
+            android:textColor="#999999" />
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
@@ -65,12 +74,13 @@
     </LinearLayout>
 
     <View
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_1"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_20"
         android:background="#eeeeee" />
+
     <LinearLayout
         android:id="@+id/set_ford"
         android:layout_width="match_parent"
