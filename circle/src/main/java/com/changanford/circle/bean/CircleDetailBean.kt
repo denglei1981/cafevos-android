@@ -17,6 +17,7 @@ data class CircleDetailBean(
     val isOwner: Int = 0,
     val name: String = "",
     val nameColor: Any? = Any(),
+    val permissions: ArrayList<CirclePermissionsData>? = ArrayList(),
     val pic: String = "",
     val postsCount: Int = 0,
     val isViewApplyMan: Int = 0,
@@ -24,7 +25,7 @@ data class CircleDetailBean(
     val userCount: Int = 0,
     val userId: Int = 0,
     val users: ArrayList<User> = arrayListOf(),
-    val tags:ArrayList<NewCirceTagBean>?=null,
+    val tags: ArrayList<NewCirceTagBean>? = null,
 )
 
 data class ShareBeanVO(
@@ -45,4 +46,25 @@ data class User(
     val memberName: Any? = Any(),
     val nickname: String = "",
     val userId: Int = 0
+)
+
+
+data class CirclePermissionsData(
+    val createBy: String = "",
+    val createTime: String = "",
+    val cssClass: String? = "",
+    val default: Boolean = false,
+    val dictCode: Int = 0,
+    val dictLabel: String = "",
+    val dictSort: Int = 0,
+    val dictType: String = "",
+    val dictValue: String = "",
+    val isDefault: String = "",
+    val listClass: String? = "",
+    val params: Params = Params(),
+    val remark: String = "",
+    val searchValue: Any? = Any(),
+    val status: String = "",
+    val updateBy: Any? = Any(),
+    val updateTime: Any? = Any()
 )

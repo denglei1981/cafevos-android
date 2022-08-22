@@ -40,18 +40,23 @@
                         android:background="@color/color_withe"
                         app:layout_collapseMode="pin">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="25dp"
+                            android:paddingBottom="5dp">
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/back_img"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:paddingStart="12dp"
-                                android:paddingTop="10dp"
                                 android:paddingEnd="10dp"
                                 android:src="@mipmap/whit_left"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
                                 tools:ignore="RtlSymmetry" />
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -64,31 +69,40 @@
                                 android:maxLines="1"
                                 android:text="圈子详情"
                                 android:textColor="@color/color_00"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textSize="16sp" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/share_img"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:paddingTop="10dp"
                                 android:layout_marginEnd="12dp"
                                 android:layout_toStartOf="@+id/tv_post"
-                                android:src="@mipmap/circle_share_image_v" />
+                                android:src="@mipmap/circle_share_image_v"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintRight_toLeftOf="@+id/tv_post"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_goneMarginEnd="0dp" />
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/tv_post"
                                 android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:text="发布"
-                                android:textSize="16sp"
-                                android:paddingTop="10dp"
                                 android:textColor="@color/white"
-                                android:layout_marginEnd="25dp"
-                                android:layout_height="wrap_content"/>
-                        </RelativeLayout>
+                                android:textSize="16sp"
+                                android:visibility="gone"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.appcompat.widget.Toolbar>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -112,12 +126,12 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_post_bar"
             android:layout_width="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="130dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="17dp"
+            android:layout_marginBottom="130dp"
             android:src="@mipmap/circle_post_bar_icon"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -555,4 +555,18 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleSelectedPostsBean>>
+
+    //发布公告
+    @POST("/con/community/initiateCircleNotice")
+    suspend fun initiateCircleNotice(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //社区-圈子-公告列表
+    @POST("/con/community/circleNotices")
+    suspend fun circleNotices(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleNoticeBean>
 }

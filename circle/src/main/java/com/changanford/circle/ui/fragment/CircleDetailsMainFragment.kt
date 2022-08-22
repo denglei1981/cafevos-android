@@ -84,7 +84,7 @@ class CircleDetailsMainFragment :
 
     override fun observe() {
         super.observe()
-        viewModel.circleBean.observe(this, {
+        viewModel.circleBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it.dataList)
             } else {
@@ -94,7 +94,7 @@ class CircleDetailsMainFragment :
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
+        }
     }
 
     private fun bus() {

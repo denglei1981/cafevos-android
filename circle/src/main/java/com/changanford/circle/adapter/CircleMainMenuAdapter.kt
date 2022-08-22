@@ -27,7 +27,7 @@ class CircleMainMenuAdapter(context: Context) :
             binding.vLine.visibility = View.VISIBLE
         }
         item.pic?.let {
-            if (item.pic != 0) {
+            if (item.pic.toString().length != 1) {
                 binding.ivIcon.loadImage(item.pic)
                 binding.ivIcon.visibility = View.VISIBLE
             } else {
