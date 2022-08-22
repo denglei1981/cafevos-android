@@ -569,4 +569,25 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleNoticeBean>
+
+    //社区-圈子-公告列表
+    @POST("/con/community/circleMyNotices")
+    suspend fun circleMyNotices(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleNoticeBean>
+
+    //修改公告
+    @POST("/con/community/updateCircleNotice")
+    suspend fun updateCircleNotice(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    //发起圈内话题
+    @POST("/con/topic/initiateTopic")
+    suspend fun initiateTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }

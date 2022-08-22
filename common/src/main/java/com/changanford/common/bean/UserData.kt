@@ -1,6 +1,8 @@
 package com.changanford.common.bean
 
+import android.os.Parcelable
 import android.text.TextUtils
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 
 /**
@@ -124,11 +126,12 @@ data class Ext(
     }
 }
 
+@Parcelize
 data class Imag(
     val img: String,
     val jumpDataType: Int,
     val jumpDataValue: String
-)
+): Parcelable
 
 
 data class FansListBean(

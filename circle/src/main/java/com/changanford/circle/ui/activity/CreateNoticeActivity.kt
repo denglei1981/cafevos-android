@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
+import com.changanford.circle.bean.CircleNoticeItem
 import com.changanford.circle.databinding.ActivityCreateNoticeBinding
 import com.changanford.circle.viewmodel.CircleNoticeViewMode
 import com.changanford.common.basic.BaseActivity
@@ -21,15 +22,22 @@ import com.changanford.common.util.toolbar.initTitleBar
 class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNoticeViewMode>() {
 
     private var circleId = ""
+    private var changeNoticeBean: CircleNoticeItem? = null
 
     override fun initView() {
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
+        changeNoticeBean = intent.getSerializableExtra(IntentKey.REASON_NOTICE) as CircleNoticeItem?
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateNoticeActivity,
                 Builder().apply { title = "发布公告" })
         }
         initMyListener()
+
+        if (changeNoticeBean != null) {
+            binding.etTitle.setText(changeNoticeBean?.noticeName)
+            binding.etContent.setText(changeNoticeBean?.detailHtml)
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -46,8 +54,18 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
             tvPost.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
-                viewModel.createNotice(circleId, title, content) {
-                    finish()
+                if (changeNoticeBean != null) {
+                    changeNoticeBean?.let {
+                        viewModel.updateCircleNotice(
+                            it.noticeId.toString(),
+                            title,
+                            content
+                        ) { finish() }
+                    }
+                } else {
+                    viewModel.createNotice(circleId, title, content) {
+                        finish()
+                    }
                 }
             }
         }

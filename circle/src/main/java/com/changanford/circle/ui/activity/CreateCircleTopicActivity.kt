@@ -9,6 +9,7 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.viewmodel.CreateCircleTopicViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
@@ -32,8 +33,10 @@ class CreateCircleTopicActivity :
     BaseActivity<ActivityCreateCircleTopicBinding, CreateCircleTopicViewModel>() {
 
     private var picUrl = ""
+    private var circleId = ""
 
     override fun initView() {
+        circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateCircleTopicActivity,
@@ -97,6 +100,11 @@ class CreateCircleTopicActivity :
 
                     }).show()
 
+            }
+            tvPost.setOnClickListener {
+                val title = etTitle.text.toString()
+                val content = etContent.text.toString()
+                viewModel.initiateTopic(circleId, title, content, picUrl) { finish() }
             }
         }
 

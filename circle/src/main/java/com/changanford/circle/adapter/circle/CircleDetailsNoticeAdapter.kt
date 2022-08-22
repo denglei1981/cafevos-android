@@ -4,6 +4,7 @@ import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
+import com.changanford.circle.bean.CircleNoticesBean
 import com.changanford.circle.databinding.ItemCiecleDetailsNoticeBinding
 import com.changanford.common.bean.TestBean
 
@@ -13,16 +14,16 @@ import com.changanford.common.bean.TestBean
  *Purpose
  */
 class CircleDetailsNoticeAdapter :
-    BaseQuickAdapter<TestBean, BaseDataBindingHolder<ItemCiecleDetailsNoticeBinding>>(
+    BaseQuickAdapter<CircleNoticesBean, BaseDataBindingHolder<ItemCiecleDetailsNoticeBinding>>(
         R.layout.item_ciecle_details_notice
     ) {
     override fun convert(
         holder: BaseDataBindingHolder<ItemCiecleDetailsNoticeBinding>,
-        item: TestBean
+        item: CircleNoticesBean
     ) {
         holder.dataBinding?.apply {
-            tvContent.text = item.testString
-            if (holder.layoutPosition < 2) {
+            tvContent.text = item.noticeName
+            if (item.top == "YES") {
                 tvTop.visibility = View.VISIBLE
             } else {
                 tvTop.visibility = View.GONE

@@ -1,13 +1,16 @@
 package com.changanford.circle.ui.activity
 
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.MyCircleNoticeAdapter
 import com.changanford.circle.databinding.ActivityMyCircleNoticeBinding
 import com.changanford.circle.viewmodel.MyCircleNoticeViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.TestBean
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.MConstant
 
 /**
  *Author lcw
@@ -18,11 +21,15 @@ import com.changanford.common.util.AppUtils
 class MyCircleNoticeActivity :
     BaseActivity<ActivityMyCircleNoticeBinding, MyCircleNoticeViewModel>() {
 
+    private var circleId = ""
+    private var page = 1
+
     private val noticeAdapter by lazy {
         MyCircleNoticeAdapter()
     }
 
     override fun initView() {
+        circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, this)
         initMyListener()
         binding.ryMyNotice.adapter = noticeAdapter
@@ -32,18 +39,40 @@ class MyCircleNoticeActivity :
         binding.run {
             ivBack.setOnClickListener { finish() }
         }
+        noticeAdapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            viewModel.circleMyNotices(page, circleId)
+        }
     }
 
     override fun initData() {
-        val list = arrayListOf(
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-            TestBean("公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；"),
-        )
-        noticeAdapter.setList(list)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(MConstant.token.isNotEmpty()){
+            page = 1
+            viewModel.circleMyNotices(page, circleId)
+        }
+    }
+
+    override fun observe() {
+        super.observe()
+        viewModel.noticeListBean.observe(this) {
+            if (it.dataList.isNullOrEmpty()) {
+                noticeAdapter.setEmptyView(R.layout.base_layout_empty)
+                return@observe
+            }
+            if (page == 1) {
+                noticeAdapter.setList(it.dataList)
+            } else {
+                noticeAdapter.addData(it.dataList)
+                noticeAdapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                noticeAdapter.loadMoreModule.loadMoreEnd()
+            }
+        }
     }
 }
