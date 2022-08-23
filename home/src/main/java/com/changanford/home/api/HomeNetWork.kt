@@ -258,7 +258,7 @@ interface HomeNetWork {
     ): CommonResponse<ListMainBean<ActBean>>
 
     /***
-     * /highlights/getHighlights
+     *
      *  活动列表新22-0819。
      * */
     @POST("/highlights/v2/getHighlights")

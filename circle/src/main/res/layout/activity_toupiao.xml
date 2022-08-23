@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusableInTouchMode="true">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/comm_bar_title_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10">
+
+                    <ImageView
+                        android:id="@+id/iv_fengmian"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_160"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/default_release_fm" />
+
+                    <TextView
+                        android:id="@+id/tv_fm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_4"
+                        android:layout_gravity="right|bottom"
+                        android:background="@drawable/circle_shape_blacksolid"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="封面"
+                        android:textColor="@color/white"
+                        android:textSize="9sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_fm_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/dp_4"
+                        android:gravity="center"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="@dimen/dp_60"
+                        android:paddingRight="3dp"
+                        android:text="请上传封面"
+                        android:textColor="@color/color_cc"
+                        android:textSize="@dimen/sp_13"
+                        android:visibility="visible" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="* "
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/commonTextView.Normal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="25dp"
+                        android:text="标题"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_biaoti"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:hint="请输入投票标题"
+                        android:maxLength="20"
+                        android:minEms="4"
+                        android:textColor="@color/textblack"
+                        android:textColorHint="@color/color_cc"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:text="0/20"
+                        android:textColor="#AFB3B6"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/alertdialog_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="* "
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/commonTextView.Normal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="25dp"
+                        android:text="活动时间"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_acttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:background="@color/transparent"
+                        android:text="请选择活动时间"
+                        android:textColor="@color/color_cc" />
+
+                    <TextView
+                        android:id="@+id/tv_acttime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/tv_time"
+                        android:drawableRight="@mipmap/rightarrow"
+                        android:drawablePadding="5dp"
+                        android:gravity="right"
+                        android:singleLine="true"
+                        android:textColor="@color/textblack"
+                        android:textColorHint="#AFB3B6"
+                        android:textSize="12sp"
+                        tools:text="adfsf" />
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/alertdialog_line" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="活动描述"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/alertdialog_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:text="* "
+                        android:textColor="@color/red"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/commonTextView.Normal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_weight="1"
+                        android:text="选项设置"
+                        android:textColor="@color/textblack"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/bg_f6_cor14"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/dp_2"
+                        android:paddingVertical="@dimen/dp_2">
+
+                        <TextView
+                            android:id="@+id/togwenzi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="@dimen/dp_10"
+                            android:paddingVertical="@dimen/dp_2"
+                            android:text="文字"
+                            android:textColor="@color/color_cc"
+                            android:textSize="@dimen/sp_12" />
+
+                        <TextView
+                            android:id="@+id/togtuwen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_white_12"
+                            android:paddingHorizontal="@dimen/dp_10"
+                            android:paddingVertical="@dimen/dp_2"
+                            android:text="图文"
+                            android:textColor="@color/color_33"
+                            android:textSize="@dimen/sp_12" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="@dimen/dp_20" />
+
+                <RelativeLayout
+
+                    android:id="@+id/ll_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/circle_shape_xuxian">
+
+                    <TextView
+                        android:id="@+id/text"
+                        style="@style/commonTextView.Normal"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="添加选项 (最多20个）"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        style="@style/commonTextView"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_toLeftOf="@id/text"
+                        android:gravity="center"
+                        android:paddingTop="15dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="15dp"
+                        android:text="+"
+                        android:textColor="@color/color_00095B"
+                        android:textSize="30sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    style="@style/commonTextView.Normal"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="25dp"
+                    android:text="投票说明"
+                    android:textColor="@color/textblack"
+                    android:textSize="15sp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/color_F8"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp_5">
+
+                    <EditText
+                        android:id="@+id/et_shuoming"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:gravity="top"
+                        android:hint="请输入投票说明"
+                        android:maxLength="500"
+                        android:minEms="4"
+                        android:minLines="6"
+                        android:padding="@dimen/dp_5"
+                        android:textColor="@color/textblack"
+                        android:textColorHint="@color/color_cc"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_shuomingnum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_5"
+                        android:gravity="bottom"
+                        android:text="0/500"
+                        android:textColor="#AFB3B6"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    style="@style/commonTextView.Normal"
+                    android:layout_marginTop="30dp"
+                    android:text="高级设置"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/multeorsignletxt"
+                        style="@style/commonTextView.Normal"
+                        android:layout_centerVertical="true"
+                        android:text="允许多选"
+                        android:textColor="@color/color_66"
+                        android:textSize="14sp" />
+
+                    <CheckBox
+                        android:id="@+id/multeorsignle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/checkbox_wenti_selector"
+                        android:button="@null"
+                        android:checked="false" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/alertdialog_line" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/ssss"
+                        style="@style/commonTextView.Normal"
+                        android:layout_centerVertical="true"
+                        android:text="查看投票明细"
+                        android:textColor="@color/color_66"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/question"
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_toRightOf="@id/ssss"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:src="@mipmap/circle_post_question"/>
+
+                    <CheckBox
+                        android:id="@+id/mcb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/checkbox_wenti_selector"
+                        android:button="@null"
+                        android:checked="true" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/alertdialog_line" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/nick_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/next_btn_bg"
+                    android:enabled="true"
+                    android:gravity="center"
+                    android:text="发布投票"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_mid"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nick_input" />
+            </LinearLayout>
+        </LinearLayout>
+        "
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

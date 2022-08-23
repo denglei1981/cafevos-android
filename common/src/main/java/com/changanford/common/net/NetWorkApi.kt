@@ -112,6 +112,15 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+    /**
+     * 发布投票-新
+     */
+    @POST("/highlights/v2/addVote")
+    suspend fun ADDVote(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
 
     //id获取活动详情
     @POST("/highlights/activityDetail")

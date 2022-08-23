@@ -8,6 +8,7 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AttributeBean
 import com.changanford.common.bean.DtoBean
 import com.changanford.common.bean.DtoBeanNew
+import com.changanford.common.bean.VoteBean
 import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
@@ -57,6 +58,29 @@ class BaoMingViewModel : BaseViewModel() {
                 body["townName"] = dtoBean.townName
                 body["wonderfulType"] = dtoBean.wonderfulType
                 apiService.ADDActNew(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+    /**
+     * 发布投票
+     */
+    fun AddVote(voteBean: VoteBean,rpo: (CommonResponse<Any>) -> Unit) {
+        viewModelScope.launch {
+            rpo(fetchRequest {
+                var body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                body["allowMultipleChoice"] = voteBean.allowMultipleChoice
+                body["allowViewResult"] = voteBean.allowViewResult
+                body["beginTime"] = voteBean.beginTime
+                body["circleId"] = voteBean.circleId
+                body["coverImg"] = voteBean.coverImg
+                body["endTime"] = voteBean.endTime
+                body["optionList"] = voteBean.optionList
+                body["title"] = voteBean.title
+                body["voteDesc"] = voteBean.voteDesc
+                body["voteType"] = voteBean.voteType
+                apiService.ADDVote(body.header(rkey), body.body(rkey))
             })
         }
     }

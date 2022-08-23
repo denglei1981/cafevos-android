@@ -8,6 +8,7 @@ object ARouterCirclePath {
     ////////////////////  Activity路由  /////////////////
     const val ActivityFabuBaoming = "/circle/ActivityFabuBaoming"
     const val ActivityFabuStep2 = "/circle/ActivityFabuStep2"
+    const val ActivityFabuToupiao = "/circle/ActivityFabuToupiao"
     const val releasactivity = "/circle/releasactivity"
     const val activitydetail = "/circle/activitydetail"
     const val CirclePeopleActivity = "/circle/CirclePeopleActivity"
