@@ -11,6 +11,7 @@ import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CommonUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.acts.dialog.HomeActsScreenDialog
@@ -68,8 +69,10 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item = searchActsResultAdapter.getItem(position)
-                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-                if (item.jumpType == 2||item.jumpType==1) {
+//                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
+                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+//                if (item.jumpType == 2||item.jumpType==1) {
+                if (item.outChain == "YES") {
                     viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
                 }
             }

@@ -43,16 +43,16 @@ class SearchActsResultAdapter :
 //                    }
                 }
                 if (item.wonderfulType != 2) {// 不是问卷活动
-                    if (item.jumpType == 3) { // 是常规活动 及报名活动
-                        if (item.needSignUp == "NO") { // 是否显示截止时间。
-                            it.tvHomeSignUpTime.visibility = View.GONE
-                        } else {
-                            it.tvHomeSignUpTime.visibility = View.VISIBLE
-                        }
-                        it.tvHomeSignUpTime.text = item.getSignTimes()
-                    } else {
-                        it.tvHomeSignUpTime.visibility = View.GONE
-                    }
+//                    if (item.jumpType == 3) { // 是常规活动 及报名活动
+//                        if (item.needSignUp == "NO") { // 是否显示截止时间。
+//                            it.tvHomeSignUpTime.visibility = View.GONE
+//                        } else {
+//                            it.tvHomeSignUpTime.visibility = View.VISIBLE
+//                        }
+//                        it.tvHomeSignUpTime.text = item.getSignTimes()
+//                    } else {
+//                        it.tvHomeSignUpTime.visibility = View.GONE
+//                    }
                 }
 
             } catch (e: Exception) {

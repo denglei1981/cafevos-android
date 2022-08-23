@@ -56,8 +56,10 @@ class SearchActsFragment :
         searchActsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
                 val item: ActBean = searchActsResultAdapter.getItem(position)
-                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
-                if (item.jumpType == 2||item.jumpType==1) {
+//                CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
+                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+//                if (item.jumpType == 2||item.jumpType==1) {
+                if (item.outChain == "YES") {
                     viewModel.AddACTbrid(searchActsResultAdapter.getItem(position).wonderfulId)
                 }
             }

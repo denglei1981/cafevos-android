@@ -30,6 +30,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
+import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
@@ -65,6 +66,14 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
         clickInit()
         liveDataInit()
         initAdapter()
+    }
+
+    override fun onBackPressed() {
+        BottomSelectDialog(this, {
+
+        }) {
+            super.onBackPressed()
+        }.show()
     }
 
     private fun initAdapter() {
@@ -329,7 +338,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             voteBean.voteDesc = binding.etShuoming.text.toString()
             voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
             voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
-            viewModel.AddVote(voteBean){
+            viewModel.AddVote(voteBean) {
                 it.onSuccess {
                     finish()
                 }
