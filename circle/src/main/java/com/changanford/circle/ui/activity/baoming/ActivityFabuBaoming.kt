@@ -32,6 +32,7 @@ import com.changanford.common.bean.AttributeBean
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos.AttributeListBean
 import com.changanford.common.bean.DtoBeanNew
+import com.changanford.common.constant.IntentKey.CREATE_NOTICE_CIRCLE_ID
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
@@ -77,6 +78,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         binding.titleLayout.barImgBack.setOnClickListener {
             finish()
         }
+        dto.circleId = intent.getStringExtra(CREATE_NOTICE_CIRCLE_ID)
 
         binding.composeLayout.setContent {
             fabubaomingCompose(viewModel, choseCover = {
@@ -126,6 +128,10 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     override fun initData() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
             fordAlbum(it as String)
+            dto.coverImgUrl = it
+        }
+        LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).observe(this){
+            finish()
         }
         viewModel.getAttributes()
         viewModel.attributeBean.observe(
@@ -256,12 +262,6 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             a.showPopupWindow()
         }
     }
-}
-
-@Preview
-@Composable
-fun thispre() {
-//    fabubaomingCompose()
 }
 
 @Composable
@@ -503,7 +503,9 @@ fun FabuInputItem(
                 Text(
                     text = hint,
                     style = TextStyle(color = Color(0xffcccccc), fontSize = 14.sp),
-                    textAlign = TextAlign.Right
+                    textAlign = TextAlign.Right, modifier = Modifier.fillMaxWidth(
+                        1f
+                    )
                 )
             }
 

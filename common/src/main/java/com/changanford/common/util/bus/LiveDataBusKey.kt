@@ -191,6 +191,7 @@ object LiveDataBusKey {
     const val STAR_EXCL_SIVEBRICK_CARD = "card:CircleMemberManageFinish"//跳转专属经销商卡
 
     const val MINE_UNI_SERVICE_DEALER_SUCCESS = "mine:uni_service_dealer_success" // 专属经销商购买成功
+    const val FABUBAOMINGFINISHI = "FABUBAOMINGFINISHI" // 发布报名活动成功
 
     const val MINE_CANCEL_ACCOUNT = "mine:cancel_account" //取消注销申请，注销成功
     const val MINE_SIGN_FIX = "mine:sign_fix" //补签成功，刷新数据

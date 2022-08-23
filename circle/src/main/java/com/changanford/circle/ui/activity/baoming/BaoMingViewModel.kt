@@ -38,7 +38,24 @@ class BaoMingViewModel : BaseViewModel() {
             rpo(fetchRequest {
                 var body = HashMap<String, Any>()
                 var rkey = getRandomKey()
-                body["dto"] = dtoBean
+                body["coverImgUrl"] = dtoBean.coverImgUrl
+                body["activityAddr"] = dtoBean.activityAddr
+                body["attributes"] = dtoBean.attributes
+                body["beginTime"] = dtoBean.beginTime
+                body["cityId"] = dtoBean.cityId
+                body["cityName"] = dtoBean.cityName
+                body["content"] = dtoBean.content
+                body["contentImgList"] = dtoBean.contentImgList
+                body["endTime"] = dtoBean.endTime
+                body["latitude"] = dtoBean.latitude
+                body["longitude"] = dtoBean.longitude
+                body["provinceId"] = dtoBean.provinceId
+                body["provinceName"] = dtoBean.provinceName
+                body["signBeginTime"] = dtoBean.signBeginTime
+                body["signEndTime"] = dtoBean.signEndTime
+                body["title"] = dtoBean.title
+                body["townName"] = dtoBean.townName
+                body["wonderfulType"] = dtoBean.wonderfulType
                 apiService.ADDActNew(body.header(rkey), body.body(rkey))
             })
         }

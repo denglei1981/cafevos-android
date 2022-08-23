@@ -1,6 +1,7 @@
 package com.changanford.circle.widget.pop
 
 import android.content.Context
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
@@ -11,6 +12,7 @@ import com.changanford.circle.adapter.CircleMainMenuAdapter
 import com.changanford.circle.bean.CircleMainMenuBean
 import com.changanford.circle.databinding.PopCircleMainMenuBinding
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.SPUtils
@@ -85,7 +87,11 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                     3->{
                         listener.checkQuestion()
                     }
-                    else -> startARouter(ARouterCirclePath.ActivityFabuBaoming)
+                    else -> {
+                        val bundle = Bundle()
+                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
+                        startARouter(ARouterCirclePath.ActivityFabuBaoming,bundle)
+                    }
                 }
                 dismiss()
             }

@@ -95,7 +95,9 @@ class CircleDetailsMenuPop(
                         startARouter(ARouterCirclePath.CreateNoticeActivity, bundle)
                     }
                     2 -> {//报名活动
-
+                        val bundle = Bundle()
+                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                        startARouter(ARouterCirclePath.ActivityFabuBaoming,bundle)
                     }
                     3 -> {//投票活动
 
