@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.UserManger
@@ -26,7 +27,6 @@ import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
-import com.changanford.home.data.AdBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.databinding.LayoutRecommendFastInBinding

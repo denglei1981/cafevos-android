@@ -5,9 +5,12 @@ import android.view.View
 import androidx.lifecycle.Observer
 import cn.we.swipe.helper.WeSwipe
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.PostRoomViewModel
+import com.changanford.common.bean.DtoBeanNew
+import com.changanford.common.bean.VoteBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -19,6 +22,7 @@ import com.changanford.my.R
 import com.changanford.my.databinding.ItemPostDraftBinding
 import com.changanford.my.databinding.UiPostDraftBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
+import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 /**
@@ -79,6 +83,46 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                                 }
                             }
                         }
+                        "5" ->{//报名
+                            var dto = Gson().fromJson(item.baoming, DtoBeanNew::class.java)
+                            if (!dto.title.isNullOrEmpty()){
+                                holder.itemTitle.visibility=View.VISIBLE
+                                holder.itemTitle.text = dto.title
+                            }else{
+                                holder.itemTitle.visibility=View.GONE
+                            }
+                            if (!dto.content.isNullOrEmpty()){
+                                holder.itemContent.visibility = View.VISIBLE
+                                holder.itemContent.text = dto.content
+                            }else{
+                                holder.itemContent.visibility = View.GONE
+                            }
+                            if (dto.title.isNullOrEmpty() && dto.content.isNullOrEmpty() && !dto.coverImgUrl.isNullOrEmpty()){
+                                holder.itemTitle.visibility = View.VISIBLE
+                                holder.itemContent.visibility=View.GONE
+                                holder.itemTitle.text ="【图片】"
+                            }
+                        }
+                        "6" ->{//投票
+                            var voteBean = Gson().fromJson(item.toupiao,VoteBean::class.java)
+                            if (voteBean.voteDesc.isNotEmpty()){
+                                holder.itemContent.visibility=View.VISIBLE
+                                holder.itemContent.text = voteBean.voteDesc
+                            }else{
+                                holder.itemContent.visibility=View.GONE
+                            }
+                            if (voteBean.title.isNotEmpty()){
+                                holder.itemTitle.visibility = View.VISIBLE
+                                holder.itemTitle.text = voteBean.title
+                            }else{
+                                holder.itemTitle.visibility = View.GONE
+                            }
+                            if (voteBean.title.isEmpty() && voteBean.voteDesc.isEmpty() && voteBean.coverImg.isNotEmpty()){
+                                holder.itemTitle.visibility = View.VISIBLE
+                                holder.itemContent.visibility=View.GONE
+                                holder.itemTitle.text ="【图片】"
+                            }
+                        }
                     }
 
                     holder.itemTime.text =
@@ -115,6 +159,14 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
                             "4" -> {
                                 RouterManger.param("postEntity", item)
                                     .startARouter(ARouterCirclePath.LongPostAvtivity)
+                            }
+                            "5" -> {
+                                RouterManger.param("postEntity", item)
+                                    .startARouter(ARouterCirclePath.ActivityFabuBaoming)
+                            }
+                            "6" -> {
+                                RouterManger.param("postEntity", item)
+                                    .startARouter(ARouterCirclePath.ActivityFabuToupiao)
                             }
                         }
                     }

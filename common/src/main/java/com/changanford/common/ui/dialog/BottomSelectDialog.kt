@@ -16,14 +16,14 @@ class BottomSelectDialog(context: Context, save:()->Unit = {},notSave:()->Unit =
     init {
         window?.setGravity(Gravity.BOTTOM)
         setParamWidthMatch()
-        findViewById<AppCompatTextView>(R.id.notsave).setOnClickListener {
+        findViewById<AppCompatTextView>(R.id.tv_cancel).setOnClickListener {
             dismiss()
         }
         findViewById<AppCompatTextView>(R.id.save).setOnClickListener {
             save()
             dismiss()
         }
-        findViewById<AppCompatTextView>(R.id.tv_default).setOnClickListener {
+        findViewById<AppCompatTextView>(R.id.notsave).setOnClickListener {
             notSave()
             dismiss()
         }

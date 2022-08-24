@@ -3,6 +3,7 @@ package com.changanford.home.acts.request
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.ActBean
 import com.changanford.common.net.*
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
@@ -11,7 +12,6 @@ import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.ListMainBean
-import com.changanford.home.data.ActBean
 import com.changanford.home.data.EnumBean
 
 /**

@@ -25,7 +25,7 @@ data class PostEntity(
     @ColumnInfo(name = "title") var title: String = "",//标题
     @ColumnInfo(name = "topicId") var topicId: String = "",//话题id
     @ColumnInfo(name = "topicName") var topicName: String = "",//话题id
-    @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频 4 图文长帖
+    @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频 4 图文长帖，5 报名活动 ，6 投票活动
     @ColumnInfo(name = "userId") var userId: String = "",//用户id
     @ColumnInfo(name = "videoTime") var videoTime: String = "",//若为视频帖子,视频时长
     @ColumnInfo(name = "videoUrl") var videoUrl: String = "",//视频帖子中视频地址
@@ -43,6 +43,8 @@ data class PostEntity(
     @ColumnInfo(name="longPostDatas") var longPostDatas:String="", //发长图的列表集合 分开存储是因为可能没有选择封面
     @ColumnInfo(name="tags") var tags:String="",   // 标签 存储为json
     @ColumnInfo(name="addrName") var addrName:String="",
+    @ColumnInfo(name = "baoming") var baoming:String = "",//报名活动
+    @ColumnInfo(name = "toupiao") var toupiao:String = "",//投票活动
 
 
 ) : Serializable

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.ActDataBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
@@ -17,6 +18,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
+import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.ActViewModel
@@ -36,8 +38,8 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var userId: String = ""
     var isRefresh: Boolean = false
 
-    val actAdapter: ActAdapter by lazy {
-        ActAdapter()
+    val actAdapter: SearchActsResultAdapter by lazy {
+        SearchActsResultAdapter()
     }
 
     companion object {
@@ -88,6 +90,50 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 total = it
             }
             completeRefresh(reponse?.data?.dataList, actAdapter, total)
+        }
+    }
+    override fun <T, VH : BaseViewHolder> completeRefresh(
+        newData: Collection<T>?,
+        adapter: BaseQuickAdapter<T, VH>,
+        total: Int
+    ) {
+        adapter?.apply {
+            //列表为null且是刷新数据或者第一次加载数据，此时显示EmptyLayout
+            if (newData.isNullOrEmpty() && pageSize == 1) {
+                //清数据
+//                data.clear()
+                data.clear()
+                addData(newData ?: arrayListOf())
+                //显示EmptyLayout
+                //需要加载到Adapter自己实现到showEmptyLayout
+                showEmpty()?.let {
+                    setEmptyView(it)
+                }
+                //禁止加载更多
+                bindSmartLayout()?.apply {
+                    setEnableLoadMore(false)
+                    setEnableRefresh(false)
+                }
+            } else {
+                //刷新数据
+                if (pageSize == 1) {
+                    data.clear()
+                }
+                if (total == 0) { // 0不加载更多 不需要分页
+                    bindSmartLayout()?.setEnableLoadMore(false)
+                }
+                newData?.let {
+                    when {
+                        total > it.size + data.size -> {// 总数大于获取的数据
+                            bindSmartLayout()?.apply { setEnableLoadMore(true) } // 加载更多
+                        }
+                        else -> {
+                            bindSmartLayout()?.apply { setEnableLoadMore(false) }// 禁止加载更多
+                        }
+                    }
+                    addData(it)
+                }
+            }
         }
     }
     override fun initRefreshData(pageSize: Int) {

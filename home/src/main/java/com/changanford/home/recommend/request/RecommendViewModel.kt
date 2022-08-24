@@ -3,6 +3,7 @@ package com.changanford.home.recommend.request
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.FastBeanData
 import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.net.*
 import com.changanford.common.util.SafeMutableLiveData
@@ -10,7 +11,6 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.data.FastBeanData
 import kotlinx.coroutines.launch
 
 class RecommendViewModel : BaseViewModel() {

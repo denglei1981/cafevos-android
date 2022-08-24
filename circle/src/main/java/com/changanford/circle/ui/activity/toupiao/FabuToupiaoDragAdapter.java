@@ -25,7 +25,7 @@ public class FabuToupiaoDragAdapter extends BaseQuickAdapter<VoteOptionBean, Bas
     }
 
 
-    Boolean showImg = true;
+    Boolean showImg = false;
 
     public void setStyle(Boolean img) {
         showImg = img;

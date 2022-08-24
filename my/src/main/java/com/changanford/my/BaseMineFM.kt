@@ -23,7 +23,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
 abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, VM>(),
     OnRefreshLoadMoreListener {
 
-    private var pageSize: Int = 1
+    var pageSize: Int = 1
     private var pageNum: Int = 10
     private var isFirst: Boolean = true //首次进入页面
     var emptyBinding: ViewEmptyBinding?=null

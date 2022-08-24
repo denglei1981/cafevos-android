@@ -7,10 +7,12 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.chad.library.adapter.base.listener.OnItemDragListener
@@ -19,13 +21,17 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityToupiaoBinding
 import com.changanford.circle.ui.activity.baoming.BaoMingViewModel
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.VoteBean
 import com.changanford.common.bean.VoteOptionBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.onSuccess
+import com.changanford.common.room.PostDatabase
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
@@ -39,10 +45,14 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
+import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ToastUtils
 import com.scwang.smart.refresh.layout.util.SmartUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 @Route(path = ARouterCirclePath.ActivityFabuToupiao)
@@ -53,26 +63,52 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     var circleId = ""
     var position = -1
     var voteBean: VoteBean = VoteBean()
+    var draftBean: PostEntity? = null
 
     override fun initView() {
         binding.title.barTvTitle.text = "发布投票活动"
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barImgBack.setOnClickListener {
-            finish()
+            caogao()
         }
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID) ?: ""
         voteBean.circleId = circleId
-        voteBean.voteType = "IMG"
+        voteBean.voteType = "TEXT"
         clickInit()
         liveDataInit()
         initAdapter()
     }
 
     override fun onBackPressed() {
-        BottomSelectDialog(this, {
+        caogao()
+    }
 
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
+
+    fun caogao() {
+        BottomSelectDialog(this, {
+            voteBean.coverImg = fengmianurl
+            var title = binding.etBiaoti.text.toString()
+            voteBean.title = title
+            voteBean.voteDesc = binding.etShuoming.text.toString()
+            voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
+            voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
+            var voteDB = PostEntity(
+                postsId = draftBean?.postsId ?: insertPostId,
+                type = "6",
+                toupiao = JSON.toJSONString(voteBean)
+            )
+            lifecycleScope.launch(Dispatchers.IO) {
+                PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                    .insert(voteDB)
+                withContext(Dispatchers.Main) {
+                    finish()
+                }
+            }
         }) {
-            super.onBackPressed()
+            finish()
         }.show()
     }
 
@@ -287,14 +323,10 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             setTimePicker()
         }
         binding.togwenzi.setOnClickListener {
-            changeStyle(
-                1
-            )
+            changeStyle(1)
         }
         binding.togtuwen.setOnClickListener {
-            changeStyle(
-                2
-            )
+            changeStyle(2)
         }
         binding.llAdd.setOnClickListener {
             if (voteBean.optionList.size < 20) {
@@ -350,10 +382,26 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     var list: ArrayList<VoteOptionBean> = ArrayList<VoteOptionBean>()
 
     override fun initData() {
-        list?.add(VoteOptionBean(""))
-        list?.add(VoteOptionBean(""))
-        voteBean.optionList.addAll(list)
-        dragAdapter.addData(list!!)
+        draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
+        if (draftBean != null) {
+            voteBean = Gson().fromJson(draftBean?.toupiao, VoteBean::class.java)
+            dragAdapter.addData(voteBean.optionList)
+            binding.apply {
+                showFengMian(voteBean.coverImg)
+                etBiaoti.setText(voteBean.title)
+                tvTime.text =
+                    "${voteBean.beginTime}-${voteBean.endTime}"
+                etShuoming.setText(voteBean.voteDesc)
+                multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
+                mcb.isChecked = voteBean.allowViewResult == "YES"
+            }
+        } else {
+            list?.add(VoteOptionBean(""))
+            list?.add(VoteOptionBean(""))
+            voteBean.optionList.addAll(list)
+            dragAdapter.addData(list!!)
+        }
+
     }
 
 

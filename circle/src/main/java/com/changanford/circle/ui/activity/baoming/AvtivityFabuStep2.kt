@@ -18,9 +18,11 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -39,17 +41,20 @@ import com.changanford.circle.ui.release.widget.ActivityTypeDialog
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DtoBeanNew
 import com.changanford.common.bean.MapReturnBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.onSuccess
+import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.AppUtils
@@ -70,9 +75,13 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.scwang.smart.refresh.layout.util.SmartUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -125,16 +134,43 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         isCirclePost = intent.extras?.getBoolean("isCirclePost") ?: false
         isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
         baoMingViewModel = createViewModel(BaoMingViewModel::class.java)
-        ActivityFabuBaoming.dto.coverImgUrl?.toast()
     }
 
     private fun initlocaData() {
         initEtContent()
+        binding.bottom.apply {
+            ActivityFabuBaoming.dto?.let {
+                time.text = "${it.beginTime?:""}-${it.endTime?:""}"
+                leixing.text = if(it.wonderfulType == "0") "线下活动" else "线上活动"
+                place.text = it.activityAddr?:""
+            }
+        }
     }
 
     private fun initEtContent() {
-        val default = LongPostBean(hintStr = "请输入活动详情")
-        longpostadapter.addData(default)
+        if (!ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()){
+            for (i in ActivityFabuBaoming.dto.contentImgList){
+                longpostadapter.addData(LongPostBean(i.contentDesc,i.localMedias))
+            }
+        }else {
+            val default = LongPostBean(hintStr = "请输入活动详情")
+            longpostadapter.addData(default)
+        }
+    }
+
+    override fun onBackPressed() {
+        caogao()
+    }
+    fun caogao(){
+        if(ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()) {
+            ActivityFabuBaoming.dto.contentImgList = ArrayList()
+        }else{
+            ActivityFabuBaoming.dto.contentImgList.clear()
+        }
+        ActivityFabuBaoming.dto.contentImgList.addAll(longpostadapter.data.map {
+            DtoBeanNew.ContentImg(it.content,it.localMedias)
+        })
+        finish()
     }
 
     override fun observe() {
@@ -241,25 +277,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
 
-    fun savePostDialog() {
-            finish()
-//        ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-//            override fun save() {
-//            }
-//
-//            override fun unsave() {
-//                isunSave = true
-//                finish()
-//            }
-//        }).showPopupWindow()
-
-    }
 
     private fun onclick() {
 
         binding.title.barImgBack.setOnClickListener {
-            savePostDialog()
-
+            caogao()
         }
         binding.bottom.timelayout.setOnClickListener {
             setTimePicker()

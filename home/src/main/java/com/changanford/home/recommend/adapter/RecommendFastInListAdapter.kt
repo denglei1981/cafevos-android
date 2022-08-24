@@ -6,13 +6,13 @@ import android.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.R
-import com.changanford.home.data.AdBean
 import com.changanford.home.databinding.ItemHomeRecommendFastInBinding
 
 // 不确定什么布局

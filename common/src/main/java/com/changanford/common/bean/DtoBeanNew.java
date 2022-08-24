@@ -1,5 +1,7 @@
 package com.changanford.common.bean;
 
+import com.luck.picture.lib.entity.LocalMedia;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -273,8 +275,21 @@ public class DtoBeanNew {
 
     public static class ContentImg {
         private String contentDesc; //图片描述
+        private LocalMedia localMedias; //保存草稿的图片
         private String contentImgUrl; //图片url
 
+        public LocalMedia getLocalMedias() {
+            return localMedias;
+        }
+
+        public void setLocalMedias(LocalMedia localMedias) {
+            this.localMedias = localMedias;
+        }
+
+        public ContentImg( String contentDesc,LocalMedia localMedias){
+            this.contentDesc = contentDesc;
+            this.localMedias = localMedias;
+        }
         public ContentImg(String contentImgUrl, String contentDesc) {
             this.contentDesc = contentDesc;
             this.contentImgUrl = contentImgUrl;

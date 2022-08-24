@@ -2,6 +2,7 @@ package com.changanford.home.search.request
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.ActBean
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.constant.SearchTypeConstant
@@ -11,7 +12,6 @@ import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.bean.SearchDoingBean
-import com.changanford.home.data.ActBean
 
 class PolySearchActsResultViewModel : BaseViewModel() {
 

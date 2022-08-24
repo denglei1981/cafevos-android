@@ -19,24 +19,31 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberImagePainter
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.alibaba.fastjson.JSON
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityFabubaomingBinding
 import com.changanford.circle.ui.release.widget.AttrbultPop
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AttributeBean
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos.AttributeListBean
 import com.changanford.common.bean.DtoBeanNew
+import com.changanford.common.bean.VoteBean
 import com.changanford.common.constant.IntentKey.CREATE_NOTICE_CIRCLE_ID
 import com.changanford.common.helper.OSSHelper
+import com.changanford.common.room.PostDatabase
+import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
@@ -44,11 +51,17 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toast
+import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.DoubleUtils
 import com.luck.picture.lib.tools.ToastUtils
 import com.scwang.smart.refresh.layout.util.SmartUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -60,6 +73,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 
     private var pvActTime: TimePickerView? = null
     private var pvActEndTime: TimePickerView? = null
+    var draftBean:PostEntity? = null
 
     companion object {
         var dto: DtoBeanNew = DtoBeanNew()
@@ -76,12 +90,15 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         binding.titleLayout.barTvTitle.text = "发布报名活动"
         AppUtils.setStatusBarPaddingTop(binding.titleLayout.commTitleBar, this)
         binding.titleLayout.barImgBack.setOnClickListener {
-            finish()
+            caogao()
         }
         dto.circleId = intent.getStringExtra(CREATE_NOTICE_CIRCLE_ID)
-
+        draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
+        if (draftBean != null){
+            dto = Gson().fromJson(draftBean?.baoming, DtoBeanNew::class.java)
+        }
         binding.composeLayout.setContent {
-            fabubaomingCompose(viewModel, choseCover = {
+            fabubaomingCompose(viewModel, dto,choseCover = {
                 SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
                     override fun chooseByPhone() {
                         PictureUtil.openGalleryOnePic(this@ActivityFabuBaoming, object :
@@ -124,7 +141,6 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
 
     }
-
     override fun initData() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
             fordAlbum(it as String)
@@ -149,6 +165,27 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
     }
 
+    override fun onBackPressed() {
+        caogao()
+    }
+    private val insertPostId by lazy {
+        System.currentTimeMillis()
+    }
+    fun caogao(){
+
+        BottomSelectDialog(this, {
+            var baomingDB = PostEntity(postsId = draftBean?.postsId?:insertPostId, type = "5", baoming = JSON.toJSONString(dto))
+            lifecycleScope.launch(Dispatchers.IO){
+                PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                    .insert(baomingDB)
+                withContext(Dispatchers.Main){
+                    finish()
+                }
+            }
+        }) {
+            finish()
+        }.show()
+    }
     fun setTimePicker() {
         initTimePick1()
         initTimePickEND()
@@ -267,22 +304,29 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 @Composable
 fun fabubaomingCompose(
     viewModel: BaoMingViewModel,
+    dto:DtoBeanNew,
     choseCover: (result: (String) -> Unit) -> Unit = {},
     choseTime: (result: (String) -> Unit) -> Unit = {},
     choseProfile: (result: (String) -> Unit) -> Unit = {},
 ) {
 
     var cover by remember {
-        mutableStateOf("")
+        mutableStateOf(dto.coverImgUrl)
     }
     var date by remember {
-        mutableStateOf("")
+        mutableStateOf("${dto.signBeginTime?:""}-${dto.signEndTime?:""}")
     }
     var profile by remember {
-        mutableStateOf("")
+        var Showstr = ""
+        if (!dto.attributes.isNullOrEmpty()) {
+            for (i in dto.attributes) {
+                Showstr += i.attributeName + " "
+            }
+        }
+        mutableStateOf(Showstr)
     }
     var num by remember {
-        mutableStateOf("")
+        mutableStateOf("${dto.activityTotalCount?:""}")
     }
     var nextEnable by remember {
         mutableStateOf(false)
@@ -361,12 +405,12 @@ fun fabubaomingCompose(
         Column {
             Box(modifier = Modifier.height(20.dp))
             FabuTitle(name = "标题", true)
-            FabuInput(hint = "请输入活动标题", 20) {
+            FabuInput(hint = "请输入活动标题", initText = ActivityFabuBaoming.dto.title?:"",20) {
                 ActivityFabuBaoming.dto.title = it
             }
             FabuLine()
             FabuTitle(name = "描述", false)
-            FabuInput(hint = "请输入活动描述", 100) {
+            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content?:"", 100) {
                 ActivityFabuBaoming.dto.content = it
             }
             FabuLine()
@@ -392,6 +436,12 @@ fun fabubaomingCompose(
             FabuLine()
             FabuInputItem(title = "报名人数", content = num, hint = "不填则无限制") {
                 num = it
+                try {
+                    ActivityFabuBaoming.dto.activityTotalCount =  it.toInt()
+                }catch (e:Exception){
+                    "报名人数请输入数字".toast()
+                    e.printStackTrace()
+                }
             }
             FabuLine(20.dp)
             FabuButton {
@@ -514,12 +564,12 @@ fun FabuInputItem(
 }
 
 @Composable
-fun FabuInput(hint: String = "", maxNum: Int = Int.MAX_VALUE, onChanged: (String) -> Unit = {}) {
+fun FabuInput(hint: String = "",initText:String = "", maxNum: Int = Int.MAX_VALUE, onChanged: (String) -> Unit = {}) {
     var txt by remember {
-        mutableStateOf("")
+        mutableStateOf(initText)
     }
     var num by remember {
-        mutableStateOf(0)
+        mutableStateOf(initText.length)
     }
     Row(
         modifier = Modifier

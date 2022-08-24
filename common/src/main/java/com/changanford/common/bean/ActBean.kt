@@ -4,7 +4,126 @@ import android.os.Parcelable
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.TimeUtils
 import kotlinx.android.parcel.Parcelize
+
+/*********活动新**********/
+class ActBean {
+    val jumpType = 0
+    val jumpVal: String? = null
+    val serverTime: Long = 0
+    fun getSignTimes(): String {
+        return "报名截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
+    }
+
+    fun getEndTimeTips(): String {
+        return "截止时间: ".plus(TimeUtils.formateActTime(deadLineTime))
+    }
+
+
+    fun getAddress(): String {
+//            if (!TextUtils.isEmpty(cityName)) {
+//                return cityName
+//            }
+//            if (TextUtils.isEmpty(provinceName)) {
+//                return "未知"
+//            }
+//            return provinceName
+        return "活动地点: $activityAddr"
+    }
+    fun getActTimeS(): String {
+        return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" - ")
+            .plus(TimeUtils.formateActTime(endTime))
+    }
+    var activityAddr: String? = ""//活动详细地址(报名活动)
+    var activityButton: String? =
+        ""//报名活动按钮,可用值:ActivityButtonEnum.SIGN_NOT_BEGIN(code=SIGN_NOT_BEGIN, dbCode=0, message=报名未开始),ActivityButtonEnum.SIGN_NOW(code=SIGN_NOW, dbCode=1, message=立即报名),ActivityButtonEnum.SIGN_FULL(code=SIGN_FULL, dbCode=2, message=报名已满),ActivityButtonEnum.SIGNED(code=SIGNED, dbCode=3, message=已报名),ActivityButtonEnum.SIGN_ENDED(code=SIGN_END, dbCode=4, message=报名结束),ActivityButtonEnum.MUNUAL_END(code=MUNUAL_END, dbCode=5, message=结束),ActivityButtonEnum.VIEW_RESULT(code=VIEW_RESULT, dbCode=6, message=查看结果)
+    val activityJoinCount: String? = "" //参加活动人数
+    var activityTag: String? =
+        ""//,,ActivityTagEnum.NOT_PASS(code=NOT_PASS, message=未通过)
+    fun showTag():String{
+        return if (activityTag.isNullOrEmpty()) "" else {
+            when(activityTag){
+                "NOT_BEGIN"-> "未开始"
+                "ON_GOING"-> "进行中"
+                "ENDED"-> "已结束"
+                "CHECKING"-> "审核中"
+                "OFF_SHELF"-> "已下架"
+                "NOT_PASS"-> "未通过"
+                else -> ""
+            }
+        }
+    }
+    var activityTotalCount: String = ""//	活动总人数（报名活动,-1表示不限制）
+    val beginTime: Long = 0//活动开始时间
+    val cityName: String = ""//城市名称
+    val coverImg: String = ""//封面图片
+    val deadLineTime: Long = 0//	报名活动截止时间
+    val endTime: Long = 0//活动结束时间
+    val hot: String = ""//是否热门,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
+    var jumpDto: JumpDTO = JumpDTO()
+    var needSignUp: String? = "YES"//是否报名（YES/NO），如果是NO则隐藏按钮（0830版本之后取消非报名常规活动）
+    val official: String? = ""//0-官方，1-个人，2-经销商,可用值:WonderfulOfficialEnum.OFFICIAL(code=0, dbCode=0, message=官方),WonderfulOfficialEnum.UNOFFICIAL(code=1, dbCode=1, message=个人),WonderfulOfficialEnum.DISTRIBUTOR(code=2, dbCode=2, message=经销商)
+    var openTime: String? = ""//	报名活动开始时间
+    var outChain: String? =
+        ""//是否外链（若是 需回调接口/highlights/callBackOuterChain）,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
+    val provinceName: String = ""//省名称
+    var reason: String = ""//拒绝原因
+    val recommend: String = ""//是否推荐,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
+    var status: String? =
+        ""//status	状态（0-审核中、1-驳回、2-正常、3-下架）,可用值:WonderfulStatusEnum.CHECKING(code=0, dbCode=0, message=审核中),WonderfulStatusEnum.REJECT(code=1, dbCode=1, message=驳回),WonderfulStatusEnum.NORMAL(code=2, dbCode=2, message=正常),WonderfulStatusEnum.OFFLINE(code=3, dbCode=3, message=下架)
+    val title: String = ""//	标题
+    val townName: String = ""//	区域名称
+    val userId = 0//	发布者id
+    var voteButton: String? =
+        ""//voteButton	投票按钮,可用值:VoteButtonEnum.VOTE_NOT_BEGIN(code=VOTE_NOT_BEGIN, dbCode=0, message=投票未开始),VoteButtonEnum.VOTE_NOW(code=VOTE_NOW, dbCode=1, message=立即投票),VoteButtonEnum.VOTED(code=VOTED, dbCode=2, message=已投票),VoteButtonEnum.VOTE_ENDED(code=VOTE_ENDED, dbCode=3, message=投票结束),VoteButtonEnum.MUNUAL_END(code=MUNUAL_END, dbCode=5, message=结束),VoteButtonEnum.VIEW_RESULT(code=VIEW_RESULT, dbCode=6, message=查看结果)
+    val wonderfulId = 0//	精彩id
+    var wonderfulType: Int =
+        0//精彩类型,可用值:WonderfulTypeEnum.ONLINE_ACTIVITY(code=0, message=线上活动, desc=线上活动, dbCode=0),WonderfulTypeEnum.OFFLINE_ACTIVITY(code=1, message=线下活动, desc=线下活动, dbCode=1),WonderfulTypeEnum.UNOFFICIAL(code=2, message=问卷调研, desc=问卷调研, dbCode=2),WonderfulTypeEnum.CAR_FAC_ACTIVITY(code=3, message=福域活动, desc=福域活动, dbCode=3),WonderfulTypeEnum.VOTE(code=4, message=投票活动, desc=投票活动, dbCode=4),WonderfulTypeEnum.QUES(code=5, message=问卷中心(0815), desc=问卷中心(0815), dbCode=5)
+    var total = 0//总记录数
+    fun showButton():Boolean{
+        return activityButton?.isNotEmpty() == true || voteButton?.isNotEmpty() == true
+    }
+    fun showButtonText():String{
+        return if (!activityButton.isNullOrEmpty()) {
+            when(activityButton){
+                "SIGN_NOT_BEGIN" -> "报名未开始"
+                "SIGN_NOW" -> "立即报名"
+                "SIGN_FULL" -> "报名已满"
+                "SIGNED" -> "已报名"
+                "SIGN_END" -> "报名结束"
+                "MUNUAL_END" -> "结束"
+                "VIEW_RESULT" -> "查看结果"
+                else -> ""
+            }
+        } else if (!voteButton.isNullOrEmpty()){
+            when(voteButton){
+                "VOTE_NOT_BEGIN" -> "投票未开始"
+                "VOTE_NOW" -> "立即投票"
+                "VOTED" -> "已投票"
+                "VOTE_ENDED" -> "投票结束"
+                "MUNUAL_END" -> "结束"
+                "VIEW_RESULT" -> "查看结果"
+                else -> ""
+            }
+        } else {
+            ""
+        }
+    }
+}
+
+class FastBeanData(var ads: List<AdBean>, var showType: String = "") {
+
+}
+
+data class JumpDTO(
+    var jumpCode: Int = 99,
+    var jumpVal: String = "",
+)
+/*********************************************************************/
+
+
+
 
 /**
  *  文件名：ActBean
@@ -296,7 +415,7 @@ data class FirstCommentData(
 )
 
 data class AccBean(
-    val dataList: List<ActDataBean>? = arrayListOf(),
+    val dataList: List<ActBean>? = arrayListOf(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,

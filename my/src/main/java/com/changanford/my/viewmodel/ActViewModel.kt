@@ -2,10 +2,7 @@ package com.changanford.my.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.AccBean
-import com.changanford.common.bean.InfoBean
-import com.changanford.common.bean.PostBean
-import com.changanford.common.bean.ShopBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import kotlinx.coroutines.launch
 
@@ -99,7 +96,6 @@ class ActViewModel : ViewModel() {
             })
         }
     }
-
 
     /*----------------------我的足迹------------------------*/
     /**

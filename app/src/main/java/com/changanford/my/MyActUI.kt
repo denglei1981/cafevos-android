@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
@@ -10,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.home.data.PublishData
@@ -34,11 +36,13 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
     val acts: String = "activity_add_wonderful"
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的活动"
-//        binding.collectToolbar.toolbarSave.text = "发布"
+        binding.collectToolbar.toolbarSave.text = "草稿箱"
+        binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))
         binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
-            JumpUtils.instans?.jump(13)
-            finish()
+            RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+//            JumpUtils.instans?.jump(13)
+//            finish()
         }
         initViewpager()
     }

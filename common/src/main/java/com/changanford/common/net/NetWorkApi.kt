@@ -965,22 +965,24 @@ interface NetWorkApi {
 
 
     //我收藏的活动  highlights/myCollect
-    @POST("highlights/myCollect")
+//    @POST("highlights/myCollect")
+    @POST("/highlights/v2/myCollect")
     suspend fun queryMineCollectAc(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<AccBean>
 
-
     //我的足迹活动  highlights/myFootprint
-    @POST("highlights/myFootprint")
+//    @POST("highlights/myFootprint")
+    @POST("/highlights/v2/myFootprint")
     suspend fun queryMineFootAc(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<AccBean>
 
     //我参与的活动
-    @POST("highlights/myJoin")
+//    @POST("highlights/myJoin")
+    @POST("/highlights/v2/myJoin")
     suspend fun queryMineJoinAc(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

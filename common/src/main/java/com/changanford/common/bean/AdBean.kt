@@ -20,13 +20,24 @@ class AdBean(
     val sortOrder: String? = "",//":null,
     val isVideo: Int? = 0,//":0,
     val video: Int? = 0,//":0,
-    val videoTime: String? = ""
+    val videoTime: String? = "",
+    var androidShow: Int,
+    var androidVersion: String,
+    var iosShow: Int,
+    var iosVersion: String,
+    var posName: Any,
+    var seeAuthType: String,
+    var tagIds: Any,
+    var tagNames: Any,
 ) {
 
     fun getAdImgUrl(): String {
         return GlideUtils.defaultHandleImageUrl(adImg)
     }
-
+    fun getImg(): String {
+        val split = adImg?.split(",")
+        return split?.get(0)?:""
+    }
 }
 
 class LoginVideoBean(val video: String? = null)
