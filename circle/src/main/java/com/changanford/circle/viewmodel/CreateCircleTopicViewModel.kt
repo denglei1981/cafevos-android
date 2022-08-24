@@ -43,4 +43,30 @@ class CreateCircleTopicViewModel : BaseViewModel() {
         })
     }
 
+    fun updateTopic(
+        topicId: String,
+        name: String,
+        description: String,
+        pic: String,
+        block: () -> Unit
+    ) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["topicId"] = topicId
+            body["description"] = description
+            body["name"] = name
+            body["pic"] = pic
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .updateTopic(body.header(rKey), body.body(rKey))
+                .also {
+                    it.msg.toast()
+                    if (it.code == 0) {
+                        block.invoke()
+                    }
+                }
+        })
+    }
+
 }

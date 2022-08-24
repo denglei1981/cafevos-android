@@ -14,9 +14,10 @@ import kotlinx.coroutines.launch
 class HomePageViewModel : BaseViewModel() {
 
     //圈子列表
-    val circlesListData=MutableLiveData<UpdateUiState<ListMainBean<NewCircleBean>>>()
-    val  myTopicsLiveData=MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
-    val  myLikedPostsLiveData= MutableLiveData<UpdateUiState<ListMainBean<PostDataBean>>>()
+    val circlesListData = MutableLiveData<UpdateUiState<ListMainBean<NewCircleBean>>>()
+    val myTopicsLiveData = MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
+    val initiateTopicsLiveData = MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
+    val myLikedPostsLiveData = MutableLiveData<UpdateUiState<ListMainBean<PostDataBean>>>()
 
     fun getMyCircles(userId: String) {
         viewModelScope.launch {
@@ -25,7 +26,7 @@ class HomePageViewModel : BaseViewModel() {
                 paramMaps["pageNo"] = 1
                 paramMaps["pageSize"] = 3
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
                 apiService.myCircles(paramMaps.header(rKey), paramMaps.body(rKey))
@@ -33,11 +34,12 @@ class HomePageViewModel : BaseViewModel() {
                 val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>(it, true, "")
                 circlesListData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>( false, it)
+                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>(false, it)
                 circlesListData.postValue(updateUiState)
             }
         }
     }
+
     fun getMyTopics(userId: String) {
         viewModelScope.launch {
             fetchRequest {
@@ -45,7 +47,7 @@ class HomePageViewModel : BaseViewModel() {
                 paramMaps["pageNo"] = 1
                 paramMaps["pageSize"] = 3
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
                 apiService.myTopics(paramMaps.header(rKey), paramMaps.body(rKey))
@@ -54,19 +56,42 @@ class HomePageViewModel : BaseViewModel() {
                 myTopicsLiveData.postValue(updateUiState)
 
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<Topic>>( true, it)
+                val updateUiState = UpdateUiState<ListMainBean<Topic>>(true, it)
                 myTopicsLiveData.postValue(updateUiState)
             }
         }
     }
+
+    fun initiateTopicList(userId: String) {
+        viewModelScope.launch {
+            fetchRequest {
+                val paramMaps = HashMap<String, Any>()
+                paramMaps["pageNo"] = 1
+                paramMaps["pageSize"] = 3
+                paramMaps["queryParams"] = HashMap<String, Any>().also {
+                    it["userId"] = userId.toLong()
+                }
+                val rKey = getRandomKey()
+                apiService.initiateTopicList(paramMaps.header(rKey), paramMaps.body(rKey))
+            }.onSuccess { // 成功
+                val updateUiState = UpdateUiState<ListMainBean<Topic>>(it, true, "")
+                initiateTopicsLiveData.postValue(updateUiState)
+
+            }.onWithMsgFailure { // 失败
+                val updateUiState = UpdateUiState<ListMainBean<Topic>>(true, it)
+                initiateTopicsLiveData.postValue(updateUiState)
+            }
+        }
+    }
+
     fun getMyLikedPosts(userId: String) {
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
                 paramMaps["pageNo"] = 1
-                paramMaps["pageSize"] =3
+                paramMaps["pageSize"] = 3
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
                 apiService.myLikedPosts(paramMaps.header(rKey), paramMaps.body(rKey))
@@ -74,7 +99,7 @@ class HomePageViewModel : BaseViewModel() {
                 val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>(it, true, "")
                 myLikedPostsLiveData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>( false, it)
+                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>(false, it)
                 myLikedPostsLiveData.postValue(updateUiState)
             }
         }

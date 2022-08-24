@@ -14,14 +14,14 @@ import kotlinx.coroutines.launch
 class MyJoinViewModel : BaseViewModel() {
 
     //圈子列表
-    val circlesListData=MutableLiveData<UpdateUiState<ListMainBean<NewCircleBean>>>()
-    val  myTopicsLiveData=MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
-    val  myLikedPostsLiveData= MutableLiveData<UpdateUiState<ListMainBean<PostDataBean>>>()
+    val circlesListData = MutableLiveData<UpdateUiState<ListMainBean<NewCircleBean>>>()
+    val myTopicsLiveData = MutableLiveData<UpdateUiState<ListMainBean<Topic>>>()
+    val myLikedPostsLiveData = MutableLiveData<UpdateUiState<ListMainBean<PostDataBean>>>()
     var pageNo: Int = 1
-    fun getMyCircles(userId: String,isLoadMore: Boolean) {
+    fun getMyCircles(userId: String, isLoadMore: Boolean) {
         if (isLoadMore) {
             pageNo += 1
-        }else{
+        } else {
             pageNo = 1
         }
         viewModelScope.launch {
@@ -30,23 +30,26 @@ class MyJoinViewModel : BaseViewModel() {
                 paramMaps["pageNo"] = pageNo
                 paramMaps["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
                 apiService.myCircles(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>(it, true, isLoadMore,"")
+                val updateUiState =
+                    UpdateUiState<ListMainBean<NewCircleBean>>(it, true, isLoadMore, "")
                 circlesListData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<NewCircleBean>>( false, it,isLoadMore)
+                val updateUiState =
+                    UpdateUiState<ListMainBean<NewCircleBean>>(false, it, isLoadMore)
                 circlesListData.postValue(updateUiState)
             }
         }
     }
-    fun getMyTopics(userId: String,isLoadMore: Boolean) {
+
+    fun getMyTopics(userId: String, isLoadMore: Boolean, isMyPost: Boolean) {
         if (isLoadMore) {
             pageNo += 1
-        }else{
+        } else {
             pageNo = 1
         }
         viewModelScope.launch {
@@ -55,41 +58,47 @@ class MyJoinViewModel : BaseViewModel() {
                 paramMaps["pageNo"] = pageNo
                 paramMaps["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
-                apiService.myTopics(paramMaps.header(rKey), paramMaps.body(rKey))
+                if (isMyPost) {
+                    apiService.initiateTopicList(paramMaps.header(rKey), paramMaps.body(rKey))
+                } else {
+                    apiService.myTopics(paramMaps.header(rKey), paramMaps.body(rKey))
+                }
             }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<ListMainBean<Topic>>(it, true, isLoadMore,"")
+                val updateUiState = UpdateUiState<ListMainBean<Topic>>(it, true, isLoadMore, "")
                 myTopicsLiveData.postValue(updateUiState)
 
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<Topic>>( true, it,isLoadMore)
+                val updateUiState = UpdateUiState<ListMainBean<Topic>>(true, it, isLoadMore)
                 myTopicsLiveData.postValue(updateUiState)
             }
         }
     }
-    fun getMyLikedPosts(userId: String,isLoadMore: Boolean) {
+
+    fun getMyLikedPosts(userId: String, isLoadMore: Boolean) {
         if (isLoadMore) {
             pageNo += 1
-        }else{
+        } else {
             pageNo = 1
         }
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
                 paramMaps["pageNo"] = pageNo
-                paramMaps["pageSize"] =PageConstant.DEFAULT_PAGE_SIZE_THIRTY
+                paramMaps["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 paramMaps["queryParams"] = HashMap<String, Any>().also {
-                    it["userId"] =userId.toLong()
+                    it["userId"] = userId.toLong()
                 }
                 val rKey = getRandomKey()
                 apiService.myLikedPosts(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
-                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>(it, true, isLoadMore,"")
+                val updateUiState =
+                    UpdateUiState<ListMainBean<PostDataBean>>(it, true, isLoadMore, "")
                 myLikedPostsLiveData.postValue(updateUiState)
             }.onWithMsgFailure { // 失败
-                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>( false, it,isLoadMore)
+                val updateUiState = UpdateUiState<ListMainBean<PostDataBean>>(false, it, isLoadMore)
                 myLikedPostsLiveData.postValue(updateUiState)
             }
         }

@@ -3,6 +3,7 @@ package com.changanford.circle.adapter.circle
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
+import com.changanford.circle.bean.CircleTopicsBean
 import com.changanford.circle.databinding.ItemCircleDetailsTopicBinding
 import com.changanford.common.bean.TestBean
 
@@ -12,15 +13,15 @@ import com.changanford.common.bean.TestBean
  *Purpose
  */
 class CircleDetailsTopicAdapter :
-    BaseQuickAdapter<TestBean, BaseDataBindingHolder<ItemCircleDetailsTopicBinding>>(
+    BaseQuickAdapter<CircleTopicsBean, BaseDataBindingHolder<ItemCircleDetailsTopicBinding>>(
         R.layout.item_circle_details_topic
     ) {
     override fun convert(
         holder: BaseDataBindingHolder<ItemCircleDetailsTopicBinding>,
-        item: TestBean
+        item: CircleTopicsBean
     ) {
         holder.dataBinding?.apply {
-            tvContent.text = item.testString
+            tvContent.text = item.name
         }
     }
 }

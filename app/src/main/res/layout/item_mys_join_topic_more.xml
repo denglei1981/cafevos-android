@@ -35,12 +35,13 @@
             android:insetBottom="0dp"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="通过"
             android:textColor="@color/color_00095B"
             android:textSize="11sp"
+            android:visibility="gone"
             app:cornerRadius="2dp"
             app:layout_constraintLeft_toLeftOf="@+id/iv_circle"
-            app:layout_constraintTop_toTopOf="@+id/iv_circle" />
+            app:layout_constraintTop_toTopOf="@+id/iv_circle"
+            tools:text="通过" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_circle_title"
@@ -114,9 +115,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:visibility="gone"
             android:background="@drawable/circle_f4f4_5"
             android:paddingBottom="23dp"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@+id/iv_circle">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -126,9 +127,9 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
-                android:text="原因：审核不过原因审核不过原因审核不过原因审核不通过原因审核不通过原因审核不通过原因 "
                 android:textColor="@color/color_99"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="原因：审核不过原因审核不过原因审核不过原因审核不通过原因审核不通过原因审核不通过原因 " />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_re_reason"

@@ -17,7 +17,7 @@ import com.changanford.common.utilext.toast
  */
 class CircleNoticeViewMode : BaseViewModel() {
 
-    val noticeListBean = MutableLiveData<CircleNoticeBean>()
+    val noticeListBean = MutableLiveData<CircleNoticeBean?>()
 
     fun createNotice(circleId: String, noticeName: String, detailHtml: String, block: () -> Unit) {
         launch(block = {
@@ -54,12 +54,18 @@ class CircleNoticeViewMode : BaseViewModel() {
                     noticeListBean.value = it
                 }
                 .onWithMsgFailure {
+                    noticeListBean.value = null
                     it?.toast()
                 }
         })
     }
 
-    fun updateCircleNotice(noticeId: String, noticeName: String, detailHtml: String, block: () -> Unit) {
+    fun updateCircleNotice(
+        noticeId: String,
+        noticeName: String,
+        detailHtml: String,
+        block: () -> Unit
+    ) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["noticeId"] = noticeId

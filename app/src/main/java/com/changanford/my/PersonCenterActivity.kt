@@ -64,9 +64,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 
     val postFragment: PostFragment by lazy {
         if (TextUtils.isEmpty(taUserId)) {
-            PostFragment.newInstance("centerPost", userId,true)
+            PostFragment.newInstance("centerPost", userId, true)
         } else {
-            PostFragment.newInstance("centerPost", taUserId,true)
+            PostFragment.newInstance("centerPost", taUserId, true)
         }
     }
     val homePageFragment: HomePageFragment by lazy {
@@ -94,9 +94,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         }
         fragmentList.add(homePageFragment)
         fragmentList.add(postFragment)
-        if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
-            fragmentList.add(myCollectFragment)
-        }
+//        if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
+        fragmentList.add(myCollectFragment)
+//        }
         binding.viewPager.adapter = MtViewPagerAdapter(this, fragmentList)
         if (TextUtils.isEmpty(taUserId) || taUserId == userId) { //是自己
             binding.topContent.tvEditInfo.visibility = View.VISIBLE
@@ -125,7 +125,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
             binding.topContent.ivBg.setOnClickListener {
                 try {
-                    if(TextUtils.isEmpty(taUserId)||taUserId==userId){
+                    if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
                         SelectCoverDialog(
                             BaseApplication.curActivity,
                             object : SelectCoverDialog.CheckedView {
@@ -152,6 +152,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             binding.topContent.btnFollow.visibility = View.VISIBLE
         }
     }
+
     private fun easyViewPager() {
         try {
             val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
@@ -165,6 +166,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         } catch (ignore: Exception) {
         }
     }
+
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.toolbar, this)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutEmptyUser.collectToolbar.conTitle, this)
@@ -178,29 +180,29 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
         }
         binding.topContent.ivHead.setOnClickListener {
-            if(TextUtils.isEmpty(taUserId)||taUserId==userId){
+            if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
                 JumpUtils.instans?.jump(34)
             }
 
         }
         binding.topContent.tvUserLevel.setOnClickListener {
-            if(TextUtils.isEmpty(taUserId)||taUserId==userId){
+            if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
                 JumpUtils.instans?.jump(32)
             }
 
         }
         binding.topContent.tvUserTags.setOnClickListener {
-            if(TextUtils.isEmpty(taUserId)||taUserId==userId){
+            if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
                 JumpUtils.instans?.jump(29)
-            }else {
-                OtherMedalActivity.start(taUserId,this)
+            } else {
+                OtherMedalActivity.start(taUserId, this)
             }
 
         }
 
     }
 
-    private fun getUserInfo(){
+    private fun getUserInfo() {
         if (TextUtils.isEmpty(taUserId)) {
             viewModel.queryOtherInfo(userId) {
                 it.onSuccess { user ->
@@ -221,11 +223,12 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
         }
     }
+
     override fun initData() {
         easyViewPager()
         initTabAndViewPager()
         initMagicIndicator()
-         getUserInfo()
+        getUserInfo()
 
 
     }
@@ -329,7 +332,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
      * 选择图片
      */
     private fun pic() {
-        PictureUtils.openGarlly2(this,1,object :
+        PictureUtils.openGarlly2(this, 1, object :
             OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 for (media in result) {
@@ -371,7 +374,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             when (userInfoBean.status) {
                 2 -> { // 用户已注销。
                     binding.layoutEmptyUser.llEmptyUser.visibility = View.VISIBLE
-                    binding.layoutEmptyUser.collectToolbar.tvTitle.text="个人主页"
+                    binding.layoutEmptyUser.collectToolbar.tvTitle.text = "个人主页"
                 }
                 else -> {
                     isFollow = userInfoBean.isFollow
@@ -401,17 +404,17 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                         GlideUtils.loadBD(userInfoBean.ext.memberIcon, binding.topContent.ivVip)
                         binding.topContent.ivVip.visibility = View.VISIBLE
                     }
-                    if(!TextUtils.isEmpty(userInfoBean.brief)){
-                        binding.topContent.tvSign.text =  userInfoBean.brief
-                        binding.topContent.tvSign.visibility=View.VISIBLE
-                    }else{
-                        binding.topContent.tvSign.visibility=View.GONE
+                    if (!TextUtils.isEmpty(userInfoBean.brief)) {
+                        binding.topContent.tvSign.text = userInfoBean.brief
+                        binding.topContent.tvSign.visibility = View.VISIBLE
+                    } else {
+                        binding.topContent.tvSign.visibility = View.GONE
                     }
                     if (!TextUtils.isEmpty(userInfoBean.frontCover)) {
                         GlideUtils.loadBD(userInfoBean.frontCover, binding.topContent.ivBg)
                     }
                     binding.topContent.tvUserTags.text =
-                     userInfoBean.medalCount.toString().plus("枚勋章")
+                        userInfoBean.medalCount.toString().plus("枚勋章")
                     binding.topContent.ddFollow.setOnClickListener {
                         if (taUserId == userId || TextUtils.isEmpty(taUserId)) {
                             JumpUtils.instans?.jump(25)
@@ -479,9 +482,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     }
 
     private fun initMagicIndicator() {
-        if ((TextUtils.isEmpty(taUserId) && tabList.size < 3) || taUserId == userId) {
-            tabList.add("收藏")
-        }
+//        if ((TextUtils.isEmpty(taUserId) && tabList.size < 3) || taUserId == userId) {
+        tabList.add("收藏")
+//        }
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(ContextCompat.getColor(this, R.color.color_F4))
         val commonNavigator = CommonNavigator(this)
@@ -598,10 +601,10 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 
         })
         LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java).observe(this) {
-                if (it) {
-                    viewModel.getUserInfo()
-                }
+            if (it) {
+                viewModel.getUserInfo()
             }
+        }
     }
 
     fun showFollowState(isFollow: Int) {
@@ -613,10 +616,12 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                 )
             )
             binding.topContent.btnFollow.text = "关注"
-            binding.topContent.btnFollow.background=ContextCompat.getDrawable(this,R.drawable.shape_r_8_c_5c_13)
+            binding.topContent.btnFollow.background =
+                ContextCompat.getDrawable(this, R.drawable.shape_r_8_c_5c_13)
         } else {
             binding.topContent.btnFollow.setTextColor(ContextCompat.getColor(this, R.color.white))
-            binding.topContent.btnFollow.background=ContextCompat.getDrawable(this,R.drawable.shape_ddd)
+            binding.topContent.btnFollow.background =
+                ContextCompat.getDrawable(this, R.drawable.shape_ddd)
             binding.topContent.btnFollow.text = "已关注"
         }
 

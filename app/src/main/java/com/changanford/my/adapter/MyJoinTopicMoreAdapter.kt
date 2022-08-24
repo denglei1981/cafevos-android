@@ -1,14 +1,18 @@
 package com.changanford.my.adapter
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Topic
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemMysJoinTopicMoreBinding
@@ -16,6 +20,11 @@ import com.changanford.evos.databinding.ItemMysJoinTopicMoreBinding
 
 class MyJoinTopicMoreAdapter :
     BaseQuickAdapter<Topic, BaseDataBindingHolder<ItemMysJoinTopicMoreBinding>>(R.layout.item_mys_join_topic_more) {
+
+    var isMyPost = false
+    var userId = ""
+
+    @SuppressLint("SetTextI18n")
     override fun convert(
         holder: BaseDataBindingHolder<ItemMysJoinTopicMoreBinding>,
         item: Topic
@@ -29,27 +38,94 @@ class MyJoinTopicMoreAdapter :
                 CountUtils.formatNum(item.postsCount.toString(), false).toString().plus("\t帖子")
             t.tvPeople.text = CountUtils.formatNum(item.heat, false).toString().plus("\t热度")
 
-            //临时测试代码
-            if (holder.layoutPosition == 1) {
-                //审核中、通过背景color_33FFFFFF，文字颜色#00095B
-                //已下架 背景dddddd，文字颜色ffffff
-                //未通过 背景color_80F21C44，文字颜色ffffff
-                val colorStateList =
-                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.color_33FFFFFF))
-                t.btnType.backgroundTintList = colorStateList
-                t.btnType.setTextColor(ContextCompat.getColor(context, R.color.white))
-                t.rlReason.visibility = View.VISIBLE
+            if (isMyPost && userId == MConstant.userId) {
+                t.btnType.visibility = View.VISIBLE
+                //CircleNoticeCheckStatusEnum.WAIT_APPROVE(code=WAIT_APPROVE, dbCode=0, message=审核中),
+                // CircleNoticeCheckStatusEnum.PASS(code=PASS, dbCode=1, message=通过)
+                // CircleNoticeCheckStatusEnum.REJECT(code=REJECT, dbCode=2, message=未通过)
+                when (item.checkStatus) {
+                    "WAIT_APPROVE" -> {
+                        t.btnType.text = "审核中"
+                        val colorStateList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.color_ccFFFFFF
+                                )
+                            )
+                        t.btnType.backgroundTintList = colorStateList
+                        t.btnType.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.color_00095B
+                            )
+                        )
+                        t.rlReason.visibility = View.GONE
+                    }
+                    "PASS" -> {
+                        t.btnType.text = "通过"
+                        val colorStateList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.color_ccFFFFFF
+                                )
+                            )
+                        t.btnType.backgroundTintList = colorStateList
+                        t.btnType.setTextColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.color_00095B
+                            )
+                        )
+                        t.rlReason.visibility = View.GONE
+                    }
+                    "REJECT" -> {
+                        t.btnType.text = "未通过"
+                        val colorStateList =
+                            ColorStateList.valueOf(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.color_80F21C44
+                                )
+                            )
+                        t.btnType.backgroundTintList = colorStateList
+                        t.btnType.setTextColor(ContextCompat.getColor(context, R.color.white))
+                        t.rlReason.visibility = View.VISIBLE
+                        t.tvReason.text = "原因：${item.reason}"
+                        t.tvReReason.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putSerializable(IntentKey.POST_TOPIC_ITEM, item)
+                            startARouter(ARouterCirclePath.CreateCircleTopicActivity, bundle)
+                        }
+                    }
+                    else -> {
+                        t.btnType.visibility = View.GONE
+                        t.rlReason.visibility = View.GONE
+                    }
+                }
+                if (item.isGrounding == 1) {//已下架
+                    t.btnType.text = "已下架"
+                    val colorStateList =
+                        ColorStateList.valueOf(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.color_DD
+                            )
+                        )
+                    t.btnType.backgroundTintList = colorStateList
+                    t.btnType.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.white
+                        )
+                    )
+                }
             } else {
-                val colorStateList =
-                    ColorStateList.valueOf(ContextCompat.getColor(context, R.color.color_80F21C44))
-                t.btnType.backgroundTintList = colorStateList
-                t.btnType.setTextColor(ContextCompat.getColor(context, R.color.white))
+                t.btnType.visibility = View.GONE
                 t.rlReason.visibility = View.GONE
             }
-            t.tvReReason.setOnClickListener {
-                //此处还需要传bundle
-                startARouter(ARouterCirclePath.CreateCircleTopicActivity)
-            }
+
         }
     }
 

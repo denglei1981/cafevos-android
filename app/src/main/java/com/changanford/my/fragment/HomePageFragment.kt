@@ -34,6 +34,7 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
 
     var postListData = HomePageBean(total = 0)
     var topicListData = HomePageBean(total = 0)
+    var postTopicListData = HomePageBean(total = 0)
     var circleListData = HomePageBean(total = 0)
     private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private lateinit var mCheckForGapMethod: Method
@@ -105,6 +106,32 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
 
     }
 
+    fun showPostTopics(data: UpdateUiState<ListMainBean<Topic>>) {
+        var total: Int = 0
+        if (data.data != null) {
+            if (data.data.dataList != null) {
+                total = data.data!!.dataList!!.size
+            }
+
+        }
+        postTopicListData = HomePageBean(topicList = data.data, type = 3, total = total)
+
+        homePageBeanList.clear()
+
+        homePageBeanList.add(circleListData)
+        homePageBeanList.add(topicListData)
+        homePageBeanList.add(postTopicListData)
+        homePageBeanList.add(postListData)
+
+        userIds.let { s ->
+            myHomePageAdapter.userIds = s
+            myHomePageAdapter.activity = requireActivity()
+        }
+
+        homePageBeanList.sortByDescending { t -> t.total }
+        myHomePageAdapter.setList(homePageBeanList)
+    }
+
     fun showTopic(data: UpdateUiState<ListMainBean<Topic>>) {
         var total: Int = 0
         if (data.data != null) {
@@ -115,38 +142,26 @@ class HomePageFragment : BaseFragment<FragmentHomePageBinding, HomePageViewModel
         }
         topicListData = HomePageBean(topicList = data.data, type = 1, total = total)
 
-        homePageBeanList.clear()
-        homePageBeanList.add(circleListData)
-
-
-        homePageBeanList.add(topicListData)
-
-
-        homePageBeanList.add(postListData)
-
         userIds.let { s ->
-            myHomePageAdapter.userIds = s
-            myHomePageAdapter.activity = requireActivity()
+            viewModel.initiateTopicList(s)
         }
-
-        homePageBeanList.sortByDescending { t -> t.total }
-        myHomePageAdapter.setList(homePageBeanList)
-
-
     }
 
     override fun observe() {
         super.observe()
-        viewModel.circlesListData.observe(this, Observer {
+        viewModel.circlesListData.observe(this) {
             showCircle(it)
-        })
-        viewModel.myTopicsLiveData.observe(this, Observer {
+        }
+        viewModel.myTopicsLiveData.observe(this) {
             showTopic(it)
-
-        })
-        viewModel.myLikedPostsLiveData.observe(this, Observer {
+        }
+        viewModel.initiateTopicsLiveData.observe(this) {
+            showPostTopics(it)
+        }
+        viewModel.myLikedPostsLiveData.observe(this) {
             showPosts(it)
-        })
+        }
+
 
         LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, Observer {
             userIds.let { s ->

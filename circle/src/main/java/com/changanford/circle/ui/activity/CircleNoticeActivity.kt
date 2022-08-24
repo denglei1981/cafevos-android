@@ -47,6 +47,10 @@ class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNot
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 startARouter(ARouterCirclePath.MyCircleNoticeActivity, bundle)
             }
+            refreshLayout.setOnRefreshListener {
+                page = 1
+                initData()
+            }
         }
         noticeAdapter.loadMoreModule.setOnLoadMoreListener {
             page++
@@ -62,12 +66,13 @@ class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNot
         super.observe()
         viewModel.noticeListBean.observe(this) {
             if (page == 1) {
-                noticeAdapter.setList(it.dataList)
+                binding.refreshLayout.finishRefresh()
+                noticeAdapter.setList(it?.dataList)
             } else {
-                noticeAdapter.addData(it.dataList)
+                it?.dataList?.let { it1 -> noticeAdapter.addData(it1) }
                 noticeAdapter.loadMoreModule.loadMoreComplete()
             }
-            if (it.dataList.size != 20) {
+            if (it?.dataList?.size != 20) {
                 noticeAdapter.loadMoreModule.loadMoreEnd()
             }
             if (noticeId.isNotEmpty()) {

@@ -1265,10 +1265,16 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<NewCircleBean>>
 
-
     // 参与的话题。
     @POST("con/topic/myTopics")
     suspend fun myTopics(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<Topic>>
+
+    // 发起的话题。
+    @POST("/con/topic/initiateTopicList")
+    suspend fun initiateTopicList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ListMainBean<Topic>>

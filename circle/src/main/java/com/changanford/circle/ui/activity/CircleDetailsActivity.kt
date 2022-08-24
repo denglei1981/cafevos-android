@@ -166,18 +166,6 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         ) {
             postEntity = it as ArrayList<PostEntity>
         }
-        initTestData()
-    }
-
-    private fun initTestData() {
-        val topicList = arrayListOf(
-            TestBean("#最新之野"),
-            TestBean("#探寻仲夏之野"),
-            TestBean("#最新之野菜"),
-            TestBean("#“橙”风破浪 热力出逃"),
-            TestBean("#探寻仲夏之野"),
-        )
-        topicAdapter.setList(topicList)
     }
 
     private fun initListener(circleName: String) {
@@ -242,12 +230,16 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             tvTopicMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putInt(IntentKey.TOPIC_TYPE, 1)
+                bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 startARouter(ARouterCirclePath.HotTopicActivity, bundle)
             }
             tvActivityMore.setOnClickListener {
-                startARouter(ARouterCirclePath.CircleActivityListActivity)
+                val bundle = Bundle()
+                bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                startARouter(ARouterCirclePath.CircleActivityListActivity, bundle)
             }
         }
+
         noticeAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = noticeAdapter.getItem(position)
             val bundle = Bundle()
@@ -256,10 +248,17 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             bundle.putString(IntentKey.NOTICE_ID, bean.noticeId)
             startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
         }
+
         activityAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = activityAdapter.getItem(position)
-            JumpUtils.instans?.jump(bean.jumpType, bean.jumpValue)
+            JumpUtils.instans?.jump(bean.jumpDto.jumpCode, bean.jumpDto.jumpVal)
+        }
 
+        topicAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = topicAdapter.getItem(position)
+            val bundle = Bundle()
+            bundle.putString("topicId", bean.topicId)
+            startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
         }
     }
 
@@ -379,6 +378,13 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             } else {
                 binding.topContent.clNotice.visibility = View.VISIBLE
                 noticeAdapter.setList(it.circleNotices)
+            }
+
+            if (it.circleTopics.isNullOrEmpty()) {
+                binding.topContent.clTopic.visibility = View.GONE
+            } else {
+                binding.topContent.clTopic.visibility = View.VISIBLE
+                topicAdapter.setList(it.circleTopics)
             }
 
             if (it.permissions.isNullOrEmpty()) {

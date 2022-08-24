@@ -29,10 +29,12 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     }
 
     private var type = 0
+    private var circleId :String?=null
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
         type = intent.getIntExtra(IntentKey.TOPIC_TYPE, 0)
+        circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         binding.title.run {
             when (type) {
                 0 -> {
@@ -51,7 +53,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
 
         adapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.page++
-            viewModel.getData()
+            viewModel.getData(circleId)
         }
         adapter.setOnItemClickListener { _, view, position ->
             // 埋点
@@ -65,12 +67,12 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     }
 
     override fun initData() {
-        viewModel.getData()
+        viewModel.getData(circleId)
     }
 
     override fun observe() {
         super.observe()
-        viewModel.hotTopicBean.observe(this, {
+        viewModel.hotTopicBean.observe(this) {
             if (viewModel.page == 1) {
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)
@@ -83,6 +85,6 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
+        }
     }
 }

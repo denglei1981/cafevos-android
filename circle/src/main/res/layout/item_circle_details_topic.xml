@@ -19,7 +19,6 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/bg_f2f4_14"
             android:gravity="center"
-            android:maxWidth="200dp"
             android:paddingStart="11dp"
             android:paddingEnd="12dp"
             android:textColor="@color/circle_8195C8"

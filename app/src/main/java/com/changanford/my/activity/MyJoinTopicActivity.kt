@@ -27,20 +27,32 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
     OnLoadMoreListener, OnRefreshListener {
 
     var userId = ""
-    val myJoinTopicAdapter: MyJoinTopicMoreAdapter by lazy {
+    var isMyPost = false
+    private var isFirst = true
+    private val myJoinTopicAdapter by lazy {
         MyJoinTopicMoreAdapter()
     }
+
     companion object {
-        fun start(userId: String,activity: Activity) {
-             var intent = Intent()
-            intent.putExtra("userId",userId)
-            intent.setClass(activity,MyJoinTopicActivity::class.java)
+        fun start(userId: String, activity: Activity, isMyPost: Boolean? = false) {
+            val intent = Intent()
+            intent.putExtra("userId", userId)
+            if (isMyPost != null) {
+                intent.putExtra("isMyPost", isMyPost)
+            }
+            intent.setClass(activity, MyJoinTopicActivity::class.java)
             activity.startActivity(intent)
         }
     }
+
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.collectToolbar.conTitle, this)
-        binding.collectToolbar.tvTitle.text = "参与的话题"
+        userId = intent.getStringExtra("userId").toString()
+        isMyPost = intent.getBooleanExtra("isMyPost", false)
+        myJoinTopicAdapter.isMyPost = isMyPost
+        myJoinTopicAdapter.userId = userId
+        val titleText = if (isMyPost) "发起的话题" else "参与的话题"
+        binding.collectToolbar.tvTitle.text = titleText
         binding.collectToolbar.ivBack.setOnClickListener {
             onBackPressed()
         }
@@ -50,9 +62,8 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
     }
 
     override fun initData() {
-        userId = intent.getStringExtra("userId").toString()
         if (!TextUtils.isEmpty(userId)) {
-            viewModel.getMyTopics(userId, false)
+            viewModel.getMyTopics(userId, false, isMyPost)
         }
         myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
             val item = myJoinTopicAdapter.getItem(position)
@@ -62,10 +73,24 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isFirst) {
+            isFirst = false
+        } else {
+            if (!TextUtils.isEmpty(userId)) {
+                viewModel.getMyTopics(userId, false, isMyPost)
+            }
+        }
+    }
+
     override fun observe() {
         super.observe()
         viewModel.myTopicsLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                if (it.data == null) {
+                    return@Observer
+                }
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {
                     if (dataList != null) {
@@ -96,7 +121,7 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
                         showFailure(it.message)
                     }
                 }
-                ToastUtils.showShortToast(it.message,this)
+                ToastUtils.showShortToast(it.message, this)
 
             }
 
@@ -105,13 +130,13 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         if (!TextUtils.isEmpty(userId)) {
-            viewModel.getMyTopics(userId, true)
+            viewModel.getMyTopics(userId, true, isMyPost)
         }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         if (!TextUtils.isEmpty(userId)) {
-            viewModel.getMyTopics(userId, false)
+            viewModel.getMyTopics(userId, false, isMyPost)
         }
     }
 

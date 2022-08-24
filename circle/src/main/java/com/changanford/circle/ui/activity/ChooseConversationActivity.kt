@@ -67,7 +67,7 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
 
     override fun initData() {
         viewModel.getData()
-        viewModel.hotTopicBean.observe(this, {
+        viewModel.hotTopicBean.observe(this) {
             if (viewModel.page == 1) {
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)
@@ -80,7 +80,7 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
+        }
     }
 
     override fun observe() {

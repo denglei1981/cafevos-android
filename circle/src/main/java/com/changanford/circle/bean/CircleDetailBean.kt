@@ -25,15 +25,23 @@ data class CircleDetailBean(
     val userCount: Int = 0,
     val userId: Int = 0,
     val wonderfulControls: ArrayList<WonderfulControlsBean>?,
-    val circleTopics: ArrayList<Any>?,
+    val circleTopics: ArrayList<CircleTopicsBean>?,
     val circleNotices: ArrayList<CircleNoticesBean>?,
     val users: ArrayList<User> = arrayListOf(),
     val tags: ArrayList<NewCirceTagBean>? = null,
 )
 
+data class CircleTopicsBean(
+    val topicId:String,
+    val name:String,
+    val pic:String,
+    val description:String,
+)
+
 data class WonderfulControlsBean(
     val title: String,
     val coverImg: String,
+    val jumpDto: JumpDto,
     val jumpType: Int,
     val jumpValue: String,
     val wonderfulId: String,

@@ -19,11 +19,16 @@ class HotTopicViewModel : BaseViewModel() {
 
     val hotTopicBean = MutableLiveData<HotPicBean>()
 
-    fun getData() {
+    fun getData(circleId: String? = "") {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
+            if (!circleId.isNullOrEmpty()) {
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["circleId"] = circleId
+                }
+            }
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .getSugesstionTopics(body.header(rKey), body.body(rKey))

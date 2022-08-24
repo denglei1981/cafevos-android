@@ -9,6 +9,7 @@ import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.viewmodel.CreateCircleTopicViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.Topic
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
@@ -22,6 +23,7 @@ import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -34,15 +36,33 @@ class CreateCircleTopicActivity :
 
     private var picUrl = ""
     private var circleId = ""
+    private var topicData: Topic? = null
+    private var isChangeTopic = false
+    private var topicId = ""
 
     override fun initView() {
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
+        topicData = intent.getSerializableExtra(IntentKey.POST_TOPIC_ITEM) as Topic?
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateCircleTopicActivity,
                 Builder().apply { title = "发起圈子话题" })
         }
         initMyListener()
+        topicData?.let { data ->
+            isChangeTopic = true
+            topicId = data.topicId.toString()
+            binding.run {
+                picUrl = data.pic
+                ivCover.loadImage(
+                    picUrl,
+                    ImageOptions().apply {
+                        placeholder = R.mipmap.add_image
+                    })
+                etTitle.setText(data.name)
+                etContent.setText(data.description)
+            }
+        }
     }
 
     override fun initData() {
@@ -61,50 +81,55 @@ class CreateCircleTopicActivity :
                 inspectContent()
             }
             ivCover.setOnClickListener {
-                SelectPicDialog(this@CreateCircleTopicActivity,
-                    object : SelectPicDialog.ChoosePicListener {
-                        override fun chooseByPhone() {
-                            PictureUtil.openGalleryOnePic(this@CreateCircleTopicActivity, object :
-                                OnResultCallbackListener<LocalMedia> {
-                                override fun onResult(result: MutableList<LocalMedia>?) {
-                                    val bean = result?.get(0)
-                                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                                    path?.let { it1 ->
-                                        OSSHelper.init(this@CreateCircleTopicActivity)
-                                            .getOSSToImage(
-                                                this@CreateCircleTopicActivity,
-                                                it1,
-                                                object : OSSHelper.OSSImageListener {
-                                                    override fun getPicUrl(url: String) {
-                                                        picUrl = url
-                                                        ivCover.post {
-                                                            ivCover.loadImage(
-                                                                picUrl,
-                                                                ImageOptions().apply {
-                                                                    placeholder = R.mipmap.add_image
-                                                                })
-                                                        }
-                                                        inspectContent()
-                                                    }
-                                                })
-                                    }
-                                }
-
-                                override fun onCancel() {}
-                            })
+//                SelectPicDialog(this@CreateCircleTopicActivity,
+//                    object : SelectPicDialog.ChoosePicListener {
+//                        override fun chooseByPhone() {
+//
+//                        }
+//
+//                        override fun chooseByDefault() {
+//                            startARouter(ARouterCommonPath.FordAlbumActivity)
+//                        }
+//
+//                    }).show()
+                PictureUtil.openGalleryOnePic(this@CreateCircleTopicActivity, object :
+                    OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        val bean = result?.get(0)
+                        val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                        path?.let { it1 ->
+                            OSSHelper.init(this@CreateCircleTopicActivity)
+                                .getOSSToImage(
+                                    this@CreateCircleTopicActivity,
+                                    it1,
+                                    object : OSSHelper.OSSImageListener {
+                                        override fun getPicUrl(url: String) {
+                                            picUrl = url
+                                            ivCover.post {
+                                                ivCover.loadImage(
+                                                    picUrl,
+                                                    ImageOptions().apply {
+                                                        placeholder = R.mipmap.add_image
+                                                    })
+                                            }
+                                            inspectContent()
+                                        }
+                                    })
                         }
+                    }
 
-                        override fun chooseByDefault() {
-                            startARouter(ARouterCommonPath.FordAlbumActivity)
-                        }
-
-                    }).show()
-
+                    override fun onCancel() {}
+                },true)
             }
             tvPost.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
-                viewModel.initiateTopic(circleId, title, content, picUrl) { finish() }
+                if (isChangeTopic) {
+                    viewModel.updateTopic(topicId, title, content, picUrl) { finish() }
+                } else {
+                    viewModel.initiateTopic(circleId, title, content, picUrl) { finish() }
+                }
+
             }
         }
 

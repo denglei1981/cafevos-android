@@ -590,4 +590,18 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
+    //圈子活动
+    @POST("/highlights/v2/circleActivity")
+    suspend fun circleActivity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleActivityBean>
+
+    //修改圈内话题
+    @POST("/con/topic/updateTopic")
+    suspend fun updateTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 }
