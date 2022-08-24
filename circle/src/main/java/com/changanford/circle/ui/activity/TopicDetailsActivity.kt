@@ -26,6 +26,7 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
@@ -62,6 +63,8 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private var isWhite = true//是否是白色状态
     private var topicId = ""
+    private var circleId: String? = null
+    private var circleName: String? = null
     private var isOpenMenuPop = false
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
@@ -70,6 +73,8 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         initMagicIndicator()
 
         topicId = intent.getStringExtra("topicId").toString()
+        circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
+        circleName = intent.getStringExtra("circleName")
 
         binding.run {
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@TopicDetailsActivity)
@@ -136,16 +141,44 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                 var postEntity = postEntity?.last()
                                 when (postEntity?.type) {
                                     "2" -> {
-                                        RouterManger.param("postEntity", postEntity)
-                                            .startARouter(ARouterCirclePath.PostActivity)
+                                        RouterManger.run {
+                                            param("postEntity", postEntity)
+                                            circleId?.let {
+                                                param("circleId", it)
+                                                param("isCirclePost", true)
+                                                circleName?.let {
+                                                    param("circleName", it)
+                                                }
+                                            }
+                                            startARouter(ARouterCirclePath.PostActivity)
+                                        }
                                     }
                                     "3" -> {
-                                        RouterManger.param("postEntity", postEntity)
-                                            .startARouter(ARouterCirclePath.VideoPostActivity)
+                                        RouterManger.run {
+                                            param("postEntity", postEntity)
+                                            circleId?.let {
+                                                param("circleId", it)
+                                                param("isCirclePost", true)
+                                                circleName?.let {
+                                                    param("circleName", it)
+                                                }
+                                            }
+                                            startARouter(ARouterCirclePath.VideoPostActivity)
+                                        }
+
                                     }
                                     "4" -> {
-                                        RouterManger.param("postEntity", postEntity)
-                                            .startARouter(ARouterCirclePath.LongPostAvtivity)
+                                        RouterManger.run {
+                                            param("postEntity", postEntity)
+                                            circleId?.let {
+                                                param("circleId", it)
+                                                param("isCirclePost", true)
+                                                circleName?.let {
+                                                    param("circleName", it)
+                                                }
+                                            }
+                                            startARouter(ARouterCirclePath.LongPostAvtivity)
+                                        }
                                     }
                                 }
                             }
@@ -176,6 +209,13 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         bundle.putString("topId", topicId)
         bundle.putBoolean("isTopPost", true)
         bundle.putString("topName", topicName)
+        circleId?.let {
+            bundle.putString("circleId", it)
+            bundle.putBoolean("isCirclePost", true)
+            circleName?.let { circleName ->
+                bundle.putString("circleName", circleName)
+            }
+        }
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
             override fun checkLongBar() {

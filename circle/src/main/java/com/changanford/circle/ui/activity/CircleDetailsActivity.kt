@@ -231,6 +231,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 val bundle = Bundle()
                 bundle.putInt(IntentKey.TOPIC_TYPE, 1)
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                bundle.putString("circleName", binding.barTitleTv.text.toString())
                 startARouter(ARouterCirclePath.HotTopicActivity, bundle)
             }
             tvActivityMore.setOnClickListener {
@@ -258,6 +259,8 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             val bean = topicAdapter.getItem(position)
             val bundle = Bundle()
             bundle.putString("topicId", bean.topicId)
+            bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+            bundle.putString("circleName", binding.barTitleTv.text.toString())
             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
         }
     }

@@ -29,12 +29,14 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     }
 
     private var type = 0
-    private var circleId :String?=null
+    private var circleId: String? = null
+    private var circleName: String? = null
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
         type = intent.getIntExtra(IntentKey.TOPIC_TYPE, 0)
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
+        circleName = intent.getStringExtra("circleName")
         binding.title.run {
             when (type) {
                 0 -> {
@@ -60,6 +62,10 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             BuriedUtil.instant?.circleHotTopicClick(adapter.getItem(position).name)
             val bundle = Bundle()
             bundle.putString("topicId", adapter.getItem(position).topicId.toString())
+            circleId?.let {
+                bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
+                bundle.putString("circleName", circleName)
+            }
             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
 
         }
