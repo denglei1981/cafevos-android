@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
@@ -10,8 +11,10 @@ import com.changanford.circle.viewmodel.CircleNoticeViewMode
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
+import com.qw.soul.permission.SoulPermission
 
 /**
  *Author lcw
@@ -30,7 +33,15 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateNoticeActivity,
-                Builder().apply { title = "发布公告" })
+                Builder().apply {
+                    title = "发布公告"
+                    leftButtonClickListener = object : Builder.LeftButtonClickListener {
+                        override fun onClick(view: View?) {
+                            backCheck()
+                        }
+
+                    }
+                })
         }
         initMyListener()
 
@@ -73,6 +84,21 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
 
     override fun initData() {
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        backCheck()
+    }
+
+    private fun backCheck() {
+        changeNoticeBean?.let {
+            AlertDialog(this).builder()
+                .setMsg("您正在编辑公告,是否确认离开")
+                .setNegativeButton("放弃编辑") { finish() }.setPositiveButton(
+                    "继续编辑"
+                ) { }.show()
+        }
     }
 
     private fun inspectContent() {

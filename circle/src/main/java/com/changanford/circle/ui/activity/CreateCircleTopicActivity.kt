@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
@@ -15,6 +16,7 @@ import com.changanford.common.helper.OSSHelper
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -47,7 +49,15 @@ class CreateCircleTopicActivity :
         binding.run {
             title.toolbar.initTitleBar(
                 this@CreateCircleTopicActivity,
-                Builder().apply { title = "发起圈子话题" })
+                Builder().apply {
+                    title = "发起圈子话题"
+                    leftButtonClickListener = object : Builder.LeftButtonClickListener {
+                        override fun onClick(view: View?) {
+                            backCheck()
+                        }
+
+                    }
+                })
         }
         initMyListener()
         topicData?.let { data ->
@@ -68,6 +78,21 @@ class CreateCircleTopicActivity :
 
     override fun initData() {
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        backCheck()
+    }
+
+    private fun backCheck() {
+        topicData?.let {
+            AlertDialog(this).builder()
+                .setMsg("您正在编辑话题,是否确认离开")
+                .setNegativeButton("放弃编辑") { finish() }.setPositiveButton(
+                    "继续编辑"
+                ) { }.show()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -120,12 +145,12 @@ class CreateCircleTopicActivity :
                     }
 
                     override fun onCancel() {}
-                },true)
+                }, true)
             }
             tvPost.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
-                if(title.length<3||!title.startsWith("#")||!title.endsWith("#")){
+                if (title.length < 3 || !title.startsWith("#") || !title.endsWith("#")) {
                     "#话题名称# 格式错误，话题前后需加#".toast()
                     return@setOnClickListener
                 }
