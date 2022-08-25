@@ -2,9 +2,15 @@ package com.changanford.my.adapter
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.graphics.Paint
 import android.os.Bundle
+import android.text.TextPaint
 import android.view.View
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnPreDraw
+import anet.channel.util.Utils.context
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Topic
@@ -14,8 +20,11 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntDp
+import com.changanford.common.utilext.toIntPx
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemMysJoinTopicMoreBinding
+import com.xiaomi.push.it
 
 
 class MyJoinTopicMoreAdapter :
@@ -124,6 +133,15 @@ class MyJoinTopicMoreAdapter :
             } else {
                 t.btnType.visibility = View.GONE
                 t.rlReason.visibility = View.GONE
+            }
+
+            val paint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+            paint.textSize = 11F
+
+            t.btnType.doOnPreDraw {
+                val w = paint.measureText(t.btnType.text.toString()).toInt() + 8
+                it.layoutParams.width = w.toIntPx()
+
             }
 
         }

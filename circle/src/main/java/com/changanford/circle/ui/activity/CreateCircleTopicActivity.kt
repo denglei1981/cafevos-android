@@ -21,6 +21,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
+import com.changanford.common.utilext.toast
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.xiaomi.push.it
@@ -124,6 +125,10 @@ class CreateCircleTopicActivity :
             tvPost.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
+                if(title.length<3||!title.startsWith("#")||!title.endsWith("#")){
+                    "#话题名称# 格式错误，话题前后需加#".toast()
+                    return@setOnClickListener
+                }
                 if (isChangeTopic) {
                     viewModel.updateTopic(topicId, title, content, picUrl) { finish() }
                 } else {

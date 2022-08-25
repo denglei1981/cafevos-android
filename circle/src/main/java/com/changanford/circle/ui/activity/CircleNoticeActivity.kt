@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleNoticeAdapter
 import com.changanford.circle.databinding.ActivityCircleNoticeBinding
 import com.changanford.circle.viewmodel.CircleNoticeViewMode
@@ -11,6 +12,8 @@ import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.toolbar.initTitleBar
+import com.gyf.immersionbar.ImmersionBar
 
 /**
  *Author lcw
@@ -30,6 +33,7 @@ class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNot
     private var hasLookNotice = false
 
     override fun initView() {
+        ImmersionBar.with(this).statusBarColor(R.color.white).keyboardEnable(false).init()
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
         noticeId = intent.getStringExtra(IntentKey.NOTICE_ID).toString()
         hasLookNotice = intent.getBooleanExtra(IntentKey.HAS_LOOK_NOTICE, false)

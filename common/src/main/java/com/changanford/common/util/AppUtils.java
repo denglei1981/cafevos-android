@@ -312,7 +312,7 @@ public class AppUtils {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
-            marginParams.topMargin = marginParams.topMargin + height + 10;
+            marginParams.topMargin = marginParams.topMargin + height ;
         }
     }
 

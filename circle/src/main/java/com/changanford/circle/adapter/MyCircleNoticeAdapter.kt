@@ -48,6 +48,9 @@ class MyCircleNoticeAdapter :
                     tvType.text = "未通过"
                 }
             }
+            if (item.onShelve == "UNDER_SHELVE") {
+                tvType.text = "下架"
+            }
             if (item.checkStatus == "REJECT") {
                 llReason.visibility = View.VISIBLE
                 tvReason.text = "原因: ${item.checkNoReason}"

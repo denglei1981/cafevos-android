@@ -94,9 +94,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
         }
         fragmentList.add(homePageFragment)
         fragmentList.add(postFragment)
-//        if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
-        fragmentList.add(myCollectFragment)
-//        }
+        if (TextUtils.isEmpty(taUserId) || taUserId == userId) {
+            fragmentList.add(myCollectFragment)
+        }
         binding.viewPager.adapter = MtViewPagerAdapter(this, fragmentList)
         if (TextUtils.isEmpty(taUserId) || taUserId == userId) { //是自己
             binding.topContent.tvEditInfo.visibility = View.VISIBLE
@@ -482,9 +482,9 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     }
 
     private fun initMagicIndicator() {
-//        if ((TextUtils.isEmpty(taUserId) && tabList.size < 3) || taUserId == userId) {
-        tabList.add("收藏")
-//        }
+        if ((TextUtils.isEmpty(taUserId) && tabList.size < 3) || taUserId == userId) {
+            tabList.add("收藏")
+        }
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(ContextCompat.getColor(this, R.color.color_F4))
         val commonNavigator = CommonNavigator(this)

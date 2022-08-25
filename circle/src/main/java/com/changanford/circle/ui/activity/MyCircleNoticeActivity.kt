@@ -11,6 +11,7 @@ import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
+import com.gyf.immersionbar.ImmersionBar
 
 /**
  *Author lcw
@@ -29,6 +30,7 @@ class MyCircleNoticeActivity :
     }
 
     override fun initView() {
+        ImmersionBar.with(this).statusBarColor(R.color.white).keyboardEnable(false).init()
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID).toString()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, this)
         initMyListener()
