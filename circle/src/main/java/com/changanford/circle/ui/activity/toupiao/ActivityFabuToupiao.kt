@@ -41,6 +41,7 @@ import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -90,28 +91,57 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     }
 
     fun caogao() {
-        BottomSelectDialog(this, {
-            voteBean.coverImg = fengmianurl
-            var title = binding.etBiaoti.text.toString()
-            voteBean.title = title
-            voteBean.voteDesc = binding.etShuoming.text.toString()
-            voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
-            voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
-            var voteDB = PostEntity(
-                postsId = draftBean?.postsId ?: insertPostId,
-                type = "6",
-                toupiao = JSON.toJSONString(voteBean)
-            )
-            lifecycleScope.launch(Dispatchers.IO) {
-                PostDatabase.getInstance(MyApp.mContext).getPostDao()
-                    .insert(voteDB)
-                withContext(Dispatchers.Main) {
+        if (updateVoteReq != null) {
+            AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                .setMsg(
+                    "您正在编辑活动，是否确认离开"
+                )
+                .setCancelable(true)
+                .setNegativeButton("放弃编辑", R.color.color_7174) {
                     finish()
                 }
+                .setPositiveButton("继续编辑", R.color.color_01025C) {
+
+                }.show()
+        } else {
+            voteBean.apply {
+                if (title.isNullOrEmpty() && coverImg.isNullOrEmpty() && endTime.isNullOrEmpty() && voteDesc.isNullOrEmpty()) {
+                    var finishImmediately = true
+                    optionList.forEach {
+                        if (!it.optionDesc.isNullOrEmpty() || !it.optionImg.isNullOrEmpty()) {
+                            finishImmediately = false
+                            return@forEach
+                        }
+                    }
+                    if (finishImmediately) {
+                        finish()
+                        return
+                    }
+                }
             }
-        }) {
-            finish()
-        }.show()
+            BottomSelectDialog(this, {
+                voteBean.coverImg = fengmianurl
+                var title = binding.etBiaoti.text.toString()
+                voteBean.title = title
+                voteBean.voteDesc = binding.etShuoming.text.toString()
+                voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
+                voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
+                var voteDB = PostEntity(
+                    postsId = draftBean?.postsId ?: insertPostId,
+                    type = "6",
+                    toupiao = JSON.toJSONString(voteBean)
+                )
+                lifecycleScope.launch(Dispatchers.IO) {
+                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                        .insert(voteDB)
+                    withContext(Dispatchers.Main) {
+                        finish()
+                    }
+                }
+            }) {
+                finish()
+            }.show()
+        }
     }
 
     private fun initAdapter() {
@@ -146,36 +176,34 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
 
     private fun openxiangche(position: Int) {
         this.position = position
-        SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
-            override fun chooseByPhone() {
-                PictureUtil.openGalleryOnePic(this@ActivityFabuToupiao, object :
-                    OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        val bean = result?.get(0)
-                        val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                        path?.let { it1 ->
-                            OSSHelper.init(this@ActivityFabuToupiao)
-                                .getOSSToImage(
-                                    this@ActivityFabuToupiao,
-                                    it1,
-                                    object : OSSHelper.OSSImageListener {
-                                        override fun getPicUrl(url: String) {
+        PictureUtils.openGarlly(
+            this@ActivityFabuToupiao,
+            1,
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>?) {
+                    val bean = result?.get(0)
+                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                    path?.let { it1 ->
+                        OSSHelper.init(this@ActivityFabuToupiao)
+                            .getOSSToImage(
+                                this@ActivityFabuToupiao,
+                                it1,
+                                object : OSSHelper.OSSImageListener {
+                                    override fun getPicUrl(url: String) {
+                                        lifecycleScope.launch(Dispatchers.Main) {
                                             voteBean.optionList[position].optionImg = url
                                             dragAdapter.notifyItemChanged(position)
                                         }
-                                    })
-                        }
+                                    }
+                                })
                     }
+                }
 
-                    override fun onCancel() {}
-                })
-            }
-
-            override fun chooseByDefault() {
-                startARouter(ARouterCommonPath.FordAlbumActivity)
-            }
-
-        }).show()
+                override fun onCancel() {}
+            },
+            400,
+            400
+        )
     }
 
     var onItemDragListener: OnItemDragListener = object : OnItemDragListener {
@@ -282,10 +310,12 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     }
 
     private fun showFengMian(s: String) {
-        fengmianurl = s
-        GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(fengmianurl), binding.ivFengmian, 5f);
-        binding.tvFm.isVisible = true
-        binding.tvFmHint.isVisible = false
+        lifecycleScope.launch(Dispatchers.Main) {
+            fengmianurl = s
+            GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(fengmianurl), binding.ivFengmian, 5f);
+            binding.tvFm.isVisible = true
+            binding.tvFmHint.isVisible = false
+        }
     }
 
     private fun clickInit() {
@@ -293,26 +323,31 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             position = -1
             SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
                 override fun chooseByPhone() {
-                    PictureUtil.openGalleryOnePic(this@ActivityFabuToupiao, object :
-                        OnResultCallbackListener<LocalMedia> {
-                        override fun onResult(result: MutableList<LocalMedia>?) {
-                            val bean = result?.get(0)
-                            val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                            path?.let { it1 ->
-                                OSSHelper.init(this@ActivityFabuToupiao)
-                                    .getOSSToImage(
-                                        this@ActivityFabuToupiao,
-                                        it1,
-                                        object : OSSHelper.OSSImageListener {
-                                            override fun getPicUrl(url: String) {
-                                                showFengMian(url)
-                                            }
-                                        })
+                    PictureUtils.openGarlly(
+                        this@ActivityFabuToupiao,
+                        1,
+                        object : OnResultCallbackListener<LocalMedia?> {
+                            override fun onResult(result: List<LocalMedia?>?) {
+                                val bean = result?.get(0)
+                                val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                                path?.let { it1 ->
+                                    OSSHelper.init(this@ActivityFabuToupiao)
+                                        .getOSSToImage(
+                                            this@ActivityFabuToupiao,
+                                            it1,
+                                            object : OSSHelper.OSSImageListener {
+                                                override fun getPicUrl(url: String) {
+                                                    showFengMian(url)
+                                                }
+                                            })
+                                }
                             }
-                        }
 
-                        override fun onCancel() {}
-                    })
+                            override fun onCancel() {}
+                        },
+                        670,
+                        400
+                    )
                 }
 
                 override fun chooseByDefault() {
@@ -390,8 +425,8 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                         }
                     }
                 }
-            }else{
-                viewModel.updateVote(updateVoteReq?.wonderfulId?:0,voteBean){
+            } else {
+                viewModel.updateVote(updateVoteReq?.wonderfulId ?: 0, voteBean) {
                     it.onSuccess {
                         if (draftBean != null) {
                             lifecycleScope.launch(Dispatchers.IO) {
@@ -434,7 +469,8 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
         }
 
     }
-    fun showDefaultData(){
+
+    fun showDefaultData() {
         dragAdapter.addData(voteBean.optionList)
         binding.apply {
             showFengMian(voteBean.coverImg)
@@ -531,7 +567,6 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             pvActEndTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                voteBean.endTime = TimeUtils.MillisToStr1(date.time)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,
@@ -539,6 +574,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                     )
                     pvActTime!!.show()
                 } else {
+                    voteBean.endTime = TimeUtils.MillisToStr1(date.time)
                     binding.tvTime.text =
                         "${voteBean.beginTime}-${voteBean.endTime}"
                 }

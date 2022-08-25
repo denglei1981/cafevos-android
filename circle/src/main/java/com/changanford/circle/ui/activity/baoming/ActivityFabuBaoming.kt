@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,8 +26,6 @@ import com.alibaba.fastjson.JSON
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.changanford.circle.R
-import com.changanford.circle.bean.ImageList
-import com.changanford.circle.bean.LongPostBean
 import com.changanford.circle.databinding.ActivityFabubaomingBinding
 import com.changanford.circle.ui.release.widget.AttrbultPop
 import com.changanford.common.MyApp
@@ -46,10 +43,12 @@ import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -64,7 +63,6 @@ import com.scwang.smart.refresh.layout.util.SmartUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import java.util.*
 
 /**
@@ -76,12 +74,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 
     private var pvActTime: TimePickerView? = null
     private var pvActEndTime: TimePickerView? = null
-    var draftBean:PostEntity? = null
-    var updateActivityV2Req:UpdateActivityV2Req? = null
+    var draftBean: PostEntity? = null
+    var updateActivityV2Req: UpdateActivityV2Req? = null
 
     companion object {
         var dto: DtoBeanNew = DtoBeanNew()
-        var wonderfulId:Int = 0
+        var wonderfulId: Int = 0
     }
 
     var timebegin: Date = Date(System.currentTimeMillis())
@@ -99,42 +97,47 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
         dto.circleId = intent.getStringExtra(CREATE_NOTICE_CIRCLE_ID)
         draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
-        if (draftBean != null){
+        if (draftBean != null) {
             dto = Gson().fromJson(draftBean?.baoming, DtoBeanNew::class.java)
         }
         updateActivityV2Req = intent.getSerializableExtra("dto") as UpdateActivityV2Req?
-        if (updateActivityV2Req != null){
+        if (updateActivityV2Req != null) {
             updateActivityV2Req?.dto?.let {
                 dto = it
                 downloadImg()
             }
-            wonderfulId = updateActivityV2Req?.wonderfulId?:0
+            wonderfulId = updateActivityV2Req?.wonderfulId ?: 0
         }
         binding.composeLayout.setContent {
-            fabubaomingCompose(viewModel, dto,choseCover = {
+            fabubaomingCompose(viewModel, dto, choseCover = {
                 SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
                     override fun chooseByPhone() {
-                        PictureUtil.openGalleryOnePic(this@ActivityFabuBaoming, object :
-                            OnResultCallbackListener<LocalMedia> {
-                            override fun onResult(result: MutableList<LocalMedia>?) {
-                                val bean = result?.get(0)
-                                val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                                path?.let { it1 ->
-                                    OSSHelper.init(this@ActivityFabuBaoming)
-                                        .getOSSToImage(
-                                            this@ActivityFabuBaoming,
-                                            it1,
-                                            object : OSSHelper.OSSImageListener {
-                                                override fun getPicUrl(url: String) {
-                                                    it(url)
-                                                    dto.coverImgUrl = url
-                                                }
-                                            })
+                        PictureUtils.openGarlly(
+                            this@ActivityFabuBaoming,
+                            1,
+                            object : OnResultCallbackListener<LocalMedia?> {
+                                override fun onResult(result: List<LocalMedia?>?) {
+                                    val bean = result?.get(0)
+                                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                                    path?.let { it1 ->
+                                        OSSHelper.init(this@ActivityFabuBaoming)
+                                            .getOSSToImage(
+                                                this@ActivityFabuBaoming,
+                                                it1,
+                                                object : OSSHelper.OSSImageListener {
+                                                    override fun getPicUrl(url: String) {
+                                                        it(url)
+                                                        dto.coverImgUrl = url
+                                                    }
+                                                })
+                                    }
                                 }
-                            }
 
-                            override fun onCancel() {}
-                        })
+                                override fun onCancel() {}
+                            },
+                            670,
+                            400
+                        )
                     }
 
                     override fun chooseByDefault() {
@@ -173,18 +176,18 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             fordAlbum(it as String)
             dto.coverImgUrl = it
         }
-        LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).observe(this){
-            if (draftBean!=null){
-                lifecycleScope.launch(Dispatchers.IO){
+        LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).observe(this) {
+            if (draftBean != null) {
+                lifecycleScope.launch(Dispatchers.IO) {
                     draftBean?.postsId?.let { it1 ->
                         PostDatabase.getInstance(MyApp.mContext).getPostDao()
                             .delete(it1)
                     }
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         finish()
                     }
                 }
-            }else {
+            } else {
                 finish()
             }
         }
@@ -207,24 +210,50 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     override fun onBackPressed() {
         caogao()
     }
+
     private val insertPostId by lazy {
         System.currentTimeMillis()
     }
-    fun caogao(){
 
-        BottomSelectDialog(this, {
-            var baomingDB = PostEntity(postsId = draftBean?.postsId?:insertPostId, type = "5", baoming = JSON.toJSONString(dto))
-            lifecycleScope.launch(Dispatchers.IO){
-                PostDatabase.getInstance(MyApp.mContext).getPostDao()
-                    .insert(baomingDB)
-                withContext(Dispatchers.Main){
+    fun caogao() {
+        if (updateActivityV2Req != null) {
+            AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                .setMsg(
+                    "您正在编辑活动，是否确认离开"
+                )
+                .setCancelable(true)
+                .setNegativeButton("放弃编辑", R.color.color_7174) {
                     finish()
                 }
+                .setPositiveButton("继续编辑", R.color.color_01025C) {
+
+                }.show()
+        } else {
+            dto.apply {
+                if (coverImgUrl.isNullOrEmpty() && title.isNullOrEmpty() && content.isNullOrEmpty() && signEndTime.isNullOrEmpty() && attributes.isNullOrEmpty() && activityTotalCount == null) {
+                    finish()
+                    return
+                }
             }
-        }) {
-            finish()
-        }.show()
+            BottomSelectDialog(this, {
+                var baomingDB = PostEntity(
+                    postsId = draftBean?.postsId ?: insertPostId,
+                    type = "5",
+                    baoming = JSON.toJSONString(dto)
+                )
+                lifecycleScope.launch(Dispatchers.IO) {
+                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                        .insert(baomingDB)
+                    withContext(Dispatchers.Main) {
+                        finish()
+                    }
+                }
+            }) {
+                finish()
+            }.show()
+        }
     }
+
     fun setTimePicker() {
         initTimePick1()
         initTimePickEND()
@@ -282,7 +311,6 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActEndTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                dto.signEndTime = TimeUtils.MillisToStr1(date.time)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,
@@ -290,6 +318,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     )
                     pvActTime!!.show()
                 } else {
+                    dto.signEndTime = TimeUtils.MillisToStr1(date.time)
                     dateReslut("${dto.signBeginTime}-${dto.signEndTime}")
                 }
             }
@@ -343,7 +372,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 @Composable
 fun fabubaomingCompose(
     viewModel: BaoMingViewModel,
-    dto:DtoBeanNew,
+    dto: DtoBeanNew,
     choseCover: (result: (String) -> Unit) -> Unit = {},
     choseTime: (result: (String) -> Unit) -> Unit = {},
     choseProfile: (result: (String) -> Unit) -> Unit = {},
@@ -353,7 +382,7 @@ fun fabubaomingCompose(
         mutableStateOf(dto.coverImgUrl)
     }
     var date by remember {
-        mutableStateOf("${dto.signBeginTime?:""}-${dto.signEndTime?:""}")
+        mutableStateOf("${dto.signBeginTime ?: ""}-${dto.signEndTime ?: ""}")
     }
     var profile by remember {
         var Showstr = ""
@@ -365,10 +394,14 @@ fun fabubaomingCompose(
         mutableStateOf(Showstr)
     }
     var num by remember {
-        mutableStateOf("${dto.activityTotalCount?:""}")
+        mutableStateOf("${dto.activityTotalCount ?: ""}")
     }
     var nextEnable by remember {
         mutableStateOf(false)
+    }
+    ActivityFabuBaoming.dto.apply {
+        nextEnable =
+            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
     }
     Column(
         modifier = Modifier
@@ -444,12 +477,12 @@ fun fabubaomingCompose(
         Column {
             Box(modifier = Modifier.height(20.dp))
             FabuTitle(name = "标题", true)
-            FabuInput(hint = "请输入活动标题", initText = ActivityFabuBaoming.dto.title?:"",20) {
+            FabuInput(hint = "请输入活动标题", initText = ActivityFabuBaoming.dto.title ?: "", 20) {
                 ActivityFabuBaoming.dto.title = it
             }
             FabuLine()
             FabuTitle(name = "描述", false)
-            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content?:"", 100) {
+            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content ?: "", 100) {
                 ActivityFabuBaoming.dto.content = it
             }
             FabuLine()
@@ -475,16 +508,12 @@ fun fabubaomingCompose(
             FabuLine()
             FabuInputItem(title = "报名人数", content = num, hint = "不填则无限制") {
                 num = it
-                try {
-                    ActivityFabuBaoming.dto.activityTotalCount =  it.toInt()
-                }catch (e:Exception){
-                    "报名人数请输入数字".toast()
-                    e.printStackTrace()
-                }
             }
             FabuLine(20.dp)
-            FabuButton {
-                startARouter(ARouterCirclePath.ActivityFabuStep2)
+            FabuButton(nextEnable) {
+                if (nextEnable) {
+                    startARouter(ARouterCirclePath.ActivityFabuStep2)
+                }
             }
         }
 
@@ -571,8 +600,18 @@ fun FabuInputItem(
         TextField(
             value = txt,
             onValueChange = {
-                txt = it
-                onChanged(it)
+                try {
+                    if (it.isNullOrEmpty()) {
+                        ActivityFabuBaoming.dto.activityTotalCount = null
+                    } else {
+                        ActivityFabuBaoming.dto.activityTotalCount = it.toInt()
+                    }
+                    txt = it
+                    onChanged(it)
+                } catch (e: Exception) {
+                    "报名人数请输入数字".toast()
+                    e.printStackTrace()
+                }
             },
             singleLine = true,
             maxLines = 1,
@@ -603,7 +642,12 @@ fun FabuInputItem(
 }
 
 @Composable
-fun FabuInput(hint: String = "",initText:String = "", maxNum: Int = Int.MAX_VALUE, onChanged: (String) -> Unit = {}) {
+fun FabuInput(
+    hint: String = "",
+    initText: String = "",
+    maxNum: Int = Int.MAX_VALUE,
+    onChanged: (String) -> Unit = {}
+) {
     var txt by remember {
         mutableStateOf(initText)
     }
