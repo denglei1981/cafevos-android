@@ -1,5 +1,8 @@
 package com.changanford.common.bean
 
+/**
+ * 投票发送和返回
+ */
 data class VoteBean(
 
     var allowMultipleChoice: String = "",//是否允许多选,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)

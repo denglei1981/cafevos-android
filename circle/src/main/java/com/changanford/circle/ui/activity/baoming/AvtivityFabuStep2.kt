@@ -18,11 +18,9 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
@@ -33,28 +31,22 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LongPostV2Adapter
 import com.changanford.circle.bean.LongPostBean
-import com.changanford.circle.bean.PostTagData
 import com.changanford.circle.databinding.ActivityFabudeitalBinding
 import com.changanford.circle.ui.release.MMapActivity
 import com.changanford.circle.ui.release.ReleaseActivity
 import com.changanford.circle.ui.release.widget.ActivityTypeDialog
 import com.changanford.circle.viewmodel.PostViewModule
-import com.changanford.circle.widget.dialog.CirclePostTagDialog
-import com.changanford.circle.widget.pop.ShowSavePostPop
-import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DtoBeanNew
 import com.changanford.common.bean.MapReturnBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.onSuccess
-import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.AppUtils
@@ -75,9 +67,6 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.scwang.smart.refresh.layout.util.SmartUtil
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.util.*
@@ -611,13 +600,23 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 ) || !TextUtils.isEmpty(it.contentImgUrl)
             }
         ActivityFabuBaoming.dto.contentImgList = last
-        baoMingViewModel?.CommitACT(
-            ActivityFabuBaoming
-                .dto
-        ) {
-            it.onSuccess {
-                LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
-                finish()
+        if (ActivityFabuBaoming.wonderfulId ==0) {
+            baoMingViewModel?.CommitACT(
+                ActivityFabuBaoming
+                    .dto
+            ) {
+                it.onSuccess {
+                    LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
+                    finish()
+                }
+            }
+        }else{
+            baoMingViewModel?.updateActivity(ActivityFabuBaoming.wonderfulId,ActivityFabuBaoming
+                .dto){
+                it.onSuccess {
+                    LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
+                    finish()
+                }
             }
         }
     }

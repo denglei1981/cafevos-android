@@ -25,6 +25,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.UpdateVoteReq
 import com.changanford.common.bean.VoteBean
 import com.changanford.common.bean.VoteOptionBean
 import com.changanford.common.constant.IntentKey
@@ -64,6 +65,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     var position = -1
     var voteBean: VoteBean = VoteBean()
     var draftBean: PostEntity? = null
+    var updateVoteReq: UpdateVoteReq? = null
 
     override fun initView() {
         binding.title.barTvTitle.text = "发布投票活动"
@@ -370,9 +372,41 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             voteBean.voteDesc = binding.etShuoming.text.toString()
             voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
             voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
-            viewModel.AddVote(voteBean) {
-                it.onSuccess {
-                    finish()
+            if (updateVoteReq == null) {
+                viewModel.AddVote(voteBean) {
+                    it.onSuccess {
+                        if (draftBean != null) {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                draftBean?.postsId?.let { it1 ->
+                                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                                        .delete(it1)
+                                }
+                                withContext(Dispatchers.Main) {
+                                    finish()
+                                }
+                            }
+                        } else {
+                            finish()
+                        }
+                    }
+                }
+            }else{
+                viewModel.updateVote(updateVoteReq?.wonderfulId?:0,voteBean){
+                    it.onSuccess {
+                        if (draftBean != null) {
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                draftBean?.postsId?.let { it1 ->
+                                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                                        .delete(it1)
+                                }
+                                withContext(Dispatchers.Main) {
+                                    finish()
+                                }
+                            }
+                        } else {
+                            finish()
+                        }
+                    }
                 }
             }
         }
@@ -383,17 +417,14 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
 
     override fun initData() {
         draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
+        updateVoteReq = intent.getSerializableExtra("voteBean") as UpdateVoteReq?
         if (draftBean != null) {
             voteBean = Gson().fromJson(draftBean?.toupiao, VoteBean::class.java)
-            dragAdapter.addData(voteBean.optionList)
-            binding.apply {
-                showFengMian(voteBean.coverImg)
-                etBiaoti.setText(voteBean.title)
-                tvTime.text =
-                    "${voteBean.beginTime}-${voteBean.endTime}"
-                etShuoming.setText(voteBean.voteDesc)
-                multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
-                mcb.isChecked = voteBean.allowViewResult == "YES"
+            showDefaultData()
+        } else if (updateVoteReq != null) {
+            updateVoteReq?.addVoteDto?.let {
+                voteBean = it
+                showDefaultData()
             }
         } else {
             list?.add(VoteOptionBean(""))
@@ -402,6 +433,18 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             dragAdapter.addData(list!!)
         }
 
+    }
+    fun showDefaultData(){
+        dragAdapter.addData(voteBean.optionList)
+        binding.apply {
+            showFengMian(voteBean.coverImg)
+            etBiaoti.setText(voteBean.title)
+            tvTime.text =
+                "${voteBean.beginTime}-${voteBean.endTime}"
+            etShuoming.setText(voteBean.voteDesc)
+            multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
+            mcb.isChecked = voteBean.allowViewResult == "YES"
+        }
     }
 
 

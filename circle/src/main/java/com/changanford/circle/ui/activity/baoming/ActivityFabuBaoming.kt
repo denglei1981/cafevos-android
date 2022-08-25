@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity.baoming
 
+import android.view.View
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,8 @@ import com.alibaba.fastjson.JSON
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.changanford.circle.R
+import com.changanford.circle.bean.ImageList
+import com.changanford.circle.bean.LongPostBean
 import com.changanford.circle.databinding.ActivityFabubaomingBinding
 import com.changanford.circle.ui.release.widget.AttrbultPop
 import com.changanford.common.MyApp
@@ -35,7 +38,7 @@ import com.changanford.common.bean.AttributeBean
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos
 import com.changanford.common.bean.AttributeBean.AttributeCategoryVos.AttributeListBean
 import com.changanford.common.bean.DtoBeanNew
-import com.changanford.common.bean.VoteBean
+import com.changanford.common.bean.UpdateActivityV2Req
 import com.changanford.common.constant.IntentKey.CREATE_NOTICE_CIRCLE_ID
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.room.PostDatabase
@@ -74,9 +77,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     private var pvActTime: TimePickerView? = null
     private var pvActEndTime: TimePickerView? = null
     var draftBean:PostEntity? = null
+    var updateActivityV2Req:UpdateActivityV2Req? = null
 
     companion object {
         var dto: DtoBeanNew = DtoBeanNew()
+        var wonderfulId:Int = 0
     }
 
     var timebegin: Date = Date(System.currentTimeMillis())
@@ -96,6 +101,14 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
         if (draftBean != null){
             dto = Gson().fromJson(draftBean?.baoming, DtoBeanNew::class.java)
+        }
+        updateActivityV2Req = intent.getSerializableExtra("dto") as UpdateActivityV2Req?
+        if (updateActivityV2Req != null){
+            updateActivityV2Req?.dto?.let {
+                dto = it
+                downloadImg()
+            }
+            wonderfulId = updateActivityV2Req?.wonderfulId?:0
         }
         binding.composeLayout.setContent {
             fabubaomingCompose(viewModel, dto,choseCover = {
@@ -141,13 +154,39 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
 
     }
+
+    private fun downloadImg() {
+        //图片下载,第一张图为封面图
+        dto.contentImgList?.let {
+            viewModel.downGlideImgs(it)
+        }
+        //监听下载的图片
+        viewModel._downloadLocalMedias.observe(this) {
+            it.forEachIndexed { index, localMedia ->
+                dto.contentImgList?.get(index)?.localMedias = localMedia
+            }
+        }
+    }
+
     override fun initData() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
             fordAlbum(it as String)
             dto.coverImgUrl = it
         }
         LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).observe(this){
-            finish()
+            if (draftBean!=null){
+                lifecycleScope.launch(Dispatchers.IO){
+                    draftBean?.postsId?.let { it1 ->
+                        PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                            .delete(it1)
+                    }
+                    withContext(Dispatchers.Main){
+                        finish()
+                    }
+                }
+            }else {
+                finish()
+            }
         }
         viewModel.getAttributes()
         viewModel.attributeBean.observe(

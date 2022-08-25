@@ -12,6 +12,7 @@ import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.CommonUtils.jumpActDetail
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
@@ -169,6 +170,32 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                             if (actBean.wonderfulId == it) {
                                 actAdapter.notifyItemChanged(index)
                                 return@forEachIndexed
+                            }
+                        }
+                    }
+                }
+                actAdapter.reEdit{//重新编辑
+                    when(it.wonderfulType){
+                        1,2->{//报名
+                            viewModel.activityInfo4Update(it.wonderfulId){
+                                it.onSuccess {
+                                    it?.let { it1 ->
+                                        RouterManger.param("dto", it1)
+                                            .startARouter(ARouterCirclePath.ActivityFabuBaoming)
+                                    }
+                                }
+
+                            }
+                        }
+                        4 -> {//投票
+                            viewModel.voteInfo4Update(it.wonderfulId){
+                                it.onSuccess {
+                                    it?.let { it1 ->
+                                        RouterManger.param("voteBean", it1)
+                                            .startARouter(ARouterCirclePath.ActivityFabuToupiao)
+                                    }
+                                }
+
                             }
                         }
                     }

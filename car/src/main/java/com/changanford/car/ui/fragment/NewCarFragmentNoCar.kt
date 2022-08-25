@@ -69,11 +69,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
         viewModel.getMoreCar()
-        viewModel.getLoveCarRecommendList {
-            headerBinding.caractivity.setContent {
-                loveCarActivityList(it)
-            }
-        }
+//        viewModel.getLoveCarRecommendList {
+//            headerBinding.caractivity.setContent {
+//                loveCarActivityList(it)
+//            }
+//        }
     }
     private fun initObserve(){
         viewModel.topBannerBean.observe(this) {

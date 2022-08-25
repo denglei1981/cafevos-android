@@ -246,7 +246,33 @@ class ActViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 活动重新编辑获取
+     */
+    fun activityInfo4Update(wonderfulId: Int, result: (CommonResponse<UpdateActivityV2Req>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["wonderfulId"] = wonderfulId
+                var rkey = getRandomKey()
+                apiService.activityInfo4Update(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 
+    /**
+     * 投票重新编辑获取
+     */
+    fun voteInfo4Update(wonderfulId: Int, result: (CommonResponse<UpdateVoteReq>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["wonderfulId"] = wonderfulId
+                var rkey = getRandomKey()
+                apiService.voteInfo4Update(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 
     //删除资讯
     fun deleteInfo(artIds: ArrayList<Int>, result: (CommonResponse<String>) -> Unit) {

@@ -994,6 +994,37 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    //活动修改页面信息，不通过时获取
+    @POST("/highlights/v2/activityInfo4Update")
+    suspend fun activityInfo4Update(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UpdateActivityV2Req>
+
+    //投票修改页面信息，不通过时获取
+    @POST("/highlights/v2/voteInfo4Update")
+    suspend fun voteInfo4Update(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<UpdateVoteReq>
+
+    //修改活动
+    @POST("/highlights/v2/updateActivity")
+    suspend fun updateActivity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    //修改投票
+    @POST("/highlights/v2/updateVote")
+    suspend fun updateVote(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+
+
     //单个 批量 删除资讯
     @POST("con/article/delete")
     suspend fun deleteInfo(

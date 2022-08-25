@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.AcBean
 import com.changanford.common.bean.ActBean
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
@@ -23,6 +24,10 @@ class SearchActsResultAdapter :
     var toFinish:(wonderfulId:Int)->Unit = {}
     fun toFinishActivity(toFinish:(wonderfulId:Int)->Unit){
         this.toFinish = toFinish
+    }
+    var reEditCall:(bean:ActBean)->Unit = {}
+    fun reEdit(reEditCall:(bean:ActBean)->Unit){
+        this.reEditCall = reEditCall
     }
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
@@ -103,6 +108,11 @@ class SearchActsResultAdapter :
                         }.show()
 
                 }
+            }
+            it.butongguo.isVisible = !item.reason.isNullOrEmpty()
+            it.reason.text = item.reason?:""
+            it.reedit.setOnClickListener {
+                reEditCall(item)
             }
 
 

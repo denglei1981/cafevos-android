@@ -191,5 +191,39 @@
             app:layout_constraintTop_toTopOf="@id/tv_signpeople"
             tools:text="结束" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/butongguo"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_8195c8_cor5"
+            app:layout_constraintTop_toBottomOf="@id/tv_signpeople">
+
+            <TextView
+                android:id="@+id/reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="#00095B"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toTopOf="@id/reedit"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过" />
+
+
+            <TextView
+                android:id="@+id/reedit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_10"
+                android:textColor="#00095B"
+                android:textSize="11sp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="重新编辑 >" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

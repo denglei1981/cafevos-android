@@ -7,7 +7,7 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.util.TimeUtils
 import kotlinx.android.parcel.Parcelize
 
-/*********活动新**********/
+/*********活动新返回**********/
 class ActBean {
     val jumpType = 0
     val jumpVal: String? = null
@@ -150,6 +150,17 @@ class FastBeanData(var ads: List<AdBean>, var showType: String = "") {
 data class JumpDTO(
     var jumpCode: Int = 99,
     var jumpVal: String = "",
+)
+
+data class UpdateActivityV2Req(
+    var dto:DtoBeanNew,
+    var wonderfulId:Int
+)
+
+data class UpdateVoteReq(
+    var addVoteDto:VoteBean,
+    var wonderfulId:Int
+
 )
 /*********************************************************************/
 
