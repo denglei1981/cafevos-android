@@ -163,6 +163,16 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
+                actAdapter.toFinishActivity {
+                    viewModel.endedActivity(it){_->
+                        actAdapter.data.forEachIndexed { index, actBean ->
+                            if (actBean.wonderfulId == it) {
+                                actAdapter.notifyItemChanged(index)
+                                return@forEachIndexed
+                            }
+                        }
+                    }
+                }
             }
             "actMyJoin" -> {
                 viewModel.queryMineJoinAc(pageSize) { reponse ->

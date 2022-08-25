@@ -949,7 +949,8 @@ interface NetWorkApi {
     /*------------------活动----------------------*/
 
     //highlights/myPublishes 我的活动
-    @POST("highlights/myPublishes")
+//    @POST("highlights/myPublishes")
+    @POST("/highlights/v2/myPublishes")
     suspend fun queryMineSendAc(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
@@ -987,8 +988,12 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<AccBean>
-
-
+    //结束活动投票
+    @POST("/highlights/v2/endedActivity")
+    suspend fun endedActivity(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
     //单个 批量 删除资讯
     @POST("con/article/delete")
     suspend fun deleteInfo(

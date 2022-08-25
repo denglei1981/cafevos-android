@@ -84,6 +84,37 @@ class ActBean {
     fun showButton():Boolean{
         return activityButton?.isNotEmpty() == true || voteButton?.isNotEmpty() == true
     }
+    fun isFinish():Boolean{
+        return  if (!activityButton.isNullOrEmpty()||!voteButton.isNullOrEmpty()){
+            activityButton == "MUNUAL_END" || voteButton == "MUNUAL_END"
+        } else false
+    }
+    fun buttonBgEnable():Boolean{
+        return if (!activityButton.isNullOrEmpty()){
+            when(activityButton){
+                "SIGN_NOT_BEGIN" -> false
+                "SIGN_NOW" -> true
+                "SIGN_FULL" -> false
+                "SIGNED" -> false
+                "SIGN_END" -> false
+                "MUNUAL_END" -> true
+                "VIEW_RESULT" -> true
+                else -> false
+            }
+        } else if(!voteButton.isNullOrEmpty()){
+            when(voteButton){
+                "VOTE_NOT_BEGIN" -> false
+                "VOTE_NOW" -> true
+                "VOTED" -> false
+                "VOTE_ENDED" -> false
+                "MUNUAL_END" -> true
+                "VIEW_RESULT" -> true
+                else -> false
+            }
+        } else {
+            false
+        }
+    }
     fun showButtonText():String{
         return if (!activityButton.isNullOrEmpty()) {
             when(activityButton){

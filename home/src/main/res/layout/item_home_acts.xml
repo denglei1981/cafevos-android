@@ -167,6 +167,7 @@
             tools:text="0人参加" />
 
         <ImageView
+            android:id="@+id/tv_signpeople_img"
             android:layout_width="@dimen/dp_11"
             android:layout_height="@dimen/dp_11"
             android:layout_marginLeft="@dimen/dp_5"

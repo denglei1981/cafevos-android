@@ -232,6 +232,22 @@ class ActViewModel : ViewModel() {
         }
     }
 
+    /**
+     * 我参与的活动
+     */
+    fun endedActivity(wonderfulId: Int, result: (CommonResponse<Any>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["wonderfulId"] = wonderfulId
+                var rkey = getRandomKey()
+                apiService.endedActivity(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
+
+
+
     //删除资讯
     fun deleteInfo(artIds: ArrayList<Int>, result: (CommonResponse<String>) -> Unit) {
 

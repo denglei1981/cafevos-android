@@ -5,7 +5,9 @@ import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.ActBean
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
@@ -18,6 +20,10 @@ import com.changanford.home.databinding.ItemHomeActsBinding
 class SearchActsResultAdapter :
     BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts),
     LoadMoreModule {
+    var toFinish:(wonderfulId:Int)->Unit = {}
+    fun toFinishActivity(toFinish:(wonderfulId:Int)->Unit){
+        this.toFinish = toFinish
+    }
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)
@@ -69,12 +75,35 @@ class SearchActsResultAdapter :
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
             it.tvSignpeople.isVisible = !item.activityTotalCount.isNullOrEmpty()
+            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
             if (item.showButton()){
                 it.bt.text = item.showButtonText()
             }
+            if (item.buttonBgEnable()){
+                it.bt.background = BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_f2f4f9_cor14)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_95b))
+            }else{
+                it.bt.background = BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_dd_cor14)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.white))
+            }
+            it.bt.setOnClickListener {
+                if (item.isFinish()){
+                    AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                        .setMsg(
+                            "一旦结束将无法恢复，确定结束吗？"
+                        )
+                        .setCancelable(true)
+                        .setPositiveButton("确定", R.color.color_01025C) {
+                            toFinish(item.wonderfulId)
+                        }
+                        .setNegativeButton("取消",R.color.color_99){
 
+                        }.show()
+
+                }
+            }
 
 
 
