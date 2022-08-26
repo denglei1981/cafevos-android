@@ -282,8 +282,10 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     ActivityFabuBaoming.dto.wonderfulType = actType
                     if (integer == 0) {
                         binding.bottom.leixing.text = "线下活动"
+                        binding.bottom.placelayout.isVisible = true
                     } else {
                         binding.bottom.leixing.text = "线上活动"
+                        binding.bottom.placelayout.isVisible = false
                     }
                     null
                 }.setDefault(Integer.valueOf(actType)).show()
@@ -293,7 +295,25 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             StartBaduMap()
         }
         binding.bottom.nickSave.setOnClickListener {
-            viewModel.getOSS()
+            ActivityFabuBaoming.dto.apply {
+                if (longpostadapter.data!= null &&longpostadapter.data.size == 1 && longpostadapter.data[0].content.isNullOrEmpty()){
+                    "请输入活动详情".toast()
+                    return@setOnClickListener
+                }
+                if (beginTime.isNullOrEmpty() || endTime.isNullOrEmpty()){
+                    "请选择活动时间".toast()
+                    return@setOnClickListener
+                }
+                if (wonderfulType.isNullOrEmpty()){
+                    "请选择活动类型".toast()
+                    return@setOnClickListener
+                }
+                if (binding.bottom.placelayout.isVisible && activityAddr.isNullOrEmpty()){
+                    "请选择活动地点".toast()
+                    return@setOnClickListener
+                }
+                viewModel.getOSS()
+            }
 
         }
         binding.ivPic.setOnClickListener {
@@ -687,7 +707,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                datebegin = TimeUtils.MillisToStr1(date.time)
+                datebegin = TimeUtils.MillisToStrO(date.time)
                 ActivityFabuBaoming.dto.beginTime = datebegin
                 timebegin = date
                 pvActEndTime?.show()
@@ -724,7 +744,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             pvActEndTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                dateend = TimeUtils.MillisToStr1(date.time)
+                dateend = TimeUtils.MillisToStrO(date.time)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,

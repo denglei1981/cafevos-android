@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity.toupiao
 
+import android.content.Intent
 import android.graphics.Canvas
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,14 +21,12 @@ import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityToupiaoBinding
+import com.changanford.circle.ui.activity.baoming.ActivityFabuBaoming
 import com.changanford.circle.ui.activity.baoming.BaoMingViewModel
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.bean.PostBean
-import com.changanford.common.bean.UpdateVoteReq
-import com.changanford.common.bean.VoteBean
-import com.changanford.common.bean.VoteOptionBean
+import com.changanford.common.bean.*
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.onSuccess
@@ -52,6 +51,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ToastUtils
 import com.scwang.smart.refresh.layout.util.SmartUtil
+import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -281,11 +281,39 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             canvas.drawColor(ContextCompat.getColor(this@ActivityFabuToupiao, R.color.white))
         }
     }
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode== RESULT_OK && requestCode == UCrop.REQUEST_CROP){
+            val resultUri = data?.let { UCrop.getOutput(it) }
+            var cutPath = resultUri?.path
+            cutPath?.let { it1 ->
+                OSSHelper.init(this@ActivityFabuToupiao)
+                    .getOSSToImage(
+                        this@ActivityFabuToupiao,
+                        it1,
+                        object : OSSHelper.OSSImageListener {
+                            override fun getPicUrl(url: String) {
+                                showFengMian(url)
+                            }
+                        })
+            }
+        }
+    }
     private fun liveDataInit() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
             if (position == -1) {
-                showFengMian(it as String)
+                var conten = DtoBeanNew.ContentImg(it as String,"")
+                var list = ArrayList<DtoBeanNew.ContentImg>()
+                list.add(conten)
+                viewModel.downGlideImg(list){
+                    PictureUtil.startUCrop(
+                        this,
+                        PictureUtil.getFinallyPath(it),
+                        UCrop.REQUEST_CROP,
+                        16f,
+                        9f
+                    )
+                }
             } else {
                 voteBean.optionList[position].optionImg = it as String
                 dragAdapter.notifyItemChanged(position)

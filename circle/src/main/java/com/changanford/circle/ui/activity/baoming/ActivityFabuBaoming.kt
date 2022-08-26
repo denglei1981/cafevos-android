@@ -1,5 +1,6 @@
 package com.changanford.circle.ui.activity.baoming
 
+import android.content.Intent
 import android.view.View
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -54,16 +55,22 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
+import com.google.accompanist.insets.navigationBarsHeight
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.manager.UCropManager
 import com.luck.picture.lib.tools.DoubleUtils
 import com.luck.picture.lib.tools.ToastUtils
 import com.scwang.smart.refresh.layout.util.SmartUtil
+import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * 发布报名活动
@@ -171,10 +178,39 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode== RESULT_OK && requestCode == UCrop.REQUEST_CROP){
+            val resultUri = data?.let { UCrop.getOutput(it) }
+            var cutPath = resultUri?.path
+            cutPath?.let { it1 ->
+                OSSHelper.init(this@ActivityFabuBaoming)
+                    .getOSSToImage(
+                        this@ActivityFabuBaoming,
+                        it1,
+                        object : OSSHelper.OSSImageListener {
+                            override fun getPicUrl(url: String) {
+                                fordAlbum(url)
+                                dto.coverImgUrl = url
+                            }
+                        })
+            }
+        }
+    }
     override fun initData() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
-            fordAlbum(it as String)
-            dto.coverImgUrl = it
+            var conten = DtoBeanNew.ContentImg(it as String,"")
+            var list = ArrayList<DtoBeanNew.ContentImg>()
+            list.add(conten)
+            viewModel.downGlideImg(list){
+                PictureUtil.startUCrop(
+                    this,
+                    PictureUtil.getFinallyPath(it),
+                    UCrop.REQUEST_CROP,
+                    16f,
+                    9f
+                )
+            }
         }
         LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).observe(this) {
             if (draftBean != null) {
@@ -184,11 +220,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                             .delete(it1)
                     }
                     withContext(Dispatchers.Main) {
-                        finish()
+                        exitPage()
                     }
                 }
             } else {
-                finish()
+                exitPage()
             }
         }
         viewModel.getAttributes()
@@ -207,6 +243,10 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
     }
 
+    fun exitPage(){
+        dto = DtoBeanNew()
+        finish()
+    }
     override fun onBackPressed() {
         caogao()
     }
@@ -223,7 +263,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 )
                 .setCancelable(true)
                 .setNegativeButton("放弃编辑", R.color.color_7174) {
-                    finish()
+                    exitPage()
                 }
                 .setPositiveButton("继续编辑", R.color.color_01025C) {
 
@@ -231,7 +271,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         } else {
             dto.apply {
                 if (coverImgUrl.isNullOrEmpty() && title.isNullOrEmpty() && content.isNullOrEmpty() && signEndTime.isNullOrEmpty() && attributes.isNullOrEmpty() && activityTotalCount == null) {
-                    finish()
+                    exitPage()
                     return
                 }
             }
@@ -245,11 +285,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     PostDatabase.getInstance(MyApp.mContext).getPostDao()
                         .insert(baomingDB)
                     withContext(Dispatchers.Main) {
-                        finish()
+                        exitPage()
                     }
                 }
             }) {
-                finish()
+                exitPage()
             }.show()
         }
     }
@@ -275,7 +315,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                dto.signBeginTime = TimeUtils.MillisToStr1(date.time)
+                dto.signBeginTime = TimeUtils.MillisToStrO(date.time)
                 timebegin = date
                 pvActEndTime?.show()
             }
@@ -318,7 +358,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     )
                     pvActTime!!.show()
                 } else {
-                    dto.signEndTime = TimeUtils.MillisToStr1(date.time)
+                    dto.signEndTime = TimeUtils.MillisToStrO(date.time)
                     dateReslut("${dto.signBeginTime}-${dto.signEndTime}")
                 }
             }
@@ -357,7 +397,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 for (i in attributeListBeans.indices) {
                     for (j in attributeListBeans[i].attributeList.indices) {
                         if (attributeListBeans[i].attributeList[j].checktype == 1) {
-                            Showstr += attributeListBeans[i].attributeList[j].attributeName + " "
+                            if (Showstr.isNullOrEmpty()) {
+                                Showstr += attributeListBeans[i].attributeList[j].attributeName
+                            }else{
+                                Showstr += "、" + attributeListBeans[i].attributeList[j].attributeName
+                            }
                         }
                     }
                 }
@@ -405,6 +449,7 @@ fun fabubaomingCompose(
     }
     Column(
         modifier = Modifier
+            .fillMaxHeight(1f)
             .background(
                 color =
                 Color.White
@@ -482,7 +527,7 @@ fun fabubaomingCompose(
             }
             FabuLine()
             FabuTitle(name = "描述", false)
-            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content ?: "", 100) {
+            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content ?: "", 100,false) {
                 ActivityFabuBaoming.dto.content = it
             }
             FabuLine()
@@ -516,6 +561,7 @@ fun fabubaomingCompose(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(100.dp).navigationBarsHeight())
 
     }
 }
@@ -642,10 +688,11 @@ fun FabuInputItem(
 }
 
 @Composable
-fun FabuInput(
+fun   FabuInput(
     hint: String = "",
     initText: String = "",
     maxNum: Int = Int.MAX_VALUE,
+    singleLine:Boolean = true,
     onChanged: (String) -> Unit = {}
 ) {
     var txt by remember {
@@ -669,8 +716,7 @@ fun FabuInput(
                     num = it.length
                 }
             },
-            singleLine = true,
-            maxLines = 1,
+            singleLine = singleLine,
             textStyle = TextStyle(color = Color(0xff666666), fontSize = 14.sp),
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent, focusedIndicatorColor =
@@ -678,6 +724,7 @@ fun FabuInput(
             ),
             modifier = Modifier
                 .fillMaxWidth(1f)
+                .wrapContentHeight()
                 .weight(1f),
             placeholder = {
                 Text(text = hint, style = TextStyle(color = Color(0xffcccccc), fontSize = 14.sp))

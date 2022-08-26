@@ -60,6 +60,7 @@ class BaoMingViewModel : BaseViewModel() {
             rpo(fetchRequest {
                 var body = HashMap<String, Any>()
                 var rkey = getRandomKey()
+                body["circleId"] = dtoBean.circleId
                 body["coverImgUrl"] = dtoBean.coverImgUrl
                 body["activityAddr"] = dtoBean.activityAddr
                 body["attributes"] = dtoBean.attributes
@@ -192,6 +193,63 @@ class BaoMingViewModel : BaseViewModel() {
                     Log.d("lists", JSON.toJSONString(it))
                     downloadLocalMedias.add(it)
                     _downloadLocalMedias.postValue(downloadLocalMedias)
+                }
+        }
+    }
+
+    /**
+     * 下载图片
+     */
+    fun downGlideImg(imageList:List<DtoBeanNew.ContentImg>,result:(LocalMedia)->Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            Observable.fromIterable(imageList)
+                .map { t ->
+                    if(t.contentImgUrl.isNullOrEmpty()){
+                        null
+                    }else {
+                        try {
+                            val file =
+                                Glide.with(BaseApplication.INSTANT)
+                                    .load(GlideUtils.handleImgUrl(t.contentImgUrl))
+                                    .downloadOnly(
+                                        Target.SIZE_ORIGINAL,
+                                        Target.SIZE_ORIGINAL
+                                    ).get()
+                            //获取到下载得到的图片，进行本地保存
+                            val pictureFolder =
+                                MConstant.ftFilesDir
+                            //第二个参数为你想要保存的目录名称
+                            val appDir = File(pictureFolder)
+                            if (!appDir.exists()) {
+                                appDir.mkdirs()
+                            }
+                            val fileName =
+                                System.currentTimeMillis().toString() + ".jpg"
+                            val destFile = File(appDir, fileName)
+                            //把gilde下载得到图片复制到定义好的目录中去
+                            copy(file, destFile)
+                            val localMedia = LocalMedia(
+                                destFile.path,
+                                0,
+                                PictureMimeType.ofImage(),
+                                "image/jpeg"
+                            )
+                            localMedia.androidQToPath = destFile.path
+                            localMedia.realPath = destFile.path
+                            localMedia
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            LocalMedia("", 0, PictureMimeType.ofImage(), "image/jpeg").apply {
+                                androidQToPath = ""
+                                realPath = ""
+                            }
+                        }
+                    }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    it?.let { it1 -> result(it1) }
                 }
         }
     }

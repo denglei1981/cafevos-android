@@ -105,6 +105,8 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
             override fun afterTextChanged(editable: Editable?) {
                 if (!TextUtils.isEmpty(editable)) {
                     item.content = editable.toString()
+                }else{
+                    item.content = ""
                 }
                 selectionIndex = binding.tvTex.selectionStart
                 selectionPosition = getItemPosition(item) // 获取位置。
