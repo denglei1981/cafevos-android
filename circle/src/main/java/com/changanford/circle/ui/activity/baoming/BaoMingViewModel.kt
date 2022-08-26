@@ -146,7 +146,7 @@ class BaoMingViewModel : BaseViewModel() {
             Observable.fromIterable(imageList)
                 .map { t ->
                     if(t.contentImgUrl.isNullOrEmpty()){
-                        null
+                        LocalMedia()
                     }else {
                         try {
                             val file =

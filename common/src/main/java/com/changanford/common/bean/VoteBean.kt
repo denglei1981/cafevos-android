@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import java.io.Serializable
+
 /**
  * 投票发送和返回
  */
@@ -16,7 +18,7 @@ data class VoteBean(
     var voteDesc: String = "",
     var voteType: String = "",//0 文字，1图文
 
-) {
+) :Serializable{
 }
 
 
@@ -24,4 +26,4 @@ data class VoteOptionBean(
     var optionDesc: String = "",
     var optionImg: String = ""
 
-)
+):Serializable

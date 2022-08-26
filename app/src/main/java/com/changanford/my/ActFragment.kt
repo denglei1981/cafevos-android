@@ -166,12 +166,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
                 actAdapter.toFinishActivity {
                     viewModel.endedActivity(it){_->
-                        actAdapter.data.forEachIndexed { index, actBean ->
-                            if (actBean.wonderfulId == it) {
-                                actAdapter.notifyItemChanged(index)
-                                return@forEachIndexed
-                            }
-                        }
+                        initRefreshData(1)
                     }
                 }
                 actAdapter.reEdit{//重新编辑

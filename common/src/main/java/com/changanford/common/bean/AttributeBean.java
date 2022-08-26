@@ -1,5 +1,6 @@
 package com.changanford.common.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class AttributeBean {
             this.attributeList = attributeList;
         }
 
-        public static class AttributeListBean {
+        public static class AttributeListBean implements Serializable {
             /**
              * attributeId : -10419076
              * attributeName : pariatur laboris ad nulla

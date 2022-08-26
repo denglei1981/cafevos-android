@@ -173,7 +173,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         //监听下载的图片
         viewModel._downloadLocalMedias.observe(this) {
             it.forEachIndexed { index, localMedia ->
-                dto.contentImgList?.get(index)?.localMedias = localMedia
+                if (localMedia != null && localMedia.realPath.isNullOrEmpty()){
+                    dto.contentImgList?.get(index)?.localMedias = null
+                }else {
+                    dto.contentImgList?.get(index)?.localMedias = localMedia
+                }
             }
         }
     }
@@ -279,6 +283,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 var baomingDB = PostEntity(
                     postsId = draftBean?.postsId ?: insertPostId,
                     type = "5",
+                    creattime = System.currentTimeMillis().toString(),
                     baoming = JSON.toJSONString(dto)
                 )
                 lifecycleScope.launch(Dispatchers.IO) {
@@ -438,7 +443,8 @@ fun fabubaomingCompose(
         mutableStateOf(Showstr)
     }
     var num by remember {
-        mutableStateOf("${dto.activityTotalCount ?: ""}")
+        mutableStateOf("${if (dto.activityTotalCount !=null && dto
+                .activityTotalCount ==-1) "" else dto.activityTotalCount ?: ""}")
     }
     var nextEnable by remember {
         mutableStateOf(false)

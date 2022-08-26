@@ -231,7 +231,8 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
 
     override fun showEmpty(): View? {
         emptyBinding.viewStatusIcon.setImageResource(R.mipmap.ic_post_draft_nodata)
-        emptyBinding.viewStatusText.text = "您的草稿箱暂时还没有草稿哦~"
+        emptyBinding.viewStatusText.text = if(isAct) "取消发送或发送失败的活动\n" +
+                "可以被存为草稿" else "您的草稿箱暂时还没有草稿哦~"
         return super.showEmpty()
     }
 

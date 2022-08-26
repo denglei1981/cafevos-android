@@ -129,6 +129,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                 var voteDB = PostEntity(
                     postsId = draftBean?.postsId ?: insertPostId,
                     type = "6",
+                    creattime = System.currentTimeMillis().toString(),
                     toupiao = JSON.toJSONString(voteBean)
                 )
                 lifecycleScope.launch(Dispatchers.IO) {

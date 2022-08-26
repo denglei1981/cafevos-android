@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.TimeUtils
 import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
 /*********活动新返回**********/
 class ActBean {
@@ -161,13 +162,13 @@ data class JumpDTO(
 data class UpdateActivityV2Req(
     var dto:DtoBeanNew,
     var wonderfulId:Int
-)
+):Serializable
 
 data class UpdateVoteReq(
     var addVoteDto:VoteBean,
     var wonderfulId:Int
 
-)
+):Serializable
 /*********************************************************************/
 
 

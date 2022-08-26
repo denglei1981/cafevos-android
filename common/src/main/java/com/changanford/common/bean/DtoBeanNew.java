@@ -2,10 +2,11 @@ package com.changanford.common.bean;
 
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DtoBeanNew {
+public class DtoBeanNew implements Serializable {
 
     private String activityAddr;//活动详细地址
     private Integer activityTotalCount;//活动限制人数，传-1表示不限制
@@ -273,7 +274,7 @@ public class DtoBeanNew {
         }
     }
 
-    public static class ContentImg {
+    public static class ContentImg implements Serializable{
         private String contentDesc; //图片描述
         private LocalMedia localMedias; //保存草稿的图片
         private String contentImgUrl; //图片url
@@ -316,7 +317,7 @@ public class DtoBeanNew {
         }
     }
 
-    private class DealerSites {
+    private class DealerSites implements Serializable{
         private String cityName;//			false string
         private int joinNum;//			falseinteger(int32)
         private String siteBeginTime;//			falsestring(date-time)

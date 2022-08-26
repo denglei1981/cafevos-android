@@ -46,6 +46,8 @@
                     android:id="@+id/item_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="#071726"
                     tools:text="标题"
                     android:textSize="@dimen/sp_15" />
@@ -54,6 +56,8 @@
                     android:id="@+id/item_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="#333333"
                     tools:text="内容"
                     android:textSize="@dimen/sp_13" />
