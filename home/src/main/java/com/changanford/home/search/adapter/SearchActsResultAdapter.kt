@@ -35,9 +35,6 @@ class SearchActsResultAdapter :
             it.root.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
             }
-            it.bt.setOnClickListener {
-                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
-            }
             it.tvTips.text = item.title
 
             it.tvHomeActTimes.text = item.getActTimeS()
@@ -110,6 +107,8 @@ class SearchActsResultAdapter :
 
                         }.show()
 
+                }else{
+                    JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
                 }
             }
             it.butongguo.isVisible = !item.reason.isNullOrEmpty()

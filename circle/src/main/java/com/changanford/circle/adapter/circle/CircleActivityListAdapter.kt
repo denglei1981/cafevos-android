@@ -3,6 +3,7 @@ package com.changanford.circle.adapter.circle
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -86,6 +87,7 @@ class CircleActivityListAdapter :
             // ActivityButtonEnum.SIGN_ENDED(code=SIGN_END, dbCode=4, message=报名结束),
             // ActivityButtonEnum.MUNUAL_END(code=MUNUAL_END, dbCode=5, message=结束),
             // ActivityButtonEnum.VIEW_RESULT(code=VIEW_RESULT, dbCode=6, message=查看结果)
+            btnType.isVisible = true
             when (item.activityButton) {
                 "SIGN_NOT_BEGIN" -> {
                     btnType.text = "报名未开始"
@@ -109,11 +111,11 @@ class CircleActivityListAdapter :
                     btnType.text = "查看结果"
                 }
                 else -> {
-
+                    btnType.isVisible = false
                 }
             }
 
-            if (btnType.text == "立即报名") {
+            if (btnType.text == "立即报名"||btnType.text == "查看结果") {
                 btnType.setBackgroundResource(R.drawable.bg_f2f4_14)
                 btnType.setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
             } else {
