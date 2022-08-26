@@ -37,6 +37,7 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
 
     val checkMap: HashMap<Long, Boolean> = HashMap()
     var isShowCheck: Boolean = false
+    var isAct = false//是否是活动草稿
 
     var adapter =
         object : BaseQuickAdapter<PostEntity, BaseDataBindingHolder<ItemPostDraftBinding>>(
@@ -217,6 +218,7 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
             adapter = this@MyPostDraftUI.adapter
             WeSwipe.attach(this)
         }
+        isAct = intent.getBooleanExtra("act",false)
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -236,19 +238,22 @@ class MyPostDraftUI : BaseMineUI<UiPostDraftBinding, PostRoomViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         PostDatabase.getInstance(this).getPostDao().findAll().observe(this, Observer {
-            it?.let { l ->
+            var list = it.filter {
+                if(isAct) it.type == "5" || it.type == "6" else it.type != "5" && it.type != "6"
+            }
+            list?.let { l ->
                 l.forEach {
                     checkMap[it.postsId] = false
                 }
             }
-            if (it?.size!! > 0) {
+            if (list?.size!! > 0) {
                 binding.draftToolbar.toolbarSave.visibility = View.VISIBLE
             } else {
                 binding.draftToolbar.toolbarSave.visibility = View.GONE
                 binding.bottomLayout.visibility = View.GONE
                 binding.draftToolbar.toolbarSave.text = "编辑"
             }
-            completeRefresh(it, adapter)
+            completeRefresh(list, adapter)
         })
     }
 

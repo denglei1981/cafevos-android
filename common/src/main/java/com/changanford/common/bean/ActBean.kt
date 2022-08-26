@@ -29,7 +29,13 @@ class ActBean {
 //                return "未知"
 //            }
 //            return provinceName
-        return "活动地点: $activityAddr"
+        var addr = "$activityAddr"
+        if (!activityAddr.isNullOrEmpty()&& !provinceName.isNullOrEmpty()){
+            if (activityAddr?.contains(provinceName) == false){
+                addr = "$provinceName$activityAddr"
+            }
+        }
+        return "活动地点: $addr"
     }
     fun getActTimeS(): String {
         return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" - ")

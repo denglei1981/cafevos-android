@@ -40,7 +40,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
         binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))
         binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
-            RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
+            RouterManger.param("act",true).startARouter(ARouterMyPath.MyPostDraftUI)
 //            JumpUtils.instans?.jump(13)
 //            finish()
         }
