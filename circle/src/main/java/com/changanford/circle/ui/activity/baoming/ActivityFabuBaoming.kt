@@ -320,7 +320,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                dto.signBeginTime = TimeUtils.MillisToStrO(date.time)
+                dto.signBeginTime = TimeUtils.MillisToStr1(date.time)
                 timebegin = date
                 pvActEndTime?.show()
             }
@@ -363,7 +363,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     )
                     pvActTime!!.show()
                 } else {
-                    dto.signEndTime = TimeUtils.MillisToStrO(date.time)
+                    dto.signEndTime = TimeUtils.MillisToStr1(date.time)
                     dateReslut("${dto.signBeginTime}-${dto.signEndTime}")
                 }
             }
@@ -451,7 +451,7 @@ fun fabubaomingCompose(
     }
     ActivityFabuBaoming.dto.apply {
         nextEnable =
-            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
+            !(title.isNullOrEmpty() || content.isNullOrEmpty()|| (attributes.isNullOrEmpty() || attributes?.size?:0==0)|| coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
     }
     Column(
         modifier = Modifier

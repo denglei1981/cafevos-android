@@ -132,6 +132,9 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 time.text = "${it.beginTime?:""}-${it.endTime?:""}"
                 leixing.text = if(it.wonderfulType == "0") "线下活动" else "线上活动"
                 place.text = it.activityAddr?:""
+                if (it.wonderfulType.isNullOrEmpty()){
+                    ActivityFabuBaoming.dto.wonderfulType = "1"
+                }
             }
         }
     }
@@ -245,7 +248,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
 
 
     override fun initData() {
-        initandonclickhead()
         viewModel.getPlate()
         viewModel.getTags() //标签
         val layoutManager = LinearLayoutManager(this)
@@ -474,24 +476,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         })
     }
 
-    private fun initandonclickhead() {
-        val bthinttxt = "标题 (1-20字之间)"
-        val spannableString = SpannableString(bthinttxt)
-        val intstart = bthinttxt.indexOf('(')
-        val intend = bthinttxt.length
-        spannableString.setSpan(
-            AbsoluteSizeSpan(60),
-            0,
-            intstart,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        spannableString.setSpan(
-            AbsoluteSizeSpan(40),
-            intstart,
-            intend,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-    }
 
     private fun uploadImgs(
         stsBean: STSBean,
@@ -707,7 +691,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                datebegin = TimeUtils.MillisToStrO(date.time)
+                datebegin = TimeUtils.MillisToStr1(date.time)
                 ActivityFabuBaoming.dto.beginTime = datebegin
                 timebegin = date
                 pvActEndTime?.show()
@@ -744,7 +728,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             pvActEndTime = TimePickerBuilder(
                 this
             ) { date, v ->
-                dateend = TimeUtils.MillisToStrO(date.time)
+                dateend = TimeUtils.MillisToStr1(date.time)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,
