@@ -165,6 +165,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
 
     override fun initData() {
         initPicAdapter()
+        viewModel.getRule()
         viewModel.getQuestionType()
         viewModel.getFordReward()
         viewModel.getInitQuestion()
@@ -355,7 +356,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
             setBlurBackgroundEnable(false)
             setOverlayMask(false)
             showPopupWindow(binding.ivQuestion)
-            initData()
+            viewModel.ruleBean.value?.let { initData(it.rule) }
         }
     }
 

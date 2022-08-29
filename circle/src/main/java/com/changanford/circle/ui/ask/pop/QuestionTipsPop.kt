@@ -28,7 +28,6 @@ class QuestionTipsPop(private val context: Context, private val listener: CheckP
     }
 
 
-
     override fun onCreateShowAnimation(): Animation {
         return AnimationHelper.asAnimation()
             .withTranslation(
@@ -44,9 +43,8 @@ class QuestionTipsPop(private val context: Context, private val listener: CheckP
             .toDismiss()
     }
 
-    fun initData() {
-
-
+    fun initData(ruleString: String) {
+        binding.ryManagement.text = ruleString
     }
 
     interface CheckPostType {

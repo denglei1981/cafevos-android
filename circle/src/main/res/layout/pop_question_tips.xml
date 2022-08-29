@@ -30,7 +30,7 @@
             android:padding="8dp"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_10"
-            android:text="@string/pop_question_tips"/>
+            tools:text="@string/pop_question_tips" />
 
     </LinearLayout>
 </layout>

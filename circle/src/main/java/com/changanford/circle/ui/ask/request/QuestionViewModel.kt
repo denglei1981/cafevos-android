@@ -6,6 +6,7 @@ import com.changanford.circle.bean.ChildCommentListBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CancelReasonBeanItem
+import com.changanford.common.bean.ConfigBean
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
@@ -20,13 +21,15 @@ import com.changanford.common.utilext.toast
  */
 class QuestionViewModel : BaseViewModel() {
 
-    var  questTypeList: MutableLiveData<ArrayList<QuestionData>> = MutableLiveData()
+    var questTypeList: MutableLiveData<ArrayList<QuestionData>> = MutableLiveData()
 
-    var  fordRewardList: MutableLiveData<ArrayList<QuestionData>> = MutableLiveData()
+    var fordRewardList: MutableLiveData<ArrayList<QuestionData>> = MutableLiveData()
+
+    val ruleBean = MutableLiveData<ConfigBean>()
 
     val stsBean = MutableLiveData<STSBean>()
 
-    var createQuestionLiveData= MutableLiveData<String>()
+    var createQuestionLiveData = MutableLiveData<String>()
     fun getQuestionType() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -39,7 +42,22 @@ class QuestionViewModel : BaseViewModel() {
         })
     }
 
-    fun getFordReward(){
+    fun getRule() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["configKey"] = "question_exceptional"
+            body["obj"] = true
+            val rKey = getRandomKey()
+            ApiClient.createApi<NetWorkApi>()
+                .getConfigByKey(body.header(rKey), body.body(rKey)).also {
+                    it.data?.let {
+                        ruleBean.postValue(it)
+                    }
+                }
+        })
+    }
+
+    fun getFordReward() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["dictType"] = "qa_fb_reward"
@@ -50,13 +68,14 @@ class QuestionViewModel : BaseViewModel() {
                 }
         })
     }
-    fun getOSS(){
-        launch(block =  {
+
+    fun getOSS() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    stsBean.value= it
+                    stsBean.value = it
                 }
                 .onFailure {
 
@@ -64,28 +83,28 @@ class QuestionViewModel : BaseViewModel() {
         })
     }
 
-    fun createQuestion(params: HashMap<String,Any>){
-        launch (block = {
+    fun createQuestion(params: HashMap<String, Any>) {
+        launch(block = {
             val body = params
 
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().createQuestion(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>().createQuestion(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     createQuestionLiveData.value = "upsuccess"
                 }
                 .onWithMsgFailure {
                     it?.toast()
-                    createQuestionLiveData.value="error"
+                    createQuestionLiveData.value = "error"
                 }
         })
     }
 
 
-    fun getInitQuestion(){
-        launch (block = {
+    fun getInitQuestion() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getInitQuestion(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>().getInitQuestion(body.header(rKey), body.body(rKey))
                 .onSuccess {
                 }
                 .onWithMsgFailure {
@@ -94,12 +113,6 @@ class QuestionViewModel : BaseViewModel() {
                 }
         })
     }
-
-
-
-
-
-
 
 
 }
