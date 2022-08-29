@@ -309,6 +309,7 @@
                     android:id="@+id/ry_topic"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:maxHeight="72dp"
                     android:layout_marginTop="11dp"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_topic"
                     app:layout_constraintRight_toRightOf="@+id/tv_topic_more"
