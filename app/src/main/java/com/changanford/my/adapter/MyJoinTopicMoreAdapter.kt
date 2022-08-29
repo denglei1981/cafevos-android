@@ -45,7 +45,7 @@ class MyJoinTopicMoreAdapter :
 
             t.tvPostCount.text =
                 CountUtils.formatNum(item.postsCount.toString(), false).toString().plus("\t帖子")
-            t.tvPeople.text = CountUtils.formatNum(item.heat, false).toString().plus("\t热度")
+            t.tvPeople.text = CountUtils.formatNum(item.userCount.toString(), false).toString().plus("\t浏览量")
 
             if (isMyPost && userId == MConstant.userId) {
                 t.btnType.visibility = View.VISIBLE

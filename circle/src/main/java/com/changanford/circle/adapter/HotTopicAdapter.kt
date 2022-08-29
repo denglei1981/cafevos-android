@@ -27,7 +27,7 @@ class HotTopicAdapter :
         binding?.let {
             MUtils.setTopMargin(binding.llContent, 18, holder.layoutPosition)
 
-            binding.tvContent.text = "${item.postsCount}帖子     ${item.heat}热度"
+            binding.tvContent.text = "${item.postsCount}帖子     ${item.userCount}浏览量"
 
             binding.bean = item
         }
