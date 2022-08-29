@@ -6,6 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -15,7 +17,9 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.*
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
@@ -39,6 +43,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
         addItemType(3, R.layout.item_home_recommend_acts)
+//        addItemType(3, com.changanford.common.R.layout.item_home_acts)
     }
 
 
@@ -101,11 +106,63 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             3 -> { // 活动
                 showActs(holder, item)
+//                showActsNew(holder, item)
             }
 
         }
     }
+    fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
+        var item = recdate.wonderful
+        var binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
+        binding?.let {
+            GlideUtils.loadBD(recdate.coverImg, it.ivActs)
+            it.root.setOnClickListener {
+                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+            }
+            it.tvTips.text = item.title
+            it.tvHomeActTimes.text = item.getActTimeS()
+            it.btnState.isVisible = !item.activityTag.isNullOrEmpty()
+            it.btnState.text = item.showTag()
+            it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
+            it.tvHomeActAddress.text = item.getAddress()
+            it.tvSignpeople.isVisible = !item.activityTotalCount.isNullOrEmpty()
+            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
+            it.tvSignpeople.text = "${item.activityJoinCount}人参与"
+            it.bt.isVisible = item.showButton()
+            if (item.showButton()){
+                it.bt.text = item.showButtonText()
+            }
+            if (item.buttonBgEnable()){
+                it.bt.background = BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_f2f4f9_cor14)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.color_95b))
+            }else{
+                it.bt.background = BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_dd_cor14)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.white))
+            }
+            it.bt.setOnClickListener {
+                if (item.isFinish()){
+                    AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                        .setMsg(
+                            "一旦结束将无法恢复，确定结束吗？"
+                        )
+                        .setCancelable(true)
+                        .setPositiveButton("确定", com.changanford.common.R.color.color_01025C) {
+                        }
+                        .setNegativeButton("取消", com.changanford.common.R.color.color_99){
 
+                        }.show()
+
+                }else{
+                    JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                }
+            }
+            it.butongguo.isVisible = !item.reason.isNullOrEmpty()
+            it.reason.text = item.reason?:""
+            it.reedit.setOnClickListener {
+            }
+            it.reedit.isVisible = item.showReedit()
+        }
+    }
     fun showActs(holder: BaseViewHolder, item: RecommendData) { //活动
         val ivActs = holder.getView<ShapeableImageView>(R.id.iv_acts)
         val tvTips = holder.getView<AppCompatTextView>(R.id.tv_tips)

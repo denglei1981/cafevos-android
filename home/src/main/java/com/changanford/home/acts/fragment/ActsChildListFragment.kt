@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.chad.library.adapter.base.listener.OnLoadMoreListener
+import com.changanford.common.adapter.SearchActsResultAdapter
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
@@ -21,7 +21,6 @@ import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentActsChildBinding
-import com.changanford.home.search.adapter.SearchActsResultAdapter
 
 /**
  *  子活动列表。

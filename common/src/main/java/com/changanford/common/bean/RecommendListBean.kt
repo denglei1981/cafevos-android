@@ -103,7 +103,7 @@ data class RecommendData(
     val openTime: String = "",
     val jumpType: String = "",
     val jumpValue: String = "",
-
+    val wonderful:ActBean,
     ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动

@@ -111,6 +111,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         if (updateActivityV2Req != null) {
             updateActivityV2Req?.dto?.let {
                 dto = it
+                try {
+                    dto.signBeginTimeShow = TimeUtils.MillisToStrO(dto.signBeginTime.toLong())
+                    dto.signEndTimeShow = TimeUtils.MillisToStrO(dto.signEndTime.toLong())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 downloadImg()
             }
             wonderfulId = updateActivityV2Req?.wonderfulId ?: 0
@@ -173,9 +179,9 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         //监听下载的图片
         viewModel._downloadLocalMedias.observe(this) {
             it.forEachIndexed { index, localMedia ->
-                if (localMedia != null && localMedia.realPath.isNullOrEmpty()){
+                if (localMedia != null && localMedia.realPath.isNullOrEmpty()) {
                     dto.contentImgList?.get(index)?.localMedias = null
-                }else {
+                } else {
                     dto.contentImgList?.get(index)?.localMedias = localMedia
                 }
             }
@@ -184,7 +190,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== RESULT_OK && requestCode == UCrop.REQUEST_CROP){
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = data?.let { UCrop.getOutput(it) }
             var cutPath = resultUri?.path
             cutPath?.let { it1 ->
@@ -201,12 +207,13 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             }
         }
     }
+
     override fun initData() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
-            var conten = DtoBeanNew.ContentImg(it as String,"")
+            var conten = DtoBeanNew.ContentImg(it as String, "")
             var list = ArrayList<DtoBeanNew.ContentImg>()
             list.add(conten)
-            viewModel.downGlideImg(list){
+            viewModel.downGlideImg(list) {
                 PictureUtil.startUCrop(
                     this,
                     PictureUtil.getFinallyPath(it),
@@ -247,10 +254,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
     }
 
-    fun exitPage(){
+    fun exitPage() {
         dto = DtoBeanNew()
         finish()
     }
+
     override fun onBackPressed() {
         caogao()
     }
@@ -300,6 +308,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     }
 
     fun setTimePicker() {
+        hideKeyboard(binding.composeLayout.windowToken)
         initTimePick1()
         initTimePickEND()
         pvActTime?.show()
@@ -320,6 +329,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             pvActTime = TimePickerBuilder(
                 this
             ) { date, v ->
+                dto.signBeginTimeShow = TimeUtils.MillisToStrO(date.time)
                 dto.signBeginTime = TimeUtils.MillisToStr1(date.time)
                 timebegin = date
                 pvActEndTime?.show()
@@ -363,8 +373,9 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     )
                     pvActTime!!.show()
                 } else {
+                    dto.signEndTimeShow = TimeUtils.MillisToStrO(date.time)
                     dto.signEndTime = TimeUtils.MillisToStr1(date.time)
-                    dateReslut("${dto.signBeginTime}-${dto.signEndTime}")
+                    dateReslut("${dto.signBeginTimeShow}-${dto.signEndTimeShow}")
                 }
             }
                 .setCancelText("取消") //取消按钮文字
@@ -404,7 +415,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                         if (attributeListBeans[i].attributeList[j].checktype == 1) {
                             if (Showstr.isNullOrEmpty()) {
                                 Showstr += attributeListBeans[i].attributeList[j].attributeName
-                            }else{
+                            } else {
                                 Showstr += "、" + attributeListBeans[i].attributeList[j].attributeName
                             }
                         }
@@ -431,7 +442,7 @@ fun fabubaomingCompose(
         mutableStateOf(dto.coverImgUrl)
     }
     var date by remember {
-        mutableStateOf("${dto.signBeginTime ?: ""}-${dto.signEndTime ?: ""}")
+        mutableStateOf("${dto.signBeginTimeShow ?: ""}-${dto.signEndTimeShow ?: ""}")
     }
     var profile by remember {
         var Showstr = ""
@@ -443,15 +454,20 @@ fun fabubaomingCompose(
         mutableStateOf(Showstr)
     }
     var num by remember {
-        mutableStateOf("${if (dto.activityTotalCount !=null && dto
-                .activityTotalCount ==-1) "" else dto.activityTotalCount ?: ""}")
+        mutableStateOf(
+            "${
+                if (dto.activityTotalCount != null && dto
+                        .activityTotalCount == -1
+                ) "" else dto.activityTotalCount ?: ""
+            }"
+        )
     }
     var nextEnable by remember {
         mutableStateOf(false)
     }
     ActivityFabuBaoming.dto.apply {
         nextEnable =
-            !(title.isNullOrEmpty() || content.isNullOrEmpty()|| (attributes.isNullOrEmpty() || attributes?.size?:0==0)|| coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
+            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
     }
     Column(
         modifier = Modifier
@@ -533,7 +549,12 @@ fun fabubaomingCompose(
             }
             FabuLine()
             FabuTitle(name = "描述", false)
-            FabuInput(hint = "请输入活动描述", initText = ActivityFabuBaoming.dto.content ?: "", 100,false) {
+            FabuInput(
+                hint = "请输入活动描述",
+                initText = ActivityFabuBaoming.dto.content ?: "",
+                100,
+                false
+            ) {
                 ActivityFabuBaoming.dto.content = it
             }
             FabuLine()
@@ -567,7 +588,9 @@ fun fabubaomingCompose(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(100.dp).navigationBarsHeight())
+        Spacer(modifier = Modifier
+            .height(100.dp)
+            .navigationBarsHeight())
 
     }
 }
@@ -694,11 +717,11 @@ fun FabuInputItem(
 }
 
 @Composable
-fun   FabuInput(
+fun FabuInput(
     hint: String = "",
     initText: String = "",
     maxNum: Int = Int.MAX_VALUE,
-    singleLine:Boolean = true,
+    singleLine: Boolean = true,
     onChanged: (String) -> Unit = {}
 ) {
     var txt by remember {

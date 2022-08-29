@@ -148,6 +148,9 @@ class ActBean {
             ""
         }
     }
+    fun showReedit():Boolean{
+        return (wonderfulType ==1 || wonderfulType == 2 || wonderfulType == 4) && outChain == "NO"
+    }
 }
 
 class FastBeanData(var ads: List<AdBean>, var showType: String = "") {

@@ -62,9 +62,11 @@ class BaoMingViewModel : BaseViewModel() {
                 var rkey = getRandomKey()
                 body["circleId"] = dtoBean.circleId
                 body["coverImgUrl"] = dtoBean.coverImgUrl
-                body["attributes"] = dtoBean.attributes
+                dtoBean.attributes?.let {
+                    body["attributes"] = it
+                }
                 body["beginTime"] = dtoBean.beginTime
-                body["content"] = dtoBean.content
+                body["content"] = dtoBean.content?:""
                 body["contentImgList"] = dtoBean.contentImgList
                 body["endTime"] = dtoBean.endTime
 
@@ -102,7 +104,7 @@ class BaoMingViewModel : BaseViewModel() {
                 body["endTime"] = voteBean.endTime
                 body["optionList"] = voteBean.optionList
                 body["title"] = voteBean.title
-                body["voteDesc"] = voteBean.voteDesc
+                body["voteDesc"] = voteBean.voteDesc?:""
                 body["voteType"] = voteBean.voteType
                 apiService.ADDVote(body.header(rkey), body.body(rkey))
             })

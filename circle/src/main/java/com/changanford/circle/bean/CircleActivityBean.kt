@@ -1,12 +1,14 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.ActBean
+
 /**
  *Author lcw
  *Time on 2022/8/23
  *Purpose
  */
 data class CircleActivityBean(
-    val dataList: ArrayList<CircleActivityItemBean> = arrayListOf(),
+    val dataList: ArrayList<ActBean> = arrayListOf(),
     val extend: Any? = Any(),
     val pageNo: Int = 0,
     val pageSize: Int = 0,

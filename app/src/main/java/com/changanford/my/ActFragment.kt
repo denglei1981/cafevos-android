@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.adapter.SearchActsResultAdapter
 import com.changanford.common.bean.ActDataBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
@@ -19,7 +20,6 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
-import com.changanford.home.search.adapter.SearchActsResultAdapter
 import com.changanford.my.databinding.FragmentActBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.ActViewModel

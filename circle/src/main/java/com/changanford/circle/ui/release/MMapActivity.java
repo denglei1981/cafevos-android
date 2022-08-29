@@ -350,6 +350,7 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
 //            binding.tvAddress.setText(location.getLocationDescribe());
             //这个判断是为了防止每次定位都重新设置中心点和marker
             if (!located) {
+                poi();
                 if (!TextUtils.isEmpty(city)) {
                     isquerypoi = true;
                     movedot(lat, lon);

@@ -4,6 +4,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.adapter.circle.CircleActivityListAdapter
 import com.changanford.circle.databinding.ActivityCircleActivityListBinding
 import com.changanford.circle.viewmodel.CircleActivityListViewModel
+import com.changanford.common.adapter.SearchActsResultAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.TestBean
 import com.changanford.common.constant.IntentKey
@@ -23,7 +24,7 @@ class CircleActivityListActivity :
     BaseActivity<ActivityCircleActivityListBinding, CircleActivityListViewModel>() {
 
     private val activityListAdapter by lazy {
-        CircleActivityListAdapter()
+        SearchActsResultAdapter()
     }
 
     private var circleId = ""

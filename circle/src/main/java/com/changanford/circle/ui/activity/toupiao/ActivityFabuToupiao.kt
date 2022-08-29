@@ -425,20 +425,28 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             }
             voteBean.title = title
 
-            if (binding.tvTime.text.toString().isNullOrEmpty()) {
+            if (voteBean.endTime.isNullOrEmpty()) {
                 "请选择时间".toast()
                 return@setOnClickListener
             }
-            if (binding.etShuoming.text.toString().isNullOrEmpty()) {
-                "请输入投票说明".toast()
-                return@setOnClickListener
-            }
             voteBean.voteDesc = binding.etShuoming.text.toString()
+            voteBean.optionList.forEach {
+                if (it.optionDesc.isNullOrEmpty()){
+                    "请输入选项内容"
+                    return@setOnClickListener
+                }
+                if (voteBean.voteType == "IMG" && it.optionImg.isNullOrEmpty()){
+                    "请选择选项图片"
+                    return@setOnClickListener
+                }
+            }
+
             voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
             voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
             if (updateVoteReq == null) {
                 viewModel.AddVote(voteBean) {
                     it.onSuccess {
+                        "发布成功".toast()
                         if (draftBean != null) {
                             lifecycleScope.launch(Dispatchers.IO) {
                                 draftBean?.postsId?.let { it1 ->
@@ -457,6 +465,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             } else {
                 viewModel.updateVote(updateVoteReq?.wonderfulId ?: 0, voteBean) {
                     it.onSuccess {
+                        "修改成功".toast()
                         if (draftBean != null) {
                             lifecycleScope.launch(Dispatchers.IO) {
                                 draftBean?.postsId?.let { it1 ->
@@ -540,6 +549,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     var timebegin: Date = Date(System.currentTimeMillis())
 
     fun setTimePicker() {
+        hideKeyboard(binding.tvTime.windowToken)
         initTimePick1()
         initTimePickEND()
         pvActTime?.show()

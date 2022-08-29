@@ -77,7 +77,7 @@ class CircleActivityListAdapter :
             tvAddress.visibility =
                 if (item.activityAddr.isNullOrEmpty()) View.GONE else View.VISIBLE
             tvAddress.text = item.activityAddr
-            tvNumJoin.text = "${item.activityJoinCount}人参与"
+            tvNumJoin.text = "${item.activityJoinCount}人参与>"
 
 
             //ActivityButtonEnum.SIGN_NOT_BEGIN(code=SIGN_NOT_BEGIN, dbCode=0, message=报名未开始),

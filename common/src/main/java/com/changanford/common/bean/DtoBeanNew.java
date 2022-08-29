@@ -27,11 +27,29 @@ public class DtoBeanNew implements Serializable {
     private String provinceName;//省名称
     private String signBeginTime;//报名开始时间
     private String signEndTime;//报名截止时间
+    private String signBeginTimeShow;//报名开始时间显示
+    private String signEndTimeShow;//报名截止时间显示
     private String title;//标题
     private String townId;//区id（国标）-获取不到的话可不穿
     private String townName;//区名称
     private String wonderfulType;//0-线上活动，1-线下活动，2-问卷,
     private String deadLineTime;//截止时间
+
+    public String getSignBeginTimeShow() {
+        return signBeginTimeShow;
+    }
+
+    public void setSignBeginTimeShow(String signBeginTimeShow) {
+        this.signBeginTimeShow = signBeginTimeShow;
+    }
+
+    public String getSignEndTimeShow() {
+        return signEndTimeShow;
+    }
+
+    public void setSignEndTimeShow(String signEndTimeShow) {
+        this.signEndTimeShow = signEndTimeShow;
+    }
 
     public ArrayList<AttributeBean.AttributeCategoryVos.AttributeListBean> getAttributes() {
         return attributes;

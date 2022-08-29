@@ -1,19 +1,19 @@
-package com.changanford.home.search.adapter
+package com.changanford.common.adapter
 
 import android.view.View
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AcBean
 import com.changanford.common.bean.ActBean
+import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.home.R
-import com.changanford.home.databinding.ItemHomeActsBinding
 
 /**
  * 活动列表。
@@ -116,6 +116,7 @@ class SearchActsResultAdapter :
             it.reedit.setOnClickListener {
                 reEditCall(item)
             }
+            it.reedit.isVisible = item.showReedit()
 
 
 

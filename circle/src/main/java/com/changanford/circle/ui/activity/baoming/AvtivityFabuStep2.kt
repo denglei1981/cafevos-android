@@ -610,6 +610,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     .dto
             ) {
                 it.onSuccess {
+                    "发布完成".toast()
                     LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
                     finish()
                 }
@@ -618,6 +619,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             baoMingViewModel?.updateActivity(ActivityFabuBaoming.wonderfulId,ActivityFabuBaoming
                 .dto){
                 it.onSuccess {
+                    "发布完成".toast()
                     LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
                     finish()
                 }
@@ -667,10 +669,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     var timebegin: Date = Date(System.currentTimeMillis())
     var datebegin = ""
     var dateend = ""
-    var actType = "0" //活动类型
+    var actType = "1" //活动类型
 
 
     fun setTimePicker() {
+        hideKeyboard(binding.bottom.time.windowToken)
         initTimePick1()
         initTimePickEND()
         pvActTime?.show()
