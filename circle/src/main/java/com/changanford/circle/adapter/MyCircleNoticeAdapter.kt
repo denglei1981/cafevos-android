@@ -42,14 +42,15 @@ class MyCircleNoticeAdapter :
                     tvType.text = "审核中"
                 }
                 "PASS" -> {//通过
-                    tvType.text = "通过"
+                    if (item.onShelve == "UNDER_SHELVE") {
+                        tvType.text = "已下架"
+                    } else {
+                        tvType.text = "通过"
+                    }
                 }
                 "REJECT" -> {//未通过
                     tvType.text = "未通过"
                 }
-            }
-            if (item.onShelve == "UNDER_SHELVE") {
-                tvType.text = "下架"
             }
             if (item.checkStatus == "REJECT") {
                 llReason.visibility = View.VISIBLE
