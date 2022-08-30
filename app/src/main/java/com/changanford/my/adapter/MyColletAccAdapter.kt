@@ -13,10 +13,10 @@ import com.changanford.evos.databinding.ItemMysNewsBinding
 
 
 class MyColletAccAdapter :
-    BaseQuickAdapter<ActDataBean, BaseDataBindingHolder<ItemMysNewsBinding>>(R.layout.item_mys_news) {
+    BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemMysNewsBinding>>(R.layout.item_mys_news) {
     override fun convert(
         holder: BaseDataBindingHolder<ItemMysNewsBinding>,
-        item: ActDataBean
+        item: ActBean
     ) {
         holder.dataBinding?.let { t ->
             GlideUtils.loadBD(item.coverImg, t.ivCircle)

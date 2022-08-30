@@ -130,7 +130,7 @@ class MyColletPageAdapter :
                     t.tvTitle.text = "活动"
                     if (item.actDataBean != null && item.actDataBean!!.dataList != null && item.actDataBean!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletAccAdapter
-                        myColletAccAdapter.setNewInstance(item.actDataBean!!.dataList as MutableList<ActDataBean>?)
+                        myColletAccAdapter.setNewInstance(item.actDataBean!!.dataList as MutableList<ActBean>?)
                         val lin =object :GridLayoutManager(activity, 3){
                             override fun canScrollHorizontally(): Boolean {
                                 return false
