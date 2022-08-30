@@ -3,6 +3,7 @@ package com.changanford.my.adapter
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Paint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextPaint
 import android.view.View
@@ -45,24 +46,24 @@ class MyJoinTopicMoreAdapter :
 
             t.tvPostCount.text =
                 CountUtils.formatNum(item.postsCount.toString(), false).toString().plus("\t帖子")
-            t.tvPeople.text = CountUtils.formatNum(item.userCount.toString(), false).toString().plus("\t浏览量")
+            t.tvPeople.text =
+                CountUtils.formatNum(item.userCount.toString(), false).toString().plus("\t浏览量")
 
             if (isMyPost && userId == MConstant.userId) {
                 t.btnType.visibility = View.VISIBLE
+                val vState = t.btnType.background as GradientDrawable
                 //CircleNoticeCheckStatusEnum.WAIT_APPROVE(code=WAIT_APPROVE, dbCode=0, message=审核中),
                 // CircleNoticeCheckStatusEnum.PASS(code=PASS, dbCode=1, message=通过)
                 // CircleNoticeCheckStatusEnum.REJECT(code=REJECT, dbCode=2, message=未通过)
                 when (item.checkStatus) {
                     "WAIT_APPROVE" -> {
                         t.btnType.text = "审核中"
-                        val colorStateList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.color_ccFFFFFF
-                                )
+                        vState.setColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.color_ccFFFFFF
                             )
-                        t.btnType.backgroundTintList = colorStateList
+                        )
                         t.btnType.setTextColor(
                             ContextCompat.getColor(
                                 context,
@@ -74,14 +75,14 @@ class MyJoinTopicMoreAdapter :
                     "PASS" -> {
                         if (item.isGrounding == 1) {
                             t.btnType.text = "已下架"
-                            val colorStateList =
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.color_DD
-                                    )
+
+                            vState.setColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.color_DD
                                 )
-                            t.btnType.backgroundTintList = colorStateList
+                            )
+
                             t.btnType.setTextColor(
                                 ContextCompat.getColor(
                                     context,
@@ -90,14 +91,14 @@ class MyJoinTopicMoreAdapter :
                             )
                         } else {
                             t.btnType.text = "通过"
-                            val colorStateList =
-                                ColorStateList.valueOf(
-                                    ContextCompat.getColor(
-                                        context,
-                                        R.color.color_ccFFFFFF
-                                    )
+
+                            vState.setColor(
+                                ContextCompat.getColor(
+                                    context,
+                                    R.color.color_ccFFFFFF
                                 )
-                            t.btnType.backgroundTintList = colorStateList
+                            )
+
                             t.btnType.setTextColor(
                                 ContextCompat.getColor(
                                     context,
@@ -109,14 +110,14 @@ class MyJoinTopicMoreAdapter :
                     }
                     "REJECT" -> {
                         t.btnType.text = "未通过"
-                        val colorStateList =
-                            ColorStateList.valueOf(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.color_80F21C44
-                                )
+
+                        vState.setColor(
+                            ContextCompat.getColor(
+                                context,
+                                R.color.color_80F21C44
                             )
-                        t.btnType.backgroundTintList = colorStateList
+                        )
+
                         t.btnType.setTextColor(ContextCompat.getColor(context, R.color.white))
                         t.rlReason.visibility = View.VISIBLE
                         t.tvReason.text = "原因：${item.reason}"
@@ -135,16 +136,6 @@ class MyJoinTopicMoreAdapter :
                 t.btnType.visibility = View.GONE
                 t.rlReason.visibility = View.GONE
             }
-
-            val paint = TextPaint(Paint.ANTI_ALIAS_FLAG)
-            paint.textSize = 11F
-
-            t.btnType.doOnPreDraw {
-                val w = paint.measureText(t.btnType.text.toString()).toInt() + 8
-                it.layoutParams.width = w.toIntPx()
-
-            }
-
         }
     }
 

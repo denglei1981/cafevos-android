@@ -23,25 +23,19 @@
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:src="@mipmap/image_mine" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_type"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="3dp"
-            android:backgroundTint="@color/color_33FFFFFF"
             android:gravity="center"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
+            android:background="@drawable/bg_my_topic_more"
             android:paddingStart="4dp"
-            android:paddingTop="0dp"
             android:paddingEnd="4dp"
-            android:paddingBottom="0dp"
-            android:textAppearance="?android:attr/textAppearanceButton"
             android:textColor="@color/color_00095B"
             android:textSize="11sp"
             android:visibility="gone"
-            app:cornerRadius="2dp"
             app:layout_constraintLeft_toLeftOf="@+id/iv_circle"
             app:layout_constraintTop_toTopOf="@+id/iv_circle"
             tools:text="通过"
