@@ -497,6 +497,14 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
         } else if (updateVoteReq != null) {
             updateVoteReq?.addVoteDto?.let {
                 voteBean = it
+                try {
+                    voteBean.beginTimeShow = TimeUtils.MillisToStrO(voteBean.beginTime.toLong())
+                    voteBean.beginTime = TimeUtils.MillisToStr1(voteBean.beginTime.toLong())
+                    voteBean.endTimeShow = TimeUtils.MillisToStrO(voteBean.endTime.toLong())
+                    voteBean.endTime = TimeUtils.MillisToStr1(voteBean.endTime.toLong())
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
                 showDefaultData()
             }
         } else {
@@ -514,7 +522,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             showFengMian(voteBean.coverImg)
             etBiaoti.setText(voteBean.title)
             tvTime.text =
-                "${voteBean.beginTime}-${voteBean.endTime}"
+                "${voteBean.beginTimeShow}-${voteBean.endTimeShow}"
             etShuoming.setText(voteBean.voteDesc)
             multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
             mcb.isChecked = voteBean.allowViewResult == "YES"
@@ -571,6 +579,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                 this
             ) { date, v ->
                 voteBean.beginTime = TimeUtils.MillisToStr1(date.time)
+                voteBean.beginTimeShow = TimeUtils.MillisToStrO(date.time)
                 timebegin = date
                 pvActEndTime?.show()
             }
@@ -614,8 +623,9 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                     pvActTime!!.show()
                 } else {
                     voteBean.endTime = TimeUtils.MillisToStr1(date.time)
+                    voteBean.endTimeShow = TimeUtils.MillisToStrO(date.time)
                     binding.tvTime.text =
-                        "${voteBean.beginTime}-${voteBean.endTime}"
+                        "${voteBean.beginTimeShow}-${voteBean.endTimeShow}"
                 }
             }
                 .setCancelText("取消") //取消按钮文字
