@@ -86,6 +86,10 @@ class CreateCircleTopicActivity :
     }
 
     private fun backCheck() {
+        if (topicData == null) {
+            finish()
+            return
+        }
         topicData?.let {
             AlertDialog(this).builder()
                 .setMsg("您正在编辑话题,是否确认离开")

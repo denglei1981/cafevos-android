@@ -92,6 +92,10 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
     }
 
     private fun backCheck() {
+        if (changeNoticeBean == null) {
+            finish()
+            return
+        }
         changeNoticeBean?.let {
             AlertDialog(this).builder()
                 .setMsg("您正在编辑公告,是否确认离开")
