@@ -149,7 +149,7 @@ class ActBean {
         }
     }
     fun showReedit():Boolean{
-        return (wonderfulType ==1 || wonderfulType == 2 || wonderfulType == 4) && outChain == "NO"
+        return (wonderfulType == 1 || wonderfulType == 0 || wonderfulType == 4) && outChain != "YES"
     }
 }
 

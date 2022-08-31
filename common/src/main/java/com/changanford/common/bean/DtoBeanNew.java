@@ -12,6 +12,7 @@ public class DtoBeanNew implements Serializable {
     private Integer activityTotalCount;//活动限制人数，传-1表示不限制
     private ArrayList<AttributeBean.AttributeCategoryVos.AttributeListBean> attributes;//填写资料数组，数组顺序是用户填写的顺序
     private String beginTime;//开始时间
+    private String beginTimeShow;//开始时间
     private String circleId;//圈子id
     private String cityId;//市id（国标）
     private String cityName;//城市名称
@@ -21,6 +22,7 @@ public class DtoBeanNew implements Serializable {
     private DealerSites dealerSites;//
     private String detailHtml;//内容(富文本)
     private String endTime;//结束时间
+    private String endTimeShow;//结束时间
     private String latitude;//纬度
     private String longitude;//经度
     private String provinceId;//省id（国标）
@@ -34,6 +36,22 @@ public class DtoBeanNew implements Serializable {
     private String townName;//区名称
     private String wonderfulType;//0-线上活动，1-线下活动，2-问卷,
     private String deadLineTime;//截止时间
+
+    public String getBeginTimeShow() {
+        return beginTimeShow;
+    }
+
+    public void setBeginTimeShow(String beginTimeShow) {
+        this.beginTimeShow = beginTimeShow;
+    }
+
+    public String getEndTimeShow() {
+        return endTimeShow;
+    }
+
+    public void setEndTimeShow(String endTimeShow) {
+        this.endTimeShow = endTimeShow;
+    }
 
     public String getSignBeginTimeShow() {
         return signBeginTimeShow;

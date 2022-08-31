@@ -171,7 +171,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
                 actAdapter.reEdit{//重新编辑
                     when(it.wonderfulType){
-                        1,2->{//报名
+                        1,0->{//报名
                             viewModel.activityInfo4Update(it.wonderfulId){
                                 it.onSuccess {
                                     it?.let { it1 ->

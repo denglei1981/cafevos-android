@@ -2,11 +2,14 @@ package com.changanford.home.adapter
 
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +24,7 @@ import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
@@ -42,8 +46,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(0, R.layout.item_home_recommend_items_one)
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
-        addItemType(3, R.layout.item_home_recommend_acts)
-//        addItemType(3, com.changanford.common.R.layout.item_home_acts)
+//        addItemType(3, R.layout.item_home_recommend_acts)
+        addItemType(3, com.changanford.common.R.layout.item_home_acts)
     }
 
 
@@ -105,8 +109,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
             }
             3 -> { // 活动
-                showActs(holder, item)
-//                showActsNew(holder, item)
+//                showActs(holder, item)
+                try {
+                    showActsNew(holder, item)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
             }
 
         }
@@ -115,10 +123,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         var item = recdate.wonderful
         var binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
         binding?.let {
-            GlideUtils.loadBD(recdate.coverImg, it.ivActs)
-            it.root.setOnClickListener {
-                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
-            }
+            GlideUtils.loadBD(item.coverImg, it.ivActs)
+//            it.root.setOnClickListener {
+//                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+//            }
+            it.root.setPadding(DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0)
             it.tvTips.text = item.title
             it.tvHomeActTimes.text = item.getActTimeS()
             it.btnState.isVisible = !item.activityTag.isNullOrEmpty()

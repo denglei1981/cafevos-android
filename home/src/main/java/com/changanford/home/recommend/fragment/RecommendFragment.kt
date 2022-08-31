@@ -242,10 +242,16 @@ open class RecommendFragment :
         }
     }
 
-    private fun toActs(item: RecommendData) {
+    private fun toActs(data: RecommendData) {
+        var item = data.wonderful
         try {
-            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpValue)
-            if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {
+//            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpValue)
+//            if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {
+//                item.wonderfulType?.let { viewModel.AddACTbrid(it) }
+//            }
+            JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+//                if (item.jumpType == 2||item.jumpType==1) {
+            if (item.outChain == "YES") {
                 item.wonderfulType?.let { viewModel.AddACTbrid(it) }
             }
             BuriedUtil.instant?.discoverAct(item.title)

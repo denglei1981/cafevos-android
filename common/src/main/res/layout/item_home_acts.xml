@@ -217,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_10"
-                android:textColor="#00095B"
+                android:textColor="#8195C8"
                 android:textSize="11sp"
                 android:gravity="center"
                 android:visibility="gone"

@@ -47,10 +47,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.PictureUtil
-import com.changanford.common.util.PictureUtils
-import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
@@ -114,6 +111,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 try {
                     dto.signBeginTimeShow = TimeUtils.MillisToStrO(dto.signBeginTime.toLong())
                     dto.signEndTimeShow = TimeUtils.MillisToStrO(dto.signEndTime.toLong())
+                    dto.signBeginTime = TimeUtils.MillisToStr1(dto.signBeginTime.toLong())
+                    dto.signEndTime = TimeUtils.MillisToStr1(dto.signEndTime.toLong())
+                    dto.beginTimeShow = TimeUtils.MillisToStrO(dto.beginTime.toLong())
+                    dto.endTimeShow = TimeUtils.MillisToStrO(dto.endTime.toLong())
+                    dto.beginTime = TimeUtils.MillisToStr1(dto.beginTime.toLong())
+                    dto.endTime = TimeUtils.MillisToStr1(dto.endTime.toLong())
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -231,10 +234,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                             .delete(it1)
                     }
                     withContext(Dispatchers.Main) {
+                        JumpUtils.instans?.jump(26)
                         exitPage()
                     }
                 }
             } else {
+                JumpUtils.instans?.jump(26)
                 exitPage()
             }
         }
@@ -250,6 +255,17 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     viewModel.attributeBean.value!!.attributesInfo
                         .attributeCategoryVos
                 )
+                if (!dto.attributes.isNullOrEmpty() && dto.attributes.size>0){
+                    dto.attributes.forEach {
+                        attributeListBeans.forEachIndexed { index1, attributeCategoryVos ->
+                            attributeCategoryVos.attributeList.forEachIndexed { index2, attributeListBean ->
+                                if (it.attributeId == attributeListBean.attributeId){
+                                    attributeListBeans[index1].attributeList[index2].checktype = 1
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -448,7 +464,11 @@ fun fabubaomingCompose(
         var Showstr = ""
         if (!dto.attributes.isNullOrEmpty()) {
             for (i in dto.attributes) {
-                Showstr += i.attributeName + " "
+                if (Showstr.isNullOrEmpty()) {
+                    Showstr += i.attributeName
+                } else {
+                    Showstr += "、" + i.attributeName
+                }
             }
         }
         mutableStateOf(Showstr)

@@ -41,7 +41,9 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DtoBeanNew
 import com.changanford.common.bean.MapReturnBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
@@ -129,7 +131,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         initEtContent()
         binding.bottom.apply {
             ActivityFabuBaoming.dto?.let {
-                time.text = "${it.beginTime?:""}-${it.endTime?:""}"
+                time.text = "${it.beginTimeShow?:""}-${it.endTimeShow?:""}"
                 leixing.text = if(it.wonderfulType == "0") "线下活动" else "线上活动"
                 place.text = it.activityAddr?:""
                 if (it.wonderfulType.isNullOrEmpty()){
@@ -147,6 +149,13 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         }else {
             val default = LongPostBean(hintStr = "请输入活动详情")
             longpostadapter.addData(default)
+        }
+        if (ActivityFabuBaoming.dto.wonderfulType == "0"){
+            actType = "0"
+            binding.bottom.placelayout.isVisible = true
+        }else{
+            actType = "1"
+            binding.bottom.placelayout.isVisible = false
         }
     }
 
@@ -613,6 +622,8 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     "发布完成".toast()
                     LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
                     finish()
+                }.onWithMsgFailure {
+                    it?.toast()
                 }
             }
         }else{
@@ -622,6 +633,8 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     "发布完成".toast()
                     LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
                     finish()
+                }.onWithMsgFailure {
+                    it?.toast()
                 }
             }
         }
@@ -645,7 +658,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     val poiInfo =
                         data!!.getBundleExtra("mbundaddress")!!.getParcelable<MapReturnBean>("poi")
                     if (poiInfo != null && poiInfo.poiInfo != null) {
-                        binding.bottom.place.text = poiInfo.poiInfo.getAddress()
+                        binding.bottom.place.text = poiInfo.poiInfo.name
                         ActivityFabuBaoming.dto?.apply {
                             latitude = poiInfo.poiInfo.getLocation().latitude.toString() + ""
                             longitude = poiInfo.poiInfo.getLocation().longitude.toString() + ""
@@ -655,7 +668,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                             townId = poiInfo.qid
                             provinceId = poiInfo.sid
                             cityId = poiInfo.cid
-                            activityAddr = poiInfo.poiInfo.getAddress()
+                            activityAddr = poiInfo.poiInfo.name
                         }
                     }
                 }
@@ -696,6 +709,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             ) { date, v ->
                 datebegin = TimeUtils.MillisToStr1(date.time)
                 ActivityFabuBaoming.dto.beginTime = datebegin
+                ActivityFabuBaoming.dto.beginTimeShow = TimeUtils.MillisToStrO(date.time)
                 timebegin = date
                 pvActEndTime?.show()
             }
@@ -740,7 +754,8 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     pvActTime!!.show()
                 } else {
                     ActivityFabuBaoming.dto.endTime = dateend
-                    binding.bottom.time.text = "$datebegin - $dateend"
+                    ActivityFabuBaoming.dto.endTimeShow = TimeUtils.MillisToStrO(date.time)
+                    binding.bottom.time.text = "${ActivityFabuBaoming.dto.beginTimeShow} - ${ActivityFabuBaoming.dto.endTimeShow}"
                 }
             }
                 .setCancelText("取消") //取消按钮文字

@@ -62,9 +62,7 @@ class BaoMingViewModel : BaseViewModel() {
                 var rkey = getRandomKey()
                 body["circleId"] = dtoBean.circleId
                 body["coverImgUrl"] = dtoBean.coverImgUrl
-                dtoBean.attributes?.let {
-                    body["attributes"] = it
-                }
+                body["attributes"] = dtoBean.attributes?:ArrayList<AttributeBean.AttributeCategoryVos.AttributeListBean>()
                 body["beginTime"] = dtoBean.beginTime
                 body["content"] = dtoBean.content?:""
                 body["contentImgList"] = dtoBean.contentImgList

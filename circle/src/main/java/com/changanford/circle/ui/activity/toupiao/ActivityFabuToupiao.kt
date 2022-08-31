@@ -30,6 +30,7 @@ import com.changanford.common.bean.*
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -398,7 +399,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             if (voteBean.optionList.size < 20) {
                 var voteoption = VoteOptionBean("")
                 voteBean.optionList.add(voteoption)
-                dragAdapter.addData(voteoption)
+                dragAdapter.addData(voteBean.optionList.size-1,voteoption)
             }
         }
         binding.question.setOnClickListener {
@@ -432,11 +433,11 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             voteBean.voteDesc = binding.etShuoming.text.toString()
             voteBean.optionList.forEach {
                 if (it.optionDesc.isNullOrEmpty()){
-                    "请输入选项内容"
+                    "请输入选项内容".toast()
                     return@setOnClickListener
                 }
                 if (voteBean.voteType == "IMG" && it.optionImg.isNullOrEmpty()){
-                    "请选择选项图片"
+                    "请选择选项图片".toast()
                     return@setOnClickListener
                 }
             }
@@ -460,6 +461,8 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                         } else {
                             finish()
                         }
+                    }.onWithMsgFailure {
+                        it?.toast()
                     }
                 }
             } else {
@@ -479,6 +482,8 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                         } else {
                             finish()
                         }
+                    }.onWithMsgFailure {
+                        it?.toast()
                     }
                 }
             }
