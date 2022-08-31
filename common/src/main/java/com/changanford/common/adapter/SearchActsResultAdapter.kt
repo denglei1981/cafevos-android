@@ -29,11 +29,18 @@ class SearchActsResultAdapter :
     fun reEdit(reEditCall:(bean:ActBean)->Unit){
         this.reEditCall = reEditCall
     }
+    var logHistory:(Int)->Unit = {}
+    fun sSetLogHistory(logHistory:(Int)->Unit = {}){
+        this.logHistory = logHistory
+    }
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)
             it.root.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                if (item.outChain == "YES") {
+                    logHistory(item.wonderfulId)
+                }
             }
             it.tvTips.text = item.title
 

@@ -63,6 +63,9 @@ class SearchActsFragment :
                 }
             }
         })
+        searchActsResultAdapter.sSetLogHistory{
+            viewModel.AddACTbrid(it)
+        }
     }
 
     override fun initData() {
