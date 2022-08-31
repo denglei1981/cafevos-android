@@ -39,10 +39,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
-import com.changanford.common.util.AppUtils
-import com.changanford.common.util.PictureUtil
-import com.changanford.common.util.PictureUtils
-import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
@@ -459,6 +456,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                 }
                             }
                         } else {
+                            JumpUtils.instans?.jump(26)
                             finish()
                         }
                     }.onWithMsgFailure {
@@ -476,10 +474,12 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                         .delete(it1)
                                 }
                                 withContext(Dispatchers.Main) {
+                                    JumpUtils.instans?.jump(26)
                                     finish()
                                 }
                             }
                         } else {
+                            JumpUtils.instans?.jump(26)
                             finish()
                         }
                     }.onWithMsgFailure {
@@ -531,6 +531,11 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             etShuoming.setText(voteBean.voteDesc)
             multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
             mcb.isChecked = voteBean.allowViewResult == "YES"
+            if (voteBean.voteType == "TEXT"){
+                changeStyle(1)
+            }else{
+                changeStyle(2)
+            }
         }
     }
 

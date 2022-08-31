@@ -86,8 +86,8 @@ class SearchActsResultAdapter :
             it.btnState.text = item.showTag()
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
-            it.tvSignpeople.isVisible = !item.activityTotalCount.isNullOrEmpty()
-            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
+            it.tvSignpeople.isVisible = !item.activityJoinCount.isNullOrEmpty()
+            it.tvSignpeopleImg.isVisible = !item.activityJoinCount.isNullOrEmpty()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
             if (item.showButton()){

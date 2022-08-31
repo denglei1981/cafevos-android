@@ -123,6 +123,8 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 downloadImg()
             }
             wonderfulId = updateActivityV2Req?.wonderfulId ?: 0
+        }else{
+            wonderfulId = 0
         }
         binding.composeLayout.setContent {
             fabubaomingCompose(viewModel, dto, choseCover = {
