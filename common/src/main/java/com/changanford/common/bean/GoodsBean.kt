@@ -972,8 +972,10 @@ data class CouponsItemBean(
      * */
     fun discountAmount(totalPrice: Long,couponRatio: Float? = (this.couponRatio ?: "0").toFloat()): Long {
         if (couponRatio == null || couponRatio == 0f) return 0
-        //优惠向下
-        return totalPrice-WCommonUtil.getHeatNum("${totalPrice * (couponRatio / 10)}").toLong()
+//        //优惠向下
+//        return totalPrice-WCommonUtil.getHeatNum("${totalPrice * (couponRatio / 10)}").toLong()
+        //截取2位
+        return WCommonUtil.getHeatNum("${totalPrice-totalPrice * (couponRatio / 10)}").toLong()
     }
 
     fun getShowMoney(): SpannableString {

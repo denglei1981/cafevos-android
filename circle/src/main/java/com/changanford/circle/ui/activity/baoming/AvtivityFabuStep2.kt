@@ -135,7 +135,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 leixing.text = if(it.wonderfulType == "1") "线下活动" else "线上活动"
                 place.text = it.activityAddr?:""
                 if (it.wonderfulType.isNullOrEmpty()){
-                    ActivityFabuBaoming.dto.wonderfulType = "1"
+                    ActivityFabuBaoming.dto.wonderfulType = "0"
                 }
             }
         }
@@ -150,7 +150,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             val default = LongPostBean(hintStr = "请输入活动详情")
             longpostadapter.addData(default)
         }
-        if (ActivityFabuBaoming.dto.wonderfulType == "0"){
+        if (ActivityFabuBaoming.dto.wonderfulType?:"0" == "0"){
             actType = "0"
             binding.bottom.placelayout.isVisible = false
         }else{
