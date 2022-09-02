@@ -161,9 +161,9 @@
         <!--预览界面返回箭头-->
         <item name="picture.preview.leftBack.icon">@drawable/picture_icon_back</item>
         <!--裁剪页面标题背景色-->
-        <item name="picture.crop.toolbar.bg">@color/picture_color_grey</item>
+        <item name="picture.crop.toolbar.bg">@color/picture_color_white</item>
         <!--裁剪页面状态栏颜色-->
-        <item name="picture.crop.status.color">@color/picture_color_grey</item>
+        <item name="picture.crop.status.color">@color/picture_color_white</item>
         <!--裁剪页面标题文字颜色-->
         <item name="picture.crop.title.color">@color/picture_color_white</item>
         <!--相册文件夹列表选中图标-->

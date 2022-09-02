@@ -41,11 +41,12 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
+            android:gravity="center"
             android:textColor="@color/color_33"
             android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
             app:layout_constraintRight_toRightOf="@+id/iv_bg"
             app:layout_constraintTop_toBottomOf="@+id/iv_bg"
-            tools:text="长安福特未来活动长安福特未…" />
+            tools:text="长安福特未来活特未…" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
