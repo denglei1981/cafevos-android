@@ -375,11 +375,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             } else {
                 binding.topContent.clActivity.visibility = View.GONE
             }
-
+            binding.topContent.clNotice.visibility = View.VISIBLE
             if (it.circleNotices.isNullOrEmpty()) {
-                binding.topContent.clNotice.visibility = View.GONE
+                noticeAdapter.setEmptyView(R.layout.empty_notice)
             } else {
-                binding.topContent.clNotice.visibility = View.VISIBLE
                 noticeAdapter.setList(it.circleNotices)
             }
 
