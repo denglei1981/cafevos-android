@@ -904,7 +904,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<InfoBean>
-
+    /**
+     *
+     * */
+    @POST("/highlights/callBackOuterChain")
+    suspend fun addactbrid(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<ActBean>>
     //我的足迹  资讯
     @POST("con/article/myVisitArticle")
     suspend fun queryMineFootprintList(

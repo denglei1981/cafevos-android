@@ -64,6 +64,9 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         }
 
         binding.rcyAct.rcyCommonView.adapter = actAdapter
+        actAdapter.sSetLogHistory{
+            viewModel.AddACTbrid(it)
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

@@ -123,6 +123,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 downloadImg()
             }
             wonderfulId = updateActivityV2Req?.wonderfulId ?: 0
+        }else{
+            wonderfulId = 0
+        }
+        if (dto.activityTotalCount == null){
+            dto.activityTotalCount = -1
         }
         binding.composeLayout.setContent {
             fabubaomingCompose(viewModel, dto, choseCover = {
@@ -487,7 +492,7 @@ fun fabubaomingCompose(
     }
     ActivityFabuBaoming.dto.apply {
         nextEnable =
-            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
+            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() ||(attributes.isNullOrEmpty() || attributes?.size?:0==0)|| signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
     }
     Column(
         modifier = Modifier
@@ -591,7 +596,8 @@ fun fabubaomingCompose(
             FabuLine()
             FabuChoseItem(
                 title = "搜集资料",
-                content = profile
+                content = profile,
+                true
             ) {
                 choseProfile() {
                     profile = it

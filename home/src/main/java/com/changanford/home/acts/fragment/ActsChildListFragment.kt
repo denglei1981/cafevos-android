@@ -76,6 +76,9 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                 }
             }
         })
+        searchActsResultAdapter.sSetLogHistory{
+            viewModel.AddACTbrid(it)
+        }
     }
 
     override fun initData() {

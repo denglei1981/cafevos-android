@@ -61,6 +61,9 @@ class ActBean {
             }
         }
     }
+    fun showJoinNum():Boolean{
+        return !activityJoinCount.isNullOrEmpty() && outChain != "YES" && activityTag != "NOT_PASS" && activityTag != "CHECKING"
+    }
     var activityTotalCount: String = ""//	活动总人数（报名活动,-1表示不限制）
     val beginTime: Long = 0//活动开始时间
     val cityName: String = ""//城市名称

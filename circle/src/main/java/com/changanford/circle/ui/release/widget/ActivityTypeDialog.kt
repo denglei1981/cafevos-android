@@ -8,7 +8,7 @@ import com.changanford.common.basic.BaseDialog
 
 class ActivityTypeDialog(context: Context, var checked: (Int) -> Unit) :
     BaseDialog<DialogActivitytypeBinding>(context) {
-    var value = 0;//0：线下，1：线上
+    var value = 0;//0：线上，1：线下
     fun setDefault(value: Int): ActivityTypeDialog {
         this.value = value
         return this
@@ -25,13 +25,13 @@ class ActivityTypeDialog(context: Context, var checked: (Int) -> Unit) :
         }
         binding.ok.setOnClickListener {
             if (binding.online.isChecked){
-                checked(1)
-            }else{
                 checked(0)
+            }else{
+                checked(1)
             }
             dismiss()
         }
-        if (value == 1) {
+        if (value == 0) {
             changeCheck(true)
         } else {
             changeCheck(false)

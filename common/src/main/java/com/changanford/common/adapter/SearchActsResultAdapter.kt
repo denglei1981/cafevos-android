@@ -29,11 +29,18 @@ class SearchActsResultAdapter :
     fun reEdit(reEditCall:(bean:ActBean)->Unit){
         this.reEditCall = reEditCall
     }
+    var logHistory:(Int)->Unit = {}
+    fun sSetLogHistory(logHistory:(Int)->Unit = {}){
+        this.logHistory = logHistory
+    }
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             GlideUtils.loadBD(item.coverImg, it.ivActs)
             it.root.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                if (item.outChain == "YES") {
+                    logHistory(item.wonderfulId)
+                }
             }
             it.tvTips.text = item.title
 
@@ -79,8 +86,8 @@ class SearchActsResultAdapter :
             it.btnState.text = item.showTag()
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
-            it.tvSignpeople.isVisible = !item.activityTotalCount.isNullOrEmpty()
-            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
+            it.tvSignpeople.isVisible = item.showJoinNum()
+            it.tvSignpeopleImg.isVisible = item.showJoinNum()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
             if (item.showButton()){

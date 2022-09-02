@@ -63,8 +63,8 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
             CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
             CircleMainMenuBean(R.mipmap.circle_post_question,"提问"),
-            CircleMainMenuBean(R.mipmap.circle_post_question,"发活动"),
-            CircleMainMenuBean(R.mipmap.circle_post_question,"发投票")
+//            CircleMainMenuBean(R.mipmap.circle_post_question,"发活动"),
+//            CircleMainMenuBean(R.mipmap.circle_post_question,"发投票")
         )
 //        if(param!="TECHNICIAN"){
 //
@@ -88,16 +88,16 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                     3->{
                         listener.checkQuestion()
                     }
-                    4 -> {
-                        val bundle = Bundle()
-                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
-                        startARouter(ARouterCirclePath.ActivityFabuBaoming,bundle)
-                    }
-                    5->{
-                        val bundle = Bundle()
-                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
-                        startARouter(ARouterCirclePath.ActivityFabuToupiao,bundle)
-                    }
+//                    4 -> {
+//                        val bundle = Bundle()
+//                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
+//                        startARouter(ARouterCirclePath.ActivityFabuBaoming,bundle)
+//                    }
+//                    5->{
+//                        val bundle = Bundle()
+//                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
+//                        startARouter(ARouterCirclePath.ActivityFabuToupiao,bundle)
+//                    }
                 }
                 dismiss()
             }

@@ -14,7 +14,24 @@ import kotlinx.coroutines.launch
  *  修改描述：TODO
  */
 class ActViewModel : ViewModel() {
-
+    /**
+     * 点击活动统计
+     */
+    fun AddACTbrid(wonderfulId: Int) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["wonderfulId"] = wonderfulId
+                var rkey = getRandomKey()
+                apiService
+                    .addactbrid(body.header(rkey), body.body(rkey))
+                    .onSuccess {
+                    }.onWithMsgFailure {
+                    }.onFailure {
+                    }
+            }
+        }
+    }
     /**
      * 我收藏的 资讯 1
      */

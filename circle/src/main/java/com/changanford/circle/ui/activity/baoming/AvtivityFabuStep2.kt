@@ -132,10 +132,10 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         binding.bottom.apply {
             ActivityFabuBaoming.dto?.let {
                 time.text = "${it.beginTimeShow?:""}-${it.endTimeShow?:""}"
-                leixing.text = if(it.wonderfulType == "0") "线下活动" else "线上活动"
+                leixing.text = if(it.wonderfulType == "1") "线下活动" else "线上活动"
                 place.text = it.activityAddr?:""
                 if (it.wonderfulType.isNullOrEmpty()){
-                    ActivityFabuBaoming.dto.wonderfulType = "1"
+                    ActivityFabuBaoming.dto.wonderfulType = "0"
                 }
             }
         }
@@ -150,12 +150,12 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             val default = LongPostBean(hintStr = "请输入活动详情")
             longpostadapter.addData(default)
         }
-        if (ActivityFabuBaoming.dto.wonderfulType == "0"){
+        if (ActivityFabuBaoming.dto.wonderfulType?:"0" == "0"){
             actType = "0"
-            binding.bottom.placelayout.isVisible = true
+            binding.bottom.placelayout.isVisible = false
         }else{
             actType = "1"
-            binding.bottom.placelayout.isVisible = false
+            binding.bottom.placelayout.isVisible = true
         }
     }
 
@@ -292,11 +292,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     actType = integer.toString() + ""
                     ActivityFabuBaoming.dto.wonderfulType = actType
                     if (integer == 0) {
-                        binding.bottom.leixing.text = "线下活动"
-                        binding.bottom.placelayout.isVisible = true
-                    } else {
                         binding.bottom.leixing.text = "线上活动"
                         binding.bottom.placelayout.isVisible = false
+                    } else {
+                        binding.bottom.leixing.text = "线下活动"
+                        binding.bottom.placelayout.isVisible = true
                     }
                     null
                 }.setDefault(Integer.valueOf(actType)).show()
@@ -613,7 +613,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 ) || !TextUtils.isEmpty(it.contentImgUrl)
             }
         ActivityFabuBaoming.dto.contentImgList = last
-        if (ActivityFabuBaoming.wonderfulId ==0) {
+        if (ActivityFabuBaoming.wonderfulId == 0) {
             baoMingViewModel?.CommitACT(
                 ActivityFabuBaoming
                     .dto
