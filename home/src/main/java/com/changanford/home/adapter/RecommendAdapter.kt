@@ -127,7 +127,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //            it.root.setOnClickListener {
 //                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
 //            }
-            it.root.setPadding(DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0)
+            it.root.setPadding(DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) )
+            it.root.background = null
             it.tvTips.text = item.title
             it.tvHomeActTimes.text = item.getActTimeS()
             it.btnState.isVisible = !item.activityTag.isNullOrEmpty()
