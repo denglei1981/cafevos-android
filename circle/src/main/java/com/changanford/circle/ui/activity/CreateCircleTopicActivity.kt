@@ -155,7 +155,7 @@ class CreateCircleTopicActivity :
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
                 if (title.length < 3 || !title.startsWith("#") || !title.endsWith("#")) {
-                    "#话题名称# 格式错误，话题前后需加#".toast()
+                    "#话题名称# 格式错误，话题前后需加英文符号#".toast()
                     return@setOnClickListener
                 }
                 if (isChangeTopic) {
