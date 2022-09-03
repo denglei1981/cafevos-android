@@ -31,9 +31,10 @@ import java.lang.Exception
 @Route(path = ARouterMyPath.MineJoinAcUI)
 class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
 
-    private val titles = arrayListOf("我发布的", "我参与的")
+    private val titles = arrayListOf("我参与的","我发布的")
     private var oldPosition = 0
     val acts: String = "activity_add_wonderful"
+    var selectPosition = "0"
     override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的活动"
         binding.collectToolbar.toolbarSave.text = "草稿箱"
@@ -44,7 +45,11 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
 //            JumpUtils.instans?.jump(13)
 //            finish()
         }
+        selectPosition = intent.getStringExtra("value")?:"0"
         initViewpager()
+        if (selectPosition == "1"){
+            binding.viewpager.currentItem = 1
+        }
     }
 
     override fun observe() {
@@ -79,10 +84,10 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
                 override fun createFragment(position: Int): Fragment {
                     return when (position) {
                         0 -> {
-                            ActFragment.newInstance("actMyCreate")
+                            ActFragment.newInstance("actMyJoin")
                         }
                         1 -> {
-                            ActFragment.newInstance("actMyJoin")
+                            ActFragment.newInstance("actMyCreate")
                         }
                         else -> {
                             ActFragment.newInstance("$position")

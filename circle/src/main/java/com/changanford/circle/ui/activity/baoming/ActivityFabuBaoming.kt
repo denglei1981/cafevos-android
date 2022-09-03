@@ -187,10 +187,14 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         //监听下载的图片
         viewModel._downloadLocalMedias.observe(this) {
             it.forEachIndexed { index, localMedia ->
-                if (localMedia != null && localMedia.realPath.isNullOrEmpty()) {
-                    dto.contentImgList?.get(index)?.localMedias = null
-                } else {
-                    dto.contentImgList?.get(index)?.localMedias = localMedia
+                try {
+                    if (localMedia != null && localMedia.realPath.isNullOrEmpty()) {
+                        dto.contentImgList?.get(index)?.localMedias = null
+                    } else {
+                        dto.contentImgList?.get(index)?.localMedias = localMedia
+                    }
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
             }
         }
@@ -239,12 +243,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                             .delete(it1)
                     }
                     withContext(Dispatchers.Main) {
-                        JumpUtils.instans?.jump(26)
+                        JumpUtils.instans?.jump(26,"1")
                         exitPage()
                     }
                 }
             } else {
-                JumpUtils.instans?.jump(26)
+                JumpUtils.instans?.jump(26,"1")
                 exitPage()
             }
         }
@@ -463,7 +467,7 @@ fun fabubaomingCompose(
         mutableStateOf(dto.coverImgUrl)
     }
     var date by remember {
-        mutableStateOf("${dto.signBeginTimeShow ?: ""}-${dto.signEndTimeShow ?: ""}")
+        mutableStateOf(if (dto.signEndTimeShow.isNullOrEmpty()) "" else "${dto.signBeginTimeShow ?: ""}-${dto.signEndTimeShow ?: ""}")
     }
     var profile by remember {
         var Showstr = ""
@@ -567,12 +571,12 @@ fun fabubaomingCompose(
         }
 
         Column {
-            Box(modifier = Modifier.height(20.dp))
+            Box(modifier = Modifier.height(30.dp))
             FabuTitle(name = "标题", true)
             FabuInput(hint = "请输入活动标题", initText = ActivityFabuBaoming.dto.title ?: "", 20) {
                 ActivityFabuBaoming.dto.title = it
             }
-            FabuLine()
+            FabuLine(20.dp)
             FabuTitle(name = "描述", false)
             FabuInput(
                 hint = "请输入活动描述",
@@ -582,7 +586,7 @@ fun fabubaomingCompose(
             ) {
                 ActivityFabuBaoming.dto.content = it
             }
-            FabuLine()
+            FabuLine(20.dp)
             FabuTitle(name = "报名设置", false)
             FabuChoseItem(
                 title = "报名时间",

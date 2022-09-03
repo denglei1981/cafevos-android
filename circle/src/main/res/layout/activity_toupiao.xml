@@ -283,8 +283,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/circle_shape_xuxian">
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_f2f4_5">
 
                     <TextView
                         android:id="@+id/text"
@@ -292,8 +292,8 @@
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="添加选项 (最多20个）"
                         android:textSize="15sp" />
 
@@ -303,9 +303,9 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toLeftOf="@id/text"
                         android:gravity="center"
-                        android:paddingTop="15dp"
+                        android:paddingTop="10dp"
                         android:paddingRight="5dp"
-                        android:paddingBottom="15dp"
+                        android:paddingBottom="10dp"
                         android:text="+"
                         android:textColor="@color/color_00095B"
                         android:textSize="30sp" />
@@ -323,7 +323,7 @@
 
                 <TextView
                     style="@style/commonTextView.Normal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="25dp"
                     android:text="投票说明"
                     android:textColor="@color/textblack"
@@ -333,7 +333,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@color/color_F8"
+                    android:background="@drawable/bg_f8_5"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dp_5">
 
@@ -347,7 +347,7 @@
                         android:hint="请输入投票说明"
                         android:maxLength="500"
                         android:minEms="4"
-                        android:minLines="6"
+                        android:minLines="5"
                         android:padding="@dimen/dp_5"
                         android:textColor="@color/textblack"
                         android:textColorHint="@color/color_cc"
@@ -370,7 +370,7 @@
 
                 <TextView
                     style="@style/commonTextView.Normal"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="20dp"
                     android:text="高级设置"
                     android:textColor="#333333"
                     android:textSize="15sp" />
@@ -418,14 +418,15 @@
                         android:text="查看投票明细"
                         android:textColor="@color/color_66"
                         android:textSize="14sp" />
+
                     <ImageView
                         android:id="@+id/question"
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
-                        android:layout_toRightOf="@id/ssss"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/dp_10"
-                        android:src="@mipmap/circle_post_question"/>
+                        android:layout_toRightOf="@id/ssss"
+                        android:src="@mipmap/icon_toupiao_question" />
 
                     <CheckBox
                         android:id="@+id/mcb"

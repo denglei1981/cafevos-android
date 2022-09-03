@@ -35,7 +35,7 @@
                 android:adjustViewBounds="false"
                 android:background="@color/color_f6"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/add_image" />
+                android:src="@mipmap/icon_toupiao_add" />
 
             <EditText
                 android:id="@+id/et_answer"

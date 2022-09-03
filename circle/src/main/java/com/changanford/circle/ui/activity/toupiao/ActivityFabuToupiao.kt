@@ -456,7 +456,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                 }
                             }
                         } else {
-                            JumpUtils.instans?.jump(26)
+                            JumpUtils.instans?.jump(26,"1")
                             finish()
                         }
                     }.onWithMsgFailure {
@@ -474,12 +474,12 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                         .delete(it1)
                                 }
                                 withContext(Dispatchers.Main) {
-                                    JumpUtils.instans?.jump(26)
+                                    JumpUtils.instans?.jump(26,"1")
                                     finish()
                                 }
                             }
                         } else {
-                            JumpUtils.instans?.jump(26)
+                            JumpUtils.instans?.jump(26,"1")
                             finish()
                         }
                     }.onWithMsgFailure {

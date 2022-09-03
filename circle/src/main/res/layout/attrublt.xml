@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="@dimen/dp_49"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="25dp"
             android:textStyle="bold"
             android:gravity="center"

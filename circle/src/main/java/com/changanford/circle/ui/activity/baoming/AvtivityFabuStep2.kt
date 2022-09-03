@@ -131,7 +131,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         initEtContent()
         binding.bottom.apply {
             ActivityFabuBaoming.dto?.let {
-                time.text = "${it.beginTimeShow?:""}-${it.endTimeShow?:""}"
+                time.text = if (it.endTimeShow.isNullOrEmpty())"" else "${it.beginTimeShow?:""}-${it.endTimeShow?:""}"
                 leixing.text = if(it.wonderfulType == "1") "线下活动" else "线上活动"
                 place.text = it.activityAddr?:""
                 if (it.wonderfulType.isNullOrEmpty()){

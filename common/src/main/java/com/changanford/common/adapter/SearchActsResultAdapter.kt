@@ -119,7 +119,7 @@ class SearchActsResultAdapter :
                 }
             }
             it.butongguo.isVisible = !item.reason.isNullOrEmpty()
-            it.reason.text = item.reason?:""
+            it.reason.text = "原因:${item.reason?:""}"
             it.reedit.setOnClickListener {
                 reEditCall(item)
             }
