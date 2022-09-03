@@ -46,6 +46,7 @@ import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.BottomSelectDialog
+import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
@@ -80,7 +81,14 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     private var pvActEndTime: TimePickerView? = null
     var draftBean: PostEntity? = null
     var updateActivityV2Req: UpdateActivityV2Req? = null
-
+    private val dialog by lazy {
+        LoadDialog(this).apply {
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            setLoadingText("加载中..")
+            show()
+        }
+    }
     companion object {
         var dto: DtoBeanNew = DtoBeanNew()
         var wonderfulId: Int = 0
@@ -183,9 +191,13 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         //图片下载,第一张图为封面图
         dto.contentImgList?.let {
             viewModel.downGlideImgs(it)
+            dialog.show()
         }
         //监听下载的图片
         viewModel._downloadLocalMedias.observe(this) {
+            if (it.size == dto.contentImgList.size) {
+                dialog.dismiss()
+            }
             it.forEachIndexed { index, localMedia ->
                 try {
                     if (localMedia != null && localMedia.realPath.isNullOrEmpty()) {

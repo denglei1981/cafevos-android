@@ -575,7 +575,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 upedimgs.add(
                     DtoBeanNew.ContentImg(
                         path,
-                        longpostadapter.getItem(index - 1).content!!
+                        ""
                     )
                 )
                 val mindexpic = indexcount + 1
