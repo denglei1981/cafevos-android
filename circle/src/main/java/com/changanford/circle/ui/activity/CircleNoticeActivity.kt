@@ -71,6 +71,9 @@ class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNot
         viewModel.noticeListBean.observe(this) {
             if (page == 1) {
                 binding.refreshLayout.finishRefresh()
+                if (it?.dataList.isNullOrEmpty()) {
+                    noticeAdapter.setEmptyView(R.layout.base_layout_empty)
+                }
                 noticeAdapter.setList(it?.dataList)
             } else {
                 it?.dataList?.let { it1 -> noticeAdapter.addData(it1) }
