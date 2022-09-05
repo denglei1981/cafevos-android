@@ -12,6 +12,7 @@ import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.viewmodel.SearchTopicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -28,16 +29,18 @@ import com.changanford.common.utilext.toast
 class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopicViewModel>() {
 
     private var page = 1
-    private var needCallback:Boolean =false
+    private var section = 0
+    private var needCallback: Boolean = false
     private val adapter by lazy {
         HotTopicAdapter()
     }
 
     override fun initView() {
+        section = intent.getIntExtra(IntentKey.TOPIC_SECTION, 0)
         AppUtils.setStatusBarMarginTop(binding.llTitle, this)
         binding.ryTopic.adapter = adapter
         intent.extras?.getBoolean(ChooseConversationActivity.needCallback)?.let {
-            needCallback =it
+            needCallback = it
         }
         initListener()
     }
@@ -52,7 +55,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
                         "请输入关键字".toast()
                     } else {
                         page = 1
-                        viewModel.getData(content, page)
+                        viewModel.getData(content, section, page)
                         // 埋点
                         BuriedUtil.instant?.circleTopicSearch(content)
                     }
@@ -64,14 +67,14 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
             val content = binding.tvSearch.text.toString()
-            viewModel.getData(content, page)
+            viewModel.getData(content, section, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
-            if (needCallback){
+            if (needCallback) {
                 LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
                     .postValue(adapter.getItem(position))
                 finish()
-            }else{
+            } else {
                 val bundle = Bundle()
                 bundle.putString("topicId", adapter.getItem(position).topicId.toString())
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
@@ -81,7 +84,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     }
 
     override fun initData() {
-        viewModel.topicBean.observe(this, {
+        viewModel.topicBean.observe(this) {
             if (page == 1) {
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)
@@ -94,6 +97,6 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
-        })
+        }
     }
 }

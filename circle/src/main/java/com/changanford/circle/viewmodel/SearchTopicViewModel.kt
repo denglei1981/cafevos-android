@@ -14,17 +14,18 @@ import com.changanford.common.utilext.createHashMap
  *Time on 2021/9/30
  *Purpose
  */
-class SearchTopicViewModel:BaseViewModel() {
+class SearchTopicViewModel : BaseViewModel() {
 
     val topicBean = MutableLiveData<HomeDataListBean<HotPicItemBean>>()
 
-    fun getData(searchKey:String,page:Int ){
+    fun getData(searchKey: String, section: Int, page: Int) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
                 it["searchKey"] = searchKey
+                it["section"] = section
             }
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().searchTopics(body.header(rKey), body.body(rKey))

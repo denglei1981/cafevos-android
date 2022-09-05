@@ -29,6 +29,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     }
 
     private var type = 0
+    private var section = 0
     private var circleId: String? = null
     private var circleName: String? = null
 
@@ -41,16 +42,20 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             when (type) {
                 0 -> {
                     tvTitle.text = "热门话题"
+                    section = 0
                 }
                 1 -> {
                     tvTitle.text = "圈内话题"
+                    section = 1
                 }
             }
             ivBack.setOnClickListener { finish() }
         }
         binding.ryTopic.adapter = adapter
         binding.tvSearch.setOnClickListener {
-            startARouter(ARouterCirclePath.SearchTopicActivity)
+            val bundle = Bundle()
+            bundle.putInt(IntentKey.TOPIC_SECTION, section)
+            startARouter(ARouterCirclePath.SearchTopicActivity, bundle)
         }
 
         adapter.loadMoreModule.setOnLoadMoreListener {

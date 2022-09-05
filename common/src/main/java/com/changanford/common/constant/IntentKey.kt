@@ -14,4 +14,5 @@ object IntentKey {
     const val REASON_NOTICE = "reasonNotice"
     const val NOTICE_ID = "noticeId"
     const val POST_TOPIC_ITEM = "postTopicItem"
+    const val TOPIC_SECTION = "topicSection"
 }
