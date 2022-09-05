@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="19dp"
             android:layout_marginTop="25dp"
-            android:text="名称"
+            android:text="话题"
             android:textColor="@color/color_33"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
