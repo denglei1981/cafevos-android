@@ -154,14 +154,15 @@ class CreateCircleTopicActivity :
             tvPost.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
-                if (title.length < 3 || !title.startsWith("#") || !title.endsWith("#")) {
-                    "#话题名称# 格式错误，话题前后需加英文符号#".toast()
-                    return@setOnClickListener
-                }
+//                if (title.length < 3 || !title.startsWith("#") || !title.endsWith("#")) {
+//                    "#话题名称# 格式错误，话题前后需加英文符号#".toast()
+//                    return@setOnClickListener
+//                }
+                val useTitle = "#$title#"
                 if (isChangeTopic) {
-                    viewModel.updateTopic(topicId, title, content, picUrl) { finish() }
+                    viewModel.updateTopic(topicId, useTitle, content, picUrl) { finish() }
                 } else {
-                    viewModel.initiateTopic(circleId, title, content, picUrl) { finish() }
+                    viewModel.initiateTopic(circleId, useTitle, content, picUrl) { finish() }
                 }
 
             }

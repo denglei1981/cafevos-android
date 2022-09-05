@@ -28,6 +28,7 @@ import com.changanford.circle.ext.setCircular
 
 import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
+import com.changanford.circle.utils.FlexboxLayoutManagerCustom
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
@@ -130,7 +131,9 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             topContent.apply {
                 ryNotice.adapter = noticeAdapter
                 ryActivity.adapter = activityAdapter
-                ryTopic.layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
+                val topicLayoutManager =
+                    FlexboxLayoutManagerCustom(this@CircleDetailsActivity,2)
+                ryTopic.layoutManager = topicLayoutManager
                 ryTopic.adapter = topicAdapter
             }
         }
