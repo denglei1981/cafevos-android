@@ -158,7 +158,12 @@ class CreateCircleTopicActivity :
 //                    "#话题名称# 格式错误，话题前后需加英文符号#".toast()
 //                    return@setOnClickListener
 //                }
-                val useTitle = "#$title#"
+                val useTitle = if (isChangeTopic) {
+                    title
+                } else {
+                    "#$title#"
+                }
+
                 if (isChangeTopic) {
                     viewModel.updateTopic(topicId, useTitle, content, picUrl) { finish() }
                 } else {
