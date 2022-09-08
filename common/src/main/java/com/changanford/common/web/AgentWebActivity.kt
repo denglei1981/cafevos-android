@@ -535,6 +535,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
         agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
+        agentWeb.agentWebSettings.webSettings.userAgentString = "ford-evos"
         AndroidBug5497Workaround.assistActivity(this)
     }
 
