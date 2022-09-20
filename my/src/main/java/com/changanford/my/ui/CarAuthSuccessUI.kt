@@ -32,7 +32,7 @@ class CarAuthSuccessUI : BaseMineUI<UiCarAuthSuccessBinding, SignViewModel>() {
         }
 
         binding.btnFinish.setOnClickListener {
-            JumpUtils.instans?.jump(103)
+//            JumpUtils.instans?.jump(103)
             back()
         }
 
