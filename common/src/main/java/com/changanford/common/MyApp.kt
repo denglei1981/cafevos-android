@@ -20,6 +20,7 @@ import com.changanford.common.widget.smart.MyHeaderView
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
+import com.orhanobut.hawk.Hawk
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 
@@ -64,6 +65,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
     override fun onCreate() {
         super.onCreate()
         mContext = this
+        Hawk.init(this).build()
         if(!BuildConfig.DEBUG)CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
         if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {

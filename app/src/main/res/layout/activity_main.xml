@@ -16,7 +16,7 @@
         android:layout_height="@dimen/dp50"
         android:layout_gravity="bottom|end"
         android:background="#fff"
-        android:elevation="@dimen/dp_10"
+        android:elevation="@dimen/dp_1"
         app:itemTextColor="@color/menu_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/menu_main">

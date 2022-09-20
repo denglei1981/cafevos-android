@@ -1,5 +1,6 @@
 package com.changanford.my
 
+import android.graphics.Color
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
@@ -20,6 +22,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.widget.pop.HomeGuidePop
+import com.changanford.common.widget.pop.MineGuidePop
 import com.changanford.my.adapter.CircleDetailsPersonalAdapter
 import com.changanford.my.adapter.MineMenuAdapter
 import com.changanford.my.bean.MineMenuData
@@ -29,8 +33,10 @@ import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
 import com.changanford.my.viewmodel.MineViewModel
 import com.changanford.my.widget.FlyCirclePost
+import com.orhanobut.hawk.Hawk
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import razerdp.basepopup.BasePopupWindow
 
 
 class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRefreshListener {
@@ -45,13 +51,28 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
     var footerAdBinding: FooterMineBinding? = null
     override fun initView() {
 
-
         binding.recyclerView.adapter = mineMenuAdapter
         binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
         addHeadView()
         addFooterView()
 
+        if (Hawk.get(HawkKey.GUIDE_MINE,false) == false) {
+            MineGuidePop(requireContext()).run {
+                //无透明背景
+                setBackgroundColor(Color.TRANSPARENT)
+                //背景模糊false
+                setBlurBackgroundEnable(false)
+                showPopupWindow()
+                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                    override fun onDismiss() {
+                        Hawk.put(HawkKey.GUIDE_MINE, true)
+                    }
+
+                }
+
+            }
+        }
 
     }
 

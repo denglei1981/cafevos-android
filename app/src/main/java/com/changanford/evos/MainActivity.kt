@@ -2,6 +2,7 @@ package com.changanford.evos
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
@@ -20,6 +21,7 @@ import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.HawkKey
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
@@ -31,6 +33,7 @@ import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
+import com.changanford.common.widget.pop.HomeGuidePop
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
@@ -39,9 +42,11 @@ import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
 import com.luck.picture.lib.tools.ToastUtils
+import com.orhanobut.hawk.Hawk
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
+import razerdp.basepopup.BasePopupWindow
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -193,6 +198,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         getNavigator()
         initBottomNavigation()
+        if (Hawk.get(HawkKey.GUIDE_HOME,false) == false) {
+            HomeGuidePop(this).run {
+                //无透明背景
+                setBackgroundColor(Color.TRANSPARENT)
+                //背景模糊false
+                setBlurBackgroundEnable(false)
+                showPopupWindow(binding.homeBottomNavi)
+                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+                    override fun onDismiss() {
+                        Hawk.put(HawkKey.GUIDE_HOME, true)
+                    }
+
+                }
+
+            }
+        }
+
 //        LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
 //            if (it as Boolean) {
 //            }
@@ -405,7 +427,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             intent.extras?.let {
                 val jumpValue = it.getInt("jumpValue")
                 try {
-                    jumpIndex = it.getString("value","")
+                    jumpIndex = it.getString("value", "")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
