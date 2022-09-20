@@ -4,6 +4,8 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.DaySignBean
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.SignTransparentUiBinding
 import com.changanford.my.widget.TodaySignPop
@@ -34,6 +36,11 @@ class SignTransparentUI : BaseMineUI<SignTransparentUiBinding, EmptyViewModel>()
         todaySignPop.showPopupWindow()
         todaySignPop.onDismissListener = object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
+                if ((daySignBean.luckyBlessingBagId?:0) !=0 ){
+                    JumpUtils.instans?.jump(
+                        1, "${MConstant.H5_SIGN_PRESENT}${daySignBean.luckyBlessingBagId}"
+                    )
+                }
                 finish()
             }
 

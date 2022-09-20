@@ -1,12 +1,16 @@
 package com.changanford.my.viewmodel
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.*
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toast
@@ -181,6 +185,25 @@ class MineViewModel : BaseViewModel() {
                 val updateUiState =UpdateUiState<List<MineMenuData>>(allList,true,"")
                 updateOrderAdLiveData.postValue(updateUiState)
 
+            }
+        }
+    }
+
+    /**
+     * 7天签到详情
+     */
+    fun getDay7Sign(result:(DaySignBean)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.day7Sign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    result(it)
+                }
+            }.onWithMsgFailure {
+                it?.let { it1 -> toastShow(it1) }
             }
         }
     }

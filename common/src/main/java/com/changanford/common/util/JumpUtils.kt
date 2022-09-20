@@ -844,9 +844,16 @@ class JumpUtils {
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
-                    var bundle = Bundle()
-                    bundle.putString("signInfo", JSON.toJSONString(it))
-                    startARouter(ARouterMyPath.SignTransparentUI, bundle)
+                    "签到成功，福币+${it.integral},成长值+${it.growth}".toast()
+                    if (it.additionStatus == 1) {//有额外弹框
+                        var bundle = Bundle()
+                        bundle.putString("signInfo", JSON.toJSONString(it))
+                        startARouter(ARouterMyPath.SignTransparentUI, bundle)
+                    }else{//无
+                        if ((it.luckyBlessingBagId?:0)!=0){
+                            jump(1,"${MConstant.H5_SIGN_PRESENT}${it.luckyBlessingBagId}")
+                        }
+                    }
                 }
             }.onWithMsgFailure {
                 it?.let { it1 -> toastShow(it1) }

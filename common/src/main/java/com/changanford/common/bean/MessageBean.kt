@@ -12,7 +12,8 @@ data class MessageBean(
     val iconId: Int,
     val title: String,
     val des: String,
-    val messageStatus: Int = 0
+    val messageStatus: Int = 0,
+    val messageNum:Int = 0
 )
 
 //消息类型 1 系统消息， 2 互动消息，3 交易消息
@@ -24,7 +25,11 @@ data class MessageStatusBean(
     val systemMessageStatus: Int,
     val systemMessageTitle: Any,
     val tradeStatus: Int,
-    val tradeTitle: Any
+    val tradeTitle: Any,
+    //新增
+    val unReadSystemMessageNum:Int,//0,
+    val unReadHudongNum:Int,//0,
+    val unReadTradeNum:Int,//0
 )
 
 

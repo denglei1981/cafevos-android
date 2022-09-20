@@ -174,6 +174,16 @@ object MConstant {
      */
     val H5_CAR_ACTIVITY ="${H5_BASE_URL}/order/#/vehicleActivity/details?activityId="
 
+    /**
+     * 签到抽奖
+     */
+    val H5_SIGN_PRESENT = "${H5_BASE_URL}/activity/#/luckDraw/index?luckyBlessingBagId="
+
+    /**
+     * 签到规则
+     */
+    var H5_SIGN_PRESENT_AGREEMENT = "${H5_BASE_URL_CSCIR}/richTextAp?key=sign_in_rule_config"
+
     var isFirstOpenTwoLevel = true // 是首次打开二楼
     var bdLocation = "{}"
 

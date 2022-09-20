@@ -408,6 +408,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<DaySignBean>
+    /**
+     * 用户7天签到详情
+     */
+    @POST("user/sevenDaySignDetail")
+    suspend fun day7Sign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<DaySignBean>
 
     /**
      * 本月签到详情

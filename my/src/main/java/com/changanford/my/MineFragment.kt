@@ -3,12 +3,9 @@ package com.changanford.my
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
@@ -24,9 +21,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.adapter.CircleDetailsPersonalAdapter
-import com.changanford.my.adapter.MineFastUsedAdapter
 import com.changanford.my.adapter.MineMenuAdapter
 import com.changanford.my.bean.MineMenuData
+import com.changanford.my.compose.dailySignCompose
 import com.changanford.my.databinding.FooterMineBinding
 import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
@@ -132,7 +129,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
                 JumpUtils.instans?.jump(35)
             }
-
         }
     }
 
@@ -238,7 +234,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
         viewModel.getBottomAds()
-
     }
 
     private var loginState: MutableLiveData<Boolean> = MutableLiveData()
@@ -473,6 +468,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getAuthCarInfo()
         viewModel.getCircleInfo()
         headNewBinding?.vFlipper?.startFlipping()
+        show7Day()
     }
 
     override fun onPause() {
@@ -485,10 +481,18 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         super.onDestroy()
 
     }
+    fun show7Day(){
+        viewModel.getDay7Sign{
+            headNewBinding?.sign7day?.setContent {
+                dailySignCompose(it)
+            }
+        }
+    }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         viewModel.getUserInfo()
         viewModel.getAuthCarInfo()
+        show7Day()
         refreshLayout.finishRefresh()
     }
 }

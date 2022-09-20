@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,6 +19,29 @@
             android:src="@mipmap/icon_msg_sys"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/dp_12"
+            android:src="@mipmap/right_arrow_common"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/icon_sys"
+            app:layout_constraintBottom_toBottomOf="@id/icon_sys"/>
+        <TextView
+            android:id="@+id/num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="99+"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:background="@drawable/loading_dot_red"
+            android:paddingHorizontal="@dimen/dp_5"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/icon_sys"
+            app:layout_constraintRight_toLeftOf="@+id/right"
+            app:layout_constraintTop_toTopOf="@+id/icon_sys" />
 
         <ImageView
             android:id="@+id/message_status"
