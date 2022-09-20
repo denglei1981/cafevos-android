@@ -6,12 +6,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.widget.UnBindWeChatTipsDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiAccountSafeBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
@@ -160,7 +162,8 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
                     showToast("未满足解绑条件")
                 } else {
                     bindType = "weixin"
-                    pop.showPopupWindow()
+                    showWeChatUnbind()
+//                    pop.showPopupWindow()
                 }
             } else {
                 //产生6位数随机数为例
@@ -222,6 +225,17 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
 
     override fun initData() {
         viewModel.bindAccount()
+    }
+    fun showWeChatUnbind(){
+        UnBindWeChatTipsDialog(BaseApplication.curActivity).setContent(2).setClickListener(
+            clickPos = {
+                lifecycleScope.launch {
+                    viewModel.unBindOtherAuth(bindType)
+                }
+            }, clickNeg = {
+                viewModel.updateUserAndRemoveOauth(bindType)
+            }
+        ).showPopupWindow()
     }
 
     override fun onResume() {

@@ -24,6 +24,7 @@ data class LoginBean(
     val token: String,
     val userId: String,
     val isNewUser: Int,
+    val unbandNotify:Int,//是否弹框，0不弹，1弹
     var jumpData: BindMobileJumpData? = BindMobileJumpData()
 )
 

@@ -180,11 +180,11 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                 it.titleSys.text = item.title
                 it.desSys.text = item.des
                 //是否有消息
-                if (item.messageStatus == 1) {
-                    it.messageStatus.visibility = View.VISIBLE
-                } else {
-                    it.messageStatus.visibility = View.GONE
-                }
+//                if (item.messageStatus == 1) {
+//                    it.messageStatus.visibility = View.VISIBLE
+//                } else {
+//                    it.messageStatus.visibility = View.GONE
+//                }
                 if (item.messageNum != 0){
                     it.num.isVisible = true
                     it.num.text = "${ if(item.messageNum>99) "99+" else item.messageNum}"

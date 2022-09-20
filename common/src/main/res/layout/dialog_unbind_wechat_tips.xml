@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_320"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_corner10"
+        android:minHeight="@dimen/dp_180"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:gravity="center"
+            android:text="您正在解绑微信，是否保留当前账号的头像和昵称？"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_16"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:text="（若不保留，头像和昵称重置为APP默认样式）"
+                android:textColor="#41464A"
+                android:textSize="@dimen/sp_13" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_46"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:background="@color/bg_color"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_1"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_unstay1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="#71747B"
+                android:textSize="@dimen/sp_15" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_stay1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="保留"
+                android:textColor="#01025C"
+                android:textSize="@dimen/sp_15" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:background="@color/bg_color"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/dp_1">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_stay2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="保留"
+                android:textColor="#01025C"
+                android:textSize="@dimen/sp_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#F1F1F1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_unstay2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="不保留"
+                android:textColor="#01025C"
+                android:textSize="@dimen/sp_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#F1F1F1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="#01025C"
+                android:textSize="@dimen/sp_15" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

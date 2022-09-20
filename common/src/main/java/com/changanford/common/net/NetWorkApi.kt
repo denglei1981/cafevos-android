@@ -517,6 +517,24 @@ interface NetWorkApi {
     ): CommonResponse<LoginBean>
 
     /**
+     * 登录提示修改头像
+     */
+    @POST("login/loginTipChangeAvatar")
+    suspend fun loginTipChangeAvatar(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 修改头像并解除绑定关系
+     */
+    @POST("login/updateUserAndRemoveOauth")
+    suspend fun updateUserAndRemoveOauth(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
      * 获取个人信息
      */
     @POST("user/myInfo")

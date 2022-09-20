@@ -17,6 +17,7 @@ import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.UnBindWeChatTipsDialog
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.utils.downLoginBg
 import com.changanford.my.utils.getDiskCacheDir
@@ -530,6 +531,38 @@ class SignViewModel : ViewModel() {
             }
         }
     }
+    fun loginTipChangeAvatar(bl:Int,result: () -> Unit){//是否保留 保留1 不保留0
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                var body = HashMap<String, Any>()
+                body["bl"] = bl
+                var rkey = getRandomKey()
+                apiService.loginTipChangeAvatar(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                result()
+            }.onWithMsgFailure {
+                it?.let {
+                    it.toast()
+                }
+            }
+        }
+    }
+
+    fun updateUserAndRemoveOauth(type:String){//是否保留 保留1 不保留0
+        viewModelScope.launch {
+            var unOtherAuth = fetchRequest {
+                var body = HashMap<String, String>()
+                body["type"] = type
+                var rkey = getRandomKey()
+                apiService.updateUserAndRemoveOauth(body.header(rkey), body.body(rkey))
+            }
+            if (unOtherAuth.code == 0) {
+                bindOtherAccount.postValue("unBindSuccess")
+            } else {
+                bindOtherAccount.postValue(unOtherAuth.msg)
+            }
+        }
+    }
 
     fun getUserInfo() {
         if (UserManger.isLogin()) {
@@ -972,9 +1005,27 @@ class SignViewModel : ViewModel() {
                         .postValue(UserManger.UserLoginStatus.USE_UNBIND_MOBILE)
                 }
                 else -> {
-                    LiveDataBus.get()
-                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                    if (it.unbandNotify == 1){
+                        UnBindWeChatTipsDialog(BaseApplication.curActivity).setContent(1).setClickListener(
+                            clickPos = {
+                                loginTipChangeAvatar(1){
+                                    LiveDataBus.get()
+                                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                                }
+                            }, clickNeg = {
+                                loginTipChangeAvatar(0){
+                                    LiveDataBus.get()
+                                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                                }
+                            }
+                        ).showPopupWindow()
+                    }else {
+                        LiveDataBus.get()
+                            .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+                            .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                    }
                 }
             }
         }
