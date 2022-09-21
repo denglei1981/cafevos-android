@@ -1322,4 +1322,22 @@ class SignViewModel : ViewModel() {
         }
 
     }
+    /**
+     * 7天签到详情
+     */
+    fun getDay7Sign(result:(DaySignBean)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.day7Sign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    result(it)
+                }
+            }.onWithMsgFailure {
+                it?.let { it1 -> toastShow(it1) }
+            }
+        }
+    }
 }

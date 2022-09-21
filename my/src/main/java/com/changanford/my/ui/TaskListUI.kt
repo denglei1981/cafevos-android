@@ -19,6 +19,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
+import com.changanford.my.compose.dailySignCompose
 import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
@@ -97,7 +98,13 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         super.initRefreshData(pageSize)
         task()
     }
-
+    fun show7Day(){
+        viewModel.getDay7Sign{
+            binding?.sign7day?.setContent {
+                dailySignCompose(it)
+            }
+        }
+    }
     override fun showEmpty(): View? {
         return ViewEmptyTopBinding.inflate(layoutInflater).root
     }
@@ -113,6 +120,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     fun task() {
         viewModel.queryTasksList()
+        show7Day()
     }
 
     private fun getData() {
