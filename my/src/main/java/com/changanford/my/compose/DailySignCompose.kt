@@ -67,12 +67,12 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             }
         }
         Text(
-            text = "连续签到赢大礼，已连续签到${daySignBean?.ontinuous ?: 0}天",
+            text = "连续签到赢大礼 ${if (daySignBean != null) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
             fontSize = 10.sp,
             color = Color(0xff999999),
             modifier = Modifier.padding(top = 10.dp)
         )
-        var canSign = false
+        var canSign = true
         daySignBean?.sevenDays?.forEach {
             if (it.signStatus == 2) {
                 canSign = true
@@ -94,7 +94,7 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "立即签到",
+                text = if (canSign) "立即签到" else "已签到",
                 fontSize = 15.sp,
                 color = Color(if (canSign) 0xff5F9DFC else 0xffF8FAFA)
             )
@@ -113,7 +113,7 @@ fun signOneDay(bean: Sign7DayBean? = null) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.background(color = Color.White)
     ) {
-        if (bean?.luckyBlessingBagId ?: 0 != 0) {
+        if (bean?.luckyBlessingBagId != 0 == true) {
             Image(
                 painter = painterResource(R.mipmap.icon_sign_gift),
                 contentDescription = "",
@@ -177,7 +177,7 @@ fun signOneDay(bean: Sign7DayBean? = null) {
                                 end.linkTo(parent.end)
                             }
                     )
-                    if ((bean?.signStatus ?: 1) == 1) {
+                    if ((bean?.signStatus ?: 3) == 1) {
                         Image(
                             painter = painterResource(id = R.mipmap.icon_sign_signed),
                             contentDescription = "",

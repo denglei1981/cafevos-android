@@ -48,7 +48,7 @@ data class MessageItemData(
     val messageContent: String,
     val messageTitle: String,
     val sendTime: Long,
-    val status: Int,//消息状态 0 未读取， 1 已读取
+    var status: Int,//消息状态 0 未读取， 1 已读取
     val userMessageId: Int
 )
 

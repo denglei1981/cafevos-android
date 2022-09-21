@@ -26,7 +26,6 @@ import com.changanford.my.databinding.ItemMineMessageInfoBinding
 import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
 import me.leolin.shortcutbadger.ShortcutBadger
 
 /**
@@ -45,7 +44,11 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
 
 
     override fun initView() {
-        adapter = MessageAdapter(this){id,pos->
+        adapter = MessageAdapter(this, {
+            viewModel.changAllMessage("${adapter?.data?.get(it)?.userMessageId}")
+            adapter?.data?.get(it)?.status = 1
+            adapter?.notifyItemChanged(it)
+        }){id,pos->
             viewModel.delUserMessage(id) {
                 it.onSuccess {
                     adapter?.data?.removeAt(pos)
@@ -148,7 +151,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.filter {itr-> itr.jumpDataType !=0 && itr.jumpDataType != 99 }.forEach {
+                            it.filter {itr-> itr.jumpDataType ==0 || itr.jumpDataType == 99 }.forEach {
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
@@ -172,7 +175,11 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
         }
     }
 
-    class MessageAdapter(var mContext: Context, var func: (String, Int)->Unit) :
+    class MessageAdapter(
+        var mContext: Context,
+        var read: (Int) -> Unit,
+        var func: (String, Int) -> Unit
+    ) :
         BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoBinding>>(R.layout.item_mine_message_info) {
         override fun convert(
             holder: BaseDataBindingHolder<ItemMineMessageInfoBinding>,
@@ -206,6 +213,9 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                         item.jumpDataType,
                         item.jumpDataValue
                     )
+                    if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0){
+                        read(getItemPosition(item))
+                    }
                 }
             }
         }

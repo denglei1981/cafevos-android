@@ -79,7 +79,11 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                 }
             }
         })
-        adapter2 = MessageAdapter2(this, this) { id, pos ->
+        adapter2 = MessageAdapter2(this, this, {
+            viewModel.changAllMessage("${adapter2?.data?.get(it)?.userMessageId}")
+            adapter2?.data?.get(it)?.status = 1
+            adapter2?.notifyItemChanged(it)
+        }) { id, pos ->
             viewModel.delUserMessage(id) {
                 it.onSuccess {
                     adapter?.data?.removeAt(pos)
@@ -262,7 +266,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.filter {itr-> itr.jumpDataType !=0 && itr.jumpDataType != 99 }.forEach {
+                            it.filter {itr-> itr.jumpDataType ==0 || itr.jumpDataType == 99 }.forEach {
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
@@ -291,6 +295,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     class MessageAdapter2(
         var mContext: Context,
         var lifecycleOwner: LifecycleOwner,
+        var read: (Int) -> Unit,
         var func: (String, Int) -> Unit
     ) :
         BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoSysBinding>>(
@@ -353,6 +358,9 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             item.jumpDataType,
                             item.jumpDataValue
                         )
+                    }
+                    if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0){
+                        read(getItemPosition(item))
                     }
 
                 }
