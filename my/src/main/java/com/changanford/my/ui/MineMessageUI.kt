@@ -41,8 +41,8 @@ import java.util.zip.Inflater
  *  文件名：MineMessageUI
  *  创建者: zcy
  *  创建日期：2020/5/22 19:30
- *  描述: TODO
- *  修改描述：TODO
+ *  描述: 消息列表
+ *  修改描述：包括互动和交易入口，全部系统消息。title的数字包含所有消息未读，点击全部已读，所有消息全部已读（包含互动和交易里的）
  */
 @Route(path = ARouterMyPath.MineMessageUI)
 class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>() {
@@ -50,7 +50,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     var adapter = MessageAdapter()
     lateinit var adapter2: MessageAdapter2
 
-
+    var times = 0//记录全部已读次数，3才能满足条件
     override fun initView() {
 
         binding.mineToolbar.toolbarTitle.text = "消息"
@@ -64,14 +64,19 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
             pop.submitBtn.setOnClickListener {
                 pop.dismiss()
                 viewModel.changeAllToRead(1)
+                viewModel.changeAllToRead(2)
+                viewModel.changeAllToRead(3)
             }
             pop.showPopupWindow()
         }
         viewModel.changeAllToRead.observe(this, Observer {
             if (it) {
-                toastShow("消息已读标记成功")
-                ShortcutBadger.applyCount(this,0)
-                setSaveText(0)
+                times++
+                if (times >= 3) {
+                    toastShow("消息已读标记成功")
+                    ShortcutBadger.applyCount(this, 0)
+                    setSaveText(0)
+                }
             }
         })
         adapter2 = MessageAdapter2(this, this) { id, pos ->
@@ -85,7 +90,12 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                 }
             }
         }
-        var headerView = DataBindingUtil.inflate<ActivityMinemessageuiHeaderBinding>(LayoutInflater.from(this), R.layout.activity_minemessageui_header, null, false)
+        var headerView = DataBindingUtil.inflate<ActivityMinemessageuiHeaderBinding>(
+            LayoutInflater.from(this),
+            R.layout.activity_minemessageui_header,
+            null,
+            false
+        )
         headerView.refreshRv.layoutManager = LinearLayoutManager(this)
         headerView.refreshRv.adapter = adapter
 
@@ -94,9 +104,11 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         adapter2.addHeaderView(headerView.root)
 
     }
+
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.mineRefresh.refreshLayout
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         super.onRefresh(refreshLayout)
     }
@@ -105,36 +117,41 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     override fun initData() {
         super.initData()
         viewModel.queryMessageStatus() {
-            it.onSuccess {it->
-                it?.let {data->
-                    var total = data.unReadSystemMessageNum + data.unReadHudongNum + data.unReadTradeNum
-                    if(total !=0 ){
-                        binding.mineToolbar.toolbarTitle.text = "消息(${if (total>99) "99+" else total})"
+            it.onSuccess { it ->
+                it?.let { data ->
+                    var total =
+                        data.unReadSystemMessageNum + data.unReadHudongNum + data.unReadTradeNum
+                    if (total != 0) {
+                        binding.mineToolbar.toolbarTitle.text =
+                            "消息(${if (total > 99) "99+" else total})"
+                        setSaveText(1)
+                    } else {
+                        setSaveText(0)
                     }
 
                     var list =
-                    arrayListOf(
+                        arrayListOf(
 //                        MessageBean(
 //                            R.mipmap.icon_msg_sys,
 //                            "系统消息",
 //                            "其余系统消息通知",
 //                            data.systemMessageStatus
 //                        ),
-                        MessageBean(
-                            R.mipmap.icon_msg_hd,
-                            "互动消息",
-                            "发现页面站内消息通知",
-                            data.hudongStatus,
-                            data.unReadHudongNum
-                        ),
-                        MessageBean(
-                            R.mipmap.icon_msg_deal,
-                            "交易消息",
-                            "三大上门、商城订单消息",
-                            data.tradeStatus,
-                            data.unReadTradeNum
+                            MessageBean(
+                                R.mipmap.icon_msg_hd,
+                                "互动消息",
+                                "发现页面站内消息通知",
+                                data.hudongStatus,
+                                data.unReadHudongNum
+                            ),
+                            MessageBean(
+                                R.mipmap.icon_msg_deal,
+                                "交易消息",
+                                "三大上门、商城订单消息",
+                                data.tradeStatus,
+                                data.unReadTradeNum
+                            )
                         )
-                    )
                     adapter.data.clear()
                     adapter.addData(list)
                 }
@@ -185,10 +202,10 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 //                } else {
 //                    it.messageStatus.visibility = View.GONE
 //                }
-                if (item.messageNum != 0){
+                if (item.messageNum != 0) {
                     it.num.isVisible = true
-                    it.num.text = "${ if(item.messageNum>99) "99+" else item.messageNum}"
-                }else{
+                    it.num.text = "${if (item.messageNum > 99) "99+" else item.messageNum}"
+                } else {
                     it.num.isVisible = false
 
                 }
@@ -245,7 +262,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.forEach {
+                            it.filter {itr-> itr.jumpDataType !=0 && itr.jumpDataType != 99 }.forEach {
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
@@ -271,7 +288,11 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     }
 
-    class MessageAdapter2(var mContext: Context, var lifecycleOwner: LifecycleOwner, var func: (String, Int)->Unit) :
+    class MessageAdapter2(
+        var mContext: Context,
+        var lifecycleOwner: LifecycleOwner,
+        var func: (String, Int) -> Unit
+    ) :
         BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoSysBinding>>(
             R.layout.item_mine_message_info_sys
         ) {
@@ -289,33 +310,34 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                 } else {
                     it.arrowR.visibility = View.VISIBLE
                 }
-                it.delete.setOnClickListener {v->
+                it.messageStatus.isVisible = item.status == 0
+                it.delete.setOnClickListener { v ->
                     AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
                         .setNegativeButton(
                             "取消", R.color.color_7174
-                        ) { v->
+                        ) { v ->
                             it.swipeLayout.quickClose()
                         }
                         .setPositiveButton("确认", R.color.black) {
-                            func("${item.userMessageId}",getItemPosition(item))
+                            func("${item.userMessageId}", getItemPosition(item))
                         }.show()
                 }
                 it.item.setOnClickListener {
                     //
-                    if(item.jumpDataType==122){ // 优惠券弹窗
+                    if (item.jumpDataType == 122) { // 优惠券弹窗
                         lifecycleOwner.launchWithCatch {
                             val body = MyApp.mContext.createHashMap()
-                            body["popup"]="NO"
+                            body["popup"] = "NO"
                             val rKey = getRandomKey()
                             ApiClient.createApi<NetWorkApi>()
                                 .receiveList(body.header(rKey), body.body(rKey))
-                                .onSuccess {list->
-                                    if(list!=null&&list.size>0){
+                                .onSuccess { list ->
+                                    if (list != null && list.size > 0) {
                                         JumpUtils.instans?.jump(
                                             item.jumpDataType,
                                             item.jumpDataValue
                                         )
-                                    }else{
+                                    } else {
                                         JumpUtils.instans?.jump(118)
                                     }
 
@@ -326,7 +348,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
                         }
 
-                    }else{
+                    } else {
                         JumpUtils.instans?.jump(
                             item.jumpDataType,
                             item.jumpDataValue

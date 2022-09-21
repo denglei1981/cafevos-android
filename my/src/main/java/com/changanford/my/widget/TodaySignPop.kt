@@ -84,18 +84,18 @@ class TodaySignPop(context: Context) : BasePopupWindow(context) {
 
 
     fun initDayBean(daySignBean: DaySignBean) {
-        MineUtils.signJf(jf, "+${daySignBean.integral}", "福币")
-        MineUtils.signJf(czz, "+${daySignBean.growth}", "成长值")
+        MineUtils.signJf(jf, "+${daySignBean.additionFb}", "福币")
+        MineUtils.signJf(czz, "+${daySignBean.additionGrowth}", "成长值")
         when (daySignBean.additionRewardType) {
             1 -> {//额外奖励类型，1福币+成长值，2勋章，3，优惠券
-                if (daySignBean.growth != 0) {
+                if (daySignBean.additionGrowth != 0) {
                     twoLayout.isVisible = true
-                    tips.text = "恭喜您获得${daySignBean.integral}福币、${daySignBean.growth}成长值"
+                    tips.text = "恭喜您获得${daySignBean.additionFb}福币、${daySignBean.additionGrowth}成长值"
                 } else {
                     oneLayout.isVisible = true
-                    tips.text = "恭喜您获得${daySignBean.integral}福币"
+                    tips.text = "恭喜您获得${daySignBean.additionFb}福币"
                 }
-                jf2.text = "福币 +${daySignBean.integral}"
+                jf2.text = "福币 +${daySignBean.additionFb}"
             }
             2 -> {
                 imgLayout.isVisible = true

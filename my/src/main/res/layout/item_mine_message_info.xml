@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools">
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
         android:layout_marginBottom="4dp"
-        card_view:cardBackgroundColor="#FFFFFF"
+        card_view:cardBackgroundColor="@color/color_F4"
         android:background="@color/color_F4"
         card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="4dp">
+        card_view:cardElevation="0dp">
         <com.mcxtzhang.swipemenulib.SwipeMenuLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="14dp"
             android:clickable="true"
             android:focusable="true"
             android:layout_height="wrap_content">
@@ -26,15 +29,33 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/icon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="14dp"
+                android:layout_marginLeft="10dp"
+                app:shapeAppearance="@style/shapeableRound"
                 android:src="@mipmap/fordicon"
                 app:layout_constraintBottom_toBottomOf="@+id/name"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/name" />
+            <ImageView
+                android:id="@+id/message_status"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/message_have_bg"
+                android:layout_marginRight="@dimen/dp_10"
+                app:layout_constraintRight_toLeftOf="@+id/right"
+                app:layout_constraintTop_toTopOf="@+id/icon"
+                app:layout_constraintBottom_toBottomOf="@id/icon"/>
+            <ImageView
+                android:id="@+id/right"
+                android:layout_width="@dimen/dp_10"
+                android:layout_height="@dimen/dp_12"
+                android:src="@mipmap/right_arrow_common"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/icon"
+                app:layout_constraintBottom_toBottomOf="@id/icon"/>
 
 
             <TextView
@@ -59,15 +80,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="14dp"
                 android:text="04月22日 10:35"
-                android:textColor="#B0B3B5"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/name"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/name" />
+                android:textColor="@color/color_99"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/look"
+                app:layout_constraintLeft_toLeftOf="@id/icon"
+                app:layout_constraintTop_toTopOf="@id/look" />
 
             <View
                 android:id="@+id/line"
-                style="@style/line"
+                android:background="@color/color_ee"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/dp_10"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -81,15 +105,18 @@
                 android:layout_marginRight="14dp"
                 android:gravity="left"
                 android:text="恭喜您的订单预约成功 务顾问"
-                android:textColor="#081725"
-                android:textSize="14sp"
+                android:textColor="@color/color_33"
+                android:textSize="15sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line" />
 
             <View
                 android:id="@+id/line1"
-                style="@style/line"
+                android:background="@color/color_ee"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="@dimen/dp_10"
                 android:layout_marginTop="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/content" />
@@ -101,13 +128,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="14dp"
-                android:layout_marginRight="14dp"
+                android:layout_marginRight="@dimen/dp_10"
                 android:layout_marginBottom="14dp"
-                android:text="点击查看详情"
+                android:text="查看详情"
                 android:textColor="@color/color_00095B"
-                android:textSize="14sp"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -147,7 +148,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.forEach {
+                            it.filter {itr-> itr.jumpDataType !=0 && itr.jumpDataType != 99 }.forEach {
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
@@ -186,7 +187,9 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                 it.content.text = item.messageContent
                 if (item.jumpDataType == 99) {
                     it.look.visibility = View.GONE
+                    it.right.isVisible = false
                 }
+                it.messageStatus.isVisible = item.status == 0
                 it.delete.setOnClickListener {v->
                     AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
                         .setNegativeButton(
