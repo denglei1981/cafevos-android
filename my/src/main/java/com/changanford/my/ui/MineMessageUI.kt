@@ -82,7 +82,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         adapter2 = MessageAdapter2(this, this, {
             viewModel.changAllMessage("${adapter2?.data?.get(it)?.userMessageId}")
             adapter2?.data?.get(it)?.status = 1
-            adapter2?.notifyItemChanged(it)
+            adapter2?.notifyItemChanged(it + 1)
         }) { id, pos ->
             viewModel.delUserMessage(id) {
                 it.onSuccess {

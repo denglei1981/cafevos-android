@@ -107,7 +107,8 @@ class HomeV2ViewModel : BaseViewModel() {
      * 待领取交车礼积分列表
      */
     fun waitReceiveList() {
-        launch(false, {
+        //交车礼改为不弹窗，2022-0922
+        /*launch(false, {
             val body = HashMap<String, Any>()
             val randomKey = getRandomKey()
             body["popup"] = "YES"
@@ -123,7 +124,7 @@ class HomeV2ViewModel : BaseViewModel() {
                     loginGetJump()
                     it?.toast()
                 }
-        })
+        })*/
     }
 
 

@@ -329,7 +329,8 @@ class CarAuthViewModel : ViewModel() {
      * 待领取交车礼积分列表
      */
     fun waitReceiveList() {
-        viewModelScope.launch {
+        //交车礼改为不弹窗，2022-0922
+        /*viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 val randomKey = getRandomKey()
@@ -343,6 +344,6 @@ class CarAuthViewModel : ViewModel() {
                         it?.toast()
                     }
             }
-        }
+        }*/
     }
 }
