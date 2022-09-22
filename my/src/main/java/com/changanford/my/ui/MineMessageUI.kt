@@ -76,6 +76,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                     toastShow("消息已读标记成功")
                     ShortcutBadger.applyCount(this, 0)
                     setSaveText(0)
+                    initData()
                 }
             }
         })
@@ -130,6 +131,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             "消息(${if (total > 99) "99+" else total})"
                         setSaveText(1)
                     } else {
+                        binding.mineToolbar.toolbarTitle.text = "消息"
                         setSaveText(0)
                     }
 

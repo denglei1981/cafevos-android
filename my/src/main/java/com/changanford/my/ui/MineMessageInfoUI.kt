@@ -94,6 +94,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                 ShortcutBadger.applyCount(this,0)
                 toastShow("消息已读标记成功")
                 setSaveText(0)
+                initRefreshData(1)
             }
         })
 
