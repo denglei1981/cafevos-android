@@ -190,6 +190,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     override fun onResume() {
         super.onResume()
         initData()
+        initRefreshData(1)
     }
 
     class MessageAdapter :
@@ -272,7 +273,12 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
-                            adapter2?.addData(it)
+                            initData()
+                            if (pageNo == 1){
+                                adapter2?.setList(it)
+                            }else {
+                                adapter2?.addData(it)
+                            }
 //                            setSaveText(messageStatus)
                         }
                     }

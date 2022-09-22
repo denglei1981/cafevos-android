@@ -156,7 +156,11 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
-                            adapter?.addData(it)
+                            if (pageNo == 1){
+                                adapter?.setList(it)
+                            }else {
+                                adapter?.addData(it)
+                            }
 //                            setSaveText(messageStatus)
                         }
                     }

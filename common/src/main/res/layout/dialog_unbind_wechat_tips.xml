@@ -67,7 +67,7 @@
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="取消"
+                android:text="不保留"
                 android:textColor="#71747B"
                 android:textSize="@dimen/sp_15" />
 

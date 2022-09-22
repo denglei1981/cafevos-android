@@ -72,7 +72,7 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             color = Color(0xff999999),
             modifier = Modifier.padding(top = 10.dp)
         )
-        var canSign = true
+        var canSign = daySignBean == null
         daySignBean?.sevenDays?.forEach {
             if (it.signStatus == 2) {
                 canSign = true
