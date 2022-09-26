@@ -503,17 +503,17 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     }
     fun show7Day(){
-        if (MConstant.token.isNullOrEmpty()){
-            headNewBinding?.sign7day?.setContent {
-                dailySignCompose()
-            }
-        } else {
+//        if (MConstant.token.isNullOrEmpty()){
+//            headNewBinding?.sign7day?.setContent {
+//                dailySignCompose()
+//            }
+//        } else {
             viewModel.getDay7Sign {
                 headNewBinding?.sign7day?.setContent {
                     dailySignCompose(it)
                 }
             }
-        }
+//        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

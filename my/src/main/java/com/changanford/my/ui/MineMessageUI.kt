@@ -189,8 +189,6 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     override fun onResume() {
         super.onResume()
-        initData()
-        initRefreshData(1)
     }
 
     class MessageAdapter :
@@ -255,6 +253,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     //消息类型 1 系统消息， 2 互动消息，3 交易消息
     override fun initRefreshData(pageNo: Int) {
         super.initRefreshData(pageNo)
+        initData()
         viewModel.queryMessageList(
             pageNo,
             1
@@ -273,7 +272,6 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                                 message.append("${it.userMessageId},")
                             }
                             viewModel.changAllMessage(message.toString())
-                            initData()
                             if (pageNo == 1){
                                 adapter2?.setList(it)
                             }else {

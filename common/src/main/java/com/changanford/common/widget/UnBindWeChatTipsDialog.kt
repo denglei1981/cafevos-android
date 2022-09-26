@@ -49,15 +49,19 @@ class UnBindWeChatTipsDialog(val context: Context) : BasePopupWindow(context) {
         }
         binding.btnStay1.setOnClickListener {
             clickPos()
+            dismiss()
         }
         binding.btnUnstay1.setOnClickListener {
             clickNeg()
+            dismiss()
         }
         binding.btnStay2.setOnClickListener {
             clickPos()
+            dismiss()
         }
         binding.btnUnstay2.setOnClickListener {
             clickNeg()
+            dismiss()
         }
     }
 }

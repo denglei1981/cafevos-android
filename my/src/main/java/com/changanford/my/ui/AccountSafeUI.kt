@@ -11,6 +11,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.widget.UnBindWeChatTipsDialog
@@ -71,9 +72,10 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
     private lateinit var wxApi: IWXAPI
     var type: Int = 0
     lateinit var bindType: String
+    var cannotUnbindPop:ConfirmTwoBtnPop? = null
 
     override fun initView() {
-
+        setCannotUnbindPop()
         tencent = Tencent.createInstance(ConfigUtils.QQAPPID, this)
 
         wxApi = WXAPIFactory.createWXAPI(this, ConfigUtils.WXAPPID)
@@ -143,7 +145,8 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
             type = 1
             if (binding.safeQqNum.isSelected) {
                 if (isCancelBind()) {
-                    showToast("未满足解绑条件")
+//                    showToast("未满足解绑条件")
+                    cannotUnbindPop?.showPopupWindow()
                 } else {
                     bindType = "qq"
                     pop.showPopupWindow()
@@ -159,7 +162,8 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
             type = 2
             if (binding.safeWxNum.isSelected) {
                 if (isCancelBind()) {
-                    showToast("未满足解绑条件")
+                    cannotUnbindPop?.showPopupWindow()
+//                    showToast("未满足解绑条件")
                 } else {
                     bindType = "weixin"
                     showWeChatUnbind()
@@ -179,7 +183,8 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
         binding.safeApple.setOnClickListener {
             if (binding.safeAppleNum.isSelected) {
                 if (isCancelBind()) {
-                    showToast("未满足解绑条件")
+                    cannotUnbindPop?.showPopupWindow()
+//                    showToast("未满足解绑条件")
                 } else {
                     bindType = "apple"
                     pop.showPopupWindow()
@@ -206,6 +211,22 @@ class AccountSafeUI : BaseMineUI<UiAccountSafeBinding, SignViewModel>() {
                     if (it) back()
                 })
 
+    }
+
+    private fun setCannotUnbindPop() {
+        cannotUnbindPop = ConfirmTwoBtnPop(this)
+        cannotUnbindPop?.apply {
+            contentText.text = "您还未绑定手机号，无法解除账号绑定"
+            btnCancel.text = "取消"
+            btnConfirm.text = "绑定手机"
+            btnCancel.setOnClickListener {
+                dismiss()
+            }
+            btnConfirm.setOnClickListener {
+                JumpUtils.instans?.jump(18)
+                dismiss()
+            }
+        }
     }
 
     fun bindMobile(type: String, code: String) {

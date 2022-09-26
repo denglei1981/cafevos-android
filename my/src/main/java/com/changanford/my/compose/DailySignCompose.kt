@@ -67,12 +67,12 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             }
         }
         Text(
-            text = "连续签到赢大礼 ${if (daySignBean != null) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
+            text = "连续签到赢大礼 ${if (daySignBean != null && !MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
             fontSize = 10.sp,
             color = Color(0xff999999),
             modifier = Modifier.padding(top = 10.dp)
         )
-        var canSign = daySignBean == null
+        var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
         daySignBean?.sevenDays?.forEach {
             if (it.signStatus == 2) {
                 canSign = true
