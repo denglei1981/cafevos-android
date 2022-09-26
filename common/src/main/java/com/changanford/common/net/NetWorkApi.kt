@@ -58,6 +58,12 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<TaskShareBean>
 
+    @POST("con/ads/bathList")
+    suspend fun getMoreBanner(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CouponMiddleData>
+
     /**--------------------------------home---------------------------------------**/
     /**
      * 调查详情/调查结果

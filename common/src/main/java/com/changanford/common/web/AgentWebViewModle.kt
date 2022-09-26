@@ -11,6 +11,8 @@ import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
@@ -278,6 +280,22 @@ class AgentWebViewModle : ViewModel() {
                 }
             } else {
                 request.msg.toast()
+            }
+        }
+    }
+
+    fun getUserInfo(result:(UserInfoBean)->Unit) {
+        if (UserManger.isLogin()) {
+            viewModelScope.launch {
+                fetchRequest {
+                    var body = java.util.HashMap<String, String>()
+                    var rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    it?.let { result(it) }
+                }.onWithMsgFailure {
+                    it?.toast()
+                }
             }
         }
     }

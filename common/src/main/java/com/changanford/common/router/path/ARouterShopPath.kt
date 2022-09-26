@@ -27,6 +27,7 @@ object ARouterShopPath {
     const val UseCouponsActivity = "/shop/UseCouponsActivity"  // 使用优惠券
     const val ChooseCouponsActivity = "/shop/ChooseCouponsActivity"  // 选择优惠券
     const val CouponActivity = "/shop/CouponActivity"  // 优惠券跳转
+    const val CouponMiddleActivity = "/shop/CouponMiddleActivity"  // 优惠券中间页
 
     const val AfterSaleActivity = "/shop/AfterSaleActivity" // 商品售后
 

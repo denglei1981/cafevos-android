@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.graphics.Color
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,9 @@ import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -43,6 +47,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
 
     var headNewBinding: HeaderMineBinding? = null
+    var couponNum = 0
 
     val mineMenuAdapter: MineMenuAdapter by lazy {
         MineMenuAdapter()
@@ -122,7 +127,13 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 JumpUtils.instans?.jump(17)
             }
             h.tvCoupon.setOnClickListener {
-                JumpUtils.instans?.jump(118)
+                if (MConstant.token.isNullOrEmpty()){
+                    startARouter(ARouterMyPath.SignUI)
+                }else{
+                    var bundle = Bundle()
+                    bundle.putInt("couponNum",couponNum)
+                    startARouter(ARouterShopPath.CouponMiddleActivity,bundle)
+                }
             }
             h.tvGold.setOnClickListener {
                 JumpUtils.instans?.jump(30)
@@ -164,7 +175,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvUserLevel.visibility = View.VISIBLE
 
                 h.tvUserTags.visibility = View.VISIBLE
-                val couponStr = "优惠券".plus("\t\t${userInfoBean.couponCount}")
+                val couponStr = "优惠券"/*.plus("\t\t${userInfoBean.couponCount}")*/
+                couponNum = userInfoBean.couponCount
                 val goldStr = "福币".plus("\t\t${userInfoBean.ext.totalIntegral}")
                 h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.black)
                 h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)

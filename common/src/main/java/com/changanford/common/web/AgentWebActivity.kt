@@ -360,13 +360,23 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this) {
             getMyInfoCallback = it
-            UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
-                .observe(this) { infoBean ->
-                    val userJson = infoBean?.userJson
+            viewModel.getUserInfo{ infoBean->
+                try {
+                    var userJson = JSON.toJSONString(infoBean)
                     if (!userJson.isNullOrEmpty()) {
                         agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
                     }
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
+            }
+//            UserDatabase.getUniUserDatabase(MyApp.mContext).getUniUserInfoDao().getUser()
+//                .observe(this) { infoBean ->
+//                    val userJson = infoBean?.userJson
+//                    if (!userJson.isNullOrEmpty()) {
+//                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
+//                    }
+//                }
 //                mineSignViewModel.getUserInfo()
         }
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_UNICARDS_LIST, String::class.java)

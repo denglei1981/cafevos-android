@@ -51,6 +51,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     lateinit var adapter2: MessageAdapter2
 
     var times = 0//记录全部已读次数，3才能满足条件
+    var total = 0
     override fun initView() {
 
         binding.mineToolbar.toolbarTitle.text = "消息"
@@ -124,7 +125,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         viewModel.queryMessageStatus() {
             it.onSuccess { it ->
                 it?.let { data ->
-                    var total =
+                    total =
                         data.unReadSystemMessageNum + data.unReadHudongNum + data.unReadTradeNum
                     if (total != 0) {
                         binding.mineToolbar.toolbarTitle.text =
@@ -189,6 +190,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     override fun onResume() {
         super.onResume()
+        initData()
     }
 
     class MessageAdapter :
