@@ -21,6 +21,7 @@ data class SugesstionTopicDetailBean(
     val heat: String,
     val pic: String,
     val postsCount: Int,
+    val viewsCount: Int = 0,
     val shareImg: Any,
     val sortOrder: Double,
     val status: Double,

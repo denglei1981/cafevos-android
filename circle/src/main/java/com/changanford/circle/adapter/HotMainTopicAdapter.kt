@@ -26,7 +26,7 @@ class HotMainTopicAdapter :
         val binding = DataBindingUtil.bind<ItemMainHotTopicBinding>(holder.itemView)
         binding?.let {
             MUtils.setTopMargin(binding.clContent, 18, holder.layoutPosition)
-            binding.tvNum.text = "${item.postsCount}帖子     ${item.userCount}浏览"
+            binding.tvNum.text = "${item.postsCount}帖子     ${item.viewsCount}浏览"
             binding.bean = item
             binding.ivPic.loadColLImage(item.pic)
             binding.ivPic.setCircular(5)

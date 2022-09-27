@@ -21,5 +21,6 @@ data class HotPicItemBean(
     val pic: String = "",
     val postsCount: Int = 0,
     val topicId: Int = 0,
-    val userCount: Int = 0
+    val userCount: Int = 0,
+    val viewsCount: Int = 0
 )
