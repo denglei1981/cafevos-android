@@ -45,7 +45,9 @@ suspend fun <T> fetchRequest(
     } finally {//处理某些特殊情况
         if (showLoading) {
             withContext(Dispatchers.Main) {
-                dialog?.dismiss()
+                if (dialog?.window?.isActive == true) {
+                    dialog?.dismiss()
+                }
             }
         }
     }
