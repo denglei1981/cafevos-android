@@ -51,6 +51,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     val mineMenuAdapter: MineMenuAdapter by lazy {
         MineMenuAdapter()
+
     }
 
     var footerAdBinding: FooterMineBinding? = null
@@ -216,7 +217,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvUserLevel.visibility = View.GONE
                 h.tvCarName.visibility = View.GONE
                 h.tvUserTags.visibility = View.GONE
-                val couponStr = "优惠券".plus("\t\t0")
+                val couponStr = "优惠券"/*.plus("\t\t0")*/
                 val goldStr = "福币".plus("\t\t0")
                 h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.black)
                 h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)
