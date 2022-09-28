@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +22,6 @@ import com.changanford.common.bean.Sign7DayBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.my.R
-import com.changanford.my.ui.SignTransparentUI
 
 
 @Preview
@@ -50,6 +48,16 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                     JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
                 })
         }
+        var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
+        var hasGift = false
+        daySignBean?.sevenDays?.forEach {
+            if (it.signStatus == 2) {
+                canSign = true
+            }
+            if (it.luckyBlessingBagId != 0 == true){
+                hasGift = true
+            }
+        }
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
@@ -58,11 +66,11 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
         ) {
             if (daySignBean?.sevenDays?.isNotEmpty() == true) {
                 daySignBean.sevenDays?.forEach {
-                    signOneDay(it)
+                    signOneDay(it,hasGift)
                 }
             } else {
                 repeat(7) {
-                    signOneDay()
+                    signOneDay(hasGift = hasGift)
                 }
             }
         }
@@ -72,13 +80,6 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             color = Color(0xff999999),
             modifier = Modifier.padding(top = 10.dp)
         )
-        var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
-        daySignBean?.sevenDays?.forEach {
-            if (it.signStatus == 2) {
-                canSign = true
-                return@forEach
-            }
-        }
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -108,23 +109,25 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
 
 @Preview("single")
 @Composable
-fun signOneDay(bean: Sign7DayBean? = null) {
+fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.background(color = Color.White)
     ) {
-        if (bean?.luckyBlessingBagId != 0 == true) {
-            Image(
-                painter = painterResource(R.mipmap.icon_sign_gift),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(25.dp)
-                    .clickable {
+        if (hasGift) {
+            if (bean?.luckyBlessingBagId != 0 == true) {
+                Image(
+                    painter = painterResource(R.mipmap.icon_sign_gift),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(25.dp)
+                        .clickable {
 
-                    }
-            )
-        } else {
-            Box(modifier = Modifier.size(25.dp))
+                        }
+                )
+            } else {
+                Box(modifier = Modifier.size(25.dp))
+            }
         }
         Box(
             modifier = Modifier
