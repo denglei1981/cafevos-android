@@ -16,6 +16,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -88,6 +89,9 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                     JumpUtils.instans?.jump(102)
                 }
             })
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this){
+            show7Day()
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -97,6 +101,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         task()
+        show7Day()
     }
     fun show7Day(){
         viewModel.getDay7Sign{
@@ -116,11 +121,11 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             isRefresh = false
             task()
         }
+        show7Day()
     }
 
     fun task() {
         viewModel.queryTasksList()
-        show7Day()
     }
 
     private fun getData() {

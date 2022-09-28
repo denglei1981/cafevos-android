@@ -79,7 +79,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 //
 //            }
 //        }
-
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this){
+            show7Day()
+        }
     }
 
     var notSign = true

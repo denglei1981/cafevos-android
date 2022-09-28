@@ -26,6 +26,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -852,6 +853,8 @@ class JumpUtils {
                     }else{//无
                         if ((it.luckyBlessingBagId?:0)!=0){
                             jump(1,"${MConstant.H5_SIGN_PRESENT}${it.luckyBlessingBagId}")
+                        }else{
+                            LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).postValue(true)
                         }
                     }
                 }
