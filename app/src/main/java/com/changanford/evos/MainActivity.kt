@@ -198,22 +198,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
         getNavigator()
         initBottomNavigation()
-        if (Hawk.get(HawkKey.GUIDE_HOME,false) == false) {
-            HomeGuidePop(this).run {
-                //无透明背景
-                setBackgroundColor(Color.TRANSPARENT)
-                //背景模糊false
-                setBlurBackgroundEnable(false)
-                showPopupWindow(binding.homeBottomNavi)
-                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        Hawk.put(HawkKey.GUIDE_HOME, true)
-                    }
-
-                }
-
-            }
-        }
+//        if (Hawk.get(HawkKey.GUIDE_HOME,false) == false) {
+//            HomeGuidePop(this).run {
+//                //无透明背景
+//                setBackgroundColor(Color.TRANSPARENT)
+//                //背景模糊false
+//                setBlurBackgroundEnable(false)
+//                showPopupWindow(binding.homeBottomNavi)
+//                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+//                    override fun onDismiss() {
+//                        Hawk.put(HawkKey.GUIDE_HOME, true)
+//                    }
+//
+//                }
+//
+//            }
+//        }
 
 //        LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
 //            if (it as Boolean) {

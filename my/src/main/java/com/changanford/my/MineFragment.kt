@@ -63,22 +63,22 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         addHeadView()
         addFooterView()
 
-        if (Hawk.get(HawkKey.GUIDE_MINE,false) == false) {
-            MineGuidePop(requireContext()).run {
-                //无透明背景
-                setBackgroundColor(Color.TRANSPARENT)
-                //背景模糊false
-                setBlurBackgroundEnable(false)
-                showPopupWindow()
-                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-                    override fun onDismiss() {
-                        Hawk.put(HawkKey.GUIDE_MINE, true)
-                    }
-
-                }
-
-            }
-        }
+//        if (Hawk.get(HawkKey.GUIDE_MINE,false) == false) {
+//            MineGuidePop(requireContext()).run {
+//                //无透明背景
+//                setBackgroundColor(Color.TRANSPARENT)
+//                //背景模糊false
+//                setBlurBackgroundEnable(false)
+//                showPopupWindow()
+//                onDismissListener = object : BasePopupWindow.OnDismissListener() {
+//                    override fun onDismiss() {
+//                        Hawk.put(HawkKey.GUIDE_MINE, true)
+//                    }
+//
+//                }
+//
+//            }
+//        }
 
     }
 
