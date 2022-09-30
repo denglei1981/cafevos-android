@@ -160,7 +160,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_special"
-                app:layout_constraintWidth_percent="0.96"
+                app:layout_constraintWidth_percent="0.88"
                 tools:visibility="visible" />
 
 
