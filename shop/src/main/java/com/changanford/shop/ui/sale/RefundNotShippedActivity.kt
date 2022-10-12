@@ -18,6 +18,7 @@ import com.changanford.shop.databinding.ActivityRefundNoShippedBinding
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.dialog.RefundResonDialog
 import com.google.gson.Gson
+import com.luck.picture.lib.tools.DoubleUtils
 
 /***
  *    申请退款-未发货-退整单
@@ -41,7 +42,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
         }
         binding.tvHandle.setOnClickListener {
 
-            if (canRefund()) {
+            if (!DoubleUtils.isFastDoubleClick() && canRefund()) {
                 refundBean?.let {
                     viewModel.getRefund(it.orderNo, backEnumBean!!.code)
                 }
