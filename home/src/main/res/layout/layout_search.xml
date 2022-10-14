@@ -27,6 +27,7 @@
             android:textColorHint="@color/color_cc"
             android:singleLine="true"
             android:textSize="13sp"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/cancel"
             app:layout_constraintStart_toStartOf="parent"
