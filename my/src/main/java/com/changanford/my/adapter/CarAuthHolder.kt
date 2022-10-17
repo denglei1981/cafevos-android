@@ -3,6 +3,7 @@ package com.changanford.my.adapter
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import androidx.core.view.isVisible
 import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
@@ -38,6 +39,7 @@ fun CarAuthHolder(
         var d = it.tvAuth.background as GradientDrawable
         d.setColor(Color.parseColor("#60000000"))
 //        item.authStatus = 3
+        it.tvAuth.isVisible = true
         when {
             isCrmStatusIng(item) -> {
                 it.tvAuth.text = if (item.authStatus == 2) "审核中" else "认证中"
@@ -50,6 +52,8 @@ fun CarAuthHolder(
             isCrmSuccess(item) -> {
                 if (item.isDefault == 1) {
                     it.tvAuth.text = "默认"
+                    it.tvAuth.isVisible = false
+                    it.tvDefault.isVisible = true
                 }else{
                     it.tvAuth.text = "已认证"
                 }
