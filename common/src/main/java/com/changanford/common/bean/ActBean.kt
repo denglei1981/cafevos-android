@@ -54,6 +54,7 @@ class ActBean {
                 "NOT_BEGIN"-> "未开始"
                 "ON_GOING"-> "进行中"
                 "ENDED"-> "已结束"
+                "SIGN_ING"-> "报名中"
                 "CHECKING"-> "审核中"
                 "OFF_SHELF"-> "已下架"
                 "NOT_PASS"-> "未通过"

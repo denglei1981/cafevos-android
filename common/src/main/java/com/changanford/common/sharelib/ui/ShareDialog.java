@@ -13,8 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.changanford.common.R;
+import com.changanford.common.adapter.ShareEditeAdapter;
+import com.changanford.common.bean.ShareEditBean;
 import com.changanford.common.sharelib.bean.IMediaObject;
 import com.changanford.common.sharelib.util.PlamForm;
 import com.changanford.common.ui.dialog.AlertDialog;
@@ -23,6 +28,7 @@ import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,21 +53,25 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
     private OnPlamFormClickListener mPlamFormClickListener;
     private int type;
     private LinearLayout llbuttom;
-    private LinearLayout ll_jbs;
+    private RecyclerView ll_jbs;
     private LinearLayout ll_act;
     private LinearLayout ll_deleteact;
     private LinearLayout ll_jubao;
     private LinearLayout ll_unlike;
-    private LinearLayout ll_jj;
-    private LinearLayout ll_bj;
-    private LinearLayout ll_sc;
+    //    private LinearLayout ll_jj;
+//    private LinearLayout ll_bj;
+//    private LinearLayout ll_sc;
     private LinearLayout ll_pb;
-    private TextView jj_tv;
+    //    private TextView jj_tv;
     private boolean showpictureshare;
     private TextView btnhaibao;
     private TextView tv_tag;
     private TextView btn_copy;
     Context context;
+
+    private ShareEditeAdapter shareEditeAdapter;
+    private ArrayList<ShareEditBean> editBeans = new ArrayList<>();
+
     public ShareDialog(@NonNull Context context, int type, boolean ShowPictureShare) {
         super(context, R.style.BottomDialog_Animation);
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
@@ -159,10 +169,10 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
         ll_deleteact = findViewById(R.id.ll_deleteact);
         ll_jubao = findViewById(R.id.ll_jubao);
         ll_unlike = findViewById(R.id.ll_unlike);
-        ll_jj = findViewById(R.id.ll_jj);
-        jj_tv = findViewById(R.id.jj_tv);
-        ll_bj = findViewById(R.id.ll_bj);
-        ll_sc = findViewById(R.id.ll_sc);
+//        ll_jj = findViewById(R.id.ll_jj);
+//        jj_tv = findViewById(R.id.jj_tv);
+//        ll_bj = findViewById(R.id.ll_bj);
+//        ll_sc = findViewById(R.id.ll_sc);
         ll_pb = findViewById(R.id.ll_pb);
         tv_tag = findViewById(R.id.tv_tag);
         btnhaibao = findViewById(R.id.btn_haibao);
@@ -174,6 +184,7 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
             tv_tag.setVisibility(View.VISIBLE);
             btnhaibao.setVisibility(View.GONE);
         }
+        editBeans.add(new ShareEditBean(R.mipmap.ic_jj_s, "申请加精", 1));
         switch (type) {
             case 0:  //不显示分享底部布局
                 llbuttom.setVisibility(View.GONE);
@@ -189,7 +200,10 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
             case 3://显示加精、编辑、删除
                 llbuttom.setVisibility(View.VISIBLE);
                 ll_jbs.setVisibility(View.VISIBLE);
-                ll_bj.setVisibility(View.VISIBLE);
+                if (is_good != 1) {//加精不显示编辑
+//                    ll_bj.setVisibility(View.VISIBLE);
+                    editBeans.add(new ShareEditBean(R.mipmap.ic_bj_s, "编辑", 2));
+                }
                 break;
             case 4://显示举报、不喜欢、屏蔽
                 llbuttom.setVisibility(View.VISIBLE);
@@ -201,6 +215,8 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
                 ll_jbs.setVisibility(View.VISIBLE);
                 break;
         }
+        editBeans.add(new ShareEditBean(R.mipmap.ic_sc_s, "删除", 3));
+//        editBeans.add(new ShareEditBean(0, "", 4));
         mTvWxMoment = findViewById(R.id.btn_share_wechat_moments);
         mTvWxChat = findViewById(R.id.btn_share_wechat);
         mTvWeiBo = findViewById(R.id.btn_share_weibo);
@@ -216,22 +232,73 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
         ll_deleteact.setOnClickListener(this);
         ll_jubao.setOnClickListener(this);
         ll_unlike.setOnClickListener(this);
-        ll_jj.setOnClickListener(this);
-        ll_bj.setOnClickListener(this);
-        ll_sc.setOnClickListener(this);
+//        ll_jj.setOnClickListener(this);
+//        ll_bj.setOnClickListener(this);
+//        ll_sc.setOnClickListener(this);
         ll_pb.setOnClickListener(this);
         btnhaibao.setOnClickListener(this);
         btn_copy.setOnClickListener(this);
         switch (is_good) {
             case 1://加精
-                jj_tv.setText("已加精");
+//                jj_tv.setText("已加精");
+                editBeans.get(0).setName("已加精");
                 break;
             case 2://不加精
-                jj_tv.setText("申请加精");
+//                jj_tv.setText("申请加精");
+                editBeans.get(0).setName("申请加精");
                 break;
             case 3://审核中
-                jj_tv.setText("已申请");
+//                jj_tv.setText("已申请");
+                editBeans.get(0).setName("已申请");
                 break;
+        }
+        if (mCustomView == null) {
+            shareEditeAdapter = new ShareEditeAdapter();
+            ll_jbs.setAdapter(shareEditeAdapter);
+            shareEditeAdapter.setList(editBeans);
+            shareEditeAdapter.setOnItemClickListener((adapter, view, position) -> {
+                ShareEditBean bean = shareEditeAdapter.getItem(position);
+                switch (bean.getType()) {
+                    case 1:
+                        dismiss();
+                        mPlamFormClickListener.onPlamFormClick(view, PlamForm.JJ);
+                        break;
+                    case 2:
+                        SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), new CheckRequestPermissionsListener() {
+                            @Override
+                            public void onAllPermissionOk(Permission[] allPermissions) {
+                                mPlamFormClickListener.onPlamFormClick(view, PlamForm.BJ);
+                                dismiss();
+                            }
+
+                            @Override
+                            public void onPermissionDenied(Permission[] refusedPermissions) {
+                                //去设置页
+                                new AlertDialog(context).builder()
+                                        .setTitle("提示")
+                                        .setMsg("您禁止了存储权限,无法使用编辑功能请到设置中心打开")
+                                        .setNegativeButton("取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        }).setPositiveButton("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                SoulPermission.getInstance().goPermissionSettings();
+                                            }
+                                        }).show();
+
+                            }
+                        });
+                        break;
+
+                    case 3:
+                        dismiss();
+                        mPlamFormClickListener.onPlamFormClick(view, PlamForm.SC);
+                        break;
+                }
+            });
         }
     }
 
@@ -321,45 +388,47 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
         } else if (i == R.id.ll_unlike) {
             plamformType = PlamForm.UNLIKE;
             dismiss();
-        } else if (i == R.id.ll_jj) {
-            plamformType = PlamForm.JJ;
-            dismiss();
-        } else if (i == R.id.ll_bj) {
-
-            SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), new CheckRequestPermissionsListener() {
-                @Override
-                public void onAllPermissionOk(Permission[] allPermissions) {
-                    mPlamFormClickListener.onPlamFormClick(v, PlamForm.BJ);
-                    dismiss();
-                }
-
-                @Override
-                public void onPermissionDenied(Permission[] refusedPermissions) {
-                    //去设置页
-                    new AlertDialog(context).builder()
-                            .setTitle("提示")
-                            .setMsg("您禁止了存储权限,无法使用编辑功能请到设置中心打开")
-                            .setNegativeButton("取消", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            }).setPositiveButton("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            SoulPermission.getInstance().goPermissionSettings();
-                        }
-                    }).show();
-
-                }
-            });
-
-            return;
-
-        } else if (i == R.id.ll_sc) {
-            plamformType = PlamForm.SC;
-            dismiss();
-        } else if (i == R.id.ll_pb) {
+        }
+//        else if (i == R.id.ll_jj) {
+//            plamformType = PlamForm.JJ;
+//            dismiss();
+//        } else if (i == R.id.ll_bj) {
+//
+//            SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), new CheckRequestPermissionsListener() {
+//                @Override
+//                public void onAllPermissionOk(Permission[] allPermissions) {
+//                    mPlamFormClickListener.onPlamFormClick(v, PlamForm.BJ);
+//                    dismiss();
+//                }
+//
+//                @Override
+//                public void onPermissionDenied(Permission[] refusedPermissions) {
+//                    //去设置页
+//                    new AlertDialog(context).builder()
+//                            .setTitle("提示")
+//                            .setMsg("您禁止了存储权限,无法使用编辑功能请到设置中心打开")
+//                            .setNegativeButton("取消", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//
+//                                }
+//                            }).setPositiveButton("确定", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    SoulPermission.getInstance().goPermissionSettings();
+//                                }
+//                            }).show();
+//
+//                }
+//            });
+//
+//            return;
+//
+//        } else if (i == R.id.ll_sc) {
+//            plamformType = PlamForm.SC;
+//            dismiss();
+//        }
+        else if (i == R.id.ll_pb) {
             plamformType = PlamForm.PB;
             dismiss();
         } else if (i == R.id.btn_haibao) {

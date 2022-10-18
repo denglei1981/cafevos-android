@@ -36,7 +36,7 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
 
     override fun observe() {
         super.observe()
-        viewModel.postDetailsBean.observe(this, {
+        viewModel.postDetailsBean.observe(this) {
             val trans = supportFragmentManager.beginTransaction()
             loadingDialog.dismiss()
             when (it.type) {
@@ -55,16 +55,16 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
                 }
             }
             trans.commitAllowingStateLoss()
-        })
+        }
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.CLOSE_POST_DETAILS).observe(this, {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.CLOSE_POST_DETAILS).observe(this) {
             finish()
-        })
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+        }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this) {
             finish()
-        })
+        }
     }
 
     //点击区域接口
