@@ -37,9 +37,8 @@ fun CarAuthHolder(
             it.carPic.load(item.modelUrl, R.mipmap.ic_car_auth_ex)
         }
         var d = it.tvAuth.background as GradientDrawable
-        d.setColor(Color.parseColor("#60000000"))
+//        d.setColor(Color.parseColor("#60000000"))
 //        item.authStatus = 3
-        it.tvAuth.isVisible = true
         when {
             isCrmStatusIng(item) -> {
                 it.tvAuth.text = if (item.authStatus == 2) "审核中" else "认证中"
@@ -51,13 +50,12 @@ fun CarAuthHolder(
             }
             isCrmSuccess(item) -> {
                 if (item.isDefault == 1) {
-                    it.tvAuth.text = "默认"
-                    it.tvAuth.isVisible = false
+                    it.tvAuth.text = "已认证"
                     it.tvDefault.isVisible = true
                 }else{
                     it.tvAuth.text = "已认证"
                 }
-                d.setColor(Color.parseColor("#6900095B"))
+//                d.setColor(Color.parseColor("#6900095B"))
                 crmHint(3, it, item)
             }
             else -> {
