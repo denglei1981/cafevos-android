@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:width="1px" android:color="@color/alertdialog_line"/>
+    <stroke android:width="0.5dp" android:color="@color/alertdialog_line"/>
     <solid android:color="@color/white"/>
     <size android:height="@dimen/dp_40" android:width="@dimen/dp80"/>
     <corners android:radius="@dimen/dp_20" />

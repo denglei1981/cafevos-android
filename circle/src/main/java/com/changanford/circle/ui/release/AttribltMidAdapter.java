@@ -17,9 +17,11 @@ import com.changanford.circle.R;
 import com.changanford.circle.ui.release.widget.AttrbultPop;
 import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.bean.AttributeBean;
+import com.donkingliang.labels.LabelsView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -46,7 +48,7 @@ public class AttribltMidAdapter extends BaseQuickAdapter<AttributeBean.Attribute
 
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, AttributeBean.AttributeCategoryVos attributeListBean) {
-        RecyclerView mid_rec = baseViewHolder.getView(R.id.mid_rec);
+        /*RecyclerView mid_rec = baseViewHolder.getView(R.id.mid_rec);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context,2);
         mid_rec.setLayoutManager(layoutManager);
         baseViewHolder.setText(R.id.leixing, attributeListBean.getCategoryName());
@@ -54,7 +56,47 @@ public class AttribltMidAdapter extends BaseQuickAdapter<AttributeBean.Attribute
             attributeListBeanMap.put(attributeListBean.getCategoryId(),object);
         });
         mid_rec.setAdapter(attribltAdapter);
-        attribltAdapter.addData(attributeListBean.getAttributeList());
+        attribltAdapter.addData(attributeListBean.getAttributeList());*/
+        LabelsView mid_rec = baseViewHolder.getView(R.id.mid_rec);
+        mid_rec.setLabels(attributeListBean.getAttributeList(), new LabelsView.LabelTextProvider<AttributeBean.AttributeCategoryVos.AttributeListBean>() {
+            @Override
+            public CharSequence getLabelText(TextView label, int position, AttributeBean.AttributeCategoryVos.AttributeListBean data) {
+                return data.getAttributeName();
+            }
+        });
+        ArrayList<Integer> selects = new ArrayList<>();
+        HashMap<Integer, AttributeBean.AttributeCategoryVos.AttributeListBean> sbuattributeListBeanMap = new HashMap<>();
+        for (int i = 0; i<attributeListBean.getAttributeList().size();i++) {
+            AttributeBean.AttributeCategoryVos.AttributeListBean bean = attributeListBean.getAttributeList().get(i);
+            if (bean.getChecktype() == 1){
+                selects.add(i);
+                sbuattributeListBeanMap.put(bean.getAttributeId(),bean);
+            }else {
+
+            }
+        }
+        mid_rec.setSelects(selects);
+        mid_rec.setOnLabelSelectChangeListener(new LabelsView.OnLabelSelectChangeListener() {
+            @Override
+            public void onLabelSelectChange(TextView label, Object data, boolean isSelect, int position) {
+                AttributeBean.AttributeCategoryVos.AttributeListBean bean = attributeListBean.getAttributeList().get(position);
+                if (isSelect){
+                    bean.setChecktype(1);
+                    sbuattributeListBeanMap.put(bean.getAttributeId(),bean);
+                }else {
+                    bean.setChecktype(0);
+                    sbuattributeListBeanMap.remove(bean.getAttributeId());
+
+                }
+                attributeListBeanMap.put(attributeListBean.getCategoryId(),sbuattributeListBeanMap);
+            }
+        });
+        baseViewHolder.setText(R.id.leixing, attributeListBean.getCategoryName());
+//        AttribltAdapter attribltAdapter = new AttribltAdapter(object -> {
+//            attributeListBeanMap.put(attributeListBean.getCategoryId(),object);
+//        });
+//        mid_rec.setAdapter(attribltAdapter);
+//        attribltAdapter.addData(attributeListBean.getAttributeList());
     }
     public interface AttrMidCallBack {
 
