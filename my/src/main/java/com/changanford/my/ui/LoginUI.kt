@@ -128,7 +128,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 binding.btnLogin.isEnabled = it
             }
 
-        binding.btnGetSms.clicks().throttleFirst(500, TimeUnit.MILLISECONDS)
+        binding.btnGetSms.clicks().throttleFirst(2000, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
