@@ -122,7 +122,11 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                     modifier = Modifier
                         .size(25.dp)
                         .clickable {
-
+                            if ((bean?.luckyBlessingBagId?:0) !=0 ){
+                                JumpUtils.instans?.jump(
+                                    1, "${MConstant.H5_SIGN_PRESENT}${bean?.luckyBlessingBagId}"
+                                )
+                            }
                         }
                 )
             } else {
