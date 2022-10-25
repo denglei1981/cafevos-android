@@ -26,6 +26,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
+import com.changanford.common.ui.dialog.SignMaintainDialog
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
@@ -845,6 +846,10 @@ class JumpUtils {
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
+                    if (it.signTextStatus == 0){
+                        SignMaintainDialog(BaseApplication.curActivity).show()
+                        return@let
+                    }
                     "签到成功，福币+${it.integral},成长值+${it.growth}".toast()
                     if (it.additionStatus == 1) {//有额外弹框
                         var bundle = Bundle()

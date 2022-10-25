@@ -39,6 +39,7 @@ data class DaySignBean(
     val additionCouponName: String,//null,优惠券
     val additionCouponImg:String,//优惠券图片
     val sevenDays: ArrayList<Sign7DayBean>,//
+    val signTextStatus: Int = -1,//0就提示文案
 )
 
 data class Sign7DayBean(
