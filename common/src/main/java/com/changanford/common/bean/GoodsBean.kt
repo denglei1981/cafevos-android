@@ -740,7 +740,7 @@ data class OrderRefundItemBean(
     val mallMallOrderId: String = "0",
     val mallMallRefundId: String = "0",
     val orderNo: String = "",
-    val refundMethod: String = "",
+    val refundMethod: String = "",//CONTAIN_GOODS ONLY_COST
     val refundNo: String = "",
     val refundNum: Int = 0,
     val refundSkus: List<OrderSkuItem> = listOf(),

@@ -35,9 +35,9 @@ class OrderRefundAdapter : BaseQuickAdapter<OrderRefundItemBean, BaseDataBinding
             initBtn(this)
             tvOrderNo.text="退款编号：${item.refundNo}"
             ScreenUtils.setMargin(tvOrderNo,l=dp4)
-            if (item.refundType == "SINGLE"){
+            if (item.refundMethod == "ONLY_COST"){
                 tvTag.text = "退款"
-            } else if (item.refundType == "ALL_ORDER"){
+            } else if (item.refundMethod == "CONTAIN_GOODS"){
                 tvTag.text = "退货"
             }
             tvTag.visibility= View.VISIBLE
