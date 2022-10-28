@@ -190,8 +190,10 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
     private fun downloadImg() {
         //图片下载,第一张图为封面图
         dto.contentImgList?.let {
-            viewModel.downGlideImgs(it)
-            dialog.show()
+            if (dto.contentImgList.size > 0) {
+                viewModel.downGlideImgs(it)
+                dialog.show()
+            }
         }
         //监听下载的图片
         viewModel._downloadLocalMedias.observe(this) {
