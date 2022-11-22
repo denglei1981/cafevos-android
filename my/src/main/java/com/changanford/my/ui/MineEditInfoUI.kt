@@ -413,7 +413,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 选择图片
      */
     private fun pic() {
-        PictureUtils.openGarlly(this@MineEditInfoUI, object :
+        PictureUtils.openHeadGarlly(this@MineEditInfoUI, 1,false,object :
             OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 for (media in result) {

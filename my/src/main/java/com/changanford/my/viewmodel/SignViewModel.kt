@@ -14,6 +14,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.room.UserDatabase
+import com.changanford.common.util.toast.ToastUtils.showToast
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -800,6 +801,11 @@ class SignViewModel : ViewModel() {
             }
             if (cancle.code == 0) {
                 cancelTip.postValue("true")
+                if(type=="1"){
+                    toastShow("已关注")
+                }else{
+                    toastShow("已取消关注")
+                }
             } else {
                 cancelTip.postValue(cancle.msg)
             }

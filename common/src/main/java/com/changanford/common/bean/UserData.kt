@@ -69,11 +69,11 @@ data class UserInfoBean(
     val updateTime: String,
     val userId: String,
     val userName: String,
-    var couponCount:Int=0,
-    var medalCount:Int=0,
+    var couponCount: Int = 0,
+    var medalCount: Int = 0,
     val userMedalList: ArrayList<MedalListBeanItem>? = arrayListOf(),
-    var frontCover:String="",
-    var cmcOpenid :String = ""
+    var frontCover: String = "",
+    var cmcOpenid: String = ""
 ) {
     /**
      * 处理因is开头属性转json丢失数据的问题
@@ -86,11 +86,11 @@ data class UserInfoBean(
 }
 
 data class Count(
-    var collections: Int=0,
-    var fans: Int=0,
-    var follows: Int=0,
-    var likeds: Int=0,
-    var releases: Int=0
+    var collections: Int = 0,
+    var fans: Int = 0,
+    var follows: Int = 0,
+    var likeds: Int = 0,
+    var releases: Int = 0
 )
 
 data class Ext(
@@ -132,7 +132,7 @@ data class Imag(
     val img: String,
     val jumpDataType: Int,
     val jumpDataValue: String
-): Parcelable
+) : Parcelable
 
 
 data class FansListBean(
@@ -148,6 +148,7 @@ data class FansItemBean(
     val avatar: String,
     var isMutualAttention: Int,//是否互相关注 1 是，0 否
     val nickname: String,
+    var isEachOther: Boolean,
     val isFollow: Int //他人的粉丝/关注是否被登录用户关注 1 是，0 否
 )
 
@@ -194,12 +195,13 @@ data class AddressBeanItem(
     val provinceName: String,
     val status: Int,
     val userId: Int
-) : Serializable{
+) : Serializable {
     fun getAddress(): String {
         return "$provinceName$cityName$districtName$addressName"
     }
-    fun getUserInfo():String{
-        return consignee.plus("\t"+phone)
+
+    fun getUserInfo(): String {
+        return consignee.plus("\t" + phone)
     }
 }
 

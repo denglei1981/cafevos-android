@@ -56,12 +56,25 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
 
         viewModel.cancelTip.observe(this, Observer {
             if ("true" == it) {
-                showToast("已取消关注")
                 when (type) {
                     2 -> {
                         fanAdapter.data?.forEach {
                             if (it.authorId == followId) {
-                                it.isMutualAttention = 100
+                                when (it.isMutualAttention) {
+                                    1, 0 -> {//互相关注变更为关注
+                                        it.isMutualAttention = 100
+                                    }
+                                    100 -> {
+                                        if (it.isEachOther) {
+                                            it.isMutualAttention = 1
+                                        } else {
+                                            it.isMutualAttention = 0
+                                        }
+                                    }
+                                    else -> {
+                                        it.isMutualAttention = 100
+                                    }
+                                }
                             }
                         }
                         fanAdapter.notifyDataSetChanged()
@@ -105,6 +118,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                         1 -> {
                             it.itemIcon.setImageResource(0)
                             it.itemText.text = "相互关注"
+                            item.isEachOther = true
                         }
                         100 -> {
                             it.layout.isSelected = true
@@ -135,7 +149,18 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                 }
                 it.layout.setOnClickListener {
                     if (type == 2) {
-                        cancel(item.authorId.toString(), "2")
+                        when (item.isMutualAttention) {
+                            1 -> {//取消关注
+                                cancel(item.authorId.toString(), "2")
+                            }
+                            100 -> {//关注
+                                cancel(item.authorId.toString(), "1")
+                            }
+                            else -> {
+                                cancel(item.authorId.toString(), "2")
+                            }
+                        }
+
                     } else
                         when (item.isMutualAttention) {
                             1 -> {//取消
@@ -149,7 +174,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                 it.itemFansIcon.setOnClickListener {
 //                    RouterManger.param("value", item.authorId)
 //                        .startARouter(ARouterMyPath.TaCentreInfoUI)
-                    JumpUtils.instans?.jump(35,item.authorId.toString())
+                    JumpUtils.instans?.jump(35, item.authorId.toString())
                 }
             }
         }
