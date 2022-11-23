@@ -97,7 +97,7 @@ class CircleDetailsFragmentV2 :
 
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getListData(type.toInt(), topicId, circleId, page)
+            viewModel.getListData(type.toInt(), topicId, circleId, page, userId)
         }
         binding.ryCircle.adapter = adapter
 
