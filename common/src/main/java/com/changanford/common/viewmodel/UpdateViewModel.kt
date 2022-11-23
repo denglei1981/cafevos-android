@@ -11,7 +11,7 @@ import com.changanford.common.net.header
 import kotlinx.coroutines.launch
 
 class UpdateViewModel : ViewModel() {
-    var _updateInfo = MutableLiveData<UpdateInfo>()
+    var _updateInfo = MutableLiveData<UpdateInfo?>()
 
     fun getUpdateInfo() {
         viewModelScope.launch {
@@ -24,7 +24,7 @@ class UpdateViewModel : ViewModel() {
             if (request.code == 0) {
                 _updateInfo.postValue(request.data!!)
             } else {
-
+                _updateInfo.postValue(null)
             }
         }
     }

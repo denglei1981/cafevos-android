@@ -196,7 +196,9 @@ class OrderConfirmActivity:BaseActivity<ActOrderConfirmBinding, OrderViewModel>(
             coupon.mallMallSkuIds?.forEach { cskuid->
                 skuItems?.forEach {
                     if (it.skuId == cskuid){
-                        newCoupons.add(coupon)
+                        if (!newCoupons.contains(coupon)) {
+                            newCoupons.add(coupon)
+                        }
                     }
                 }
             }

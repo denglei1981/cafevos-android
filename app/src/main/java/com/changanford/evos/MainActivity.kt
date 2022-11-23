@@ -31,6 +31,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.common.widget.pop.HomeGuidePop
@@ -43,6 +44,8 @@ import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
@@ -243,7 +246,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 Db.myDb.saveData("name", it[0].name)
             }
         })
-        updateViewModel._updateInfo.observe(this, Observer { info ->
+//        var count = 0
+        updateViewModel._updateInfo?.observe(this, Observer { info ->
+            if (info == null){
+//                "${count++}".toast()
+                lifecycleScope.launch(Dispatchers.IO){
+                    delay(3000)
+                    updateViewModel.getUpdateInfo()
+                }
+                return@Observer
+            }
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
                     return@Observer

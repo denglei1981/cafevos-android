@@ -73,7 +73,7 @@ class AboutFordUI : BaseMineUI<UiAboutBinding, EmptyViewModel>() {
 
     override fun initData() {
         updateViewModel = createViewModel(UpdateViewModel::class.java)
-        updateViewModel._updateInfo.observe(this, { info ->
+        updateViewModel._updateInfo?.observe(this, { info ->
             info?.downloadUrl?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
                     return@observe
