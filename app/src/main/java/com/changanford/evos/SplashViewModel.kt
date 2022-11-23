@@ -19,7 +19,9 @@ import com.changanford.common.utilext.toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.reflect.Type
 
 class SplashViewModel : ViewModel() {
@@ -74,6 +76,12 @@ class SplashViewModel : ViewModel() {
                 it ?: "tag".logE()
             }.onWithMsgFailure {
                 it?.toast()
+                launch(Dispatchers.IO) {
+                    delay(1000)
+                    withContext(Dispatchers.Main){
+                        getKey()
+                    }
+                }
             }
         }
     }
