@@ -19,6 +19,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.MyApp
@@ -27,10 +28,16 @@ import com.changanford.common.basic.BaseApplication.Companion.currentViewModelSc
 import com.changanford.common.net.*
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MyApplicationUtil.applicationContext
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
+import java.util.*
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -95,6 +102,25 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         curActivity = this
         try {
             currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        //全局监听回到前台
+        try {
+            isOnStop_b = false
+            isOnResume_b = true
+            if (!isForeground_b) {
+                //由后台切换到前台
+                isForeground_b = true
+                LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).postValue(true)
+            }
+            if (timer_b == null) {
+                timer_b = Timer()
+            }
+            if (timerTask_b == null){
+                timerTask_b = MyTimerTask()
+            }
+            timer_b?.schedule(timerTask_b, 50, 5000)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -210,6 +236,47 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             }
         }
         return false
+    }
+
+    companion object{
+        //全局监听后台运行
+        var isForeground_b = true
+        var timer_b: Timer? = null
+        var isOnResume_b = false
+        var isOnStop_b = false
+        var timerTask_b: MyTimerTask? = null
+        open fun isAppOnForeground(): Boolean {
+            val activityManager = applicationContext
+                .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val packageName = applicationContext.packageName
+
+            /**
+             * 获取Android设备中所有正在运行的App
+             */
+            val appProcesses = activityManager
+                .runningAppProcesses ?: return false
+            for (appProcess in appProcesses) {
+                // The name of the process that this object is associated with.
+                if (appProcess.processName == packageName && appProcess.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                    return true
+                }
+            }
+            return false
+        }
+        class MyTimerTask : TimerTask() {
+            override fun run() {
+                if (!isAppOnForeground()) {
+                    //由前台切换到后台
+                    isForeground_b = false
+                    curActivity.lifecycleScope.launch(Dispatchers.Main) {
+//                        "${curActivity.resources.getString(R.string.app_name)}App已经进入后台".toast()
+                    }
+                    timer_b?.cancel()
+                    timer_b = null
+                    timerTask_b = null
+                }
+            }
+        }
     }
 
 

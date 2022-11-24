@@ -196,6 +196,7 @@ object LiveDataBusKey {
     const val MINE_CANCEL_ACCOUNT = "mine:cancel_account" //取消注销申请，注销成功
     const val MINE_SIGN_FIX = "mine:sign_fix" //补签成功，刷新数据
     const val MINE_SIGN_SIGNED = "mine:sign_signed" //签到成功，刷新按钮
+    const val HOME_UPDATE = "home:update" //首页更新弹框，在后台切换到前台时调用
 
     /**
      * 车主认证，crm提交资料成功

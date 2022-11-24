@@ -314,6 +314,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         })
+        LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this){
+            updateViewModel.getUpdateInfo()
+        }
         registerConnChange()
         viewModel.getQuestionTagInfo()
     }
