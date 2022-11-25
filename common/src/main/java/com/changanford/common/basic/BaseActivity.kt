@@ -28,7 +28,6 @@ import com.changanford.common.basic.BaseApplication.Companion.currentViewModelSc
 import com.changanford.common.net.*
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.MyApplicationUtil.applicationContext
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.launchWithCatch
@@ -246,9 +245,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         var isOnStop_b = false
         var timerTask_b: MyTimerTask? = null
         open fun isAppOnForeground(): Boolean {
-            val activityManager = applicationContext
+            val activityManager = curActivity.applicationContext
                 .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val packageName = applicationContext.packageName
+            val packageName = curActivity.applicationContext.packageName
 
             /**
              * 获取Android设备中所有正在运行的App
