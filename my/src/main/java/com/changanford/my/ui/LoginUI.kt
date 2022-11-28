@@ -20,6 +20,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
@@ -400,7 +401,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             delay(2000)
             if (!isFinishing && !isOnResume && !isOnStop) {
                 withContext(Dispatchers.Main) {
-                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
+                    ToastUtils.reToast("${resources.getString(R.string.app_name)}App已经进入后台")
                 }
             }
         }
