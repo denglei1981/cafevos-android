@@ -109,6 +109,21 @@ class SplashViewModel : ViewModel() {
                 request.msg ?: "tag".logE()
             }
         }
+        viewModelScope.launch {
+            val request = fetchRequest {
+                val body = HashMap<String, Any>()
+                body["configKey"] = "app_mourning_mode"
+                body["obj"] = true
+                val rKey = getRandomKey()
+                apiService.getAppMourningMode(body.header(rKey), body.body(rKey))
+            }
+            if (request.code == 0) {//处理成功和失败
+                val config = request.data ?: 0
+                MConstant.app_mourning_mode = config
+            } else {
+                request.msg ?: "tag".logE()
+            }
+        }
     }
 
     /**

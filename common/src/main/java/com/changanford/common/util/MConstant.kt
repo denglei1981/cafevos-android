@@ -84,6 +84,7 @@ object MConstant {
     var userId = ""
     var configBean:ConfigBean?=null
     var totalWebNum = 0//AgentWebActivity的个数
+    var app_mourning_mode = 0;//哀悼模式  app_mourning_mode 1 打开，0关闭
 
     //app更新
     var isDownloading = false//是否下载

@@ -194,6 +194,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+        if (MConstant.app_mourning_mode == 1) {
+            BlackWhiteMode(window = window)
+        }
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         updateViewModel = createViewModel(UpdateViewModel::class.java)
         updateViewModel.getUpdateInfo()

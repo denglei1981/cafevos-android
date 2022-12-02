@@ -405,6 +405,15 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ConfigBean>
+    /**
+     * 获取基本配置
+     * 图片域名
+     */
+    @POST("/base/config/getConfigValueByKey")
+    suspend fun getAppMourningMode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Int>
 
     /**
      * 用户签到
