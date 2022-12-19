@@ -48,8 +48,8 @@ import java.io.InputStream
  */
 fun TextView.signAgreement() {
     val title = "点击注册/登录，即表示已阅读并同意"
-    var content = "《用户隐私条款》"
-    var content1 = "《福域注册会员服务条款》"
+    var content = "《福域APP个人隐私协议》"
+    var content1 = "《福域APP会员服务协议》"
 
     var spannable = SpannableString("$title$content、$content1")
 

@@ -40,15 +40,16 @@
 
         <TextView
             android:id="@+id/tv_author_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:textColor="#ff333333"
             android:textSize="@dimen/sp_15"
             app:layout_constraintStart_toEndOf="@+id/iv_shopping"
             app:layout_constraintTop_toTopOf="@+id/iv_shopping"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="这里是兔子说" />
+            tools:text="这里是兔子" />
 
         <TextView
             android:id="@+id/tv_sub_title"
