@@ -350,6 +350,15 @@ interface NetWorkApi {
     ): CommonResponse<SettingPhoneBean>
 
     /**
+     * 获取推荐购入口
+     */
+    @POST("base/config/getConfigValueByKey")
+    suspend fun getTuijianGou(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
      * 用户已读
      */
     @POST("userFeedback/changeToRead")

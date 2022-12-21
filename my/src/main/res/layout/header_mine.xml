@@ -277,55 +277,119 @@
             app:layout_constraintTop_toBottomOf="@+id/v_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_gold"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/shape_whit5_bg"
-            android:gravity="center"
-            android:includeFontPadding="false"
+            android:id="@+id/fubilayout"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:textColor="#8195C8"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toStartOf="@+id/tv_coupon"
+            android:layout_marginHorizontal="@dimen/dp_20"
             app:layout_constraintStart_toStartOf="@+id/v_bg"
             app:layout_constraintTop_toBottomOf="@+id/sign7day"
-            tools:text="福币 0"
-            tools:visibility="visible" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_coupon"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
-
-            android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/shape_whit5_bg"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textColor="#8195C8"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toEndOf="@+id/v_bg"
-            app:layout_constraintStart_toEndOf="@+id/tv_gold"
-            app:layout_constraintTop_toBottomOf="@+id/sign7day"
-            tools:text="优惠券 0"
-            tools:visibility="visible" />
 
-        <View
-            android:id="@+id/l_line"
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:background="@color/color_F5"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_gold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_gold" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/fl_img_fb"
+                android:layout_width="@dimen/dp_28"
+                app:layout_goneMarginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="@id/tv_gold"
+                app:layout_constraintEnd_toEndOf="@id/tv_gold"
+                android:layout_marginTop="@dimen/dp_8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_gold"
+                android:layout_height="@dimen/dp_28"
+                android:src="@mipmap/icon_mine_fb"/>
+
+            <ImageView
+                android:id="@+id/fl_img_tuijian"
+                android:layout_width="@dimen/dp_28"
+                app:layout_constraintStart_toStartOf="@id/tv_tuijian"
+                app:layout_constraintEnd_toEndOf="@id/tv_tuijian"
+                app:layout_constraintTop_toTopOf="@id/fl_img_fb"
+                app:layout_constraintBottom_toTopOf="@id/tv_tuijian"
+                android:layout_height="@dimen/dp_28"
+                tools:visibility="visible"
+                android:src="@mipmap/icon_mine_tuijian"/>
+            <ImageView
+                android:id="@+id/fl_img_youhui"
+                android:layout_width="@dimen/dp_28"
+                app:layout_constraintStart_toStartOf="@id/tv_coupon"
+                app:layout_constraintEnd_toEndOf="@id/tv_coupon"
+                app:layout_constraintBottom_toTopOf="@id/tv_coupon"
+                app:layout_constraintTop_toTopOf="@id/fl_img_fb"
+                android:layout_height="@dimen/dp_28"
+                android:src="@mipmap/icon_mine_youhui"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_gold"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintEnd_toStartOf="@+id/tv_coupon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="福币 0"
+                tools:visibility="visible" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_coupon"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/shape_whit5_bg"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintEnd_toStartOf="@id/tv_tuijian"
+                app:layout_constraintStart_toEndOf="@+id/tv_gold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="优惠券 0"
+                tools:visibility="visible" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tuijian"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_10"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/color_66"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_coupon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="推荐购"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/l_line"
+                android:visibility="gone"
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:background="@color/color_F5"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_gold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_gold" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_love_car_tips"
@@ -335,8 +399,8 @@
             android:text="@string/mine_love_car"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_gold"
-            app:layout_constraintTop_toBottomOf="@+id/tv_gold" />
+            app:layout_constraintStart_toStartOf="@+id/fubilayout"
+            app:layout_constraintTop_toBottomOf="@+id/fubilayout" />
 
         <View
             android:id="@+id/v_car_bg"

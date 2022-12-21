@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
+import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
@@ -48,7 +50,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     var headNewBinding: HeaderMineBinding? = null
     var couponNum = 0
-
+    var tuijiangou = ""
     val mineMenuAdapter: MineMenuAdapter by lazy {
         MineMenuAdapter()
 
@@ -142,6 +144,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 JumpUtils.instans?.jump(30)
 
             }
+            h.tvTuijian.setOnClickListener {
+                JumpUtils.instans?.jump(1,tuijiangou)
+            }
             h.ddFollow.setOnClickListener {
                 JumpUtils.instans?.jump(25)
 
@@ -180,9 +185,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvUserTags.visibility = View.VISIBLE
                 val couponStr = "优惠券"/*.plus("\t\t${userInfoBean.couponCount}")*/
                 couponNum = userInfoBean.couponCount
-                val goldStr = "福币".plus("\t\t${userInfoBean.ext.totalIntegral}")
-                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.black)
-                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)
+                val goldStr = "福币".plus("\t${userInfoBean.ext.totalIntegral}")
+                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
+                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
                 h.tvUserLevel.text = userInfoBean.ext.growSeriesName
 
 
@@ -220,9 +225,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvCarName.visibility = View.GONE
                 h.tvUserTags.visibility = View.GONE
                 val couponStr = "优惠券"/*.plus("\t\t0")*/
-                val goldStr = "福币".plus("\t\t0")
-                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.black)
-                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.black)
+                val goldStr = "福币".plus("\t0")
+                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
+                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
                 h.daySign.text = "签到"
                 h.messageStatus.visibility = View.GONE
                 h.tvUserTags.text = "0枚勋章"
@@ -503,6 +508,23 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
         viewModel.getCircleInfo()
+        viewModel.getTuijianGou {
+            it.onSuccess {
+                if (it.isNullOrEmpty()){
+                    headNewBinding?.let { h ->
+                        h.tvTuijian.isVisible = false
+                        h.flImgTuijian.isVisible = false
+                    }
+                }else{
+                    headNewBinding?.let { h ->
+                        h.tvTuijian.isVisible = true
+                        h.flImgTuijian.isVisible = true
+                    }
+                    tuijiangou = it
+                }
+            }
+
+        }
         headNewBinding?.vFlipper?.startFlipping()
         show7Day()
     }

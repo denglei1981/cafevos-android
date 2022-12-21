@@ -55,6 +55,21 @@ class MineViewModel : BaseViewModel() {
             saveUserInfo(null)
         }
     }
+    /**
+     * 推荐购入口
+     */
+    fun getTuijianGou(result: (CommonResponse<String>) -> Unit) {
+
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = java.util.HashMap<String, Any>()
+                body["configKey"] = "app_mine_tuijiangou"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.getTuijianGou(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 
     private fun saveUserInfo(userInfoBean: UserInfoBean?) {
         userInfo.postValue(userInfoBean)
