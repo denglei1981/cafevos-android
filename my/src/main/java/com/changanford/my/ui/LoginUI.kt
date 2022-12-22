@@ -348,9 +348,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         timer = null
         timerTask = null
         mPlayer.let {
-            if (it.isPlaying)
-                it.stop()
-            it.release()
+            try {
+                if (it.isPlaying)
+                    it.stop()
+                it.release()
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
     }
 

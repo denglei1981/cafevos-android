@@ -356,7 +356,7 @@ interface NetWorkApi {
     suspend fun getTuijianGou(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<SettingPhoneBean>
 
     /**
      * 用户已读

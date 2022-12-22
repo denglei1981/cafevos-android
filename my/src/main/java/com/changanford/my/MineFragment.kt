@@ -145,7 +145,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
             }
             h.tvTuijian.setOnClickListener {
-                JumpUtils.instans?.jump(1,tuijiangou)
+                JumpUtils.instans?.jump(106,tuijiangou)
             }
             h.ddFollow.setOnClickListener {
                 JumpUtils.instans?.jump(25)
@@ -510,7 +510,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getCircleInfo()
         viewModel.getTuijianGou {
             it.onSuccess {
-                if (it.isNullOrEmpty()){
+                if (it?.data.isNullOrEmpty()){
                     headNewBinding?.let { h ->
                         h.tvTuijian.isVisible = false
                         h.flImgTuijian.isVisible = false
@@ -520,7 +520,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                         h.tvTuijian.isVisible = true
                         h.flImgTuijian.isVisible = true
                     }
-                    tuijiangou = it
+                    tuijiangou = it?.data?:""
                 }
             }
 

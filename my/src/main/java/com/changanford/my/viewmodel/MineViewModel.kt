@@ -58,7 +58,7 @@ class MineViewModel : BaseViewModel() {
     /**
      * 推荐购入口
      */
-    fun getTuijianGou(result: (CommonResponse<String>) -> Unit) {
+    fun getTuijianGou(result: (CommonResponse<SettingPhoneBean>) -> Unit) {
 
         viewModelScope.launch {
             result(fetchRequest {

@@ -275,6 +275,7 @@ data class MyShopBean(
 )
 
 data class SettingPhoneBean(
+    val data: String,//推荐购链接
     val date: String,
     val desc: String,
     val holidayHotline: String?,//服务热线
