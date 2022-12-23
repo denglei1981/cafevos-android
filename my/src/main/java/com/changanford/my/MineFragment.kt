@@ -140,11 +140,26 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                     startARouter(ARouterShopPath.CouponMiddleActivity,bundle)
                 }
             }
+            h.flImgYouhui.setOnClickListener {
+                if (MConstant.token.isNullOrEmpty()){
+                    startARouter(ARouterMyPath.SignUI)
+                }else{
+                    var bundle = Bundle()
+                    bundle.putInt("couponNum",couponNum)
+                    startARouter(ARouterShopPath.CouponMiddleActivity,bundle)
+                }
+            }
             h.tvGold.setOnClickListener {
                 JumpUtils.instans?.jump(30)
 
             }
+            h.flImgFb.setOnClickListener {
+                JumpUtils.instans?.jump(30)
+            }
             h.tvTuijian.setOnClickListener {
+                JumpUtils.instans?.jump(106,tuijiangou)
+            }
+            h.flImgTuijian.setOnClickListener {
                 JumpUtils.instans?.jump(106,tuijiangou)
             }
             h.ddFollow.setOnClickListener {
