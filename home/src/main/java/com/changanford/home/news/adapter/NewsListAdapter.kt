@@ -13,6 +13,7 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
@@ -57,15 +58,21 @@ class NewsListAdapter(
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         GlideUtils.loadBD(item.pics, ivPicBig)
         tvAuthorName.text = item.authors?.nickname
-        if(TextUtils.isEmpty(item.authors?.getMemberNames())){
-            tvSubtitle.visibility=View.GONE
-        }else{
-            tvSubtitle.visibility=View.VISIBLE
+        if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
+            tvSubtitle.visibility = View.GONE
+        } else {
+            tvSubtitle.visibility = View.VISIBLE
         }
 //        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
-        btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
+
+        if (item.authors?.authorId != MConstant.userId && isShowFollow) {
+            btnFollow.visibility = View.VISIBLE
+        } else {
+            btnFollow.visibility = View.GONE
+        }
+//        btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
         tag.visibility = if (isShowTag) View.VISIBLE else View.GONE
         tag.text = "资讯"
         item.authors?.let {

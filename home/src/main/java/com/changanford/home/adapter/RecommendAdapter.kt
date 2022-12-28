@@ -23,10 +23,7 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
-import com.changanford.common.util.CountUtils
-import com.changanford.common.util.DisplayUtil
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -112,13 +109,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //                showActs(holder, item)
                 try {
                     showActsNew(holder, item)
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
 
         }
     }
+
     fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
         var item = recdate.wonderful
         var binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
@@ -127,7 +125,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //            it.root.setOnClickListener {
 //                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
 //            }
-            it.root.setPadding(DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,0,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) ,DisplayUtil.dip2px(BaseApplication.INSTANT,12f) )
+            it.root.setPadding(
+                DisplayUtil.dip2px(BaseApplication.INSTANT, 12f),
+                0,
+                DisplayUtil.dip2px(BaseApplication.INSTANT, 12f),
+                DisplayUtil.dip2px(BaseApplication.INSTANT, 12f)
+            )
             it.root.background = null
             it.tvTips.text = item.title
             it.tvHomeActTimes.text = item.getActTimeS()
@@ -139,18 +142,20 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
-            if (item.showButton()){
+            if (item.showButton()) {
                 it.bt.text = item.showButtonText()
             }
-            if (item.buttonBgEnable()){
-                it.bt.background = BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_f2f4f9_cor14)
+            if (item.buttonBgEnable()) {
+                it.bt.background =
+                    BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_f2f4f9_cor14)
                 it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.color_95b))
-            }else{
-                it.bt.background = BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_dd_cor14)
+            } else {
+                it.bt.background =
+                    BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_dd_cor14)
                 it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.white))
             }
             it.bt.setOnClickListener {
-                if (item.isFinish()){
+                if (item.isFinish()) {
                     AlertThreeFilletDialog(BaseApplication.curActivity).builder()
                         .setMsg(
                             "一旦结束将无法恢复，确定结束吗？"
@@ -158,21 +163,22 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         .setCancelable(true)
                         .setPositiveButton("确定", com.changanford.common.R.color.color_01025C) {
                         }
-                        .setNegativeButton("取消", com.changanford.common.R.color.color_99){
+                        .setNegativeButton("取消", com.changanford.common.R.color.color_99) {
 
                         }.show()
 
-                }else{
-                    JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                } else {
+                    JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
                 }
             }
             it.butongguo.isVisible = !item.reason.isNullOrEmpty()
-            it.reason.text = item.reason?:""
+            it.reason.text = item.reason ?: ""
             it.reedit.setOnClickListener {
             }
             it.reedit.isVisible = item.showReedit()
         }
     }
+
     fun showActs(holder: BaseViewHolder, item: RecommendData) { //活动
         val ivActs = holder.getView<ShapeableImageView>(R.id.iv_acts)
         val tvTips = holder.getView<AppCompatTextView>(R.id.tv_tips)
@@ -274,7 +280,6 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
 
 
-
         val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
         setLikeState(tvLikeCount, item.isLike, false) // 设置是否喜欢。
         tvLikeCount.setOnClickListener {
@@ -330,6 +335,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
         item.authors?.let {
             setFollowState(btnFollow, it)
+        }
+
+        if (item.authors?.authorId == MConstant.userId) {
+            btnFollow.visibility = View.GONE
+        } else {
+            btnFollow.visibility = View.VISIBLE
         }
 
         btnFollow.setOnClickListener {

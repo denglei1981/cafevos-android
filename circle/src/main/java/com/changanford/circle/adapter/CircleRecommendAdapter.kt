@@ -81,6 +81,16 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 likePost(binding, item, holder.layoutPosition)
             }
 
+            if (item.authorBaseVo != null) {
+                if (item.authorBaseVo?.authorId == MConstant.userId) {
+                    binding.layoutHeader.btnFollow.visibility = View.GONE
+                } else {
+                    binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+                }
+            } else {
+                binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+            }
+
             binding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     if (item.authorBaseVo != null) {
