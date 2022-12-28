@@ -12,6 +12,7 @@ import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.net.*
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -54,6 +55,11 @@ class SearchPostsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvCount = holder.getView<AppCompatTextView>(R.id.tv_count)
         tvCount.text = item.getCommentCountAnViewCount()
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+        if (item.authorBaseVo?.authorId != MConstant.userId) {
+            btnFollow.visibility = View.VISIBLE
+        } else {
+            btnFollow.visibility = View.INVISIBLE
+        }
         item.authorBaseVo?.let {
             setFollowState(btnFollow, it)
         }

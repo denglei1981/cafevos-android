@@ -1,5 +1,6 @@
 package com.changanford.home.search.adapter
 
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
@@ -8,6 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
@@ -40,6 +42,11 @@ class SearchNewsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvCount = holder.getView<AppCompatTextView>(R.id.tv_count)
         tvCount.text = item.getCommentCountAnViewCount()
         val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+        if (item.authors?.authorId != MConstant.userId) {
+            btnFollow.visibility = View.VISIBLE
+        } else {
+            btnFollow.visibility = View.INVISIBLE
+        }
         item.authors?.let {
             setFollowState(btnFollow, it)
         }
