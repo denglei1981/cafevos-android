@@ -102,6 +102,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     private val commentAdapter by lazy {
         PostDetailsCommentAdapter(this)
     }
+
     @SuppressLint("SetTextI18n")
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.relativeLayout, requireActivity())
@@ -116,21 +117,21 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
 //                "scrollY:$scrollY>>>>oldScrollY:$oldScrollY".wLogE("okhttp")
                 //上滑
-                if (scrollY < oldScrollY&&scrollY<150) {
+                if (scrollY < oldScrollY && scrollY < 150) {
                     isExpand = false
                     updateInfoUI()
                 }
             })
             ryComment.adapter = commentAdapter
-            val commentCount=mData.commentCount
+            val commentCount = mData.commentCount
             tvCommentNum.text = "${if (commentCount > 0) mData.commentCount else "0"}"
-            if(commentCount>0)commentTitle.text="全部评论 $commentCount"
+            if (commentCount > 0) commentTitle.text = "全部评论 $commentCount"
             tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
             tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
-            if(mData.isGood==1){
-                binding.ivVeryPost.visibility=View.VISIBLE
-            }else{
-                binding.ivVeryPost.visibility=View.INVISIBLE
+            if (mData.isGood == 1) {
+                binding.ivVeryPost.visibility = View.VISIBLE
+            } else {
+                binding.ivVeryPost.visibility = View.INVISIBLE
             }
 
             ivLike.setImageResource(
@@ -155,6 +156,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     error = R.mipmap.head_default
                 })
             tvName.text = mData.authorBaseVo?.nickname
+            if (mData.authorBaseVo?.authorId != MConstant.userId) {
+                tvFollow.visibility = View.VISIBLE
+            } else {
+                tvFollow.visibility = View.INVISIBLE
+            }
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"
             } else {
@@ -166,7 +172,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 }
             }
             rvUserTag.adapter = labelAdapter
-            tvSubTitle.visibility = if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
+            tvSubTitle.visibility =
+                if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
             tvSubTitle.text = mData.authorBaseVo?.getMemberNames()
             tvTitle.text = mData.title
             if (mData.circleName.isNullOrEmpty()) {
@@ -197,18 +204,21 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         initListener()
         bus()
     }
-    private fun updateInfoUI(){
+
+    private fun updateInfoUI() {
         binding.apply {
-            composeView.visibility=if(isExpand)View.VISIBLE else View.GONE
-            layoutInfo.visibility=if(isExpand)View.GONE else View.VISIBLE
-            imgInfoBg.setBackgroundResource(if(isExpand)0 else R.mipmap.ic_post_video_bg)
-            llBottom.setBackgroundResource(if(isExpand)R.color.color_00142E else 0)
+            composeView.visibility = if (isExpand) View.VISIBLE else View.GONE
+            layoutInfo.visibility = if (isExpand) View.GONE else View.VISIBLE
+            imgInfoBg.setBackgroundResource(if (isExpand) 0 else R.mipmap.ic_post_video_bg)
+            llBottom.setBackgroundResource(if (isExpand) R.color.color_00142E else 0)
         }
     }
+
     private fun showContent() {
-       val layoutParams= binding.videoView.layoutParams
-        layoutParams.height=ScreenUtils.getScreenHeight(requireContext())-ScreenUtils.dp2px(requireContext(),60f)
-        binding.videoView.layoutParams=layoutParams
+        val layoutParams = binding.videoView.layoutParams
+        layoutParams.height =
+            ScreenUtils.getScreenHeight(requireContext()) - ScreenUtils.dp2px(requireContext(), 60f)
+        binding.videoView.layoutParams = layoutParams
         binding.tvContent.post {
             val textView = binding.tvContent
 //            binding.tvExpand.text = if (isExpand) "收起" else "展开"
@@ -221,11 +231,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (isExpand) {
 //                textView.text =mData.content
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
-                    binding.scrollView.smoothScrollTo(0,800)
-                },200)
+                    binding.scrollView.smoothScrollTo(0, 800)
+                }, 200)
 
             } else {
-                binding.scrollView.smoothScrollTo(0,0)
+                binding.scrollView.smoothScrollTo(0, 0)
                 val paddingLeft = textView.paddingLeft
                 val paddingRight = textView.paddingRight
                 val paint = textView.paint
@@ -331,7 +341,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             ivHead.setOnClickListener {
 
-                JumpUtils.instans?.jump(35,mData.authorBaseVo?.authorId)
+                JumpUtils.instans?.jump(35, mData.authorBaseVo?.authorId)
 
             }
             tvFollow.setOnClickListener {
@@ -377,15 +387,17 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     override fun initData() {
         //
     }
+
     /**
      * 关注取消关注
-    * */
-    private fun addFocusOn(){
+     * */
+    private fun addFocusOn() {
         if (!MineUtils.getBindMobileJumpDataType(true)) {
             val isFol = mData.authorBaseVo?.isFollow
             viewModel.userFollowOrCancelFollow(mData.userId, if (isFol == 1) 2 else 1)
         }
     }
+
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
@@ -471,7 +483,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             mData.commentCount++
             binding.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
-            binding.commentTitle.text="全部评论 ${mData.commentCount}"
+            binding.commentTitle.text = "全部评论 ${mData.commentCount}"
             viewModel.getCommendList(mData.postsId, page)
         }
 
@@ -490,8 +502,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         })
         LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
             try {
-                viewModel.getCommendList(mData.postsId,1)
-            }catch (e:Exception){
+                viewModel.getCommendList(mData.postsId, 1)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -557,6 +569,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
 
     }
+
     private fun tagsClick(circlePostDetailsTagAdapter: CircleVideoPostTagAdapter) {
         circlePostDetailsTagAdapter.setOnItemClickListener { adapter, view, position ->
             // 跳转到搜索
@@ -594,43 +607,61 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     }
                 })
     }
+
     @Composable
-    private fun PostDetailsCompose(dataBean: PostsDetailBean?){
+    private fun PostDetailsCompose(dataBean: PostsDetailBean?) {
         dataBean?.apply {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White)
-                .padding(horizontal = 20.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(horizontal = 20.dp)
+            ) {
                 authorBaseVo?.apply {
 //                    val isFollowState = remember{ mutableStateOf(isFollow) }
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Row(verticalAlignment = Alignment.CenterVertically,modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 10.dp, bottom = 7.dp)) {
-                            WImage(imgUrl = avatar, modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp), verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                                .weight(1f)
+                                .padding(top = 10.dp, bottom = 7.dp)
+                        ) {
+                            WImage(
+                                imgUrl = avatar, modifier = Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                            )
                             Spacer(modifier = Modifier.width(12.dp))
                             Column {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     //昵称
-                                    Text(text = nickname, fontSize = 15.sp, color = colorResource(com.changanford.common.R.color.color_01), overflow = TextOverflow.Ellipsis, maxLines = 1)
+                                    Text(
+                                        text = nickname,
+                                        fontSize = 15.sp,
+                                        color = colorResource(com.changanford.common.R.color.color_01),
+                                        overflow = TextOverflow.Ellipsis,
+                                        maxLines = 1
+                                    )
                                     Spacer(modifier = Modifier.width(5.dp))
                                     //勋章 暂时只能佩戴一个
                                     Row {
                                         imags.forEach {
                                             Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
-                                                it.img) ?: com.changanford.common.R.mipmap.head_default,
-                                                builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
+                                                it.img
+                                            ) ?: com.changanford.common.R.mipmap.head_default,
+                                                builder = { placeholder(com.changanford.common.R.mipmap.head_default) }),
                                                 contentScale = ContentScale.Crop,
-                                                contentDescription =null,modifier = Modifier
+                                                contentDescription = null, modifier = Modifier
                                                     .size(20.dp)
                                                     .clip(CircleShape)
                                                     .clickable {
-                                                        JumpUtils.instans?.jump(it.jumpDataType,
-                                                            it.jumpDataValue)
+                                                        JumpUtils.instans?.jump(
+                                                            it.jumpDataType,
+                                                            it.jumpDataValue
+                                                        )
                                                     })
                                         }
                                     }
@@ -639,95 +670,157 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                     Box(modifier = Modifier
                                         .width(60.dp)
                                         .height(25.dp)
-                                        .background(color = colorResource(com.changanford.common.R.color.color_E5),
-                                            shape = RoundedCornerShape(13.dp))
+                                        .background(
+                                            color = colorResource(com.changanford.common.R.color.color_E5),
+                                            shape = RoundedCornerShape(13.dp)
+                                        )
                                         .clickable {
                                             addFocusOn()
 //                                    isFollowState.value=if(isFollowState.value==1)0 else 1
-                                        }, contentAlignment = Alignment.Center) {
-                                        Text(text = if(isFollow ==1)"已关注" else "关注", fontSize = 12.sp, color = colorResource(
-                                            com.changanford.common.R.color.color_00095B))
+                                        }, contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = if (isFollow == 1) "已关注" else "关注",
+                                            fontSize = 12.sp,
+                                            color = colorResource(
+                                                com.changanford.common.R.color.color_00095B
+                                            )
+                                        )
                                     }
                                 }
                                 //xx车主
                                 getMemberNames()?.let {
-                                    Text(text = it, fontSize = 11.sp, color = colorResource(com.changanford.common.R.color.color_00095B))
+                                    Text(
+                                        text = it,
+                                        fontSize = 11.sp,
+                                        color = colorResource(com.changanford.common.R.color.color_00095B)
+                                    )
                                 }
                             }
                         }
                         //是否是精华帖
-                        if(dataBean.isGood==1) Image(painter = painterResource(com.changanford.common.R.mipmap.ic_essence), contentDescription =null )
+                        if (dataBean.isGood == 1) Image(
+                            painter = painterResource(com.changanford.common.R.mipmap.ic_essence),
+                            contentDescription = null
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 //标题
-                Text(text = title, fontSize = 18.sp, color = colorResource(com.changanford.common.R.color.color_33), fontWeight = FontWeight.Bold)
+                Text(
+                    text = title,
+                    fontSize = 18.sp,
+                    color = colorResource(com.changanford.common.R.color.color_33),
+                    fontWeight = FontWeight.Bold
+                )
                 Spacer(modifier = Modifier.height(21.dp))
                 Row {
                     //来自那个圈子
-                    Text(text = if(!TextUtils.isEmpty(circleName))"来自" else "", fontSize = 14.sp, color = colorResource(
-                        com.changanford.common.R.color.color_33))
-                    Text(text = circleName?:"",fontSize = 14.sp, color = colorResource(com.changanford.common.R.color.color_00095B), modifier = Modifier
-                        .weight(1f)
-                        .clickable {
-                            val bundle = Bundle()
-                            bundle.putString("circleId", "$circleId")
-                            startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
-                        })
+                    Text(
+                        text = if (!TextUtils.isEmpty(circleName)) "来自" else "",
+                        fontSize = 14.sp,
+                        color = colorResource(
+                            com.changanford.common.R.color.color_33
+                        )
+                    )
+                    Text(text = circleName ?: "",
+                        fontSize = 14.sp,
+                        color = colorResource(com.changanford.common.R.color.color_00095B),
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable {
+                                val bundle = Bundle()
+                                bundle.putString("circleId", "$circleId")
+                                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                            })
                     //位置
                     if (!TextUtils.isEmpty(city)) {
-                        Image(painter = painterResource(R.mipmap.circle_location_details), contentDescription ="" )
+                        Image(
+                            painter = painterResource(R.mipmap.circle_location_details),
+                            contentDescription = ""
+                        )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = showCity(), fontSize = 13.sp, color = colorResource(com.changanford.common.R.color.color_cc), modifier = Modifier.clickable {
-                            startBaduMap()
-                        })
+                        Text(
+                            text = showCity(),
+                            fontSize = 13.sp,
+                            color = colorResource(com.changanford.common.R.color.color_cc),
+                            modifier = Modifier.clickable {
+                                startBaduMap()
+                            })
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 //内容
-                Text(text = content?:"", fontSize = 15.sp, color = colorResource(com.changanford.common.R.color.color_01), lineHeight = 25.sp)
+                Text(
+                    text = content ?: "",
+                    fontSize = 15.sp,
+                    color = colorResource(com.changanford.common.R.color.color_01),
+                    lineHeight = 25.sp
+                )
                 Spacer(modifier = Modifier.height(19.dp))
                 //topicName
                 topicName?.let {
-                    Column (verticalArrangement = Arrangement.Center,modifier = Modifier
-                        .background(color = colorResource(com.changanford.common.R.color.color_66F2F4F9),
-                            shape = RoundedCornerShape(20.dp))
+                    Column(verticalArrangement = Arrangement.Center, modifier = Modifier
+                        .background(
+                            color = colorResource(com.changanford.common.R.color.color_66F2F4F9),
+                            shape = RoundedCornerShape(20.dp)
+                        )
                         .clickable {
                             val bundle = Bundle()
                             bundle.putString("topicId", topicId)
                             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
-                        }){
+                        }) {
                         Spacer(modifier = Modifier.height(10.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Spacer(modifier = Modifier.width(9.dp))
-                            Image(painter = painterResource(com.changanford.common.R.mipmap.ic_jh), contentDescription =null )
+                            Image(
+                                painter = painterResource(com.changanford.common.R.mipmap.ic_jh),
+                                contentDescription = null
+                            )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = it, fontSize = 13.sp, color = colorResource(com.changanford.common.R.color.color_8195C8))
+                            Text(
+                                text = it,
+                                fontSize = 13.sp,
+                                color = colorResource(com.changanford.common.R.color.color_8195C8)
+                            )
                             Spacer(modifier = Modifier.width(15.dp))
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
                 //标签
-                if(tags!=null&&tags.size>0){
+                if (tags != null && tags.size > 0) {
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         tags.forEach {
                             Box(contentAlignment = Alignment.Center, modifier = Modifier
                                 .width(68.dp)
                                 .height(23.dp)
-                                .background(colorResource(com.changanford.common.R.color.color_FAFBFD),
-                                    shape = RoundedCornerShape(12.dp))
+                                .background(
+                                    colorResource(com.changanford.common.R.color.color_FAFBFD),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
                                 .clickable {
                                     // 跳转到搜索
                                     val bundle = Bundle()
-                                    bundle.putInt(JumpConstant.SEARCH_TYPE,
-                                        SearchTypeConstant.SEARCH_POST)
+                                    bundle.putInt(
+                                        JumpConstant.SEARCH_TYPE,
+                                        SearchTypeConstant.SEARCH_POST
+                                    )
                                     bundle.putString(JumpConstant.SEARCH_CONTENT, it.tagName)
                                     bundle.putString(JumpConstant.SEARCH_TAG_ID, it.id)
-                                    startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+                                    startARouter(
+                                        ARouterHomePath.PloySearchResultActivity,
+                                        bundle
+                                    )
                                 }) {
-                                Text(text = it.tagName, fontSize = 12.sp, color= colorResource(com.changanford.common.R.color.color_8195C8), overflow = TextOverflow.Ellipsis, maxLines = 1)
+                                Text(
+                                    text = it.tagName,
+                                    fontSize = 12.sp,
+                                    color = colorResource(com.changanford.common.R.color.color_8195C8),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 1
+                                )
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                         }

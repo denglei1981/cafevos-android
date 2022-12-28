@@ -216,6 +216,11 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
+        if (author.authorId != MConstant.userId) {
+            binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+        } else {
+            binding.layoutHeader.btnFollow.visibility = View.INVISIBLE
+        }
         GlideUtils.loadBD(author.avatar, binding.layoutHeader.ivAvatar)
         binding.layoutHeader.tvAuthor.text = author.nickname
         setFollowState(binding.layoutHeader.btnFollow, author)

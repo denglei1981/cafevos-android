@@ -66,6 +66,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     var checkPosition: Int = -1
 
     private lateinit var artId: String
+    private var isShowFollow = false
     private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
         HomeNewsCommentAdapter(this)
     }
@@ -125,21 +126,6 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
         binding.layoutTitle.ivMore.setOnClickListener(this)
         llInfoBottom = binding.layoutTitle.llAuthorInfo.bottom
-        binding.pbRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val position: Int = linearLayoutManager.findFirstVisibleItemPosition()
-                val firstVisiableChildView =
-                    linearLayoutManager.findViewByPosition(position) as View
-                val itemHeight = firstVisiableChildView.height
-                val scrollHeight = position * itemHeight - firstVisiableChildView.top
-                binding.layoutTitle.llAuthorInfo.visibility =
-                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
-                binding.layoutTitle.btFollow.visibility =
-                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
-
-            }
-        })
         binding.layoutTitle.llAuthorInfo.setOnClickListener {
             JumpUtils.instans!!.jump(35, newsDetailData?.userId.toString())
         }
@@ -223,6 +209,15 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
+        if (author.authorId != MConstant.userId) {
+            isShowFollow = true
+//            binding.layoutTitle.btFollow.visibility = View.VISIBLE
+            inflateHeader.btFollow.visibility = View.VISIBLE
+        } else {
+            isShowFollow = false
+//            binding.layoutTitle.btFollow.visibility = View.INVISIBLE
+            inflateHeader.btFollow.visibility = View.INVISIBLE
+        }
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
         binding.layoutTitle.tvAuthor.text = author.nickname
@@ -286,6 +281,25 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 false
             )
         }
+        addScrollListener()
+    }
+
+    private fun addScrollListener() {
+        binding.pbRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position: Int = linearLayoutManager.findFirstVisibleItemPosition()
+                val firstVisiableChildView =
+                    linearLayoutManager.findViewByPosition(position) as View
+                val itemHeight = firstVisiableChildView.height
+                val scrollHeight = position * itemHeight - firstVisiableChildView.top
+                binding.layoutTitle.llAuthorInfo.visibility =
+                    if (scrollHeight > llInfoBottom) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+                binding.layoutTitle.btFollow.visibility =
+                    if (scrollHeight > llInfoBottom && isShowFollow) View.VISIBLE else View.GONE //如果滚动超过用户信息一栏，显示标题栏中的用户头像和昵称
+
+            }
+        })
     }
 
     var tips = ""
@@ -354,13 +368,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         inflateHeader.flRecommend.visibility = View.VISIBLE
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
-                    }else{
-                        inflateHeader.flRecommend.visibility=View.GONE
+                    } else {
+                        inflateHeader.flRecommend.visibility = View.GONE
                     }
                     if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
-                    }else{
+                    } else {
                         inflateHeader.rvAds.visibility = View.GONE
                     }
                 } else {// 隐藏热门推荐。
@@ -407,7 +421,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         })
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             newsDetailData?.shareCount?.plus(1)?.let {
-                newsDetailData?.shareCount=it
+                newsDetailData?.shareCount = it
                 binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
             }
         })

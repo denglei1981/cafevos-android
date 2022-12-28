@@ -293,6 +293,13 @@ class NewsVideoDetailFragment :
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
         val author = newsDetailData.authors
+
+        if (author.authorId != MConstant.userId) {
+            inflateHeader.btFollow.visibility = View.VISIBLE
+        } else {
+            inflateHeader.btFollow.visibility = View.INVISIBLE
+        }
+
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         inflateHeader.ivAvatar.setOnClickListener {
             JumpUtils.instans?.jump(35, newsDetailData.userId)

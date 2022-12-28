@@ -101,6 +101,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
             tvSubTitle.text = mData.authorBaseVo?.getMemberNames()
 
+            if (mData.authorBaseVo?.authorId != MConstant.userId) {
+                tvFollow.visibility = View.VISIBLE
+            } else {
+                tvFollow.visibility = View.INVISIBLE
+            }
 
             tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
                 "已关注"
