@@ -412,12 +412,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         intent.putExtra("lon", mData.lon)
                         intent.putExtra("address", mData.address)
                         intent.putExtra("addrName", mData.showCity())
-                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+                        intent.setClass(context, LocationMMapActivity::class.java)
                         context.startActivity(intent)
                     }
 
                     override fun onPermissionDenied(permission: Permission) {
-                        AlertDialog(MyApp.mContext).builder()
+                        AlertDialog(context).builder()
                             .setTitle("提示")
                             .setMsg("您已禁止了定位权限，请到设置中心去打开")
                             .setNegativeButton("取消") { }.setPositiveButton(
