@@ -10,7 +10,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
@@ -278,15 +277,22 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
    private fun play(videoUrl: String) {
+       "----play 1".logE()
         videoUrl.logE()
         binding.loginVideo.visibility = View.VISIBLE
-        mPlayer.reset()
-        mPlayer.setDataSource(videoUrl)
-        mPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
-        mPlayer.prepareAsync()
-        mPlayer.isLooping = true
+       if (isloaded){
+           mPlayer.start()
+       }else {
+           mPlayer.reset()
+           mPlayer.setDataSource(videoUrl)
+           mPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+           mPlayer.prepareAsync()
+           mPlayer.isLooping = true
+           isloaded = true
+       }
         binding.imBg.visibility = View.GONE
-    }
+       "----play 2".logE()
+   }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -363,6 +369,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     var timerTask: MyTimerTask? = null
     var isOnResume = false
     var isOnStop = false
+    var isloaded = false
 
     inner class MyTimerTask : TimerTask() {
         override fun run() {
@@ -374,6 +381,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 }
                 timer?.cancel()
                 timer = null
+                timerTask?.cancel()
                 timerTask = null
             }
         }
@@ -388,7 +396,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 //由后台切换到前台
                 isForeground = true
             }
-            viewModel.downLoginBgUrl()
+            if (isloaded){
+                viewModel.loginBgPath.value?.let { play(it) }
+            }else {
+                viewModel.downLoginBgUrl()
+            }
 //            mPlayer.start()
             timer = Timer()
             timerTask = MyTimerTask()
@@ -410,7 +422,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             }
         }
         if (mPlayer.isPlaying) {
-            mPlayer.stop()
+            mPlayer.pause()
+            binding.loginVideo.visibility = View.VISIBLE
+            binding.imBg.visibility = View.GONE
         }
     }
 

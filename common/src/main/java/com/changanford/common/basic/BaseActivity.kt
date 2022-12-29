@@ -113,12 +113,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
                 isForeground_b = true
                 LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).postValue(true)
             }
-            if (timer_b == null) {
-                timer_b = Timer()
-            }
-            if (timerTask_b == null){
-                timerTask_b = MyTimerTask()
-            }
+            timer_b = Timer()
+            timerTask_b = MyTimerTask()
             timer_b?.schedule(timerTask_b, 50, 5000)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -272,6 +268,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
                     }
                     timer_b?.cancel()
                     timer_b = null
+                    timerTask_b?.cancel()
                     timerTask_b = null
                 }
             }
