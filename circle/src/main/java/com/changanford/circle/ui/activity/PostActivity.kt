@@ -318,7 +318,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            showErrorWarn()
+//            showErrorWarn()
         })
 
     }

@@ -196,7 +196,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            showErrorWarn()
+//            showErrorWarn()
         })
 
 

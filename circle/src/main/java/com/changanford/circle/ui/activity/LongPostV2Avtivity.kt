@@ -348,7 +348,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            showErrorWarn()
+//            showErrorWarn()
         })
 
     }
