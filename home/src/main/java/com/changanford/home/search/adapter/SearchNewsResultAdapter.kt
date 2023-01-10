@@ -20,7 +20,6 @@ import com.google.android.material.imageview.ShapeableImageView
 
 /***
  *
- * 资讯和帖子用同一个。。。
  */
 class SearchNewsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_search_result_post) {
@@ -32,7 +31,8 @@ class SearchNewsResultAdapter(private val lifecycleOwner: LifecycleOwner) :
         val tvTime = holder.getView<TextView>(R.id.tv_time)
         var tvContent = holder.getView<TextView>(R.id.tv_content)
 
-        tvContent.text = item.getContentStr()
+//        tvContent.text = item.getContentStr()
+        tvContent.text = item.title
 
         tvTime.text = item.timeStr
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
