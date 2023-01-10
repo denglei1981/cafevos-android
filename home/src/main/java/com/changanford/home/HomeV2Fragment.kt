@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -23,12 +24,14 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GetCoupopBindingPop
+import com.changanford.common.ui.NewEstOnePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toastShow
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -44,6 +47,7 @@ import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import com.orhanobut.hawk.Hawk
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
@@ -262,7 +266,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     override fun onResume() {
         super.onResume()
-
     }
 
     fun isCurrentIndex(index: Int) = binding.homeViewpager.currentItem == index
@@ -366,6 +369,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         }
+        viewModel.getNewEstOne()
         //是否领取福币
         viewModel.isGetIntegral()
     }
@@ -426,6 +430,20 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                         showPopupWindow()
                     }
                 }, 500)
+            }
+        }
+        viewModel.newEstOneBean.observe(this) {
+            if (!it.ads.isNullOrEmpty()) {
+                if (!Hawk.get(it.ads[0].adId.toString(), false)) {
+                    android.os.Handler(Looper.myLooper()!!).postDelayed({
+                        NewEstOnePop(requireContext(), it).apply {
+                            showPopupWindow()
+                            setOnPopupWindowShowListener {
+                                Hawk.put(it.ads[0].adId.toString(), true)
+                            }
+                        }
+                    }, 500)
+                }
             }
         }
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{

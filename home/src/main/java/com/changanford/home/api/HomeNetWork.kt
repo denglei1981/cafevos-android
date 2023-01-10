@@ -410,7 +410,7 @@ interface HomeNetWork {
 
     // 领取优惠券
     @POST("/mall/coupon/receive")
-    suspend fun  receiveCoupons(
+    suspend fun receiveCoupons(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<*>
@@ -421,4 +421,11 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<WaitReceiveBean>>
+
+    // 首页弹窗
+    @POST("/con/ads/newEstOne")
+    suspend fun newEstOne(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewEstOneBean>
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.NewEstOneBean
 import com.changanford.common.bean.WResponseBean
 import com.changanford.common.bean.WaitReceiveBean
 import com.changanford.common.net.*
@@ -127,6 +128,23 @@ class HomeV2ViewModel : BaseViewModel() {
         })*/
     }
 
+    val newEstOneBean = MutableLiveData<NewEstOneBean>()
+
+    fun getNewEstOne() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            body["posCode"] = "index_popover"
+            ApiClient.createApi<HomeNetWork>()
+                .newEstOne(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    it?.let {
+                        newEstOneBean.postValue(it)
+                    }
+                }
+                .onWithMsgFailure { it?.toast() }
+        })
+    }
 
     /**
      * 领取微客服小程序积分
