@@ -142,7 +142,6 @@ class HomeV2ViewModel : BaseViewModel() {
                         newEstOneBean.postValue(it)
                     }
                 }
-                .onWithMsgFailure { it?.toast() }
         })
     }
 
