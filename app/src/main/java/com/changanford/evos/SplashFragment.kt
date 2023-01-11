@@ -44,17 +44,18 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 //        })
         lifecycleScope.launch {
             delay(4000)
-            ShortcutBadger.applyCount(MyApp.mContext,0)
             viewModel.getKey()
             viewModel.key.observe(this@SplashFragment) {
                 MConstant.pubKey = it
                 if (MConstant.isPopAgreement) {
                     showAppPrivacy(BaseApplication.curActivity as AppCompatActivity) {
                         SPUtils.setParam(MyApp.mContext, "isPopAgreement", false)
+                        ShortcutBadger.applyCount(MyApp.mContext,0)
                         viewModel.getDbAds()
                         viewModel.adService("app_launch")
                     }
                 } else {
+                    ShortcutBadger.applyCount(MyApp.mContext,0)
                     viewModel.getDbAds()
                     viewModel.adService("app_launch")
                 }
