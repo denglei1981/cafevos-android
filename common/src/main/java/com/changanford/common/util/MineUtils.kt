@@ -41,6 +41,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.text.DecimalFormat
+import java.util.*
 import java.util.regex.Pattern
 
 
@@ -470,8 +471,8 @@ object MineUtils {
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
 //                    JumpUtils.instans?.jump(1, H5_regTerms)
-                    val intent=Intent(BaseApplication.curActivity,AgentWebActivity::class.java)
-                    intent.putExtra("value",H5_regTerms)
+                    val intent = Intent(BaseApplication.curActivity, AgentWebActivity::class.java)
+                    intent.putExtra("value", H5_regTerms)
                     BaseApplication.curActivity.startActivity(intent)
                 }
 
@@ -489,8 +490,8 @@ object MineUtils {
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
 //                    JumpUtils.instans?.jump(1, H5_privacy)
-                    val intent=Intent(BaseApplication.curActivity,AgentWebActivity::class.java)
-                    intent.putExtra("value",H5_privacy)
+                    val intent = Intent(BaseApplication.curActivity, AgentWebActivity::class.java)
+                    intent.putExtra("value", H5_privacy)
                     BaseApplication.curActivity.startActivity(intent)
                 }
 
@@ -1137,5 +1138,17 @@ object MineUtils {
                 }
             }
         return false
+    }
+
+    fun getTodayTime(): String {
+        val calendar: Calendar = Calendar.getInstance()
+        //年
+        val year = calendar[Calendar.YEAR]
+        //月
+        val month = calendar[Calendar.MONTH] + 1
+        //日
+        val day = calendar[Calendar.DAY_OF_MONTH]
+
+        return "$year$month$day"
     }
 }

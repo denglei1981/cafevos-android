@@ -64,7 +64,7 @@ fun ImageView.load(url: String?, drawable: Int? = R.mipmap.image_h_one_default) 
             .fitCenter()
             .into(this)
     }
-    if(BuildConfig.DEBUG)string?.logE()
+    if (BuildConfig.DEBUG) string?.logE()
 }
 
 fun ImageView.load(string: Int?, drawable: Int? = null) {
@@ -91,13 +91,15 @@ object GlideUtils {
      */
     fun handleImgUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl
-        else if(!TextUtils.isEmpty(MConstant.imgcdn))MConstant.imgcdn.plus(preUrl)
+        else if (!TextUtils.isEmpty(MConstant.imgcdn)) MConstant.imgcdn.plus(preUrl)
         else MConstant.defaultImgCdn.plus(preUrl)
 
-    fun handleNullableUrl(preUrl: String?) :String? =
-        if (preUrl.isNullOrEmpty()) null else {if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
-            preUrl
-        )}
+    fun handleNullableUrl(preUrl: String?): String? =
+        if (preUrl.isNullOrEmpty()) null else {
+            if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
+                preUrl
+            )
+        }
 
     fun defaultHandleImageUrl(preUrl: String?): String =
         if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
@@ -166,6 +168,7 @@ object GlideUtils {
             }
         }.into(imageView)
     }
+
     /**
      * 加载原始大小
      */
@@ -181,7 +184,7 @@ object GlideUtils {
                     .fallback(errorDefaultRes)
                     .error(errorDefaultRes)
             }
-            override(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
+            override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
         }.into(imageView)
     }
 
@@ -242,6 +245,34 @@ object GlideUtils {
             .into(imageView)
     }
 
+    @JvmOverloads
+    fun loadBigTransform(
+        url: String?,
+        loadTransform: BitmapTransformation,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int? = null
+    ) {
+        imageView.post {
+            Glide.with(imageView.context).load(dealWithMuchImage(imageView, handleImgUrl(url)))
+                .transform(loadTransform).apply {
+                    if (errorDefaultRes != null) {
+                        placeholder(errorDefaultRes)
+                            .fallback(errorDefaultRes)
+                            .error(errorDefaultRes)
+                            .thumbnail(
+                                getTransform(
+                                    imageView.context,
+                                    errorDefaultRes,
+                                    loadTransform
+                                )
+                            )
+                    }
+                }
+                .into(imageView)
+        }
+
+    }
+
     fun loadCircleFilePath(filePath: String?, imageView: ImageView) {
         Glide.with(imageView.context).load(filePath).transform(CircleGlideTransform())
             .into(imageView)
@@ -251,8 +282,29 @@ object GlideUtils {
      * 加载圆角
      */
     @JvmOverloads
-    fun loadRound(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
+    fun loadRound(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
         loadTransform(
+            handleImgUrl(url),
+            RoundGlideTransform(isSquare = false),
+            imageView,
+            errorDefaultRes
+        )
+    }
+
+    /**
+     * 加载大图压缩
+     */
+    @JvmOverloads
+    fun loadBigImage(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        loadBigTransform(
             handleImgUrl(url),
             RoundGlideTransform(isSquare = false),
             imageView,
@@ -327,21 +379,42 @@ object GlideUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun glideLoadWidth(activity: Activity,url: String?,imageView: ImageView,width: Int,default_image: Int = R.mipmap.image_h_one_default) {
+    fun glideLoadWidth(
+        activity: Activity,
+        url: String?,
+        imageView: ImageView,
+        width: Int,
+        default_image: Int = R.mipmap.image_h_one_default
+    ) {
         url?.apply {
             if (!activity.isDestroyed) {
-                var imgUrl=this
+                var imgUrl = this
                 if (!imgUrl.startsWith("http")) {
                     imgUrl = MConstant.imgcdn + url
                 }
                 if (!imgUrl.contains(".gif")) {
-                    val options =RequestOptions.bitmapTransform(RoundedCorners(1)).placeholder(default_image).error(default_image).skipMemoryCache(false)
+                    val options =
+                        RequestOptions.bitmapTransform(RoundedCorners(1)).placeholder(default_image)
+                            .error(default_image).skipMemoryCache(false)
                     Glide.with(activity).load(imgUrl).apply(options)
                         .into(SimpleTargetUtils(activity, imageView, width))
-                } else imageView.load(imgUrl,default_image)
-            }else {
+                } else imageView.load(imgUrl, default_image)
+            } else {
                 Log.i("TAG", "Picture loading failed,activity is Destroyed")
             }
         }
     }
+
+    fun dealWithMuchImage(
+        imageView: ImageView,
+        oriPath: String
+    ): String {
+        if (oriPath.contains("?") || oriPath.contains(".gif")) {
+            return oriPath
+        }
+        val height = (imageView.height * 0.8).toInt()
+        return "$oriPath?x-oss-process=image/resize,h_${height},m_lfit"
+
+    }
+
 }

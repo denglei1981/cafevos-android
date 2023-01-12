@@ -908,4 +908,18 @@ class AgentWebInterface(
         LiveDataBus.get().with(LiveDataBusKey.GET_USER_APPROVE_CAR, String::class.java)
             .postValue(callback)
     }
+
+    /**
+     * 返回网页上一级
+     */
+    @JavascriptInterface
+    fun webGoBack() {
+        agentWeb.webCreator.webView.post{
+            if (agentWeb.webCreator.webView.canGoBack()) {
+                agentWeb.webCreator.webView.goBack()
+            } else {
+                activity?.finish()
+            }
+        }
+    }
 }

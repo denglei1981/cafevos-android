@@ -4,13 +4,11 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
@@ -28,10 +26,10 @@ import com.changanford.common.ui.NewEstOnePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.toastShow
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -54,6 +52,8 @@ import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -433,19 +433,30 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
         }
         viewModel.newEstOneBean.observe(this) {
+
             if (!it.ads.isNullOrEmpty()) {
-                if (!Hawk.get(it.ads[0].adId.toString(), false)) {
+                if (!Hawk.get(MineUtils.getTodayTime() + it.ads[0].adId.toString(), false)) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
                         NewEstOnePop(requireContext(), it).apply {
                             showPopupWindow()
                             setOnPopupWindowShowListener {
-                                Hawk.put(it.ads[0].adId.toString(), true)
+                                Hawk.put(MineUtils.getTodayTime() + it.ads[0].adId.toString(), true)
                             }
                         }
                     }, 500)
                 }
             }
         }
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                        viewModel.getNewEstOne()
+                    }
+                    else -> {}
+                }
+            }
 //        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
 //            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
 //                if (t.isSuccess) {

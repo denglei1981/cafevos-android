@@ -188,7 +188,8 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     picList.size == 1 -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
-                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
+//                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
+                        GlideUtils.loadBigImage(picList[0], binding.layoutOne.ivPic)
                         binding.btnMore.visibility = View.GONE
                         if (item.isGood == 1) {
                             binding.layoutOne.ivVeryPost.visibility = View.VISIBLE
