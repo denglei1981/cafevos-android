@@ -19,7 +19,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

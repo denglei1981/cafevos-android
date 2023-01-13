@@ -28,6 +28,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
@@ -321,11 +322,11 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                 it.title.text = item.messageTitle
                 it.date.text = "${TimeUtils.InputTimetamp(item.sendTime.toString())}"
                 it.messageDes.text = item.messageContent
-                if (item.jumpDataType == 99) {
-                    it.arrowR.visibility = View.GONE
-                } else {
-                    it.arrowR.visibility = View.VISIBLE
-                }
+//                if (item.jumpDataType == 99) {
+//                    it.arrowR.visibility = View.GONE
+//                } else {
+//                    it.arrowR.visibility = View.VISIBLE
+//                }
                 it.messageStatus.isVisible = item.status == 0
                 it.delete.setOnClickListener { v ->
                     AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
@@ -366,9 +367,10 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
                     } else if (item.jumpDataType == 0 || item.jumpDataType == 99) {
                         AlertDialog(context).builder()
-                            .setTitle("APP系统升级维护通知")
-                            .setMsg("亲爱的用户，平台将于7月25日进行系统维护升级，维护期间，平台将暂时无法访问，给您带来不便，敬请谅解！")
+                            .setTitle(item.messageTitle)
+                            .setMsg(item.messageContent)
                             .setMsgSize(12)
+                            .setMsgHeight(48.toIntPx())
                             .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
                             .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                         read(getItemPosition(item))

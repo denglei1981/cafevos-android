@@ -583,7 +583,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         isunSave = false
                     }
 
-                })
+                }, isCompress = true
+            )
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
             val holder = binding.picsrec.findViewHolderForLayoutPosition(position)
@@ -1079,7 +1080,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         params["topicId"] = locaPostEntity!!.topicId
                         params["postsId"] = locaPostEntity!!.postsId
                         params["type"] = locaPostEntity!!.type
-                        locaPostEntity.keywords?.let {k->
+                        locaPostEntity.keywords?.let { k ->
                             params["keywords"] = k
                         }
 

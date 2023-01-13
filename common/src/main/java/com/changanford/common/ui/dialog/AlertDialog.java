@@ -3,6 +3,7 @@ package com.changanford.common.ui.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,7 @@ public class AlertDialog {
 
     /**
      * 恢复初始
+     *
      * @return
      */
     public AlertDialog setGone() {
@@ -86,6 +88,7 @@ public class AlertDialog {
 
     /**
      * 设置title
+     *
      * @param title
      * @return
      */
@@ -101,6 +104,7 @@ public class AlertDialog {
 
     /**
      * 设置Message
+     *
      * @param msg
      * @return
      */
@@ -116,6 +120,7 @@ public class AlertDialog {
 
     /**
      * 设置Message
+     *
      * @return
      */
     public AlertDialog setMsgSize(int size) {
@@ -125,6 +130,7 @@ public class AlertDialog {
 
     /**
      * 设置Message
+     *
      * @return
      */
     public AlertDialog setMsgColor(int color) {
@@ -133,7 +139,19 @@ public class AlertDialog {
     }
 
     /**
+     * 设置Message
+     *
+     * @return
+     */
+    public AlertDialog setMsgHeight(int height) {
+        txt_msg.setMaxHeight(height);
+        txt_msg.setMovementMethod(ScrollingMovementMethod.getInstance());
+        return this;
+    }
+
+    /**
      * 设置点击外部是否消失
+     *
      * @param cancel
      * @return
      */
@@ -279,7 +297,7 @@ public class AlertDialog {
     }
 
     public void dismiss() {
-        if (dialog!=null){
+        if (dialog != null) {
             dialog.dismiss();
         }
 

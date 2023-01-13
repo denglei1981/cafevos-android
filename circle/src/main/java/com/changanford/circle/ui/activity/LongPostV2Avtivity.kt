@@ -733,7 +733,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         isunSave = false
                     }
 
-                })
+                },isCompress = true)
         }
 
 
