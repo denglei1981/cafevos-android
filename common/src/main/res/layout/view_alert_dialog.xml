@@ -4,7 +4,7 @@
     android:id="@+id/lLayout_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_whit15_bg"
+    android:background="@drawable/shape_whit5_bg"
     android:orientation="vertical">
 
     <TextView
