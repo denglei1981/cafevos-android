@@ -14,6 +14,7 @@ import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.actTypeText
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 
 /**
  * 活动列表。
@@ -35,7 +36,7 @@ class SearchActsResultAdapter :
     }
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
-            GlideUtils.loadBD(item.coverImg, it.ivActs)
+            it.ivActs.loadCompress(item.coverImg)
             it.root.setOnClickListener {
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
                 if (item.outChain == "YES") {

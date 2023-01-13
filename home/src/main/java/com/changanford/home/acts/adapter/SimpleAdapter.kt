@@ -3,6 +3,7 @@ package com.changanford.home.acts.adapter
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.bean.CircleHeadBean
@@ -18,7 +19,7 @@ class SimpleAdapter : BaseBannerAdapter<CircleHeadBean?>() {
         holder?.let {
             DataBindingUtil.bind<ItemRecommendBarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
-                    GlideUtils.loadBD(data.adImg, ivBanner)
+                    ivBanner.loadCompress(data.adImg)
                     ivBanner.setOnClickListener {
                         try {
                             JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)

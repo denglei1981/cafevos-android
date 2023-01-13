@@ -33,9 +33,14 @@ class ActBean {
         var addr = "$activityAddr"
 //        if (!activityAddr.isNullOrEmpty()&& !provinceName.isNullOrEmpty()){
 //            if (activityAddr?.contains(provinceName) == false){
-                addr = "$provinceName•$activityAddr"
+
 //            }
 //        }
+        addr = if(cityName.isNullOrEmpty()){
+            "$activityAddr"
+        }else{
+            "${cityName}•$activityAddr"
+        }
         return "活动地点: $addr"
     }
     fun getActTimeS(): String {

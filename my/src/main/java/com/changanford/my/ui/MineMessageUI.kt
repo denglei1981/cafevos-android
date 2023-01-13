@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -21,6 +22,7 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
@@ -270,13 +272,14 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.filter {itr-> itr.jumpDataType ==0 || itr.jumpDataType == 99 }.forEach {
-                                message.append("${it.userMessageId},")
-                            }
+                            it.filter { itr -> itr.jumpDataType == 0 || itr.jumpDataType == 99 }
+                                .forEach {
+                                    message.append("${it.userMessageId},")
+                                }
                             viewModel.changAllMessage(message.toString())
-                            if (pageNo == 1){
+                            if (pageNo == 1) {
                                 adapter2?.setList(it)
-                            }else {
+                            } else {
                                 adapter2?.addData(it)
                             }
 //                            setSaveText(messageStatus)
@@ -361,13 +364,22 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
                         }
 
+                    } else if (item.jumpDataType == 0 || item.jumpDataType == 99) {
+                        AlertDialog(context).builder()
+                            .setTitle("APP系统升级维护通知")
+                            .setMsg("亲爱的用户，平台将于7月25日进行系统维护升级，维护期间，平台将暂时无法访问，给您带来不便，敬请谅解！")
+                            .setMsgSize(12)
+                            .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
+                            .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
+                        read(getItemPosition(item))
                     } else {
                         JumpUtils.instans?.jump(
                             item.jumpDataType,
                             item.jumpDataValue
                         )
                     }
-                    if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0){
+
+                    if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0) {
                         read(getItemPosition(item))
                     }
 

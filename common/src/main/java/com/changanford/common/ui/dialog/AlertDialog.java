@@ -115,6 +115,24 @@ public class AlertDialog {
     }
 
     /**
+     * 设置Message
+     * @return
+     */
+    public AlertDialog setMsgSize(int size) {
+        txt_msg.setTextSize(size);
+        return this;
+    }
+
+    /**
+     * 设置Message
+     * @return
+     */
+    public AlertDialog setMsgColor(int color) {
+        txt_msg.setTextColor(color);
+        return this;
+    }
+
+    /**
      * 设置点击外部是否消失
      * @param cancel
      * @return

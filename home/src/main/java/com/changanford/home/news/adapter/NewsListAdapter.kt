@@ -17,6 +17,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -56,7 +57,7 @@ class NewsListAdapter(
         val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
         val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
-        GlideUtils.loadBD(item.pics, ivPicBig)
+        ivPicBig.loadCompress(item.pics)
         tvAuthorName.text = item.authors?.nickname
         if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
             tvSubtitle.visibility = View.GONE

@@ -44,6 +44,7 @@ import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -189,7 +190,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
 //                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
-                        GlideUtils.loadBigImage(picList[0], binding.layoutOne.ivPic)
+                        binding.layoutOne.ivPic.loadCompress(picList[0])
                         binding.btnMore.visibility = View.GONE
                         if (item.isGood == 1) {
                             binding.layoutOne.ivVeryPost.visibility = View.VISIBLE

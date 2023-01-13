@@ -21,6 +21,7 @@ import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
 
 
@@ -312,6 +313,18 @@ object GlideUtils {
         )
     }
 
+    fun ImageView.loadCompress(
+        url: String?,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        loadBigTransform(
+            handleImgUrl(url),
+            RoundGlideTransform(isSquare = false),
+            this,
+            errorDefaultRes
+        )
+    }
+
     /**
      * 加载圆角
      */
@@ -405,15 +418,30 @@ object GlideUtils {
         }
     }
 
-    fun dealWithMuchImage(
+    private fun dealWithMuchImage(
         imageView: ImageView,
         oriPath: String
     ): String {
         if (oriPath.contains("?") || oriPath.contains(".gif")) {
             return oriPath
         }
-        val height = (imageView.height * 0.8).toInt()
-        return "$oriPath?x-oss-process=image/resize,h_${height},m_lfit"
+        return if (oriPath.contains("androidios") && oriPath.contains("_")) {
+            val s = oriPath.substringAfter("androidios").substringBefore(".")
+            val array = s.split("_")
+            if (array.size != 2) {
+                "$oriPath?x-oss-process=image/resize,p_90/format,webp/quality,Q_95"
+            } else {
+                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
+                if (array[0].toInt() > screenWidth * 2) {
+                    "$oriPath?x-oss-process=image/resize,l_${imageView.width}/format,webp/quality,Q_95"
+                } else {
+                    oriPath
+                }
+            }
+        } else {
+            oriPath
+            //            return "$oriPath?x-oss-process=image/resize,w_${width},m_lfit"
+        }
 
     }
 

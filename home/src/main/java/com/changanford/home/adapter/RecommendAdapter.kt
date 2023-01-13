@@ -25,6 +25,7 @@ import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.*
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -66,9 +67,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
                 if (!TextUtils.isEmpty(item.pic)) {
-                    GlideUtils.loadBD(item.pic, ivPic, R.mipmap.image_h_one_default)
+                    ivPic.loadCompress(item.pic)
                 } else if (picLists != null) {
-                    GlideUtils.loadBD(picLists[0], ivPic)
+                    ivPic.loadCompress(picLists[0])
                 }
             }
             2 -> { //3张图
@@ -93,13 +94,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         val index = picLists.indexOf(s)
                         when (index) {
                             0 -> {
-                                GlideUtils.loadBD(s, onePic)
+                                onePic.loadCompress(s)
                             }
                             1 -> {
-                                GlideUtils.loadBD(s, twoPic)
+                                twoPic.loadCompress(s)
                             }
                             2 -> {
-                                GlideUtils.loadBD(s, threePic)
+                                threePic.loadCompress(s)
                             }
                         }
                     }
@@ -118,10 +119,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     }
 
     fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
-        var item = recdate.wonderful
-        var binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
+        val item = recdate.wonderful
+        val binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
         binding?.let {
-            GlideUtils.loadBD(item.coverImg, it.ivActs)
+            it.ivActs.loadCompress(item.coverImg)
 //            it.root.setOnClickListener {
 //                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
 //            }
@@ -251,6 +252,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
 
         GlideUtils.loadBD(item.authors?.avatar, ivHeader)
+
         tvAuthorName.text = item.authors?.nickname
         if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
             tvSubtitle.visibility = View.GONE
