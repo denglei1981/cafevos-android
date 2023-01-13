@@ -275,7 +275,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             var message: StringBuffer = StringBuffer()
                             it.filter { itr -> itr.jumpDataType == 0 || itr.jumpDataType == 99 }
                                 .forEach {
-                                    message.append("${it.userMessageId},")
+//                                    message.append("${it.userMessageId},")
                                 }
                             viewModel.changAllMessage(message.toString())
                             if (pageNo == 1) {
@@ -370,7 +370,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             .setTitle(item.messageTitle)
                             .setMsg(item.messageContent)
                             .setMsgSize(12)
-                            .setMsgHeight(48.toIntPx())
+                            .setMsgHeight(51.toIntPx())
                             .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
                             .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                         read(getItemPosition(item))
