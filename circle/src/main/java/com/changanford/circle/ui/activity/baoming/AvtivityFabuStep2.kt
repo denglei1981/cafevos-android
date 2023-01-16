@@ -56,6 +56,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -71,6 +72,7 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.scwang.smart.refresh.layout.util.SmartUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -192,7 +194,38 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                         mediacount++
                     }
                 }
-                uploadImgs(it, 0, dialog, mediacount, 0)
+
+                val needCompressImg = ArrayList<String?>()
+                selectList.forEach { bean ->
+                    bean.localMedias?.let {
+                        needCompressImg.add(
+                            PictureUtil.getFinallyPath(
+                                bean.localMedias!!
+                            )
+                        )
+                    }
+                }
+
+                ImageCompress.compressImage(
+                    this,
+                    needCompressImg,
+                    object : ImageCompress.ImageCompressResult {
+                        override fun compressSuccess(list: List<File>) {
+                            var index = 0
+                            selectList.forEach {
+                                it.localMedias?.let {
+                                    it.myCompressPath = list[index].absolutePath
+                                    index++
+                                }
+                            }
+                            uploadImgs(it, 0, dialog, mediacount, 0)
+                        }
+
+                        override fun compressFailed() {
+                            uploadImgs(it, 0, dialog, mediacount, 0)
+                        }
+
+                    })
             }
         })
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -503,8 +536,12 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         )
 
         if (selectList[index].localMedias != null) {  //封面必不为空 index 0必有值
-            val media = selectList[index].localMedias
-            ytPath = PictureUtil.getFinallyPath(media!!)
+            val media = selectList[index].localMedias!!
+            ytPath =  if (media.myCompressPath.isNullOrEmpty()) {
+                PictureUtil.getFinallyPath(media)
+            } else {
+                media.myCompressPath
+            }
             Log.d("=============", "${ytPath}")
             val type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
             val exifInterface = ExifInterface(ytPath);

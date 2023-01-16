@@ -42,6 +42,7 @@ import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.google.gson.Gson
@@ -53,6 +54,7 @@ import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.*
 
 @Route(path = ARouterCirclePath.ActivityFabuToupiao)
@@ -182,20 +184,21 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                 override fun onResult(result: List<LocalMedia?>?) {
                     val bean = result?.get(0)
                     val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                    path?.let { it1 ->
-                        OSSHelper.init(this@ActivityFabuToupiao)
-                            .getOSSToImage(
-                                this@ActivityFabuToupiao,
-                                it1,
-                                object : OSSHelper.OSSImageListener {
-                                    override fun getPicUrl(url: String) {
-                                        lifecycleScope.launch(Dispatchers.Main) {
-                                            voteBean.optionList[position].optionImg = url
-                                            dragAdapter.notifyItemChanged(position)
-                                        }
-                                    }
-                                })
-                    }
+
+                    ImageCompress.compressImage(
+                        this@ActivityFabuToupiao,
+                        arrayListOf(path),
+                        object : ImageCompress.ImageCompressResult {
+                            override fun compressSuccess(list: List<File>) {
+                                upLoadImage(list[0].absolutePath)
+                            }
+
+                            override fun compressFailed() {
+                                upLoadImage(path)
+                            }
+
+                        })
+
                 }
 
                 override fun onCancel() {}
@@ -203,6 +206,23 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             400,
             400
         )
+    }
+
+    private fun upLoadImage(path: String?) {
+        path?.let { it1 ->
+            OSSHelper.init(this@ActivityFabuToupiao)
+                .getOSSToImage(
+                    this@ActivityFabuToupiao,
+                    it1,
+                    object : OSSHelper.OSSImageListener {
+                        override fun getPicUrl(url: String) {
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                voteBean.optionList[position].optionImg = url
+                                dragAdapter.notifyItemChanged(position)
+                            }
+                        }
+                    })
+        }
     }
 
     var onItemDragListener: OnItemDragListener = object : OnItemDragListener {
@@ -280,9 +300,10 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             canvas.drawColor(ContextCompat.getColor(this@ActivityFabuToupiao, R.color.white))
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== RESULT_OK && requestCode == UCrop.REQUEST_CROP){
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = data?.let { UCrop.getOutput(it) }
             var cutPath = resultUri?.path
             cutPath?.let { it1 ->
@@ -298,13 +319,14 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             }
         }
     }
+
     private fun liveDataInit() {
         LiveDataBus.get().with(LiveDataBusKey.FORD_ALBUM_RESULT).observe(this) {
             if (position == -1) {
-                var conten = DtoBeanNew.ContentImg(it as String,"")
+                var conten = DtoBeanNew.ContentImg(it as String, "")
                 var list = ArrayList<DtoBeanNew.ContentImg>()
                 list.add(conten)
-                viewModel.downGlideImg(list){
+                viewModel.downGlideImg(list) {
                     PictureUtil.startUCrop(
                         this,
                         PictureUtil.getFinallyPath(it),
@@ -396,7 +418,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             if (voteBean.optionList.size < 20) {
                 var voteoption = VoteOptionBean("")
                 voteBean.optionList.add(voteoption)
-                dragAdapter.addData(voteBean.optionList.size-1,voteoption)
+                dragAdapter.addData(voteBean.optionList.size - 1, voteoption)
             }
         }
         binding.question.setOnClickListener {
@@ -429,11 +451,11 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             }
             voteBean.voteDesc = binding.etShuoming.text.toString()
             voteBean.optionList.forEach {
-                if (it.optionDesc.isNullOrEmpty()){
+                if (it.optionDesc.isNullOrEmpty()) {
                     "请输入选项内容".toast()
                     return@setOnClickListener
                 }
-                if (voteBean.voteType == "IMG" && it.optionImg.isNullOrEmpty()){
+                if (voteBean.voteType == "IMG" && it.optionImg.isNullOrEmpty()) {
                     "请选择选项图片".toast()
                     return@setOnClickListener
                 }
@@ -456,7 +478,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                 }
                             }
                         } else {
-                            JumpUtils.instans?.jump(26,"1")
+                            JumpUtils.instans?.jump(26, "1")
                             finish()
                         }
                     }.onWithMsgFailure {
@@ -474,12 +496,12 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                                         .delete(it1)
                                 }
                                 withContext(Dispatchers.Main) {
-                                    JumpUtils.instans?.jump(26,"1")
+                                    JumpUtils.instans?.jump(26, "1")
                                     finish()
                                 }
                             }
                         } else {
-                            JumpUtils.instans?.jump(26,"1")
+                            JumpUtils.instans?.jump(26, "1")
                             finish()
                         }
                     }.onWithMsgFailure {
@@ -507,7 +529,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                     voteBean.beginTime = TimeUtils.MillisToStr1(voteBean.beginTime.toLong())
                     voteBean.endTimeShow = TimeUtils.MillisToStrO(voteBean.endTime.toLong())
                     voteBean.endTime = TimeUtils.MillisToStr1(voteBean.endTime.toLong())
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
                 showDefaultData()
@@ -531,9 +553,9 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             etShuoming.setText(voteBean.voteDesc)
             multeorsignle.isChecked = voteBean.allowMultipleChoice == "YES"
             mcb.isChecked = voteBean.allowViewResult == "YES"
-            if (voteBean.voteType == "TEXT"){
+            if (voteBean.voteType == "TEXT") {
                 changeStyle(1)
-            }else{
+            } else {
                 changeStyle(2)
             }
         }
