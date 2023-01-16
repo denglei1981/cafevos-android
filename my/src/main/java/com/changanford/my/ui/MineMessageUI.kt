@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.MessageBean
 import com.changanford.common.bean.MessageItemData
 import com.changanford.common.net.*
@@ -27,6 +28,7 @@ import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.launchWithCatch
+import com.changanford.common.util.setCustomDensity
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
@@ -55,8 +57,13 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     var times = 0//记录全部已读次数，3才能满足条件
     var total = 0
-    override fun initView() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setCustomDensity(this, BaseApplication.INSTANT)
+    }
+
+    override fun initView() {
         binding.mineToolbar.toolbarTitle.text = "消息"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
@@ -370,7 +377,9 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             .setTitle(item.messageTitle)
                             .setMsg(item.messageContent)
                             .setMsgSize(12)
-                            .setMsgHeight(51.toIntPx())
+                            .setTitleSize(15)
+                            .cancelTitleBold()
+                            .setMsgHeight(52.toIntPx())
                             .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
                             .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                         read(getItemPosition(item))

@@ -8,4 +8,5 @@ package com.changanford.common.constant
 object HawkKey {
     const val GUIDE_HOME = "guideHome"
     const val GUIDE_MINE = "guideMine"
+    const val IS_OPEN_SIGN_IN_TIPS = "isOpenSignInTips"
 }

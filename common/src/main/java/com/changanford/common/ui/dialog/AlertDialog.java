@@ -2,6 +2,7 @@ package com.changanford.common.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Display;
@@ -99,6 +100,17 @@ public class AlertDialog {
         } else {
             txt_title.setText(title);
         }
+        return this;
+    }
+
+    public AlertDialog setTitleSize(int size) {
+        txt_title.setTextSize(size);
+        return this;
+    }
+
+    public AlertDialog cancelTitleBold() {
+        txt_title.setTypeface(Typeface.create(txt_title.getTypeface(), Typeface.NORMAL), Typeface.NORMAL);
+        txt_title.invalidate();
         return this;
     }
 

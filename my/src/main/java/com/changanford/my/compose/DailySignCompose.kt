@@ -1,5 +1,6 @@
 package com.changanford.my.compose
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,12 +20,19 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.changanford.common.bean.DaySignBean
 import com.changanford.common.bean.Sign7DayBean
+import com.changanford.common.constant.HawkKey
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.my.R
+import com.github.gzuliyujiang.wheelpicker.TimePicker
+import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode
+import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity
+import com.github.gzuliyujiang.wheelpicker.impl.UnitTimeFormatter
+import com.orhanobut.hawk.Hawk
 
 
-@Preview
 @Composable
 fun dailySignCompose(daySignBean: DaySignBean? = null) {
 
@@ -39,14 +47,38 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth(1f)
         ) {
-            Text(text = "每日签到", fontSize = 16.sp, color = Color(0xff666666))
-            Text(
-                text = "签到规则 >",
-                fontSize = 12.sp,
-                color = Color(0xff999999),
-                modifier = Modifier.clickable {
-                    JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
-                })
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "每日签到", fontSize = 16.sp, color = Color(0xff666666))
+                Text(
+                    text = "签到规则 >",
+                    fontSize = 12.sp,
+                    color = Color(0xff999999),
+                    modifier = Modifier
+                        .clickable {
+                            JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
+                        }
+                        .padding(start = 12.dp)
+                )
+            }
+
+            val isOpenTips = Hawk.get(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
+            val tipsImage = if (isOpenTips) {
+                R.mipmap.sign_in_tips_open
+            } else R.mipmap.sign_in_tips_close
+
+            Image(
+                painter = painterResource(id = tipsImage),
+                contentDescription = "",
+                modifier = Modifier
+                    .height(21.dp)
+                    .width(38.dp)
+                    .clickable {
+                        signInTipsClick()
+                    }
+            )
         }
         var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
         var hasGift = false
@@ -54,7 +86,7 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             if (it.signStatus == 2) {
                 canSign = true
             }
-            if (it.luckyBlessingBagId != 0 == true){
+            if (it.luckyBlessingBagId != 0 == true) {
                 hasGift = true
             }
         }
@@ -66,7 +98,7 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
         ) {
             if (daySignBean?.sevenDays?.isNotEmpty() == true) {
                 daySignBean.sevenDays?.forEach {
-                    signOneDay(it,hasGift)
+                    signOneDay(it, hasGift)
                 }
             } else {
                 repeat(7) {
@@ -107,6 +139,14 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
 }
 
 
+private fun signInTipsClick() {
+    if (MConstant.token.isEmpty()) {
+        startARouter(ARouterMyPath.SignUI)
+        return
+    }
+}
+
+
 @Preview("single")
 @Composable
 fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
@@ -122,7 +162,7 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                     modifier = Modifier
                         .size(25.dp)
                         .clickable {
-                            if ((bean?.luckyBlessingBagId?:0) !=0 ){
+                            if ((bean?.luckyBlessingBagId ?: 0) != 0) {
                                 JumpUtils.instans?.jump(
                                     1, "${MConstant.H5_SIGN_PRESENT}${bean?.luckyBlessingBagId}"
                                 )
