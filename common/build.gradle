@@ -250,5 +250,8 @@ dependencies {
 
     api 'com.orhanobut:hawk:2.0.1'
 
+    //图片压缩
+    api 'com.github.ZS-ZhangsShun:EasyImageCompressor:1.1.5'
+
 
 }

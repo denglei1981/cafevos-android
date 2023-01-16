@@ -44,6 +44,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
@@ -53,6 +54,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
+import java.io.File
 
 @Route(path = ARouterCirclePath.CreateQuestionActivity)
 class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, QuestionViewModel>() {
@@ -295,7 +297,38 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         viewModel.stsBean.observe(this, Observer {
             it?.let {
                 upedimgs.clear()
-                uploadImgs(it, 0, dialog)
+
+                val needCompressImg = ArrayList<String?>()
+                selectList.forEach { bean ->
+                    bean.let {
+                        needCompressImg.add(
+                            PictureUtil.getFinallyPath(
+                                bean
+                            )
+                        )
+                    }
+                }
+
+                ImageCompress.compressImage(
+                    this,
+                    needCompressImg,
+                    object : ImageCompress.ImageCompressResult {
+                        override fun compressSuccess(list: List<File>) {
+                            var index = 0
+                            selectList.forEach {
+                                it.let {
+                                    it.myCompressPath = list[index].absolutePath
+                                    index++
+                                }
+                            }
+                            uploadImgs(it, 0, dialog)
+                        }
+
+                        override fun compressFailed() {
+                            uploadImgs(it, 0, dialog)
+                        }
+
+                    })
             }
         })
         viewModel.createQuestionLiveData.observe(this, Observer {
@@ -425,7 +458,11 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         )
 
         val media = selectList[index]
-        val ytPath = PictureUtil.getFinallyPath(media)
+        val ytPath = if (media.myCompressPath.isNullOrEmpty()) {
+            PictureUtil.getFinallyPath(media)
+        } else {
+            media.myCompressPath
+        }
         Log.d("=============", "${ytPath}")
         var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
         var exifInterface = ExifInterface(ytPath);

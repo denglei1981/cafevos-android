@@ -46,6 +46,7 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -60,6 +61,7 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
+import com.xiaomi.push.it
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
@@ -352,7 +354,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     params["topicId"] = locaPostEntity!!.topicId
                     params["postsId"] = locaPostEntity!!.postsId
                     params["type"] = locaPostEntity.type
-                    locaPostEntity.keywords?.let {k->
+                    locaPostEntity.keywords?.let { k ->
                         params["keywords"] = k
                     }
                     params["circleId"] = locaPostEntity!!.circleId
@@ -966,7 +968,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
-    private fun upimgs(stsBean: STSBean, fmpath: String, dialog: LoadDialog) {
+    private fun upimgs(stsBean: STSBean, fmUrl: String, dialog: LoadDialog) {
+        ImageCompress.compressImage(
+            this,
+            arrayListOf(fmUrl),
+            object : ImageCompress.ImageCompressResult {
+                override fun compressSuccess(list: List<File>) {
+                    upCompressimgs(stsBean, list[0].absolutePath, dialog)
+                }
+
+                override fun compressFailed() {
+                    upCompressimgs(stsBean, fmUrl, dialog)
+                }
+
+            })
+    }
+
+    private fun upCompressimgs(stsBean: STSBean, fmpath: String, dialog: LoadDialog) {
+
         var type = fmpath?.substring(fmpath.lastIndexOf(".") + 1, fmpath.length)
         Glide.with(this).asBitmap().load(fmpath)
             .skipMemoryCache(true)
@@ -1154,18 +1173,18 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {
 
-                        canEditVideo = true
-                        val videoeditpath = data?.getStringExtra("finalPath")
-                        val time = data!!.getLongExtra("time", 0)
-                        SelectlocalMedia.apply {
-                            isCut = true
-                            cutPath = videoeditpath
-                            duration = time
-                        }
-                        selectList.clear()
-                        selectList.add(SelectlocalMedia)
-                        postVideoAdapter.setList(selectList)
-                        postVideoAdapter.notifyDataSetChanged()
+                    canEditVideo = true
+                    val videoeditpath = data?.getStringExtra("finalPath")
+                    val time = data!!.getLongExtra("time", 0)
+                    SelectlocalMedia.apply {
+                        isCut = true
+                        cutPath = videoeditpath
+                        duration = time
+                    }
+                    selectList.clear()
+                    selectList.add(SelectlocalMedia)
+                    postVideoAdapter.setList(selectList)
+                    postVideoAdapter.notifyDataSetChanged()
 
                 }
                 VideoChoseFMActivity.FM_CALLBACK -> {

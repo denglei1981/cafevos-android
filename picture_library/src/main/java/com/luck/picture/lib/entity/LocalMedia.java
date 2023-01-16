@@ -41,6 +41,8 @@ public class LocalMedia implements Parcelable {
      * compress path
      */
     private String compressPath;
+    private String myCompressPath;
+
     /**
      * cut path
      */
@@ -186,6 +188,7 @@ public class LocalMedia implements Parcelable {
     private long dateAddedTime;
 
     private String contentDesc;
+
     public String getContentDesc() {
         return contentDesc;
     }
@@ -266,6 +269,7 @@ public class LocalMedia implements Parcelable {
         realPath = in.readString();
         originalPath = in.readString();
         compressPath = in.readString();
+        myCompressPath = in.readString();
         cutPath = in.readString();
         androidQToPath = in.readString();
         duration = in.readLong();
@@ -305,6 +309,7 @@ public class LocalMedia implements Parcelable {
         dest.writeString(realPath);
         dest.writeString(originalPath);
         dest.writeString(compressPath);
+        dest.writeString(myCompressPath);
         dest.writeString(cutPath);
         dest.writeString(androidQToPath);
         dest.writeLong(duration);
@@ -436,6 +441,14 @@ public class LocalMedia implements Parcelable {
 
     public void setCompressPath(String compressPath) {
         this.compressPath = compressPath;
+    }
+
+    public String getMyCompressPath() {
+        return myCompressPath;
+    }
+
+    public void setMyCompressPath(String compressPath) {
+        this.myCompressPath = compressPath;
     }
 
     public String getCutPath() {
@@ -681,6 +694,7 @@ public class LocalMedia implements Parcelable {
                 ", realPath='" + realPath + '\'' +
                 ", originalPath='" + originalPath + '\'' +
                 ", compressPath='" + compressPath + '\'' +
+                ", myCompressPath='" + myCompressPath + '\'' +
                 ", cutPath='" + cutPath + '\'' +
                 ", androidQToPath='" + androidQToPath + '\'' +
                 ", duration=" + duration +

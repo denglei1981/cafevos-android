@@ -37,7 +37,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-class PostViewModule() :PostRoomViewModel(){
+class PostViewModule() : PostRoomViewModel() {
     var postsuccess = MutableLiveData<String>()
     val plateBean = MutableLiveData<PlateBean>()
     val cityCode = MutableLiveData<LocationDataBean>()
@@ -49,34 +49,34 @@ class PostViewModule() :PostRoomViewModel(){
     var _downloadLocalMedias = MutableLiveData<ArrayList<LocalMedia>>()
 
 
-    val postError= MutableLiveData<String>()
+    val postError = MutableLiveData<String>()
 
-    fun postEdit(params: HashMap<String,Any>){
-         launch (block = {
-              val body = params
+    fun postEdit(params: HashMap<String, Any>) {
+        launch(block = {
+            val body = params
 
-              val rKey = getRandomKey()
-              ApiClient.createApi<CircleNetWork>().postEdit(body.header(rKey),body.body(rKey))
-                  .onSuccess {
-                      postsuccess.value = "upsuccess"
-                  }
-                  .onWithMsgFailure {
-                      it?.toast()
-                      postError.value="error"
-                  }
-          })
-      }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().postEdit(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    postsuccess.value = "upsuccess"
+                }
+                .onWithMsgFailure {
+                    it?.toast()
+                    postError.value = "error"
+                }
+        })
+    }
 
     /**
      * 获取发帖模块
      */
-    fun getPlate(){
-        launch(block =  {
+    fun getPlate() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getPlate(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>().getPlate(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                     plateBean.value = it
+                    plateBean.value = it
                 }
                 .onFailure {
 
@@ -87,11 +87,11 @@ class PostViewModule() :PostRoomViewModel(){
     /**
      * 获取发帖模块
      */
-    fun getKeyWords(){
-        launch(block =  {
+    fun getKeyWords() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getkeywords(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>().getkeywords(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     keywords.value = it
                 }
@@ -101,11 +101,11 @@ class PostViewModule() :PostRoomViewModel(){
         })
     }
 
-    fun getTags(){
-        launch(block =  {
+    fun getTags() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getTags(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>().getTags(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     tagsList.value = it
                 }
@@ -116,19 +116,19 @@ class PostViewModule() :PostRoomViewModel(){
     }
 
 
-
     /**
      * 获取省市区ID
      */
-    fun getCityDetailBylngAndlat(latY: Double,lngX:Double) {
-        launch(block =  {
+    fun getCityDetailBylngAndlat(latY: Double, lngX: Double) {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["latY"] = latY
             body["lngX"] = lngX
             val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>().getCityDetailBylngAndlat(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<CircleNetWork>()
+                .getCityDetailBylngAndlat(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    cityCode.value= it
+                    cityCode.value = it
                 }
                 .onFailure {
 
@@ -138,21 +138,21 @@ class PostViewModule() :PostRoomViewModel(){
     }
 
 
-    fun getOSS(){
-        launch(block =  {
+    fun getOSS() {
+        launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey),body.body(rKey))
+            ApiClient.createApi<NetWorkApi>().getOSS(body.header(rKey), body.body(rKey))
                 .onSuccess {
-                    stsBean.value= it
+                    stsBean.value = it
                 }
-                .onFailure {
-
+                .onWithMsgFailure {
+                    it?.toast()
                 }
         })
     }
 
-    fun getPostById(postsId:String){
+    fun getPostById(postsId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             body["postsId"] = postsId
@@ -170,10 +170,11 @@ class PostViewModule() :PostRoomViewModel(){
             it.message?.toast()
         })
     }
+
     /**
      * 下载图片
      */
-    fun downGlideImgs(imageList:List<ImageList>) {
+    fun downGlideImgs(imageList: List<ImageList>) {
         viewModelScope.launch(Dispatchers.IO) {
             Observable.fromIterable(imageList)
                 .map { t ->
@@ -198,7 +199,8 @@ class PostViewModule() :PostRoomViewModel(){
                         val destFile = File(appDir, fileName)
                         //把gilde下载得到图片复制到定义好的目录中去
                         copy(file, destFile)
-                        val localMedia = LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
+                        val localMedia =
+                            LocalMedia(destFile.path, 0, PictureMimeType.ofImage(), "image/jpeg")
                         localMedia.androidQToPath = destFile.path
                         localMedia.realPath = destFile.path
                         localMedia
@@ -214,12 +216,13 @@ class PostViewModule() :PostRoomViewModel(){
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
 //                yuanPathList.add(it.path)
-                    Log.d("lists",JSON.toJSONString(it))
+                    Log.d("lists", JSON.toJSONString(it))
                     downloadLocalMedias.add(it)
                     _downloadLocalMedias.postValue(downloadLocalMedias)
                 }
         }
     }
+
     /**
      * 复制文件
      *

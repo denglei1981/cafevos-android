@@ -246,3 +246,5 @@
 -keep class com.changanford.common.util.crash.IProtectActivityStartUp{*;}
 -keepclassmembers class com.changanford.common.util.crash.IProtectActivityStartUp{*;}
 -keepclassmembers class com.changanford.common.util.crash.ReflexUtil{*;}
+
+-keep class com.zs.easy.imgcompress.** {*;}

@@ -51,6 +51,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.CREATE_LOCATION
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -67,6 +68,7 @@ import com.yw.li_model.adapter.EmojiAdapter
 import io.reactivex.exceptions.Exceptions
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
+import java.io.File
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -186,8 +188,40 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         })
         viewModel.stsBean.observe(this, Observer {
             it?.let {
+
                 upedimgs.clear()
-                uploadImgs(it, 0, dialog)
+
+                val needCompressImg = ArrayList<String?>()
+                selectList.forEach { bean ->
+                    bean.let {
+                        needCompressImg.add(
+                            PictureUtil.getFinallyPath(
+                                bean
+                            )
+                        )
+                    }
+                }
+
+                ImageCompress.compressImage(
+                    this,
+                    needCompressImg,
+                    object : ImageCompress.ImageCompressResult {
+                        override fun compressSuccess(list: List<File>) {
+                            var index = 0
+                            selectList.forEach {
+                                it.let {
+                                    it.myCompressPath = list[index].absolutePath
+                                    index++
+                                }
+                            }
+                            uploadImgs(it, 0, dialog)
+                        }
+
+                        override fun compressFailed() {
+                            uploadImgs(it, 0, dialog)
+                        }
+
+                    })
             }
         })
         viewModel.cityCode.observe(this, Observer {
@@ -583,7 +617,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         isunSave = false
                     }
 
-                }, isCompress = true
+                }, isCompress = false
             )
         }
         postPicAdapter.setOnItemClickListener { adapter, view, position ->
@@ -819,7 +853,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         )
 
         val media = selectList[index]
-        val ytPath = PictureUtil.getFinallyPath(media)
+        val ytPath = if (media.myCompressPath.isNullOrEmpty()) {
+            PictureUtil.getFinallyPath(media)
+        } else {
+            media.myCompressPath
+        }
         Log.d("=============", "${ytPath}")
         var type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
         var exifInterface = ExifInterface(ytPath);

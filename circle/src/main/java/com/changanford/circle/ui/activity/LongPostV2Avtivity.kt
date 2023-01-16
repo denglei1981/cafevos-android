@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.Settings
 import android.text.*
 import android.text.style.AbsoluteSizeSpan
@@ -42,7 +43,6 @@ import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
@@ -50,9 +50,10 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
-import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.image.ImageCompress
+import com.changanford.common.util.image.ImageCompress.compressImage
 import com.changanford.common.utilext.*
 import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
@@ -61,8 +62,13 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.yw.li_model.adapter.EmojiAdapter
+import com.zs.easy.imgcompress.EasyImgCompress
+import com.zs.easy.imgcompress.bean.ErrorBean
+import com.zs.easy.imgcompress.listener.OnCompressMultiplePicsListener
+import com.zs.easy.imgcompress.util.GBMBKBUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
+import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
@@ -184,9 +190,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
-        viewModel.stsBean.observe(this, Observer {
+        viewModel.stsBean.observe(this) {
             it?.let {
                 upedimgs.clear()
+                selectList.clear()
                 selectList.add(LongPostBean("", FMMeadia))
                 selectList.addAll(longpostadapter.data)
                 var mediacount = 0
@@ -195,9 +202,40 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         mediacount++
                     }
                 }
-                uploadImgs(it, 0, dialog, mediacount, 0)
+                val needCompressImg = ArrayList<String?>()
+                selectList.forEach { bean ->
+                    bean.localMedias?.let {
+                        needCompressImg.add(
+                            PictureUtil.getFinallyPath(
+                                bean.localMedias!!
+                            )
+                        )
+                    }
+                }
+
+                compressImage(
+                    this,
+                    needCompressImg,
+                    object : ImageCompress.ImageCompressResult {
+                        override fun compressSuccess(list: List<File>) {
+                            var index = 0
+                            selectList.forEach {
+                                it.localMedias?.let {
+                                    it.myCompressPath = list[index].absolutePath
+                                    index++
+                                }
+                            }
+                            uploadImgs(it, 0, dialog, mediacount, 0)
+                        }
+
+                        override fun compressFailed() {
+                            uploadImgs(it, 0, dialog, mediacount, 0)
+                        }
+
+                    })
+
             }
-        })
+        }
         viewModel.cityCode.observe(this, Observer {
             params["cityCode"] = it.cityCode ?: ""
             params["city"] = it.cityName
@@ -352,7 +390,6 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         })
 
     }
-
 
     fun showErrorWarn() {
         QuickPopupBuilder.with(this)
@@ -713,7 +750,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
             val meadiaList: ArrayList<LocalMedia> = arrayListOf()
-            PictureUtil.openGallery(this, meadiaList,
+            PictureUtil.openGallery(
+                this, meadiaList,
                 object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
                         if (result != null) {
@@ -733,7 +771,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         isunSave = false
                     }
 
-                },isCompress = true)
+                }, isCompress = false
+            )
         }
 
 
@@ -1047,15 +1086,20 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         )
 
         if (selectList[index].localMedias != null) {  //封面必不为空 index 0必有值
-            val media = selectList[index].localMedias
-            ytPath = PictureUtil.getFinallyPath(media!!)
+            val media = selectList[index].localMedias!!
+            ytPath = if (media.myCompressPath.isNullOrEmpty()) {
+                PictureUtil.getFinallyPath(media)
+            } else {
+                media.myCompressPath
+            }
+
             Log.d("=============", "${ytPath}")
             val type = ytPath.substring(ytPath.lastIndexOf(".") + 1, ytPath.length)
             val exifInterface = ExifInterface(ytPath);
             val rotation = exifInterface.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
                 ExifInterface.ORIENTATION_NORMAL
-            );
+            )
             path = stsBean.tempFilePath + System.currentTimeMillis() + "androidios${
                 if (media.isCut) {
                     if (rotation == ExifInterface.ORIENTATION_ROTATE_90 || rotation == ExifInterface.ORIENTATION_ROTATE_270) {
@@ -1154,7 +1198,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
         }
         params["tagIds"] = tagIds
-        params["content"]=""
+        params["content"] = ""
         JSON.toJSONString(params).logD()
 
         try {

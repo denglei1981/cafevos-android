@@ -155,8 +155,8 @@ public class AlertDialog {
      *
      * @return
      */
-    public AlertDialog setMsgHeight(int height) {
-        txt_msg.setMaxHeight(height);
+    public AlertDialog setMsgLines(int lines) {
+        txt_msg.setMaxLines(lines);
         txt_msg.setMovementMethod(ScrollingMovementMethod.getInstance());
         return this;
     }
