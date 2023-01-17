@@ -445,4 +445,34 @@ object GlideUtils {
 
     }
 
+    fun composeDealWithMuchImage(
+        context: Context,
+        width: Int,
+        oriPath: String?
+    ): String? {
+        if (oriPath.isNullOrEmpty()) {
+            return null
+        }
+        if (oriPath.contains("?") || oriPath.contains(".gif")) {
+            return oriPath
+        }
+        return if (oriPath.contains("androidios") && oriPath.contains("_")) {
+            val s = oriPath.substringAfter("androidios").substringBefore(".")
+            val array = s.split("_")
+            if (array.size != 2) {
+                "$oriPath?x-oss-process=image/resize,p_90/format,webp/quality,Q_95"
+            } else {
+                val screenWidth = ScreenUtils.getScreenWidth(context)
+                if (array[0].toInt() > screenWidth * 2) {
+                    "$oriPath?x-oss-process=image/resize,l_${width}/format,webp/quality,Q_95"
+                } else {
+                    oriPath
+                }
+            }
+        } else {
+            oriPath
+            //            return "$oriPath?x-oss-process=image/resize,w_${width},m_lfit"
+        }
+
+    }
 }

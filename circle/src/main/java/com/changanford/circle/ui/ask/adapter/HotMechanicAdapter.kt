@@ -12,6 +12,7 @@ import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.bean.TecnicianVo
 import com.changanford.circle.databinding.ItemHotMechanicBinding
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 
 /**
  *Author lcw
@@ -25,7 +26,8 @@ class HotMechanicAdapter :
     override fun convert(holder: BaseViewHolder, item: TecnicianVo) {
         val binding = DataBindingUtil.bind<ItemHotMechanicBinding>(holder.itemView)
         binding?.let {
-            GlideUtils.loadBD(item.avater, it.ivHeader)
+//            GlideUtils.loadBD(item.avater, it.ivHeader)
+            it.ivHeader.loadCompress(item.avater)
             it.tvUserName.text = item.nickName
 
 

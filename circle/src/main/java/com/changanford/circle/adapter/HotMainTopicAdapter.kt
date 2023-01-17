@@ -12,6 +12,7 @@ import com.changanford.circle.databinding.ItemMainHotTopicBinding
 import com.changanford.circle.ext.loadColLImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 
 /**
  *Author lcw
@@ -28,7 +29,7 @@ class HotMainTopicAdapter :
             MUtils.setTopMargin(binding.clContent, 18, holder.layoutPosition)
             binding.tvNum.text = "${item.postsCount}帖子     ${item.viewsCount}浏览"
             binding.bean = item
-            binding.ivPic.loadColLImage(item.pic)
+            binding.ivPic.loadCompress(item.pic)
             binding.ivPic.setCircular(5)
             when (val position = holder.layoutPosition + 1) {
                 1 -> {

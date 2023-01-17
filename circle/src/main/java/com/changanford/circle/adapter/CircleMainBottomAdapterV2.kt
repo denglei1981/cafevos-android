@@ -48,6 +48,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.*
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
@@ -207,7 +208,8 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     picList.size == 1 -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
-                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
+//                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
+                        binding.layoutOne.ivPic.loadCompress(picList[0])
                         binding.btnMore.visibility = View.GONE
                         if (item.isGood == 1) {
                             binding.layoutOne.ivVeryPost.visibility = View.VISIBLE

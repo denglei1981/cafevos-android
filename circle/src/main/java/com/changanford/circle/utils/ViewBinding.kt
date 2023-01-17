@@ -11,6 +11,7 @@ import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadImage
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 
@@ -25,13 +26,14 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  */
 @BindingAdapter(value = ["bindingUrl", "circleCrop","placeholder"], requireAll = false)
 fun bindingUrl(imageView: ImageView, url: String, mCircleCrop: Boolean = false,@DrawableRes mPlaceHolder:Int) {
-    imageView.loadImage(
-        GlideUtils.handleImgUrl(url),
-        ImageOptions().apply {
-            circleCrop = mCircleCrop
-            error = R.mipmap.ic_def_square_img
-            placeholder = mPlaceHolder
-        })
+//    imageView.loadImage(
+//        GlideUtils.handleImgUrl(url),
+//        ImageOptions().apply {
+//            circleCrop = mCircleCrop
+//            error = R.mipmap.ic_def_square_img
+//            placeholder = mPlaceHolder
+//        })
+    imageView.loadCompress(url)
 }
 
 @BindingAdapter(value = ["bindingBigUrl", "circleCrop"], requireAll = false)

@@ -9,6 +9,7 @@ import com.changanford.circle.ext.loadColLImage
 import com.changanford.circle.ext.setCircular
 import com.changanford.common.bean.TestBean
 import com.changanford.common.constant.TestImageUrl
+import com.changanford.common.utilext.GlideUtils.loadCompress
 
 /**
  *Author lcw
@@ -25,7 +26,7 @@ class CircleDetailsActivityAdapter :
     ) {
         holder.dataBinding?.apply {
             ivBg.setCircular(5)
-            ivBg.loadColLImage(item.coverImg)
+            ivBg.loadCompress(item.coverImg)
             tvContent.text = item.title
 
             when (item.wonderfulType) {

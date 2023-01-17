@@ -31,6 +31,7 @@ import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -196,8 +197,9 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 picList.size == 1 -> {
                     binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
                     binding?.layoutAskInfo?.ivPic?.visibility = View.VISIBLE
-                    GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
-                    binding.layoutAskInfo.btnMore.visibility = View.GONE
+//                    GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
+                    binding?.layoutAskInfo?.ivPic?.loadCompress(picList[0])
+                    binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
                 }
                 else -> {
                     binding?.layoutAskInfo?.ivNine?.visibility = View.GONE

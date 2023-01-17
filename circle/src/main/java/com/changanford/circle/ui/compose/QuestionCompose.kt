@@ -41,6 +41,7 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntPx
 import java.text.SimpleDateFormat
 
 /**
@@ -456,6 +457,7 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
     val imageLoaderM = ImageLoader.Builder(LocalContext.current)
         .componentRegistry { add(GifDecoder()) }
         .build()
+    val context = LocalContext.current
     imgs?.split(",")?.filter { it != "" }?.apply {
         when (size) {
             0 -> {}
@@ -463,8 +465,11 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                 val pic = this[0]
                 val imgSize = viewWidthDp * 0.49
                 Image(
-                    painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(pic)
-                        ?: R.mipmap.head_default,
+                    painter = rememberImagePainter(data = GlideUtils.composeDealWithMuchImage(
+                        context,
+                        imgSize.toInt().toIntPx(),
+                        GlideUtils.handleNullableUrl(pic)
+                    ) ?: R.mipmap.head_default,
                         imageLoader = imageLoaderM,
                         builder = {
 
@@ -483,8 +488,11 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     for (i in 0 until size) {
                         Image(
-                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(this@apply[i])
-                                ?: R.mipmap.head_default,
+                            painter = rememberImagePainter(data = GlideUtils.composeDealWithMuchImage(
+                                context,
+                                imgSize.toIntPx(),
+                                GlideUtils.handleNullableUrl(this@apply[i])
+                            ) ?: R.mipmap.head_default,
                                 imageLoader = imageLoaderM,
                                 builder = {
 
@@ -519,8 +527,10 @@ private fun ImgsUI(imgs: String?, viewWidthDp: Int = 0) {
                                 ) {
                                     if (column < itemList.size) {
                                         Image(
-                                            painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
-                                                itemList[column]
+                                            painter = rememberImagePainter(data = GlideUtils.composeDealWithMuchImage(
+                                                context,
+                                                imgSize.toIntPx(),
+                                                GlideUtils.handleNullableUrl(itemList[column])
                                             ) ?: R.mipmap.head_default,
                                                 imageLoader = imageLoaderM,
                                                 builder = {
@@ -618,16 +628,17 @@ private fun UserInfoUI(itemData: QuestionItemBean, imgs: String?) {
 //            Spacer(modifier = Modifier.height(4.dp))
             Spacer(modifier = Modifier.height(20.dp))
         }
-        Row(modifier = Modifier
-            .run {
-                fillMaxWidth()
-                if (MConstant.conQaUjId != userInfo.conQaUjId) {
-                    this.clickable {
-                        JumpUtils.instans?.jump(114, userInfo.conQaUjId)
+        Row(
+            modifier = Modifier
+                .run {
+                    fillMaxWidth()
+                    if (MConstant.conQaUjId != userInfo.conQaUjId) {
+                        this.clickable {
+                            JumpUtils.instans?.jump(114, userInfo.conQaUjId)
+                        }
                     }
-                }
-                this
-            }, verticalAlignment = Alignment.CenterVertically
+                    this
+                }, verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(userInfo.avater)
