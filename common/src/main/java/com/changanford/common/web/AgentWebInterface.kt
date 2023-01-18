@@ -922,4 +922,14 @@ class AgentWebInterface(
             }
         }
     }
+
+    /**
+     * 获取临时code授权码
+     */
+    @JavascriptInterface
+    fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
+        activity?.viewModel?.getH5AccessCode(clientId,redirectUrl) {
+            agentWeb.jsAccessEntrace.quickCallJs(callback,it)
+        }
+    }
 }

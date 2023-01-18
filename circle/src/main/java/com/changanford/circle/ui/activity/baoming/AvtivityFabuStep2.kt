@@ -783,12 +783,18 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 this
             ) { date, v ->
                 dateend = TimeUtils.MillisToStr1(date.time)
+                var baomingStartTime = TimeUtils.StrToMillis(ActivityFabuBaoming.dto.signBeginTime)
                 if (timebegin.time > date.time) {
                     ToastUtils.s(
                         BaseApplication.INSTANT.applicationContext,
                         "结束时间不能小于开始时间"
                     )
                     pvActTime!!.show()
+                } else if (baomingStartTime > date.time) {
+                    ToastUtils.s(
+                        BaseApplication.INSTANT.applicationContext,
+                        "活动结束时间不能早于报名开始时间"
+                    )
                 } else {
                     ActivityFabuBaoming.dto.endTime = dateend
                     ActivityFabuBaoming.dto.endTimeShow = TimeUtils.MillisToStrO(date.time)

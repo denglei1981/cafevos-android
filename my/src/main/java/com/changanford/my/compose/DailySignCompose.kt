@@ -1,13 +1,12 @@
 package com.changanford.my.compose
 
-import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DaySignBean
 import com.changanford.common.bean.Sign7DayBean
 import com.changanford.common.constant.HawkKey
@@ -25,11 +25,12 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.testCalendar
+import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.my.R
 import com.github.gzuliyujiang.wheelpicker.TimePicker
-import com.github.gzuliyujiang.wheelpicker.annotation.TimeMode
-import com.github.gzuliyujiang.wheelpicker.entity.TimeEntity
-import com.github.gzuliyujiang.wheelpicker.impl.UnitTimeFormatter
 import com.orhanobut.hawk.Hawk
 
 
@@ -64,7 +65,9 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 )
             }
 
-            val isOpenTips = Hawk.get(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
+            var isOpenTips by remember {
+                mutableStateOf(Hawk.get(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)&&(System.currentTimeMillis()-Hawk.get(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0) > 30*24*60*60*1000))
+            }
             val tipsImage = if (isOpenTips) {
                 R.mipmap.sign_in_tips_open
             } else R.mipmap.sign_in_tips_close
@@ -76,7 +79,9 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                     .height(21.dp)
                     .width(38.dp)
                     .clickable {
-                        signInTipsClick()
+                        signInTipsClick(isOpenTips) {
+                            isOpenTips = it
+                        }
                     }
             )
         }
@@ -139,10 +144,27 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
 }
 
 
-private fun signInTipsClick() {
+private fun signInTipsClick(isOpenTips: Boolean,result: (Boolean) -> Unit) {
     if (MConstant.token.isEmpty()) {
         startARouter(ARouterMyPath.SignUI)
         return
+    }
+    if (isOpenTips){
+        testCalendar(2)
+        Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0)
+        Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
+        result(false)
+        "删除成功".toast()
+    }else {
+        showTimePicker { it1, it2 ->
+            //添加事件
+            var time = TimeUtils.MillisTo_M_H(System.currentTimeMillis())//yyyy.MM.dd HH:mm
+            testCalendar(1,TimeUtils.MillisTo_M_H_REVERSE(time.substring(0,11).plus("$it1:$it2")))
+            Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, System.currentTimeMillis())
+            Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, true)
+            result(true)
+            "添加成功".toast()
+        }
     }
 }
 
@@ -247,5 +269,16 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
             color = Color(if (bean?.signStatus == 1) 0xff333333 else 0xff999999)
         )
 
+    }
+}
+
+fun showTimePicker(result:(String,String)->Unit){
+    var timePicker = TimePicker(BaseApplication.curActivity)
+    timePicker.apply {
+        setTitle("每日提醒时间")
+        setOnTimePickedListener { hour, minute, second ->
+            result("$hour","$minute")
+        }
+        show()
     }
 }

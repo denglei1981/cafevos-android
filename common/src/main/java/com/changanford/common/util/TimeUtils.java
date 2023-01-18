@@ -152,6 +152,19 @@ public class TimeUtils {
         SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_M_H);
         return sf.format(date);
     }
+    public static Long MillisTo_M_H_REVERSE(String time) {
+        if (time == null) {
+            return 0L;
+        }
+        SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_M_H);
+
+        try {
+            return sf.parse(time).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
 
     public static String MillisTo_YMDHM(Long timeMillis) {
         if (timeMillis == null) {

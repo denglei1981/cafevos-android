@@ -299,6 +299,27 @@ class AgentWebViewModle : ViewModel() {
             }
         }
     }
+
+    /**
+     * 获取h5临时授权Code
+     */
+    fun getH5AccessCode(clientId:String,redirectUrl:String,result: (String) -> Unit){
+        if (UserManger.isLogin()) {
+            viewModelScope.launch {
+                fetchRequest {
+                    var body = java.util.HashMap<String, String>()
+                    body["clientId"] = clientId
+                    body["redirectUrl"] = redirectUrl
+                    var rkey = getRandomKey()
+                    apiService.getH5AccessCode(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    it?.let { result(it) }
+                }.onWithMsgFailure {
+                    it?.toast()
+                }
+            }
+        }
+    }
 }
 
 interface MyBindCarList {

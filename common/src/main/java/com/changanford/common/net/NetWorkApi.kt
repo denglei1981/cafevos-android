@@ -568,6 +568,15 @@ interface NetWorkApi {
     ): CommonResponse<UserInfoBean>
 
     /**
+     * 获取h5临时授权Code
+     */
+    @POST("/idp/getTempCode")
+    suspend fun getH5AccessCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
+
+    /**
      * 任务列表
      */
     @POST("userTask/getAllTasks")

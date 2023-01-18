@@ -9,4 +9,5 @@ object HawkKey {
     const val GUIDE_HOME = "guideHome"
     const val GUIDE_MINE = "guideMine"
     const val IS_OPEN_SIGN_IN_TIPS = "isOpenSignInTips"
+    const val OPEN_SIGN_IN_TIPS_TIME = "OpenSignInTipsTime"
 }
