@@ -36,11 +36,11 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     }
 
     companion object {
-        fun newInstance(value: String, userId: String = "",bg:Boolean=false): PostFragment {
+        fun newInstance(value: String, userId: String = "", bg: Boolean = false): PostFragment {
             val bundle: Bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
             bundle.putString(RouterManger.KEY_TO_ID, userId)
-            bundle.putBoolean("bg",bg)
+            bundle.putBoolean("bg", bg)
             val medalFragment = PostFragment()
             medalFragment.arguments = bundle
             return medalFragment
@@ -67,19 +67,26 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
 
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
+            if (it == "footPost") {
+                postAdapter.type = "我的足迹-帖子"
+            } else if (it == "collectPost") {
+                postAdapter.type = "我的收藏-帖子"
+            }
         }
         arguments?.getBoolean("bg")?.let {
-           if(it){
-               binding.llBg.background=ContextCompat.getDrawable(requireContext(),R.drawable.shape_gray_f4)
-           }
+            if (it) {
+                binding.llBg.background =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.shape_gray_f4)
+            }
 
         }
 
-        userId = UserManger.getSysUserInfo()?.uid?:""
+        userId = UserManger.getSysUserInfo()?.uid ?: ""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
         }
-        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
+        mCheckForGapMethod =
+            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
 
         staggeredGridLayoutManager = StaggeredGridLayoutManager(
@@ -100,11 +107,12 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     override fun bindSmartLayout(): SmartRefreshLayout? {
         return binding.rcyPost.smartCommonLayout
     }
-    var searchKeys:String=""
 
-    fun  mySerachInfo(){
+    var searchKeys: String = ""
+
+    fun mySerachInfo() {
         var total: Int = 0
-        viewModel.queryMineCollectPost(1,searchKeys) { response ->
+        viewModel.queryMineCollectPost(1, searchKeys) { response ->
             response?.data?.total?.let {
                 total = it
             }
@@ -113,12 +121,13 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             }
         }
     }
+
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
         when (type) {
             "collectPost" -> {
-                viewModel.queryMineCollectPost(pageSize,searchKeys) { response ->
+                viewModel.queryMineCollectPost(pageSize, searchKeys) { response ->
                     response?.data?.total?.let {
                         total = it
                     }

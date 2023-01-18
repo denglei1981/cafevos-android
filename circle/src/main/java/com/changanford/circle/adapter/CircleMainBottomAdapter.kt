@@ -1,7 +1,6 @@
 package com.changanford.circle.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -22,13 +21,12 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.DensityUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.*
 import com.luck.picture.lib.tools.ScreenUtils
 
@@ -40,6 +38,8 @@ import com.luck.picture.lib.tools.ScreenUtils
 class CircleMainBottomAdapter(context: Context) :
     BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_main_bottom),
     LoadMoreModule {
+
+    var type = ""
 
     private val imgWidth by lazy {
         (ScreenUtils.getScreenWidth(context) - DensityUtils.dip2px(60F)) / 2
@@ -89,7 +89,7 @@ class CircleMainBottomAdapter(context: Context) :
 
             if (item.type == 3) {//视频
                 binding.ivPlay.visibility = View.VISIBLE
-                binding.tvVideoTimes.visibility=View.VISIBLE
+                binding.tvVideoTimes.visibility = View.VISIBLE
                 if (item.videoTime == null) {
                     binding.tvVideoTimes.visibility = View.GONE
                 } else {
@@ -98,7 +98,7 @@ class CircleMainBottomAdapter(context: Context) :
                 binding.tvVideoTimes.text = item.videoTime.toString()
             } else {
                 binding.ivPlay.visibility = View.GONE
-                binding.tvVideoTimes.visibility=View.GONE
+                binding.tvVideoTimes.visibility = View.GONE
             }
 
             if (item.city.isNullOrEmpty()) {
@@ -126,7 +126,7 @@ class CircleMainBottomAdapter(context: Context) :
 //                    circleCrop = true
 //                    error = R.mipmap.head_default
 //                })
-            GlideUtils.loadBD( item.authorBaseVo?.avatar, binding.ivHead)
+            GlideUtils.loadBD(item.authorBaseVo?.avatar, binding.ivHead)
             binding.ivBg.loadImage(
                 item.pics,
                 ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
@@ -161,10 +161,34 @@ class CircleMainBottomAdapter(context: Context) :
                             binding.ivLike.setImageResource(R.mipmap.circle_like_image)
                             item.likesCount++
                             AnimScaleInUtil.animScaleIn(binding.ivLike)
+                            if (type.isNotEmpty()) {
+                                GIOUtils.postLickClick(
+                                    type,
+                                    item.topicId,
+                                    item.topicName,
+                                    item.authorBaseVo?.authorId,
+                                    item.postsId.toString(),
+                                    item.title,
+                                    item.circleId,
+                                    item.circleName
+                                )
+                            }
                         } else {
                             item.isLike = 0
                             item.likesCount--
                             binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                            if (type.isNotEmpty()) {
+                                GIOUtils.cancelPostLickClick(
+                                    type,
+                                    item.topicId,
+                                    item.topicName,
+                                    item.authorBaseVo?.authorId,
+                                    item.postsId.toString(),
+                                    item.title,
+                                    item.circleId,
+                                    item.circleName
+                                )
+                            }
                         }
                         binding.tvLikeNum.text =
                             "${if (item.likesCount > 0) item.likesCount else "0"}"

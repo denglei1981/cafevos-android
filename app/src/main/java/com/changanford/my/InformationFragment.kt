@@ -6,6 +6,7 @@ import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.news.adapter.NewsListAdapter
@@ -24,7 +25,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var type: String = ""
     var userId: String = ""
 
-    var searchKeys:String=""
+    var searchKeys: String = ""
 
     val infoAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
@@ -60,6 +61,11 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     override fun initView() {
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
+            if (it == "footInformation") {
+                infoAdapter.type = "我的足迹-资讯"
+            } else if (it == "collectInformation") {
+                infoAdapter.type = "我的收藏-资讯"
+            }
         }
         userId = UserManger.getSysUserInfo()?.uid ?: ""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
@@ -105,11 +111,11 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         }
     }
 
-    fun  myCollectInfo(pageSize: Int){
+    fun myCollectInfo(pageSize: Int) {
         var total: Int = 0
-        viewModel.queryMineCollectInfo(pageSize,searchKeys) { reponse ->
+        viewModel.queryMineCollectInfo(pageSize, searchKeys) { reponse ->
             reponse?.data?.total?.let {
-                total=it
+                total = it
             }
             completeRefresh(reponse.data?.dataList, infoAdapter, total)
         }

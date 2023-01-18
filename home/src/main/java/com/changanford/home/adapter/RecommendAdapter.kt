@@ -24,6 +24,7 @@ import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.*
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
@@ -299,6 +300,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                         false
                                     ).toString()
                                 )
+                                GIOUtils.infoLickClick(
+                                    "发现-推荐",
+                                    item.artSpecialTopicTitle,
+                                    item.artId,
+                                    item.artTitle
+                                )
                             } else {
                                 item.isLike = 0
                                 val likesCount = item.likeCount.minus(1)
@@ -308,6 +315,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                         likesCount.toString(),
                                         false
                                     ).toString()
+                                )
+                                GIOUtils.cancelInfoLickClick(
+                                    "发现-推荐",
+                                    item.artSpecialTopicTitle,
+                                    item.artId,
+                                    item.artTitle
                                 )
                             }
                             actionLike(item.artId)
@@ -442,7 +455,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         this.notifyDataSetChanged()
     }
 
-    // 喜欢
+    // 资讯点赞
     fun actionLike(artId: String) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
@@ -478,11 +491,31 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     if (it.code == 0) {
                         it.msg.toast()
                         if (item.isLike == 0) {
+                            GIOUtils.postLickClick(
+                                "发现-推荐",
+                                item.postsTopicId,
+                                item.postsTopicName,
+                                item.authors?.authorId,
+                                item.postsId,
+                                item.title,
+                                item.postsCircleId,
+                                item.postsCircleName
+                            )
 //                            "点赞成功".toast()
                             item.isLike = 1
                             tvLikeView.setThumb(R.mipmap.home_comment_like, true)
                             item.postsLikesCount++
                         } else {
+                            GIOUtils.cancelPostLickClick(
+                                "发现-推荐",
+                                item.postsTopicId,
+                                item.postsTopicName,
+                                item.authors?.authorId,
+                                item.postsId,
+                                item.title,
+                                item.postsCircleId,
+                                item.postsCircleName
+                            )
 //                            "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--

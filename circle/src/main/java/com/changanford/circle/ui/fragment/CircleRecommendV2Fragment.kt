@@ -21,6 +21,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.zhpan.bannerview.constants.PageStyle
@@ -37,7 +38,6 @@ class CircleRecommendV2Fragment :
 //    private lateinit var mCheckForGapMethod: Method
 
     private val adapter by lazy { CircleRecommendAdapter(requireContext(), this) }
-
 
 
     private var type = 0
@@ -77,6 +77,7 @@ class CircleRecommendV2Fragment :
             viewModel.getRecommendPostData(type, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
+            GioPageConstant.postEntrance = "社区-广场-信息流"
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
@@ -94,9 +95,6 @@ class CircleRecommendV2Fragment :
     }
 
 
-
-
-
     override fun observe() {
         super.observe()
         viewModel.recommondBean.observe(this, Observer {
@@ -111,7 +109,8 @@ class CircleRecommendV2Fragment :
             }
         })
         //登录回调
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
                 viewModel.getRecommendPostData(type, 1)
             }
@@ -148,8 +147,8 @@ class CircleRecommendV2Fragment :
 //
 //    }
 
-   fun  outRefresh(){
-       page = 1
-       viewModel.getRecommendPostData(type, page)
-   }
+    fun outRefresh() {
+        page = 1
+        viewModel.getRecommendPostData(type, page)
+    }
 }

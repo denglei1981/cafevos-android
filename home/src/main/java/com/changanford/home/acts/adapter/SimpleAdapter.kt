@@ -2,6 +2,7 @@ package com.changanford.home.acts.adapter
 
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toastShow
@@ -21,6 +22,7 @@ class SimpleAdapter : BaseBannerAdapter<CircleHeadBean?>() {
                 data?.apply {
                     ivBanner.loadCompress(data.adImg)
                     ivBanner.setOnClickListener {
+                        GIOUtils.homePageClick("广告位banner",(position+1).toString(),data.adName)
                         try {
                             JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
                         } catch (e: Exception) {

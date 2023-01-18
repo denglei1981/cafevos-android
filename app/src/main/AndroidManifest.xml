@@ -106,6 +106,13 @@
                     android:host="open"
                     android:scheme="fordevos" />
             </intent-filter>
+
+            <intent-filter>
+                <data android:scheme="growing.5203f0f6016f1db6" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

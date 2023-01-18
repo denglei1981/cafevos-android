@@ -13,6 +13,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.evos.databinding.FragmentMyCollectBinding
 import com.changanford.my.adapter.*
 import com.changanford.my.request.HomePageViewModel
@@ -43,6 +44,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     }
 
     override fun initView() {
+        GioPageConstant.infoEntrance = "发帖人个人主页-收藏"
         viewModel.queryMineCollectInfo()
 
     }

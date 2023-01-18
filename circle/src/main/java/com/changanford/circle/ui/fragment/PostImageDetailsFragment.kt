@@ -45,6 +45,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
@@ -454,10 +455,30 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     binding.bottomView.ivLike.setImageResource(R.mipmap.circle_like_image)
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.bottomView.ivLike)
+                    GIOUtils.postLickClick(
+                        "帖子详情",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId?.toString(),
+                        mData.circleName
+                    )
                 } else {
                     mData.isLike = 0
                     mData.likesCount--
                     binding.bottomView.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                    GIOUtils.cancelPostLickClick(
+                        "帖子详情",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId?.toString(),
+                        mData.circleName
+                    )
                 }
                 binding.bottomView.tvLikeNum.text =
                     "${if (mData.likesCount > 0) mData.likesCount else "0"}"

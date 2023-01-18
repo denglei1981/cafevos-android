@@ -4,6 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.User
+import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.UserManger
+import com.changanford.common.manger.UserManger.saveUserInfo
 import com.changanford.common.net.*
 import com.changanford.common.utilext.logE
 import com.changanford.common.wutil.WConstant
@@ -74,5 +77,21 @@ class MainViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    var userInfo: MutableLiveData<UserInfoBean> = MutableLiveData()
+
+    fun getUserInfo() {
+            viewModelScope.launch {
+                fetchRequest {
+                    val body = HashMap<String, String>()
+                    val rkey = getRandomKey()
+                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+                }.onSuccess {
+                    it?.let {
+                        userInfo.postValue(it)
+                    }
+                }
+            }
     }
 }

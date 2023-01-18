@@ -43,6 +43,8 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.toIntPx
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -62,7 +64,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("广场","圈子","问答")
+    private val tabList = listOf("广场", "圈子", "问答")
 
 
     override fun onDestroyView() {
@@ -115,6 +117,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                                             }
                                         }
                                     }
+
                                     override fun cancle() {  //不使用草稿
                                         showMenuPop()
                                     }
@@ -133,9 +136,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
         }
         binding.tvSearch.setOnClickListener {
-            if(binding.viewPager.currentItem==2){
+            if (binding.viewPager.currentItem == 2) {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ASK.toString())
-            }else{
+            } else {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
             }
         }
@@ -143,16 +146,18 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         initMagicIndicator()
         viewModel.getInitQuestion()
     }
-    open fun setCurrentItem(valueItem:String?){
+
+    open fun setCurrentItem(valueItem: String?) {
         try {
-            if(!TextUtils.isEmpty(valueItem)){
+            if (!TextUtils.isEmpty(valueItem)) {
                 binding.viewPager.currentItem = valueItem!!.toInt()
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
     }
+
     private fun showMenuPop() {
         CircleMainMenuPop(
             requireContext(),
@@ -186,9 +191,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 //        binding.ryCircle.adapter = circleAdapter
 
 
-
-
-
     }
 
     override fun initData() {
@@ -201,24 +203,25 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     override fun observe() {
         super.observe()
         viewModel.popupLiveData.observe(this, Observer {
-               // 保存用户技师相关信息
-                   try{
-                       if(it.identityType!=null){
-                           SPUtils.setParam(requireContext(),"identityType",it.identityType!!)
-                       }
-                   }catch (e:Exception){
-                       e.toString()
-                   }
+            // 保存用户技师相关信息
+            try {
+                if (it.identityType != null) {
+                    SPUtils.setParam(requireContext(), "identityType", it.identityType!!)
+                }
+            } catch (e: Exception) {
+                e.toString()
+            }
         })
 
-        LiveDataBus.get().with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                when(it){
-                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS->{
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
                         viewModel.getInitQuestion()
                     }
-                    UserManger.UserLoginStatus.USER_LOGIN_OUT->{
-                        SPUtils.setParam(requireContext(),"identityType","")
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
+                        SPUtils.setParam(requireContext(), "identityType", "")
                     }
                     else -> {}
                 }
@@ -229,6 +232,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     private fun bus() {
 
     }
+
     private fun easyViewPager() {
         try {
             val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
@@ -243,14 +247,14 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         }
     }
 
-   val   circleSquareFragment: CircleSquareFragment by  lazy{
-       CircleSquareFragment.newInstance()
+    val circleSquareFragment: CircleSquareFragment by lazy {
+        CircleSquareFragment.newInstance()
 
-   }
-    val  askRecommendFragment:AskRecommendFragment by lazy{
+    }
+    val askRecommendFragment: AskRecommendFragment by lazy {
         AskRecommendFragment.newInstance()
     }
-    val   newCircleFragment:NewCircleFragment by lazy{
+    val newCircleFragment: NewCircleFragment by lazy {
         NewCircleFragment()
 
     }
@@ -262,7 +266,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         fragmentList.add(circleSquareFragment)
         fragmentList.add(newCircleFragment)
         fragmentList.add(askRecommendFragment)
-        binding.viewPager.adapter=   CircleMainViewPagerAdapter(this,fragmentList)
+        binding.viewPager.adapter = CircleMainViewPagerAdapter(this, fragmentList)
 
     }
 
@@ -324,6 +328,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 magicIndicator.onPageScrolled(position, positionOffset, positionOffsetPixels)
 
             }
+
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 magicIndicator.onPageScrollStateChanged(state)
@@ -333,22 +338,24 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 super.onPageSelected(position)
                 magicIndicator.onPageSelected(position)
                 // 埋点
-                when(position){
-                    0->{
+                when (position) {
+                    0 -> {
+                        GioPageConstant.communitySecondPageName = "社区页-广场"
                         BuriedUtil.instant?.communityMainTopMenu("广场")
                     }
-                    1->{
+                    1 -> {
+                        GioPageConstant.communitySecondPageName = "社区页-圈子"
                         BuriedUtil.instant?.communityMainTopMenu("圈子")
                     }
-                    2->{
+                    2 -> {
+                        GioPageConstant.communitySecondPageName = "社区页-问答"
                         BuriedUtil.instant?.communityMainTopMenu("问答")
                     }
                 }
+                GIOUtils.homePageView()
             }
 
         })
-
-
 
 
     }

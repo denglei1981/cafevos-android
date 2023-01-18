@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
@@ -24,9 +25,12 @@ import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.zhpan.bannerview.constants.PageStyle
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -99,6 +103,7 @@ class CircleSquareAdapter(
             }
 
             topicAdapter.setOnItemClickListener { adapter, view, position ->
+                GioPageConstant.topicEntrance = "社区-广场-热门话题"
                 val item = topicAdapter.getItem(position)
                 // 埋点
                 BuriedUtil.instant?.communityMainHotTopic(item.name)
@@ -114,20 +119,34 @@ class CircleSquareAdapter(
 
         binding.let {
 
-                it.tvTopicMore.setOnClickListener {
-                    startARouter(ARouterCirclePath.HotTopicActivity)
-                }
-                it.bViewpager.visibility = View.GONE
-                val recommendAdAdapter = CircleAdBannerAdapter()
-                it.bViewpager.setAdapter(recommendAdAdapter)
-                it.bViewpager.setCanLoop(true)
-                it.bViewpager.setIndicatorView(it.drIndicator)
-                it.bViewpager.setAutoPlay(true)
-                it.bViewpager.setScrollDuration(500)
-                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
-                it.bViewpager.create()
+            it.tvTopicMore.setOnClickListener {
+                startARouter(ARouterCirclePath.HotTopicActivity)
             }
-            setIndicator(binding)
+            it.bViewpager.visibility = View.GONE
+            val recommendAdAdapter = CircleAdBannerAdapter()
+            it.bViewpager.setAdapter(recommendAdAdapter)
+            it.bViewpager.setCanLoop(true)
+            it.bViewpager.setIndicatorView(it.drIndicator)
+            it.bViewpager.setAutoPlay(true)
+            it.bViewpager.setScrollDuration(500)
+            it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+            it.bViewpager.create()
+
+            it.bViewpager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    val bean = it.bViewpager.data as List<AdBean>
+                    bean[position].adName?.let { it1 ->
+                        GIOUtils.homePageExposure(
+                            "广告位banner", (position + 1).toString(),
+                            it1
+                        )
+                    }
+                }
+            })
+        }
+        setIndicator(binding)
 
     }
 
@@ -155,7 +174,7 @@ class CircleSquareAdapter(
 
         magicIndicator.setBackgroundResource(R.drawable.circle_square_indicator)
         val commonNavigator = CommonNavigator(context)
-        commonNavigator.isAdjustMode=true
+        commonNavigator.isAdjustMode = true
 
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
             override fun getCount(): Int {
@@ -191,12 +210,14 @@ class CircleSquareAdapter(
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 
-    val  circleRecommendV2Fragment:CircleRecommendV2Fragment=CircleRecommendV2Fragment.newInstance(1)
-    val  lastCircleRecommendV2Fragment:CircleRecommendV2Fragment=CircleRecommendV2Fragment.newInstance(2)
+    val circleRecommendV2Fragment: CircleRecommendV2Fragment =
+        CircleRecommendV2Fragment.newInstance(1)
+    val lastCircleRecommendV2Fragment: CircleRecommendV2Fragment =
+        CircleRecommendV2Fragment.newInstance(2)
 
-    var viewpagerBinding: ItemCircleMianBottomBinding?=null
+    var viewpagerBinding: ItemCircleMianBottomBinding? = null
     private fun initTabAndViewPager(binding: ItemCircleMianBottomBinding) {
-        viewpagerBinding=binding
+        viewpagerBinding = binding
         binding.viewPager.apply {
 
             adapter = object : FragmentPagerAdapter(
@@ -209,20 +230,17 @@ class CircleSquareAdapter(
 
                 override fun getItem(position: Int): Fragment {
 
-                    return when(position){
-                        0->{
+                    return when (position) {
+                        0 -> {
                             circleRecommendV2Fragment
                         }
-                        1->{
+                        1 -> {
                             lastCircleRecommendV2Fragment
                         }
-                        else ->{
+                        else -> {
                             circleRecommendV2Fragment
                         }
                     }
-
-
-
 
 
                 }
@@ -231,13 +249,13 @@ class CircleSquareAdapter(
         }
     }
 
-    fun outRefresh(){
-        viewpagerBinding?.let { vp->
-            when(vp.viewPager.currentItem){
-                0->{
+    fun outRefresh() {
+        viewpagerBinding?.let { vp ->
+            when (vp.viewPager.currentItem) {
+                0 -> {
                     circleRecommendV2Fragment.outRefresh()
                 }
-                1->{
+                1 -> {
                     lastCircleRecommendV2Fragment.outRefresh()
                 }
             }

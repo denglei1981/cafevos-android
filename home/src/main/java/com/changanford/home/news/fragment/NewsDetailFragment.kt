@@ -24,6 +24,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -50,6 +51,7 @@ import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
+import com.huawei.hms.scankit.p.da
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -472,16 +474,33 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 
     private fun setLikeState() { //设置是否喜欢文章。
         var likesCount = newsDetailData?.likesCount
+        val item = viewModel.newsDetailLiveData.value
         when (newsDetailData?.isLike) {
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
+                item?.data?.let {
+                    GIOUtils.infoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
+                item?.data?.let {
+                    GIOUtils.cancelInfoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
         }
         if (likesCount != null) {

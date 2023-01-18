@@ -15,6 +15,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.NEWS_DETAIL_CHANGE
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
@@ -70,6 +71,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     if (item.authors != null) {
 //                        val newsValueData = NewsValueData(item.artId, item.type)
 //                        val values = Gson().toJson(newsValueData)
+                        GioPageConstant.infoEntrance = "发现-资讯-信息流"
                         JumpUtils.instans?.jump(2, item.artId)
                     } else {
                         toastShow("没有作者")

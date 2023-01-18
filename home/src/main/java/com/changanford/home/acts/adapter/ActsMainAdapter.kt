@@ -12,8 +12,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.adapter.BaseAdapter
+import com.changanford.common.bean.AdBean
 import com.changanford.common.net.*
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.acts.dialog.UnitActsPop
@@ -28,6 +31,7 @@ import com.changanford.home.databinding.HomeActsHeaderBinding
 import com.changanford.home.util.launchWithCatch
 import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
+import com.xiaomi.push.it
 import com.zhpan.bannerview.constants.PageStyle
 import razerdp.basepopup.BasePopupWindow
 
@@ -144,6 +148,15 @@ class ActsMainAdapter(
     fun setViewPagerData(list: ArrayList<CircleHeadBean>) {
         this.adBean = list
         headerBinding?.bViewpager?.refreshData(list)
+        if (!list.isNullOrEmpty()) {
+            list[0].adName?.let { it1 ->
+                GIOUtils.homePageExposure(
+                    "广告位banner", 1.toString(),
+                    it1
+                )
+            }
+        }
+
 //        notifyItemChanged(0, 0)
     }
 
@@ -162,14 +175,30 @@ class ActsMainAdapter(
                 ContextCompat.getColor(context, R.color.blue_tab),
                 ContextCompat.getColor(context, R.color.colorPrimary)
             )
+
+            registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    val bean = data as List<CircleHeadBean>
+                    bean[position].adName?.let { it1 ->
+                        GIOUtils.homePageExposure(
+                            "广告位banner", (position + 1).toString(),
+                            it1
+                        )
+                    }
+                }
+            })
         }.create()
 
 
     }
-    fun stopViewPagerLoop(){
+
+    fun stopViewPagerLoop() {
         headerBinding?.bViewpager?.stopLoop()
     }
-    fun startViewPagerLoop(){
+
+    fun startViewPagerLoop() {
         headerBinding?.bViewpager?.startLoop()
     }
 

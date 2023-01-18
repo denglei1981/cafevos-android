@@ -15,6 +15,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.databinding.ActivityPloySearchResultBinding
@@ -67,6 +68,7 @@ class PloySearchResultActivity :
     }
 
     override fun initView() {
+        GioPageConstant.infoEntrance = "搜索结果页"
         ImmersionBar.with(this)
             .fitsSystemWindows(true)
             .statusBarColor(R.color.color_ee)

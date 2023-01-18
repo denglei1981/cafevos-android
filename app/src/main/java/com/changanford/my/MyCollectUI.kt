@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import android.view.inputmethod.EditorInfo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.gio.GioPageConstant
 
 
 /**
@@ -51,6 +52,8 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     var index = 0
     override fun initView() {
+        GioPageConstant.infoEntrance = "我的收藏-资讯"
+        GioPageConstant.postEntrance = "我的收藏-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的收藏"
         val currentItem = intent.getStringExtra("value")
 
@@ -89,24 +92,24 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private fun search() {
 
 
-                informationFragment.searchKeys =
-                    binding.layoutSearch.searchContent.text.toString().trim()
-                informationFragment.myCollectInfo(1)
-                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+        informationFragment.searchKeys =
+            binding.layoutSearch.searchContent.text.toString().trim()
+        informationFragment.myCollectInfo(1)
+        HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
 
 
-                postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
-                postFragment.mySerachInfo()
-                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+        postFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+        postFragment.mySerachInfo()
+        HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
 
 
-                actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
-                actFragment.mySerachInfo()
-                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+        actFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+        actFragment.mySerachInfo()
+        HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
 
-                myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
-                myShopFragment.mySerachInfo()
-                HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+        myShopFragment.searchKeys = binding.layoutSearch.searchContent.text.toString().trim()
+        myShopFragment.mySerachInfo()
+        HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
 
 
 //        when (binding.viewpager.currentItem) {

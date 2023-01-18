@@ -15,6 +15,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import java.lang.reflect.Method
 import java.util.*
@@ -75,6 +76,7 @@ class CircleDetailsFragmentV2 :
         circleId = arguments?.getString("circleId", "").toString()
         userId = arguments?.getString("userId", "").toString()
 
+        adapter.isTopic = !topicId.isNullOrEmpty()
 //        staggeredGridLayoutManager = StaggeredGridLayoutManager(
 //            2,
 //            StaggeredGridLayoutManager.VERTICAL
@@ -102,6 +104,11 @@ class CircleDetailsFragmentV2 :
         binding.ryCircle.adapter = adapter
 
         adapter.setOnItemClickListener { _, view, position ->
+            if (topicId.isNotEmpty()) {
+                GioPageConstant.postEntrance = "话题详情页"
+            } else {
+                GioPageConstant.postEntrance = "圈子详情页"
+            }
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)

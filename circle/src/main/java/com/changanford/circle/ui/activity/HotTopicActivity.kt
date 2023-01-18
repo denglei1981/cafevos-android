@@ -15,6 +15,8 @@ import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 
 /**
  *Author lcw
@@ -43,6 +45,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
                 0 -> {
                     tvTitle.text = "热门话题"
                     section = 0
+                    GIOUtils.topicListPageView()
                 }
                 1 -> {
                     tvTitle.text = "圈内话题"
@@ -70,6 +73,14 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             circleId?.let {
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 bundle.putString("circleName", circleName)
+            }
+            when (type) {
+                0 -> {
+                    GioPageConstant.topicEntrance = "热门话题列表页"
+                }
+                1 -> {
+                    GioPageConstant.topicEntrance = "圈内话题列表页"
+                }
             }
             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
 

@@ -7,20 +7,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GridSpacingItemDecoration
-import com.changanford.common.ui.videoedit.EditSpacingItemDecoration
-import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
-import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
@@ -38,7 +38,6 @@ import com.changanford.home.widget.SpacesItemDecoration
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.xiaomi.push.it
 import com.zhpan.bannerview.constants.PageStyle
 
 
@@ -94,7 +93,7 @@ open class RecommendFragment :
 
     var fastInBinding: LayoutRecommendFastInBinding? = null
 
-     var isSecondHeader:Boolean=false
+    var isSecondHeader: Boolean = false
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(
@@ -105,22 +104,39 @@ open class RecommendFragment :
             )
             val recommendBannerAdapter = RecommendBannerAdapter()
             headNewBinding?.let {
-                isSecondHeader=true
+                isSecondHeader = true
                 recommendAdapter.addHeaderView(it.root, 0)
                 it.bViewpager.setAdapter(recommendBannerAdapter)
                 it.bViewpager.setCanLoop(true)
+                it.bViewpager.registerLifecycleObserver(lifecycle)
                 it.bViewpager.setIndicatorView(it.drIndicator)
                 it.bViewpager.setAutoPlay(true)
                 it.bViewpager.setScrollDuration(500)
                 it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+                it.bViewpager.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        if (GioPageConstant.mainSecondPageName() == "发现页-推荐") {
+                            val bean = it.bViewpager.data as List<AdBean>
+                            bean[position].adName?.let { it1 ->
+                                GIOUtils.homePageExposure(
+                                    "广告位banner", (position + 1).toString(),
+                                    it1
+                                )
+                            }
+                        }
+                    }
+                })
                 it.bViewpager.create()
             }
             setIndicator()
         }
     }
-    var isAddFaster:Boolean=false
-    var isAddGridSpace:Boolean=false
-    var isAddLinearSpace:Boolean=false
+
+    var isAddFaster: Boolean = false
+    var isAddGridSpace: Boolean = false
+    var isAddLinearSpace: Boolean = false
     private fun addHeadFaster(isGrid: Boolean, dataList: List<AdBean>) {
         if (fastInBinding == null) {
             fastInBinding = DataBindingUtil.inflate(
@@ -133,35 +149,50 @@ open class RecommendFragment :
         val fastInAdapter = RecommendFastInListAdapter()
         fastInBinding?.let { fi ->
             fi.rvFastIn.adapter = fastInAdapter
-            var index=1
-            if(!isSecondHeader){
-                index=0
+            var index = 1
+            if (!isSecondHeader) {
+                index = 0
             }
-            if(dataList.isEmpty()){
-                fi.tvFastIn.visibility=View.GONE
-            }else{
-                fi.tvFastIn.visibility=View.VISIBLE
+            if (dataList.isEmpty()) {
+                fi.tvFastIn.visibility = View.GONE
+            } else {
+                fi.tvFastIn.visibility = View.VISIBLE
             }
-            if(!isAddFaster){
+            if (!isAddFaster) {
                 recommendAdapter.addHeaderView(fi.root, index)
-                isAddFaster=true
+                isAddFaster = true
             }
             fastInAdapter.setList(dataList)
             if (isGrid) {
-                fastInAdapter.isWith=false
+                fastInAdapter.isWith = false
                 fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
-                if(!isAddGridSpace){
-                    fi.rvFastIn.addItemDecoration(GridSpacingItemDecoration(ScreenUtils.dp2px(requireContext(),10f),3))
-                    isAddGridSpace=true
+                if (!isAddGridSpace) {
+                    fi.rvFastIn.addItemDecoration(
+                        GridSpacingItemDecoration(
+                            ScreenUtils.dp2px(
+                                requireContext(),
+                                10f
+                            ), 3
+                        )
+                    )
+                    isAddGridSpace = true
                 }
 
             } else {
-                fastInAdapter.isWith=true
-                val linearLayoutManager=LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                fastInAdapter.isWith = true
+                val linearLayoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 fi.rvFastIn.layoutManager = linearLayoutManager
-                if(!isAddLinearSpace){
-                    fi.rvFastIn.addItemDecoration( SpacesItemDecoration(ScreenUtils.dp2px(requireContext(),10f)))
-                    isAddLinearSpace=true
+                if (!isAddLinearSpace) {
+                    fi.rvFastIn.addItemDecoration(
+                        SpacesItemDecoration(
+                            ScreenUtils.dp2px(
+                                requireContext(),
+                                10f
+                            )
+                        )
+                    )
+                    isAddLinearSpace = true
                 }
             }
         }
@@ -194,6 +225,14 @@ open class RecommendFragment :
                     headNewBinding?.drIndicator?.visibility = View.VISIBLE
                 }
                 headNewBinding?.bViewpager?.refreshData(it.data)
+                if (!it.data.isNullOrEmpty()) {
+                    it.data[0].adName?.let { it1 ->
+                        GIOUtils.homePageExposure(
+                            "广告位banner", 1.toString(),
+                            it1
+                        )
+                    }
+                }
 
             } else {
                 headNewBinding?.bViewpager?.visibility = View.GONE
@@ -224,6 +263,7 @@ open class RecommendFragment :
                 if (item.authors != null) {
 //                    val newsValueData = NewsValueData(item.artId, item.artType)
 //                    val values = Gson().toJson(newsValueData)
+                    GioPageConstant.infoEntrance = "发现-推荐-信息流"
                     JumpUtils.instans?.jump(2, item.artId)
                     // 埋点--- 资讯名称。
                     BuriedUtil.instant?.discoverNews(item.getTopic())
@@ -235,6 +275,7 @@ open class RecommendFragment :
                 // todo 跳转到帖子
 //                bundle.putString("postsId", value)
 //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+                GioPageConstant.postEntrance = "发现-推荐-信息流"
                 JumpUtils.instans!!.jump(4, item.postsId)
                 // 埋点--- 资讯名称。
                 BuriedUtil.instant?.discoverPost(item.getTopic())
@@ -249,7 +290,7 @@ open class RecommendFragment :
 //            if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {
 //                item.wonderfulType?.let { viewModel.AddACTbrid(it) }
 //            }
-            JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+            JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
 //                if (item.jumpType == 2||item.jumpType==1) {
             if (item.outChain == "YES") {
                 item.wonderfulType?.let { viewModel.AddACTbrid(it) }

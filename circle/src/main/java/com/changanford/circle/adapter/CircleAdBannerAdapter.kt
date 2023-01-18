@@ -7,6 +7,7 @@ import com.changanford.circle.databinding.ItemCircleRecommendAdBinding
 import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
@@ -30,6 +31,11 @@ class CircleAdBannerAdapter : BaseBannerAdapter<AdBean>() {
         binding.ivBanner.setOnClickListener {
             // 埋点
             data.adName?.let { it1 -> BuriedUtil.instant?.communityMainBanner(it1) }
+            data.adName?.let { it1 ->
+                GIOUtils.homePageClick("广告banner",(position+1).toString(),
+                    it1
+                )
+            }
             JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
         }
     }

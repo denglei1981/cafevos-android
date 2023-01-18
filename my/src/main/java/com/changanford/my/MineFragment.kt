@@ -26,6 +26,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.widget.pop.HomeGuidePop
@@ -81,7 +82,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 //
 //            }
 //        }
-        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this){
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this) {
             show7Day()
         }
     }
@@ -132,21 +133,21 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 JumpUtils.instans?.jump(17)
             }
             h.tvCoupon.setOnClickListener {
-                if (MConstant.token.isNullOrEmpty()){
+                if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
-                }else{
+                } else {
                     var bundle = Bundle()
-                    bundle.putInt("couponNum",couponNum)
-                    startARouter(ARouterShopPath.CouponMiddleActivity,bundle)
+                    bundle.putInt("couponNum", couponNum)
+                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
                 }
             }
             h.flImgYouhui.setOnClickListener {
-                if (MConstant.token.isNullOrEmpty()){
+                if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
-                }else{
+                } else {
                     var bundle = Bundle()
-                    bundle.putInt("couponNum",couponNum)
-                    startARouter(ARouterShopPath.CouponMiddleActivity,bundle)
+                    bundle.putInt("couponNum", couponNum)
+                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
                 }
             }
             h.tvGold.setOnClickListener {
@@ -157,10 +158,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 JumpUtils.instans?.jump(30)
             }
             h.tvTuijian.setOnClickListener {
-                JumpUtils.instans?.jump(106,tuijiangou)
+                JumpUtils.instans?.jump(106, tuijiangou)
             }
             h.flImgTuijian.setOnClickListener {
-                JumpUtils.instans?.jump(106,tuijiangou)
+                JumpUtils.instans?.jump(106, tuijiangou)
             }
             h.ddFollow.setOnClickListener {
                 JumpUtils.instans?.jump(25)
@@ -484,6 +485,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     fun setCarInfo(carAuthBean: CarAuthBean?) {
         headNewBinding?.let { h ->
+            carAuthBean?.let {
+                MConstant.isCarOwner = carAuthBean.isCarOwner
+            }
             if (carAuthBean?.isCarOwner == 1 && carAuthBean.carList != null) {
                 carAuthBean.carList?.let { l ->
                     val carInfo = l[0]
@@ -525,17 +529,17 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getCircleInfo()
         viewModel.getTuijianGou {
             it.onSuccess {
-                if (it?.data.isNullOrEmpty()){
+                if (it?.data.isNullOrEmpty()) {
                     headNewBinding?.let { h ->
                         h.tvTuijian.isVisible = false
                         h.flImgTuijian.isVisible = false
                     }
-                }else{
+                } else {
                     headNewBinding?.let { h ->
                         h.tvTuijian.isVisible = true
                         h.flImgTuijian.isVisible = true
                     }
-                    tuijiangou = it?.data?:""
+                    tuijiangou = it?.data ?: ""
                 }
             }
 
@@ -554,17 +558,18 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         super.onDestroy()
 
     }
-    fun show7Day(){
+
+    fun show7Day() {
 //        if (MConstant.token.isNullOrEmpty()){
 //            headNewBinding?.sign7day?.setContent {
 //                dailySignCompose()
 //            }
 //        } else {
-            viewModel.getDay7Sign {
-                headNewBinding?.sign7day?.setContent {
-                    dailySignCompose(it)
-                }
+        viewModel.getDay7Sign {
+            headNewBinding?.sign7day?.setContent {
+                dailySignCompose(it)
             }
+        }
 //        }
     }
 

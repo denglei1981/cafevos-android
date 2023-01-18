@@ -1,6 +1,5 @@
 package com.changanford.home.news.activity
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MotionEvent
@@ -10,7 +9,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.GioPageConstant.isInInfoActivity
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.databinding.ActivityInfoDetailBinding
@@ -21,16 +22,12 @@ import com.changanford.home.news.request.InfoDetailViewModel
 
 
 /**
- * @Author: hpb
- * @Date: 2020/5/18
  * @Des: 资讯详情
  */
 @Route(path = ARouterHomePath.InfoDetailActivity)
 class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailViewModel>() {
 
-
     var artId: String? = null
-
 
     @JvmField
     @Autowired(name = "contentType") //页面来源
@@ -40,6 +37,16 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
+                it.data?.let { it1 ->
+                    GioPageConstant.run {
+                        infoTheme = it1.specialTopicTitle
+                        infoId = it1.artId.toString()
+                        infoName = it1.title
+                        isInInfoActivity = true
+                    }
+
+                    GIOUtils.infoDetailInfo()
+                }
                 val type = it.data.type
                 val trans = supportFragmentManager.beginTransaction()
                 if (TextUtils.isEmpty(artId)) {
@@ -122,5 +129,8 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
 
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        isInInfoActivity = false
+    }
 }

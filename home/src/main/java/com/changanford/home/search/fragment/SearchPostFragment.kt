@@ -13,6 +13,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.data.InfoDetailsChangeData
@@ -35,11 +36,11 @@ class SearchPostFragment :
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     companion object {
-        fun newInstance(skwContent: String,tagId:String): SearchPostFragment {
+        fun newInstance(skwContent: String, tagId: String): SearchPostFragment {
             val fg = SearchPostFragment()
             val bundle = Bundle()
             bundle.putString(JumpConstant.SEARCH_CONTENT, skwContent)
-            bundle.putString(JumpConstant.SEARCH_TAG_ID,tagId)
+            bundle.putString(JumpConstant.SEARCH_TAG_ID, tagId)
             fg.arguments = bundle
 
             return fg
@@ -47,11 +48,11 @@ class SearchPostFragment :
     }
 
     var searchContent: String? = null
-    var tagId:String=""
+    var tagId: String = ""
     override fun initView() {
 
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
-         tagId = arguments?.getString(JumpConstant.SEARCH_TAG_ID).toString()
+        tagId = arguments?.getString(JumpConstant.SEARCH_TAG_ID).toString()
         binding.recyclerView.adapter = searchPostsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
@@ -64,17 +65,15 @@ class SearchPostFragment :
                 }
             }
         }
-        searchPostsResultAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val item = searchPostsResultAdapter.getItem(position)
-                selectPosition = position
-                // todo 跳转到帖子
-//                bundle.putString("postsId", value)
-//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
-                JumpUtils.instans!!.jump(4, item.postsId.toString())
-            }
-
-        })
+        searchPostsResultAdapter.setOnItemClickListener { adapter, view, position ->
+            GioPageConstant.postEntrance = "搜索结果页"
+            val item = searchPostsResultAdapter.getItem(position)
+            selectPosition = position
+            // todo 跳转到帖子
+            //                bundle.putString("postsId", value)
+            //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            JumpUtils.instans!!.jump(4, item.postsId.toString())
+        }
     }
 
     override fun initData() {
@@ -126,6 +125,7 @@ class SearchPostFragment :
     override fun onRetryBtnClick() {
 
     }
+
     fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
@@ -133,13 +133,13 @@ class SearchPostFragment :
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(it, tagId,false)
+            viewModel.getSearchContent(it, tagId, false)
         }
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         searchContent?.let {
-            viewModel.getSearchContent(it, tagId,true)
+            viewModel.getSearchContent(it, tagId, true)
         }
     }
 }

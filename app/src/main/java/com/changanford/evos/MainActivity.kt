@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.compose.DesignElements.map
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -18,10 +19,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.CircleFragmentV2
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.HawkKey
+import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
@@ -29,7 +32,10 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.room.Db
+import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -42,6 +48,7 @@ import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
+import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +129,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.carFragment -> {
+                    GioPageConstant.mainTabName = "爱车页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {
@@ -130,6 +138,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     isJumpMenu = false
                 }
                 R.id.myFragment -> {
+                    GioPageConstant.mainTabName = "我的页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {
@@ -138,6 +147,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     isJumpMenu = false
                 }
                 R.id.circleFragment -> {// 社区
+                    GioPageConstant.mainTabName = "社区页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                     if (!isJumpMenu) {
@@ -155,6 +165,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
 
                 R.id.shopFragment -> {
+                    GioPageConstant.mainTabName = " 商城页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {
@@ -171,6 +182,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     }
                 }
                 R.id.homeFragment -> {
+                    GioPageConstant.mainTabName = "发现页"
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let { it ->
@@ -190,6 +202,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
             StatusBarUtil.setLightStatusBar(this, destination.id != R.id.carFragment)
+            GIOUtils.homePageView()
         }
     }
 
@@ -225,6 +238,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //            if (it as Boolean) {
 //            }
 //        })
+        GIOUtils.homePageView()
     }
 
     private fun getNavigator() {
@@ -244,6 +258,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initData() {
         handleViewIntent(intent)
         viewModel.getUserData()
+        viewModel.getUserInfo()
         viewModel.user.observe(this, Observer {
             lifecycleScope.launch {
                 Db.myDb.saveData("name", it[0].name)
@@ -251,9 +266,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
 //        var count = 0
         updateViewModel._updateInfo?.observe(this, Observer { info ->
-            if (info == null){
+            if (info == null) {
 //                "${count++}".toast()
-                lifecycleScope.launch(Dispatchers.IO){
+                lifecycleScope.launch(Dispatchers.IO) {
                     delay(3000)
                     updateViewModel.getUpdateInfo()
                 }
@@ -317,7 +332,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         })
-        LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this){
+        LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this) {
             updateViewModel.getUpdateInfo()
         }
         registerConnChange()
@@ -394,6 +409,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 setHomBottomNavi(View.VISIBLE)
             }
         })
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                    viewModel.getUserInfo()
+                } else if (UserManger.UserLoginStatus.USER_LOGIN_OUT == it) {
+                    initGioUserId()
+                }
+            }
+        LiveDataBus.get().with(MConstant.REFRESH_USER_INFO, Boolean::class.java).observe(this) {
+            if (it) {
+                viewModel.getUserInfo()
+            }
+        }
         LiveDataBus.get().with(LiveDataBusKey.COOKIE_DB, Boolean::class.java)
             .observe(this, Observer {
                 if (it) {
@@ -417,6 +446,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgGone()
             }
         })
+        viewModel.userInfo.observe(this) {
+            initGioUserId()
+            GIOUtils.setLoginUserAttributes(it)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -527,6 +560,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return null
     }
 
-
+    private fun initGioUserId() {
+        if (MConstant.userId.isEmpty()) {
+            GrowingAutotracker.get().cleanLoginUserId()
+        } else {
+            if (MConstant.userId.isNotEmpty()) {
+                GrowingAutotracker.get().setLoginUserId(viewModel.userInfo.value?.cmcOpenid)
+            }
+        }
+    }
 }
 

@@ -3,6 +3,8 @@ package com.changanford.common.util
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.ConfigBean
+import com.changanford.common.constant.HawkKey
+import com.orhanobut.hawk.Hawk
 import java.io.File
 
 /**********************************************************************************
@@ -29,7 +31,8 @@ import java.io.File
 object MConstant {
     val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
     val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
-//    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+
+    //    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
     //这里修改默认的环境，isCanQeck字段为true时生效
     val isDebug by lazy {
         if (isCanQeck) SPUtils.getParam(
@@ -53,8 +56,9 @@ object MConstant {
 
     //登录背景保存地址
     const val loginBgVideoPath = "loginBg.mp4"
+
     //登录背景视频地址
-    var loginBgVideoUrl:String?=null
+    var loginBgVideoUrl: String? = null
 
     //是否保存成功
     var isDownLoginBgSuccess: Boolean = false
@@ -79,10 +83,10 @@ object MConstant {
 
     var pubKey = ""
     var token: String = ""
-    val defaultImgCdn by lazy { if(isDebug&& isCanQeck)"https://evosuserqa.changanford.cn/" else "https://evosuser.changanford.cn/" }
+    val defaultImgCdn by lazy { if (isDebug && isCanQeck) "https://evosuserqa.changanford.cn/" else "https://evosuser.changanford.cn/" }
     var imgcdn = defaultImgCdn
     var userId = ""
-    var configBean:ConfigBean?=null
+    var configBean: ConfigBean? = null
     var totalWebNum = 0//AgentWebActivity的个数
     var app_mourning_mode = 0;//哀悼模式  app_mourning_mode 1 打开，0关闭
 
@@ -152,28 +156,32 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
-     val H5_BASE_URL by lazy { if (isCanQeck&&isDebug)"https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
+    val H5_BASE_URL by lazy { if (isCanQeck && isDebug) "https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
+
     //H5活动
     private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" }
+
     /**
      * %s
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
 //    val H5_SHOP_BARGAINING ="${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
-    val H5_SHOP_BARGAINING ="${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s"
+    val H5_SHOP_BARGAINING = "${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s"
+
     /**
      * 维保商品订单详情 /order/#/maintain/maintainDetail?orderNo=
-    * */
-    val H5_SHOP_MAINTENANCE ="${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
+     * */
+    val H5_SHOP_MAINTENANCE = "${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
+
     /**
      * 经销商 order/#/fillInformation/selectDealer
      * */
-    val H5_CAR_DEALER ="${H5_BASE_URL}/order/#/fillInformation/selectDealer"
+    val H5_CAR_DEALER = "${H5_BASE_URL}/order/#/fillInformation/selectDealer"
 
     /**
      * 爱车活动详情
      */
-    val H5_CAR_ACTIVITY ="${H5_BASE_URL}/order/#/vehicleActivity/details?activityId="
+    val H5_CAR_ACTIVITY = "${H5_BASE_URL}/order/#/vehicleActivity/details?activityId="
 
     /**
      * 签到抽奖
@@ -190,9 +198,10 @@ object MConstant {
 
 
     //埋点测试
-    val BASE_URL_BURIED="https://evosmdqa.changanford.cn"
+    val BASE_URL_BURIED = "https://evosmdqa.changanford.cn"
+
     //埋点正式
-    val BASE_URL_BURIED_PROD="https://evosmd.changanford.cn/buried"
+    val BASE_URL_BURIED_PROD = "https://evosmd.changanford.cn/buried"
 
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
@@ -205,5 +214,7 @@ object MConstant {
      */
     var COUPON_TASK_RULE = "${H5_BASE_URL_CSCIR}/richTextAp?key=coupon_illustration"
 
-    var conQaUjId=""
+    var conQaUjId = ""
+
+    var isCarOwner = 0
 }

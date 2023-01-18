@@ -6,6 +6,9 @@ plugins {
     id 'com.alibaba.arouter'
 }
 
+//添加 GrowingIO 插件
+apply plugin: 'com.growingio.android.autotracker'
+
 def keystorePropertiesFile = rootProject.file("./keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
@@ -150,6 +153,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //tab
     implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
+    //gio埋点
+    implementation "com.growingio.android:autotracker-cdp:$versions_gio"
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
 
     implementation(project(":common"))

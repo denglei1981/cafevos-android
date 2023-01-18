@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -27,6 +28,8 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private var oldPosition = 0
 
     override fun initView() {
+        GioPageConstant.infoEntrance = "我的足迹-资讯"
+        GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"
         initViewpager()
     }

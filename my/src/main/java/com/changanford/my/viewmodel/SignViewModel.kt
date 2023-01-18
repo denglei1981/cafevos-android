@@ -13,6 +13,7 @@ import com.changanford.common.net.*
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.util.gio.trackCustomEvent
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.util.toast.ToastUtils.showToast
 import com.changanford.common.utilext.GlideUtils
@@ -28,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  *  文件名：SignViewModel
@@ -493,6 +495,7 @@ class SignViewModel : ViewModel() {
                 var rkey = getRandomKey()
                 apiService.smsCodeSign(body.header(rkey), body.body(rkey))
             }.onSuccess {
+                signInChannel = "手机号登陆"
                 loginSuccess(it)
             }.onWithMsgFailure {
                 it?.toast()
@@ -511,8 +514,14 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    private var signInChannel = ""
 
     fun otherLogin(type: String, code: String, pushId: String) {
+        if (type == "qq") {
+            signInChannel = "QQ登陆"
+        } else if (type == "weixin") {
+            signInChannel = "微信登陆"
+        }
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
@@ -532,7 +541,8 @@ class SignViewModel : ViewModel() {
             }
         }
     }
-    fun loginTipChangeAvatar(bl:Int,result: () -> Unit){//是否保留 保留1 不保留0
+
+    fun loginTipChangeAvatar(bl: Int, result: () -> Unit) {//是否保留 保留1 不保留0
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 var body = HashMap<String, Any>()
@@ -549,7 +559,7 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun updateUserAndRemoveOauth(type:String){//是否保留 保留1 不保留0
+    fun updateUserAndRemoveOauth(type: String) {//是否保留 保留1 不保留0
         viewModelScope.launch {
             var unOtherAuth = fetchRequest {
                 var body = HashMap<String, String>()
@@ -716,13 +726,13 @@ class SignViewModel : ViewModel() {
      */
     val wearMedal: MutableLiveData<String> = MutableLiveData()
 
-    fun wearMedal(medalId: String,medalKey:String) {
+    fun wearMedal(medalId: String, medalKey: String) {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 var body = HashMap<String, String>()
                 body["medalId"] = medalId
                 body["type"] = "1"
-                body["medalKey"]=medalKey
+                body["medalKey"] = medalKey
                 var rkey = getRandomKey()
                 apiService.wearMedal(body.header(rkey), body.body(rkey))
             }.onSuccess {
@@ -801,9 +811,9 @@ class SignViewModel : ViewModel() {
             }
             if (cancle.code == 0) {
                 cancelTip.postValue("true")
-                if(type=="1"){
+                if (type == "1") {
                     toastShow("已关注")
-                }else{
+                } else {
                     toastShow("已取消关注")
                 }
             } else {
@@ -1004,6 +1014,11 @@ class SignViewModel : ViewModel() {
             MConstant.mine_phone = "${it.phone}"
             SPUtils.putToken(it.token)
             getUserInfo()
+            val trackMap = HashMap<String, String>()
+            trackMap["fy_signInChannel_var"] = signInChannel
+            if (signInChannel.isNotEmpty()) {
+                trackCustomEvent("fy_signInSuccess", trackMap)
+            }
             when {
                 it.phone.isNullOrEmpty() -> {
                     LiveDataBus.get()
@@ -1011,23 +1026,30 @@ class SignViewModel : ViewModel() {
                         .postValue(UserManger.UserLoginStatus.USE_UNBIND_MOBILE)
                 }
                 else -> {
-                    if (it.unbandNotify == 1){
-                        UnBindWeChatTipsDialog(BaseApplication.curActivity).setContent(1).setClickListener(
-                            clickPos = {
-                                loginTipChangeAvatar(1){
-                                    LiveDataBus.get()
-                                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-                                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                    if (it.unbandNotify == 1) {
+                        UnBindWeChatTipsDialog(BaseApplication.curActivity).setContent(1)
+                            .setClickListener(
+                                clickPos = {
+                                    loginTipChangeAvatar(1) {
+                                        LiveDataBus.get()
+                                            .with(
+                                                USER_LOGIN_STATUS,
+                                                UserManger.UserLoginStatus::class.java
+                                            )
+                                            .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                                    }
+                                }, clickNeg = {
+                                    loginTipChangeAvatar(0) {
+                                        LiveDataBus.get()
+                                            .with(
+                                                USER_LOGIN_STATUS,
+                                                UserManger.UserLoginStatus::class.java
+                                            )
+                                            .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
+                                    }
                                 }
-                            }, clickNeg = {
-                                loginTipChangeAvatar(0){
-                                    LiveDataBus.get()
-                                        .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-                                        .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
-                                }
-                            }
-                        ).showPopupWindow()
-                    }else {
+                            ).showPopupWindow()
+                    } else {
                         LiveDataBus.get()
                             .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
                             .postValue(UserManger.UserLoginStatus.USER_LOGIN_SUCCESS)
@@ -1231,7 +1253,7 @@ class SignViewModel : ViewModel() {
             if (MConstant.isDownLoginBgSuccess) {
                 loginBgPath.postValue("${
                     getDiskCachePath(BaseApplication.INSTANT)?.let {
-                        getDiskCacheDir(it,MConstant.loginBgVideoPath)
+                        getDiskCacheDir(it, MConstant.loginBgVideoPath)
                     }
                 }")
             } else {
@@ -1316,22 +1338,24 @@ class SignViewModel : ViewModel() {
             })
         }
     }
+
     fun receiveList(result: (CommonResponse<MutableList<CouponsItemBean>>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
                 val body = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                body["popup"]="YES"
+                body["popup"] = "YES"
                 val rkey = getRandomKey()
                 apiService.receiveList(body.header(rkey), body.body(rkey))
             })
         }
 
     }
+
     /**
      * 7天签到详情
      */
-    fun getDay7Sign(result:(DaySignBean)->Unit){
+    fun getDay7Sign(result: (DaySignBean) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()

@@ -3,10 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.alibaba.arouter'
-}
+    id 'kotlin-parcelize'
 
-/*序列化插件*/
-apply plugin: 'kotlin-parcelize'
+}
 
 def versions_datastore = "1.0.0-beta01"
 def versions_retrofit = "2.9.0"
@@ -195,7 +194,7 @@ dependencies {
     api 'com.github.dueeeke.dkplayer:player-exo:3.2.6'
 
     //viewPager
-    api "com.github.zhpanvip:BannerViewPager:3.5.5"
+    api "com.github.zhpanvip:BannerViewPager:3.5.8"
 
     api 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     api 'pl.droidsonroids.gif:android-gif-drawable:1.1.17'
@@ -253,5 +252,7 @@ dependencies {
     //图片压缩
     api 'com.github.ZS-ZhangsShun:EasyImageCompressor:1.1.5'
 
+    //gio埋点
+    api "com.growingio.android:autotracker-cdp:$versions_gio"
 
 }

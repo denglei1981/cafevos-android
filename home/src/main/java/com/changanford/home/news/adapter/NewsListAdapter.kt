@@ -16,6 +16,7 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toast
@@ -32,12 +33,13 @@ import com.google.android.material.imageview.ShapeableImageView
 
 
 class NewsListAdapter(
-    private val lifecycleOwner: LifecycleOwner
+    private val lifecycleOwner: LifecycleOwner, private val isSpecialDetail: Boolean = false
 ) :
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
 
     var isShowFollow: Boolean = true
     var isShowTag: Boolean = false
+    var type = ""
 
     init {
         addChildClickViewIds(
@@ -141,6 +143,16 @@ class NewsListAdapter(
                                 false
                             ).toString()
                         )
+                        GIOUtils.infoLickClick(
+                            if (type.isNotEmpty()) {
+                                type
+                            } else if (isSpecialDetail) {
+                                "专题详情页面"
+                            } else "发现-资讯",
+                            item.specialTopicTitle,
+                            item.artId,
+                            item.title
+                        )
                     } else {
                         item.isLike = 0
                         val likesCount = item.likesCount.minus(1)
@@ -150,6 +162,14 @@ class NewsListAdapter(
                                 likesCount.toString(),
                                 false
                             ).toString()
+                        )
+                        GIOUtils.cancelInfoLickClick(
+                            if (isSpecialDetail) {
+                                "专题详情页面"
+                            } else "发现-资讯",
+                            item.specialTopicTitle,
+                            item.artId,
+                            item.title
                         )
                     }
                     actionLike(item.artId)

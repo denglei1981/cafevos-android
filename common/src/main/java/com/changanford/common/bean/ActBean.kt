@@ -339,12 +339,13 @@ data class PostBean(
 
 data class PostDataBean(
     val authorBaseVo: AuthorBaseVo? = null,
-    val circleId: Int? = 0,
+    val circleId: String? = "",
     val circle: PostCircleDataBean? = null,
     var itemImgHeight: Int = 0,
     val collectCount: Int = 0,
     var commentCount: Long = 0,
     val content: String = "",
+    val circleName: String = "",
     val firstComment: FirstCommentData? = null,
     val contentLike: Any? = Any(),
     val createBy: Any? = Any(),
@@ -378,7 +379,7 @@ data class PostDataBean(
     val city: String? = "",
     val topicName: String? = "",
     val topTime: Any? = Any(),
-    val topicId: Int? = 0,
+    val topicId: String? = "",
     val type: Int = 0,
     val updateBy: Any? = Any(),
     val updateTime: Long = 0,

@@ -14,6 +14,8 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
@@ -90,7 +92,7 @@ object HomeShareModel {
             .withPlamformClickListener { view, plamForm ->
                 when (plamForm) {
                     0 -> {
-
+                        GioPageConstant.infoShareType = "微信好友"
                         shareto = "2"
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -124,6 +126,7 @@ object HomeShareModel {
                     }
                     1 -> {
                         shareto = "1"
+                        GioPageConstant.infoShareType = "朋友圈"
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
                         //                                            "微信朋友圈分享",
@@ -155,6 +158,7 @@ object HomeShareModel {
                     }
                     2 -> {
                         shareto = "4"
+                        GioPageConstant.infoShareType = "微博"
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.SINA)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -187,6 +191,7 @@ object HomeShareModel {
                     }
                     3 -> {
                         shareto = "3"
+                        GioPageConstant.infoShareType = "QQ好友"
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQ)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -219,6 +224,7 @@ object HomeShareModel {
                     }
                     4 -> {
                         shareto = "6"
+                        GioPageConstant.infoShareType = "QQ空间"
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQZOOM)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -326,9 +332,11 @@ object HomeShareModel {
         if (is_good != null) {
             shareManager.shareDialog.goodJJ(is_good)
         }
+        if (GioPageConstant.isInInfoActivity) {
+            GIOUtils.infoShareSuccess()
+        }
         shareManager.open()
     }
-
 
 
 }
@@ -356,7 +364,7 @@ device	string
 非必须
 分享设备id
  */
-fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: Int=0) {
+fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: Int = 0) {
     when (type) {
         0 -> {
             if (shareBean != null) {
@@ -373,7 +381,8 @@ fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: In
                     ApiClient.createApi<HomeNetWork>()
                         .ShareBack(body.header(rkey), body.body(rkey))
                         .onSuccess {
-                            LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT).postValue(false)
+                            LiveDataBus.get().with(CircleLiveBusKey.ADD_SHARE_COUNT)
+                                .postValue(false)
                         }.onWithMsgFailure {
 
                         }

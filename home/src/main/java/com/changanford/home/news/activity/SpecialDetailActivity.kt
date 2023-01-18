@@ -13,6 +13,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -33,11 +34,12 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 class SpecialDetailActivity :
     BaseLoadSirActivity<ActivitySpecialDetailBinding, SpecialDetailViewModel>() {
     val newsListAdapter: NewsListAdapter by lazy {
-        NewsListAdapter(this)
+        NewsListAdapter(this, isSpecialDetail = true)
     }
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
+        GioPageConstant.infoEntrance = "专题详情页"
         binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

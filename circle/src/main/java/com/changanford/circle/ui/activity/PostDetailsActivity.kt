@@ -12,6 +12,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.gio.GIOUtils
 import com.gyf.immersionbar.ImmersionBar
 
 /**
@@ -37,6 +38,17 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
     override fun observe() {
         super.observe()
         viewModel.postDetailsBean.observe(this) {
+            it?.let {
+                GIOUtils.postDetailPageView(
+                    it.topicId,
+                    it.topicName,
+                    it.authorBaseVo?.authorId,
+                    it.postsId,
+                    it.title,
+                    it.circleId.toString(),
+                    it.circleName
+                )
+            }
             val trans = supportFragmentManager.beginTransaction()
             loadingDialog.dismiss()
             when (it.type) {

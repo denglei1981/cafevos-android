@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -38,9 +39,12 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.google.android.material.appbar.AppBarLayout
+import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -63,6 +67,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private var isWhite = true//是否是白色状态
     private var topicId = ""
+    private var topicName = ""
     private var circleId: String? = null
     private var circleName: String? = null
     private var isOpenMenuPop = false
@@ -120,6 +125,35 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     }
 
     private fun initListener(topicName: String) {
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        GioPageConstant.topicDetailTabName = "推荐"
+                    }
+                    1 -> {
+                        GioPageConstant.topicDetailTabName = "最新"
+                    }
+                    2 -> {
+                        GioPageConstant.topicDetailTabName = "精华"
+                    }
+                }
+                GIOUtils.topicDetailPageView(topicId, topicName)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+        })
         binding.ivPostBar.setOnClickListener {
             if (MConstant.token.isEmpty()) {
                 startARouter(ARouterMyPath.SignUI)
@@ -258,6 +292,8 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     override fun observe() {
         super.observe()
         viewModel.topPicDetailsTopBean.observe(this) {
+            GIOUtils.topicDetailPageView(topicId, it.name)
+            topicName = it.name
             initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.topContent.run {

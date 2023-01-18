@@ -22,6 +22,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -130,7 +131,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                     toastShow(it.message)
                     setLikeState()
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -168,7 +169,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             newsDetailData?.shareCount?.plus(1)?.let {
-                newsDetailData?.shareCount=it
+                newsDetailData?.shareCount = it
                 binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
             }
         })
@@ -316,11 +317,20 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
     private fun setLikeState() { //设置是否喜欢文章。
         var likesCount = newsDetailData?.likesCount
+        val item = viewModel.newsDetailLiveData.value
         when (newsDetailData?.isLike) {
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, true)
+                item?.data?.let {
+                    GIOUtils.infoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
             1 -> {
                 newsDetailData?.isLike = 0
@@ -329,6 +339,14 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                     R.drawable.icon_home_bottom_like_white,
                     false
                 )
+                item?.data?.let {
+                    GIOUtils.cancelInfoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
         }
         if (likesCount != null) {
@@ -362,6 +380,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 //    }
 
     var followType = 0
+
     // 1 关注 2 取消关注
     fun cancel(followId: String, type: Int) {
         if (MineUtils.getBindMobileJumpDataType(true)) {
@@ -384,6 +403,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 .show()
         }
     }
+
     // 关注或者取消
     private fun followAction() {
         newsDetailData?.let {

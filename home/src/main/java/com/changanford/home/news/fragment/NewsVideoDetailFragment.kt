@@ -25,6 +25,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -98,11 +99,12 @@ class NewsVideoDetailFragment :
             .statusBarDarkFont(true)
             .autoStatusBarDarkModeEnable(true, 0.5f)
             .init()
-        linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.homeRvContent.layoutManager = linearLayoutManager
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         binding.homeRvContent.adapter = homeNewsCommentAdapter
-        homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener{
+        homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getNewsCommentList(artId, true)
         }
         playerHelper = DKPlayerHelperBig(requireActivity(), binding.homesDkVideo)
@@ -219,14 +221,14 @@ class NewsVideoDetailFragment :
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
-                    }else{
-                        inflateHeader.grRecommend.visibility=View.GONE
+                    } else {
+                        inflateHeader.grRecommend.visibility = View.GONE
                     }
                     if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
                         newsAdsListAdapter.setNewInstance(it.data.ads)
-                    }else{
-                        inflateHeader.rvAds.visibility=View.GONE
+                    } else {
+                        inflateHeader.rvAds.visibility = View.GONE
                     }
                 }
             }
@@ -280,7 +282,7 @@ class NewsVideoDetailFragment :
         })
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             newsDetailData?.shareCount?.plus(1)?.let {
-                newsDetailData?.shareCount=it
+                newsDetailData?.shareCount = it
                 binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
             }
         })
@@ -386,11 +388,12 @@ class NewsVideoDetailFragment :
 
             followType = if (followType == 1) 2 else 1
 
-            cancel(followId = it.userId,followType)
+            cancel(followId = it.userId, followType)
 
 
         }
     }
+
     private fun surefollow(newsData: NewsDetailData, followType: Int) {
         newsData.authors.isFollow = followType
         setFollowState(inflateHeader.btFollow, newsData.authors)
@@ -404,7 +407,8 @@ class NewsVideoDetailFragment :
         linearLayoutManager?.startSmoothScroll(smoothScroller)
     }
 
-    var followType =0
+    var followType = 0
+
     // 1 关注 2 取消关注
     fun cancel(followId: String, type: Int) {
         if (MineUtils.getBindMobileJumpDataType(true)) {
@@ -552,16 +556,33 @@ class NewsVideoDetailFragment :
 
     private fun setLikeState() { //设置是否喜欢文章。
         var likesCount = newsDetailData?.likesCount
+        val item = viewModel.newsDetailLiveData.value
         when (newsDetailData?.isLike) {
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
+                item?.data?.let {
+                    GIOUtils.infoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
+                item?.data?.let {
+                    GIOUtils.cancelInfoLickClick(
+                        "资讯详情",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
         }
         if (likesCount != null) {
@@ -655,7 +676,7 @@ class NewsVideoDetailFragment :
             bean.let { _ ->
                 bean.childCount = it
             }
-            homeNewsCommentAdapter.notifyItemChanged(checkPosition+1)
+            homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
         })
     }
 

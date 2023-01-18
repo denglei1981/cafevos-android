@@ -43,6 +43,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
@@ -309,12 +310,32 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             )
                             item.likesCount++
                             "点赞成功".toast()
+                            GIOUtils.postLickClick(
+                                "社区-广场",
+                                item.topicId,
+                                item.topicName,
+                                item.authorBaseVo?.authorId,
+                                item.postsId.toString(),
+                                item.title,
+                                item.circleId,
+                                item.circleName
+                            )
                         } else {
                             item.isLike = 0
                             item.likesCount--
                             binding.layoutCount.tvLikeCount.setThumb(
                                 R.mipmap.circle_no_like_image,
                                 false
+                            )
+                            GIOUtils.cancelPostLickClick(
+                                "社区-广场",
+                                item.topicId,
+                                item.topicName,
+                                item.authorBaseVo?.authorId,
+                                item.postsId.toString(),
+                                item.title,
+                                item.circleId,
+                                item.circleName
                             )
 //                            "取消点赞".toast()
                         }

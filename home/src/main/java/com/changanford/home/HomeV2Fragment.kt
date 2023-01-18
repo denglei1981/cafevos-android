@@ -29,6 +29,8 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
@@ -136,6 +138,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) { // 不禁用刷新
                 currentPosition = position
+                GioPageConstant.findSecondPageName = when (position) {
+                    0 -> "发现页-推荐"
+                    1 -> "发现页-活动"
+                    2 -> "发现页-资讯"
+                    else -> "发现页-推荐"
+                }
+                GIOUtils.homePageView()
 //                when (position) {
 //                    0 -> {
 //                        binding.refreshLayout.setEnableRefresh(true)

@@ -11,6 +11,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -51,6 +52,8 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
@@ -172,6 +175,36 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     }
 
     private fun initListener(circleName: String) {
+
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        GioPageConstant.circleDetailTabName = "推荐"
+                    }
+                    1 -> {
+                        GioPageConstant.circleDetailTabName = "最新"
+                    }
+                    2 -> {
+                        GioPageConstant.circleDetailTabName = "精华"
+                    }
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+        })
+
         binding.ivPostBar.setOnClickListener {
             if (MineUtils.getBindMobileJumpDataType()) {
                 BindDialog(this).show()

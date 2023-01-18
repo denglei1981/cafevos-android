@@ -46,6 +46,8 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.*
 import com.changanford.common.utilext.GlideUtils.loadCompress
@@ -69,7 +71,8 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     LoadMoreModule {
 
     private val viewModel by lazy { PostGraphicViewModel() }
-    var checkPostDataBean :PostDataBean?=null
+    var checkPostDataBean: PostDataBean? = null
+    var isTopic = false
 
     init {
         addChildClickViewIds(R.id.tv_all_comment)
@@ -287,6 +290,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         position: Int
     ) {
         val activity = BaseApplication.curActivity as AppCompatActivity
+        val currentPageName = if (isTopic) {
+            "话题详情-${GioPageConstant.topicDetailTabName}"
+        } else "圈子详情-${GioPageConstant.circleDetailTabName}"
         MineUtils.getBindMobileJumpDataType(true)
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
@@ -303,12 +309,32 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             )
                             item.likesCount++
                             "点赞成功".toast()
+                            GIOUtils.postLickClick(
+                                currentPageName,
+                                item.topicId,
+                                item.topicName,
+                                item.authorBaseVo?.authorId,
+                                item.postsId.toString(),
+                                item.title,
+                                item.circleId,
+                                item.circleName
+                            )
                         } else {
                             item.isLike = 0
                             item.likesCount--
                             binding.layoutCount.tvLikeCount.setThumb(
                                 R.mipmap.circle_no_like_image,
                                 false
+                            )
+                            GIOUtils.cancelPostLickClick(
+                                currentPageName,
+                                item.topicId,
+                                item.topicName,
+                                item.authorBaseVo?.authorId,
+                                item.postsId.toString(),
+                                item.title,
+                                item.circleId,
+                                item.circleName
                             )
 //                            "取消点赞".toast()
                         }

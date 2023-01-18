@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -28,6 +29,8 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MyApplicationUtil
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
+import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
+import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -65,10 +68,26 @@ abstract class BaseApplication : MultiDexApplication() {
             initCloudChannel(this)
             initshare()
             initUmeng()
+            initGio()
         }
         initRetrofitClientConfig()
     }
 
+    //福域安卓 数据源
+    private val accountID = "a3f971f8c6df1e03"
+    private val dataSourceID = "9fd2dfc69845771d"
+    private val uRLScheme = "growing.5203f0f6016f1db6"
+    private val apiHost = "https://ubacollectuat.changanford.cn"
+
+    private fun initGio() {
+        val sConfiguration = CdpAutotrackConfiguration(accountID, uRLScheme)
+            .setDataCollectionServerHost(apiHost)
+            .setDataSourceId(dataSourceID)
+            .setDebugEnabled(MConstant.isDebug)
+        GrowingAutotracker.startWithConfiguration(this, sConfiguration)
+        //采集数据开关
+        GrowingAutotracker.get().setDataCollectionEnabled(true)
+    }
 
     //友盟初始化
     private fun initUmeng() {
@@ -168,8 +187,9 @@ abstract class BaseApplication : MultiDexApplication() {
     companion object {
         lateinit var INSTANT: Application
         lateinit var curActivity: AppCompatActivity
-        lateinit var currentViewModelScope  :CoroutineScope
+        lateinit var currentViewModelScope: CoroutineScope
     }
+
     /**
      * 配置Retrofit + OkHttp
      */
@@ -179,7 +199,8 @@ abstract class BaseApplication : MultiDexApplication() {
             .build()
         RetrofitClient.setRetrofitClientConfig(config)
     }
-    private fun initBaiduSdk(){
+
+    private fun initBaiduSdk() {
         /**
          * 隐私政策统一接口：：该接口必须在调用SDK初始化接口之前设置
          * 设为false不同意隐私政策：不支持发起检索、路线规划等数据请求，SDK抛出异常；

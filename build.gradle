@@ -11,6 +11,7 @@ buildscript {
         minSDKVersion = 22
         versions_router_compiler = "1.5.2"
         versions_compose = '1.0.5'
+        versions_gio = '3.4.5'
         //TODO
     }
     repositories {
@@ -28,6 +29,8 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
         classpath 'com.novoda:bintray-release:0.9.1'
         classpath "com.alibaba:arouter-register:1.0.2"
+        //GrowingIO 无埋点 SDK plugin
+        classpath 'com.growingio.android:autotracker-gradle-plugin:3.4.5'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
