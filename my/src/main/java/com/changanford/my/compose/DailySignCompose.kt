@@ -50,7 +50,8 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
         ) {
             Row(
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
             ) {
                 Text(text = "每日签到", fontSize = 16.sp, color = Color(0xff666666))
                 Text(
@@ -62,6 +63,14 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                             JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
                         }
                         .padding(start = 12.dp)
+                        .weight(1f)
+                )
+                Text(
+                    text = "签到提醒",
+                    fontSize = 11.sp,
+                    color = Color(0xff999999),
+                    modifier = Modifier
+                        .padding(end = 9.dp)
                 )
             }
 
@@ -150,20 +159,22 @@ private fun signInTipsClick(isOpenTips: Boolean,result: (Boolean) -> Unit) {
         return
     }
     if (isOpenTips){
-        testCalendar(2)
-        Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0)
-        Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
-        result(false)
-        "删除成功".toast()
+        testCalendar(2){
+            Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0)
+            Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
+            result(false)
+            "删除成功".toast()
+        }
     }else {
         showTimePicker { it1, it2 ->
             //添加事件
             var time = TimeUtils.MillisTo_M_H(System.currentTimeMillis())//yyyy.MM.dd HH:mm
-            testCalendar(1,TimeUtils.MillisTo_M_H_REVERSE(time.substring(0,11).plus("$it1:$it2")))
-            Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, System.currentTimeMillis())
-            Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, true)
-            result(true)
-            "添加成功".toast()
+            testCalendar(1,TimeUtils.MillisTo_M_H_REVERSE(time.substring(0,11).plus("$it1:$it2"))){
+                Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, System.currentTimeMillis())
+                Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, true)
+                result(true)
+                "添加成功".toast()
+            }
         }
     }
 }

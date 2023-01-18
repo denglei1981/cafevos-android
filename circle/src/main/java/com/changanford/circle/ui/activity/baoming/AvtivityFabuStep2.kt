@@ -795,6 +795,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                         BaseApplication.INSTANT.applicationContext,
                         "活动结束时间不能早于报名开始时间"
                     )
+                    pvActTime!!.show()
                 } else {
                     ActivityFabuBaoming.dto.endTime = dateend
                     ActivityFabuBaoming.dto.endTimeShow = TimeUtils.MillisToStrO(date.time)
