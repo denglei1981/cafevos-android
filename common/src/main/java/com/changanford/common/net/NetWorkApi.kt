@@ -574,7 +574,7 @@ interface NetWorkApi {
     suspend fun getH5AccessCode(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<AdBean>
 
     /**
      * 任务列表
