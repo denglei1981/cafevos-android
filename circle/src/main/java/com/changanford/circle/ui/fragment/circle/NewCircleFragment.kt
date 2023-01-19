@@ -49,6 +49,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.ViewPage2AdapterFragment
@@ -79,6 +80,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
             viewModel.getYouLikeData()
         }
         binding.wtvAllHot.setOnClickListener {
+            GioPageConstant.hotCircleEntrance = "社区-圈子-热门榜单-更多"
             //全部热门榜单
             HotListActivity.start()
         }
@@ -263,7 +265,9 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
     @Composable
     private fun ItemMyCircle(dataList: List<NewCircleBean>) {
         val dataListSize = dataList.size
-        LazyRow(modifier = Modifier.fillMaxWidth().padding(start = 18.dp)) {
+        LazyRow(modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 18.dp)) {
             items(5) { index ->
                 //最多展示5个我圈子
                 Row(

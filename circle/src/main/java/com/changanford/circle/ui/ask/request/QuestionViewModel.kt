@@ -11,6 +11,7 @@ import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.STSBean
 import com.changanford.common.net.*
 import com.changanford.common.util.DeviceUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -83,6 +84,8 @@ class QuestionViewModel : BaseViewModel() {
         })
     }
 
+    var questionType = ""
+
     fun createQuestion(params: HashMap<String, Any>) {
         launch(block = {
             val body = params
@@ -90,6 +93,14 @@ class QuestionViewModel : BaseViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().createQuestion(body.header(rKey), body.body(rKey))
                 .onSuccess {
+                    it?.let {
+                        GIOUtils.questionPublishSuccess(
+                            params["title"].toString(),
+                            questionType,
+                            params["fbReward"].toString(),
+                            it.conQaQuestionId.toString()
+                        )
+                    }
                     createQuestionLiveData.value = "upsuccess"
                 }
                 .onWithMsgFailure {

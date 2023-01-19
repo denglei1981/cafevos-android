@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMainTopBinding
@@ -49,7 +50,8 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
  */
 class CircleSquareAdapter(
     private val context: Context,
-    private val supportFragmentManager: FragmentManager
+    private val supportFragmentManager: FragmentManager,
+    private val lifecycleRegistry: Lifecycle
 ) : BaseAdapter<String>(
     context,
     Pair(R.layout.layout_circle_header_hot_topic, 0),
@@ -126,6 +128,7 @@ class CircleSquareAdapter(
             val recommendAdAdapter = CircleAdBannerAdapter()
             it.bViewpager.setAdapter(recommendAdAdapter)
             it.bViewpager.setCanLoop(true)
+            it.bViewpager.registerLifecycleObserver(lifecycleRegistry)
             it.bViewpager.setIndicatorView(it.drIndicator)
             it.bViewpager.setAutoPlay(true)
             it.bViewpager.setScrollDuration(500)
@@ -136,12 +139,14 @@ class CircleSquareAdapter(
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    val bean = it.bViewpager.data as List<AdBean>
-                    bean[position].adName?.let { it1 ->
-                        GIOUtils.homePageExposure(
-                            "广告位banner", (position + 1).toString(),
-                            it1
-                        )
+                    if (it.bViewpager.visibility == View.VISIBLE) {
+                        val bean = it.bViewpager.data as List<AdBean>
+                        bean[position].adName?.let { it1 ->
+                            GIOUtils.homePageExposure(
+                                "广告位banner", (position + 1).toString(),
+                                it1
+                            )
+                        }
                     }
                 }
             })

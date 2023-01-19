@@ -24,6 +24,7 @@ import com.changanford.common.ui.dialog.SelectCoverDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -372,7 +373,11 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 //        ).show()
     }
 
+    private var mUserInfo: UserInfoBean? = null
+
     private fun showUserInfo(userInfoBean: UserInfoBean?) {
+        mUserInfo = userInfoBean
+        GIOUtils.personalHomepageView(userInfoBean?.userId, userInfoBean?.nickname)
         userInfoBean?.let {
             when (userInfoBean.status) {
                 2 -> { // 用户已注销。
@@ -595,6 +600,24 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                     1
                 } else {
                     0
+                }
+                if (isFollow == 1) {
+                    mUserInfo?.let {
+                        GIOUtils.followClick(
+                            taUserId,
+                            it.nickname,
+                            "发帖人个人主页"
+                        )
+                    }
+
+                } else {
+                    mUserInfo?.let {
+                        GIOUtils.cancelFollowClick(
+                            taUserId,
+                            it.nickname,
+                            "发帖人个人主页"
+                        )
+                    }
                 }
                 showFollowState(isFollow)
                 LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(isFollow)

@@ -307,6 +307,16 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 isOpenComment = false
             }
             tvCommentNum.setOnClickListener {
+                GIOUtils.clickCommentPost(
+                    "帖子详情页",
+                    mData.topicId,
+                    mData.topicName,
+                    mData.authorBaseVo?.authorId,
+                    mData.postsId,
+                    mData.title,
+                    mData.circleId.toString(),
+                    mData.circleName
+                )
                 page = 1
                 viewModel.getCommendList(mData.postsId, page)
                 isOpenComment = true
@@ -425,7 +435,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.ivLike)
                     GIOUtils.postLickClick(
-                        "帖子详情",
+                        "帖子详情页",
                         mData.topicId,
                         mData.topicName,
                         mData.authorBaseVo?.authorId,
@@ -439,7 +449,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     mData.likesCount--
                     binding.ivLike.setImageResource(R.mipmap.circle_no_like_image_v)
                     GIOUtils.cancelPostLickClick(
-                        "帖子详情",
+                        "帖子详情页",
                         mData.topicId,
                         mData.topicName,
                         mData.authorBaseVo?.authorId,
@@ -460,9 +470,29 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 if (mData.isCollection == 0) {
                     mData.isCollection = 1
                     mData.collectCount++
+                    GIOUtils.collectSuccessPost(
+                        "帖子详情页",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId.toString(),
+                        mData.circleName
+                    )
                 } else {
                     mData.isCollection = 0
                     mData.collectCount--
+                    GIOUtils.cancelCollectSuccessPost(
+                        "帖子详情页",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId.toString(),
+                        mData.circleName
+                    )
                 }
                 binding.tvCollectionNum.text =
                     "${if (mData.collectCount > 0) mData.collectCount else "0"}"
@@ -485,10 +515,21 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     "关注"
                 }
-                if (mData.authorBaseVo?.isFollow == 1)
+                if (mData.authorBaseVo?.isFollow == 1) {
                     "关注成功".toast()
-                else
+                    GIOUtils.followClick(
+                        mData.authorBaseVo.authorId,
+                        mData.authorBaseVo.nickname,
+                        "帖子详情页"
+                    )
+                } else {
                     "已取消关注".toast()
+                    GIOUtils.cancelFollowClick(
+                        mData.authorBaseVo?.authorId,
+                        mData.authorBaseVo?.nickname,
+                        "帖子详情页"
+                    )
+                }
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER)
                     .postValue(mData.authorBaseVo?.isFollow)
                 binding.composeView.setContent {
@@ -505,6 +546,16 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             binding.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             binding.commentTitle.text = "全部评论 ${mData.commentCount}"
+            GIOUtils.commentSuccessPost(
+                "帖子详情页",
+                mData.topicId,
+                mData.topicName,
+                mData.authorBaseVo?.authorId,
+                mData.postsId,
+                mData.title,
+                mData.circleId?.toString(),
+                mData.circleName
+            )
             viewModel.getCommendList(mData.postsId, page)
         }
 
@@ -688,17 +739,18 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                     }
                                     Spacer(modifier = Modifier.width(13.dp))
                                     //是否关注
-                                    Box(modifier = Modifier
-                                        .width(60.dp)
-                                        .height(25.dp)
-                                        .background(
-                                            color = colorResource(com.changanford.common.R.color.color_E5),
-                                            shape = RoundedCornerShape(13.dp)
-                                        )
-                                        .clickable {
-                                            addFocusOn()
+                                    Box(
+                                        modifier = Modifier
+                                            .width(60.dp)
+                                            .height(25.dp)
+                                            .background(
+                                                color = colorResource(com.changanford.common.R.color.color_E5),
+                                                shape = RoundedCornerShape(13.dp)
+                                            )
+                                            .clickable {
+                                                addFocusOn()
 //                                    isFollowState.value=if(isFollowState.value==1)0 else 1
-                                        }, contentAlignment = Alignment.Center
+                                            }, contentAlignment = Alignment.Center
                                     ) {
                                         Text(
                                             text = if (isFollow == 1) "已关注" else "关注",

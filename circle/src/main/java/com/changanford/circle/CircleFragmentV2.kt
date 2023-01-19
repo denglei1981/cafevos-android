@@ -175,6 +175,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
                 override fun checkQuestion() {
+                    GioPageConstant.askSourceEntrance = "右上角+号"
                     JumpUtils.instans?.jump(116)
                 }
 

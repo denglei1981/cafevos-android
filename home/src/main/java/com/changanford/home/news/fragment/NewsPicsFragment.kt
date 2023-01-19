@@ -116,6 +116,15 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 // 评论数量加1. 刷新评论。
                 viewModel.getNewsCommentList(artId, false)
                 setCommentCount()
+                val item = viewModel.newsDetailLiveData.value
+                item?.data?.let {
+                    GIOUtils.commentSuccessInfo(
+                        "资讯详情页",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             } else {
 
                 toastShow(it.message)
@@ -286,6 +295,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
     private fun setCollection() {
         var collectCount = newsDetailData?.collectCount
+        val item = viewModel.newsDetailLiveData.value
         when (newsDetailData?.isCollect) {
             0 -> {
                 newsDetailData?.isCollect = 1
@@ -294,6 +304,14 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                     R.drawable.icon_home_bottom_collection_blue,
                     true
                 )
+                item?.data?.let {
+                    GIOUtils.collectSuccessInfo(
+                        "资讯详情页",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
             1 -> {
                 newsDetailData?.isCollect = 0
@@ -302,6 +320,14 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                     R.drawable.icon_home_bottom_collection_white,
                     false
                 )
+                item?.data?.let {
+                    GIOUtils.cancelCollectSuccessInfo(
+                        "资讯详情页",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
         }
         if (collectCount != null) {
@@ -325,7 +351,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, true)
                 item?.data?.let {
                     GIOUtils.infoLickClick(
-                        "资讯详情",
+                        "资讯详情页",
                         it.specialTopicTitle,
                         it.artId.toString(),
                         it.title
@@ -341,7 +367,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 )
                 item?.data?.let {
                     GIOUtils.cancelInfoLickClick(
-                        "资讯详情",
+                        "资讯详情页",
                         it.specialTopicTitle,
                         it.artId.toString(),
                         it.title
@@ -417,6 +443,18 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         newsData.authors.isFollow = followType
         setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
         setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
+        when (followType) {
+            1 -> {
+                GIOUtils.followClick(newsData.authors.authorId, newsData.authors.nickname, "资讯详情页")
+            }
+            2 -> {
+                GIOUtils.cancelFollowClick(
+                    newsData.authors.authorId,
+                    newsData.authors.nickname,
+                    "资讯详情页"
+                )
+            }
+        }
 //        viewModel.followOrCancelUser(newsData.userId, followType)
     }
 
@@ -440,6 +478,15 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             R.id.tv_news_to_msg -> { // 去评论。
 
                 showCommentDialog()
+                val item = viewModel.newsDetailLiveData.value
+                item?.data?.let {
+                    GIOUtils.clickCommentInfo(
+                        "资讯详情页",
+                        it.specialTopicTitle,
+                        it.artId.toString(),
+                        it.title
+                    )
+                }
             }
 
             R.id.tv_news_to_collect -> {

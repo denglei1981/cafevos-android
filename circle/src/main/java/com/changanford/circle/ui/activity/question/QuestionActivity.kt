@@ -31,6 +31,7 @@ import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
@@ -115,6 +116,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
             )
             tvAskQuestions.setOnClickListener {
                 WBuriedUtil.clickQuestionAskTop()
+                GioPageConstant.askSourceEntrance = "我的问答页面-右上角提问"
                 JumpUtils.instans?.jump(116)
             }
         }

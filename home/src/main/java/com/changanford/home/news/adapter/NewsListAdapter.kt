@@ -93,6 +93,19 @@ class NewsListAdapter(
         tvLikeCount.setPageTitleText(item.likesCount.toString())
         setLikeState(tvLikeCount, item, false)
         tvCommentCount.text = item.getCommentCountResult()
+        tvCommentCount.setOnTouchListener { v, event ->
+            GIOUtils.clickCommentInfo(
+                if (type.isNotEmpty()) {
+                    type
+                } else if (isSpecialDetail) {
+                    "专题详情页面"
+                } else "发现-资讯",
+                item.specialTopicTitle,
+                item.artId,
+                item.title
+            )
+            false
+        }
         tvLookCount.text = item.getTimeAdnViewCount()
         tvTime.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
@@ -164,7 +177,9 @@ class NewsListAdapter(
                             ).toString()
                         )
                         GIOUtils.cancelInfoLickClick(
-                            if (isSpecialDetail) {
+                            if (type.isNotEmpty()) {
+                                type
+                            } else if (isSpecialDetail) {
                                 "专题详情页面"
                             } else "发现-资讯",
                             item.specialTopicTitle,
@@ -180,16 +195,26 @@ class NewsListAdapter(
     }
 
     // 关注。
-    private fun getFollow(followId: String, type: Int) {
+    private fun getFollow(followId: String, typeFollow: Int, nickName: String) {
+        val pageName = if (type.isNotEmpty()) {
+            type
+        } else if (isSpecialDetail) {
+            "专题详情页面"
+        } else "发现-资讯"
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
-            requestBody["type"] = type
+            requestBody["type"] = typeFollow
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
-                    notifyAtt(followId, type)
+                    notifyAtt(followId, typeFollow)
+                    if (typeFollow == 1) {
+                        GIOUtils.followClick(followId, nickName, pageName)
+                    } else {
+                        GIOUtils.cancelFollowClick(followId, nickName, pageName)
+                    }
                 }.onWithMsgFailure {
                     if (it != null) {
                         toastShow(it)
@@ -245,6 +270,23 @@ class NewsListAdapter(
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
-        getFollow(authorBaseVo.authorId, followType)
+        getFollow(authorBaseVo.authorId, followType, authorBaseVo.nickname)
+        val pageName = if (type.isNotEmpty()) {
+            type
+        } else if (isSpecialDetail) {
+            "专题详情页面"
+        } else "发现-资讯"
+        when (followType) {
+            1 -> {
+                GIOUtils.followClick(authorBaseVo.authorId, authorBaseVo.nickname, pageName)
+            }
+            2 -> {
+                GIOUtils.cancelFollowClick(
+                    authorBaseVo.authorId,
+                    authorBaseVo.nickname,
+                    pageName
+                )
+            }
+        }
     }
 }

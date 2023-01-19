@@ -2,6 +2,7 @@ package com.changanford.common.util.gio
 
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.GIOUtils.gioEmpty
 import com.changanford.common.util.gio.GioPageConstant.infoEntrance
 import com.changanford.common.util.gio.GioPageConstant.infoId
 import com.changanford.common.util.gio.GioPageConstant.infoName
@@ -30,9 +31,7 @@ object GIOUtils {
             else -> "无"
         }
         //城市
-        map["fy_province_ppl"] = if (userInfoBean.provinceName.isNullOrEmpty()) {
-            "无"
-        } else userInfoBean.provinceName
+        map["fy_province_ppl"] = userInfoBean.provinceName.gioEmpty()
         //生日
         map["fy_birthday_ppl"] = userInfoBean.birthday.toString()
         //年龄
@@ -144,9 +143,9 @@ object GIOUtils {
         //资讯所属专题
         map["fy_informationTheme_var"] = infoTheme.gioEmpty()
         //资讯id
-        map["fy_informationID_var"] = GioPageConstant.infoId
+        map["fy_informationID_var"] = infoId
         //资讯名称
-        map["fy_informationName_var"] = GioPageConstant.infoName
+        map["fy_informationName_var"] = infoName
         map["fy_shareChannel_var_var"] = GioPageConstant.infoShareType
 
         trackCustomEvent("fy_infoShareSuccess", map)
@@ -483,6 +482,390 @@ object GIOUtils {
         map["fy_circleName_var"] = circleName.gioEmpty()
 
         trackCustomEvent("fy_commentClick", map)
+    }
+
+    //资讯评论成功
+    fun commentSuccessInfo(
+        pageName: String,
+        infoTheme: String?,
+        infoId: String?,
+        infoName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "资讯"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = infoTheme.gioEmpty()
+        //资讯id
+        map["fy_informationID_var"] = infoId.gioEmpty()
+        //资讯名称
+        map["fy_informationName_var"] = infoName.gioEmpty()
+        //话题id
+        map["fy_topicID_var"] = "无"
+        //话题名称
+        map["fy_topicName_var"] = "无"
+        //发帖人id
+        map["fy_posterID_var"] = "无"
+        //帖子id
+        map["fy_postID_var"] = "无"
+        //帖子标题
+        map["fy_postName_var"] = "无"
+        //圈子id
+        map["fy_circleID_var"] = "无"
+        //圈子名称
+        map["fy_circleName_var"] = "无"
+
+        trackCustomEvent("fy_commentSuccess", map)
+    }
+
+    //帖子评论成功
+    fun commentSuccessPost(
+        pageName: String,
+        topicId: String?,
+        topicName: String?,
+        posterId: String?,
+        postId: String?,
+        postName: String?,
+        circleId: String?,
+        circleName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        //所在页面
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "帖子"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = "无"
+        //资讯id
+        map["fy_informationID_var"] = "无"
+        //资讯名称
+        map["fy_informationName_var"] = "无"
+        //话题id
+        map["fy_topicID_var"] = topicId.gioEmpty()
+        //话题名称
+        map["fy_topicName_var"] = topicName.gioEmpty()
+        //发帖人id
+        map["fy_posterID_var"] = posterId.gioEmpty()
+        //帖子id
+        map["fy_postID_var"] = postId.gioEmpty()
+        //帖子标题
+        map["fy_postName_var"] = postName.gioEmpty()
+        //圈子id
+        map["fy_circleID_var"] = circleId.gioEmpty()
+        //圈子名称
+        map["fy_circleName_var"] = circleName.gioEmpty()
+
+        trackCustomEvent("fy_commentSuccess", map)
+    }
+
+    //帖子收藏成功
+    fun collectSuccessPost(
+        pageName: String,
+        topicId: String?,
+        topicName: String?,
+        posterId: String?,
+        postId: String?,
+        postName: String?,
+        circleId: String?,
+        circleName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        //所在页面
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "帖子"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = "无"
+        //资讯id
+        map["fy_informationID_var"] = "无"
+        //资讯名称
+        map["fy_informationName_var"] = "无"
+        //话题id
+        map["fy_topicID_var"] = topicId.gioEmpty()
+        //话题名称
+        map["fy_topicName_var"] = topicName.gioEmpty()
+        //发帖人id
+        map["fy_posterID_var"] = posterId.gioEmpty()
+        //帖子id
+        map["fy_postID_var"] = postId.gioEmpty()
+        //帖子标题
+        map["fy_postName_var"] = postName.gioEmpty()
+        //圈子id
+        map["fy_circleID_var"] = circleId.gioEmpty()
+        //圈子名称
+        map["fy_circleName_var"] = circleName.gioEmpty()
+
+        trackCustomEvent("fy_collectClick", map)
+    }
+
+    //资讯收藏成功
+    fun collectSuccessInfo(
+        pageName: String,
+        infoTheme: String?,
+        infoId: String?,
+        infoName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "资讯"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = infoTheme.gioEmpty()
+        //资讯id
+        map["fy_informationID_var"] = infoId.gioEmpty()
+        //资讯名称
+        map["fy_informationName_var"] = infoName.gioEmpty()
+        //话题id
+        map["fy_topicID_var"] = "无"
+        //话题名称
+        map["fy_topicName_var"] = "无"
+        //发帖人id
+        map["fy_posterID_var"] = "无"
+        //帖子id
+        map["fy_postID_var"] = "无"
+        //帖子标题
+        map["fy_postName_var"] = "无"
+        //圈子id
+        map["fy_circleID_var"] = "无"
+        //圈子名称
+        map["fy_circleName_var"] = "无"
+
+        trackCustomEvent("fy_collectClick", map)
+    }
+
+    //帖子取消收藏成功
+    fun cancelCollectSuccessPost(
+        pageName: String,
+        topicId: String?,
+        topicName: String?,
+        posterId: String?,
+        postId: String?,
+        postName: String?,
+        circleId: String?,
+        circleName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        //所在页面
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "帖子"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = "无"
+        //资讯id
+        map["fy_informationID_var"] = "无"
+        //资讯名称
+        map["fy_informationName_var"] = "无"
+        //话题id
+        map["fy_topicID_var"] = topicId.gioEmpty()
+        //话题名称
+        map["fy_topicName_var"] = topicName.gioEmpty()
+        //发帖人id
+        map["fy_posterID_var"] = posterId.gioEmpty()
+        //帖子id
+        map["fy_postID_var"] = postId.gioEmpty()
+        //帖子标题
+        map["fy_postName_var"] = postName.gioEmpty()
+        //圈子id
+        map["fy_circleID_var"] = circleId.gioEmpty()
+        //圈子名称
+        map["fy_circleName_var"] = circleName.gioEmpty()
+
+        trackCustomEvent("fy_cancelCollectClick", map)
+    }
+
+    //资讯取消收藏成功
+    fun cancelCollectSuccessInfo(
+        pageName: String,
+        infoTheme: String?,
+        infoId: String?,
+        infoName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_currentPageName_var"] = pageName
+        //帖子、资讯
+        map["fy_contentType_var"] = "资讯"
+        //福域_资讯所属专题
+        map["fy_informationTheme_var"] = infoTheme.gioEmpty()
+        //资讯id
+        map["fy_informationID_var"] = infoId.gioEmpty()
+        //资讯名称
+        map["fy_informationName_var"] = infoName.gioEmpty()
+        //话题id
+        map["fy_topicID_var"] = "无"
+        //话题名称
+        map["fy_topicName_var"] = "无"
+        //发帖人id
+        map["fy_posterID_var"] = "无"
+        //帖子id
+        map["fy_postID_var"] = "无"
+        //帖子标题
+        map["fy_postName_var"] = "无"
+        //圈子id
+        map["fy_circleID_var"] = "无"
+        //圈子名称
+        map["fy_circleName_var"] = "无"
+
+        trackCustomEvent("fy_cancelCollectClick", map)
+    }
+
+    //关注账号
+    fun followClick(userId: String?, userNick: String?, pageName: String) {
+
+        val map = HashMap<String, String>()
+
+        //账号id
+        map["fy_userID_var"] = userId.gioEmpty()
+        //账号昵称
+        map["fy_userNick_var"] = userNick.gioEmpty()
+        //所在页面
+        map["fy_currentPageName_var"] = pageName
+
+        trackCustomEvent("fy_followClick", map)
+    }
+
+    //取消关注账号
+    fun cancelFollowClick(userId: String?, userNick: String?, pageName: String) {
+
+        val map = HashMap<String, String>()
+
+        //账号id
+        map["fy_userID_var"] = userId.gioEmpty()
+        //账号昵称
+        map["fy_userNick_var"] = userNick.gioEmpty()
+        //所在页面
+        map["fy_currentPageName_var"] = pageName
+
+        trackCustomEvent("fy_followCancel", map)
+    }
+
+    //个人主页曝光
+    fun personalHomepageView(userId: String?, nickName: String?) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+        map["fy_userID_var"] = userId.gioEmpty()
+        map["fy_userNick_var"] = nickName.gioEmpty()
+
+        trackCustomEvent("fy_personalHomepageView", map)
+    }
+
+    //热门榜单详情曝光
+    fun hotCircleDetailPageView(tabName: String?) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+        //社区-圈子-热门榜单-更多
+        //社区-圈子-热门榜单-车友会-更多
+        //社区-圈子-热门榜单-车型圈-更多
+        //社区-圈子-热门榜单-车生活-更多
+        map["fy_hotCircleEntrance_var"] = GioPageConstant.hotCircleEntrance
+        map["fy_tabName_var"] = tabName.gioEmpty()
+
+        trackCustomEvent("fy_hotCircleDetailPageView", map)
+    }
+
+    //圈子详情曝光
+    fun circleDetailPageView(circleId: String?, circleName: String) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+        map["fy_circleID_var"] = circleId.gioEmpty()
+        map["fy_circleName_var"] = circleName.gioEmpty()
+
+        trackCustomEvent("fy_circleDetailPageView", map)
+    }
+
+    //圈子详情资源位点击
+    fun circleDetailPageResourceClick(areaName: String, position: String, trafficName: String?) {
+
+        val map = HashMap<String, String>()
+
+        //流量位区域
+        map["fy_area_var"] = areaName.gioEmpty()
+        map["fy_position_var"] = position.gioEmpty()
+        map["fy_trafficName_var"] = trafficName.gioEmpty()
+
+        trackCustomEvent("fy_circleDetailPageResourceClick", map)
+    }
+
+    //加入圈子点击
+    fun joinCircleClick(pageName: String, circleId: String?, circleName: String?) {
+
+        val map = HashMap<String, String>()
+
+        //流量位区域
+        map["fy_currentPageName_var"] = pageName
+        map["fy_circleID_var"] = circleId.gioEmpty()
+        map["fy_circleName_var"] = circleName.gioEmpty()
+
+        trackCustomEvent("fy_joinCircleClick", map)
+    }
+
+    //提问页面曝光
+    fun askPageView() {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+        map["fy_sourceEntrance_var"] = GioPageConstant.askSourceEntrance
+
+        trackCustomEvent("fy_askPageView", map)
+    }
+
+    //提问按钮点击
+    fun questionPublishClick(askName: String, askType: String?, askFB: String?) {
+
+        val map = HashMap<String, String>()
+
+        //问答标题
+        map["fy_questionName_var"] = askName.gioEmpty()
+        //问答类型
+        map["fy_questionType_var"] = askType.gioEmpty()
+        //打赏福币
+        map["fy_fbReward_var"] = askFB.gioEmpty() + "福币"
+
+        trackCustomEvent("fy_questionPublishClick", map)
+    }
+
+    //提问发布成功
+    fun questionPublishSuccess(askName: String, askType: String?, askFB: String?, askId: String?) {
+
+        val map = HashMap<String, String>()
+
+        //问答id
+        map["fy_questionID_var"] = askId.gioEmpty()
+        //问答标题
+        map["fy_questionName_var"] = askName.gioEmpty()
+        //问答类型
+        map["fy_questionType_var"] = askType.gioEmpty()
+        //打赏福币
+        map["fy_fbReward_var"] = askFB.gioEmpty()
+
+        trackCustomEvent("fy_questionPublishSuccess", map)
     }
 
     private fun String?.gioEmpty(): String {

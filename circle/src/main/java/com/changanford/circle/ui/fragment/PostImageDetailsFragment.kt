@@ -376,6 +376,16 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         binding.bottomView.run {
             tvCommentNum.setOnClickListener {
                 binding.nestScroll.smoothScrollTo(0, binding.ryComment.top - 20)
+                GIOUtils.clickCommentPost(
+                    "帖子详情页",
+                    mData.topicId,
+                    mData.topicName,
+                    mData.authorBaseVo?.authorId,
+                    mData.postsId,
+                    mData.title,
+                    mData.circleId.toString(),
+                    mData.circleName
+                )
             }
             llLike.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
@@ -456,7 +466,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.bottomView.ivLike)
                     GIOUtils.postLickClick(
-                        "帖子详情",
+                        "帖子详情页",
                         mData.topicId,
                         mData.topicName,
                         mData.authorBaseVo?.authorId,
@@ -470,7 +480,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     mData.likesCount--
                     binding.bottomView.ivLike.setImageResource(R.mipmap.circle_no_like_image)
                     GIOUtils.cancelPostLickClick(
-                        "帖子详情",
+                        "帖子详情页",
                         mData.topicId,
                         mData.topicName,
                         mData.authorBaseVo?.authorId,
@@ -491,9 +501,29 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 if (mData.isCollection == 0) {
                     mData.isCollection = 1
                     mData.collectCount++
+                    GIOUtils.collectSuccessPost(
+                        "帖子详情页",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId.toString(),
+                        mData.circleName
+                    )
                 } else {
                     mData.isCollection = 0
                     mData.collectCount--
+                    GIOUtils.cancelCollectSuccessPost(
+                        "帖子详情页",
+                        mData.topicId,
+                        mData.topicName,
+                        mData.authorBaseVo?.authorId,
+                        mData.postsId,
+                        mData.title,
+                        mData.circleId.toString(),
+                        mData.circleName
+                    )
                 }
                 binding.bottomView.tvCollectionNum.text =
                     "${if (mData.collectCount > 0) mData.collectCount else "0"}"
@@ -514,6 +544,16 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             binding.bottomView.tvCommentNum.text =
                 "${if (mData.commentCount > 0) mData.commentCount else "0"}"
             binding.tvCommentsTitle.setText("  ${mData.commentCount}")
+            GIOUtils.commentSuccessPost(
+                "帖子详情页",
+                mData.topicId,
+                mData.topicName,
+                mData.authorBaseVo?.authorId,
+                mData.postsId,
+                mData.title,
+                mData.circleId?.toString(),
+                mData.circleName
+            )
             initData()
         }
         viewModel.followBean.observe(this) {
@@ -525,10 +565,21 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     "关注"
                 }
-                if (mData.authorBaseVo?.isFollow == 1)
+                if (mData.authorBaseVo?.isFollow == 1) {
                     "关注成功".toast()
-                else
+                    GIOUtils.followClick(
+                        mData.authorBaseVo.authorId,
+                        mData.authorBaseVo.nickname,
+                        "帖子详情页"
+                    )
+                } else {
                     "已取消关注".toast()
+                    GIOUtils.cancelFollowClick(
+                        mData.authorBaseVo?.authorId,
+                        mData.authorBaseVo?.nickname,
+                        "帖子详情页"
+                    )
+                }
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_FOLLOW_USER)
                     .postValue(mData.authorBaseVo?.isFollow)
             } else {

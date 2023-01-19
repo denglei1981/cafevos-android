@@ -13,6 +13,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -151,23 +152,23 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     if (type == 2) {
                         when (item.isMutualAttention) {
                             1 -> {//取消关注
-                                cancel(item.authorId.toString(), "2")
+                                cancel(item.authorId.toString(), "2", item.nickname)
                             }
                             100 -> {//关注
-                                cancel(item.authorId.toString(), "1")
+                                cancel(item.authorId.toString(), "1", item.nickname)
                             }
                             else -> {
-                                cancel(item.authorId.toString(), "2")
+                                cancel(item.authorId.toString(), "2", item.nickname)
                             }
                         }
 
                     } else
                         when (item.isMutualAttention) {
                             1 -> {//取消
-                                cancel(item.authorId.toString(), "2")
+                                cancel(item.authorId.toString(), "2", item.nickname)
                             }
                             0 -> {//关注
-                                cancel(item.authorId.toString(), "1")
+                                cancel(item.authorId.toString(), "1", item.nickname)
                             }
                         }
                 }
@@ -181,12 +182,14 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     }
 
     // 1 关注 2 取消关注
-    fun cancel(followId: String, type: String) {
+    fun cancel(followId: String, typeFollow: String, nickName: String) {
+        val pageName = if (type == 1) "我的-粉丝页" else "我的-关注页"
         if (MineUtils.getBindMobileJumpDataType(true)) {
             return
         }
-        if (type == "1") {
-            viewModel.cancelFans(followId, type)
+        if (typeFollow == "1") {
+            viewModel.cancelFans(followId, typeFollow)
+            GIOUtils.followClick(followId, nickName, pageName)
         } else {
             QuickPopupBuilder.with(this)
                 .contentView(R.layout.pop_two_btn)
@@ -195,7 +198,8 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                         .gravity(Gravity.CENTER)
                         .withClick(R.id.btn_comfir, View.OnClickListener {
                             this.followId = followId
-                            viewModel.cancelFans(followId, type)
+                            viewModel.cancelFans(followId, typeFollow)
+                            GIOUtils.cancelFollowClick(followId, nickName, pageName)
                         }, true)
                         .withClick(R.id.btn_cancel, View.OnClickListener {
 

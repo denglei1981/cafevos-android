@@ -101,6 +101,19 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 }
             }
             binding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
+            binding.layoutCount.tvCommentCount.setOnTouchListener { v, event ->
+                GIOUtils.clickCommentPost(
+                    "社区-广场",
+                    item.topicId,
+                    item.topicName,
+                    item.authorBaseVo?.authorId,
+                    item.postsId.toString(),
+                    item.title,
+                    item.circleId,
+                    item.circleName
+                )
+                false
+            }
             binding.layoutHeader.ivHeader.setOnClickListener {
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId.toString())
@@ -268,6 +281,11 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 //                                item.isJoin ="TOJOIN"
                                                 }
                                             }
+                                            GIOUtils.joinCircleClick(
+                                                "社区-广场",
+                                                item.circleId,
+                                                item.circleName
+                                            )
                                         }
                                     })
                             }
@@ -357,9 +375,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         }
     }
 
+    private var nickName: String = ""
+
     // 关注或者取消
     private fun followAction(authorBaseVo: AuthorBaseVo) {
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
+        nickName = authorBaseVo.nickname
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
         if (followType == 2) { //取消关注
@@ -384,7 +405,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 .onSuccess {
                     if (type == 1) {
                         toastShow("已关注")
+                        GIOUtils.followClick(followId, nickName, "社区-广场")
                     } else {
+                        GIOUtils.cancelFollowClick(followId, nickName, "社区-广场")
                         toastShow("取消关注")
                     }
                     notifyAtt(followId, type)

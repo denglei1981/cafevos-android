@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -91,6 +92,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     private var isWhite = true//是否是白色状态
 
     private var circleId = ""
+    private var circleName: String? = null
     private var isOpenMenuPop = false
     private var shareBeanVO: CircleShareBean? = null
     private var isFirst = true
@@ -135,7 +137,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 ryNotice.adapter = noticeAdapter
                 ryActivity.adapter = activityAdapter
                 val topicLayoutManager =
-                    FlexboxLayoutManagerCustom(this@CircleDetailsActivity,2)
+                    FlexboxLayoutManagerCustom(this@CircleDetailsActivity, 2)
                 ryTopic.layoutManager = topicLayoutManager
                 ryTopic.adapter = topicAdapter
             }
@@ -186,6 +188,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             }
 
             override fun onPageSelected(position: Int) {
+
                 when (position) {
                     0 -> {
                         GioPageConstant.circleDetailTabName = "推荐"
@@ -196,7 +199,15 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     2 -> {
                         GioPageConstant.circleDetailTabName = "精华"
                     }
+                    3 -> {
+                        GioPageConstant.circleDetailTabName = "圈主专区"
+                    }
                 }
+                GIOUtils.circleDetailPageResourceClick(
+                    "tab名称",
+                    (position + 1).toString(),
+                    GioPageConstant.circleDetailTabName
+                )
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -262,6 +273,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 bundle.putBoolean(IntentKey.HAS_LOOK_NOTICE, hasLookNotice)
                 startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
+                GIOUtils.circleDetailPageResourceClick("公告栏", "0", "")
             }
             tvTopicMore.setOnClickListener {
                 val bundle = Bundle()
@@ -269,11 +281,16 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 bundle.putString("circleName", binding.barTitleTv.text.toString())
                 startARouter(ARouterCirclePath.HotTopicActivity, bundle)
+                GIOUtils.circleDetailPageResourceClick("圈内话题", "0", "")
             }
             tvActivityMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 startARouter(ARouterCirclePath.CircleActivityListActivity, bundle)
+                GIOUtils.circleDetailPageResourceClick("圈内活动", "0", "")
+            }
+            clTop.setOnClickListener {
+                GIOUtils.circleDetailPageResourceClick("圈子简介", "1", "圈子简介")
             }
         }
 
@@ -284,11 +301,21 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             bundle.putBoolean(IntentKey.HAS_LOOK_NOTICE, hasLookNotice)
             bundle.putString(IntentKey.NOTICE_ID, bean.noticeId)
             startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
+            GIOUtils.circleDetailPageResourceClick(
+                "公告栏",
+                (position + 1).toString(),
+                bean.noticeName
+            )
         }
 
         activityAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = activityAdapter.getItem(position)
             JumpUtils.instans?.jump(bean.jumpDto.jumpCode, bean.jumpDto.jumpVal)
+            GIOUtils.circleDetailPageResourceClick(
+                "圈内活动",
+                (position + 1).toString(),
+                bean.title
+            )
         }
 
         topicAdapter.setOnItemClickListener { adapter, view, position ->
@@ -298,6 +325,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
             bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
             bundle.putString("circleName", binding.barTitleTv.text.toString())
             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            GIOUtils.circleDetailPageResourceClick(
+                "圈内话题",
+                (position + 1).toString(),
+                bean.name
+            )
         }
     }
 
@@ -401,6 +433,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
+            circleName = it.name
             if (isFirst) {
                 initMyView(it.userId.toString())
                 isFirst = false
@@ -499,6 +532,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     binding.ivPostBar.visibility = View.GONE
                 }
             }
+            GIOUtils.circleDetailPageView(it.circleId.toString(), it.name)
         }
         viewModel.joinBean.observe(this) {
             it.msg.toast()
@@ -643,6 +677,11 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     )
                     tvJoin.setOnClickListener {
                         viewModel.joinCircle(circleId)
+                        GIOUtils.joinCircleClick(
+                            "圈子详情页",
+                            circleId,
+                            circleName
+                        )
                     }
                 }
             }

@@ -16,6 +16,7 @@ import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 
@@ -24,8 +25,10 @@ import com.changanford.common.wutil.FlowLayoutManager
  *Time on 2021/9/18
  *Purpose
  */
-class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.layout.item_circle_list),LoadMoreModule {
+class CircleListAdapter :
+    BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.layout.item_circle_list), LoadMoreModule {
     private val viewModel by lazy { CircleDetailsViewModel() }
+
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: ChoseCircleBean) {
         val binding = DataBindingUtil.bind<ItemCircleListBinding>(holder.itemView)
@@ -34,63 +37,69 @@ class CircleListAdapter : BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.la
             ivIcon.setCircular(5)
             tvNum.text = "${item.userCount} 成员     ${item.postsCount} 帖子"
             bean = item
-            isJoin(btnJoin,item)
+            isJoin(btnJoin, item)
             item.tags?.apply {
-                recyclerView.layoutManager=FlowLayoutManager(context,true,true)
-                recyclerView.adapter=TagAdapter().apply {
+                recyclerView.layoutManager = FlowLayoutManager(context, true, true)
+                recyclerView.adapter = TagAdapter().apply {
                     setList(item.tags)
                 }
             }
         }
     }
+
     /**
      * 是否加入圈子
-    * */
-    private fun isJoin(btnJoin: AppCompatButton, item: ChoseCircleBean){
+     * */
+    private fun isJoin(btnJoin: AppCompatButton, item: ChoseCircleBean) {
         btnJoin.apply {
-            visibility= View.VISIBLE
+            visibility = View.VISIBLE
             when (item.isJoin) {
                 //未加入
                 "TOJOIN" -> {
                     setText(R.string.str_join)
                     setBackgroundResource(R.drawable.shadow_00095b_12dp)
-                    isEnabled=true
+                    isEnabled = true
                     setOnClickListener {
                         WBuriedUtil.clickCircleJoin(item.name)
                         //申请加入圈子
-                        viewModel.joinCircle(item.circleId,object :OnPerformListener{
+                        viewModel.joinCircle(item.circleId, object : OnPerformListener {
                             override fun onFinish(code: Int) {
                                 when (code) {
                                     1 -> {//状态更新为审核中
-                                        item.isJoin ="PENDING"
+                                        item.isJoin = "PENDING"
                                         context.getString(R.string.str_appliedForMembership).toast()
                                     }
                                     2 -> {//已加入
-                                        item.isJoin ="JOINED"
+                                        item.isJoin = "JOINED"
                                         context.getString(R.string.str_successfullyJoined).toast()
                                     }
                                     else -> {
-                                        item.isJoin ="TOJOIN"
+                                        item.isJoin = "TOJOIN"
                                     }
                                 }
-                                isJoin(btnJoin,item)
+                                isJoin(btnJoin, item)
+                                GIOUtils.joinCircleClick(
+                                    "全部圈子",
+                                    item.circleId,
+                                    item.name
+                                )
                             }
                         })
                     }
                 }
                 //审核中
-                "PENDING"->{
-                    isEnabled=false
+                "PENDING" -> {
+                    isEnabled = false
                     setText(R.string.str_underReview)
                     setBackgroundResource(R.drawable.shadow_dd_12dp)
                 }
                 //已加入
                 "JOINED" -> {
-                    isEnabled=false
+                    isEnabled = false
                     setText(R.string.str_hasJoined)
                     setBackgroundResource(R.drawable.shadow_dd_12dp)
                 }
-                else -> visibility= View.GONE
+                else -> visibility = View.GONE
             }
         }
 

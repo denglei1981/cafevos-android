@@ -44,6 +44,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logD
@@ -440,6 +441,12 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                     questionTypes[0].dictLabel,
                     labelReward
                 )
+                GIOUtils.questionPublishClick(
+                    biaoti,
+                    questionTypes[0].dictLabel,
+                    if (viewModel.fordRewardList.value.isNullOrEmpty()) "0" else labelsReaward[0].dictValue
+                )
+                viewModel.questionType = questionTypes[0].dictLabel
                 if (selectList.size == 0) {
                     viewModel.createQuestion(params)
                 } else if (selectList.size > 0) {
@@ -546,6 +553,8 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
 
 
     fun addPost(dialog: LoadDialog) {
+        val questionTypes = binding.labelsType.getSelectLabelDatas<QuestionData>()
+        viewModel.questionType = questionTypes[0].dictLabel
         viewModel.createQuestion(params)
     }
 

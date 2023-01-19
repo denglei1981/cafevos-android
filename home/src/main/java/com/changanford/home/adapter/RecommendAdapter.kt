@@ -38,6 +38,7 @@ import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.xiaomi.push.it
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>() {
@@ -339,6 +340,31 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
         tvLikeCount.setPageTitleText(item.getLikeCount())
         tvCommentCount.text = item.getCommentCount()
+        tvCommentCount.setOnTouchListener { v, event ->
+            when (item.rtype) {
+                1 -> {//资讯
+                    GIOUtils.clickCommentInfo(
+                        "发现-推荐",
+                        item.artSpecialTopicTitle,
+                        item.artId,
+                        item.artTitle
+                    )
+                }
+                2 -> {//帖子
+                    GIOUtils.clickCommentPost(
+                        "发现-推荐",
+                        item.postsTopicId,
+                        item.postsTopicName,
+                        item.authors?.authorId,
+                        item.postsId,
+                        item.title,
+                        item.postsCircleId,
+                        item.postsCircleName
+                    )
+                }
+            }
+            false
+        }
         tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
@@ -416,14 +442,19 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
     }
 
+
     // 关注或者取消
     private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
         getFollow(authorBaseVo.authorId, followType)
         if (followType == 1) {
             // 埋点 关注
             BuriedUtil.instant?.discoverFollow(authorBaseVo.nickname)
+            GIOUtils.followClick(authorBaseVo.authorId, authorBaseVo.nickname, "发现-推荐")
+        } else {
+            GIOUtils.cancelFollowClick(authorBaseVo.authorId, authorBaseVo.nickname, "发现-推荐")
         }
 
     }

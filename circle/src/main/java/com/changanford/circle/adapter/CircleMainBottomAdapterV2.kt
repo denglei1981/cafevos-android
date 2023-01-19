@@ -398,8 +398,11 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         }
     }
 
+    private var mAuthorBaseVo: AuthorBaseVo? = null
+
     // 关注或者取消
     private fun followAction(authorBaseVo: AuthorBaseVo) {
+        mAuthorBaseVo = authorBaseVo
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
@@ -415,6 +418,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
 
     // 关注。
     private fun getFollow(followId: String, type: Int) {
+        val currentPageName = if (isTopic) {
+            "话题详情-${GioPageConstant.topicDetailTabName}"
+        } else "圈子详情-${GioPageConstant.circleDetailTabName}"
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -425,8 +431,14 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                 .onSuccess {
                     if (type == 1) {
                         toastShow("已关注")
+                        mAuthorBaseVo?.let {
+                            GIOUtils.followClick(followId, it.nickname, currentPageName)
+                        }
                     } else {
                         toastShow("取消关注")
+                        mAuthorBaseVo?.let {
+                            GIOUtils.cancelFollowClick(followId, it.nickname, currentPageName)
+                        }
                     }
                     notifyAtt(followId, type)
                 }.onWithMsgFailure {

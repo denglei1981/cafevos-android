@@ -15,6 +15,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import java.lang.reflect.Method
@@ -108,6 +109,11 @@ class CircleDetailsFragmentV2 :
                 GioPageConstant.postEntrance = "话题详情页"
             } else {
                 GioPageConstant.postEntrance = "圈子详情页"
+                GIOUtils.circleDetailPageResourceClick(
+                    "帖子信息流",
+                    (position + 1).toString(),
+                    adapter.getItem(position).title
+                )
             }
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())

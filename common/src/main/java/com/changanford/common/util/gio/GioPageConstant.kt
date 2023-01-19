@@ -20,6 +20,8 @@ object GioPageConstant {
     var topicEntrance = ""
     var topicDetailTabName = ""
     var circleDetailTabName = ""
+    var hotCircleEntrance = ""
+    var askSourceEntrance = ""
 
     fun mainSecondPageName(): String {
         return when (mainTabName) {

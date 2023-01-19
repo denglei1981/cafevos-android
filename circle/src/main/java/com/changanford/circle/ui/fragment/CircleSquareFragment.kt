@@ -14,16 +14,19 @@ import com.changanford.common.util.gio.GIOUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel>() ,OnRefreshListener  {
+class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel>(),
+    OnRefreshListener {
 
     private val circleSquareAdapter by lazy {
-        CircleSquareAdapter(requireContext(), childFragmentManager)
+        CircleSquareAdapter(requireContext(), childFragmentManager, lifecycle)
     }
+
     companion object {
         fun newInstance(): CircleSquareFragment {
             return CircleSquareFragment()
         }
     }
+
     override fun initView() {
         binding.refreshLayout.setOnRefreshListener(this)
 

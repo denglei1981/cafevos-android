@@ -29,6 +29,7 @@ import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.ui.dialog.SignMaintainDialog
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
@@ -422,13 +423,13 @@ class JumpUtils {
                         val vin = json.getString("vin")
                         val authId = json.getString("authId")
                         val status = json.getIntValue("status")
-                        var carSalesInfoId=""
-                        if(json.containsKey("carSalesInfoId")){
-                           carSalesInfoId = json.getString("carSalesInfoId")
+                        var carSalesInfoId = ""
+                        if (json.containsKey("carSalesInfoId")) {
+                            carSalesInfoId = json.getString("carSalesInfoId")
                         }
-                        var isNeedChangeBind=0
-                        if(json.containsKey("isNeedChangeBind")){
-                             isNeedChangeBind = json.getIntValue("isNeedChangeBind")
+                        var isNeedChangeBind = 0
+                        if (json.containsKey("isNeedChangeBind")) {
+                            isNeedChangeBind = json.getIntValue("isNeedChangeBind")
                         }
 
                         RouterManger.param(
@@ -673,6 +674,7 @@ class JumpUtils {
             }
             116 -> { //提问
                 startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
+                GIOUtils.askPageView()
             }
             117 -> { //圈子成员列表
                 if (!TextUtils.isEmpty(value)) {
@@ -717,10 +719,10 @@ class JumpUtils {
                     instans?.jump(125, toJson)
                 } else {// 发货了，选一下退货还是退款
                     val gson = Gson()
-                    if (refundBean.busSource == "WB"){//如果是维保订单直接跳仅退款
+                    if (refundBean.busSource == "WB") {//如果是维保订单直接跳仅退款
                         orderItemBean?.singleRefundType = "ONLY_COST"
                         val toJson = gson.toJson(orderItemBean)
-                        instans?.jump(125,toJson)
+                        instans?.jump(125, toJson)
                         return
                     }
                     val toJson = gson.toJson(orderItemBean)
@@ -786,22 +788,22 @@ class JumpUtils {
                 }
 
             }
-            133-> {//圈子分类页    value  = 圈子分类名称
-                startARouter(ARouterCirclePath.CircleListActivity,bundle)
+            133 -> {//圈子分类页    value  = 圈子分类名称
+                startARouter(ARouterCirclePath.CircleListActivity, bundle)
             }
-            134-> {//创建圈子
-                startARouter(ARouterCirclePath.CreateCircleActivity,true)
+            134 -> {//创建圈子
+                startARouter(ARouterCirclePath.CreateCircleActivity, true)
             }
-            135-> {//圈子热门榜单页
-                startARouter(ARouterCirclePath.HotListActivity,bundle)
+            135 -> {//圈子热门榜单页
+                startARouter(ARouterCirclePath.HotListActivity, bundle)
             }
-            138-> {//商城-推荐榜单-榜单列表页：type = 138 value = 榜单名称
+            138 -> {//商城-推荐榜单-榜单列表页：type = 138 value = 榜单名称
                 startARouter(ARouterShopPath.RecommendActivity, bundle)
             }
-            139-> {//勋章详情
+            139 -> {//勋章详情
                 startARouter(ARouterMyPath.MedalDetailUI, bundle, true)
             }
-            140-> {//新增收货地址
+            140 -> {//新增收货地址
                 startARouter(ARouterMyPath.EditAddressUI, bundle, true)
             }
             10000 -> {
@@ -846,7 +848,7 @@ class JumpUtils {
                 apiService.daySign(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
-                    if (it.signTextStatus == 0){
+                    if (it.signTextStatus == 0) {
                         SignMaintainDialog(BaseApplication.curActivity).show()
                         return@let
                     }
@@ -855,10 +857,10 @@ class JumpUtils {
                         var bundle = Bundle()
                         bundle.putString("signInfo", JSON.toJSONString(it))
                         startARouter(ARouterMyPath.SignTransparentUI, bundle)
-                    }else{//无
-                        if ((it.luckyBlessingBagId?:0)!=0){
-                            jump(1,"${MConstant.H5_SIGN_PRESENT}${it.luckyBlessingBagId}")
-                        }else{
+                    } else {//无
+                        if ((it.luckyBlessingBagId ?: 0) != 0) {
+                            jump(1, "${MConstant.H5_SIGN_PRESENT}${it.luckyBlessingBagId}")
+                        } else {
                             LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).postValue(true)
                         }
                     }

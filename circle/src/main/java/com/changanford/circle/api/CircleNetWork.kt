@@ -495,7 +495,7 @@ interface CircleNetWork {
     suspend fun createQuestion(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<String>
+    ): CommonResponse<QuestionCreateBean>
 
     /**
      * 提问首页

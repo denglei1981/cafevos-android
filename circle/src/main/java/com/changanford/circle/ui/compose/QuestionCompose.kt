@@ -40,6 +40,7 @@ import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import java.text.SimpleDateFormat
@@ -111,6 +112,7 @@ fun EmptyQuestionCompose(height: Int = 0) {
         Button(
             onClick = {
                 WBuriedUtil.clickQuestionAskCenter()
+                GioPageConstant.askSourceEntrance = "我的问答页面提问悬浮窗"
                 //去提问
                 JumpUtils.instans?.jump(116)
             }, shape = RoundedCornerShape(15.dp),
@@ -137,6 +139,7 @@ fun BtnQuestionCompose() {
             .padding(5.dp)
             .clickable {
                 WBuriedUtil.clickQuestionAskFloat()
+                GioPageConstant.askSourceEntrance = "我的问答页面提问悬浮窗"
                 JumpUtils.instans?.jump(116)
             },
         verticalArrangement = Arrangement.Center,

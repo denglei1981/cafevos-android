@@ -15,6 +15,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -105,10 +106,10 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                 it.layout.setOnClickListener {
                     when (item.isFollow) {
                         1 -> {//取消
-                            cancel(item.authorId.toString(), "2")
+                            cancel(item.authorId.toString(), "2", item.nickname)
                         }
                         0 -> {//关注
-                            cancel(item.authorId.toString(), "1")
+                            cancel(item.authorId.toString(), "1", item.nickname)
                         }
                     }
                 }
@@ -122,12 +123,16 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     }
 
     // 1 关注 2 取消关注
-    fun cancel(followId: String, type: String) {
+    fun cancel(followId: String, typeFollow: String, nickName: String) {
+        val pageName = if (type == 1) "TA的粉丝页" else "TA的关注页"
         if (MineUtils.getBindMobileJumpDataType(true)) {
             return
         }
-        if (type == "1") {
-            lifecycleScope.launch { viewModel.cancelFans(followId, type) }
+        if (typeFollow == "1") {
+            lifecycleScope.launch {
+                viewModel.cancelFans(followId, typeFollow)
+                GIOUtils.followClick(followId, nickName, pageName)
+            }
         } else {
             QuickPopupBuilder.with(this)
                 .contentView(R.layout.pop_two_btn)
@@ -135,7 +140,8 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     QuickPopupConfig()
                         .gravity(Gravity.CENTER)
                         .withClick(R.id.btn_comfir, View.OnClickListener {
-                            viewModel.cancelFans(followId, type)
+                            viewModel.cancelFans(followId, typeFollow)
+                            GIOUtils.cancelFollowClick(followId, nickName, pageName)
                         }, true)
                         .withClick(R.id.btn_cancel, View.OnClickListener {
 

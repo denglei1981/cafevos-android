@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCircleHotlistBinding
@@ -22,6 +23,7 @@ import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.wutil.ScreenUtils
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -74,6 +76,7 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
                         )
                     }
                 if (index > 0) binding.viewPager.currentItem = index
+                GIOUtils.hotCircleDetailPageView(it[index].topName)
             }
 
         }
@@ -96,6 +99,28 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
             }
             offscreenPageLimit = 3
         }
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                val list = viewModel.hotTypesData.value
+                list?.let {
+                    GIOUtils.hotCircleDetailPageView(it[position].topName)
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+        })
     }
 
     private fun initMagicIndicator(tabs: MutableList<CirCleHotList>) {
