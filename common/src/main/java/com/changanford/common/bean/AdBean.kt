@@ -29,6 +29,7 @@ class AdBean(
     var seeAuthType: String,
     var tagIds: Any,
     var tagNames: Any,
+    var code:String? = "",
 ) {
 
     fun getAdImgUrl(): String {

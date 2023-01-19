@@ -313,7 +313,7 @@ class AgentWebViewModle : ViewModel() {
                     var rkey = getRandomKey()
                     apiService.getH5AccessCode(body.header(rkey), body.body(rkey))
                 }.onSuccess {
-                    it?.let { result(it) }
+                    it?.let { result(it.code?:"") }
                 }.onWithMsgFailure {
                     it?.toast()
                 }
