@@ -186,7 +186,11 @@ class JumpUtils {
                 }
             }
             11 -> {//填写意见反馈
-                startARouter(ARouterMyPath.MineEditFeedbackUI, bundle)
+                if (MConstant.token.isNullOrEmpty()) {
+                    startARouter(ARouterMyPath.SignUI)
+                } else {
+                    startARouter(ARouterMyPath.MineEditFeedbackUI, bundle)
+                }
             }
             12 -> {//去发布调查
                 startARouter(ARouterCirclePath.ReleaseUpActivity, true)
@@ -353,7 +357,11 @@ class JumpUtils {
                 instans?.jump(17)
             }
             42 -> {//意见反馈记录
-                startARouter(ARouterMyPath.MineFeedbackListUI)
+                if (MConstant.token.isNullOrEmpty()) {
+                    startARouter(ARouterMyPath.SignUI)
+                } else {
+                    startARouter(ARouterMyPath.MineFeedbackListUI)
+                }
             }
             43 -> {//公民认证详情页
                 try {
