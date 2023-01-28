@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -17,6 +18,7 @@ import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.bean.AdBean
 import com.changanford.common.net.*
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.acts.dialog.UnitActsPop
@@ -38,7 +40,8 @@ import razerdp.basepopup.BasePopupWindow
 class ActsMainAdapter(
     var context: Context,
     var lifecycleOwner: LifecycleOwner,
-    var fragment: FragmentActivity
+    var fragment: FragmentActivity,
+    var lifecycle: Lifecycle
 ) : BaseAdapter<String>(
     context,
     Pair(R.layout.home_acts_header, 0),
@@ -168,6 +171,7 @@ class ActsMainAdapter(
             setScrollDuration(500)
             setCanLoop(true)
             setAdapter(SimpleAdapter())
+            registerLifecycleObserver(lifecycle)
             setIndicatorView(binding.drIndicator)
             setRoundCorner(20).setPageStyle(PageStyle.MULTI_PAGE_SCALE)
 //            setOnPageClickListener { }
@@ -180,12 +184,14 @@ class ActsMainAdapter(
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    val bean = data as List<CircleHeadBean>
-                    bean[position].adName?.let { it1 ->
-                        GIOUtils.homePageExposure(
-                            "广告位banner", (position + 1).toString(),
-                            it1
-                        )
+                    if (GioPageConstant.mainSecondPageName() == "发现页-活动") {
+                        val bean = data as List<CircleHeadBean>
+                        bean[position].adName?.let { it1 ->
+                            GIOUtils.homePageExposure(
+                                "广告位banner", (position + 1).toString(),
+                                it1
+                            )
+                        }
                     }
                 }
             })

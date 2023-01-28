@@ -868,6 +868,165 @@ object GIOUtils {
         trackCustomEvent("fy_questionPublishSuccess", map)
     }
 
+    //商品详情页浏览
+    fun productDetailPageView(
+        spuId: String?,
+        skuId: String?,
+        name: String?,
+        price: String?,
+        fbPrice: String?,
+        isSeckill: String
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+        map["fy_productSpuID_var"] = spuId.gioEmpty()
+        map["fy_productSkuID_var"] = skuId.gioEmpty()
+        map["fy_productName_var"] = name.gioEmpty()
+        map["fy_productPrice_var"] = price.gioEmpty()
+        map["fy_productFbPrice_var"] = fbPrice.gioEmpty()
+        map["fy_ifSeckill_var"] = isSeckill
+
+        trackCustomEvent("fy_productDetailPageView", map)
+    }
+
+    //加入购物车成功
+    fun productAddToCart(
+        spuId: String?,
+        skuId: String?,
+        name: String?,
+        price: String?,
+        fbPrice: String?,
+        isSeckill: String,
+        productNumber: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_productSpuID_var"] = spuId.gioEmpty()
+        map["fy_productSkuID_var"] = skuId.gioEmpty()
+        map["fy_productName_var"] = name.gioEmpty()
+        map["fy_productPrice_var"] = price.gioEmpty()
+        map["fy_productFbPrice_var"] = fbPrice.gioEmpty()
+        map["fy_ifSeckill_var"] = isSeckill
+        map["fy_productNumber_var"] = productNumber.gioEmpty()
+
+        trackCustomEvent("fy_ProductAddToCart", map)
+    }
+
+    //点击立即兑换
+    fun exchangeCtaClick(
+        spuId: String?,
+        skuId: String?,
+        name: String?,
+        price: String?,
+        fbPrice: String?,
+        isSeckill: String,
+        productNumber: String?
+    ) {
+        val map = HashMap<String, String>()
+
+        map["fy_productSpuID_var"] = spuId.gioEmpty()
+        map["fy_productSkuID_var"] = skuId.gioEmpty()
+        map["fy_productName_var"] = name.gioEmpty()
+        map["fy_productPrice_var"] = price.gioEmpty()
+        map["fy_productFbPrice_var"] = fbPrice.gioEmpty()
+        map["fy_ifSeckill_var"] = isSeckill
+        map["fy_productNumber_var"] = productNumber.gioEmpty()
+
+        trackCustomEvent("fy_exchangeCtaClick", map)
+    }
+
+    //商品兑换成功
+    fun productOrderCreate(
+        spuId: String?,
+        skuId: String?,
+        name: String?,
+        price: String?,
+        fbPrice: String?,
+        isSeckill: String,
+        productNumber: String?,
+        mainOrderId: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        map["fy_productSpuID_var"] = spuId.gioEmpty()
+        map["fy_productSkuID_var"] = skuId.gioEmpty()
+        map["fy_productName_var"] = name.gioEmpty()
+        map["fy_productPrice_var"] = price.gioEmpty()
+        map["fy_productFbPrice_var"] = fbPrice.gioEmpty()
+        map["fy_ifSeckill_var"] = isSeckill
+        map["fy_productNumber_var"] = productNumber.gioEmpty()
+        map["fy_mainOrderId_var"] = mainOrderId.gioEmpty()
+
+        trackCustomEvent("fy_productOrderCreate", map)
+    }
+
+    // 兑换订单提交成功
+    fun orderCreate(
+        orderId: String?,
+        priceAll: String?,
+        fbPrice: String?,
+        productNumber: String?,
+        ifCoupon: String,
+        couponId: String?,
+        couponDeduct: String?,
+        couponName: String?
+    ) {
+
+        val map = HashMap<String, String>()
+
+        //主订单号
+        map["fy_mainOrderId_var"] = orderId.gioEmpty()
+        //商品价格总额
+        map["fy_productPriceAll_var"] = priceAll.gioEmpty()
+        //商品福币总量
+        map["fy_productFbPriceAll_var"] = fbPrice.gioEmpty()
+        //商品数量
+        map["fy_productNumber_var"] = productNumber.gioEmpty()
+        //是否使用优惠券
+        map["fy_ifCoupon_var"] = ifCoupon
+        //优惠券id
+        map["fy_couponId_var"] = couponId.gioEmpty()
+        //优惠券抵扣金额
+        map["fy_couponDeduct_var"] = couponDeduct.gioEmpty()
+        //优惠券名称
+        map["fy_couponName_var"] = couponName.gioEmpty()
+
+        trackCustomEvent("fy_orderCreate", map)
+    }
+
+    // 任务中心浏览
+    fun taskCenterPageView() {
+
+        val map = HashMap<String, String>()
+
+        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
+        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageUrl_var"] = "无"
+
+        trackCustomEvent("fy_taskCenterPageView", map)
+    }
+
+    //任务中心点击
+    fun taskCenterCtaClick(ctaName: String, fbNumber: String?, taskName: String?) {
+
+        val map = HashMap<String, String>()
+
+        //立即签到、去完成
+        map["fy_ctaName_var"] = ctaName
+        //赚取福币数量
+        map["fy_earnFbNumber_var"] = fbNumber.gioEmpty()
+        //任务名称
+        map["fy_taskName_var"] = taskName.gioEmpty()
+
+        trackCustomEvent("fy_taskCenterCtaClick", map)
+    }
+
     private fun String?.gioEmpty(): String {
         return if (this.isNullOrEmpty()) {
             "无"

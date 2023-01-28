@@ -270,6 +270,7 @@ object GlideUtils {
                     }
                 }
                 .into(imageView)
+           Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
         }
 
     }
@@ -429,11 +430,11 @@ object GlideUtils {
             val s = oriPath.substringAfter("androidios").substringBefore(".")
             val array = s.split("_")
             if (array.size != 2) {
-                "$oriPath?x-oss-process=image/resize,p_90/format,webp/quality,Q_95"
+                "$oriPath?x-oss-process=image/resize,p_90/quality,Q_95"
             } else {
                 val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
                 if (array[0].toInt() > screenWidth * 2) {
-                    "$oriPath?x-oss-process=image/resize,l_${imageView.width}/format,webp/quality,Q_95"
+                    "$oriPath?x-oss-process=image/resize,l_${imageView.width}/quality,Q_95"
                 } else {
                     oriPath
                 }
@@ -460,11 +461,11 @@ object GlideUtils {
             val s = oriPath.substringAfter("androidios").substringBefore(".")
             val array = s.split("_")
             if (array.size != 2) {
-                "$oriPath?x-oss-process=image/resize,p_90/format,webp/quality,Q_95"
+                "$oriPath?x-oss-process=image/resize,p_90/quality,Q_95"
             } else {
                 val screenWidth = ScreenUtils.getScreenWidth(context)
                 if (array[0].toInt() > screenWidth * 2) {
-                    "$oriPath?x-oss-process=image/resize,l_${width}/format,webp/quality,Q_95"
+                    "$oriPath?x-oss-process=image/resize,l_${width}/quality,Q_95"
                 } else {
                     oriPath
                 }

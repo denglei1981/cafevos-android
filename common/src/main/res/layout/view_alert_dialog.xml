@@ -19,7 +19,7 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <com.changanford.common.widget.LastLineSpaceTextView
         android:id="@+id/txt_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
-        android:lineSpacingMultiplier="1.2"
+        android:lineSpacingExtra="@dimen/dp_2"
         android:textColor="@color/black"
         android:textSize="16sp" />
 

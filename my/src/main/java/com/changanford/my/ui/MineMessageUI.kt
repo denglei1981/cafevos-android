@@ -60,7 +60,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setCustomDensity(this, BaseApplication.INSTANT)
+//        setCustomDensity(this, BaseApplication.INSTANT)
     }
 
     override fun initView() {
@@ -379,7 +379,8 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             .setMsgSize(12)
                             .setTitleSize(15)
                             .cancelTitleBold()
-                            .setMsgLines(3)
+                            .setMsgHeight()
+                            .setMsgGravity()
                             .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
                             .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                         read(getItemPosition(item))

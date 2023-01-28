@@ -10,6 +10,7 @@ import com.changanford.common.bean.RootTaskBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.ItemTaskContentBinding
@@ -72,6 +73,7 @@ class TaskContentAdapter() :
                 it.taskFinish.text = "去完成"
                 it.taskFinish.isSelected = true
                 it.taskFinish.setOnClickListener(View.OnClickListener {
+                    GIOUtils.taskCenterCtaClick("去完成", item.taskIcon, item.taskName)
                     if (item.jumpDataType == 14) {
                         try {
                             LiveDataBus.get()

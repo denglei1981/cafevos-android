@@ -17,6 +17,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -50,6 +51,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageView(this, null)
+        GIOUtils.taskCenterPageView()
         binding.imBack.setOnClickListener {
             back()
         }
@@ -89,7 +91,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
                     JumpUtils.instans?.jump(102)
                 }
             })
-        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this){
+        LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this) {
             show7Day()
         }
     }
@@ -103,13 +105,15 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         task()
         show7Day()
     }
-    fun show7Day(){
-        viewModel.getDay7Sign{
+
+    fun show7Day() {
+        viewModel.getDay7Sign {
             binding?.sign7day?.setContent {
                 dailySignCompose(it)
             }
         }
     }
+
     override fun showEmpty(): View? {
         return ViewEmptyTopBinding.inflate(layoutInflater).root
     }

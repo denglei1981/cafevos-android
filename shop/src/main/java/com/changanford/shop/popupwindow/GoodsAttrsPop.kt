@@ -19,28 +19,38 @@ import com.changanford.shop.utils.WCommonUtil
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
+
 /**
  * @Author : wenke
  * @Time : 2021/9/22
  * @Description : GoodsAttrsPop
  */
-open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:GoodsDetailBean, var _skuCode:String,val control:GoodsDetailsControl): BasePopupWindow(activity) {
-    private var viewDataBinding: PopGoodsSelectattributeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
+open class GoodsAttrsPop(
+    val activity: AppCompatActivity,
+    private val dataBean: GoodsDetailBean,
+    var _skuCode: String,
+    val control: GoodsDetailsControl
+) : BasePopupWindow(activity) {
+    private var viewDataBinding: PopGoodsSelectattributeBinding =
+        DataBindingUtil.bind(createPopupById(R.layout.pop_goods_selectattribute))!!
     private var skuCodeLiveData: MutableLiveData<String> = MutableLiveData()
     private val mAdapter by lazy { GoodsAttributeIndexAdapter(skuCodeLiveData) }
+
     init {
-        contentView=viewDataBinding.root
+        contentView = viewDataBinding.root
         initView()
         initData()
     }
-    private fun initView(){
+
+    private fun initView() {
         setKeyboardAdaptive(true)
-        setMaxHeight(ScreenUtils.getScreenHeight(context)/4*3)
+        setMaxHeight(ScreenUtils.getScreenHeight(context) / 4 * 3)
         viewDataBinding.apply {
-            recyclerView.adapter=mAdapter
+            recyclerView.adapter = mAdapter
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
                 dismiss()
+                control.exchangeCtaClick()
                 OrderConfirmActivity.start(dataBean)
             }
             btnCart.setOnClickListener {
@@ -50,16 +60,18 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
         }
 
     }
+
     @SuppressLint("StringFormatMatches")
-    private fun initData(){
-        viewDataBinding.model=dataBean
-        dataBean.skuVos.forEach { it.skuCodeArr=it.skuCode.split("-") }
-        mAdapter.skuVos=dataBean.skuVos
+    private fun initData() {
+        viewDataBinding.model = dataBean
+        dataBean.skuVos.forEach { it.skuCodeArr = it.skuCode.split("-") }
+        mAdapter.skuVos = dataBean.skuVos
 
         //没有选中sku时默认选中最低sku （113新增）
-        if(control.isInvalidSelectAttrs(_skuCode)){
-            dataBean.skuVos.filter { it.stock.toInt()>0 }.sortedWith(compareBy { it.fbPrice.toLong()}).let {
-                if(it.isNotEmpty())_skuCode=it[0].skuCode
+        if (control.isInvalidSelectAttrs(_skuCode)) {
+            dataBean.skuVos.filter { it.stock.toInt() > 0 }
+                .sortedWith(compareBy { it.fbPrice.toLong() }).let {
+                if (it.isNotEmpty()) _skuCode = it[0].skuCode
             }
         }
         mAdapter.setSkuCodes(_skuCode)
@@ -86,7 +98,8 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         dataBean.fbPrice = dataBean.orFbPrice
                         dataBean.orginPrice = dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
-                        val price=if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice
+                        val price =
+                            if ("SECKILL" == dataBean.spuPageType) dataBean.fbPrice else dataBean.orginPrice
                         viewDataBinding.tvFbPrice.setText(price)
                         viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(price))
                     }
@@ -114,28 +127,36 @@ open class GoodsAttrsPop(val activity: AppCompatActivity, private val dataBean:G
                         limitBuyNum
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
-                    control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnBuy, viewDataBinding.btnCart,1)
+                    control.bindingBtn(
+                        dataBean,
+                        _skuCode,
+                        viewDataBinding.btnBuy,
+                        viewDataBinding.btnCart,
+                        1
+                    )
                 }
             }
         }
         viewDataBinding.tvAccountPoints.apply {
-            visibility=if(MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
-            text="${dataBean.acountFb}"
+            visibility = if (MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
+            text = "${dataBean.acountFb}"
 //            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
         }
-        viewDataBinding.addSubtractView.setNumber(dataBean.buyNum,false)
+        viewDataBinding.addSubtractView.setNumber(dataBean.buyNum, false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity) {
             dataBean.buyNum = it
-            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnBuy, null,1)
+            control.bindingBtn(dataBean, _skuCode, viewDataBinding.btnBuy, null, 1)
         }
 //        viewDataBinding.tvFbLine.visibility=if(dataBean.getLineFbEmpty())View.GONE else View.VISIBLE
     }
+
     //动画
     override fun onCreateShowAnimation(): Animation? {
         return AnimationHelper.asAnimation()
             .withTranslation(TranslationConfig.FROM_BOTTOM)
             .toShow()
     }
+
     override fun onCreateDismissAnimation(): Animation? {
         return AnimationHelper.asAnimation()
             .withTranslation(TranslationConfig.TO_BOTTOM)

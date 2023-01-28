@@ -10,7 +10,8 @@ import com.changanford.home.databinding.FragmentActsParentBinding
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),OnRefreshListener {
+class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),
+    OnRefreshListener {
 
 
     companion object {
@@ -23,7 +24,7 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     }
 
     private val adapter by lazy {
-        ActsMainAdapter(requireContext(), this, requireActivity())
+        ActsMainAdapter(requireContext(), this, requireActivity(), lifecycle)
     }
 
     override fun initView() {
@@ -44,14 +45,16 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     override fun initData() {
         viewModel.getBanner()
     }
+
     override fun onRetryBtnClick() {
     }
+
     override fun onResume() {
         super.onResume()
 //        viewModel.getBanner()
         try {
             adapter.startViewPagerLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -62,7 +65,7 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         viewModel.bannerLiveData.observe(this, {
             if (it.isSuccess) {
 //                (parentFragment as HomeV2Fragment).stopRefresh()
-                 binding.refreshLayout.finishRefresh()
+                binding.refreshLayout.finishRefresh()
                 adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
             } else {
                 toastShow(it.message)
@@ -79,7 +82,7 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         super.onPause()
         try {
             adapter.stopViewPagerLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
@@ -89,7 +92,7 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
         super.onDestroy()
         try {
             adapter.stopViewPagerLoop()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 

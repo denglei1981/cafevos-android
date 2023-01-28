@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.changanford.common.R;
+import com.changanford.common.utilext.IntExtKt;
 
 
 /***
@@ -158,6 +160,24 @@ public class AlertDialog {
     public AlertDialog setMsgLines(int lines) {
         txt_msg.setMaxLines(lines);
         txt_msg.setMovementMethod(ScrollingMovementMethod.getInstance());
+        return this;
+    }
+
+    public AlertDialog setMsgHeight() {
+        int height = (int) (txt_msg.getLineHeight() + txt_msg.getLineSpacingExtra());
+        txt_msg.setMaxHeight((int) (height * 3 + (height * 0.5)));
+        txt_msg.setMovementMethod(ScrollingMovementMethod.getInstance());
+        return this;
+    }
+
+    public AlertDialog setMsgGravity() {
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        //此处相当于布局文件中的Android:layout_gravity属性
+        param.gravity = Gravity.START;
+        param.leftMargin = IntExtKt.toIntPx(15);
+        param.rightMargin = IntExtKt.toIntPx(15);
+        param.topMargin = IntExtKt.toIntPx(20);
+        txt_msg.setLayoutParams(param);
         return this;
     }
 

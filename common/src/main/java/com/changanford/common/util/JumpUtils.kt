@@ -861,6 +861,7 @@ class JumpUtils {
                         return@let
                     }
                     "签到成功，福币+${it.integral},成长值+${it.growth}".toast()
+                    GIOUtils.taskCenterCtaClick("立即签到", it.integral.toString(), "签到")
                     if (it.additionStatus == 1) {//有额外弹框
                         var bundle = Bundle()
                         bundle.putString("signInfo", JSON.toJSONString(it))
