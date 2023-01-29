@@ -66,6 +66,10 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
     BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_recommend_one),
     LoadMoreModule {
 
+    init {
+        loadMoreModule.preLoadNumber = 20
+    }
+
     private val viewModel by lazy { CircleDetailsViewModel() }
 
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {

@@ -63,8 +63,12 @@ open class RecommendFragment :
     var selectPosition = -1
     override fun initView() {
         binding.smartLayout.setEnableRefresh(true)
+        binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
+        recommendAdapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.getRecommend(true)
+        }
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
@@ -368,6 +372,8 @@ open class RecommendFragment :
                 if (it.isLoadMore) {
                     recommendAdapter.addData(dataList)
                     binding.smartLayout.finishLoadMore()
+                    //设置状态完成
+                    recommendAdapter.loadMoreModule.loadMoreComplete()
                 } else {
                     if (it.data == null || dataList.size == 0) {
                         showEmpty()
@@ -380,8 +386,9 @@ open class RecommendFragment :
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
+                    recommendAdapter.loadMoreModule.loadMoreEnd()
                 } else {
-                    binding.smartLayout.setEnableLoadMore(true)
+//                    binding.smartLayout.setEnableLoadMore(true)
                 }
             } else {
                 when (it.message) {
@@ -395,6 +402,7 @@ open class RecommendFragment :
                 // 刷新也得停
                 (parentFragment as HomeV2Fragment).stopRefresh()
                 ToastUtils.showShortToast(it.message, requireContext())
+                recommendAdapter.loadMoreModule.loadMoreComplete()
             }
 
         })

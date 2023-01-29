@@ -22,23 +22,31 @@ import com.changanford.common.utilext.GlideUtils.loadCompress
 class SearchActsResultAdapter :
     BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts),
     LoadMoreModule {
-    var toFinish:(wonderfulId:Int)->Unit = {}
-    fun toFinishActivity(toFinish:(wonderfulId:Int)->Unit){
+
+    init {
+        loadMoreModule.preLoadNumber = 20
+    }
+
+    var toFinish: (wonderfulId: Int) -> Unit = {}
+    fun toFinishActivity(toFinish: (wonderfulId: Int) -> Unit) {
         this.toFinish = toFinish
     }
-    var reEditCall:(bean:ActBean)->Unit = {}
-    fun reEdit(reEditCall:(bean:ActBean)->Unit){
+
+    var reEditCall: (bean: ActBean) -> Unit = {}
+    fun reEdit(reEditCall: (bean: ActBean) -> Unit) {
         this.reEditCall = reEditCall
     }
-    var logHistory:(Int)->Unit = {}
-    fun sSetLogHistory(logHistory:(Int)->Unit = {}){
+
+    var logHistory: (Int) -> Unit = {}
+    fun sSetLogHistory(logHistory: (Int) -> Unit = {}) {
         this.logHistory = logHistory
     }
+
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
             it.ivActs.loadCompress(item.coverImg)
             it.root.setOnClickListener {
-                JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
                 if (item.outChain == "YES") {
                     logHistory(item.wonderfulId)
                 }
@@ -91,18 +99,20 @@ class SearchActsResultAdapter :
             it.tvSignpeopleImg.isVisible = item.showJoinNum()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
-            if (item.showButton()){
+            if (item.showButton()) {
                 it.bt.text = item.showButtonText()
             }
-            if (item.buttonBgEnable()){
-                it.bt.background = BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_f2f4f9_cor14)
+            if (item.buttonBgEnable()) {
+                it.bt.background =
+                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_f2f4f9_cor14)
                 it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_95b))
-            }else{
-                it.bt.background = BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_dd_cor14)
+            } else {
+                it.bt.background =
+                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_dd_cor14)
                 it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.white))
             }
             it.bt.setOnClickListener {
-                if (item.isFinish()){
+                if (item.isFinish()) {
                     AlertThreeFilletDialog(BaseApplication.curActivity).builder()
                         .setMsg(
                             "一旦结束将无法恢复，确定结束吗？"
@@ -111,21 +121,20 @@ class SearchActsResultAdapter :
                         .setPositiveButton("确定", R.color.color_01025C) {
                             toFinish(item.wonderfulId)
                         }
-                        .setNegativeButton("取消",R.color.color_99){
+                        .setNegativeButton("取消", R.color.color_99) {
 
                         }.show()
 
-                }else{
-                    JumpUtils.instans?.jump(item.jumpDto.jumpCode,item.jumpDto.jumpVal)
+                } else {
+                    JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
                 }
             }
             it.butongguo.isVisible = !item.reason.isNullOrEmpty()
-            it.reason.text = "原因:${item.reason?:""}"
+            it.reason.text = "原因:${item.reason ?: ""}"
             it.reedit.setOnClickListener {
                 reEditCall(item)
             }
             it.reedit.isVisible = item.showReedit()
-
 
 
 //            it.tvTagTwo.actTypeText(item.wonderfulType)

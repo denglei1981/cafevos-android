@@ -76,6 +76,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
 
     init {
         addChildClickViewIds(R.id.tv_all_comment)
+        loadMoreModule.preLoadNumber = 20
     }
 
     @SuppressLint("SetTextI18n")

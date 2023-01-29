@@ -42,8 +42,6 @@ object GIOUtils {
         map["fy_ifCarOwner_ppl"] = if (MConstant.isCarOwner == 1) {
             "是"
         } else "否"
-        //车主认证时间
-        map["fy_verificationTime_ppl"] = "无"
         //app注册时间
         map["fy_registerTime_ppl"] = userInfoBean.createTime.toString()
         //当前福币数量
@@ -1025,6 +1023,28 @@ object GIOUtils {
         map["fy_taskName_var"] = taskName.gioEmpty()
 
         trackCustomEvent("fy_taskCenterCtaClick", map)
+    }
+
+    //消息列表点击
+    fun newsClick(title: String?) {
+        val map = HashMap<String, String>()
+
+        map["fy_journeyID_var"] = "无"
+        map["fy_controlID_var"] = "无"
+        map["fy_newName_var"] = title.gioEmpty()
+
+        trackCustomEvent("fy_newsClick", map)
+    }
+
+    //车型点击
+    fun carClick(carName: String?, carType: String?) {
+        val map = HashMap<String, String>()
+
+        map["fy_currentPageName_var"] = "爱车页"
+        map["fy_carName_var"] = carName.gioEmpty()
+        map["fy_carType_var"] = carType.gioEmpty()
+
+        trackCustomEvent("fy_carClick", map)
     }
 
     private fun String?.gioEmpty(): String {

@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
@@ -41,13 +42,14 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.xiaomi.push.it
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
-    BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>() {
+    BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(),LoadMoreModule {
     init {
         addItemType(0, R.layout.item_home_recommend_items_one)
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)
 //        addItemType(3, R.layout.item_home_recommend_acts)
         addItemType(3, com.changanford.common.R.layout.item_home_acts)
+        loadMoreModule.preLoadNumber = 20
     }
 
 

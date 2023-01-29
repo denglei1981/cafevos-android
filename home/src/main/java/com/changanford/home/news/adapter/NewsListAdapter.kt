@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
@@ -35,7 +36,11 @@ import com.google.android.material.imageview.ShapeableImageView
 class NewsListAdapter(
     private val lifecycleOwner: LifecycleOwner, private val isSpecialDetail: Boolean = false
 ) :
-    BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items) {
+    BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items), LoadMoreModule {
+
+    init {
+        loadMoreModule.preLoadNumber = 20
+    }
 
     var isShowFollow: Boolean = true
     var isShowTag: Boolean = false

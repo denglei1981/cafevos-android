@@ -80,10 +80,14 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
         }
         binding.smartLayout.setEnableRefresh(true)
+        binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
         homeRefersh()
         setLoadSir(binding.smartLayout)
+        newsListAdapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.getNewsList(true)
+        }
     }
 
     var headNewBinding: HeaderNewsListBinding? = null
@@ -157,12 +161,14 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             }
 
         })
-        viewModel.newsListLiveData.safeObserve(this, {
+        viewModel.newsListLiveData.safeObserve(this) {
             if (it.isSuccess) {
                 val dataList = it.data.dataList
                 if (it.isLoadMore) {
                     newsListAdapter.addData(dataList)
                     binding.smartLayout.finishLoadMore()
+                    //设置状态完成
+                    newsListAdapter.loadMoreModule.loadMoreComplete()
                 } else {
                     if (it.data == null || dataList.size == 0) {
                         showEmpty()
@@ -174,8 +180,9 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     binding.smartLayout.setEnableLoadMore(false)
+                    newsListAdapter.loadMoreModule.loadMoreEnd()
                 } else {
-                    binding.smartLayout.setEnableLoadMore(true)
+//                    binding.smartLayout.setEnableLoadMore(true)
                 }
             } else {
                 when (it.message) {
@@ -189,7 +196,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 ToastUtils.showShortToast(it.message, requireContext())
 
             }
-        })
+        }
         LiveDataBus.get().withs<InfoDetailsChangeData>(NEWS_DETAIL_CHANGE).observe(this, Observer {
             // 主要是改，点赞，评论， 浏览记录。。。
             if (isCurrentPage()) {

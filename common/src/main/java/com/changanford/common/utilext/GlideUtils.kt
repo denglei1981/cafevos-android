@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -254,23 +255,31 @@ object GlideUtils {
         @DrawableRes errorDefaultRes: Int? = null
     ) {
         imageView.post {
-            Glide.with(imageView.context).load(dealWithMuchImage(imageView, handleImgUrl(url)))
-                .transform(loadTransform).apply {
+            val width = imageView.width
+            val height = imageView.height
+            Glide.with(imageView.context)
+                .load(dealWithMuchImage(imageView, handleImgUrl(url)))
+            .transform(loadTransform)
+                .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
-                            .fallback(errorDefaultRes)
-                            .error(errorDefaultRes)
-                            .thumbnail(
-                                getTransform(
-                                    imageView.context,
-                                    errorDefaultRes,
-                                    loadTransform
-                                )
-                            )
+//                        fallback(errorDefaultRes)
+                        error(errorDefaultRes)
+                    thumbnail(
+                        getTransform(
+                            imageView.context,
+                            errorDefaultRes,
+                            loadTransform
+                        )
+                    )
                     }
                 }
+                .override(width, height)
+//                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+//                .preload()
                 .into(imageView)
-           Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
+
+            Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
         }
 
     }
@@ -430,14 +439,14 @@ object GlideUtils {
             val s = oriPath.substringAfter("androidios").substringBefore(".")
             val array = s.split("_")
             if (array.size != 2) {
-                "$oriPath?x-oss-process=image/resize,p_90/quality,Q_95"
+                "$oriPath?x-oss-process=image/resize,p_80/quality,Q_85"
             } else {
                 val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
-                if (array[0].toInt() > screenWidth * 2) {
-                    "$oriPath?x-oss-process=image/resize,l_${imageView.width}/quality,Q_95"
-                } else {
-                    oriPath
-                }
+//                if (array[0].toInt() > screenWidth / 2) {
+                "$oriPath?x-oss-process=image/resize,l_500/quality,Q_95"
+//                } else {
+//                    oriPath
+//                }
             }
         } else {
             oriPath

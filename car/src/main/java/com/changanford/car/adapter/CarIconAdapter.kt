@@ -10,6 +10,7 @@ import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
 
@@ -44,6 +45,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
             executePendingBindings()
             root.setOnClickListener {
                 WBuriedUtil.clickCarEnjoy(item.spuName)
+                GIOUtils.carClick(item.spuName,item.spuCode)
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }

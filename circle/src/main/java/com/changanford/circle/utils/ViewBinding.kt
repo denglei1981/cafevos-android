@@ -71,23 +71,23 @@ fun bindingLoading(swipe: SmartRefreshLayout, isLoading: Boolean) {
  */
 @BindingAdapter("imageOptimization")
 fun imageOptimization(recycler: RecyclerView, isStar: String) {
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var IsScrolling = false
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                //recyclerView在滑动
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    IsScrolling = true
-                    Glide.with(recycler.context).pauseRequests()
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (IsScrolling) {
-                        Glide.with(recycler.context).resumeRequests()
-                    }
-                    IsScrolling = false
-                }
-            }
-        })
+//        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            var IsScrolling = false
+//
+//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                super.onScrollStateChanged(recyclerView, newState)
+//                //recyclerView在滑动
+//                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
+//                    IsScrolling = true
+//                    Glide.with(recycler.context).pauseRequests()
+//                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (IsScrolling) {
+//                        Glide.with(recycler.context).resumeRequests()
+//                    }
+//                    IsScrolling = false
+//                }
+//            }
+//        })
 }
 
 @BindingAdapter("bindBaseAdapterOneAdapter")

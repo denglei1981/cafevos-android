@@ -27,6 +27,7 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.setCustomDensity
 import com.changanford.common.utilext.createHashMap
@@ -347,48 +348,52 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                         }.show()
                 }
                 it.item.setOnClickListener {
-                    //
-                    if (item.jumpDataType == 122) { // 优惠券弹窗
-                        lifecycleOwner.launchWithCatch {
-                            val body = MyApp.mContext.createHashMap()
-                            body["popup"] = "NO"
-                            val rKey = getRandomKey()
-                            ApiClient.createApi<NetWorkApi>()
-                                .receiveList(body.header(rKey), body.body(rKey))
-                                .onSuccess { list ->
-                                    if (list != null && list.size > 0) {
-                                        JumpUtils.instans?.jump(
-                                            item.jumpDataType,
-                                            item.jumpDataValue
-                                        )
-                                    } else {
+                    GIOUtils.newsClick(item.messageTitle)
+                    when (item.jumpDataType) {
+                        122 -> { // 优惠券弹窗
+                            lifecycleOwner.launchWithCatch {
+                                val body = MyApp.mContext.createHashMap()
+                                body["popup"] = "NO"
+                                val rKey = getRandomKey()
+                                ApiClient.createApi<NetWorkApi>()
+                                    .receiveList(body.header(rKey), body.body(rKey))
+                                    .onSuccess { list ->
+                                        if (list != null && list.size > 0) {
+                                            JumpUtils.instans?.jump(
+                                                item.jumpDataType,
+                                                item.jumpDataValue
+                                            )
+                                        } else {
+                                            JumpUtils.instans?.jump(118)
+                                        }
+
+                                    }
+                                    .onWithMsgFailure {
                                         JumpUtils.instans?.jump(118)
                                     }
 
-                                }
-                                .onWithMsgFailure {
-                                    JumpUtils.instans?.jump(118)
-                                }
+                            }
 
                         }
-
-                    } else if (item.jumpDataType == 0 || item.jumpDataType == 99) {
-                        AlertDialog(context).builder()
-                            .setTitle(item.messageTitle)
-                            .setMsg(item.messageContent)
-                            .setMsgSize(12)
-                            .setTitleSize(15)
-                            .cancelTitleBold()
-                            .setMsgHeight()
-                            .setMsgGravity()
-                            .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
-                            .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
-                        read(getItemPosition(item))
-                    } else {
-                        JumpUtils.instans?.jump(
-                            item.jumpDataType,
-                            item.jumpDataValue
-                        )
+                        0, 99 -> {
+                            AlertDialog(context).builder()
+                                .setTitle(item.messageTitle)
+                                .setMsg(item.messageContent)
+                                .setMsgSize(12)
+                                .setTitleSize(15)
+                                .cancelTitleBold()
+                                .setMsgHeight()
+                                .setMsgGravity()
+                                .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
+                                .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
+                            read(getItemPosition(item))
+                        }
+                        else -> {
+                            JumpUtils.instans?.jump(
+                                item.jumpDataType,
+                                item.jumpDataValue
+                            )
+                        }
                     }
 
                     if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0) {
