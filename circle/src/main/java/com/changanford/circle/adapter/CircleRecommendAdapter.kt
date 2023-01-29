@@ -67,7 +67,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
     LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 20
+        loadMoreModule.preLoadNumber = 10
     }
 
     private val viewModel by lazy { CircleDetailsViewModel() }

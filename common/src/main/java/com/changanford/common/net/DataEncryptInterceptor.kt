@@ -10,6 +10,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.longE
+import com.changanford.common.utilext.toast
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,8 +38,8 @@ class DataEncryptInterceptor : Interceptor {
         request =
             request.newBuilder().headers(headers = headers).header("codelab", "codelabs").build()
         var response: Response
-            response = chain.proceed(request)
-        if (response.isSuccessful ) {//请求成功解密
+        response = chain.proceed(request)
+        if (response.isSuccessful) {//请求成功解密
             key?.let {
                 var responseBody1: ResponseBody = response.body!!
                 var responseStr1: String = responseBody1.string()
@@ -72,7 +73,10 @@ class DataEncryptInterceptor : Interceptor {
 
                 //按加密流程走
                 if (isEncr) {
-                    commonResponse = Gson().fromJson(responseStr1, CommonResponse::class.java) as CommonResponse<String>
+                    commonResponse = Gson().fromJson(
+                        responseStr1,
+                        CommonResponse::class.java
+                    ) as CommonResponse<String>
                 }
 
                 if (commonResponse.code == StatusCode.REDIRECT_NOT_FOUND_PAGE) {
@@ -82,25 +86,35 @@ class DataEncryptInterceptor : Interceptor {
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
                     AppUtils.Unbinduserid()
+                    val activity = BaseApplication.curActivity
+                    activity.runOnUiThread {
+                        "您已退出登录".toast()
+                    }
                     RouterManger.param("isClear", true).startARouter(ARouterMyPath.SignUI)
                     try {
                         var isfirstin =
                             SPUtils.getParam(MyApp.mContext, "isfirstin", false) as Boolean
-                        var isDebug = SPUtils.getParam(BaseApplication.INSTANT, MConstant.ISDEBUG, true) as Boolean
+                        var isDebug = SPUtils.getParam(
+                            BaseApplication.INSTANT,
+                            MConstant.ISDEBUG,
+                            true
+                        ) as Boolean
                         var isPopAgreement =
                             SPUtils.getParam(
                                 MyApp.mContext,
                                 "isPopAgreement",
                                 true
                             ) as Boolean
-                        var versionCode = SPUtils.getParam(BaseApplication.INSTANT,"versionCode",0) as Int
-                        var pushId = SPUtils.getParam(MyApp.mContext,MConstant.PUSH_ID,"11111") as String
+                        var versionCode =
+                            SPUtils.getParam(BaseApplication.INSTANT, "versionCode", 0) as Int
+                        var pushId =
+                            SPUtils.getParam(MyApp.mContext, MConstant.PUSH_ID, "11111") as String
                         SPUtils.clear(MyApp.mContext)
                         SPUtils.setParam(MyApp.mContext, MConstant.PUSH_ID, pushId)
                         SPUtils.setParam(MyApp.mContext, MConstant.ISDEBUG, isDebug)
                         SPUtils.setParam(MyApp.mContext, "isfirstin", isfirstin)
                         SPUtils.setParam(MyApp.mContext, "isPopAgreement", isPopAgreement)
-                        SPUtils.setParam(BaseApplication.INSTANT,"versionCode",versionCode)
+                        SPUtils.setParam(BaseApplication.INSTANT, "versionCode", versionCode)
 
                     } catch (e: java.lang.Exception) {
                         SPUtils.clear(MyApp.mContext)
@@ -110,13 +124,14 @@ class DataEncryptInterceptor : Interceptor {
                 //初始化data字段 有加密去解密 无加密直接赋值
                 if (!commonResponse.data.isNullOrEmpty()) {
                     try {
-                        decryptStr = if (isEncr) decryResult(commonResponse.data!!, key) else jsonData
-                    }catch (e:Exception){
+                        decryptStr =
+                            if (isEncr) decryResult(commonResponse.data!!, key) else jsonData
+                    } catch (e: Exception) {
 
                     }
 
                 }
-                "result---->$decryptStr".longE()
+//                "result---->$decryptStr".longE()
                 var jsonObject = JSONObject()
                 if (!decryptStr.isNullOrEmpty()) {
                     try {

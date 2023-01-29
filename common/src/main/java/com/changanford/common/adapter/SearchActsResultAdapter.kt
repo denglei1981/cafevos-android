@@ -24,7 +24,7 @@ class SearchActsResultAdapter :
     LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 20
+        loadMoreModule.preLoadNumber = 10
     }
 
     var toFinish: (wonderfulId: Int) -> Unit = {}

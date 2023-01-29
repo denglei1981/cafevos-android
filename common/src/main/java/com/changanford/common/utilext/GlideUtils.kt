@@ -1,5 +1,6 @@
 package com.changanford.common.utilext
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
@@ -12,9 +13,12 @@ import androidx.annotation.DrawableRes
 import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.changanford.common.BuildConfig
@@ -247,6 +251,7 @@ object GlideUtils {
             .into(imageView)
     }
 
+    @SuppressLint("CheckResult")
     @JvmOverloads
     fun loadBigTransform(
         url: String?,
@@ -254,33 +259,54 @@ object GlideUtils {
         imageView: ImageView,
         @DrawableRes errorDefaultRes: Int? = null
     ) {
-        imageView.post {
-            val width = imageView.width
-            val height = imageView.height
-            Glide.with(imageView.context)
-                .load(dealWithMuchImage(imageView, handleImgUrl(url)))
-            .transform(loadTransform)
+        if (url?.contains(".mp4") == true) {
+            Glide.with(imageView)
+                .load(handleImgUrl(url))
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
-//                        fallback(errorDefaultRes)
+                        fallback(errorDefaultRes)
                         error(errorDefaultRes)
-                    thumbnail(
-                        getTransform(
-                            imageView.context,
-                            errorDefaultRes,
-                            loadTransform
-                        )
-                    )
+//                    thumbnail(
+//                        getTransform(
+//                            imageView.context,
+//                            errorDefaultRes,
+//                            loadTransform
+//                        )
+//                    )
                     }
                 }
-                .override(width, height)
-//                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-//                .preload()
                 .into(imageView)
+        } else {
+            imageView.load(dealWithMuchImage(imageView, handleImgUrl(url))) {
+                errorDefaultRes?.let {
+                    placeholder(errorDefaultRes)
+                    error(errorDefaultRes)
+                }
+            }
 
-            Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
+
         }
+//        Glide.with(imageView)
+//            .load(dealWithMuchImage(imageView, handleImgUrl(url)))
+//            .transform(loadTransform)
+//            .apply {
+//                if (errorDefaultRes != null) {
+//                    placeholder(errorDefaultRes)
+//                    fallback(errorDefaultRes)
+//                    error(errorDefaultRes)
+////                    thumbnail(
+////                        getTransform(
+////                            imageView.context,
+////                            errorDefaultRes,
+////                            loadTransform
+////                        )
+////                    )
+//                }
+//            }
+//            .into(imageView)
+
+//        Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
 
     }
 
@@ -333,6 +359,23 @@ object GlideUtils {
             this,
             errorDefaultRes
         )
+    }
+
+    fun ImageView.loadCompress2(
+        url: String?,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+
+        Glide.with(this)
+            .load(dealWithNineMuchImage(this, handleImgUrl(url)))
+            .transform(RoundGlideTransform(isSquare = false))
+            .apply {
+                placeholder(errorDefaultRes)
+                fallback(errorDefaultRes)
+                error(errorDefaultRes)
+            }
+            .override(400.toIntPx(), 400.toIntPx())
+            .into(this)
     }
 
     /**
@@ -432,18 +475,47 @@ object GlideUtils {
         imageView: ImageView,
         oriPath: String
     ): String {
-        if (oriPath.contains("?") || oriPath.contains(".gif")) {
+        if (oriPath.contains("?") || oriPath.contains(".gif") || oriPath.contains(".mp4")) {
             return oriPath
         }
         return if (oriPath.contains("androidios") && oriPath.contains("_")) {
             val s = oriPath.substringAfter("androidios").substringBefore(".")
             val array = s.split("_")
             if (array.size != 2) {
-                "$oriPath?x-oss-process=image/resize,p_80/quality,Q_85"
+//                "$oriPath?x-oss-process=image/resize,p_80"
+                "$oriPath?x-oss-process=image/resize,l_500"
             } else {
-                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
+//                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
 //                if (array[0].toInt() > screenWidth / 2) {
-                "$oriPath?x-oss-process=image/resize,l_500/quality,Q_95"
+                "$oriPath?x-oss-process=image/resize,l_500"
+//                } else {
+//                    oriPath
+//                }
+            }
+        } else {
+            oriPath
+            //            return "$oriPath?x-oss-process=image/resize,w_${width},m_lfit"
+        }
+
+    }
+
+    private fun dealWithNineMuchImage(
+        imageView: ImageView,
+        oriPath: String
+    ): String {
+        if (oriPath.contains("?") || oriPath.contains(".gif") || oriPath.contains(".mp4")) {
+            return oriPath
+        }
+        return if (oriPath.contains("androidios") && oriPath.contains("_")) {
+            val s = oriPath.substringAfter("androidios").substringBefore(".")
+            val array = s.split("_")
+            if (array.size != 2) {
+//                "$oriPath?x-oss-process=image/resize,p_80"
+                "$oriPath?x-oss-process=image/resize,l_300"
+            } else {
+//                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
+//                if (array[0].toInt() > screenWidth / 2) {
+                "$oriPath?x-oss-process=image/resize,l_300"
 //                } else {
 //                    oriPath
 //                }
@@ -463,18 +535,19 @@ object GlideUtils {
         if (oriPath.isNullOrEmpty()) {
             return null
         }
-        if (oriPath.contains("?") || oriPath.contains(".gif")) {
+        if (oriPath.contains("?") || oriPath.contains(".gif") || oriPath.contains(".mp4")) {
             return oriPath
         }
         return if (oriPath.contains("androidios") && oriPath.contains("_")) {
             val s = oriPath.substringAfter("androidios").substringBefore(".")
             val array = s.split("_")
             if (array.size != 2) {
-                "$oriPath?x-oss-process=image/resize,p_90/quality,Q_95"
+//                "$oriPath?x-oss-process=image/resize,p_90"
+                "$oriPath?x-oss-process=image/resize,l_500"
             } else {
                 val screenWidth = ScreenUtils.getScreenWidth(context)
                 if (array[0].toInt() > screenWidth * 2) {
-                    "$oriPath?x-oss-process=image/resize,l_${width}/quality,Q_95"
+                    "$oriPath?x-oss-process=image/resize,l_500"
                 } else {
                     oriPath
                 }

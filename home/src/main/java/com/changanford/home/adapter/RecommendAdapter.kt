@@ -49,7 +49,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(2, R.layout.item_home_recommend_items_three)
 //        addItemType(3, R.layout.item_home_recommend_acts)
         addItemType(3, com.changanford.common.R.layout.item_home_acts)
-        loadMoreModule.preLoadNumber = 20
+        loadMoreModule.preLoadNumber = 10
     }
 
 

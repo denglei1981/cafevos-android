@@ -39,7 +39,7 @@ class NewsListAdapter(
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items), LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 20
+        loadMoreModule.preLoadNumber = 10
     }
 
     var isShowFollow: Boolean = true

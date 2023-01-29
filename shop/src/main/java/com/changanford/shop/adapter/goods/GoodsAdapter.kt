@@ -17,7 +17,7 @@ class GoodsAdapter :
     LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 20
+        loadMoreModule.preLoadNumber = 10
     }
 
     @SuppressLint("SetTextI18n")

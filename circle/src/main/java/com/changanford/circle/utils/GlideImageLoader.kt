@@ -7,6 +7,7 @@ import com.changanford.common.utilext.GlideUtils
 import android.graphics.Bitmap
 import android.widget.ImageView
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.GlideUtils.loadCompress2
 
 /**
  * @author assionhonty
@@ -17,7 +18,7 @@ import com.changanford.common.utilext.GlideUtils.loadCompress
 class GlideImageLoader : AssNineGridView.ImageLoader {
     override fun onDisplayImage(context: Context, imageView: ImageView, url: String) {
 //        Glide.with(context).load(url).into(imageView);
-        imageView.loadCompress(url)
+        imageView.loadCompress2(url)
     }
 
     override fun getCacheImage(url: String): Bitmap? {
