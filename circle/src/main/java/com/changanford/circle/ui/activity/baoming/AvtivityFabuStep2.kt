@@ -356,6 +356,15 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     "请选择活动地点".toast()
                     return@setOnClickListener
                 }
+                var baomingStartTime = TimeUtils.StrToMillis(ActivityFabuBaoming.dto.signBeginTime)
+                var activityEndTime = TimeUtils.StrToMillis(ActivityFabuBaoming.dto.endTime)
+                if (baomingStartTime > activityEndTime) {
+                    ToastUtils.s(
+                        BaseApplication.INSTANT.applicationContext,
+                        "活动结束时间不能早于报名开始时间"
+                    )
+                    return@setOnClickListener
+                }
                 viewModel.getOSS()
             }
 
