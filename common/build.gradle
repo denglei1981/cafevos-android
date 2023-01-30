@@ -253,6 +253,6 @@ dependencies {
     api 'com.github.ZS-ZhangsShun:EasyImageCompressor:1.1.5'
 
     //gio埋点
-    api "com.growingio.android:autotracker-cdp:$versions_gio"
+    implementation "com.growingio.android:autotracker-cdp:$versions_gio"
 
 }

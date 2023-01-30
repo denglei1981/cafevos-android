@@ -18,10 +18,10 @@ class CircleHotListAdapter2: BaseQuickAdapter<NewCircleBean, BaseDataBindingHold
             tvCount.text="${itemData.userCount} 成员  ${itemData.postsCount} 帖子"
             model=itemData
             executePendingBindings()
-            root.setOnClickListener {
-                WBuriedUtil.clickCircleHot(itemData.name)
-                CircleDetailsActivity.start(itemData.circleId)
-            }
+//            root.setOnClickListener {
+//                WBuriedUtil.clickCircleHot(itemData.name)
+//                CircleDetailsActivity.start(itemData.circleId)
+//            }
         }
     }
 }

@@ -33,6 +33,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -78,6 +79,7 @@ class AskRecommendFragment :
                 recommendData.questionTypeName,
                 recommendData.title
             )
+            GIOUtils.homePageClick("热门问答", (position + 1).toString(), recommendData.title)
             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
         }
         recommendAskAdapter.setOnItemChildClickListener { adapter, view, position ->
@@ -120,6 +122,7 @@ class AskRecommendFragment :
                             moreJumpData!!.jumpCode.toInt(),
                             moreJumpData!!.jumpVal
                         )
+                        GIOUtils.homePageClick("问答红人", 0.toString(), "更多")
                     }
                 }
                 it.ryTopic.adapter = hotMechanicAdapter
@@ -135,6 +138,7 @@ class AskRecommendFragment :
                         val item = hotMechanicAdapter.getItem(position = position)
                         // 埋点
                         BuriedUtil.instant?.communityHOtEngineer(item.nickName)
+                        GIOUtils.homePageClick("问答红人", (position + 1).toString(), item.nickName)
                         JumpUtils.instans?.jump(114, item.conQaUjId)
                     }
 
@@ -142,6 +146,7 @@ class AskRecommendFragment :
 
                 it.tvLook.setOnClickListener {
                     if (isLogin()) {
+                        GIOUtils.homePageClick("我的问答", 0.toString(), "我的问答")
                         val param = SPUtils.getParam(requireContext(), "qaUjId", "")
                         JumpUtils.instans?.jump(114, param.toString())
                     }

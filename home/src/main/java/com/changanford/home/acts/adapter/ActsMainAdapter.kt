@@ -96,6 +96,7 @@ class ActsMainAdapter(
                 }
                 binding.tvSrceen.setOnClickListener {
                     actsChildFragment.show()
+                    GIOUtils.homePageClick("筛选区", 3.toString(), "筛选")
                 }
                 binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -105,6 +106,7 @@ class ActsMainAdapter(
                                     unitPop!!.dismiss()
                                 } else {
                                     getEnum(binding, shaixuanList[0])
+                                    GIOUtils.homePageClick("筛选区", 1.toString(), shaixuanList[0])
                                 }
                             }
                             1 -> {
@@ -112,6 +114,7 @@ class ActsMainAdapter(
                                     allActsPop!!.dismiss()
                                 } else {
                                     getEnum(binding, shaixuanList[1])
+                                    GIOUtils.homePageClick("筛选区", 2.toString(), shaixuanList[1])
                                 }
                             }
                         }

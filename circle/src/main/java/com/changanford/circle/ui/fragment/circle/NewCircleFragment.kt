@@ -49,6 +49,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
@@ -141,6 +142,25 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                             interactionSource = remember { MutableInteractionSource() }) {
                             WBuriedUtil.clickCircleTop(itemData.name)
                             CircleListActivity.start(itemData.id)
+                            var position = 0
+                            allCircles.forEachIndexed { index, newCircleBean ->
+                                if (newCircleBean.id == itemData.id) {
+                                    position = index
+                                }
+                            }
+                            if (itemData.id == "0") {
+                                GIOUtils.homePageClick(
+                                    "圈子分类区",
+                                    0.toString(),
+                                    itemData.name
+                                )
+                            } else {
+                                GIOUtils.homePageClick(
+                                    "圈子分类区",
+                                    (position + 1).toString(),
+                                    itemData.name
+                                )
+                            }
                         }) {
                         Image(
                             painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
@@ -202,6 +222,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }) {
                             startARouter(ARouterMyPath.MineCircleUI, true)
+                            GIOUtils.homePageClick("我的圈子", (0).toString(), "更多")
                         }) {
                         Text(
                             text = stringResource(R.string.str_more),
@@ -265,9 +286,11 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
     @Composable
     private fun ItemMyCircle(dataList: List<NewCircleBean>) {
         val dataListSize = dataList.size
-        LazyRow(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 18.dp)) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 18.dp)
+        ) {
             items(5) { index ->
                 //最多展示5个我圈子
                 Row(
@@ -286,6 +309,11 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                                     val bundle = Bundle()
                                     bundle.putString("circleId", itemData.circleId)
                                     startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                                    GIOUtils.homePageClick(
+                                        "我的圈子",
+                                        (index + 1).toString(),
+                                        itemData.name
+                                    )
                                 }, contentAlignment = Alignment.BottomCenter
                         ) {
                             Image(

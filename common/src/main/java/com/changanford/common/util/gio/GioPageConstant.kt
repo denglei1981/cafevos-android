@@ -22,6 +22,7 @@ object GioPageConstant {
     var circleDetailTabName = ""
     var hotCircleEntrance = ""
     var askSourceEntrance = ""
+    var shopOneTabName = "全部商品"
 
     fun mainSecondPageName(): String {
         return when (mainTabName) {

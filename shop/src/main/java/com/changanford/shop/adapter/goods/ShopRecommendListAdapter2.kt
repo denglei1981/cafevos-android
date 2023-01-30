@@ -19,9 +19,9 @@ class ShopRecommendListAdapter2: BaseQuickAdapter<GoodsItemBean, BaseDataBinding
             item.getRMB(item.priceFb)
             model=item
             executePendingBindings()
-            root.setOnClickListener {
-                GoodsDetailsActivity.start(item.spuId)
-            }
+//            root.setOnClickListener {
+//                GoodsDetailsActivity.start(item.spuId)
+//            }
         }
     }
 }

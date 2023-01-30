@@ -85,7 +85,7 @@ object GIOUtils {
     }
 
     //导航流量区域点击
-    fun homePageClick(areaName: String, position: String, trafficName: String) {
+    fun homePageClick(areaName: String, position: String, trafficName: String?) {
         val map = HashMap<String, String>()
 
         map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
@@ -95,7 +95,7 @@ object GIOUtils {
         //banner具体内容position
         map["fy_position_var"] = position
         //banner名称
-        map["fy_trafficName_var"] = trafficName
+        map["fy_trafficName_var"] = trafficName.gioEmpty()
         map["fy_operationPlanID_var"] = "无"
         map["fy_journeyID_var"] = "无"
         map["fy_controlID_var"] = "无"

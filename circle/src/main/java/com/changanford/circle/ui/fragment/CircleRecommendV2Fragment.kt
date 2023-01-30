@@ -21,6 +21,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -82,6 +83,11 @@ class CircleRecommendV2Fragment :
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             checkPosition = position
+            GIOUtils.homePageClick(
+                "广场信息流",
+                (position + 1).toString(),
+                adapter.getItem(position).title
+            )
         }
 
         viewModel.communityTopic()

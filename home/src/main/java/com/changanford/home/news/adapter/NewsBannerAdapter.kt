@@ -3,6 +3,7 @@ package com.changanford.home.news.adapter
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 import com.changanford.home.R
 import com.changanford.home.bean.SpecialListBean
@@ -61,6 +62,7 @@ class NewsBannerAdapter : BaseBannerAdapter<SpecialListBean?>() {
                     ivBanner.load(data.pics)
                     ivBanner.setOnClickListener {
                         JumpUtils.instans?.jump(8,data.artId)
+                        GIOUtils.homePageClick("专题区", (position + 1).toString(), data.title)
                     }
                 }
             }

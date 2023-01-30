@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsListBean
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.control.SortControl
@@ -87,6 +89,11 @@ class GoodsListFragment : BaseFragment<FragmentExchangeBinding, GoodsViewModel>(
                 val price =
                     if (spuPageTagType == "MEMBER_DISCOUNT" || spuPageTagType == "MEMBER_EXCLUSIVE") vipFb else normalFb
                 WBuriedUtil.clickShopItem(spuName, price)
+                GIOUtils.homePageClick(
+                    "商品区域",
+                    (position + 1).toString(),
+                    "${GioPageConstant.shopOneTabName}-${spuName}"
+                )
                 GoodsDetailsActivity.start(getJdType(), getJdValue())
             }
         }

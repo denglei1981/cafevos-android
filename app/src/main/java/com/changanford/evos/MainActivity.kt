@@ -165,7 +165,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
 
                 R.id.shopFragment -> {
-                    GioPageConstant.mainTabName = " 商城页"
+                    GioPageConstant.mainTabName = "商城页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {

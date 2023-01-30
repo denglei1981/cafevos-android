@@ -8,6 +8,7 @@ import com.changanford.car.databinding.ItemCarServiceBinding
 import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 
 class CarServiceAdapter: BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarServiceBinding>>(R.layout.item_car_service){
@@ -19,6 +20,11 @@ class CarServiceAdapter: BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<I
             executePendingBindings()
             root.setOnClickListener {
                 WBuriedUtil.clickCarBuyService(item.iconName)
+                GIOUtils.homePageClick(
+                    "购车服务",
+                    (holder.adapterPosition + 1).toString(),
+                    item.iconName
+                )
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }

@@ -1,5 +1,6 @@
 package com.changanford.circle.utils
 
+import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
@@ -24,16 +25,21 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 /**
  * 图片加载
  */
-@BindingAdapter(value = ["bindingUrl", "circleCrop","placeholder"], requireAll = false)
-fun bindingUrl(imageView: ImageView, url: String, mCircleCrop: Boolean = false,@DrawableRes mPlaceHolder:Int) {
-//    imageView.loadImage(
-//        GlideUtils.handleImgUrl(url),
-//        ImageOptions().apply {
-//            circleCrop = mCircleCrop
-//            error = R.mipmap.ic_def_square_img
-//            placeholder = mPlaceHolder
-//        })
-    imageView.loadCompress(url)
+@BindingAdapter(value = ["bindingUrl", "circleCrop", "placeholder"], requireAll = false)
+fun bindingUrl(
+    imageView: ImageView,
+    url: String,
+    mCircleCrop: Boolean = false,
+    @DrawableRes mPlaceHolder: Int
+) {
+    imageView.loadImage(
+        GlideUtils.handleImgUrl(url),
+        ImageOptions().apply {
+            circleCrop = mCircleCrop
+            error = R.mipmap.ic_def_square_img
+            placeholder = mPlaceHolder
+        })
+//    imageView.loadCompress(url)
 }
 
 @BindingAdapter(value = ["bindingBigUrl", "circleCrop"], requireAll = false)

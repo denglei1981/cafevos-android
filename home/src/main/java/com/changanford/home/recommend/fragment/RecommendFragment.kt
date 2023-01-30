@@ -76,6 +76,7 @@ open class RecommendFragment :
             selectPosition = position
             val itemViewType = recommendAdapter.getItemViewType(position + 1)
             val item = recommendAdapter.getItem(position)
+            GIOUtils.homePageClick("推荐信息流", (position + 1).toString(), item.title)
             when (itemViewType) {
                 3 -> { // 跳转到活动
                     toActs(item)
@@ -289,6 +290,7 @@ open class RecommendFragment :
 
     private fun toActs(data: RecommendData) {
         var item = data.wonderful
+        GioPageConstant.infoEntrance = "发现-推荐-信息流"
         try {
 //            CommonUtils.jumpActDetail(item.jumpType.toInt(), item.jumpValue)
 //            if (item.jumpType.toIntOrNull() == 2 || item.jumpType.toIntOrNull() == 1) {

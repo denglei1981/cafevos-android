@@ -46,6 +46,7 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
             root.setOnClickListener {
                 WBuriedUtil.clickCarEnjoy(item.spuName)
                 GIOUtils.carClick(item.spuName,item.spuCode)
+                GIOUtils.homePageClick("推荐车型", (position + 1).toString(), item.spuName)
                 JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
             }
         }

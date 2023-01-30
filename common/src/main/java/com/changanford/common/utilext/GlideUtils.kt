@@ -261,7 +261,7 @@ object GlideUtils {
     ) {
         if (url?.contains(".mp4") == true) {
             Glide.with(imageView)
-                .load(handleImgUrl(url))
+                .load(url)
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
@@ -278,7 +278,7 @@ object GlideUtils {
                 }
                 .into(imageView)
         } else {
-            imageView.load(dealWithMuchImage(imageView, handleImgUrl(url))) {
+            imageView.load(url?.let { dealWithMuchImage(imageView, it) }) {
                 errorDefaultRes?.let {
                     placeholder(errorDefaultRes)
                     error(errorDefaultRes)
@@ -471,7 +471,7 @@ object GlideUtils {
         }
     }
 
-    private fun dealWithMuchImage(
+    fun dealWithMuchImage(
         imageView: ImageView,
         oriPath: String
     ): String {
@@ -511,11 +511,11 @@ object GlideUtils {
             val array = s.split("_")
             if (array.size != 2) {
 //                "$oriPath?x-oss-process=image/resize,p_80"
-                "$oriPath?x-oss-process=image/resize,l_300"
+                "$oriPath?x-oss-process=image/resize,l_400"
             } else {
 //                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
 //                if (array[0].toInt() > screenWidth / 2) {
-                "$oriPath?x-oss-process=image/resize,l_300"
+                "$oriPath?x-oss-process=image/resize,l_400"
 //                } else {
 //                    oriPath
 //                }

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Lifecycle
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMainTopBinding
@@ -102,6 +103,7 @@ class CircleSquareAdapter(
 
             tvTopicMore.setOnClickListener {
                 startARouter(ARouterCirclePath.HotTopicActivity)
+                GIOUtils.homePageClick("热门话题", 0.toString(), "更多")
             }
 
             topicAdapter.setOnItemClickListener { adapter, view, position ->
@@ -109,6 +111,7 @@ class CircleSquareAdapter(
                 val item = topicAdapter.getItem(position)
                 // 埋点
                 BuriedUtil.instant?.communityMainHotTopic(item.name)
+                GIOUtils.homePageClick("热门话题", (position + 1).toString(), item.name)
                 val bundle = Bundle()
                 bundle.putString("topicId", item.topicId.toString())
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
@@ -176,7 +179,6 @@ class CircleSquareAdapter(
 
     private fun initMagicIndicator(binding: ItemCircleMianBottomBinding) {
         val magicIndicator = binding.magicTab
-
         magicIndicator.setBackgroundResource(R.drawable.circle_square_indicator)
         val commonNavigator = CommonNavigator(context)
         commonNavigator.isAdjustMode = true
@@ -213,6 +215,7 @@ class CircleSquareAdapter(
         }
         magicIndicator.navigator = commonNavigator
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
+
     }
 
     val circleRecommendV2Fragment: CircleRecommendV2Fragment =
@@ -251,6 +254,31 @@ class CircleSquareAdapter(
                 }
             }
             offscreenPageLimit = 1
+
+            val pageChangeListener = object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+                    if (position == 0) {
+                        GIOUtils.homePageClick("筛选区", 1.toString(), "推荐")
+                    } else {
+                        GIOUtils.homePageClick("筛选区", 2.toString(), "最新")
+                    }
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+
+                }
+
+            }
+            removeOnPageChangeListener(pageChangeListener)
+            addOnPageChangeListener(pageChangeListener)
         }
     }
 
