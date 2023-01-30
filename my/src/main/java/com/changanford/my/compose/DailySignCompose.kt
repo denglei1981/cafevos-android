@@ -163,7 +163,7 @@ private fun signInTipsClick(isOpenTips: Boolean,result: (Boolean) -> Unit) {
             Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0)
             Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
             result(false)
-            "删除成功".toast()
+            "签到提醒关闭成功".toast()
         }
     }else {
         showTimePicker { it1, it2 ->
@@ -173,7 +173,7 @@ private fun signInTipsClick(isOpenTips: Boolean,result: (Boolean) -> Unit) {
                 Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, System.currentTimeMillis())
                 Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, true)
                 result(true)
-                "添加成功".toast()
+                "签到提醒开启成功".toast()
             }
         }
     }
@@ -291,5 +291,8 @@ fun showTimePicker(result:(String,String)->Unit){
             result("$hour","$minute")
         }
         show()
+    }
+    timePicker.titleView.post {
+        timePicker.titleView.text = "每日提醒时间"
     }
 }
