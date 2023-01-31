@@ -5,6 +5,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import com.changanford.common.R
 import com.changanford.common.basic.BaseDialog
 import com.changanford.common.databinding.DialogLoadingBinding
+import com.changanford.common.databinding.DialogLoadingNewBinding
 
 /**********************************************************************************
  * @Copyright (C), 2020-2021.
@@ -15,29 +16,33 @@ import com.changanford.common.databinding.DialogLoadingBinding
  * @Description: 　
  * *********************************************************************************
  */
-class LoadingDialog(context: Context) : BaseDialog<DialogLoadingBinding>(context) {
+class LoadingDialog(context: Context) : BaseDialog<DialogLoadingNewBinding>(context,R.style.DialogStyleWhite) {
 
     override fun initView() {
-        binding.loadingM.transitionToState(R.id.end)
-        binding.loadingM.addTransitionListener(object : MotionLayout.TransitionListener {
-            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
-            }
+//        binding.loadingM.transitionToState(R.id.end)
+//        binding.loadingM.addTransitionListener(object : MotionLayout.TransitionListener {
+//            override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {
+//            }
+//
+//            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
+//            }
+//
+//            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+//                if (p0?.currentState == R.id.end) {
+//                    binding.loadingM.transitionToState(R.id.start)
+//                } else {
+//                    binding.loadingM.transitionToState(R.id.end)
+//                }
+//            }
+//
+//            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
+//            }
+//
+//        })Float
 
-            override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {
-            }
-
-            override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-                if (p0?.currentState == R.id.end) {
-                    binding.loadingM.transitionToState(R.id.start)
-                } else {
-                    binding.loadingM.transitionToState(R.id.end)
-                }
-            }
-
-            override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {
-            }
-
-        })
+        binding.loading.scale = 3.0f
+        binding.loading.playAnimation()
+        binding.text.text = "正在加载..."
     }
 
     override fun initData() {

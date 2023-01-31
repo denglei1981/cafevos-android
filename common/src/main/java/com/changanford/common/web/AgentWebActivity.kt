@@ -35,6 +35,7 @@ import com.changanford.common.pay.PayViewModule
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
+import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant.totalWebNum
@@ -95,6 +96,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     //    public var postEntity: List<PostEntity>? = null//草稿
     private var setNavTitleKey: String = System.currentTimeMillis().toString()
     private var localWebNum = -1
+    private var loadingDialog:LoadingDialog? = null
 
     companion object {
         private const val REQUEST_PIC = 0x5431//图片
@@ -107,6 +109,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.titleBar.commTitleBar, this)
         SoftHideKeyBoardUtil.assistActivity(this)
+        loadingDialog = LoadingDialog(this)
         totalWebNum += 1
         localWebNum = totalWebNum
         shareViewModule = createViewModel(ShareViewModule::class.java)
@@ -509,7 +512,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private fun initWeb() {
         agentWeb = AgentWeb.with(this)
             .setAgentWebParent(binding.llWebparent, LinearLayout.LayoutParams(-1, -1))
-            .useDefaultIndicator()
+            .closeIndicator()
             .setWebChromeClient(mWebChromeClient)
             .setWebViewClient(object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
@@ -522,6 +525,12 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                         headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
                             View.GONE
                     }
+                    loadingDialog?.dismiss()
+                }
+
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    loadingDialog?.show()
                 }
 
                 //忽略浏览器报错

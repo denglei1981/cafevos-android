@@ -17,8 +17,8 @@ import java.lang.reflect.ParameterizedType
  * @Description: 　
  * *********************************************************************************
  */
-abstract class BaseDialog<VB : ViewBinding>(context: Context) :
-    AlertDialog(context, R.style.DialogStyle),
+abstract class BaseDialog<VB : ViewBinding>(context: Context,style:Int = R.style.DialogStyle) :
+    AlertDialog(context, style),
     BaseInterface {
 
     override fun initView(savedInstanceState: Bundle?) {
