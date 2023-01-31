@@ -4,16 +4,16 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import coil.load
+import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
-import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
@@ -23,11 +23,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.changanford.common.BuildConfig
 import com.changanford.common.R
+import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import com.changanford.common.utilext.GlideUtils.defaultHandleImageUrl
+import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
+import com.squareup.picasso.Picasso
+import com.xiaomi.push.it
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import javax.sql.DataSource
 
 
 /**********************************************************************************
@@ -278,36 +286,45 @@ object GlideUtils {
                 }
                 .into(imageView)
         } else {
-            imageView.load(url?.let { dealWithMuchImage(imageView, it) }) {
-                errorDefaultRes?.let {
-                    placeholder(errorDefaultRes)
-                    error(errorDefaultRes)
-                }
-            }
-
-
-        }
-//        Glide.with(imageView)
-//            .load(dealWithMuchImage(imageView, handleImgUrl(url)))
-//            .transform(loadTransform)
-//            .apply {
-//                if (errorDefaultRes != null) {
+//            imageView.load(url?.let { dealWithMuchImage(imageView, it) }) {
+//                errorDefaultRes?.let {
 //                    placeholder(errorDefaultRes)
-//                    fallback(errorDefaultRes)
 //                    error(errorDefaultRes)
-////                    thumbnail(
-////                        getTransform(
-////                            imageView.context,
-////                            errorDefaultRes,
-////                            loadTransform
-////                        )
-////                    )
 //                }
 //            }
-//            .into(imageView)
+//            Glide.with(imageView).load(url?.let { dealWithMuchImage(imageView, it) })
+//                .diskCacheStrategy(DiskCacheStrategy.DATA).preload()
+//
+//            Glide.with(imageView)
+//                .load(url?.let { dealWithMuchImage(imageView, it) })
+//                .apply {
+//                    if (errorDefaultRes != null) {
+//                        placeholder(errorDefaultRes)
+//                        fallback(errorDefaultRes)
+//                        error(errorDefaultRes)
+//                    }
+//                }
+//                .diskCacheStrategy(DiskCacheStrategy.DATA)
+//                .into(imageView)
+//            Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
 
-//        Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
+            errorDefaultRes?.let {
+                Picasso.get()
+                    .load(url?.let { dealWithMuchImage(imageView, it) })
+                    .fetch()
+            }
 
+            errorDefaultRes?.let {
+                Picasso.get()
+                    .load(url?.let { dealWithMuchImage(imageView, it) })
+                    .placeholder(it)
+                    .error(errorDefaultRes)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView)
+            }
+
+        }
     }
 
     fun loadCircleFilePath(filePath: String?, imageView: ImageView) {
@@ -332,22 +349,6 @@ object GlideUtils {
         )
     }
 
-    /**
-     * 加载大图压缩
-     */
-    @JvmOverloads
-    fun loadBigImage(
-        url: String?,
-        imageView: ImageView,
-        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
-    ) {
-        loadBigTransform(
-            handleImgUrl(url),
-            RoundGlideTransform(isSquare = false),
-            imageView,
-            errorDefaultRes
-        )
-    }
 
     fun ImageView.loadCompress(
         url: String?,
@@ -366,16 +367,52 @@ object GlideUtils {
         @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
     ) {
 
-        Glide.with(this)
-            .load(dealWithNineMuchImage(this, handleImgUrl(url)))
-            .transform(RoundGlideTransform(isSquare = false))
-            .apply {
-                placeholder(errorDefaultRes)
-                fallback(errorDefaultRes)
-                error(errorDefaultRes)
-            }
-            .override(400.toIntPx(), 400.toIntPx())
+        Picasso.get()
+            .load(dealWithNineMuchImage(handleImgUrl(url.toString())))
+            .placeholder(errorDefaultRes)
+            .fetch()
+
+        Picasso.get()
+            .load(dealWithNineMuchImage(handleImgUrl(url.toString())))
+            .placeholder(errorDefaultRes)
+            .error(errorDefaultRes)
+            .fit()
+            .centerCrop()
             .into(this)
+//        Glide.with(this).load(url?.let { dealWithNineMuchImage(this, it) })
+//            .diskCacheStrategy(DiskCacheStrategy.DATA).listener(object :
+//                RequestListener<Drawable> {
+//                override fun onLoadFailed(
+//                    e: GlideException?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    Log.d("kkk", "预加载失败")
+//                    return true
+//                }
+//
+//                override fun onResourceReady(
+//                    resource: Drawable?,
+//                    model: Any?,
+//                    target: Target<Drawable>?,
+//                    dataSource: com.bumptech.glide.load.DataSource?,
+//                    isFirstResource: Boolean
+//                ): Boolean {
+//                    Log.d("kkk", "预加载完成")
+//                    return true
+//                }
+//            }).preload()
+//
+//        Glide.with(this)
+//            .load(dealWithNineMuchImage(this, handleImgUrl(url)))
+//            .transform(RoundGlideTransform(isSquare = false))
+//            .placeholder(errorDefaultRes)
+//            .fallback(errorDefaultRes)
+//            .error(errorDefaultRes)
+//            .override(400.toIntPx(), 400.toIntPx())
+//            .diskCacheStrategy(DiskCacheStrategy.DATA)
+//            .into(this)
     }
 
     /**
@@ -483,11 +520,11 @@ object GlideUtils {
             val array = s.split("_")
             if (array.size != 2) {
 //                "$oriPath?x-oss-process=image/resize,p_80"
-                "$oriPath?x-oss-process=image/resize,l_500"
+                "$oriPath?x-oss-process=image/resize,l_550"
             } else {
 //                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
 //                if (array[0].toInt() > screenWidth / 2) {
-                "$oriPath?x-oss-process=image/resize,l_500"
+                "$oriPath?x-oss-process=image/resize,l_550"
 //                } else {
 //                    oriPath
 //                }
@@ -500,7 +537,6 @@ object GlideUtils {
     }
 
     private fun dealWithNineMuchImage(
-        imageView: ImageView,
         oriPath: String
     ): String {
         if (oriPath.contains("?") || oriPath.contains(".gif") || oriPath.contains(".mp4")) {

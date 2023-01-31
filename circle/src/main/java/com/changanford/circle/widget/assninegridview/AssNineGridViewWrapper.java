@@ -15,13 +15,15 @@ import android.view.MotionEvent;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.view.ViewCompat;
 
+import com.google.android.material.imageview.ShapeableImageView;
+
 /**
  * @author assionhonty
  * Created on 2018/9/19 9:10.
  * Email：assionhonty@126.com
  * Function:
  */
-public class AssNineGridViewWrapper extends AppCompatImageView {
+public class AssNineGridViewWrapper extends ShapeableImageView {
 
     /***显示更多的数量*/
     private int moreNum = 0;

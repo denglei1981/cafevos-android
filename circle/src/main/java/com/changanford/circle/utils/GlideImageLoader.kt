@@ -1,7 +1,6 @@
 package com.changanford.circle.utils
 
 import android.content.Context
-import com.changanford.common.utilext.GlideUtils.loadBigImage
 import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.common.utilext.GlideUtils
 import android.graphics.Bitmap

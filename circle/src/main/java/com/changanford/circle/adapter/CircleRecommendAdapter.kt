@@ -9,18 +9,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
-import com.changanford.circle.ext.loadBigImage
 import com.changanford.circle.ext.loadCircleImage
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.utils.TestBeanUtil
 import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
@@ -30,11 +26,9 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.JumpUtils
@@ -53,7 +47,6 @@ import com.google.android.material.button.MaterialButton
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.xiaomi.push.it
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -128,12 +121,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             binding.layoutCount.tvLocation.setOnClickListener {
                 StartBaduMap(item)
             }
-
-            GlideUtils.loadBD(
-                item.authorBaseVo?.avatar,
-                binding.layoutHeader.ivHeader,
-                R.mipmap.head_default
-            )
+            binding.layoutHeader.ivHeader.loadCompress(item.authorBaseVo?.avatar)
+//            GlideUtils.loadBD(
+//                item.authorBaseVo?.avatar,
+//                binding.layoutHeader.ivHeader,
+//                R.mipmap.head_default
+//            )
             binding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
             binding.layoutHeader.tvSubTitle.visibility =
                 if (item.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
@@ -245,7 +238,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
                     }
                     tvCircleName.text = circleData?.name
-                    binding.ivCircleHead.loadCircleImage(circleData?.pic)
+                    binding.ivCircleHead.loadCompress(circleData?.pic)
                     when (circleData?.isJoin) {
                         "TOJOIN" -> {//未加入
                             tvJoinType.text = "  加入"

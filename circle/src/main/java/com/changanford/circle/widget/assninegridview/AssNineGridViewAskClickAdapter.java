@@ -3,11 +3,8 @@ package com.changanford.circle.widget.assninegridview;
 import static com.changanford.common.router.ARouterNavigationKt.startARouter;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
-import com.changanford.common.router.path.ARouterCirclePath;
 import com.changanford.common.util.JumpUtils;
 
 import java.util.List;
@@ -30,7 +27,7 @@ public class AssNineGridViewAskClickAdapter extends AssNineGridViewAdapter {
     }
 
     @Override
-    public void onImageItemClick(Context context, AssNineGridView angv, int index, List<ImageInfo> imageInfo) {
+    public void onImageItemClick(Context context, AssNineGridView angv, int index, List<? extends ImageInfo> imageInfo) {
         for (int i = 0; i < imageInfo.size(); i++) {
             ImageInfo info = imageInfo.get(i);
             View imageView;

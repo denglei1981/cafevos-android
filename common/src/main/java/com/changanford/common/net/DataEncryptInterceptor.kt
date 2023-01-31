@@ -86,9 +86,11 @@ class DataEncryptInterceptor : Interceptor {
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
                     AppUtils.Unbinduserid()
-                    val activity = BaseApplication.curActivity
-                    activity.runOnUiThread {
-                        "您已退出登录".toast()
+                    if(MConstant.token.isNotEmpty()){
+                        val activity = BaseApplication.curActivity
+                        activity.runOnUiThread {
+                            "您已退出登录".toast()
+                        }
                     }
                     RouterManger.param("isClear", true).startARouter(ARouterMyPath.SignUI)
                     try {

@@ -13,6 +13,7 @@ import com.changanford.circle.databinding.FragmentCircleRecommendBinding
 import com.changanford.circle.databinding.FragmentCircleRecommendV2Binding
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
+import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.manger.UserManger
@@ -58,7 +59,7 @@ class CircleRecommendV2Fragment :
 
     override fun initView() {
         type = arguments?.getInt("type", 1)!!
-//        MUtils.scrollStopLoadImage(binding.ryCircle)
+        MUtils.scrollStopLoadImage(binding.ryCircle)
 //        mCheckForGapMethod = StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
 //        mCheckForGapMethod.isAccessible = true
 
@@ -124,7 +125,7 @@ class CircleRecommendV2Fragment :
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this) {
             val bean = checkPosition?.let { it1 -> adapter.getItem(it1) }
             bean?.let { _ ->
                 bean.isLike = it
@@ -135,17 +136,17 @@ class CircleRecommendV2Fragment :
                 }
             }
             checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
-        })
+        }
 //        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_BOTTOM_FRAGMENT)
 //            .observe(this, {
 //                page = 1
 //                viewModel.getData(type, page)
 //            })
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this, {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this) {
             checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
             checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
             checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1, adapter.itemCount) }
-        })
+        }
     }
 
 //    override fun onRefresh(refreshLayout: RefreshLayout) {

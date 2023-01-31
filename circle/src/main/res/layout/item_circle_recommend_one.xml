@@ -97,10 +97,11 @@
             android:background="@drawable/bg_f2_18"
             android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_circle_head"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                app:shapeAppearanceOverlay="@style/circleImageStyle"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp" />
 
