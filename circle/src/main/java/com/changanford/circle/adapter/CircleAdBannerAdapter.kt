@@ -9,6 +9,7 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -27,8 +28,9 @@ class CircleAdBannerAdapter : BaseBannerAdapter<AdBean>() {
 
         val binding = DataBindingUtil.bind<ItemCircleRecommendAdBinding>(holder.itemView)
 //        binding?.ivBanner?.load(data.adImg)
-        GlideUtils.loadRound(data.adImg,binding?.ivBanner!!)
-        binding.ivBanner.setOnClickListener {
+         binding?.ivBanner?.loadCompress(data.adImg)
+//        GlideUtils.loadRound(data.adImg,binding?.ivBanner!!)
+        binding?.ivBanner?.setOnClickListener {
             // 埋点
             data.adName?.let { it1 -> BuriedUtil.instant?.communityMainBanner(it1) }
             data.adName?.let { it1 ->

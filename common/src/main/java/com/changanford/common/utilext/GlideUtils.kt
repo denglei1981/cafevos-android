@@ -4,38 +4,27 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.changanford.common.BuildConfig
 import com.changanford.common.R
-import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
-import com.changanford.common.utilext.GlideUtils.defaultHandleImageUrl
-import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
 import com.squareup.picasso.Picasso
-import com.xiaomi.push.it
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.sql.DataSource
 
 
 /**********************************************************************************

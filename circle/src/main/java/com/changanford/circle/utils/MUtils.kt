@@ -22,6 +22,7 @@ import com.changanford.circle.R
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.toIntPx
+import com.squareup.picasso.Picasso
 
 object MUtils {
 
