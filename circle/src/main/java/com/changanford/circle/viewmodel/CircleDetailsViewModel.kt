@@ -1,8 +1,13 @@
 package com.changanford.circle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.*
+import com.changanford.circle.source.RecommendPostSource
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
@@ -58,6 +63,15 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
+    var recommendType = 0
+
+    val pager by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20, prefetchDistance = 1),
+            pagingSourceFactory = { RecommendPostSource(recommendType) }).flow.cachedIn(
+            viewModelScope
+        )
+    }
 
     fun getRecommendPostData(viewType: Int, page: Int) {
         launch(block = {

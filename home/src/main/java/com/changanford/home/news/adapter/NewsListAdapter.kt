@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
+import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.net.*
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.MConstant
@@ -39,7 +40,7 @@ class NewsListAdapter(
     BaseQuickAdapter<InfoDataBean, BaseViewHolder>(R.layout.item_news_items), LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 10
+        loadMoreModule.preLoadNumber = preLoadNumber
     }
 
     var isShowFollow: Boolean = true

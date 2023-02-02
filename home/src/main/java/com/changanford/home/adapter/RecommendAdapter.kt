@@ -21,6 +21,7 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
@@ -49,7 +50,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(2, R.layout.item_home_recommend_items_three)
 //        addItemType(3, R.layout.item_home_recommend_acts)
         addItemType(3, com.changanford.common.R.layout.item_home_acts)
-        loadMoreModule.preLoadNumber = 10
+        loadMoreModule.preLoadNumber = preLoadNumber
     }
 
 
@@ -70,11 +71,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     veryPostIv.visibility = View.GONE
                 }
                 val ivPic = holder.getView<ShapeableImageView>(R.id.iv_pic)
-                if (!TextUtils.isEmpty(item.pic)) {
-                    ivPic.loadCompress(item.pic)
-                } else if (picLists != null) {
-                    ivPic.loadCompress(picLists[0])
-                }
+//                if (!TextUtils.isEmpty(item.pic)) {
+//                    ivPic.loadCompress(item.pic)
+//                } else if (picLists != null) {
+                    ivPic.loadCompress(picLists?.get(0))
+//                }
             }
             2 -> { //3张图
                 showPics(holder, item)

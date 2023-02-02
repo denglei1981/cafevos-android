@@ -9,6 +9,7 @@ import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AcBean
 import com.changanford.common.bean.ActBean
+import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
@@ -24,7 +25,7 @@ class SearchActsResultAdapter :
     LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 10
+        loadMoreModule.preLoadNumber = preLoadNumber
     }
 
     var toFinish: (wonderfulId: Int) -> Unit = {}

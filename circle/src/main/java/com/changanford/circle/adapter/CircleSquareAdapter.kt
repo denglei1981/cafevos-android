@@ -24,6 +24,7 @@ import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
 
 import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
 import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
+import com.changanford.circle.ui.fragment.CircleRecommendV3Fragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.adapter.BaseAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
@@ -218,9 +219,9 @@ class CircleSquareAdapter(
 
     }
 
-    val circleRecommendV2Fragment: CircleRecommendV2Fragment =
+    val circleRecommendV2Fragment =
         CircleRecommendV2Fragment.newInstance(1)
-    val lastCircleRecommendV2Fragment: CircleRecommendV2Fragment =
+    val lastCircleRecommendV2Fragment =
         CircleRecommendV2Fragment.newInstance(2)
 
     var viewpagerBinding: ItemCircleMianBottomBinding? = null

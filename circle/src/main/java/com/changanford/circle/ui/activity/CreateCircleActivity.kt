@@ -10,7 +10,6 @@ import com.changanford.circle.adapter.circle.CircleTagAdapter
 import com.changanford.circle.databinding.ActivityCreateCircleBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
 import com.changanford.circle.viewmodel.CreateCircleViewModel
 import com.changanford.circle.widget.pop.CircleSelectTypePop
 import com.changanford.circle.widget.pop.OnSelectedBackListener
@@ -26,6 +25,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
 import com.luck.picture.lib.entity.LocalMedia

@@ -16,9 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityTopicDetailsBinding
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
 
-import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
@@ -39,6 +37,7 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils

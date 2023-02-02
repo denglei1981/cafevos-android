@@ -8,7 +8,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -18,27 +17,22 @@ import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
-import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
 import com.changanford.circle.ext.loadCircleImage
 
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.utils.MUtils.setTopMargin
 import com.changanford.circle.utils.launchWithCatch
-import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
-import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
-import com.changanford.circle.widget.assninegridview.ImageInfo
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.ImageInfo
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.constant.TestImageUrl
-import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -48,7 +42,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.*
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.google.android.material.button.MaterialButton
@@ -56,10 +49,8 @@ import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.xiaomi.push.it
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
-import kotlin.onSuccess
 
 /**
  *Author lcw
@@ -76,7 +67,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
 
     init {
         addChildClickViewIds(R.id.tv_all_comment)
-        loadMoreModule.preLoadNumber = 10
+        loadMoreModule.preLoadNumber = preLoadNumber
     }
 
     @SuppressLint("SetTextI18n")

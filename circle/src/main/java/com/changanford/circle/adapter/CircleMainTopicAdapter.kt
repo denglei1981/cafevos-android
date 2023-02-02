@@ -9,8 +9,8 @@ import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleMainTopicBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.ext.setCircular
 import com.xiaomi.push.er
 
 /**

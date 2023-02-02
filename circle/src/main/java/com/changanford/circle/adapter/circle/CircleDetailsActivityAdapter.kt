@@ -5,10 +5,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.WonderfulControlsBean
 import com.changanford.circle.databinding.ItemCircleDetailsActivityBinding
-import com.changanford.circle.ext.loadColLImage
-import com.changanford.circle.ext.setCircular
-import com.changanford.common.bean.TestBean
-import com.changanford.common.constant.TestImageUrl
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 
 /**

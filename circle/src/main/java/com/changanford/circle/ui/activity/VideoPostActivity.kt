@@ -1012,7 +1012,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         .setOnUploadFile(object :
                             AliYunOssUploadOrDownFileConfig.OnUploadFile {
                             override fun onUploadFileSuccess(info: String) {
-                                params["pics"] = path
+                                val upLoadPath = if (path.endsWith(".mp4")) {
+                                    "$path${"?x-oss-process=video/snapshot,t_0,f_jpg,w_800,h_600,m_fast"}"
+                                } else path
+                                params["pics"] = upLoadPath
                                 upvideo(stsBean, dialog)
                             }
 

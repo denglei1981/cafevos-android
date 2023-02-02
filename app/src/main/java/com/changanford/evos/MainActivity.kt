@@ -210,6 +210,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         if (MConstant.app_mourning_mode == 1) {
             BlackWhiteMode(window = window)
         }
+        getDeviceWidth()
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         updateViewModel = createViewModel(UpdateViewModel::class.java)
         updateViewModel.getUpdateInfo()
@@ -258,7 +259,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initData() {
         handleViewIntent(intent)
         viewModel.getUserData()
-        viewModel.getUserInfo()
+        if (MConstant.token.isNotEmpty()) {
+            viewModel.getUserInfo()
+        }
         viewModel.user.observe(this, Observer {
             lifecycleScope.launch {
                 Db.myDb.saveData("name", it[0].name)
@@ -567,6 +570,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             if (MConstant.userId.isNotEmpty()) {
                 GrowingAutotracker.get().setLoginUserId(viewModel.userInfo.value?.cmcOpenid)
             }
+        }
+    }
+
+    private fun getDeviceWidth() {
+        runOnUiThread {
+            MConstant.deviceWidth = DisplayUtil.getScreenWidth(this)
         }
     }
 }

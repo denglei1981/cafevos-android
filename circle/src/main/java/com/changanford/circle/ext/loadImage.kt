@@ -120,12 +120,6 @@ private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply
     }
 }
 
-fun ShapeableImageView.setCircular(circular: Int) {
-    this.shapeAppearanceModel =
-        ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, circular.toPx())
-            .build()
-}
-
 class ImageOptions {
     var placeholder = 0         // 加载占位图
     var error = 0               // 错误占位图

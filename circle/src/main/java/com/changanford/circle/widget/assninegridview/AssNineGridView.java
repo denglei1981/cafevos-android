@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.changanford.circle.R;
+import com.changanford.common.bean.ImageInfo;
 
 import java.util.ArrayList;
 import java.util.List;

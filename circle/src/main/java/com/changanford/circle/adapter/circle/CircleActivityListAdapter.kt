@@ -11,8 +11,8 @@ import com.changanford.circle.R
 import com.changanford.circle.bean.CircleActivityItemBean
 import com.changanford.circle.databinding.ItemCircleActivityListBinding
 import com.changanford.circle.ext.loadColLImage
-import com.changanford.circle.ext.setCircular
 import com.changanford.circle.utils.MUtils
+import com.changanford.common.util.ext.setCircular
 import java.text.SimpleDateFormat
 import java.util.*
 

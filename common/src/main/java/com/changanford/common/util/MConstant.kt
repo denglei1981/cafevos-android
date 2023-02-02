@@ -217,4 +217,6 @@ object MConstant {
     var conQaUjId = ""
 
     var isCarOwner = 0
+
+    var deviceWidth = 0
 }

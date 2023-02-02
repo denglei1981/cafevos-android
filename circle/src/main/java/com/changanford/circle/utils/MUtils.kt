@@ -169,9 +169,11 @@ object MUtils {
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
                     IsScrolling = true
                     Glide.with(recycler.context).pauseRequests()
+                    Picasso.get().pauseTag(recycler.context)
                 } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (IsScrolling) {
                         Glide.with(recycler.context).resumeRequests()
+                        Picasso.get().resumeTag(recycler.context)
                     }
                     IsScrolling = false
                 }

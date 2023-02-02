@@ -13,8 +13,10 @@ import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.changanford.common.BuildConfig
@@ -22,6 +24,7 @@ import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
+import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
 import com.squareup.picasso.Picasso
@@ -257,59 +260,30 @@ object GlideUtils {
         @DrawableRes errorDefaultRes: Int? = null
     ) {
         if (url?.contains(".mp4") == true) {
+            Log.e("mp4===", url)
             Glide.with(imageView)
-                .load(url)
+                .load("$url?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast")
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
                         fallback(errorDefaultRes)
                         error(errorDefaultRes)
-//                    thumbnail(
-//                        getTransform(
-//                            imageView.context,
-//                            errorDefaultRes,
-//                            loadTransform
-//                        )
-//                    )
                     }
                 }
                 .into(imageView)
         } else {
-//            imageView.load(url?.let { dealWithMuchImage(imageView, it) }) {
-//                errorDefaultRes?.let {
-//                    placeholder(errorDefaultRes)
-//                    error(errorDefaultRes)
-//                }
-//            }
-//            Glide.with(imageView).load(url?.let { dealWithMuchImage(imageView, it) })
-//                .diskCacheStrategy(DiskCacheStrategy.DATA).preload()
-//
-//            Glide.with(imageView)
-//                .load(url?.let { dealWithMuchImage(imageView, it) })
-//                .apply {
-//                    if (errorDefaultRes != null) {
-//                        placeholder(errorDefaultRes)
-//                        fallback(errorDefaultRes)
-//                        error(errorDefaultRes)
-//                    }
-//                }
-//                .diskCacheStrategy(DiskCacheStrategy.DATA)
-//                .into(imageView)
-//            Log.i("compressUrl", dealWithMuchImage(imageView, handleImgUrl(url)))
-
             errorDefaultRes?.let {
-                Picasso.get()
-                    .load(url?.let { dealWithMuchImage(imageView, it) })
-                    .fetch()
-            }
 
-            errorDefaultRes?.let {
-                Picasso.get()
-                    .load(url?.let { dealWithMuchImage(imageView, it) })
-                    .placeholder(it)
+                Glide.with(imageView).load(url?.let { it1 -> dealWithMuchImage(it1) })
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE).preload()
+
+                Glide.with(imageView)
+                    .load(url?.let { it1 -> dealWithMuchImage(it1) })
+                    .placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
                     .error(errorDefaultRes)
-                    .fit()
-                    .centerCrop()
+                    .override(400.toIntPx(), 400.toIntPx())
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                     .into(imageView)
             }
 
@@ -355,53 +329,20 @@ object GlideUtils {
         url: String?,
         @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
     ) {
+        Glide.with(this).load(dealWithNineMuchImage(handleImgUrl(url)))
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE).preload()
 
-        Picasso.get()
-            .load(dealWithNineMuchImage(handleImgUrl(url.toString())))
+        Glide.with(this)
+            .load(dealWithNineMuchImage(handleImgUrl(url)))
             .placeholder(errorDefaultRes)
-            .fetch()
-
-        Picasso.get()
-            .load(dealWithNineMuchImage(handleImgUrl(url.toString())))
-            .placeholder(errorDefaultRes)
+            .fallback(errorDefaultRes)
             .error(errorDefaultRes)
-            .fit()
-            .centerCrop()
+            .override(350.toIntPx(), 350.toIntPx())
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .into(this)
-//        Glide.with(this).load(url?.let { dealWithNineMuchImage(this, it) })
-//            .diskCacheStrategy(DiskCacheStrategy.DATA).listener(object :
-//                RequestListener<Drawable> {
-//                override fun onLoadFailed(
-//                    e: GlideException?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    Log.d("kkk", "预加载失败")
-//                    return true
-//                }
-//
-//                override fun onResourceReady(
-//                    resource: Drawable?,
-//                    model: Any?,
-//                    target: Target<Drawable>?,
-//                    dataSource: com.bumptech.glide.load.DataSource?,
-//                    isFirstResource: Boolean
-//                ): Boolean {
-//                    Log.d("kkk", "预加载完成")
-//                    return true
-//                }
-//            }).preload()
-//
-//        Glide.with(this)
-//            .load(dealWithNineMuchImage(this, handleImgUrl(url)))
-//            .transform(RoundGlideTransform(isSquare = false))
-//            .placeholder(errorDefaultRes)
-//            .fallback(errorDefaultRes)
-//            .error(errorDefaultRes)
-//            .override(400.toIntPx(), 400.toIntPx())
-//            .diskCacheStrategy(DiskCacheStrategy.DATA)
-//            .into(this)
+
+
+        Log.e("compressImageview", dealWithNineMuchImage(handleImgUrl(url)))
     }
 
     /**
@@ -498,7 +439,6 @@ object GlideUtils {
     }
 
     fun dealWithMuchImage(
-        imageView: ImageView,
         oriPath: String
     ): String {
         if (oriPath.contains("?") || oriPath.contains(".gif") || oriPath.contains(".mp4")) {
@@ -509,11 +449,11 @@ object GlideUtils {
             val array = s.split("_")
             if (array.size != 2) {
 //                "$oriPath?x-oss-process=image/resize,p_80"
-                "$oriPath?x-oss-process=image/resize,l_550"
+                "$oriPath?x-oss-process=image/resize,l_600"
             } else {
 //                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
 //                if (array[0].toInt() > screenWidth / 2) {
-                "$oriPath?x-oss-process=image/resize,l_550"
+                "$oriPath?x-oss-process=image/resize,l_600"
 //                } else {
 //                    oriPath
 //                }
@@ -536,11 +476,11 @@ object GlideUtils {
             val array = s.split("_")
             if (array.size != 2) {
 //                "$oriPath?x-oss-process=image/resize,p_80"
-                "$oriPath?x-oss-process=image/resize,l_400"
+                "$oriPath?x-oss-process=image/resize,l_350"
             } else {
 //                val screenWidth = ScreenUtils.getScreenWidth(imageView.context)
 //                if (array[0].toInt() > screenWidth / 2) {
-                "$oriPath?x-oss-process=image/resize,l_400"
+                "$oriPath?x-oss-process=image/resize,l_350"
 //                } else {
 //                    oriPath
 //                }
@@ -568,11 +508,11 @@ object GlideUtils {
             val array = s.split("_")
             if (array.size != 2) {
 //                "$oriPath?x-oss-process=image/resize,p_90"
-                "$oriPath?x-oss-process=image/resize,l_500"
+                "$oriPath?x-oss-process=image/resize,l_550"
             } else {
                 val screenWidth = ScreenUtils.getScreenWidth(context)
                 if (array[0].toInt() > screenWidth * 2) {
-                    "$oriPath?x-oss-process=image/resize,l_500"
+                    "$oriPath?x-oss-process=image/resize,l_550"
                 } else {
                     oriPath
                 }

@@ -7,9 +7,9 @@ import com.changanford.circle.R
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleInterestBinding
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
 
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.toIntPx
 
 class CircleInterestAdapter(context: Context) :

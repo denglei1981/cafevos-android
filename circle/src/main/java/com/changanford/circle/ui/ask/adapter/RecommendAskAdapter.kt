@@ -3,18 +3,14 @@ package com.changanford.circle.ui.ask.adapter
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Paint.FontMetricsInt
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
-import android.text.method.LinkMovementMethod
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -22,21 +18,12 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.AskListMainData
-import com.changanford.circle.bean.MultiBean
-import com.changanford.circle.databinding.ItemRecommendAskAnswerPicBinding
 import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
 import com.changanford.circle.widget.assninegridview.AssNineGridViewAskClickAdapter
-import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
-import com.changanford.circle.widget.assninegridview.ImageInfo
-import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.bean.ImageInfo
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
-import com.changanford.common.utilext.logE
-import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
-import kotlin.math.floor
-import kotlin.math.roundToInt
 
 /**
  *Author lcw

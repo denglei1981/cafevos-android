@@ -18,6 +18,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.scrollStopLoadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
@@ -69,6 +70,7 @@ open class RecommendFragment :
         recommendAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getRecommend(true)
         }
+        binding.recyclerView.scrollStopLoadImage()
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter

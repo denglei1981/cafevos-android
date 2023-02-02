@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 
+import com.changanford.common.bean.ImageInfo;
 import com.changanford.common.router.path.ARouterCirclePath;
 
 import java.util.List;

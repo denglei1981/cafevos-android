@@ -5,6 +5,7 @@ import static com.changanford.common.router.ARouterNavigationKt.startARouter;
 import android.content.Context;
 import android.view.View;
 
+import com.changanford.common.bean.ImageInfo;
 import com.changanford.common.util.JumpUtils;
 
 import java.util.List;

@@ -8,11 +8,11 @@ import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.ImageList
 import com.changanford.circle.databinding.ItemLongPostDetailsBinding
-import com.changanford.circle.ext.setCircular
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.load
 
 /**

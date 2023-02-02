@@ -6,6 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
@@ -17,7 +18,7 @@ class GoodsAdapter :
     LoadMoreModule {
 
     init {
-        loadMoreModule.preLoadNumber = 10
+        loadMoreModule.preLoadNumber = preLoadNumber
     }
 
     @SuppressLint("SetTextI18n")

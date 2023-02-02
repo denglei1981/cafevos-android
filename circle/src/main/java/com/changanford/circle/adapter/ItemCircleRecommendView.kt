@@ -1,17 +1,13 @@
 package com.changanford.circle.adapter
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.module.LoadMoreModule
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
@@ -25,9 +21,9 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.ImageInfo
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.paging.PagingItemView
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
@@ -52,53 +48,61 @@ import razerdp.basepopup.QuickPopupConfig
 
 /**
  *Author lcw
- *Time on 2021/9/22
+ *Time on 2023/2/2
  *Purpose
  */
-class CircleRecommendAdapter(context: Context, private val lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<PostDataBean, BaseViewHolder>(R.layout.item_circle_recommend_one),
-    LoadMoreModule {
-
-    init {
-        loadMoreModule.preLoadNumber = preLoadNumber
-    }
+class ItemCircleRecommendView(
+    private val item: PostDataBean,
+    private val lifecycleOwner: LifecycleOwner
+) :
+    PagingItemView<ItemCircleRecommendView>(R.layout.item_circle_recommend_one) {
 
     private val viewModel by lazy { CircleDetailsViewModel() }
 
-    override fun convert(holder: BaseViewHolder, item: PostDataBean) {
-        val binding = DataBindingUtil.bind<ItemCircleRecommendOneBinding>(holder.itemView)
-        binding?.let {
-            binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
+    override fun areItemsTheSame(data: ItemCircleRecommendView): Boolean {
+        return item.postsId == data.item.postsId
+    }
+
+    override fun areContentsTheSame(data: ItemCircleRecommendView): Boolean {
+        return item.postsId == data.item.postsId
+    }
+
+    override fun onBindView(position: Int, binding: ViewDataBinding) {
+        super.onBindView(position, binding)
+        val mbBinding = binding as ItemCircleRecommendOneBinding
+
+        mbBinding.let {
+            mbBinding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_like_image, false)
+                mbBinding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_like_image, false)
 
             } else {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_no_like_image, false)
+                mbBinding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_no_like_image, false)
             }
 
-            binding.layoutCount.tvLikeCount.setOnClickListener {
-                likePost(binding, item, holder.layoutPosition)
+            mbBinding.layoutCount.tvLikeCount.setOnClickListener {
+                likePost(mbBinding, item, position)
             }
 
             if (item.authorBaseVo != null) {
                 if (item.authorBaseVo?.authorId == MConstant.userId) {
-                    binding.layoutHeader.btnFollow.visibility = View.GONE
+                    mbBinding.layoutHeader.btnFollow.visibility = View.GONE
                 } else {
-                    binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+                    mbBinding.layoutHeader.btnFollow.visibility = View.VISIBLE
                 }
             } else {
-                binding.layoutHeader.btnFollow.visibility = View.VISIBLE
+                mbBinding.layoutHeader.btnFollow.visibility = View.VISIBLE
             }
 
-            binding.layoutHeader.btnFollow.setOnClickListener {
+            mbBinding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     if (item.authorBaseVo != null) {
                         followAction(item.authorBaseVo!!)
                     }
                 }
             }
-            binding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
-            binding.layoutCount.tvCommentCount.setOnTouchListener { v, event ->
+            mbBinding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
+            mbBinding.layoutCount.tvCommentCount.setOnTouchListener { v, event ->
                 GIOUtils.clickCommentPost(
                     "社区-广场",
                     item.topicId,
@@ -111,55 +115,55 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 )
                 false
             }
-            binding.layoutHeader.ivHeader.setOnClickListener {
+            mbBinding.layoutHeader.ivHeader.setOnClickListener {
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId.toString())
 //                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
                 JumpUtils.instans?.jump(35, item.userId.toString())
 
             }
-            binding.layoutCount.tvLocation.setOnClickListener {
+            mbBinding.layoutCount.tvLocation.setOnClickListener {
                 StartBaduMap(item)
             }
-            binding.layoutHeader.ivHeader.loadCompress(item.authorBaseVo?.avatar)
+            mbBinding.layoutHeader.ivHeader.loadCompress(item.authorBaseVo?.avatar)
 //            GlideUtils.loadBD(
 //                item.authorBaseVo?.avatar,
 //                binding.layoutHeader.ivHeader,
 //                R.mipmap.head_default
 //            )
-            binding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
-            binding.layoutHeader.tvSubTitle.visibility =
+            mbBinding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
+            mbBinding.layoutHeader.tvSubTitle.visibility =
                 if (item.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
             val labelAdapter = LabelAdapter(context, 15)
             labelAdapter.setItems(item.authorBaseVo?.imags)
-            binding.layoutHeader.rvUserTag.adapter = labelAdapter
-            binding.postBean = item
-            binding.author = item.authorBaseVo
+            mbBinding.layoutHeader.rvUserTag.adapter = labelAdapter
+            mbBinding.postBean = item
+            mbBinding.author = item.authorBaseVo
             if (item.authorBaseVo != null) {
-                setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
+                setFollowState(mbBinding.layoutHeader.btnFollow, item.authorBaseVo!!)
             }
             if (item.city.isNullOrEmpty()) {
-                binding.layoutCount.tvLocation.visibility = View.GONE
+                mbBinding.layoutCount.tvLocation.visibility = View.GONE
             } else {
-                binding.layoutCount.tvLocation.visibility = View.VISIBLE
-                binding.layoutCount.tvLocation.text = item.showCity()
+                mbBinding.layoutCount.tvLocation.visibility = View.VISIBLE
+                mbBinding.layoutCount.tvLocation.text = item.showCity()
             }
             if (item.type == 3) {//视频
-                binding.layoutOne.conOne.visibility = View.VISIBLE
-                binding.layoutOne.ivPlay.visibility = View.VISIBLE
-                binding.ivNine.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
+                mbBinding.layoutOne.conOne.visibility = View.VISIBLE
+                mbBinding.layoutOne.ivPlay.visibility = View.VISIBLE
+                mbBinding.ivNine.visibility = View.GONE
+                mbBinding.icMultVeryPost.visibility = View.GONE
                 if (item.videoTime == null) {
-                    binding.layoutOne.tvVideoTimes.visibility = View.GONE
+                    mbBinding.layoutOne.tvVideoTimes.visibility = View.GONE
                 } else {
-                    binding.layoutOne.tvVideoTimes.visibility = View.VISIBLE
+                    mbBinding.layoutOne.tvVideoTimes.visibility = View.VISIBLE
                 }
-                binding.layoutOne.tvVideoTimes.text = item.videoTime.toString()
-                binding.btnMore.visibility = View.GONE
+                mbBinding.layoutOne.tvVideoTimes.text = item.videoTime.toString()
+                mbBinding.btnMore.visibility = View.GONE
             } else {
-                binding.layoutOne.ivPlay.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.text = ""
+                mbBinding.layoutOne.ivPlay.visibility = View.GONE
+                mbBinding.layoutOne.tvVideoTimes.visibility = View.GONE
+                mbBinding.layoutOne.tvVideoTimes.text = ""
 
             }
 
@@ -180,52 +184,51 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             imageInfoList.add(imageInfo)
                         }
 //                        val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
-//                        binding.ivNine.setAdapter(assNineAdapter)
-                        binding.ivNine.dealMuchImage(imageInfoList)
-                        binding.ivNine.visibility = View.VISIBLE
-                        binding.layoutOne.ivPlay.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
+                        mbBinding.ivNine.dealMuchImage(imageInfoList)
+                        mbBinding.ivNine.visibility = View.VISIBLE
+                        mbBinding.layoutOne.ivPlay.visibility = View.GONE
+                        mbBinding.layoutOne.conOne.visibility = View.GONE
                         if (picList.size > 4) {
-                            binding.btnMore.visibility = View.VISIBLE
-                            binding.btnMore.text = "+".plus(picList.size)
+                            mbBinding.btnMore.visibility = View.VISIBLE
+                            mbBinding.btnMore.text = "+".plus(picList.size)
                         } else {
-                            binding.btnMore.visibility = View.GONE
+                            mbBinding.btnMore.visibility = View.GONE
                         }
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
+                        mbBinding.layoutOne.ivVeryPost.visibility = View.GONE
                         if (item.isGood == 1) {
-                            binding.icMultVeryPost.visibility = View.VISIBLE
+                            mbBinding.icMultVeryPost.visibility = View.VISIBLE
                         } else {
-                            binding.icMultVeryPost.visibility = View.GONE
+                            mbBinding.icMultVeryPost.visibility = View.GONE
                         }
                     }
                     picList.size == 1 -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.VISIBLE
+                        mbBinding.ivNine.visibility = View.GONE
+                        mbBinding.layoutOne.conOne.visibility = View.VISIBLE
 //                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
-                        binding.layoutOne.ivPic.loadCompress(picList[0])
-                        binding.btnMore.visibility = View.GONE
+                        mbBinding.layoutOne.ivPic.loadCompress(picList[0])
+                        mbBinding.btnMore.visibility = View.GONE
                         if (item.isGood == 1) {
-                            binding.layoutOne.ivVeryPost.visibility = View.VISIBLE
+                            mbBinding.layoutOne.ivVeryPost.visibility = View.VISIBLE
                         } else {
-                            binding.layoutOne.ivVeryPost.visibility = View.GONE
+                            mbBinding.layoutOne.ivVeryPost.visibility = View.GONE
                         }
-                        binding.icMultVeryPost.visibility = View.GONE
+                        mbBinding.icMultVeryPost.visibility = View.GONE
 
                     }
                     else -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
-                        binding.btnMore.visibility = View.GONE
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        binding.icMultVeryPost.visibility = View.GONE
+                        mbBinding.ivNine.visibility = View.GONE
+                        mbBinding.layoutOne.conOne.visibility = View.GONE
+                        mbBinding.btnMore.visibility = View.GONE
+                        mbBinding.layoutOne.ivVeryPost.visibility = View.GONE
+                        mbBinding.icMultVeryPost.visibility = View.GONE
                     }
                 }
             } else {
-                binding.ivNine.visibility = View.GONE
-                binding.layoutOne.ivVeryPost.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
+                mbBinding.ivNine.visibility = View.GONE
+                mbBinding.layoutOne.ivVeryPost.visibility = View.GONE
+                mbBinding.icMultVeryPost.visibility = View.GONE
             }
-            binding.run {
+            mbBinding.run {
                 if (item.circle == null) {
                     llCircle.visibility = View.GONE
                 } else {
@@ -239,7 +242,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
                     }
                     tvCircleName.text = circleData?.name
-                    binding.ivCircleHead.loadCompress(circleData?.pic)
+                    mbBinding.ivCircleHead.loadCompress(circleData?.pic)
                     when (circleData?.isJoin) {
                         "TOJOIN" -> {//未加入
                             tvJoinType.text = "  加入"
@@ -255,26 +258,26 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                     object : OnPerformListener {
                                         override fun onFinish(code: Int) {
                                             when (code) {
-                                                1 -> {//状态更新为审核中
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "PENDING"
-                                                        }
-                                                    }
-                                                    notifyDataSetChanged()
-//                                                    tvJoinType.text = "  待审核"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
-                                                2 -> {//已加入
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "JOINED"
-                                                        }
-                                                    }
-                                                    notifyDataSetChanged()
-//                                                    tvJoinType.text = "  已加入"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
+//                                                1 -> {//状态更新为审核中
+//                                                    data.forEach {
+//                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
+//                                                            it.circle!!.isJoin = "PENDING"
+//                                                        }
+//                                                    }
+//                                                    notifyDataSetChanged()
+////                                                    tvJoinType.text = "  待审核"
+////                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
+//                                                }
+//                                                2 -> {//已加入
+//                                                    data.forEach {
+//                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
+//                                                            it.circle!!.isJoin = "JOINED"
+//                                                        }
+//                                                    }
+//                                                    notifyDataSetChanged()
+////                                                    tvJoinType.text = "  已加入"
+////                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
+//                                                }
                                                 else -> {
 //                                item.isJoin ="TOJOIN"
                                                 }
@@ -434,12 +437,12 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 
     //关注
     fun notifyAtt(userId: String, isFollow: Int) {
-        for (data in this.data) {
-            if (data.authorBaseVo?.authorId == userId) {
-                data.authorBaseVo?.isFollow = isFollow
-            }
-        }
-        this.notifyDataSetChanged()
+//        for (data in this.data) {
+//            if (data.authorBaseVo?.authorId == userId) {
+//                data.authorBaseVo?.isFollow = isFollow
+//            }
+//        }
+//        this.notifyDataSetChanged()
     }
 
     private fun StartBaduMap(mData: PostDataBean) {

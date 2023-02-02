@@ -26,6 +26,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.*
 import com.luck.picture.lib.tools.ScreenUtils

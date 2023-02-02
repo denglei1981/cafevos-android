@@ -1,4 +1,4 @@
-package com.changanford.circle.widget.assninegridview;
+package com.changanford.common.bean;
 
 import java.io.Serializable;
 

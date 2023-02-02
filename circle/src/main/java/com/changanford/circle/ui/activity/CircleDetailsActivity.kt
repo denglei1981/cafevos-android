@@ -26,9 +26,6 @@ import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
 import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.setCircular
-
-import com.changanford.circle.ui.fragment.CircleDetailsFragment
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.utils.FlexboxLayoutManagerCustom
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
@@ -41,7 +38,6 @@ import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CircleShareBean
-import com.changanford.common.bean.TestBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
@@ -53,6 +49,7 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.GlideUtils

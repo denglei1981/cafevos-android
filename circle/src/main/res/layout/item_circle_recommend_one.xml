@@ -36,17 +36,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.changanford.circle.widget.assninegridview.AssNineGridView
+            <!--            <com.changanford.circle.widget.assninegridview.AssNineGridView-->
+            <!--                android:id="@+id/iv_nine"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/dp_16"-->
+            <!--                android:scaleType="centerCrop"-->
+            <!--                app:angv_gridSpace="3dp"-->
+            <!--                app:angv_maxSize="4"-->
+            <!--                app:angv_singleImgRatio="1"-->
+            <!--                tools:src="@drawable/image_recommed_default" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/iv_nine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_16"
-                android:scaleType="centerCrop"
-                app:angv_gridSpace="3dp"
-                app:angv_maxSize="4"
-                app:angv_singleImgRatio="1"
-                tools:src="@drawable/image_recommed_default" />
-
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_more"
@@ -101,9 +108,10 @@
                 android:id="@+id/iv_circle_head"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                app:shapeAppearanceOverlay="@style/circleImageStyle"
+                android:scaleType="centerCrop"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="4dp"
+                app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -126,9 +134,9 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                tools:text="EVOS车友圈"
                 android:textColor="@color/circle_8195C8"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                tools:text="EVOS车友圈" />
 
             <RelativeLayout
                 android:id="@+id/rl_circle_type"
@@ -147,9 +155,9 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    tools:text="  加入"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="  加入" />
             </RelativeLayout>
 
         </LinearLayout>
