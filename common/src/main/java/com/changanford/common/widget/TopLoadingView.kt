@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import com.airbnb.lottie.LottieAnimationView
 import com.changanford.common.R
 import com.changanford.common.databinding.DialogLoadingBinding
 import com.changanford.common.databinding.LayoutCommentLoadingTopBinding
@@ -46,5 +47,7 @@ class TopLoadingView : ConstraintLayout {
 
     private fun initView() {
         LayoutInflater.from(context).inflate(R.layout.layout_comment_loading_top, this, true)
+        val loading = findViewById<LottieAnimationView>(R.id.loading)
+        loading.scale = 8f
     }
 }

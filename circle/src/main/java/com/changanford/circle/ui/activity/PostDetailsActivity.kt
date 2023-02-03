@@ -8,6 +8,7 @@ import com.changanford.circle.ui.fragment.PostImageDetailsFragment
 import com.changanford.circle.ui.fragment.PostVideoDetailsFragment
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.bus.CircleLiveBusKey
@@ -19,15 +20,17 @@ import com.gyf.immersionbar.ImmersionBar
  * 帖子详情
  */
 @Route(path = ARouterCirclePath.PostDetailsActivity)
-class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphicViewModel>() {
+class PostDetailsActivity :
+    BaseLoadSirActivity<ActivityPostDetailsBinding, PostGraphicViewModel>() {
 
     private var postsId = ""
-    private lateinit var loadingDialog: LoadingDialog
+    override fun onRetryBtnClick() {
+
+    }
 
     override fun initView() {
         postsId = intent.getStringExtra("postsId").toString()
-        loadingDialog = LoadingDialog(this)
-        loadingDialog.show()
+        setLoadSir(binding.frameLayout)
         bus()
     }
 
@@ -50,7 +53,7 @@ class PostDetailsActivity : BaseActivity<ActivityPostDetailsBinding, PostGraphic
                 )
             }
             val trans = supportFragmentManager.beginTransaction()
-            loadingDialog.dismiss()
+            showContent()
             when (it.type) {
                 3 -> {//视频
                     ImmersionBar.with(this).statusBarDarkFont(false).init()
