@@ -93,16 +93,16 @@ fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
         })
 }
 
-fun ImageView.loadCircleImage(url:String?){
-    this.load(GlideUtils.dealMP4Url(url)){
+fun ImageView.loadCircleImage(url: String?) {
+    this.load(GlideUtils.dealMP4Url(url)) {
         transformations(CircleCropTransformation())
         placeholder(R.mipmap.ic_def_square_img)
         error(R.mipmap.ic_def_square_img)
     }
 }
 
-fun ImageView.loadColLImage(url:String?){
-    this.load(GlideUtils.dealMP4Url(url)){
+fun ImageView.loadColLImage(url: String?) {
+    this.load(GlideUtils.dealMP4Url(url)) {
         placeholder(R.mipmap.ic_def_square_img)
         error(R.mipmap.ic_def_square_img)
     }
@@ -121,9 +121,9 @@ private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply
 }
 
 class ImageOptions {
-    var placeholder = 0         // 加载占位图
-    var error = 0               // 错误占位图
-    var fallback = 0            // null占位图
+    var placeholder = R.mipmap.ic_def_square_img      // 加载占位图
+    var error = R.mipmap.ic_def_square_img               // 错误占位图
+    var fallback = R.mipmap.ic_def_square_img            // null占位图
     var cornersRadius = 0       // 圆角半径
     var circleCrop = false      // 是否裁剪为圆形
 }

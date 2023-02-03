@@ -96,7 +96,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             AppUtils.setStatusBarMarginTop(llTitle, requireActivity())
             ivHead.loadImage(
                 mData.authorBaseVo?.avatar,
-                ImageOptions().apply { circleCrop = true })
+                ImageOptions().apply {
+                    circleCrop = true
+                    placeholder = R.mipmap.head_default_circle
+                    error = R.mipmap.head_default_circle
+                })
             tvName.text = mData.authorBaseVo?.nickname
             tvSubTitle.visibility =
                 if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
