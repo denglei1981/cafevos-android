@@ -2,6 +2,7 @@ package com.changanford.common.ui
 
 import android.content.Context
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import com.changanford.common.R
 import com.changanford.common.basic.BaseDialog
 import com.changanford.common.databinding.DialogLoadingBinding
@@ -40,9 +41,10 @@ class LoadingDialog(context: Context) : BaseDialog<DialogLoadingNewBinding>(cont
 //
 //        })Float
 
-        binding.loading.scale = 3.0f
-        binding.loading.playAnimation()
-        binding.text.text = "正在加载..."
+        binding.loading.scale = 8.0f
+        binding.loading.postDelayed( {
+            binding.loading.isVisible = true
+        },100)
     }
 
     override fun initData() {
