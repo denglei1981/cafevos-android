@@ -8,9 +8,10 @@
     android:background="@color/transparent">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dp_500"
+        android:layout_height="@dimen/dp_500"
         app:lottie_autoPlay="true"
+        android:paddingLeft="@dimen/dp_20"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

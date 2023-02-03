@@ -41,7 +41,6 @@ class LoadingDialog(context: Context) : BaseDialog<DialogLoadingNewBinding>(cont
 //
 //        })Float
 
-        binding.loading.scale = 8.0f
         binding.loading.postDelayed( {
             binding.loading.isVisible = true
         },100)

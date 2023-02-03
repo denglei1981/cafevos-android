@@ -15,9 +15,9 @@ class MineFastUsedAdapter: BaseQuickAdapter<MenuBeanItem, BaseViewHolder>(R.layo
     override fun convert(holder: BaseViewHolder, item: MenuBeanItem) {
         holder.setText(R.id.tv_name, item.menuName)
         if(      !TextUtils.isEmpty(item.icon)){
-            holder.getView<ImageView>(R.id.iv_icon).load(item.icon)
+            holder.getView<ImageView>(R.id.iv_icon).load(item.icon,R.mipmap.head_default_circle)
         }else{
-            holder.getView<ImageView>(R.id.iv_icon).load(item.drawInt)
+            holder.getView<ImageView>(R.id.iv_icon).load(item.drawInt,R.mipmap.head_default_circle)
         }
 
 
