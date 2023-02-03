@@ -22,7 +22,6 @@ import com.changanford.circle.R
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.utilext.toIntPx
-import com.squareup.picasso.Picasso
 
 object MUtils {
 
@@ -155,30 +154,6 @@ object MUtils {
             params.topMargin =
                 margin.toIntPx()
         } else params.topMargin = 0
-    }
-
-    /**
-     * 列表滑动时停止加载图片
-     */
-    fun scrollStopLoadImage(recycler: RecyclerView) {
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            var IsScrolling = false
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                //recyclerView在滑动
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
-                    IsScrolling = true
-                    Glide.with(recycler.context).pauseRequests()
-                    Picasso.get().pauseTag(recycler.context)
-                } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (IsScrolling) {
-                        Glide.with(recycler.context).resumeRequests()
-                        Picasso.get().resumeTag(recycler.context)
-                    }
-                    IsScrolling = false
-                }
-            }
-        })
     }
 
     private var expand = "展开 ∨"

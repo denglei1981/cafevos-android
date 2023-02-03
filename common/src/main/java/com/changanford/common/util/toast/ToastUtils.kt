@@ -58,8 +58,10 @@ object ToastUtils {
      * @param msg  提示信息
      */
     fun showShortToast(msg: String, context: Context?) {
-        setToastGravity(Gravity.CENTER)
-        showToast(msg, Toast.LENGTH_SHORT, context)
+        if(msg.isNotEmpty()){
+            setToastGravity(Gravity.CENTER)
+            showToast(msg, Toast.LENGTH_SHORT, context)
+        }
     }
 
     fun showShortToast(msgId: Int, context: Context?) {

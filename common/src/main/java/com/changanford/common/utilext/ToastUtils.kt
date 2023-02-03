@@ -17,9 +17,11 @@ import com.changanford.common.util.toast.ToastUtils
 @Synchronized
 fun String.toast() {
 //    Toast.makeText(MyApp.mContext, this, Toast.LENGTH_SHORT).show()
-    ToastUtils.showShortToast(this, MyApp.mContext)
+    if (this.isNotEmpty()) {
+        ToastUtils.showShortToast(this, MyApp.mContext)
+    }
 }
 
-fun toastShow(s:String){
+fun toastShow(s: String) {
     s.toast()
 }

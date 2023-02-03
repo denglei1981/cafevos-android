@@ -40,7 +40,7 @@ class CircleDetailsViewModel : BaseViewModel() {
 
     val joinBean = MutableLiveData<CommonResponse<ChoseCircleBean>>()
 
-    val circleDetailsBean = MutableLiveData<CircleDetailBean>()
+    val circleDetailsBean = MutableLiveData<CircleDetailBean?>()
 
     val circleRolesBean = MutableLiveData<ArrayList<CircleStarRoleDto>>()
 
@@ -141,7 +141,9 @@ class CircleDetailsViewModel : BaseViewModel() {
                 .onSuccess {
                     circleDetailsBean.value = it
                 }
-                .onFailure { }
+                .onFailure {
+                    circleDetailsBean.value = null
+                }
         })
     }
 

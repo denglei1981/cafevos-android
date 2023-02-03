@@ -9,7 +9,6 @@ import com.changanford.common.utilext.toPx
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
-import com.squareup.picasso.Picasso
 
 /**
  *Author lcw
@@ -25,11 +24,9 @@ fun RecyclerView.scrollStopLoadImage() {
             if (newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING) {
                 IsScrolling = true
                 Glide.with(this@scrollStopLoadImage.context).pauseRequests()
-                Picasso.get().pauseTag(this@scrollStopLoadImage.context)
             } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 if (IsScrolling) {
                     Glide.with(this@scrollStopLoadImage.context).resumeRequests()
-                    Picasso.get().resumeTag(this@scrollStopLoadImage.context)
                 }
                 IsScrolling = false
             }
@@ -62,6 +59,7 @@ fun RecyclerView.dealMuchImage(list: ArrayList<ImageInfo>?) {
             }
         }
         setItemViewCacheSize(4)
+        setHasFixedSize(true)
         this.adapter = DealMuchImageAdapter().apply { setList(mList) }
     }
 }

@@ -27,7 +27,6 @@ import com.changanford.common.util.RoundGlideTransform
 import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
-import com.squareup.picasso.Picasso
 
 
 /**********************************************************************************
@@ -100,6 +99,14 @@ object GlideUtils {
         else if (!TextUtils.isEmpty(MConstant.imgcdn)) MConstant.imgcdn.plus(preUrl)
         else MConstant.defaultImgCdn.plus(preUrl)
 
+    fun dealMP4Url(url: String?):String{
+        return if(url?.endsWith(".mp4") == true){
+            "${handleImgUrl(url)}?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast"
+        }else{
+            handleImgUrl(url).toString()
+        }
+    }
+
     fun handleNullableUrl(preUrl: String?): String? =
         if (preUrl.isNullOrEmpty()) null else {
             if (!preUrl.isNullOrEmpty() && preUrl.startsWith("http")) preUrl else MConstant.imgcdn.plus(
@@ -166,13 +173,26 @@ object GlideUtils {
         imageView: ImageView,
         @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
     ) {
-        Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
-            if (errorDefaultRes != null) {
-                placeholder(errorDefaultRes)
-                    .fallback(errorDefaultRes)
-                    .error(errorDefaultRes)
-            }
-        }.into(imageView)
+        if (url?.endsWith(".mp4") == true) {
+            Glide.with(imageView)
+                .load("${defaultHandleImageUrl(url)}?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast")
+                .apply {
+                    if (errorDefaultRes != null) {
+                        placeholder(errorDefaultRes)
+                        fallback(errorDefaultRes)
+                        error(errorDefaultRes)
+                    }
+                }
+                .into(imageView)
+        } else {
+            Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
+                if (errorDefaultRes != null) {
+                    placeholder(errorDefaultRes)
+                        .fallback(errorDefaultRes)
+                        .error(errorDefaultRes)
+                }
+            }.into(imageView)
+        }
     }
 
     /**
@@ -259,14 +279,13 @@ object GlideUtils {
         imageView: ImageView,
         @DrawableRes errorDefaultRes: Int? = null
     ) {
-        if (url?.contains(".mp4") == true) {
+        if (url?.endsWith(".mp4") == true) {
             Log.e("mp4===", url)
             Glide.with(imageView)
                 .load("$url?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast")
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
-                        fallback(errorDefaultRes)
                         error(errorDefaultRes)
                     }
                 }
@@ -275,15 +294,13 @@ object GlideUtils {
             errorDefaultRes?.let {
 
                 Glide.with(imageView).load(url?.let { it1 -> dealWithMuchImage(it1) })
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE).preload()
+                   .preload()
 
                 Glide.with(imageView)
                     .load(url?.let { it1 -> dealWithMuchImage(it1) })
                     .placeholder(errorDefaultRes)
-                    .fallback(errorDefaultRes)
                     .error(errorDefaultRes)
-                    .override(400.toIntPx(), 400.toIntPx())
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+//                    .override(400.toIntPx(), 400.toIntPx())
                     .into(imageView)
             }
 
@@ -459,7 +476,7 @@ object GlideUtils {
 //                }
             }
         } else {
-            oriPath
+            "$oriPath?x-oss-process=image/resize,l_600"
             //            return "$oriPath?x-oss-process=image/resize,w_${width},m_lfit"
         }
 
@@ -486,7 +503,7 @@ object GlideUtils {
 //                }
             }
         } else {
-            oriPath
+            "$oriPath?x-oss-process=image/resize,l_350"
             //            return "$oriPath?x-oss-process=image/resize,w_${width},m_lfit"
         }
 

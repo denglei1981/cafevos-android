@@ -110,6 +110,8 @@ class CircleRecommendV2Fragment :
         super.observe()
         viewModel.recommondBean.observe(this, Observer {
             if (page == 1) {
+                binding.ryCircle.visibility = View.VISIBLE
+                binding.topView.visibility = View.GONE
                 adapter.setList(it.dataList)
             } else {
                 adapter.addData(it.dataList)

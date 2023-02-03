@@ -70,7 +70,7 @@ open class RecommendFragment :
         recommendAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getRecommend(true)
         }
-        binding.recyclerView.scrollStopLoadImage()
+//        binding.recyclerView.scrollStopLoadImage()
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter

@@ -258,6 +258,4 @@ dependencies {
     //gio埋点
     implementation "com.growingio.android:autotracker-cdp:$versions_gio"
 
-    api 'com.squareup.picasso:picasso:2.8'
-
 }

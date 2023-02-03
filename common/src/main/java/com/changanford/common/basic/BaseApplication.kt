@@ -86,7 +86,7 @@ abstract class BaseApplication : MultiDexApplication() {
             .setDebugEnabled(MConstant.isDebug)
         GrowingAutotracker.startWithConfiguration(this, sConfiguration)
         //采集数据开关
-        GrowingAutotracker.get().setDataCollectionEnabled(true)
+        GrowingAutotracker.get().setDataCollectionEnabled(false)
     }
 
     //友盟初始化

@@ -23,7 +23,7 @@ import java.io.File
 
 fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
-        .load(GlideUtils.handleImgUrl(url))
+        .load(GlideUtils.dealMP4Url(url))
         .error(R.mipmap.ic_def_square_img)
         .placeholder(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
@@ -73,7 +73,7 @@ fun ImageView.loadImage(url: Int?, imageOptions: ImageOptions? = null) {
 @SuppressLint("CheckResult")
 fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
-        .load(GlideUtils.handleImgUrl(url))
+        .load(GlideUtils.dealMP4Url(url))
         .error(R.mipmap.ic_def_square_img)
         .apply(requestOptions(imageOptions))
         .transition(
@@ -94,7 +94,7 @@ fun ImageView.loadBigImage(url: String?, imageOptions: ImageOptions? = null) {
 }
 
 fun ImageView.loadCircleImage(url:String?){
-    this.load(GlideUtils.handleImgUrl(url)){
+    this.load(GlideUtils.dealMP4Url(url)){
         transformations(CircleCropTransformation())
         placeholder(R.mipmap.ic_def_square_img)
         error(R.mipmap.ic_def_square_img)
@@ -102,7 +102,7 @@ fun ImageView.loadCircleImage(url:String?){
 }
 
 fun ImageView.loadColLImage(url:String?){
-    this.load(GlideUtils.handleImgUrl(url)){
+    this.load(GlideUtils.dealMP4Url(url)){
         placeholder(R.mipmap.ic_def_square_img)
         error(R.mipmap.ic_def_square_img)
     }

@@ -37,6 +37,7 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
@@ -75,7 +76,8 @@ import kotlin.math.abs
  *Purpose 圈子详情
  */
 @Route(path = ARouterCirclePath.CircleDetailsActivity)
-class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
+class CircleDetailsActivity :
+    BaseLoadSirActivity<ActivityCircleDetailsBinding, CircleDetailsViewModel>() {
     companion object {
         fun start(circleId: String?) {
             circleId?.apply {
@@ -118,9 +120,14 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
         CircleDetailsTopicAdapter()
     }
 
+    override fun onRetryBtnClick() {
+
+    }
+
     override fun initView() {
         circleId = intent.getStringExtra("circleId").toString()
         initMagicIndicator()
+        setLoadSir(binding.clContent)
         binding.run {
             backImg.setOnClickListener { finish() }
             AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
@@ -430,6 +437,10 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
+            if (it == null) {
+                showFailure("服务器开小差，请稍候再试")
+                return@observe
+            }
             circleName = it.name
             if (isFirst) {
                 initMyView(it.userId.toString())
@@ -529,6 +540,7 @@ class CircleDetailsActivity : BaseActivity<ActivityCircleDetailsBinding, CircleD
                     binding.ivPostBar.visibility = View.GONE
                 }
             }
+            showContent()
             GIOUtils.circleDetailPageView(it.circleId.toString(), it.name)
         }
         viewModel.joinBean.observe(this) {

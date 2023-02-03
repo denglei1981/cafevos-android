@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -140,6 +141,8 @@ class CircleDetailsFragmentV2 :
         viewModel.listBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it.dataList)
+                binding.ryCircle.visibility = View.VISIBLE
+                binding.topView.visibility = View.GONE
                 if (it.dataList.size == 0) {
                     adapter.setEmptyView(R.layout.circle_empty_layout)
                 }
