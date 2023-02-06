@@ -44,11 +44,11 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             SmartRefreshLayout.setDefaultRefreshHeaderCreator(fun(
                 context: Context,
                 layout: RefreshLayout
-            ): MyHeaderViewNew {
+            ): MyHeaderView {
                 layout.setPrimaryColorsId(R.color.colorAccent, R.color.color_ee);//全局设置主题颜色
 //                layout.setEnableLoadMore(false)//禁用加载更多
                 layout.setReboundDuration(300)
-                return MyHeaderViewNew(context)
+                return MyHeaderView(context)
             })
 
             SmartRefreshLayout.setDefaultRefreshFooterCreator(fun(
