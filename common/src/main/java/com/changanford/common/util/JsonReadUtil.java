@@ -1,4 +1,4 @@
-package com.changanford.circle.utils;
+package com.changanford.common.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;

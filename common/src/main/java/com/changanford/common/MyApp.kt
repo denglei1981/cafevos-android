@@ -17,6 +17,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.crash.CrashProtect
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
+import com.changanford.common.widget.smart.MyHeaderViewNew
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
@@ -43,11 +44,11 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             SmartRefreshLayout.setDefaultRefreshHeaderCreator(fun(
                 context: Context,
                 layout: RefreshLayout
-            ): MyHeaderView {
+            ): MyHeaderViewNew {
                 layout.setPrimaryColorsId(R.color.colorAccent, R.color.color_ee);//全局设置主题颜色
 //                layout.setEnableLoadMore(false)//禁用加载更多
                 layout.setReboundDuration(300)
-                return MyHeaderView(context)
+                return MyHeaderViewNew(context)
             })
 
             SmartRefreshLayout.setDefaultRefreshFooterCreator(fun(

@@ -10,11 +10,11 @@ import com.changanford.circle.adapter.CityListAdapter
 import com.changanford.circle.adapter.CitySearchListAdapter
 import com.changanford.circle.bean.CityEntity
 import com.changanford.circle.databinding.ActivityChoiceAllCityBinding
-import com.changanford.circle.utils.JsonReadUtil
 import com.changanford.circle.widget.LetterListView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JsonReadUtil
 import com.changanford.common.utilext.logE
 import org.json.JSONException
 import org.json.JSONObject
