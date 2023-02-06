@@ -18,6 +18,8 @@ import com.changanford.common.util.CommonUtils.jumpActDetail
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.actTypeText
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
 import com.changanford.my.databinding.FragmentActBinding
@@ -201,6 +203,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             }
             "actMyJoin" -> {
                 viewModel.queryMineJoinAc(pageSize) { reponse ->
+                    LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
                     reponse?.data?.total?.let {
                         total = it
                     }

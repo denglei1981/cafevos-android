@@ -52,7 +52,7 @@ class OtherMedalActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, Ot
 
     }
 
-    override fun showEmpty() {
+    override fun showEmptyLoadView() {
 //        super.showEmpty()
         if (null != mLoadService) {
             mLoadService!!.showCallback(EmptyMedalCallback::class.java)
@@ -92,7 +92,7 @@ class OtherMedalActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, Ot
         viewModel.medalLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if(it.data.size==0){
-                    showEmpty()
+                    showEmptyLoadView()
                 }else{
                     showContent()
                     taMedalAdapter.setNewInstance(it.data)

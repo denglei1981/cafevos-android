@@ -14,6 +14,8 @@ import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.home.data.PublishData
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiMyActBinding
@@ -50,6 +52,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
         if (selectPosition == "1"){
             binding.viewpager.currentItem = 1
         }
+        setLoadSir(binding.root)
     }
 
     override fun observe() {
@@ -57,6 +60,9 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
         viewModel.myActPublishState.observe(this, Observer {
            changPerm(it)
         })
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
+            showContent()
+        }
 
     }
 

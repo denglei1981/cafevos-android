@@ -39,7 +39,7 @@ abstract class BaseLoadSirActivity<VB : ViewBinding, VM : ViewModel> :
         }
     }
 
-    open fun showEmpty() {
+    open fun showEmptyLoadView() {
         if (null != mLoadService) {
             mLoadService!!.showCallback(EmptyCallback::class.java)
         }

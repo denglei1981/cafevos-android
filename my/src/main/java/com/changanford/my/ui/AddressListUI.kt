@@ -57,12 +57,13 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
 
     override fun initView() {
         binding.addToolbar.toolbarTitle.text = "收货地址"
-
+        setLoadSir(binding.root)
         intent.extras?.getInt(RouterManger.KEY_TO_ITEM, 0)?.let { isChooseAdd = it }
         binding.cryAdd.rcyCommonView.adapter = addAdapter
 
         viewModel.addressList.observe(this, Observer {
             completeRefresh(it, addAdapter)
+            showContent()
             if (null == it || it.size == 0) {
                 binding.add.visibility = View.GONE
             } else {

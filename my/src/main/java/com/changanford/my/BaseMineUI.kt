@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.databinding.ViewEmptyBinding
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
@@ -28,7 +29,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
  *  描述: TODO
  *  修改描述：TODO
  */
-abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, VM>(),
+abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivity<VB, VM>(),
     OnRefreshLoadMoreListener {
 
     protected var pageSize: Int = 1
@@ -203,6 +204,9 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseActivity<VB, V
         return emptyBinding.root
     }
 
+    override fun onRetryBtnClick() {
+
+    }
     open fun initRefreshData(pageSize: Int) {
 
     }

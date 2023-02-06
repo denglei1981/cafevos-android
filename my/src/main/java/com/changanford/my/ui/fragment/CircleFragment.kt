@@ -18,6 +18,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineFM
@@ -71,6 +72,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         })
 
         viewModel.mJoinCircle.observe(this, Observer {
+            LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
             it?.dataList?.let { list ->
                 list.forEach {
                     it.itemType = index

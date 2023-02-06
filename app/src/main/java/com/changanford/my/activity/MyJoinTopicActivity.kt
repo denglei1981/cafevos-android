@@ -16,7 +16,6 @@ import com.changanford.evos.databinding.LayoutBaseRecyclerviewBinding
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 
-import com.changanford.my.adapter.MyJoinTopicAdapter
 import com.changanford.my.adapter.MyJoinTopicMoreAdapter
 import com.changanford.my.request.MyJoinViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -100,7 +99,7 @@ class MyJoinTopicActivity : BaseLoadSirActivity<LayoutBaseRecyclerviewBinding, M
                 } else {
                     if (dataList != null) {
                         if (it.data == null || dataList.size == 0) {
-                            showEmpty()
+                            showEmptyLoadView()
                         }
                     }
                     showContent()

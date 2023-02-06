@@ -14,6 +14,8 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMedalTabBinding
@@ -36,6 +38,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     private var oldPosition = 0
     private val fragments= arrayListOf<CircleFragment>()
     override fun initView() {
+        setLoadSir(binding.root)
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)
@@ -57,6 +60,9 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
     override fun initData() {
         super.initData()
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
+            showContent()
+        }
         viewModel.createCircle {
             it.onSuccess {
                 binding.collectToolbar.toolbarSave.text = "创建圈子"

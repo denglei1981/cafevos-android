@@ -20,6 +20,7 @@ object LiveDataBusKey {
     const val RJP_TYPE = "RJPTYPE"
 
     const val BUS_HIDE_BOTTOM_TAB = "HIDE_BOTTOM_TAB"
+    const val BUS_SHOW_LOAD_CONTENT = "BUS_SHOW_LOAD_CONTENT"
 
     /**
      * WebView传递

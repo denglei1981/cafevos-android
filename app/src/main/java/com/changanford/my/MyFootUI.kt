@@ -9,6 +9,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
@@ -31,6 +33,10 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         GioPageConstant.infoEntrance = "我的足迹-资讯"
         GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"
+        setLoadSir(binding.root)
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
+            showContent()
+        }
         initViewpager()
     }
 

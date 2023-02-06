@@ -6,6 +6,8 @@ import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -114,6 +116,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     fun myCollectInfo(pageSize: Int) {
         var total: Int = 0
         viewModel.queryMineCollectInfo(pageSize, searchKeys) { reponse ->
+            LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
             reponse?.data?.total?.let {
                 total = it
             }
@@ -133,6 +136,7 @@ class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             "footInformation" -> {
                 infoAdapter.isShowTag = true
                 viewModel.queryMineFootInfo(pageSize) { reponse ->
+                    LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
                     reponse?.data?.total?.let {
                         total = it
                     }

@@ -52,6 +52,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageView(this, null)
         GIOUtils.taskCenterPageView()
+        setLoadSir(binding.root)
         binding.imBack.setOnClickListener {
             back()
         }
@@ -65,6 +66,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
         viewModel.taskBean.observe(this, Observer {
             completeRefresh(it, taskAdapter, 0)
+            showContent()
         })
 
         binding.rcyDay.layoutManager = LinearLayoutManager(this).apply {

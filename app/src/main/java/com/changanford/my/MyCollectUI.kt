@@ -18,6 +18,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import android.view.inputmethod.EditorInfo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 
 
@@ -52,6 +54,10 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     var index = 0
     override fun initView() {
+        setLoadSir(binding.root)
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
+            showContent()
+        }
         GioPageConstant.infoEntrance = "我的收藏-资讯"
         GioPageConstant.postEntrance = "我的收藏-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的收藏"

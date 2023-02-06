@@ -20,6 +20,7 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
     private var adapter = MineCommAdapter.FeedbackAdapter(R.layout.item_feedback_list)
     var mobile: String = "4008877766"//节假日热线
     override fun initView() {
+        setLoadSir(binding.root)
         binding.mineToolbar.toolbarTitle.text = "帮助与反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
@@ -75,6 +76,7 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
         }
         viewModel.getFeedbackQ()
         viewModel._feedBackBean.observe(this, {
+            showContent()
             if (!it.dataList.isNullOrEmpty()) {
                 if (it.dataList?.size!! > 5) {
                     completeRefresh(it.dataList?.subList(0, 5), adapter)
