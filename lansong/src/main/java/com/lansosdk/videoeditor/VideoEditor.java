@@ -1235,6 +1235,8 @@ public class VideoEditor {
                 retriever.release();
             } catch (RuntimeException ex) {
                 // Ignore failures while cleaning up.
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
 

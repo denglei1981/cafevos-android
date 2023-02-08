@@ -1,6 +1,7 @@
 package com.changanford.circle.source
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.common.MyApp
 import com.changanford.common.bean.PostBean
@@ -44,6 +45,10 @@ class RecommendPostSource(private val viewType: Int) : PagingSource<Int, PostDat
         } catch (e: Exception) {
             LoadResult.Error(e)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, PostDataBean>): Int? {
+        return 0
     }
 
 }

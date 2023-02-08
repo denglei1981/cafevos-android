@@ -29,13 +29,13 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
             MineUtils.callPhone(this, mobile)
         }
         var hasFeedbacks: Int = 0
-        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this) {
             it?.let {
                 var userInfoBean: UserInfoBean =
                     Gson().fromJson(it.userJson, UserInfoBean::class.java)
-                hasFeedbacks = userInfoBean?.hasFeedbacks
+                hasFeedbacks = userInfoBean?.hasFeedbacks!!
             }
-        })
+        }
         binding.yijian.setOnClickListener {
             JumpUtils.instans?.jump(
                 when (hasFeedbacks) {

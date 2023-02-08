@@ -39,7 +39,7 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                 it.useWideViewPort = true
                 it.loadWithOverviewMode = true
                 it.databaseEnabled = true
-                it.setAppCacheEnabled(true)
+//                it.setAppCacheEnabled(true)
                 it.loadsImagesAutomatically = true
                 it.setSupportMultipleWindows(false)
                 it.blockNetworkImage = false
@@ -50,7 +50,7 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                 it.defaultFontSize = 16
                 it.minimumFontSize = 12
                 val dir = AgentWebConfig.getCachePath(webView!!.context)
-                it.setAppCachePath(dir)
+//                it.setAppCachePath(dir)
                 if (Build.VERSION.SDK_INT >= 21) {
                     // 通过 file url 加载的 Javascript 读取其他的本地文件 .建议关闭
                     it.allowFileAccessFromFileURLs = false

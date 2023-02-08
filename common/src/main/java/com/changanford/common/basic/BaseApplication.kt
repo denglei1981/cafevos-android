@@ -31,6 +31,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
 import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
+import com.growingio.giokit.GioKit
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -86,7 +87,9 @@ abstract class BaseApplication : MultiDexApplication() {
             .setDebugEnabled(MConstant.isDebug)
         GrowingAutotracker.startWithConfiguration(this, sConfiguration)
         //采集数据开关
-        GrowingAutotracker.get().setDataCollectionEnabled(false)
+        GrowingAutotracker.get().setDataCollectionEnabled(true)
+
+        GioKit.with(this).build()
     }
 
     //友盟初始化

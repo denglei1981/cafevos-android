@@ -314,6 +314,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                         agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                     }
+                    else->{
+
+                    }
                 }
             })
         //绑定手机号

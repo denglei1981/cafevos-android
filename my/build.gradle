@@ -27,7 +27,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
+//        useIR = true
         freeCompilerArgs += [
                 "-Xjvm-default=all",
         ]
@@ -39,7 +39,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion versions_compose
+        kotlinCompilerExtensionVersion versions_compose_ext
         kotlinCompilerVersion = "$kotlin_version"
     }
 }
@@ -52,8 +52,6 @@ dependencies {
 
     implementation(project(":common"))
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
-
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

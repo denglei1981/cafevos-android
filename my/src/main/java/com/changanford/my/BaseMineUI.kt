@@ -71,7 +71,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivit
     }
 
     protected fun showToast(message: String) {
-        if (message?.isNotEmpty()) {
+        if (message?.isNotEmpty() == true) {
             toastShow(message)
         }
     }

@@ -532,22 +532,25 @@ fun OwnerCertification(
                 withStyle(style = ParagraphStyle(lineHeight = 17.sp)) {
                     withStyle(
                         style = SpanStyle(
-                            color = colorResource(R.color.color_33),
+//                            color = colorResource(R.color.color_33),
+                            color = Color(0xFF333333),
                             fontSize = 14.sp
                         )
                     ) {
-                        append(
+//                        append(
                             (carAuthConfVo?.title
-                                ?: stringResource(R.string.str_upgradeYourCarExperience)) + "\n"
-                        )
+//                                ?: stringResource(R.string.str_upgradeYourCarExperience)) + "\n"
+                                ?: "升级您的用车体验") + "\n"
+//                        )
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = colorResource(R.color.color_99),
+//                            color = colorResource(R.color.color_99),
+                            color = Color(0xFF999999),
                             fontSize = 12.sp
                         )
                     ) {
-                        append(carAuthConfVo?.des ?: stringResource(R.string.str_bindYourCar_x))
+//                        append(carAuthConfVo?.des ?: stringResource(R.string.str_bindYourCar_x))
                     }
                 }
             })

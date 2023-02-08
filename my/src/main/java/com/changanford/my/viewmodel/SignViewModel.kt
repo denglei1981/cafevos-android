@@ -415,7 +415,7 @@ class SignViewModel : ViewModel() {
 
     /****------------------****/
     fun getSmsCode(mobile: String) {
-        if (mobile?.isNullOrEmpty()) {
+        if (mobile?.isNullOrEmpty() == true) {
             toastShow("请输入手机号")
             return
         }
@@ -436,7 +436,7 @@ class SignViewModel : ViewModel() {
     }
 
     fun smsCacSmsCode(mobile: String) {
-        if (mobile?.isNullOrEmpty()) {
+        if (mobile?.isNullOrEmpty() == true) {
             toastShow("请输入手机号")
             return
         }

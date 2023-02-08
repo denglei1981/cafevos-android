@@ -179,8 +179,10 @@ class PayAnimatorView : View {
             invalidate()
         })
         mLoadingAnimator?.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationStart(p0: Animator) {
+            }
+
+            override fun onAnimationEnd(p0: Animator) {
                 if (curStatus == STATUS_SUCCESS) {
                     mSuccessAnimator!!.start()
                 } else if (curStatus == STATUS_FAIL) {
@@ -188,8 +190,12 @@ class PayAnimatorView : View {
                 }
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationCancel(p0: Animator) {
+            }
+
+            override fun onAnimationRepeat(p0: Animator) {
+            }
+
         })
         mLoadingAnimator?.setInterpolator(AccelerateDecelerateInterpolator())
         mLoadingAnimator?.setRepeatCount(ValueAnimator.INFINITE)

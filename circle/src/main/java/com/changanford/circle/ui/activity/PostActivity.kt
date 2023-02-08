@@ -911,7 +911,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 ("上传了几张图呢").plus(scount).logE()
                 if (scount == selectList.size) {
                     params["imgUrl"] = upedimgs
-                    params["pics"] = upedimgs[0]?.imgUrl
+                    params["pics"] = upedimgs[0].imgUrl
                     params["isPublish"] = 2
                     JSON.toJSONString(params).logE()
                     addPost(dialog)

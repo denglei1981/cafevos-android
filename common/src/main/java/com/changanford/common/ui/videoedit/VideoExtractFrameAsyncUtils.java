@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import java.io.IOException;
+
 /**
  * ================================================
  * 作    者：顾修忠-guxiuzhong@youku.com/gfj19900401@163.com
@@ -36,7 +38,11 @@ public class VideoExtractFrameAsyncUtils {
         for (int i = 0; i < thumbnailsCount; i++) {
             if (stop) {
                 Log.d("ExtractFrame", "-------ok-stop-stop-->>>>>>>>>");
-                metadataRetriever.release();
+                try {
+                    metadataRetriever.release();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             }
             long time = startPosition + interval * i;
@@ -53,7 +59,11 @@ public class VideoExtractFrameAsyncUtils {
                 sendAPic(path, time);
             }
         }
-        metadataRetriever.release();
+        try {
+            metadataRetriever.release();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

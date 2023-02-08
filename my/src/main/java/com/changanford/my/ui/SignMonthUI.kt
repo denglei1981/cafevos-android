@@ -62,7 +62,7 @@ class SignMonthUI : BaseMineUI<FragmentsignmonthBinding, SignViewModel>() {
             bean?.let {
                 dateList.clear()
                 it.data?.apply {
-                    monthAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt())
+                    monthAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt()!!)
                     binding.signview.apply {
                         smCzz.text = totalGrowth
                         smJf.text = totalIntegral

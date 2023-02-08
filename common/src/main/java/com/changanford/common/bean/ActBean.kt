@@ -398,8 +398,8 @@ data class PostDataBean(
     var addrName: String? = ""
 ) {
     fun getCommentCountAnViewCount(): String {
-        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
-        val viewStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("阅读")
+        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论  ")
+        val viewStr = CountUtils.formatNum(viewsCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
 

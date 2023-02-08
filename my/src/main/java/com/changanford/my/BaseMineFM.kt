@@ -48,7 +48,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     }
 
     protected fun showToast(message: String) {
-        if (message?.isNotEmpty()) {
+        if (message?.isNotEmpty() == true) {
             toastShow(message)
         }
     }

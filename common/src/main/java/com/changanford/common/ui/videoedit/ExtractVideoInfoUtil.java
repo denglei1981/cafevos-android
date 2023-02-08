@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * ================================================
@@ -113,7 +114,11 @@ public class ExtractVideoInfoUtil {
 
     public void release() {
         if (mMetadataRetriever != null) {
-            mMetadataRetriever.release();
+            try {
+                mMetadataRetriever.release();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

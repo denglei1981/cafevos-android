@@ -78,7 +78,7 @@ class AddCardNumTransparentUI : BaseMineUI<UiAddCardNumTransparentBinding, SignV
                 finish()
             } else {
                 bundle?.getString("carSalesInfoId")?.let {
-                    if (bundle?.getBoolean("isUni", false)) {
+                    if (bundle?.getBoolean("isUni", false) == true) {
                         addCarUni(it, inputContent)
                     } else {
                         addCar(carSalesInfoId=it, cardNum=inputContent)

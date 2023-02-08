@@ -81,9 +81,11 @@ class ClearAccountConfirmUI :
                 try {
                     //其他放在最后，设置reasonId标识为其他
                     var bean = it?.last()
-                    bean.reasonId = -1
+                    if (bean != null) {
+                        bean.reasonId = -1
+                    }
                     it.removeAt(it.size - 1)
-                    it.add(bean)
+                    bean?.let { it1 -> it.add(it1) }
                     cancelReasonAdapter.addData(it)
                 } catch (e: Exception) {//如报错，直接加载数据
                     cancelReasonAdapter.addData(it)

@@ -117,7 +117,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
      */
     private fun saveUserInfo(isShowDialog: Boolean, map: HashMap<String, String>) {
         viewModel.saveUniUserInfoV1(map) { response ->
-            if (response?.msg?.isNotEmpty()) {
+            if (response?.msg?.isNotEmpty() == true) {
                 if (isShowDialog) {
                     ConfirmTwoBtnPop(this).apply {
                         contentText.text = response.msg

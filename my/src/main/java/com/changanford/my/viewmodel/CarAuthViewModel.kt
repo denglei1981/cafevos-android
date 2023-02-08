@@ -185,7 +185,7 @@ class CarAuthViewModel : ViewModel() {
     var smsSuccess: MutableLiveData<Boolean> = MutableLiveData()
 
     fun smsCacSmsCode(mobile: String) {
-        if (mobile?.isNullOrEmpty()) {
+        if (mobile?.isNullOrEmpty() == true) {
             toastShow("请输入手机号")
             return
         }

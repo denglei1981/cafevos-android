@@ -436,7 +436,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: List<LocalMedia>) {
                 // 结果回调
-                if (result?.isNotEmpty()) {
+                if (result?.isNotEmpty() == true) {
                     for (media in result) {
                         var path: String = PictureUtil.getFinallyPath(media)
 //                        loadCircleFilePath(path, binding.editIcon)
@@ -455,7 +455,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
     private fun saveHeadIcon() {
         //保存
-        if (headIconPath?.isNotEmpty()) {
+        if (headIconPath?.isNotEmpty() == true) {
             dialog.show()
             viewModel.uploadFile(this, arrayListOf(headIconPath), object : UploadPicCallback {
                 override fun onUploadSuccess(files: ArrayList<String>) {

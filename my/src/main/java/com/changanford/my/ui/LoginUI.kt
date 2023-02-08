@@ -207,6 +207,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                         RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
                         finish()
                     }
+                    else -> {}
                 }
             })
 

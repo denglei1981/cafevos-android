@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.util.FileUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.adapter.EditvideoPicAdapter
 import com.changanford.circle.bean.PicCutBean

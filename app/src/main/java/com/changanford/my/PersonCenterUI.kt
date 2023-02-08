@@ -142,9 +142,9 @@ class PersonCenterUI : BaseMineUI<UiPersonCenterBinding, SignViewModel>() {
                     binding.nickName.text = user.nickname
                     binding.userGrade.text = user.ext?.growSeriesName
                     binding.followLayout.apply {
-                        followNum.text = "${MineUtils.num(user.count?.follows.toLong())}"
-                        fansNum.text = "${MineUtils.num(user.count?.fans.toLong())}"
-                        goodNum.text = "${MineUtils.num(user.count?.likeds.toLong())}"
+                        followNum.text = user.count?.follows?.let { it1 -> MineUtils.num(it1.toLong()) }
+                        fansNum.text = user.count?.fans?.let { it1 -> MineUtils.num(it1.toLong()) }
+                        goodNum.text = user.count?.likeds?.let { it1 -> MineUtils.num(it1.toLong()) }
 
                         followNum.setOnClickListener {
                             mapOf(

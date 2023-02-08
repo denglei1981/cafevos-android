@@ -205,7 +205,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
         var params = binding.carTopViewPager.layoutParams
         var service = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         var outMetrics = DisplayMetrics()
-        service?.defaultDisplay.getRealMetrics(outMetrics)
+        service?.defaultDisplay?.getRealMetrics(outMetrics)
         params.height = outMetrics.heightPixels - DeviceUtils.getNavigationBarHeight()
         binding.carTopViewPager.layoutParams = params
     }

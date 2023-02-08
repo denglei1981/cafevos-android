@@ -412,11 +412,13 @@ private fun TopUI() {
         Text(buildAnnotatedString {
             withStyle(style = ParagraphStyle(lineHeight = 20.sp)) {
                 withStyle(style = SpanStyle(color = Color.Transparent, fontSize = 15.sp)) {
-                    append(stringResource(R.string.str_vehicleFailure) + "\t")
+//                    append(stringResource(R.string.str_vehicleFailure) + "\t")
+                    append("车辆故障\t")
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = colorResource(R.color.color_2d),
+//                        color = colorResource(R.color.color_2d),
+                        color = Color(0xFF2D2D2D),
                         fontSize = 15.sp
                     )
                 ) {
@@ -424,7 +426,8 @@ private fun TopUI() {
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = colorResource(R.color.color_E1A743),
+//                        color = colorResource(R.color.color_E1A743),
+                        color = Color(0xFFE1A743),
                         fontSize = 10.sp
                     )
                 ) {

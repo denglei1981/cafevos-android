@@ -89,6 +89,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                         showToast("绑定成功")
                         finish()
                     }
+                    else -> {}
                 }
             })
         binding.btnNoBind.setOnClickListener {
