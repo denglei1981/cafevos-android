@@ -69,7 +69,7 @@ abstract class BaseApplication : MultiDexApplication() {
             initCloudChannel(this)
             initshare()
             initUmeng()
-//            initGio()
+            initGio()
         }
         initRetrofitClientConfig()
     }

@@ -1047,6 +1047,12 @@ object GIOUtils {
         trackCustomEvent("fy_carClick", map)
     }
 
+    //用户勾选隐私协议
+    fun privacyClick(){
+        val map = HashMap<String, String>()
+        trackCustomEvent("fy_privacyClick", map)
+    }
+
     private fun String?.gioEmpty(): String {
         return if (this.isNullOrEmpty()) {
             "无"

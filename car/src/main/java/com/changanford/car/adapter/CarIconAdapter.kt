@@ -15,8 +15,10 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
 
 
-class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon){
-    private val dp20 by lazy { ScreenUtils.dp2px(context,20f) }
+class CarIconAdapter(val activity: Activity) :
+    BaseQuickAdapter<NewCarTagBean, BaseDataBindingHolder<ItemCarIconBinding>>(R.layout.item_car_icon) {
+    private val dp20 by lazy { ScreenUtils.dp2px(context, 20f) }
+
     //当recarDisScale设置的为屏幕的宽度比例时 即 控件宽度=屏幕有效宽度（总宽度-控件之间的间距）*recarDisScale
 //    private val imgWidth by lazy {
 //        MConstant.configBean?.recarDisScale?.let {widthMultiple ->
@@ -26,28 +28,34 @@ class CarIconAdapter(val activity:Activity): BaseQuickAdapter<NewCarTagBean, Bas
 //        }
 //    }
     private val imgWidth by lazy {
-        MConstant.configBean?.recarDisScale?.let {number ->
-            val widthMultiple=if(number!=0f)number else 2f
-            val multiple:Int= widthMultiple.toInt()
-            val spacing=(multiple+1)*dp20
-            ((ScreenUtils.getScreenWidth(context)-spacing)/widthMultiple).toInt()
+        MConstant.configBean?.recarDisScale?.let { number ->
+            val widthMultiple = if (number != 0f) number else 2f
+            val multiple: Int = widthMultiple.toInt()
+            val spacing = (multiple + 1) * dp20
+            ((ScreenUtils.getScreenWidth(context) - spacing) / widthMultiple).toInt()
         }
     }
+
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemCarIconBinding>, item: NewCarTagBean) {
         holder.dataBinding?.apply {
-            val position=holder.absoluteAdapterPosition
+            val position = holder.absoluteAdapterPosition
 //            imgCover.load(item.carModelPic)
 //            WCommonUtil.setMargin(layoutRoot,if(0==position)dp20 else 0,0,dp20,0)
-            layoutRoot.setPadding(if(0==position)dp20 else 0,0,dp20,0)
-            GlideUtils.glideLoadWidth(activity,item.carModelPic,imgCover,imgWidth?:ScreenUtils.getScreenWidth(context)/2)
-            model=item
+            layoutRoot.setPadding(if (0 == position) dp20 else 0, 0, dp20, 0)
+            GlideUtils.glideLoadWidth(
+                activity,
+                item.carModelPic,
+                imgCover,
+                imgWidth ?: ScreenUtils.getScreenWidth(context) / 2
+            )
+            model = item
             executePendingBindings()
             root.setOnClickListener {
                 WBuriedUtil.clickCarEnjoy(item.spuName)
-                GIOUtils.carClick(item.spuName,item.spuCode)
+                GIOUtils.carClick(item.spuName, item.carLbName)
                 GIOUtils.homePageClick("推荐车型", (position + 1).toString(), item.spuName)
-                JumpUtils.instans?.jump(item.jumpDataType,item.jumpDataValue)
+                JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
             }
         }
     }

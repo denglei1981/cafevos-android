@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.SurfaceHolder
 import android.view.View
+import android.widget.CompoundButton
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
@@ -19,6 +20,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -224,6 +226,11 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.back.setOnClickListener {
             back()
         }
+        binding.cbEx.setOnCheckedChangeListener { _, p1 ->
+            if (p1) {
+                GIOUtils.privacyClick()
+            }
+        }
 //        viewModel.downLoginBgUrl()
     }
 
@@ -239,61 +246,61 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     }
 
-   private fun playInit() {
-       mPlayer.let { player ->
-           binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
-               override fun surfaceCreated(holder: SurfaceHolder) {
-               }
+    private fun playInit() {
+        mPlayer.let { player ->
+            binding.loginVideo.holder.addCallback(object : SurfaceHolder.Callback {
+                override fun surfaceCreated(holder: SurfaceHolder) {
+                }
 
-               override fun surfaceChanged(
-                   holder: SurfaceHolder,
-                   format: Int,
-                   width: Int,
-                   height: Int
-               ) {
-                   player.setDisplay(holder)
-               }
+                override fun surfaceChanged(
+                    holder: SurfaceHolder,
+                    format: Int,
+                    width: Int,
+                    height: Int
+                ) {
+                    player.setDisplay(holder)
+                }
 
-               override fun surfaceDestroyed(holder: SurfaceHolder) {
-               }
+                override fun surfaceDestroyed(holder: SurfaceHolder) {
+                }
 
-           })
-           player.setOnPreparedListener {
-               try {
-                   if(!player.isPlaying){
-                       player.setDisplay(binding.loginVideo.holder)
-                       player.start()
-                   }
-               }catch (e :Exception){
-                   binding.loginVideo.visibility = View.GONE
-                   binding.imBg.visibility = View.VISIBLE
-               }
-           }
-           player.setOnErrorListener { mp, what, extra ->
-               binding.loginVideo.visibility = View.GONE
-               binding.imBg.visibility = View.VISIBLE
-               false
-           }
-       }
+            })
+            player.setOnPreparedListener {
+                try {
+                    if (!player.isPlaying) {
+                        player.setDisplay(binding.loginVideo.holder)
+                        player.start()
+                    }
+                } catch (e: Exception) {
+                    binding.loginVideo.visibility = View.GONE
+                    binding.imBg.visibility = View.VISIBLE
+                }
+            }
+            player.setOnErrorListener { mp, what, extra ->
+                binding.loginVideo.visibility = View.GONE
+                binding.imBg.visibility = View.VISIBLE
+                false
+            }
+        }
     }
 
-   private fun play(videoUrl: String) {
-       "----play 1".logE()
+    private fun play(videoUrl: String) {
+        "----play 1".logE()
         videoUrl.logE()
         binding.loginVideo.visibility = View.VISIBLE
-       if (isloaded){
-           mPlayer.start()
-       }else {
-           mPlayer.reset()
-           mPlayer.setDataSource(videoUrl)
-           mPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
-           mPlayer.prepareAsync()
-           mPlayer.isLooping = true
-           isloaded = true
-       }
+        if (isloaded) {
+            mPlayer.start()
+        } else {
+            mPlayer.reset()
+            mPlayer.setDataSource(videoUrl)
+            mPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+            mPlayer.prepareAsync()
+            mPlayer.isLooping = true
+            isloaded = true
+        }
         binding.imBg.visibility = View.GONE
-       "----play 2".logE()
-   }
+        "----play 2".logE()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -359,7 +366,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 if (it.isPlaying)
                     it.stop()
                 it.release()
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -397,9 +404,9 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 //由后台切换到前台
                 isForeground = true
             }
-            if (isloaded){
+            if (isloaded) {
                 viewModel.loginBgPath.value?.let { play(it) }
-            }else {
+            } else {
                 viewModel.downLoginBgUrl()
             }
 //            mPlayer.start()

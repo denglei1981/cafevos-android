@@ -69,7 +69,7 @@ fun ImageView.load(url: String?, drawable: Int? = R.mipmap.image_h_one_default) 
             .fitCenter()
             .into(this)
     }
-    if (BuildConfig.DEBUG) string?.logE()
+//    if (BuildConfig.DEBUG) string?.logE()
 }
 
 fun ImageView.load(string: Int?, drawable: Int? = null) {
@@ -99,10 +99,10 @@ object GlideUtils {
         else if (!TextUtils.isEmpty(MConstant.imgcdn)) MConstant.imgcdn.plus(preUrl)
         else MConstant.defaultImgCdn.plus(preUrl)
 
-    fun dealMP4Url(url: String?):String{
-        return if(url?.endsWith(".mp4") == true){
+    fun dealMP4Url(url: String?): String {
+        return if (url?.endsWith(".mp4") == true) {
             "${handleImgUrl(url)}?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast"
-        }else{
+        } else {
             handleImgUrl(url).toString()
         }
     }
@@ -294,7 +294,7 @@ object GlideUtils {
             errorDefaultRes?.let {
 
                 Glide.with(imageView).load(url?.let { it1 -> dealWithMuchImage(it1) })
-                   .preload()
+                    .preload()
 
                 Glide.with(imageView)
                     .load(url?.let { it1 -> dealWithMuchImage(it1) })
@@ -359,7 +359,7 @@ object GlideUtils {
             .into(this)
 
 
-        Log.e("compressImageview", dealWithNineMuchImage(handleImgUrl(url)))
+//        Log.e("compressImageview", dealWithNineMuchImage(handleImgUrl(url)))
     }
 
     /**

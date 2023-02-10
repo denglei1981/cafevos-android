@@ -114,6 +114,8 @@ class CircleRecommendV3Fragment :
         super.observe()
         lifecycleScope.launch {
             viewModel.pager.collect { it ->
+                binding.ryCircle.visibility = View.VISIBLE
+                binding.topView.visibility = View.GONE
                 adapter.submitData(it.map {
                     ItemCircleRecommendView(
                         it,

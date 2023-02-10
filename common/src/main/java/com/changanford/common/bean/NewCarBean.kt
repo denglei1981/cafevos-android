@@ -88,6 +88,7 @@ data class NewCarTagBean(
     val spuId: String?=null,
     var spuCode: String?=null,//车型编码
     var spuName: String?=null,//车型编码
+    var carLbName: String?=null,//车型编码
     var carModelPic: String?=null,//车型名称
     var url: String?=null, override val itemType: Int=0,
 ):MultiItemEntity
