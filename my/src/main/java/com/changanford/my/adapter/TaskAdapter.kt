@@ -72,8 +72,13 @@ class TaskContentAdapter() :
             } else {
                 it.taskFinish.text = "去完成"
                 it.taskFinish.isSelected = true
-                it.taskFinish.setOnClickListener(View.OnClickListener {
-                    GIOUtils.taskCenterCtaClick("去完成", item.taskIcon, item.taskName)
+                it.taskFinish.setOnClickListener {
+                    GIOUtils.taskCenterCtaClick(
+                        "去完成",
+                        item.taskScore.toString(),
+                        item.taskName,
+                        item.actionCode
+                    )
                     if (item.jumpDataType == 14) {
                         try {
                             LiveDataBus.get()
@@ -88,7 +93,7 @@ class TaskContentAdapter() :
                             .postValue(false)
                         JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
                     }
-                })
+                }
                 it.taskFinish.setTextColor(Color.parseColor("#1B3B89"))
             }
         }

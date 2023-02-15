@@ -111,7 +111,7 @@ class ItemCircleRecommendView(
                     item.postsId.toString(),
                     item.title,
                     item.circleId,
-                    item.circleName
+                    item.circle?.name
                 )
                 false
             }
@@ -285,7 +285,7 @@ class ItemCircleRecommendView(
                                             GIOUtils.joinCircleClick(
                                                 "社区-广场",
                                                 item.circleId,
-                                                item.circleName
+                                                item.circle?.name
                                             )
                                         }
                                     })
@@ -337,7 +337,7 @@ class ItemCircleRecommendView(
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
                         } else {
                             item.isLike = 0
@@ -354,7 +354,7 @@ class ItemCircleRecommendView(
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
 //                            "取消点赞".toast()
                         }

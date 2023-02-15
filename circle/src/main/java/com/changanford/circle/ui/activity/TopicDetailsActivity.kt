@@ -75,7 +75,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     override fun initView() {
         initMagicIndicator()
-
+        GioPageConstant.topicDetailTabName = "推荐"
         topicId = intent.getStringExtra("topicId").toString()
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         circleName = intent.getStringExtra("circleName")

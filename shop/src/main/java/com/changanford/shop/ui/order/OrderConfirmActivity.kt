@@ -243,7 +243,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             productNumber.toString(),
             ifCoupon,
             couponsItem?.couponId,
-            couponsItem?.couponMoney,
+            WCommonUtil.getRMB(couponsItem?.discountsFb.toString(), ""),
             couponsItem?.couponName
         )
     }

@@ -357,7 +357,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
 
         })
-
-
     }
+
 }

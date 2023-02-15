@@ -107,7 +107,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     item.postsId.toString(),
                     item.title,
                     item.circleId,
-                    item.circleName
+                    item.circle?.name
                 )
                 false
             }
@@ -282,7 +282,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                             GIOUtils.joinCircleClick(
                                                 "社区-广场",
                                                 item.circleId,
-                                                item.circleName
+                                                item.circle?.name
                                             )
                                         }
                                     })
@@ -334,7 +334,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
                         } else {
                             item.isLike = 0
@@ -351,7 +351,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
 //                            "取消点赞".toast()
                         }

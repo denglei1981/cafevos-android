@@ -127,6 +127,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            GioPageConstant.prePageType = GioPageConstant.mainTabName
+            GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
             when (destination.id) {
                 R.id.carFragment -> {
                     GioPageConstant.mainTabName = "爱车页"
@@ -201,6 +203,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                 }
             }
+            LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE)
+                .postValue(GioPageConstant.mainTabName)
             StatusBarUtil.setLightStatusBar(this, destination.id != R.id.carFragment)
             GIOUtils.homePageView()
         }
@@ -451,7 +455,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         })
         viewModel.userInfo.observe(this) {
             initGioUserId()
-            GIOUtils.setLoginUserAttributes(it)
+//            GIOUtils.setLoginUserAttributes(it)
         }
     }
 

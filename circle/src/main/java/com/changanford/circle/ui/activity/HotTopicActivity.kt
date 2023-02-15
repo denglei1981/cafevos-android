@@ -34,6 +34,14 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     private var section = 0
     private var circleId: String? = null
     private var circleName: String? = null
+    private var topicCheck = false
+
+    override fun onResume() {
+        super.onResume()
+        if (type == 0) {
+            GIOUtils.topicListPageView(topicCheck)
+        }
+    }
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
@@ -45,7 +53,6 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
                 0 -> {
                     tvTitle.text = "热门话题"
                     section = 0
-                    GIOUtils.topicListPageView()
                 }
                 1 -> {
                     tvTitle.text = "圈内话题"
@@ -74,6 +81,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 bundle.putString("circleName", circleName)
             }
+            topicCheck = true
             when (type) {
                 0 -> {
                     GioPageConstant.topicEntrance = "热门话题列表页"

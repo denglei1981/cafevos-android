@@ -226,11 +226,6 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.back.setOnClickListener {
             back()
         }
-        binding.cbEx.setOnCheckedChangeListener { _, p1 ->
-            if (p1) {
-                GIOUtils.privacyClick()
-            }
-        }
 //        viewModel.downLoginBgUrl()
     }
 

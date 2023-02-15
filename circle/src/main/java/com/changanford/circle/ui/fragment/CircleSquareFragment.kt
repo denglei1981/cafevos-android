@@ -11,6 +11,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
@@ -78,6 +79,11 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
             binding.refreshLayout.finishRefresh()
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        GioPageConstant.topicEntrance = ""
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

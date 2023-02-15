@@ -171,7 +171,7 @@ class CircleMainBottomAdapter(context: Context) :
                                     item.postsId.toString(),
                                     item.title,
                                     item.circleId,
-                                    item.circleName
+                                    item.circle?.name
                                 )
                             }
                         } else {
@@ -187,7 +187,7 @@ class CircleMainBottomAdapter(context: Context) :
                                     item.postsId.toString(),
                                     item.title,
                                     item.circleId,
-                                    item.circleName
+                                    item.circle?.name
                                 )
                             }
                         }

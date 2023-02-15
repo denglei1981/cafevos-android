@@ -94,6 +94,9 @@ object HomeShareModel {
                     0 -> {
                         GioPageConstant.infoShareType = "微信好友"
                         shareto = "2"
+                        if (GioPageConstant.isInInfoActivity) {
+                            GIOUtils.infoShareSuccess()
+                        }
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
                         //                                            "微信好友分享",
@@ -127,6 +130,9 @@ object HomeShareModel {
                     1 -> {
                         shareto = "1"
                         GioPageConstant.infoShareType = "朋友圈"
+                        if (GioPageConstant.isInInfoActivity) {
+                            GIOUtils.infoShareSuccess()
+                        }
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
                         //                                            "微信朋友圈分享",
@@ -159,6 +165,9 @@ object HomeShareModel {
                     2 -> {
                         shareto = "4"
                         GioPageConstant.infoShareType = "微博"
+                        if (GioPageConstant.isInInfoActivity) {
+                            GIOUtils.infoShareSuccess()
+                        }
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.SINA)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -192,6 +201,9 @@ object HomeShareModel {
                     3 -> {
                         shareto = "3"
                         GioPageConstant.infoShareType = "QQ好友"
+                        if (GioPageConstant.isInInfoActivity) {
+                            GIOUtils.infoShareSuccess()
+                        }
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQ)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -225,6 +237,9 @@ object HomeShareModel {
                     4 -> {
                         shareto = "6"
                         GioPageConstant.infoShareType = "QQ空间"
+                        if (GioPageConstant.isInInfoActivity) {
+                            GIOUtils.infoShareSuccess()
+                        }
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQZOOM)
                         //                                        SPUtils.saveBuried(
                         //                                            "share",
@@ -331,9 +346,6 @@ object HomeShareModel {
             }
         if (is_good != null) {
             shareManager.shareDialog.goodJJ(is_good)
-        }
-        if (GioPageConstant.isInInfoActivity) {
-            GIOUtils.infoShareSuccess()
         }
         shareManager.open()
     }

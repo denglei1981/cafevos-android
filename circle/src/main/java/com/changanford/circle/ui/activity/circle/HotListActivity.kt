@@ -24,8 +24,10 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.wutil.ScreenUtils
+import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -44,6 +46,7 @@ import java.net.URLDecoder
 @Route(path = ARouterCirclePath.HotListActivity)
 class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleViewModel>() {
     private var typeName: String = ""
+    private var topName: String? = null
 
     companion object {
         fun start(topId: Int = -1) {
@@ -57,6 +60,13 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
         binding.run {
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
             ivBack.setOnClickListener { finish() }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (GioPageConstant.hotCircleEntrance == "圈子详情页") {
+            GIOUtils.hotCircleDetailPageView(topName)
         }
     }
 
@@ -76,6 +86,7 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
                         )
                     }
                 if (index > 0) binding.viewPager.currentItem = index
+                topName = it[index].topName
                 GIOUtils.hotCircleDetailPageView(it[index].topName)
             }
 
@@ -112,6 +123,7 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
             override fun onPageSelected(position: Int) {
                 val list = viewModel.hotTypesData.value
                 list?.let {
+                    topName = it[position].topName
                     GIOUtils.hotCircleDetailPageView(it[position].topName)
                 }
             }

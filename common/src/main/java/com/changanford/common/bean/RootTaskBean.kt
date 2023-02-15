@@ -25,6 +25,7 @@ data class ItemTaskBean(
     val taskIsDone: Int,
     val taskIsOpen: Int,
     val taskName: String,
+    val actionCode: String,
     val taskScore: Int,
     val taskSort: Int,
     val taskType: Int,

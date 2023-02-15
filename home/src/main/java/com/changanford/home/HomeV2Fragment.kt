@@ -601,5 +601,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     viewModel.isGetIntegral()
                 }
             }
+        LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE, String::class.java).observe(this) {
+            if (it == "发现页") {
+
+            }
+        }
     }
 }

@@ -117,7 +117,7 @@ class CircleRecommendV2Fragment :
                 adapter.addData(it.dataList)
                 adapter.loadMoreModule.loadMoreComplete()
             }
-            if (it.dataList.size != 20) {
+            if (it.dataList.size == 0) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
         })

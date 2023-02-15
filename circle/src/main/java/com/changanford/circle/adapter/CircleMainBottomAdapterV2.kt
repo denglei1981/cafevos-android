@@ -309,7 +309,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
                         } else {
                             item.isLike = 0
@@ -326,7 +326,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                                 item.postsId.toString(),
                                 item.title,
                                 item.circleId,
-                                item.circleName
+                                item.circle?.name
                             )
 //                            "取消点赞".toast()
                         }
@@ -348,6 +348,10 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         item: PostDataBean
     ) {
         val activity = BaseApplication.curActivity
+
+        val currentPageName = if (isTopic) {
+            "话题详情-${GioPageConstant.topicDetailTabName}"
+        } else "圈子详情-${GioPageConstant.circleDetailTabName}"
 
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
@@ -373,6 +377,17 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             binding.tvAllComment.visibility = View.VISIBLE
                             item.commentCount += 1
                             binding.tvAllComment.text = "查看全部${item.commentCount}条评论"
+
+                            GIOUtils.commentSuccessPost(
+                                currentPageName,
+                                item.topicId,
+                                item.topicName,
+                                item.authorBaseVo?.authorId,
+                                item.postsId.toString(),
+                                item.title,
+                                item.circleId,
+                                item.circle?.name
+                            )
                         }
 
                 }

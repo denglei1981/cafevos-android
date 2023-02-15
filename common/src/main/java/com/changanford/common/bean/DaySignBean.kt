@@ -13,6 +13,7 @@ package com.changanford.common.bean
 data class DaySignBean(
     val multiple: String,
     val actionId: String,
+    val actionCode: String,
     val actionName: String,
     val actionTimes: Int,
     val cumulation: Int,

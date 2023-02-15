@@ -297,5 +297,7 @@ object LiveDataBusKey {
     const val GET_USER_APPROVE_CAR = "getUserApproveCar"
 
     const val FORD_ALBUM_RESULT = "fordAlbumResult"
+
+    const val MAIN_TAB_CHANGE = "mainTabChange"
 }
 
