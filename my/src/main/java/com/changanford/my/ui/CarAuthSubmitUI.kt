@@ -17,6 +17,9 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.request.GetRequestResult
+import com.changanford.common.util.request.addRecord
+import com.changanford.common.util.request.getBizCode
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.styleAuthCheck
@@ -60,6 +63,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
     private var isRefresh: Boolean = false
     var pathMap = HashMap<Int, OcrRequestBean>() // 保存上传图片地址
     var imgType: Int = 0 // 1身份证 4 行驶证  5发票  7 驾驶证
+    private var ruleId = ""
 
     val uploadDialog: LoadDialog by lazy {
         LoadDialog(this)
@@ -152,6 +156,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         })
         intent.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
             carItemBean = it as CarItemBean
+        }
+        binding.authCheckbox.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                getBizCode(this, MConstant.agreementCar, object : GetRequestResult {
+                    override fun success(data: Any) {
+                        ruleId = data.toString()
+                    }
+
+                })
+            }
         }
 //        initClick()
     }
@@ -563,16 +577,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         }
 
         viewModel.ocr(pathMap[imgType]) {
-            it.onSuccess { ocrBean->
+            it.onSuccess { ocrBean ->
                 when (imgType) {
                     1 -> {
-                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
-                            it.data?.let {s->
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
+                            it.data?.let { s ->
                                 pathMap.put(imgType, OcrRequestBean(s.cmcUrl, "ID_CARD", s.cmcUrl))
                             }
-                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()) {
                                 showToast("上传失败，请重新上传")
-                            }else{
+                            } else {
                                 showToast("上传成功")
                                 showIdcard(ocrBean)
                             }
@@ -581,16 +595,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     }
 
                     7 -> {
-                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
-                            it.data?.let {s->
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
+                            it.data?.let { s ->
                                 pathMap.put(
                                     imgType,
                                     OcrRequestBean(s.cmcUrl, "DRIVER_LICENCE", s.cmcUrl)
                                 )
                             }
-                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()) {
                                 showToast("上传失败，请重新上传")
-                            }else{
+                            } else {
                                 showToast("上传成功")
                                 showIdcard(ocrBean)
                             }
@@ -598,16 +612,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         }
                     }
                     4 -> {
-                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
-                            it.data?.let {s->
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
+                            it.data?.let { s ->
                                 pathMap.put(
                                     imgType,
                                     OcrRequestBean(s.cmcUrl, "WALK_LICENCE", s.cmcUrl)
                                 )
                             }
-                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()) {
                                 showToast("上传失败，请重新上传")
-                            }else{
+                            } else {
                                 showToast("上传成功")
                                 ocrBean?.plate_num?.let {
                                     body["plateNum"] = it
@@ -618,16 +632,16 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         }
                     }
                     5 -> {
-                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}",imgType){
-                            it.data?.let {s->
+                        viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
+                            it.data?.let { s ->
                                 pathMap.put(
                                     imgType,
                                     OcrRequestBean(s.cmcUrl, "CAR_INVOICE", s.cmcUrl)
                                 )
                             }
-                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()){
+                            if (it.data == null || it.data?.cmcUrl.isNullOrEmpty()) {
                                 showToast("上传失败，请重新上传")
-                            }else{
+                            } else {
                                 showToast("上传成功")
                                 ocrBean?.plate_num?.let {
                                     body["plateNum"] = it
@@ -878,6 +892,9 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
 
         viewModel.submitCarAuth(body) {
             it.onSuccess {
+                if (ruleId.isNotEmpty()) {
+                    addRecord(ruleId)
+                }
                 //审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:解绑
                 it?.let {
                     when (it.authStatus) {

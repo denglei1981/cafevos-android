@@ -219,4 +219,16 @@ object MConstant {
     var isCarOwner = 0
 
     var deviceWidth = 0
+
+    //个人隐私协议code
+    const val agreementPrivacy = "user_agreement_privacy"
+
+    //会员服务协议code
+    const val agreementRegister = "user_agreement_register"
+
+    //车主认证code
+    const val agreementCar = "user_agreement_register"
+
+    //商场协议code
+    const val agreementShop = "user_agreement_mall"
 }

@@ -546,9 +546,12 @@ object WCommonUtil {
      * 将福币转换为人民币 1元=100福币
      * */
     fun getRMB(fb: String?, unit: String? = "¥"): String {
+        if (fb.isNullOrEmpty()) {
+            return "0"
+        }
         var rmbPrice = "0"
         if (!TextUtils.isEmpty(fb)) {
-            val fbToFloat = fb!!.toFloat()
+            val fbToFloat = fb.toFloat()
             val remainder = fbToFloat % 100
             rmbPrice = if (remainder > 0) "${fbToFloat / 100}"
             else "${fb.toInt() / 100}"

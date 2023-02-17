@@ -1,5 +1,7 @@
 package com.changanford.common.bean
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
 /**
  *  文件名：MessageBean
  *  创建者: zcy
@@ -13,7 +15,7 @@ data class MessageBean(
     val title: String,
     val des: String,
     val messageStatus: Int = 0,
-    val messageNum:Int = 0
+    val messageNum: Int = 0
 )
 
 //消息类型 1 系统消息， 2 互动消息，3 交易消息
@@ -27,9 +29,9 @@ data class MessageStatusBean(
     val tradeStatus: Int,
     val tradeTitle: Any,
     //新增
-    val unReadSystemMessageNum:Int,//0,
-    val unReadHudongNum:Int,//0,
-    val unReadTradeNum:Int,//0
+    val unReadSystemMessageNum: Int,//0,
+    val unReadHudongNum: Int,//0,
+    val unReadTradeNum: Int,//0
 )
 
 
@@ -49,8 +51,9 @@ data class MessageItemData(
     val messageTitle: String,
     val sendTime: Long,
     var status: Int,//消息状态 0 未读取， 1 已读取
-    val userMessageId: Int
-)
+    val userMessageId: Int,
+    override var itemType: Int = 0
+) : MultiItemEntity
 
 class MessageExtend(
 )

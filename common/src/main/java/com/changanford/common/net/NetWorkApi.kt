@@ -1417,4 +1417,18 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<FordPhotosBean>
+
+    //获取协议id
+    @POST("/con/agreementHub/bizCodes")
+    suspend fun bizCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<bizCodeBean>
+
+    //协议记录提交
+    @POST("/con/agreementHub/addRecords")
+    suspend fun addRecord(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

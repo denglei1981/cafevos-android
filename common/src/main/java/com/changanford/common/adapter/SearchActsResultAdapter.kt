@@ -14,6 +14,7 @@ import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.actTypeText
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 
@@ -47,6 +48,7 @@ class SearchActsResultAdapter :
         holder.dataBinding?.let {
             it.ivActs.loadCompress(item.coverImg)
             it.root.setOnClickListener {
+                GIOUtils.homePageClick("活动信息流", (holder.position + 1).toString(), item.title)
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
                 if (item.outChain == "YES") {
                     logHistory(item.wonderfulId)

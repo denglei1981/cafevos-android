@@ -14,6 +14,7 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.gio.trackCustomEvent
+import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.util.toast.ToastUtils.showToast
 import com.changanford.common.utilext.GlideUtils
@@ -45,6 +46,7 @@ class SignViewModel : ViewModel() {
     var _feedBackBean: MutableLiveData<FeedbackQBean> = MutableLiveData()
     var _lables: MutableLiveData<ArrayList<FeedbackTagsItem>> = MutableLiveData()
     var _feedbackMineListBean: MutableLiveData<FeedbackMineListBean> = MutableLiveData()
+    var ruleId = ""
 
     /**
      * 反馈意见内容列表
@@ -1018,6 +1020,9 @@ class SignViewModel : ViewModel() {
             trackMap["fy_signInChannel_var"] = signInChannel
             if (signInChannel.isNotEmpty()) {
                 trackCustomEvent("fy_signInSuccess", trackMap)
+            }
+            if (ruleId.isNotEmpty()) {
+                addRecord(ruleId)
             }
             when {
                 it.phone.isNullOrEmpty() -> {

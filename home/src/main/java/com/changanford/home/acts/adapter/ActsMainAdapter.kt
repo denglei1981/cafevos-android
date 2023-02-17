@@ -100,13 +100,14 @@ class ActsMainAdapter(
                 }
                 binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabReselected(tab: TabLayout.Tab?) {
+                        val title = tab?.customView?.findViewById<TextView>(R.id.text_view)?.text
                         when (tab?.position) {
                             0 -> {
                                 if (unitPop != null && unitPop!!.isShowing) {
                                     unitPop!!.dismiss()
                                 } else {
                                     getEnum(binding, shaixuanList[0])
-                                    GIOUtils.homePageClick("筛选区", 1.toString(), shaixuanList[0])
+                                    GIOUtils.homePageClick("筛选区", 1.toString(), title.toString())
                                 }
                             }
                             1 -> {
@@ -114,7 +115,7 @@ class ActsMainAdapter(
                                     allActsPop!!.dismiss()
                                 } else {
                                     getEnum(binding, shaixuanList[1])
-                                    GIOUtils.homePageClick("筛选区", 2.toString(), shaixuanList[1])
+                                    GIOUtils.homePageClick("筛选区", 2.toString(), title.toString())
                                 }
                             }
                         }
@@ -124,12 +125,15 @@ class ActsMainAdapter(
                     }
 
                     override fun onTabSelected(tab: TabLayout.Tab?) {
+                        val title = tab?.customView?.findViewById<TextView>(R.id.text_view)?.text
                         when (tab?.position) {
                             0 -> {
                                 getEnum(binding, shaixuanList[0])
+                                GIOUtils.homePageClick("筛选区", 1.toString(), title.toString())
                             }
                             1 -> {
                                 getEnum(binding, shaixuanList[1])
+                                GIOUtils.homePageClick("筛选区", 2.toString(), title.toString())
                             }
                         }
                     }

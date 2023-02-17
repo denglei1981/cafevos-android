@@ -148,19 +148,11 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                                     position = index
                                 }
                             }
-                            if (itemData.id == "0") {
-                                GIOUtils.homePageClick(
-                                    "圈子分类区",
-                                    0.toString(),
-                                    itemData.name
-                                )
-                            } else {
-                                GIOUtils.homePageClick(
-                                    "圈子分类区",
-                                    (position + 1).toString(),
-                                    itemData.name
-                                )
-                            }
+                            GIOUtils.homePageClick(
+                                "圈子分类区",
+                                (position + 1).toString(),
+                                itemData.name
+                            )
                         }) {
                         Image(
                             painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(

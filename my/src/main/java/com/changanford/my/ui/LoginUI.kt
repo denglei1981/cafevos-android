@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import android.widget.CompoundButton
@@ -21,6 +22,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.request.GetRequestResult
+import com.changanford.common.util.request.getBizCode
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -37,6 +40,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
+import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
@@ -123,6 +127,18 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             smsText,
             checkBox,
             Function3<CharSequence, CharSequence, Boolean, Boolean> { t1, t2, t3 ->
+                if (t3 == true) {
+                    getBizCode(
+                        this,
+                        MConstant.agreementPrivacy + "," + MConstant.agreementRegister,
+                        object :
+                            GetRequestResult {
+                            override fun success(data: Any) {
+                                viewModel.ruleId = data.toString()
+                            }
+
+                        })
+                }
                 t1.isNotEmpty() && t2.isNotEmpty() && t3
             })
             .subscribe {

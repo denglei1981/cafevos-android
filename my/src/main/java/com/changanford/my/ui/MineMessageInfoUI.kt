@@ -3,12 +3,19 @@ package com.changanford.my.ui
 import android.content.Context
 import android.graphics.Color
 import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.MessageItemData
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
@@ -18,14 +25,18 @@ import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.request.followOrCancelFollow
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMineMessageInfoBinding
+import com.changanford.my.databinding.ItemMineMessageInteractionBinding
 import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.xiaomi.push.it
 import me.leolin.shortcutbadger.ShortcutBadger
 
 /**
@@ -37,7 +48,7 @@ import me.leolin.shortcutbadger.ShortcutBadger
  */
 @Route(path = ARouterMyPath.MineMessageInfoUI)
 class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>() {
-    private var adapter : MessageAdapter? = null
+    private var adapter: MessageAdapter? = null
 
     var messageType: Int = 2 //消息类型 1 系统消息， 2 互动消息，3 交易消息
     var messageStatus: Int = 1 // 默认有未读消息
@@ -48,12 +59,12 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
             viewModel.changAllMessage("${adapter?.data?.get(it)?.userMessageId}")
             adapter?.data?.get(it)?.status = 1
             adapter?.notifyItemChanged(it)
-        }){id,pos->
+        }) { id, pos ->
             viewModel.delUserMessage(id) {
                 it.onSuccess {
                     adapter?.data?.removeAt(pos)
                     adapter?.notifyItemRemoved(pos)
-                    adapter?.notifyItemRangeChanged(0,adapter?.itemCount?:0)
+                    adapter?.notifyItemRangeChanged(0, adapter?.itemCount ?: 0)
                 }.onWithMsgFailure {
                     it?.toast()
                 }
@@ -64,18 +75,18 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
             messageType = it.getInt("value", 2)
             messageStatus = it.getInt("messageStatus", 1)
         }
+
+        if (messageType == 2) {
+            binding.mineRefresh.refreshRv.setBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_F4
+                )
+            )
+        }
+
         setSaveText(messageStatus)
         binding.mineToolbar.toolbarTitle.text = if (messageType == 2) "互动消息" else "交易消息"
-        when (messageType) {
-            2 -> {
-//                BuriedUtil.instant?.click_my_msg_hudong()
-//                GrowingIO.getInstance().track("yl_viewInteractMessage")
-            }
-            3 -> {
-//                BuriedUtil.instant?.click_my_msg_jiaoyi()
-//                GrowingIO.getInstance().track("yl_viewTransactionMessage")
-            }
-        }
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
         }
@@ -91,7 +102,7 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
         }
         viewModel.changeAllToRead.observe(this, Observer {
             if (it) {
-                ShortcutBadger.applyCount(this,0)
+                ShortcutBadger.applyCount(this, 0)
                 toastShow("消息已读标记成功")
                 setSaveText(0)
                 initRefreshData(1)
@@ -100,16 +111,6 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
 
         binding.mineRefresh.refreshRv.layoutManager = LinearLayoutManager(this)
         binding.mineRefresh.refreshRv.adapter = adapter
-
-        adapter?.setOnItemClickListener { ad, view, position ->
-//            JumpUtils.instans?.jump(
-//                adapter?.getItem(position)?.jumpDataType,
-//                adapter?.getItem(position)?.jumpDataValue
-//            )
-//            if (adapter.getItem(position).status == 0) {
-//                viewModel.changMessage(adapter.getItem(position).userMessageId.toString())
-//            }
-        }
 
     }
 
@@ -152,13 +153,17 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                             )
                         ) {
                             var message: StringBuffer = StringBuffer()
-                            it.filter {itr-> itr.jumpDataType ==0 || itr.jumpDataType == 99 }.forEach {
-                                message.append("${it.userMessageId},")
-                            }
+                            it.filter { itr -> itr.jumpDataType == 0 || itr.jumpDataType == 99 }
+                                .forEach {
+                                    message.append("${it.userMessageId},")
+                                }
                             viewModel.changAllMessage(message.toString())
-                            if (pageNo == 1){
+                            it.forEach { bean ->
+                                bean.itemType = if (messageType != 2) 0 else 1
+                            }
+                            if (pageNo == 1) {
                                 adapter?.setList(it)
-                            }else {
+                            } else {
                                 adapter?.addData(it)
                             }
 //                            setSaveText(messageStatus)
@@ -184,45 +189,105 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
         var mContext: Context,
         var read: (Int) -> Unit,
         var func: (String, Int) -> Unit
-    ) :
-        BaseQuickAdapter<MessageItemData, BaseDataBindingHolder<ItemMineMessageInfoBinding>>(R.layout.item_mine_message_info) {
-        override fun convert(
-            holder: BaseDataBindingHolder<ItemMineMessageInfoBinding>,
-            item: MessageItemData
-        ) {
+    ) : BaseMultiItemQuickAdapter<MessageItemData, BaseViewHolder>() {
 
-            holder.dataBinding?.let {
-                if (!item.messageTitle.isNullOrEmpty()) {
-                    it.name.text = item.messageTitle
-                }
-                it.date.text = "${TimeUtils.InputTimetamp(item.sendTime.toString())}"
-                it.content.text = item.messageContent
-                if (item.jumpDataType == 99) {
-                    it.look.visibility = View.GONE
-                    it.right.isVisible = false
-                }
-                it.messageStatus.isVisible = item.status == 0
-                it.delete.setOnClickListener {v->
-                    AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
-                        .setNegativeButton(
-                            "取消", R.color.color_7174
-                        ) { v->
-                            it.swipeLayout.quickClose()
+        init {
+            addItemType(0, R.layout.item_mine_message_info)
+            addItemType(1, R.layout.item_mine_message_interaction)
+        }
+
+        override fun convert(holder: BaseViewHolder, item: MessageItemData) {
+            when (item.itemType) {
+                0 -> {
+                    val dataBinding =
+                        DataBindingUtil.bind<ItemMineMessageInfoBinding>(holder.itemView)
+                    dataBinding?.let {
+                        if (!item.messageTitle.isNullOrEmpty()) {
+                            it.name.text = item.messageTitle
                         }
-                        .setPositiveButton("确认", R.color.black) {
-                            func("${item.userMessageId}",getItemPosition(item))
-                        }.show()
+                        it.date.text = "${TimeUtils.InputTimetamp(item.sendTime.toString())}"
+                        it.content.text = item.messageContent
+                        if (item.jumpDataType == 99) {
+                            it.look.visibility = View.GONE
+                            it.right.isVisible = false
+                        }
+                        it.messageStatus.isVisible = item.status == 0
+                        it.delete.setOnClickListener { v ->
+                            AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
+                                .setNegativeButton(
+                                    "取消", R.color.color_7174
+                                ) { v ->
+                                    it.swipeLayout.quickClose()
+                                }
+                                .setPositiveButton("确认", R.color.black) {
+                                    func("${item.userMessageId}", getItemPosition(item))
+                                }.show()
+                        }
+                        it.item.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                item.jumpDataType,
+                                item.jumpDataValue
+                            )
+                            if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0) {
+                                read(getItemPosition(item))
+                            }
+                        }
+                    }
                 }
-                it.item.setOnClickListener {
-                    JumpUtils.instans?.jump(
-                        item.jumpDataType,
-                        item.jumpDataValue
-                    )
-                    if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0){
-                        read(getItemPosition(item))
+                1 -> {
+                    val binding =
+                        DataBindingUtil.bind<ItemMineMessageInteractionBinding>(holder.itemView)
+                    binding?.let {
+                        setTopMargin(it.root, 18, holder.absoluteAdapterPosition)
+                        it.content.text = item.messageContent
+                        it.messageStatus.isVisible = item.status == 0
+                        it.date.text = TimeUtils.InputTimetamp(item.sendTime.toString())
+
+                        it.delete.setOnClickListener { v ->
+                            AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")
+                                .setNegativeButton(
+                                    "取消", R.color.color_7174
+                                ) { v ->
+                                    it.swipeLayout.quickClose()
+                                }
+                                .setPositiveButton("确认", R.color.black) {
+                                    func("${item.userMessageId}", getItemPosition(item))
+                                }.show()
+                        }
+//                        R.mipmap.ic_mine_message_follow
+//                        R.mipmap.ic_mine_message_no_follow
+                        binding.tvFollow.setOnClickListener {
+                            followOrCancelFollow(context as AppCompatActivity,"891",1) {
+
+                            }
+                        }
+                        binding.icon.setOnClickListener {
+//                            JumpUtils.instans?.jump(35, item.userId.toString())
+                        }
+                        binding.item.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                item.jumpDataType,
+                                item.jumpDataValue
+                            )
+                            if (item.jumpDataType != 0 && item.jumpDataType != 99 && item.status == 0) {
+                                read(getItemPosition(item))
+                            }
+                        }
                     }
                 }
             }
+
+        }
+
+        private fun setTopMargin(view: View?, margin: Int, position: Int) {
+            view?.let {
+                val params = view.layoutParams as ViewGroup.MarginLayoutParams
+                if (position == 0) {
+                    params.topMargin =
+                        margin.toIntPx()
+                } else params.topMargin = 0
+            }
+
         }
     }
 }

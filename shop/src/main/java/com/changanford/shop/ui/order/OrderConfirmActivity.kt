@@ -26,6 +26,9 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.request.GetRequestResult
+import com.changanford.common.util.request.addRecord
+import com.changanford.common.util.request.getBizCode
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
@@ -75,6 +78,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     //    private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit = false
+    private var ruleId = ""
 
     //    private var spuPageType=""//商品类型
     private var dataListBean: ArrayList<GoodsDetailBean>? = null
@@ -243,7 +247,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             productNumber.toString(),
             ifCoupon,
             couponsItem?.couponId,
-            WCommonUtil.getRMB(couponsItem?.discountsFb.toString(), ""),
+            if (ifCoupon == "否") "无" else WCommonUtil.getRMB(
+                couponsItem?.discountsFb?.toString(),
+                ""
+            ),
             couponsItem?.couponName
         )
     }
@@ -431,6 +438,14 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             //协议勾选
             R.id.checkBox -> {
                 isAgree = binding.checkBox.isChecked
+                if (isAgree) {
+                    getBizCode(this, MConstant.agreementShop, object : GetRequestResult {
+                        override fun success(data: Any) {
+                            ruleId = data.toString()
+                        }
+
+                    })
+                }
                 updateBtnUi()
             }
             //福币+人民币支付
@@ -455,6 +470,9 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         if (!isClickSubmit) {
             isClickSubmit = true
             val consumerMsg = binding.inGoodsInfo.edtLeaveMsg.text.toString()
+            if (ruleId.isNotEmpty()) {
+                addRecord(ruleId)
+            }
             viewModel.createOrder(
                 orderConfirmType = orderConfirmType,
                 payFb = payFb,

@@ -92,7 +92,10 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?) {
                                 .weight(1f)
                                 .padding(start = 10.dp, end = 10.dp)
                         ) {
-                            ItemService(if (itemListSize > i) itemList[i] else null, i)
+                            ItemService(
+                                if (itemListSize > i) itemList[i] else null,
+                                (i + 1) + (row * 3)
+                            )
                         }
                         if (i < 2) Spacer(modifier = Modifier.width(20.dp))
                     }
@@ -113,7 +116,7 @@ private fun ItemService(itemData: NewCarTagBean?, position: Int) {
             .fillMaxWidth()
             .clickable {
                 WBuriedUtil.clickCarAfterSalesService(iconName)
-                GIOUtils.homePageClick("车主服务", (position + 1).toString(), iconName)
+                GIOUtils.homePageClick("车主服务", (position).toString(), iconName)
                 JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
             }) {
             Image(
@@ -538,9 +541,9 @@ fun OwnerCertification(
                         )
                     ) {
 //                        append(
-                            (carAuthConfVo?.title
+                        (carAuthConfVo?.title
 //                                ?: stringResource(R.string.str_upgradeYourCarExperience)) + "\n"
-                                ?: "升级您的用车体验") + "\n"
+                            ?: "升级您的用车体验") + "\n"
 //                        )
                     }
                     withStyle(
