@@ -928,8 +928,6 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
-        activity?.viewModel?.getH5AccessCode(clientId,redirectUrl) {
-            agentWeb.jsAccessEntrace.quickCallJs(callback,it)
-        }
+        activity?.getAccessCode(clientId,redirectUrl,callback)
     }
 }

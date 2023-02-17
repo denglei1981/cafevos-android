@@ -92,6 +92,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private var getCurVinCallback = ""//获取当前默认车辆vin
     private var addPlateNumCallback = ""//H5添加车牌回调
     private var jrsdkCallBack = "" //h5调起金融sdk回调
+    private var getAccessCodeCallBack = ""//h5授权回调
+    private var clientId = ""
+    private var redirectUrl = ""
 
     //    public var postEntity: List<PostEntity>? = null//草稿
     private var setNavTitleKey: String = System.currentTimeMillis().toString()
@@ -302,6 +305,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     //登录成功
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
                         agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
+                        doGetAccessCode()
                     }
 
                     //取消绑定手机号
@@ -313,6 +317,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
                         agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
+                        doGetAccessCode()
                     }
                     else->{
 
@@ -463,6 +468,26 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
                 })
             }
+    }
+    fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
+        if (UserManger.isLogin()) {
+            viewModel?.getH5AccessCode(clientId, redirectUrl) {
+                agentWeb.jsAccessEntrace.quickCallJs(callback, it)
+            }
+        }else{
+            getAccessCodeCallBack = callback
+            this.clientId = clientId
+            this.redirectUrl = redirectUrl
+            JumpUtils.instans?.jump(100,"")
+        }
+    }
+    private fun doGetAccessCode(){
+        if (getAccessCodeCallBack.isNotEmpty()) {
+            viewModel?.getH5AccessCode(clientId, redirectUrl) {
+                agentWeb.jsAccessEntrace.quickCallJs(getAccessCodeCallBack, it)
+                getAccessCodeCallBack = ""
+            }
+        }
     }
 
     override fun initData() {
