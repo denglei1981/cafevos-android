@@ -15,6 +15,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiFansBinding
@@ -138,7 +139,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                             it.layout.isSelected = false
                             it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
                             it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
-                            it.itemText.text = "已关注"
+                            it.itemText.text = "相互关注"
                         }
                         0 -> {
                             it.layout.isSelected = true
@@ -146,6 +147,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                             it.itemText.setTextColor(Color.parseColor("#01025C"))
                             it.itemIcon.setImageResource(0)
                         }
+
                     }
                 }
                 it.layout.setOnClickListener {
@@ -182,7 +184,11 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     }
 
     // 1 关注 2 取消关注
-    fun cancel(followId: String, typeFollow: String, nickName: String) {
+    fun cancel(followId: String?, typeFollow: String, nickName: String?) {
+        if (followId.isNullOrEmpty() || nickName.isNullOrEmpty()) {
+            "用户已注销".toast()
+            return
+        }
         val pageName = if (type == 1) "我的-粉丝页" else "我的-关注页"
         if (MineUtils.getBindMobileJumpDataType(true)) {
             return

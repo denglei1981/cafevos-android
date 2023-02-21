@@ -52,6 +52,11 @@ data class MessageItemData(
     val sendTime: Long,
     var status: Int,//消息状态 0 未读取， 1 已读取
     val userMessageId: Int,
+    val messageFollowType: Int,// 0 其它消息 1 关注消息
+    var followStatus: Int,// 0 被关注 1 互相关注
+    val userAvatar: String?,//用户头像
+    val relationBizUrl: String?,//消息关联业务封面
+    val createId: String?,//发起者id
     override var itemType: Int = 0
 ) : MultiItemEntity
 

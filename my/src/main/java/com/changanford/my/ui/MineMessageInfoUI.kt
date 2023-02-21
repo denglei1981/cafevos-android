@@ -10,7 +10,9 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
@@ -25,10 +27,10 @@ import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.request.followOrCancelFollow
-import com.changanford.common.utilext.toIntPx
-import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
+import com.changanford.common.utilext.*
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemMineMessageInfoBinding
@@ -254,15 +256,46 @@ class MineMessageInfoUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewMode
                                     func("${item.userMessageId}", getItemPosition(item))
                                 }.show()
                         }
-//                        R.mipmap.ic_mine_message_follow
-//                        R.mipmap.ic_mine_message_no_follow
+                        binding.ivRight.setCircular(5)
+                        if (item.userAvatar.isNullOrEmpty()) {
+                            Glide.with(binding.icon).load(R.mipmap.fordicon).into(binding.icon)
+                        } else {
+                            GlideUtils.loadRound(item.userAvatar,binding.icon,R.mipmap.head_default_circle)
+                        }
+                        when (item.messageFollowType) {
+                            0 -> {//其他消息
+                                binding.ivRight.loadCompress(
+                                    item.relationBizUrl,
+                                    R.mipmap.ic_def_square_img
+                                )
+                            }
+                            1 -> {//关注消息
+                                if (item.followStatus == 0) {//被关注
+                                    binding.ivRight.setImageResource(R.mipmap.ic_mine_message_no_follow)
+                                } else {//互相关注
+                                    binding.ivRight.setImageResource(R.mipmap.ic_mine_message_follow)
+                                }
+                            }
+                        }
+                        if (item.messageFollowType == 1 && item.followStatus == 0) {
+                            binding.tvFollow.visibility = View.VISIBLE
+                        } else {
+                            binding.tvFollow.visibility = View.GONE
+                        }
                         binding.tvFollow.setOnClickListener {
-                            followOrCancelFollow(context as AppCompatActivity,"891",1) {
-
+                            item.createId?.let { it1 ->
+                                followOrCancelFollow(context as AppCompatActivity, it1, 1) {
+                                    read(getItemPosition(item))
+                                    item.followStatus = 1
+                                    notifyItemChanged(holder.layoutPosition)
+                                }
                             }
                         }
                         binding.icon.setOnClickListener {
-//                            JumpUtils.instans?.jump(35, item.userId.toString())
+                            if (!item.createId.isNullOrEmpty()) {
+                                read(getItemPosition(item))
+                                JumpUtils.instans?.jump(35, item.createId.toString())
+                            }
                         }
                         binding.item.setOnClickListener {
                             JumpUtils.instans?.jump(

@@ -4,6 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.changanford.common.basic.ApiException
 import com.changanford.common.basic.Block
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.longE
 import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
@@ -26,6 +27,8 @@ fun LifecycleOwner.launchWithCatch(block: Block<Unit>) {
             error.message?.longE()
         } catch (error: java.lang.Exception) {
             error.message?.longE()
+        } catch (error: Throwable) {
+            error.message?.logE()
         }
     }
 }

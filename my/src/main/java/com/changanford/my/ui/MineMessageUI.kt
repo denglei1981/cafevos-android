@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -99,9 +100,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         }) { id, pos ->
             viewModel.delUserMessage(id) {
                 it.onSuccess {
-                    adapter?.data?.removeAt(pos)
-                    adapter?.notifyItemRemoved(pos)
-                    adapter?.notifyItemRangeChanged(0, adapter?.itemCount ?: 0)
+                    adapter2?.removeAt(pos)
                 }.onWithMsgFailure {
                     it?.toast()
                 }
@@ -119,6 +118,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         binding.mineRefresh.refreshRv.layoutManager = LinearLayoutManager(this)
         binding.mineRefresh.refreshRv.adapter = adapter2
         adapter2.addHeaderView(headerView.root)
+        adapter2.headerWithEmptyEnable = true
 
     }
 

@@ -86,8 +86,8 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
                         )
                     }
                 if (index > 0) binding.viewPager.currentItem = index
-                topName = it[index].topName
-                GIOUtils.hotCircleDetailPageView(it[index].topName)
+                topName = it[binding.viewPager.currentItem].topName
+                GIOUtils.hotCircleDetailPageView(it[binding.viewPager.currentItem].topName)
             }
 
         }

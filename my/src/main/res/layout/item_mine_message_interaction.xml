@@ -32,10 +32,10 @@
                 android:layout_height="51dp"
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="17dp"
-                android:src="@mipmap/fordicon"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/shapeableRound" />
+                app:shapeAppearance="@style/shapeableRound"
+                tools:src="@mipmap/fordicon" />
 
             <ImageView
                 android:id="@+id/message_status"
@@ -65,10 +65,11 @@
                 android:layout_width="51dp"
                 android:layout_height="51dp"
                 android:layout_marginEnd="19dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@+id/icon"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/icon"
-                android:src="@mipmap/ic_def_square_img" />
+                tools:src="@mipmap/ic_def_square_img" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/date"
@@ -90,11 +91,11 @@
                 android:paddingStart="7dp"
                 android:paddingTop="2dp"
                 android:paddingEnd="7dp"
-                android:visibility="gone"
                 android:paddingBottom="2dp"
                 android:text="一键回关"
                 android:textColor="@color/color_73A3D8"
                 android:textSize="13sp"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="@+id/date"
                 app:layout_constraintTop_toBottomOf="@+id/date"
                 tools:ignore="HardcodedText" />

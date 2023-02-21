@@ -57,7 +57,7 @@ fun addRecord(id: String) {
     val activity = BaseApplication.curActivity
     activity?.launchWithCatch {
         val requestBody = HashMap<String, Any>()
-        requestBody["id"] = id
+        requestBody["ids"] = id
         val rkey = getRandomKey()
         ApiClient.createApi<NetWorkApi>()
             .addRecord(requestBody.header(rkey), requestBody.body(rkey))
