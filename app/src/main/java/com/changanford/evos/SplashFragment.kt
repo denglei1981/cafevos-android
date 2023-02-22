@@ -103,6 +103,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
                     val value = uri.getQueryParameter("jumpDataValue")
                     bundle.putString("jumpDataType", type)
                     bundle.putString("jumpDataValue", value)
+                    if (MainActivity.activityAlive){
+                        JumpUtils.instans?.jump(type!!.toInt(),value)
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

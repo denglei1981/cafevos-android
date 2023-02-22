@@ -67,6 +67,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     var jumpIndex: String = ""
 
+    companion object{
+        var activityAlive = false
+    }
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
 
@@ -211,6 +214,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+        activityAlive = true
         if (MConstant.app_mourning_mode == 1) {
             BlackWhiteMode(window = window)
         }
