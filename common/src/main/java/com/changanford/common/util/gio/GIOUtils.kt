@@ -7,6 +7,8 @@ import com.changanford.common.util.gio.GioPageConstant.infoEntrance
 import com.changanford.common.util.gio.GioPageConstant.infoId
 import com.changanford.common.util.gio.GioPageConstant.infoName
 import com.changanford.common.util.gio.GioPageConstant.infoTheme
+import com.changanford.common.util.gio.GioPageConstant.prePageType
+import com.changanford.common.util.gio.GioPageConstant.prePageTypeName
 import com.changanford.common.util.gio.GioPageConstant.topicDetailTabName
 import com.changanford.common.util.gio.GioPageConstant.topicEntrance
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
@@ -52,13 +54,13 @@ object GIOUtils {
     }
 
     //导航浏览
-    fun homePageView() {
+    fun homePageView(prePageName: String = "", prePageType: String = "") {
         val map = HashMap<String, String>()
 
         map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
         map["fy_pageType_var"] = GioPageConstant.mainTabName
-        map["fy_prePageType_var"] = GioPageConstant.prePageType
-        map["fy_prePageName_var"] = GioPageConstant.prePageTypeName
+        map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.prePageType }
+        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.prePageTypeName }
 
         trackCustomEvent("fy_homePageView", map)
     }
@@ -103,12 +105,16 @@ object GIOUtils {
     fun infoDetailInfo() {
         val map = HashMap<String, String>()
         //上一级页面类型
-        map["fy_prePageType_var"] = infoEntrance.ifEmpty {
+        map["fy_prePageType_var"] = if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
             GioPageConstant.mainTabName
+        } else {
+            infoEntrance
         }
         //上一级页面名称
-        map["fy_prePageName_var"] = infoEntrance.ifEmpty {
+        map["fy_prePageName_var"] = if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
             GioPageConstant.mainSecondPageName()
+        } else {
+            infoEntrance
         }
         //资讯入口
         map["fy_infoEntrance_var"] = infoEntrance
@@ -141,34 +147,38 @@ object GIOUtils {
     }
 
     //热门话题列表浏览
-    fun topicListPageView(isCheckDetail: Boolean) {
+    fun topicListPageView() {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] = if (isCheckDetail) {
-            "话题详情页"
-        } else
-            GioPageConstant.mainSecondPageName()
-        map["fy_prePageType_var"] = if (isCheckDetail) {
-            "话题详情页"
-        } else GioPageConstant.mainTabName
+        map["fy_prePageName_var"] = prePageTypeName
+        map["fy_prePageType_var"] = prePageType
 
         trackCustomEvent("fy_topicListPageView", map)
     }
 
     //话题详情浏览
-    fun topicDetailPageView(topicId: String, topicName: String) {
+    fun topicDetailPageView(
+        topicId: String,
+        topicName: String,
+        prePageName: String = "",
+        prePageType: String = ""
+    ) {
 
         val map = HashMap<String, String>()
 
         map["fy_prePageName_var"] =
-            if (topicEntrance.isNotEmpty() && topicEntrance != "社区-广场-热门话题") {
+            if (prePageName.isNotEmpty()) {
+                prePageName.gioEmpty()
+            } else if (topicEntrance.isNotEmpty() && topicEntrance != "社区-广场-热门话题") {
                 topicEntrance
             } else {
                 GioPageConstant.mainSecondPageName()
             }
         map["fy_prePageType_var"] =
-            if (topicEntrance.isNotEmpty() && topicEntrance != "社区-广场-热门话题") {
+            if (prePageType.isNotEmpty()) {
+                prePageType.gioEmpty()
+            } else if (topicEntrance.isNotEmpty() && topicEntrance != "社区-广场-热门话题") {
                 topicEntrance
             } else {
                 GioPageConstant.mainTabName
@@ -185,6 +195,11 @@ object GIOUtils {
         trackCustomEvent("fy_topicDetailPageView", map)
     }
 
+    var postDetailIsCheckPersonal = false
+    var postDetailIsCheckCircle = false
+    var postDetailIsCheckTopic = false
+    var postPrePostName = ""
+
     //帖子详情浏览
     fun postDetailPageView(
         topicId: String?,
@@ -193,18 +208,20 @@ object GIOUtils {
         postId: String,
         postName: String,
         circleId: String?,
-        circleName: String?
+        circleName: String?,
+        prePageType: String = "",
+        prePageName: String = ""
     ) {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] =
-            if (GioPageConstant.postEntrance.isEmpty() || GioPageConstant.postEntrance.contains("信息流"))
-                GioPageConstant.mainSecondPageName() else GioPageConstant.postEntrance
+        map["fy_prePageName_var"] = if (prePageName.isNotEmpty()) prePageName
+        else if (GioPageConstant.postEntrance.isEmpty() || GioPageConstant.postEntrance.contains("信息流"))
+            GioPageConstant.mainSecondPageName() else GioPageConstant.postEntrance
 
-        map["fy_prePageType_var"] =
-            if (GioPageConstant.postEntrance.isEmpty() || GioPageConstant.postEntrance.contains("信息流"))
-                GioPageConstant.mainTabName else GioPageConstant.postEntrance
+        map["fy_prePageType_var"] = if (prePageType.isNotEmpty()) prePageType
+        else if (GioPageConstant.postEntrance.isEmpty() || GioPageConstant.postEntrance.contains("信息流"))
+            GioPageConstant.mainTabName else GioPageConstant.postEntrance
         //帖子入口
         map["fy_postEntrance_var"] = GioPageConstant.postEntrance
         //话题id
@@ -223,6 +240,9 @@ object GIOUtils {
         map["fy_circleName_var"] = circleName.gioEmpty()
 
         trackCustomEvent("fy_postDetailPageView", map)
+        postDetailIsCheckPersonal = false
+        postDetailIsCheckCircle = false
+        postDetailIsCheckTopic = false
     }
 
     //资讯点赞
@@ -748,12 +768,17 @@ object GIOUtils {
     }
 
     //个人主页曝光
-    fun personalHomepageView(userId: String?, nickName: String?) {
+    fun personalHomepageView(
+        userId: String?,
+        nickName: String?,
+        prePageName: String = "",
+        prePageType: String = ""
+    ) {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] = GioPageConstant.mainSecondPageName()
-        map["fy_prePageType_var"] = GioPageConstant.mainTabName
+        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.mainSecondPageName() }
+        map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.mainTabName }
         map["fy_userID_var"] = userId.gioEmpty()
         map["fy_userNick_var"] = nickName.gioEmpty()
 
@@ -761,12 +786,16 @@ object GIOUtils {
     }
 
     //热门榜单详情曝光
-    fun hotCircleDetailPageView(tabName: String?) {
+    fun hotCircleDetailPageView(
+        tabName: String?,
+        prePageName: String = "",
+        prePageType: String = ""
+    ) {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] = GioPageConstant.mainSecondPageName()
-        map["fy_prePageType_var"] = GioPageConstant.mainTabName
+        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.mainSecondPageName() }
+        map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.mainTabName }
         //社区-圈子-热门榜单-更多
         //社区-圈子-热门榜单-车友会-更多
         //社区-圈子-热门榜单-车型圈-更多
@@ -778,12 +807,17 @@ object GIOUtils {
     }
 
     //圈子详情曝光
-    fun circleDetailPageView(circleId: String?, circleName: String) {
+    fun circleDetailPageView(
+        circleId: String?,
+        circleName: String,
+        prePageName: String = "",
+        prePageType: String = ""
+    ) {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] = GioPageConstant.mainSecondPageName()
-        map["fy_prePageType_var"] = GioPageConstant.mainTabName
+        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.mainSecondPageName() }
+        map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.mainTabName }
         map["fy_circleID_var"] = circleId.gioEmpty()
         map["fy_circleName_var"] = circleName.gioEmpty()
 
@@ -872,13 +906,15 @@ object GIOUtils {
         name: String?,
         price: String?,
         fbPrice: String?,
-        isSeckill: String
+        isSeckill: String,
+        prePageName: String = "",
+        prePageType: String = ""
     ) {
 
         val map = HashMap<String, String>()
 
-        map["fy_prePageName_var"] = GioPageConstant.mainSecondPageName()
-        map["fy_prePageType_var"] = GioPageConstant.mainTabName
+        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.mainSecondPageName() }
+        map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.mainTabName }
         map["fy_productSpuID_var"] = spuId.gioEmpty()
 //        map["fy_productSkuID_var"] = skuId.gioEmpty()
         map["fy_productSpuName_var"] = name.gioEmpty()
@@ -997,12 +1033,12 @@ object GIOUtils {
     }
 
     // 任务中心浏览
-    fun taskCenterPageView() {
+    fun taskCenterPageView(prePageName: String = "", prePageType: String = "") {
 
         val map = HashMap<String, String>()
 
-        map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
-        map["fy_pageType_var"] = GioPageConstant.mainTabName
+        map["fy_pageName_var"] = prePageName.ifEmpty { GioPageConstant.mainSecondPageName() }
+        map["fy_pageType_var"] = prePageType.ifEmpty { GioPageConstant.mainTabName }
 
         trackCustomEvent("fy_taskCenterPageView", map)
     }

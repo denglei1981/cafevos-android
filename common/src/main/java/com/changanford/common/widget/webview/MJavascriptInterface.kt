@@ -1,51 +1,43 @@
-package com.changanford.common.widget.webview;
+package com.changanford.common.widget.webview
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.webkit.JavascriptInterface;
-
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.changanford.common.bean.MediaListBean;
-import com.changanford.common.router.path.ARouterCirclePath;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import android.app.Activity
+import android.os.Bundle
+import android.webkit.JavascriptInterface
+import com.alibaba.android.arouter.launcher.ARouter
+import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.MediaListBean
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.util.gio.updateGoodsDetails
+import java.io.Serializable
 
 /**
  * Created by Administrator on 2019/1/16.
  */
-
-public class MJavascriptInterface {
-    private Activity activity;
-    private List<String> list_imgs = new ArrayList<>();
-    private int index = 0;
-
-    public MJavascriptInterface(Activity activity){
-
-        this.activity = activity;
-    }
-
+class MJavascriptInterface(private val activity: Activity) {
+    private val list_imgs: List<String> = ArrayList()
+    private val index = 0
     @JavascriptInterface
-    public void openImage(String img, String[] imageUrls) {
-
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("imageUrls",imageUrls);
-        List<MediaListBean> mediaListBeans = new ArrayList<>();
-        int count =0;
-        if (imageUrls.length>0){
-            for (int i = 0; i < imageUrls.length; i++) {
-                MediaListBean mediaListBean = new MediaListBean();
-                mediaListBean.setImg_url(imageUrls[i]);
-                mediaListBeans.add(mediaListBean);
-                if (img.equals(imageUrls[i])){
-                    count = i;
+    fun openImage(img: String, imageUrls: Array<String>) {
+        val bundle = Bundle()
+        bundle.putStringArray("imageUrls", imageUrls)
+        val mediaListBeans: MutableList<MediaListBean> = ArrayList()
+        var count = 0
+        if (imageUrls.size > 0) {
+            for (i in imageUrls.indices) {
+                val mediaListBean = MediaListBean()
+                mediaListBean.img_url = imageUrls[i]
+                mediaListBeans.add(mediaListBean)
+                if (img == imageUrls[i]) {
+                    count = i
                 }
             }
         }
-        bundle.putSerializable("imgList", (Serializable) mediaListBeans);
-        bundle.putString("curImageUrl",img);
-        bundle.putInt("count",count);
-        ARouter.getInstance().build(ARouterCirclePath.PhotoViewActivity).with(bundle).navigation();
+        bundle.putSerializable("imgList", mediaListBeans as Serializable)
+        bundle.putString("curImageUrl", img)
+        bundle.putInt("count", count)
+        if (BaseApplication.curActivity?.javaClass?.name == "com.changanford.shop.ui.goods.GoodsDetailsActivity") {
+            updateGoodsDetails("图片查看页", "图片查看页")
+        }
+        ARouter.getInstance().build(ARouterCirclePath.PhotoViewActivity).with(bundle).navigation()
     }
 }

@@ -8,6 +8,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityCouponmiddleBinding
@@ -21,6 +22,7 @@ import com.zhpan.bannerview.constants.PageStyle
 @Route(path = ARouterShopPath.CouponMiddleActivity)
 class CouponMiddleActivity : BaseActivity<ActivityCouponmiddleBinding, CouponViewModel>() {
     override fun initView() {
+        updateMainGio("优惠券页", "优惠券页")
         var couponNum = intent.extras?.getInt("couponNum")
         binding.num.text = "$couponNum 张可用"
         binding.click1.setOnClickListener {

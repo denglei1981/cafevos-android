@@ -22,6 +22,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
@@ -63,6 +64,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
         typeId=intent.getStringExtra("typeId")?:"0"
         typeName=intent.getStringExtra("value")?:""
         initListener()
+        updateMainGio("全部圈子页", "全部圈子页")
     }
 
     private fun initListener() {

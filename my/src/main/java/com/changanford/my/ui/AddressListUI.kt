@@ -16,6 +16,7 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemAddressBinding
@@ -56,6 +57,7 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
     }
 
     override fun initView() {
+        updateMainGio("收货地址页", "收获地址页")
         binding.addToolbar.toolbarTitle.text = "收货地址"
         setLoadSir(binding.root)
         intent.extras?.getInt(RouterManger.KEY_TO_ITEM, 0)?.let { isChooseAdd = it }

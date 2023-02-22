@@ -14,6 +14,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -40,6 +41,7 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        updateMainGio("福币明细页", "福币明细页")
         binding.toolbarJifen.toolbar.setBackgroundResource(0)
         binding.toolbarJifen.toolbarTitle.text = "福币明细"
         UserManger.getSysUserInfo()?.integral?.let {

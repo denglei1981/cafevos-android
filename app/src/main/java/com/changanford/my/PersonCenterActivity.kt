@@ -8,11 +8,13 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onFailure
@@ -26,6 +28,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
@@ -42,6 +46,7 @@ import com.changanford.widget.ScaleTransitionPagerTitleView
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -170,8 +175,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     }
 
     override fun initView() {
-        GioPageConstant.topicEntrance = "发帖人个人主页"
-        GioPageConstant.postEntrance = "发帖人个人主页"
+        updateMainGio("发帖人个人主页", "发帖人个人主页")
         StatusBarUtil.setStatusBarMarginTop(binding.toolbar, this)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutEmptyUser.collectToolbar.conTitle, this)
         binding.layoutEmptyUser.collectToolbar.ivBack.setOnClickListener {
@@ -201,9 +205,10 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             } else {
                 OtherMedalActivity.start(taUserId, this)
             }
-
+            updatePersonalData("TA的勋章页", "TA的勋章页")
         }
 
+        initBus()
     }
 
     private fun getUserInfo() {
@@ -373,11 +378,38 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
 //        ).show()
     }
 
+    private fun initBus() {
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_PERSONAL_GIO).observe(this) {
+            gioPreBean = it
+        }
+    }
+
     private var mUserInfo: UserInfoBean? = null
+    private var gioNeedInfo = MutableLiveData<UserInfoBean?>()
+    private var gioPreBean = GioPreBean()
+    private var isFirstIn = true
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirstIn) {
+            gioNeedInfo.observe(this) {
+                it?.let {
+                    GIOUtils.personalHomepageView(
+                        it.userId,
+                        it.nickname,
+                        gioPreBean.prePageName,
+                        gioPreBean.prePageType
+                    )
+                }
+            }
+            isFirstIn = false
+        }
+
+    }
 
     private fun showUserInfo(userInfoBean: UserInfoBean?) {
         mUserInfo = userInfoBean
-        GIOUtils.personalHomepageView(userInfoBean?.userId, userInfoBean?.nickname)
+        gioNeedInfo.value = userInfoBean
         userInfoBean?.let {
             when (userInfoBean.status) {
                 2 -> { // 用户已注销。

@@ -23,6 +23,7 @@ import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.CleanDataUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.my.BaseMineUI
@@ -41,6 +42,7 @@ import kotlin.concurrent.thread
 class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
 
     override fun initView() {
+        updateMainGio("设置页", "设置页")
         binding.setToolbar.toolbarTitle.text = "设置"
         binding.setToolbar.toolbar.setNavigationOnClickListener {
             back()

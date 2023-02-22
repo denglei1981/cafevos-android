@@ -36,6 +36,7 @@ import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WCommonUtil
@@ -283,6 +284,7 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
         Column(modifier = Modifier
             .fillMaxWidth()
             .clickable {
+                updateGoodsDetails(itemData.spuName, "逛一逛")
                 GoodsDetailsActivity.start(mallMallSpuId)
             }) {
             //封面

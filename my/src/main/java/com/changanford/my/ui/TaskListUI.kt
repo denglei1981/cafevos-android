@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.RoundBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.net.*
@@ -18,6 +19,8 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.util.gio.updateTaskList
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
@@ -39,6 +42,7 @@ import kotlin.math.abs
  */
 @Route(path = ARouterMyPath.MineTaskListUI)
 class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
+    private var gioPreBean = GioPreBean()
     var isRefresh: Boolean = false //回到当前页面刷新列表
 
     val taskAdapter: TaskTitleAdapter by lazy {
@@ -51,12 +55,13 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageView(this, null)
-        GIOUtils.taskCenterPageView()
+        updateMainGio("任务中心页", "任务中心页")
         setLoadSir(binding.root)
         binding.imBack.setOnClickListener {
             back()
         }
         binding.tvTaskExplain.setOnClickListener { //任务说明
+            updateTaskList("任务说明页", "任务说明页")
             JumpUtils.instans?.jump(1, MConstant.H5_TASK_RULE)
         }
 
@@ -96,6 +101,9 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this) {
             show7Day()
         }
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_TASK_LIST_GIO).observe(this) {
+            gioPreBean = it
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -128,6 +136,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             task()
         }
         show7Day()
+        GIOUtils.taskCenterPageView(gioPreBean.prePageName, gioPreBean.prePageType)
     }
 
     fun task() {

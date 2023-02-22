@@ -23,6 +23,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.SearchRecordDatabase
 import com.changanford.common.util.room.SearchRecordEntity
 import com.changanford.common.utilext.toastShow
@@ -64,6 +65,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     var historyList: MutableList<SearchRecordEntity>? = null
     override fun initView() {
+        updateMainGio("搜索页", "搜索页")
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
         searchType = if (!TextUtils.isEmpty(searchTypStr)) {
             searchTypStr?.toIntOrNull()!!
@@ -215,11 +217,11 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
-        when(searchType){
-            SEARCH_POST->{ //搜索帖子。 埋点。
+        when (searchType) {
+            SEARCH_POST -> { //搜索帖子。 埋点。
                 BuriedUtil.instant?.communityMainTopSearsh(searchContent)
             }
-            SEARCH_ASK->{
+            SEARCH_ASK -> {
                 BuriedUtil.instant?.communityQuestionSerach(searchContent)
             }
         }

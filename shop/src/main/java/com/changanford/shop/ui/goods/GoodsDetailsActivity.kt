@@ -6,9 +6,12 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.GioPreBean
+import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
@@ -16,6 +19,8 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateGoodsDetails
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsImgsAdapter
@@ -101,6 +106,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
     override fun initView() {
         addLiveDataBus()
+        updateMainGio("商品详情页", "商品详情页")
         binding.inEmpty.imgBack.setOnClickListener { this.finish() }
         spuId = intent.getStringExtra("spuId") ?: "0"
         if ("0" == spuId) {
@@ -122,12 +128,16 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
         tabLayout.removeAllTabs()
         for (it in tabTitles) tabLayout.addTab(tabLayout.newTab().setText(it))
         tabClick()
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_GOODS_DETAILS_GIO).observe(this) {
+            gioPreBean = it
+        }
     }
 
-    override fun initData() {
-        viewModel.goodsDetailData.observe(this) {
-            binding.inEmpty.layoutEmpty.visibility = View.GONE
-            control.bindingData(it)
+    private val goodsDetailsBean = MutableLiveData<GoodsDetailBean>()
+    private var gioPreBean = GioPreBean()
+    override fun onResume() {
+        super.onResume()
+        goodsDetailsBean.observe(this) {
             val isSeckill = if (it.killStates == 5) "是" else "否"
             GIOUtils.productDetailPageView(
                 it.spuId,
@@ -135,8 +145,18 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
                 it.spuName,
                 it.rmbPrice,
                 it.fbPrice,
-                isSeckill
+                isSeckill,
+                gioPreBean.prePageName,
+                gioPreBean.prePageType
             )
+        }
+    }
+
+    override fun initData() {
+        viewModel.goodsDetailData.observe(this) {
+            goodsDetailsBean.value = it
+            binding.inEmpty.layoutEmpty.visibility = View.GONE
+            control.bindingData(it)
             viewModel.collectionGoodsStates.postValue(it.collect == "YES")
             GlobalScope.launch {
                 delay(1000L)
@@ -187,7 +207,10 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
             //加入购物车
             R.id.btn_cart -> control.addShoppingCart(0)
             //查看评价
-            R.id.tv_goodsCommentLookAll -> GoodsEvaluateActivity.start(spuId)
+            R.id.tv_goodsCommentLookAll -> {
+                updateGoodsDetails(headerBinding.inGoodsInfo.tvGoodsTitle.text.toString(), "商品评价页")
+                GoodsEvaluateActivity.start(spuId)
+            }
             //选择商品属性
             R.id.tv_goodsAttrs -> control.createAttribute()
             //收藏商品
@@ -198,9 +221,16 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
             //分享商品
             R.id.img_share -> control.share()
             //客服
-            R.id.tv_customerService -> JumpUtils.instans?.jump(11)
+            R.id.tv_customerService -> {
+                updateGoodsDetails("意见反馈页", "意见反馈页")
+                JumpUtils.instans?.jump(11)
+            }
+
             //购物车
-            R.id.tv_cart -> JumpUtils.instans?.jump(119)
+            R.id.tv_cart -> {
+                updateGoodsDetails("购物车页", "购物车页")
+                JumpUtils.instans?.jump(119)
+            }
             //返回
             R.id.img_back -> this.finish()
         }

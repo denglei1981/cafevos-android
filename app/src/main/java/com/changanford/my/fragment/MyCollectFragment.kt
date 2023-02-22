@@ -44,7 +44,7 @@ class MyCollectFragment : BaseFragment<FragmentMyCollectBinding, MyCollectViewMo
     }
 
     override fun initView() {
-        GioPageConstant.infoEntrance = "发帖人个人主页-收藏"
+        GioPageConstant.infoEntrance = "发帖人个人主页"
         viewModel.queryMineCollectInfo()
 
     }

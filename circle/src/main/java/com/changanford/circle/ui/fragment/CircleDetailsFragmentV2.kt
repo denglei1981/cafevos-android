@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleRecommendAdapterV2
 import com.changanford.circle.databinding.FragmentCircleDetailsV2Binding
+import com.changanford.circle.ui.activity.CircleDetailsActivity
+import com.changanford.circle.ui.activity.TopicDetailsActivity
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.shareBackUpHttp
 import com.changanford.common.basic.BaseFragment
@@ -18,6 +20,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.util.toast.ToastUtils
 import java.lang.reflect.Method
 import java.util.*
@@ -108,14 +111,23 @@ class CircleDetailsFragmentV2 :
         adapter.setOnItemClickListener { _, view, position ->
             if (topicId.isNotEmpty()) {
                 GioPageConstant.postEntrance = "话题详情页"
+                if (requireActivity() is TopicDetailsActivity) {
+                    val activity = requireActivity() as TopicDetailsActivity
+                    activity.isCheckDetails = true
+                }
             } else {
                 GioPageConstant.postEntrance = "圈子详情页"
+                if (requireActivity() is CircleDetailsActivity) {
+                    val activity = requireActivity() as CircleDetailsActivity
+//                    activity.isCheckDetails = true
+                }
                 GIOUtils.circleDetailPageResourceClick(
                     "帖子信息流",
                     (position + 1).toString(),
                     adapter.getItem(position).title
                 )
             }
+            updateCircleDetailsData(adapter.getItem(position).title.toString(), "帖子详情页")
             val bundle = Bundle()
             bundle.putString("postsId", adapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)

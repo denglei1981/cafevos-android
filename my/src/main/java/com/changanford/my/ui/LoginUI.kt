@@ -22,6 +22,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.getBizCode
 import com.changanford.common.util.toast.ToastUtils
@@ -105,6 +107,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        updateMainGio("登陆页", "登陆页")
+        GioPageConstant.topicEntrance = "登陆页"
         AppUtils.setStatusBarMarginTop(binding.back, this)
         AppUtils.setStatusBarMarginTop(binding.title, this)
         UserManger.deleteUserInfo()

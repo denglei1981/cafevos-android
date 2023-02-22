@@ -21,6 +21,7 @@ import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 
 
 /**
@@ -55,6 +56,7 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     var index = 0
     override fun initView() {
         setLoadSir(binding.root)
+        updateMainGio("我的收藏页", "我的收藏页")
         LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
             showContent()
         }

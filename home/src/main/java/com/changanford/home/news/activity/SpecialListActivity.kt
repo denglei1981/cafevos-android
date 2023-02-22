@@ -10,6 +10,7 @@ import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.databinding.ActivityHomeBaseSmRvBinding
 import com.changanford.home.news.adapter.SpecialListAdapter
@@ -17,6 +18,7 @@ import com.changanford.home.news.request.SpecialListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import com.xiaomi.push.it
 
 @Route(path = ARouterHomePath.SpecialListActivity)
 class SpecialListActivity :
@@ -28,6 +30,7 @@ class SpecialListActivity :
 
     override fun initView() {
         binding.layoutTitle.tvTitle.text = "专题列表"
+        updateMainGio("专题列表页", "专题列表页")
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
@@ -37,11 +40,11 @@ class SpecialListActivity :
         binding.layoutTitle.ivBack.setOnClickListener {
             onBackPressed()
         }
-        specialListAdapter.setOnItemClickListener(object :OnItemClickListener{
+        specialListAdapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
 
                 var item = specialListAdapter.getItem(position)
-                JumpUtils.instans?.jump(8,item.artId)
+                JumpUtils.instans?.jump(8, item.artId)
 //                startARouter(ARouterHomePath.SpecialDetailActivity)
 
             }
@@ -76,6 +79,7 @@ class SpecialListActivity :
             }
         })
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         binding.smartLayout.setEnableLoadMore(true)
         viewModel.getSpecialList(false)

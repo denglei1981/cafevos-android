@@ -21,6 +21,7 @@ import com.changanford.circle.R
 
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toIntPx
 
 object MUtils {
@@ -34,6 +35,8 @@ object MUtils {
         spannable.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
+                    GIOUtils.postDetailIsCheckCircle = true
+                    GIOUtils.postPrePostName = content
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
                     startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
@@ -61,6 +64,8 @@ object MUtils {
         spannable.setSpan(
             object : ClickableSpan() {
                 override fun onClick(widget: View) {
+                    GIOUtils.postDetailIsCheckCircle = true
+                    GIOUtils.postPrePostName = content
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
                     startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
@@ -159,7 +164,7 @@ object MUtils {
     private var expand = "展开 ∨"
     private var collapse = "收起 ∧"
 
-     fun expandText(contentTextView: TextView, msg: String) {
+    fun expandText(contentTextView: TextView, msg: String) {
         val text: CharSequence = contentTextView.text
         val width: Int = contentTextView.width
         val paint: TextPaint = contentTextView.paint
@@ -206,7 +211,7 @@ object MUtils {
         }
     }
 
-     fun collapseText(contentTextView: TextView, msg: String) {
+    fun collapseText(contentTextView: TextView, msg: String) {
 
         // 默认此时文本肯定超过行数了，直接在最后拼接文本
         val clickableSpan: ClickableSpan = object : ClickableSpan() {

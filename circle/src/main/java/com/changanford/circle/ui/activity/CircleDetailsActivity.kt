@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -36,9 +34,9 @@ import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.CircleShareBean
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
@@ -50,9 +48,13 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateCircleDetailsData
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
@@ -96,6 +98,7 @@ class CircleDetailsActivity :
     private var shareBeanVO: CircleShareBean? = null
     private var isFirst = true
     private var hasLookNotice = false
+    private var gioPreBean = GioPreBean()
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
@@ -126,7 +129,6 @@ class CircleDetailsActivity :
 
     override fun initView() {
         GioPageConstant.circleDetailTabName = "推荐"
-        GioPageConstant.hotCircleEntrance = "圈子详情页"
         circleId = intent.getStringExtra("circleId").toString()
         initMagicIndicator()
         setLoadSir(binding.clContent)
@@ -179,6 +181,9 @@ class CircleDetailsActivity :
             this
         ) {
             postEntity = it as ArrayList<PostEntity>
+        }
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_CIRCLE_DETAILS_GIO).observe(this) {
+            gioPreBean = it
         }
     }
 
@@ -280,6 +285,7 @@ class CircleDetailsActivity :
                 bundle.putBoolean(IntentKey.HAS_LOOK_NOTICE, hasLookNotice)
                 startARouter(ARouterCirclePath.CircleNoticeActivity, bundle)
                 GIOUtils.circleDetailPageResourceClick("公告栏", "0", "")
+                updateCircleDetailsData("公告栏页", "公告栏页")
             }
             tvTopicMore.setOnClickListener {
                 val bundle = Bundle()
@@ -288,12 +294,14 @@ class CircleDetailsActivity :
                 bundle.putString("circleName", binding.barTitleTv.text.toString())
                 startARouter(ARouterCirclePath.HotTopicActivity, bundle)
                 GIOUtils.circleDetailPageResourceClick("圈内话题", "0", "")
+                updateCircleDetailsData("圈内话题页", "圈内话题页")
             }
             tvActivityMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 startARouter(ARouterCirclePath.CircleActivityListActivity, bundle)
                 GIOUtils.circleDetailPageResourceClick("圈内活动", "0", "")
+                updateCircleDetailsData("圈内活动页", "圈内活动页")
             }
             clTop.setOnClickListener {
                 GIOUtils.circleDetailPageResourceClick("圈子简介", "1", "圈子简介")
@@ -312,6 +320,7 @@ class CircleDetailsActivity :
                 (position + 1).toString(),
                 bean.noticeName
             )
+            updateCircleDetailsData("公告栏页", "公告栏页")
         }
 
         activityAdapter.setOnItemClickListener { adapter, view, position ->
@@ -322,6 +331,7 @@ class CircleDetailsActivity :
                 (position + 1).toString(),
                 bean.title
             )
+            updateCircleDetailsData(bean.title, "圈内活动详情页")
         }
 
         topicAdapter.setOnItemClickListener { adapter, view, position ->
@@ -336,6 +346,7 @@ class CircleDetailsActivity :
                 (position + 1).toString(),
                 bean.name
             )
+            updateCircleDetailsData(bean.name, "圈内话题详情页")
         }
     }
 
@@ -439,6 +450,7 @@ class CircleDetailsActivity :
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
+            updateMainGio(it?.name.toString(), "圈子详情页")
             if (it == null) {
                 showFailure("服务器开小差，请稍候再试")
                 return@observe
@@ -530,6 +542,7 @@ class CircleDetailsActivity :
                 personalAdapter.setItems(it.users)
                 personalAdapter.notifyDataSetChanged()
                 tvPersonal.setOnClickListener { _ ->
+                    updateCircleDetailsData("成员页", "成员页")
                     val bundle = Bundle()
                     bundle.putString("circleId", circleId)
                     bundle.putString("isApply", it.isApply.toString())
@@ -543,7 +556,12 @@ class CircleDetailsActivity :
                 }
             }
             showContent()
-            GIOUtils.circleDetailPageView(it.circleId.toString(), it.name)
+            GIOUtils.circleDetailPageView(
+                it.circleId.toString(),
+                it.name,
+                gioPreBean.prePageName,
+                gioPreBean.prePageType
+            )
         }
         viewModel.joinBean.observe(this) {
             it.msg.toast()
@@ -689,7 +707,7 @@ class CircleDetailsActivity :
                     tvJoin.setOnClickListener {
                         viewModel.joinCircle(circleId)
                         GIOUtils.joinCircleClick(
-                            "圈子详情页",
+                            "圈子详情页-${GioPageConstant.circleDetailTabName}",
                             circleId,
                             circleName
                         )

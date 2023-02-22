@@ -10,17 +10,17 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.toast
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.shop.databinding.ActivityShoppingCartBinding
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartInvaildAdapter
 import com.changanford.shop.ui.shoppingcart.request.ShoppingCartViewModel
 import com.changanford.shop.utils.WCommonUtil
+import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import java.math.BigDecimal
@@ -35,7 +35,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             override fun check() {
                 setTitle()
             }
-        },singleCheck)
+        }, singleCheck)
 
     }
     val shoppingCartInvaildAdapter: ShoppingCartInvaildAdapter by lazy {
@@ -50,7 +50,17 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
     private val singleCheck = false
 
     override fun initView() {
+        val height: Int = ImmersionBar.getStatusBarHeight(this)
+        binding.layoutTop.root.run {
+            this.setPadding(
+                this.paddingLeft,
+                this.paddingTop + height / 2,
+                this.paddingRight,
+                this.paddingBottom
+            )
+        }
         binding.layoutTop.tvTitle.text = "购物车"
+        updateMainGio("购物车页", "购物车页")
         binding.rvShopping.adapter = shoppingCartAdapter
         binding.layoutTop.imgBack.setOnClickListener {
             onBackPressed()
@@ -130,7 +140,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                     shoppingCartAdapter.shopList.forEach {
                         mallUserSkuIds.add(it.mallMallUserSkuId.toString())
                     }
-                    viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds)
+                    viewModel.deleteCartShopping(shoppingCartAdapter.data.size, mallUserSkuIds)
                 }
             }
         }
@@ -142,7 +152,11 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             shoppingCartInvaildAdapter.data.forEach {
                 mallUserSkuIds.add(it.mallMallUserSkuId.toString())
             }
-            viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds = mallUserSkuIds,false)
+            viewModel.deleteCartShopping(
+                shoppingCartAdapter.data.size,
+                mallUserSkuIds = mallUserSkuIds,
+                false
+            )
         }
         shoppingCartInvaildAdapter.setOnItemChildClickListener(object : OnItemChildClickListener {
             override fun onItemChildClick(
@@ -153,7 +167,10 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 val mallUserSkuIds: ArrayList<String> = arrayListOf()
                 mallUserSkuIds.add(shoppingCartInvaildAdapter.getItem(position = position).mallMallUserSkuId.toString())
                 shoppingCartInvaildAdapter.remove(shoppingCartInvaildAdapter.getItem(position = position))
-                viewModel.deleteCartShopping(shoppingCartAdapter.data.size,mallUserSkuIds = mallUserSkuIds)
+                viewModel.deleteCartShopping(
+                    shoppingCartAdapter.data.size,
+                    mallUserSkuIds = mallUserSkuIds
+                )
             }
         })
 

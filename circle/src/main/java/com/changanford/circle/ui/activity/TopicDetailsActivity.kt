@@ -9,6 +9,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
@@ -37,9 +38,12 @@ import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.google.android.material.appbar.AppBarLayout
@@ -66,16 +70,21 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private var isWhite = true//是否是白色状态
     private var topicId = ""
-    private var topicName = ""
+    private var topicName = MutableLiveData<String>()
     private var circleId: String? = null
     private var circleName: String? = null
     private var isOpenMenuPop = false
+    var isCheckDetails = false
+    private var isCheckPost = false
+    var isCheckPerson = false
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     override fun initView() {
         initMagicIndicator()
         GioPageConstant.topicDetailTabName = "推荐"
+        GioPageConstant.prePageType = "话题详情页"
+        GioPageConstant.prePageTypeName = "话题详情页"
         topicId = intent.getStringExtra("topicId").toString()
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         circleName = intent.getStringExtra("circleName")
@@ -116,6 +125,9 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             this
         ) {
             postEntity = it as ArrayList<PostEntity>
+        }
+        LiveDataBus.get().with(LiveDataBusKey.IS_CHECK_PERSONAL).observe(this) {
+            isCheckPerson = true
         }
     }
 
@@ -183,6 +195,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                                     param("circleName", it)
                                                 }
                                             }
+                                            isCheckPost = true
                                             startARouter(ARouterCirclePath.PostActivity)
                                         }
                                     }
@@ -196,6 +209,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                                     param("circleName", it)
                                                 }
                                             }
+                                            isCheckPost = true
                                             startARouter(ARouterCirclePath.VideoPostActivity)
                                         }
 
@@ -210,6 +224,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                                     param("circleName", it)
                                                 }
                                             }
+                                            isCheckPost = true
                                             startARouter(ARouterCirclePath.LongPostAvtivity)
                                         }
                                     }
@@ -252,14 +267,17 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
         CircleDetailsPop(this, object : CircleMainMenuPop.CheckPostType {
             override fun checkLongBar() {
+                isCheckPost = true
                 startARouter(ARouterCirclePath.LongPostAvtivity, bundle, true)
             }
 
             override fun checkPic() {
+                isCheckPost = true
                 startARouter(ARouterCirclePath.PostActivity, bundle, true)
             }
 
             override fun checkVideo() {
+                isCheckPost = true
                 startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
             }
 
@@ -287,12 +305,45 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (isCheckDetails) {
+            GIOUtils.topicDetailPageView(
+                topicId,
+                topicName.value.toString(),
+                GioPageConstant.postDetailsName,
+                "帖子详情页"
+            )
+            isCheckDetails = false
+        } else if (isCheckPost) {
+            GIOUtils.topicDetailPageView(
+                topicId,
+                topicName.value.toString(),
+                "发帖页",
+                "发帖页"
+            )
+            isCheckPost = false
+        } else if (isCheckPerson) {
+            GIOUtils.topicDetailPageView(
+                topicId,
+                topicName.value.toString(),
+                "发帖人个人主页",
+                "发帖人个人主页"
+            )
+            isCheckPerson = false
+        } else {
+            topicName.observe(this) {
+                GIOUtils.topicDetailPageView(topicId, it)
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.topPicDetailsTopBean.observe(this) {
-            GIOUtils.topicDetailPageView(topicId, it.name)
-            topicName = it.name
+            topicName.value = it.name
+            updateMainGio(it.name, "话题详情页")
             initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.topContent.run {

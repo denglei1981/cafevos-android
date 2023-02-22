@@ -16,6 +16,7 @@ import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.SPUtils
+import com.changanford.common.util.gio.updateMainGio
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
@@ -78,15 +79,19 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                 when (position) {
                     0 -> {
                         listener.checkLongBar()
+                        updateMainGio("扫一扫页", "扫一扫页")
                     }
                     1 -> {
                         listener.checkPic()
+                        updateMainGio("扫一扫页", "扫一扫页")
                     }
                     2 -> {
                         listener.checkVideo()
+                        updateMainGio("扫一扫页", "扫一扫页")
                     }
                     3->{
                         listener.checkQuestion()
+                        updateMainGio("提问页", "提问页")
                     }
 //                    4 -> {
 //                        val bundle = Bundle()

@@ -231,4 +231,8 @@ object MConstant {
 
     //商场协议code
     const val agreementShop = "user_agreement_mall"
+
+    //注销协议code
+    const val userAgreementCancellation="user_agreement_cancellation"
+
 }

@@ -147,11 +147,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             mAdapter.data[position].apply {
                 WBuriedUtil.clickShopKill(spuName, seckillFb)
                 GoodsDetailsActivity.start(getJdType(), getJdValue())
+                GIOUtils.homePageClick("限时秒杀", (position+1).toString(), spuName)
             }
 
 //            if("ON_GOING"==mAdapter.data[position].seckillStatus)GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)
         }
-        binding.inTop.tvShopMoreKill.setOnClickListener { GoodsKillAreaActivity.start(requireContext()) }
+        binding.inTop.tvShopMoreKill.setOnClickListener {
+            GoodsKillAreaActivity.start(requireContext())
+            GIOUtils.homePageClick("限时秒杀", 0.toString(), "更多")
+        }
     }
 
     override fun initData() {

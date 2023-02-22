@@ -17,6 +17,7 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.request.getBizCode
@@ -70,6 +71,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
     }
 
     override fun initView() {
+        updateMainGio("车主认证页", "车主认证页")
         signViewModel = createViewModel(SignViewModel::class.java)
         viewModel.isWaitBindingCar()
         uploadDialog.setCancelable(false)

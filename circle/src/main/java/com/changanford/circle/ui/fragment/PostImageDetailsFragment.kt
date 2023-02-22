@@ -323,6 +323,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 //                val bundle = Bundle()
 //                bundle.putString("value", mData.authorBaseVo?.authorId)
 //                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                GIOUtils.postDetailIsCheckPersonal = true
                 JumpUtils.instans?.jump(35, mData.authorBaseVo?.authorId)
             }
             bottomView.tvTalk.setOnClickListener {
@@ -350,16 +351,22 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
             tvTalkOut.setOnClickListener {
+                GIOUtils.postDetailIsCheckTopic = true
+                GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             tvTalkWeb.setOnClickListener {
+                GIOUtils.postDetailIsCheckTopic = true
+                GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             binding.viewLongType.tvTalkOut.setOnClickListener {
+                GIOUtils.postDetailIsCheckTopic = true
+                GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)

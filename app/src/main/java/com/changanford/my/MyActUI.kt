@@ -16,6 +16,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.home.data.PublishData
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiMyActBinding
@@ -38,6 +39,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
     val acts: String = "activity_add_wonderful"
     var selectPosition = "0"
     override fun initView() {
+        updateMainGio("我的活动页", "我的活动页")
         binding.collectToolbar.toolbarTitle.text = "我的活动"
         binding.collectToolbar.toolbarSave.text = "草稿箱"
         binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))

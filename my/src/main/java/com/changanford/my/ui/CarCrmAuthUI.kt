@@ -17,6 +17,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
@@ -52,6 +53,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
 
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
+        updateMainGio("我的爱车页", "我的爱车页")
 
         headView.look.setOnClickListener {
             BuriedUtil.instant?.carQy()

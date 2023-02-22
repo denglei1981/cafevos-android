@@ -42,6 +42,7 @@ import com.changanford.common.util.MConstant.totalWebNum
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
@@ -99,7 +100,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     //    public var postEntity: List<PostEntity>? = null//草稿
     private var setNavTitleKey: String = System.currentTimeMillis().toString()
     private var localWebNum = -1
-    private var loadingDialog:LoadingDialog? = null
+    private var loadingDialog: LoadingDialog? = null
 
     companion object {
         private const val REQUEST_PIC = 0x5431//图片
@@ -110,6 +111,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
 
     override fun initView() {
+        updateMainGio("无", "无")
         AppUtils.setStatusBarPaddingTop(binding.titleBar.commTitleBar, this)
         SoftHideKeyBoardUtil.assistActivity(this)
         loadingDialog = LoadingDialog(this)
@@ -319,7 +321,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                         doGetAccessCode()
                     }
-                    else->{
+                    else -> {
 
                     }
                 }
@@ -371,13 +373,13 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this) {
             getMyInfoCallback = it
-            viewModel.getUserInfo{ infoBean->
+            viewModel.getUserInfo { infoBean ->
                 try {
                     var userJson = JSON.toJSONString(infoBean)
                     if (!userJson.isNullOrEmpty()) {
                         agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
                     }
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -461,7 +463,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .observe(
                 this
             ) {
-                viewModel.getMyBindCarList(object :MyBindCarList{
+                viewModel.getMyBindCarList(object : MyBindCarList {
                     override fun myBindCarList(string: String) {
                         agentWeb.jsAccessEntrace.quickCallJs(it, string)
                     }
@@ -469,19 +471,21 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 })
             }
     }
-    fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
+
+    fun getAccessCode(clientId: String, redirectUrl: String, callback: String) {
         if (UserManger.isLogin()) {
             viewModel?.getH5AccessCode(clientId, redirectUrl) {
                 agentWeb.jsAccessEntrace.quickCallJs(callback, it)
             }
-        }else{
+        } else {
             getAccessCodeCallBack = callback
             this.clientId = clientId
             this.redirectUrl = redirectUrl
-            JumpUtils.instans?.jump(100,"")
+            JumpUtils.instans?.jump(100, "")
         }
     }
-    private fun doGetAccessCode(){
+
+    private fun doGetAccessCode() {
         if (getAccessCodeCallBack.isNotEmpty()) {
             viewModel?.getH5AccessCode(clientId, redirectUrl) {
                 agentWeb.jsAccessEntrace.quickCallJs(getAccessCodeCallBack, it)
@@ -582,7 +586,8 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         )
         agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
         agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
-        agentWeb.agentWebSettings.webSettings.userAgentString = "${agentWeb.agentWebSettings.webSettings.userAgentString} ford-evos"
+        agentWeb.agentWebSettings.webSettings.userAgentString =
+            "${agentWeb.agentWebSettings.webSettings.userAgentString} ford-evos"
         AndroidBug5497Workaround.assistActivity(this)
     }
 

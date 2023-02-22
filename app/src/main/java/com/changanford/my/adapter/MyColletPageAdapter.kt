@@ -12,6 +12,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemHomePageBinding
 import com.changanford.my.activity.MyJoinCircleActivity
@@ -43,14 +44,14 @@ class MyColletPageAdapter :
         item: MyCollectBean
     ) {
         holder.dataBinding?.let { t ->
-            t.rvMenu.isNestedScrollingEnabled=false
+            t.rvMenu.isNestedScrollingEnabled = false
             when (item.type) {
                 0 -> { //资讯
                     t.tvTitle.text = "资讯"
                     if (item.infoList != null && item.infoList!!.dataList != null && item.infoList!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletNewsAdapter
                         myColletNewsAdapter.setNewInstance(item.infoList!!.dataList as MutableList<InfoDataBean>?)
-                        val lin =object :GridLayoutManager(activity, 3){
+                        val lin = object : GridLayoutManager(activity, 3) {
                             override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
@@ -69,12 +70,14 @@ class MyColletPageAdapter :
 //                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
 
                         myColletNewsAdapter.setOnItemClickListener { adapter, view, position ->
-                            myFragment.isOut=true
+                            myFragment.isOut = true
                             val item = myColletNewsAdapter.getItem(position)
+                            updatePersonalData(myColletNewsAdapter.getItem(position).title, "资讯详情页")
                             JumpUtils.instans?.jump(2, item.artId)
                         }
                         t.tvMore.setOnClickListener {
-                            myFragment.isOut=true
+                            updatePersonalData("我的收藏页", "我的收藏页")
+                            myFragment.isOut = true
                             JumpUtils.instans?.jump(27, "0")
                         }
                     } else {
@@ -89,7 +92,7 @@ class MyColletPageAdapter :
                     t.tvTitle.text = "帖子"
                     if (item.postList != null && item.postList!!.dataList.size > 0) {
                         t.rvMenu.adapter = myColletPostAdapter
-                        val lin =object :GridLayoutManager(activity, 3){
+                        val lin = object : GridLayoutManager(activity, 3) {
                             override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
@@ -107,16 +110,21 @@ class MyColletPageAdapter :
 //                        t.tvTitle.text =
 //                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         myColletPostAdapter.setOnItemClickListener { adapter, view, position ->
-                            myFragment.isOut=true
+                            myFragment.isOut = true
                             val bundle = Bundle()
                             bundle.putString(
                                 "postsId",
                                 myColletPostAdapter.getItem(position).postsId.toString()
                             )
+                            updatePersonalData(
+                                myColletPostAdapter.getItem(position).title.toString(),
+                                "帖子详情页"
+                            )
                             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
                         }
                         t.tvMore.setOnClickListener {
-                            myFragment.isOut=true
+                            updatePersonalData("我的收藏页", "我的收藏页")
+                            myFragment.isOut = true
                             JumpUtils.instans?.jump(27, "1")
                         }
                     } else {
@@ -131,7 +139,7 @@ class MyColletPageAdapter :
                     if (item.actDataBean != null && item.actDataBean!!.dataList != null && item.actDataBean!!.dataList?.size!! > 0) {
                         t.rvMenu.adapter = myColletAccAdapter
                         myColletAccAdapter.setNewInstance(item.actDataBean!!.dataList as MutableList<ActBean>?)
-                        val lin =object :GridLayoutManager(activity, 3){
+                        val lin = object : GridLayoutManager(activity, 3) {
                             override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
@@ -145,15 +153,17 @@ class MyColletPageAdapter :
                         t.llEmpty.visibility = View.GONE
                         t.tvMore.visibility = View.VISIBLE
                         t.tvMore.setOnClickListener {
-                            myFragment.isOut=true
+                            updatePersonalData("我的收藏页", "我的收藏页")
+                            myFragment.isOut = true
                             JumpUtils.instans?.jump(27, "2")
                         }
 //                        val str = "活动 ${item.actDataBean!!.total}"
 //                        t.tvTitle.text =
 //                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         myColletAccAdapter.setOnItemClickListener { adapter, view, position ->
-                         myFragment.isOut=true
+                            myFragment.isOut = true
                             val item = myColletAccAdapter.getItem(position)
+                            updatePersonalData(item.title, "活动详情页")
                             CommonUtils.jumpActDetail(item.jumpType, item.jumpVal)
                         }
                     } else {
@@ -168,7 +178,7 @@ class MyColletPageAdapter :
                     if (item.shopList != null && item.shopList!!.dataList != null && item.shopList!!.dataList?.isNotEmpty()!!) {
                         t.rvMenu.adapter = myColletShopAdapter
                         myColletShopAdapter.setNewInstance(item.shopList!!.dataList as MutableList<MyShopBean>?)
-                        val lin =object :GridLayoutManager(activity, 3){
+                        val lin = object : GridLayoutManager(activity, 3) {
                             override fun canScrollHorizontally(): Boolean {
                                 return false
                             }
@@ -185,12 +195,14 @@ class MyColletPageAdapter :
 //                        t.tvTitle.text =
 //                            SpannableStringUtils.getSizeColor(str, "#999999", 14, 2, str.length)
                         t.tvMore.setOnClickListener {
-                            myFragment.isOut=true
+                            updatePersonalData("我的收藏页", "我的收藏页")
+                            myFragment.isOut = true
                             JumpUtils.instans?.jump(27, "3")
                         }
                         myColletShopAdapter.setOnItemClickListener { adapter, view, position ->
-                            myFragment.isOut=true
+                            myFragment.isOut = true
                             val item = myColletShopAdapter.getItem(position)
+                            updatePersonalData(item.spuName, "商品详情页")
                             JumpUtils.instans?.jump(3, item.mallMallSpuId)
                         }
                     } else {

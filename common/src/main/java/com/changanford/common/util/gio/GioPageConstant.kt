@@ -25,6 +25,7 @@ object GioPageConstant {
     var shopOneTabName = "全部商品"
     var prePageType = "无"
     var prePageTypeName = "无"
+    var postDetailsName = ""
 
     fun mainSecondPageName(): String {
         return when (mainTabName) {

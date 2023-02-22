@@ -18,6 +18,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toast
 
 /**
@@ -36,6 +37,8 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     }
 
     override fun initView() {
+        GioPageConstant.prePageType = "搜索页"
+        GioPageConstant.prePageTypeName = "搜索页"
         section = intent.getIntExtra(IntentKey.TOPIC_SECTION, 0)
         AppUtils.setStatusBarMarginTop(binding.llTitle, this)
         binding.ryTopic.adapter = adapter

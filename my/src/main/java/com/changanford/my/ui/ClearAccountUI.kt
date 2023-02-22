@@ -9,9 +9,13 @@ import com.changanford.common.bean.CancelVerifyBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.H5_CANCEL_ACCOUNT
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.request.GetRequestResult
+import com.changanford.common.util.request.addRecord
+import com.changanford.common.util.request.getBizCode
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountVerifyBinding
@@ -30,6 +34,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
     var isCondition = true //是否满足全部条件
     var isChecked: Boolean = false
+    private var bizCode = ""
 
     val clearAdapter: ClearAccountAdapter by lazy {
         ClearAccountAdapter()
@@ -58,9 +63,20 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
         binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
             this.isChecked = isChecked
             binding.btnClearAccount.isEnabled = isChecked && isCondition
+            if (isChecked) {
+                getBizCode(this, MConstant.userAgreementCancellation, object : GetRequestResult {
+                    override fun success(data: Any) {
+                        bizCode = data.toString()
+                    }
+
+                })
+            }
         }
 
         binding.btnClearAccount.setOnClickListener {
+            if (bizCode.isNotEmpty()) {
+                addRecord(bizCode)
+            }
             RouterManger.startARouter(ARouterMyPath.MineCancelAccountConfirmUI)
         }
 

@@ -11,6 +11,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateTaskList
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.ItemTaskContentBinding
@@ -79,6 +80,24 @@ class TaskContentAdapter() :
                         item.taskName,
                         item.actionCode
                     )
+                    when (item.jumpDataType) {
+                        18 -> {
+                            updateTaskList("绑定手机号页", "绑定手机号页")
+                        }
+                        17 -> {
+                            updateTaskList("车主认证页", "车主认证页")
+                        }
+                        1 -> {
+                            updateTaskList("无", "无")
+                        }
+                        34 -> {
+                            updateTaskList("基本信息页", "基本信息页")
+                        }
+                        21 -> {
+                            updateTaskList("设置页", "设置页")
+                        }
+
+                    }
                     if (item.jumpDataType == 14) {
                         try {
                             LiveDataBus.get()

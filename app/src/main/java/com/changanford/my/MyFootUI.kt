@@ -12,6 +12,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,6 +31,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private var oldPosition = 0
 
     override fun initView() {
+        updateMainGio("我的足迹页", "我的足迹页")
         GioPageConstant.infoEntrance = "我的足迹-资讯"
         GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"

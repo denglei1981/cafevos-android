@@ -12,6 +12,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.GioPageConstant.isInInfoActivity
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.databinding.ActivityInfoDetailBinding
@@ -46,6 +47,7 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                     }
 
                     GIOUtils.infoDetailInfo()
+                    updateMainGio(it1.title, "资讯详情页")
                 }
                 val type = it.data.type
                 val trans = supportFragmentManager.beginTransaction()

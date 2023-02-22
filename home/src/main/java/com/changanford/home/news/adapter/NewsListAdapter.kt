@@ -105,7 +105,7 @@ class NewsListAdapter(
                 if (type.isNotEmpty()) {
                     type
                 } else if (isSpecialDetail) {
-                    "专题详情页面"
+                    "专题详情页"
                 } else "发现-资讯",
                 item.specialTopicTitle,
                 item.artId,
@@ -167,7 +167,7 @@ class NewsListAdapter(
                             if (type.isNotEmpty()) {
                                 type
                             } else if (isSpecialDetail) {
-                                "专题详情页面"
+                                "专题详情页"
                             } else "发现-资讯",
                             item.specialTopicTitle,
                             item.artId,
@@ -187,7 +187,7 @@ class NewsListAdapter(
                             if (type.isNotEmpty()) {
                                 type
                             } else if (isSpecialDetail) {
-                                "专题详情页面"
+                                "专题详情页"
                             } else "发现-资讯",
                             item.specialTopicTitle,
                             item.artId,
@@ -206,7 +206,7 @@ class NewsListAdapter(
         val pageName = if (type.isNotEmpty()) {
             type
         } else if (isSpecialDetail) {
-            "专题详情页面"
+            "专题详情页"
         } else "发现-资讯"
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
@@ -281,7 +281,7 @@ class NewsListAdapter(
         val pageName = if (type.isNotEmpty()) {
             type
         } else if (isSpecialDetail) {
-            "专题详情页面"
+            "专题详情页"
         } else "发现-资讯"
         when (followType) {
             1 -> {

@@ -18,6 +18,7 @@ import com.changanford.common.util.MineUtils.listSex
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_LIKE
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils.loadCircle
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -69,6 +70,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     lateinit var dialog: LoadDialog
 
     override fun initView() {
+        updateMainGio("基本信息页", "基本信息页")
         dialog = LoadDialog(this@MineEditInfoUI)
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)

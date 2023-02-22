@@ -11,6 +11,7 @@ import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
 import com.changanford.shop.adapter.goods.GoodsKillAreaTimeAdapter
@@ -56,6 +57,7 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         override fun onFinish() {}
     }.start()
     override fun initView() {
+        updateMainGio("限时秒杀页", "限时秒杀页")
         binding.inKill.rvDate.adapter=dateAdapter
         binding.inKill.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter

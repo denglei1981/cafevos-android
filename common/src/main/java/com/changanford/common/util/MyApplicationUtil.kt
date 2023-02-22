@@ -25,8 +25,12 @@ import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.common.BaiduMapSDKException
 import com.changanford.common.R
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
+import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
+import com.growingio.android.sdk.autotrack.GrowingAutotracker
+import com.growingio.giokit.GioKit
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
 import com.tencent.bugly.crashreport.CrashReport
@@ -41,14 +45,14 @@ import com.tencent.bugly.crashreport.CrashReport
  * *********************************************************************************
  */
 object MyApplicationUtil {
-    lateinit var applicationContext : Application
-    fun init(application:Application) {
+    lateinit var applicationContext: BaseApplication
+    fun init(application: BaseApplication) {
         applicationContext = application
     }
 
-    fun init(){
+    fun init() {
         //Arouter Initial
-        if (MConstant.isDebug) {
+        if (MConstant.isCanQeck) {
             ARouter.openLog()
             ARouter.openDebug()
         }
@@ -72,12 +76,14 @@ object MyApplicationUtil {
         initCloudChannel(applicationContext)
         initThirdPush()
         initshare()
+        applicationContext.initGio()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             initBugfy()
         }
 
     }
-    private fun initBaiduSdk(){
+
+    private fun initBaiduSdk() {
         /**
          * 隐私政策统一接口：：该接口必须在调用SDK初始化接口之前设置
          * 设为false不同意隐私政策：不支持发起检索、路线规划等数据请求，SDK抛出异常；
@@ -86,6 +92,7 @@ object MyApplicationUtil {
         SDKInitializer.setAgreePrivacy(applicationContext, true)
         LocationClient.setAgreePrivacy(true)
     }
+
     @RequiresApi(Build.VERSION_CODES.P)
     private fun initBugfy() {
         val context = applicationContext
@@ -201,9 +208,11 @@ object MyApplicationUtil {
 //        var res = CustomNotificationBuilder.getInstance()
 //            .setCustomNotification(1, advancedCustomPushNotification);//注册该通知,并设置ID为1
     }
+
     private fun initshare() {
         ShareManager.initWxShareSdk(ConfigUtils.WXAPPID)
         ShareManager.initSinaSdk(ConfigUtils.WEIBOAPPKEY, ModuleConfigureConstant.REDIRECT_URL, "")
         ShareManager.initQqSdk(ConfigUtils.QQAPPID, "福域")
     }
+
 }

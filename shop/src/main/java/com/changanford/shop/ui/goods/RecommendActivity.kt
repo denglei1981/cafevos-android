@@ -9,6 +9,7 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.wutil.ViewPage2AdapterAct
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActRecommendBinding
@@ -33,6 +34,7 @@ class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
     }
     private val fragments=ArrayList<Fragment>()
     override fun initView() {
+        updateMainGio("推荐榜单页", "推荐榜单页")
         binding.topBar.setActivity(this)
         WCommonUtil.setTabSelectStyle(this,binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
     }

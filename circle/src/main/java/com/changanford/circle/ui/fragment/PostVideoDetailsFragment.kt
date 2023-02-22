@@ -351,7 +351,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             ivHead.setOnClickListener {
-
+                GIOUtils.postDetailIsCheckPersonal = true
                 JumpUtils.instans?.jump(35, mData.authorBaseVo?.authorId)
 
             }
@@ -802,6 +802,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         modifier = Modifier
                             .weight(1f)
                             .clickable {
+                                GIOUtils.postDetailIsCheckCircle = true
+                                circleName?.let {
+                                    GIOUtils.postPrePostName = circleName
+                                }
                                 val bundle = Bundle()
                                 bundle.putString("circleId", "$circleId")
                                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)

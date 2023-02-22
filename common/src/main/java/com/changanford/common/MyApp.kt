@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.camera.camera2.Camera2Config
 import androidx.camera.core.CameraXConfig
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.constant.HawkKey
 import com.changanford.common.loadsir.EmptyCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
@@ -18,6 +19,7 @@ import com.changanford.common.util.crash.CrashProtect
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
 import com.changanford.common.widget.smart.MyHeaderViewNew
+import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
@@ -67,7 +69,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         super.onCreate()
         mContext = this
         Hawk.init(this).build()
-        if(!BuildConfig.DEBUG)CrashProtect().doProtect(this)
+        if (!BuildConfig.DEBUG) CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
         if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             LanSoEditor.initSDK(this, "ft")
@@ -80,6 +82,10 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         }
         initLoadSir()// 初始化界面管理类。
         isRunInBackGround()
+        val cmcOpenId = Hawk.get<String>(HawkKey.CMC_OPEN_ID)
+        cmcOpenId?.let {
+            GrowingAutotracker.get().setLoginUserId(it)
+        }
 //        DebuggerUtils.checkDebuggableInNotDebugModel(this)
     }
 
@@ -96,6 +102,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
             .commit()
     }
+
     /**
      * app是否处于后台H
      */
@@ -115,15 +122,17 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
      */
     private fun isRunInBackGround() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity,savedInstanceState: Bundle?) {}
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
             override fun onActivityStarted(activity: Activity) {
                 mFinalCount++
                 if (mFinalCount == 1 && isRunBack) { //说明从后台回到了前台
                     isRunBack = false
                 }
             }
+
             override fun onActivityResumed(activity: Activity) {
             }
+
             override fun onActivityPaused(activity: Activity) {}
             override fun onActivityStopped(activity: Activity) {
                 mFinalCount--
@@ -137,7 +146,9 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             override fun onActivitySaveInstanceState(
                 activity: Activity,
                 outState: Bundle
-            ) {}
+            ) {
+            }
+
             override fun onActivityDestroyed(activity: Activity) {}
         })
     }

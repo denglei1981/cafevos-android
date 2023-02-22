@@ -12,6 +12,10 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemHomePageBinding
 import com.changanford.my.activity.MyJoinCircleActivity
@@ -68,12 +72,14 @@ class MyHomePageAdapter :
                         t.tvTitle.text =
                             SpannableStringUtils.getSizeColor(str, "#999999", 14, 5, str.length)
                         myJoinCircleAdapter.setOnItemClickListener { adapter, view, position ->
+                            updatePersonalData(myJoinCircleAdapter.getItem(position).name.toString(), "圈子详情页")
                             JumpUtils.instans?.jump(
                                 6,
                                 myJoinCircleAdapter.getItem(position).circleId.toString()
                             )
                         }
                         t.tvMore.setOnClickListener {
+                            updatePersonalData("加入的圈子页", "加入的圈子页")
                             MyJoinCircleActivity.start(userId = userIds, activity)
                         }
                     } else {
@@ -106,12 +112,16 @@ class MyHomePageAdapter :
                         t.tvTitle.text =
                             SpannableStringUtils.getSizeColor(str, "#999999", 14, 5, str.length)
                         t.tvMore.setOnClickListener {
+                            GioPageConstant.topicEntrance = "发帖人个人主页"
+                            updatePersonalData("参与的话题页", "参与的话题页")
                             MyJoinTopicActivity.start(userIds, activity)
                         }
                         myJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
                             val item = myJoinTopicAdapter.getItem(position)
                             val bundle = Bundle()
                             bundle.putString("topicId", item.topicId.toString())
+                            GioPageConstant.topicEntrance = "发帖人个人主页"
+                            updatePersonalData(item.name, "话题详情页")
                             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
                         }
                     } else {
@@ -144,10 +154,14 @@ class MyHomePageAdapter :
                         t.tvTitle.text =
                             SpannableStringUtils.getSizeColor(str, "#999999", 14, 5, str.length)
                         t.tvMore.setOnClickListener {
+                            GioPageConstant.topicEntrance = "发帖人个人主页"
+                            updatePersonalData("发起的话题页", "发起的话题页")
                             MyJoinTopicActivity.start(userIds, activity, true)
                         }
                         myPostJoinTopicAdapter.setOnItemClickListener { adapter, view, position ->
+                            GioPageConstant.topicEntrance = "发帖人个人主页"
                             val item = myPostJoinTopicAdapter.getItem(position)
+                            updatePersonalData(item.name, "话题详情页")
                             val bundle = Bundle()
                             bundle.putString("topicId", item.topicId.toString())
                             startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
@@ -181,14 +195,18 @@ class MyHomePageAdapter :
                         t.tvTitle.text =
                             SpannableStringUtils.getSizeColor(str, "#999999", 14, 5, str.length)
                         myStarAdapter.setOnItemClickListener { adapter, view, position ->
+                            GioPageConstant.postEntrance = "发帖人个人主页"
                             val bundle = Bundle()
                             bundle.putString(
                                 "postsId",
                                 myStarAdapter.getItem(position).postsId.toString()
                             )
+                            updatePersonalData(myStarAdapter.getItem(position).title.toString(), "帖子详情页")
                             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
                         }
                         t.tvMore.setOnClickListener {
+                            GioPageConstant.postEntrance = "发帖人个人主页"
+                            updatePersonalData("点赞的帖子页", "点赞的帖子页")
                             MyStarPostsActivity.start(userIds, activity)
                         }
                     } else {

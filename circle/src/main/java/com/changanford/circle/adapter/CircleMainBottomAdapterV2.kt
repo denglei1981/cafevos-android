@@ -118,6 +118,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId.toString())
 //                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                LiveDataBus.get().with(LiveDataBusKey.IS_CHECK_PERSONAL).postValue("")
                 JumpUtils.instans?.jump(35, item.userId.toString())
 
             }

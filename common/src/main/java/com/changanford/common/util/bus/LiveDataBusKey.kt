@@ -299,5 +299,11 @@ object LiveDataBusKey {
     const val FORD_ALBUM_RESULT = "fordAlbumResult"
 
     const val MAIN_TAB_CHANGE = "mainTabChange"
+    const val IS_CHECK_PERSONAL = "isCheckPersonal"
+    const val UPDATE_PERSONAL_GIO = "updatePersonalGio"
+    const val UPDATE_CIRCLE_DETAILS_GIO = "updateCircleDetailsGio"
+    const val UPDATE_GOODS_DETAILS_GIO = "updateGoodsDetailsGio"
+    const val UPDATE_TASK_LIST_GIO = "updateTaskListGio"
+    const val UPDATE_MAIN_GIO = "updateMainGio"
 }
 

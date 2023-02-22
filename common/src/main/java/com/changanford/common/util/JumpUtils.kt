@@ -30,6 +30,7 @@ import com.changanford.common.ui.dialog.SignMaintainDialog
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
@@ -299,7 +300,7 @@ class JumpUtils {
                 startARouter(ARouterMyPath.MineCollectUI, bundle, true)
 
             }
-            28 -> {//我的圈子',
+            28 -> {//我的圈子',value=1进入我管理的
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
 
             }
@@ -530,6 +531,7 @@ class JumpUtils {
                 SoulPermission.getInstance().checkAndRequestPermission(
                     Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
                         override fun onPermissionOk(permission: Permission?) {
+                            updateMainGio("扫一扫页", "扫一扫页")
                             startARouter(ARouterHomePath.CaptureActivity)
                         }
 
@@ -861,7 +863,7 @@ class JumpUtils {
                         return@let
                     }
                     "签到成功，福币+${it.integral},成长值+${it.growth}".toast()
-                    GIOUtils.taskCenterCtaClick("立即签到", it.integral.toString(), "签到",it.actionCode)
+                    GIOUtils.taskCenterCtaClick("立即签到", it.integral.toString(), "签到", it.actionCode)
                     if (it.additionStatus == 1) {//有额外弹框
                         var bundle = Bundle()
                         bundle.putString("signInfo", JSON.toJSONString(it))

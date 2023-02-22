@@ -32,6 +32,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
@@ -148,6 +149,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                             else -> R.string.str_taQuestionAndAnswer
                         }
                     )
+                    updateMainGio("${tvTitle.text}页", "${tvTitle.text}页")
                 }
                 if (fragments.size > 0) {
                     fragments[binding.viewPager.currentItem].startRefresh()

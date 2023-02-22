@@ -18,6 +18,7 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
@@ -56,7 +57,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     var medalDatas: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
-
+        updateMainGio("会员勋章页", "会员勋章页")
         binding.medalToolbar.toolbarTitle.text = "会员勋章"
         binding.medalToolbar.toolbarSave.apply {
             text = "我的勋章"

@@ -44,7 +44,7 @@ abstract class BaseApplication : MultiDexApplication() {
             // 没签，等签署之后再调用registerPush()
         } else {
             //Arouter Initial
-            if (MConstant.isDebug) {
+            if (MConstant.isCanQeck) {
                 ARouter.openLog()
                 ARouter.openDebug()
             }
@@ -80,7 +80,7 @@ abstract class BaseApplication : MultiDexApplication() {
     private val uRLScheme = "growing.5203f0f6016f1db6"
     private val apiHost = "https://ubacollectuat.changanford.cn"
 
-    private fun initGio() {
+     fun initGio() {
         val sConfiguration = CdpAutotrackConfiguration(accountID, uRLScheme)
             .setDataCollectionServerHost(apiHost)
             .setDataSourceId(dataSourceID)
@@ -89,7 +89,7 @@ abstract class BaseApplication : MultiDexApplication() {
         //采集数据开关
         GrowingAutotracker.get().setDataCollectionEnabled(true)
 
-//        GioKit.with(this).build()
+        GioKit.with(this).build()
     }
 
     //友盟初始化
@@ -188,7 +188,7 @@ abstract class BaseApplication : MultiDexApplication() {
     }
 
     companion object {
-        lateinit var INSTANT: Application
+        lateinit var INSTANT: BaseApplication
         lateinit var curActivity: AppCompatActivity
         lateinit var currentViewModelScope: CoroutineScope
     }

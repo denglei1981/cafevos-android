@@ -29,6 +29,7 @@ import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.setCustomDensity
 import com.changanford.common.utilext.createHashMap
@@ -66,6 +67,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
     }
 
     override fun initView() {
+        updateMainGio("消息页", "消息页")
         binding.mineToolbar.toolbarTitle.text = "消息"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()

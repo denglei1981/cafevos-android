@@ -14,6 +14,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
@@ -46,6 +47,10 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
         intent.extras?.getInt(RouterManger.KEY_TO_ID, 1)?.let {
             type = it
             binding.fansToolbar.toolbarTitle.text = if (type == 1) "粉丝" else "关注"
+            updateMainGio(
+                "${binding.fansToolbar.toolbarTitle.text}页",
+                "${binding.fansToolbar.toolbarTitle.text}页"
+            )
         }
         intent?.extras?.getString(RouterManger.KEY_TO_OBJ)?.let {
             userId = it

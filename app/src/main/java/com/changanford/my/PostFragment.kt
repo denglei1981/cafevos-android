@@ -11,6 +11,8 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.my.databinding.FragmentPostBinding
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -98,6 +100,8 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
         binding.rcyPost.rcyCommonView.adapter = postAdapter
 
         postAdapter.setOnItemClickListener { _, view, position ->
+            GioPageConstant.postEntrance = "发帖人个人主页"
+            updatePersonalData(postAdapter.getItem(position).title.toString(), "帖子详情页")
             val bundle = Bundle()
             bundle.putString("postsId", postAdapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)

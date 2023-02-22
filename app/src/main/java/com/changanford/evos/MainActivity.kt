@@ -22,6 +22,7 @@ import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
@@ -67,9 +68,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     var jumpIndex: String = ""
 
-    companion object{
+    companion object {
         var activityAlive = false
     }
+
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
 
@@ -247,7 +249,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //            if (it as Boolean) {
 //            }
 //        })
-        GIOUtils.homePageView()
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_MAIN_GIO).observe(this) {
+            gioPreBean = it
+        }
+    }
+
+    private var gioPreBean = GioPreBean()
+
+    override fun onResume() {
+        super.onResume()
+        GIOUtils.homePageView(gioPreBean.prePageName, gioPreBean.prePageType)
+        gioPreBean.run {
+            prePageName = ""
+            prePageType = ""
+        }
     }
 
     private fun getNavigator() {
@@ -423,7 +438,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it || UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it) {
                     viewModel.getUserInfo()
                 } else if (UserManger.UserLoginStatus.USER_LOGIN_OUT == it) {
                     initGioUserId()
@@ -574,8 +589,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun initGioUserId() {
         if (MConstant.userId.isEmpty()) {
             GrowingAutotracker.get().cleanLoginUserId()
+            Hawk.delete(HawkKey.CMC_OPEN_ID)
         } else {
             if (MConstant.userId.isNotEmpty()) {
+                if (!viewModel.userInfo.value?.cmcOpenid.isNullOrEmpty()) {
+                    Hawk.put(HawkKey.CMC_OPEN_ID, viewModel.userInfo.value?.cmcOpenid)
+                }
                 GrowingAutotracker.get().setLoginUserId(viewModel.userInfo.value?.cmcOpenid)
             }
         }

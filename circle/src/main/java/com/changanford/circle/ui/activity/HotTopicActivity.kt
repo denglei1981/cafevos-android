@@ -17,6 +17,8 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -34,13 +36,10 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     private var section = 0
     private var circleId: String? = null
     private var circleName: String? = null
-    private var topicCheck = false
 
     override fun onResume() {
         super.onResume()
-        if (type == 0) {
-            GIOUtils.topicListPageView(topicCheck)
-        }
+        GIOUtils.topicListPageView()
     }
 
     override fun initView() {
@@ -52,6 +51,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             when (type) {
                 0 -> {
                     tvTitle.text = "热门话题"
+                    updateMainGio("热门话题页", "热门话题页")
                     section = 0
                 }
                 1 -> {
@@ -81,7 +81,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, circleId)
                 bundle.putString("circleName", circleName)
             }
-            topicCheck = true
+
             when (type) {
                 0 -> {
                     GioPageConstant.topicEntrance = "热门话题列表页"

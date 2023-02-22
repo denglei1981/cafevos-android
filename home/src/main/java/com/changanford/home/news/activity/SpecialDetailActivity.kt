@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
@@ -101,6 +102,7 @@ class SpecialDetailActivity :
         viewModel.specialDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
+                updateMainGio(it.data.title, "专题详情页")
                 binding.layoutCollBar.ivShare.setOnClickListener { s ->
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }

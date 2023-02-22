@@ -7,6 +7,7 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
@@ -21,6 +22,7 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
     var mobile: String = "4008877766"//节假日热线
     override fun initView() {
         setLoadSir(binding.root)
+        updateMainGio("帮助与反馈页", "帮助与反馈页")
         binding.mineToolbar.toolbarTitle.text = "帮助与反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()

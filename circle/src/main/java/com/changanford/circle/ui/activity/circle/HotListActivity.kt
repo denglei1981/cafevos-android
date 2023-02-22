@@ -20,11 +20,15 @@ import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CirCleHotList
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.wutil.ScreenUtils
 import com.xiaomi.push.it
@@ -61,12 +65,22 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
             ivBack.setOnClickListener { finish() }
         }
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_PERSONAL_GIO).observe(this) {
+            gioPreBean = it
+        }
+        updateMainGio("圈子热门榜单页", "圈子热门榜单页")
     }
+
+    private var isFirstIn = true
+    private var gioPreBean = GioPreBean()
 
     override fun onResume() {
         super.onResume()
-        if (GioPageConstant.hotCircleEntrance == "圈子详情页") {
-            GIOUtils.hotCircleDetailPageView(topName)
+
+        if (isFirstIn) {
+            isFirstIn = false
+        } else {
+            GIOUtils.hotCircleDetailPageView(topName,gioPreBean.prePageName,gioPreBean.prePageType)
         }
     }
 

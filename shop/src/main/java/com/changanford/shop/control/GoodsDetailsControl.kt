@@ -14,6 +14,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
@@ -439,6 +440,7 @@ class GoodsDetailsControl(
      fun exchangeCtaClick() {
         dataBean.run {
             val isSeckill = if (killStates == 5) "是" else "否"
+            updateGoodsDetails(spuName.toString(), "确认订单页")
             GIOUtils.exchangeCtaClick(
                 spuId,
                 skuId,
