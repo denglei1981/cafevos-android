@@ -111,7 +111,7 @@ class GoodsDetailsControl(
         }
         //详情
         val detailsHtml = dataBean.detailsHtml
-        CustomWebHelper(activity, headerBinding.webview, false).loadDataWithBaseURL(detailsHtml)
+        CustomWebHelper(activity, headerBinding.webview, false).loadDataWithBaseURL(detailsHtml,dataBean.spuSource)
         //运费 0为包邮
         val freightPrice = dataBean.freightPrice
         if (freightPrice != "0.00" && "0" != freightPrice) headerBinding.inGoodsInfo.tvFreight.setHtmlTxt(

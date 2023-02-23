@@ -129,10 +129,10 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
         }
     }
 
-    fun loadDataWithBaseURL(htmlData: String) {
+    fun loadDataWithBaseURL(htmlData: String,spuSource:String = "0") {
         webView?.loadDataWithBaseURL(
             null,
-            HHtmlUtils.getHtmlData(htmlData) ?: "",
+            HHtmlUtils.getHtmlData(htmlData,spuSource) ?: "",
             "text/html",
             "utf-8",
             null
