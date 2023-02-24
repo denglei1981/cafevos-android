@@ -265,6 +265,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onResume() {
         super.onResume()
+        if (MConstant.token.isNotEmpty()) {
+            val cmcOpenId = Hawk.get<String>(HawkKey.CMC_OPEN_ID)
+            if (cmcOpenId.isNullOrEmpty()) {
+                viewModel.getUserInfo()
+            } else {
+                GrowingAutotracker.get().setLoginUserId(cmcOpenId)
+            }
+        }
         GIOUtils.homePageView(gioPreBean.prePageName, gioPreBean.prePageType)
         gioPreBean.run {
             prePageName = ""
@@ -289,9 +297,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initData() {
         handleViewIntent(intent)
         viewModel.getUserData()
-        if (MConstant.token.isNotEmpty()) {
-            viewModel.getUserInfo()
-        }
         viewModel.user.observe(this, Observer {
             lifecycleScope.launch {
                 Db.myDb.saveData("name", it[0].name)
