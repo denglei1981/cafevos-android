@@ -70,6 +70,7 @@ class PostDetailsActivity :
                     prePageType,
                     if (prePageType.isEmpty()) "" else GIOUtils.postPrePostName
                 )
+                updateMainGio(it.title, "帖子详情页")
             }
             isFirstIn = false
         } else {
@@ -85,6 +86,7 @@ class PostDetailsActivity :
                     prePageType,
                     if (prePageType.isEmpty()) "" else GIOUtils.postPrePostName
                 )
+                updateMainGio(it.title, "帖子详情页")
             }
         }
 
@@ -96,7 +98,6 @@ class PostDetailsActivity :
             postsBean.value = it
             it?.let {
                 GioPageConstant.postDetailsName = it.title
-                updateMainGio(it.title, "帖子详情页")
             }
             val trans = supportFragmentManager.beginTransaction()
             showContent()

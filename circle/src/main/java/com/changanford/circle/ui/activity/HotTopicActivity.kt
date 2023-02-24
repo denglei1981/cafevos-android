@@ -40,6 +40,9 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     override fun onResume() {
         super.onResume()
         GIOUtils.topicListPageView()
+        if(type==0){
+            updateMainGio("热门话题页", "热门话题页")
+        }
     }
 
     override fun initView() {
@@ -51,7 +54,6 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
             when (type) {
                 0 -> {
                     tvTitle.text = "热门话题"
-                    updateMainGio("热门话题页", "热门话题页")
                     section = 0
                 }
                 1 -> {

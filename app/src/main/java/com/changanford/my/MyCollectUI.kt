@@ -53,10 +53,14 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         MyShopFragment.newInstance("collectShop")
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateMainGio("我的收藏页", "我的收藏页")
+    }
+
     var index = 0
     override fun initView() {
         setLoadSir(binding.root)
-        updateMainGio("我的收藏页", "我的收藏页")
         LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
             showContent()
         }

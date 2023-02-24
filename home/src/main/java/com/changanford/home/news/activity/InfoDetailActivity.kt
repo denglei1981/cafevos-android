@@ -3,12 +3,16 @@ package com.changanford.home.news.activity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.MotionEvent
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.GioPageConstant.isInInfoActivity
@@ -16,6 +20,7 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.databinding.ActivityInfoDetailBinding
+import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.fragment.NewsDetailFragment
 import com.changanford.home.news.fragment.NewsPicsFragment
 import com.changanford.home.news.fragment.NewsVideoDetailFragment
@@ -34,21 +39,30 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
     @Autowired(name = "contentType") //页面来源
     var contentType: String? = null
     private var videoFragment: NewsVideoDetailFragment? = null
+
+    private val newDetailBean = MutableLiveData<NewsDetailData>()
+    private var isFistIn = true
+    private var gioPreBean = GioPreBean()
+
+    override fun onResume() {
+        super.onResume()
+        newDetailBean.observe(this) {
+            GioPageConstant.run {
+                infoTheme = it.specialTopicTitle
+                infoId = it.artId.toString()
+                infoName = it.title
+                isInInfoActivity = true
+            }
+            updateMainGio(it.title, "资讯详情页")
+            GIOUtils.infoDetailInfo(gioPreBean.prePageName, gioPreBean.prePageType)
+        }
+    }
+
     override fun observe() {
         super.observe()
         viewModel.newsDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
-                it.data?.let { it1 ->
-                    GioPageConstant.run {
-                        infoTheme = it1.specialTopicTitle
-                        infoId = it1.artId.toString()
-                        infoName = it1.title
-                        isInInfoActivity = true
-                    }
-
-                    GIOUtils.infoDetailInfo()
-                    updateMainGio(it1.title, "资讯详情页")
-                }
+                newDetailBean.value = it.data
                 val type = it.data.type
                 val trans = supportFragmentManager.beginTransaction()
                 if (TextUtils.isEmpty(artId)) {
@@ -84,7 +98,9 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
     }
 
     override fun initView() {
-
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_INFO_DETAIL_GIO).observe(this) {
+            gioPreBean = it
+        }
     }
 
     override fun initData() {

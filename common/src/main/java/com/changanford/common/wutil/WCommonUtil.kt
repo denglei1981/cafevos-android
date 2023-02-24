@@ -96,8 +96,9 @@ object WCommonUtil {
             textView.text = text
             customView = textView
         }
+
         tabLayout.addOnTabSelectedListener(object :
-            TabLayout.BaseOnTabSelectedListener<TabLayout.Tab> {
+            TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 //
             }
@@ -111,13 +112,22 @@ object WCommonUtil {
                     customView = null
                     textView.text = text
                     customView = textView
-
-                    GIOUtils.homePageClick("一级tab名称", (position + 1).toString(), text.toString())
-                    GioPageConstant.shopOneTabName = text.toString()
+                    if (isFirst) {
+                        isFirst = false
+                    } else {
+                        GIOUtils.homePageClick(
+                            "一级tab名称",
+                            (position + 1).toString(),
+                            text.toString()
+                        )
+                        GioPageConstant.shopOneTabName = text.toString()
+                    }
                 }
             }
         })
     }
+
+    private var isFirst = true
 
     /**
      * 是否开启通知

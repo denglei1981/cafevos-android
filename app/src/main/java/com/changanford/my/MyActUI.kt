@@ -38,8 +38,13 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
     private var oldPosition = 0
     val acts: String = "activity_add_wonderful"
     var selectPosition = "0"
-    override fun initView() {
+
+    override fun onResume() {
+        super.onResume()
         updateMainGio("我的活动页", "我的活动页")
+    }
+
+    override fun initView() {
         binding.collectToolbar.toolbarTitle.text = "我的活动"
         binding.collectToolbar.toolbarSave.text = "草稿箱"
         binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))

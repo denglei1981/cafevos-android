@@ -149,7 +149,6 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                             else -> R.string.str_taQuestionAndAnswer
                         }
                     )
-                    updateMainGio("${tvTitle.text}页", "${tvTitle.text}页")
                 }
                 if (fragments.size > 0) {
                     fragments[binding.viewPager.currentItem].startRefresh()
@@ -180,6 +179,11 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
             binding.smartRl.isEnabled = i >= 0
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
         binding.smartRl.setOnRefreshListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateMainGio("${binding.inHeader.tvTitle.text}页", "${binding.inHeader.tvTitle.text}页")
     }
 
     private fun initTabAndViewPager(

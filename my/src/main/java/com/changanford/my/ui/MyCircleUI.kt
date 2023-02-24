@@ -38,9 +38,14 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     private val titles = arrayListOf("我参与的", "我管理的")
     private var oldPosition = 0
     private val fragments = arrayListOf<CircleFragment>()
+
+    override fun onResume() {
+        super.onResume()
+        updateMainGio("我的圈子页", "我的圈子页")
+    }
+
     override fun initView() {
         setLoadSir(binding.root)
-        updateMainGio("我的圈子页", "我的圈子页")
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterCirclePath.CreateCircleActivity)

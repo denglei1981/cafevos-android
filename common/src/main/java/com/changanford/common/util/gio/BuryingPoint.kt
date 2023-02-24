@@ -39,3 +39,8 @@ fun updateMainGio(prePageName: String, prePageType: String) {
     LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_GIO)
         .postValue(GioPreBean(prePageName = prePageName, prePageType = prePageType))
 }
+
+fun updateInfoDetailGio(prePageName: String, prePageType: String) {
+    LiveDataBus.get().with(LiveDataBusKey.UPDATE_INFO_DETAIL_GIO)
+        .postValue(GioPreBean(prePageName = prePageName, prePageType = prePageType))
+}

@@ -14,6 +14,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updateInfoDetailGio
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -40,7 +41,7 @@ class SpecialDetailActivity :
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
-        GioPageConstant.infoEntrance = "专题详情页"
+        updateInfoDetailGio("专题详情页", "专题详情页")
         binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -56,6 +57,7 @@ class SpecialDetailActivity :
                     if (item.authors != null) {
 //                        var newsValueData = NewsValueData(item.artId, item.type)
 //                        var values = Gson().toJson(newsValueData)
+                        GioPageConstant.infoEntrance = "专题详情页"
                         JumpUtils.instans?.jump(2, item.artId)
                     } else {
                         toastShow("没有作者")

@@ -64,6 +64,10 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
         typeId=intent.getStringExtra("typeId")?:"0"
         typeName=intent.getStringExtra("value")?:""
         initListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
         updateMainGio("全部圈子页", "全部圈子页")
     }
 

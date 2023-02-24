@@ -24,38 +24,57 @@ import java.net.URLDecoder
  * @Description : 商品推荐
  */
 @Route(path = ARouterShopPath.RecommendActivity)
-class RecommendActivity:BaseActivity<ActRecommendBinding,GoodsViewModel>() {
-    companion object{
-        fun start(kindName:String?=""){
-            val bundle= Bundle()
+class RecommendActivity : BaseActivity<ActRecommendBinding, GoodsViewModel>() {
+    companion object {
+        fun start(kindName: String? = "") {
+            val bundle = Bundle()
             bundle.putString("value", kindName)
-            RouterManger.startARouter(ARouterShopPath.RecommendActivity,bundle)
+            RouterManger.startARouter(ARouterShopPath.RecommendActivity, bundle)
         }
     }
-    private val fragments=ArrayList<Fragment>()
-    override fun initView() {
+
+    private val fragments = ArrayList<Fragment>()
+
+    override fun onResume() {
+        super.onResume()
         updateMainGio("推荐榜单页", "推荐榜单页")
-        binding.topBar.setActivity(this)
-        WCommonUtil.setTabSelectStyle(this,binding.tabLayout,18f, Typeface.DEFAULT_BOLD,R.color.color_00095B)
     }
+
+    override fun initView() {
+        binding.topBar.setActivity(this)
+        WCommonUtil.setTabSelectStyle(
+            this,
+            binding.tabLayout,
+            18f,
+            Typeface.DEFAULT_BOLD,
+            R.color.color_00095B
+        )
+    }
+
     override fun initData() {
-        val defaultKindName=intent.getStringExtra("value")
-        viewModel.typesBean.observe(this){
+        val defaultKindName = intent.getStringExtra("value")
+        viewModel.typesBean.observe(this) {
             bindTab(it)
-            val index =if(!TextUtils.isEmpty(defaultKindName))it.indexOfFirst { item -> item.kindName == URLDecoder.decode(defaultKindName, "UTF-8") } else 0
-            if (index>0) binding.viewPager2.currentItem =index
+            val index = if (!TextUtils.isEmpty(defaultKindName)) it.indexOfFirst { item ->
+                item.kindName == URLDecoder.decode(
+                    defaultKindName,
+                    "UTF-8"
+                )
+            } else 0
+            if (index > 0) binding.viewPager2.currentItem = index
         }
         viewModel.getRecommendTypes()
     }
-    private fun bindTab(tabs:MutableList<GoodsTypesItemBean>){
+
+    private fun bindTab(tabs: MutableList<GoodsTypesItemBean>) {
         fragments.clear()
         binding.tabLayout.removeAllTabs()
-        for(it in tabs){
+        for (it in tabs) {
             fragments.add(RecommendFragment.newInstance(it.kindId))
         }
         binding.viewPager2.apply {
-            offscreenPageLimit=4
-            adapter= ViewPage2AdapterAct(this@RecommendActivity,fragments)
+            offscreenPageLimit = 4
+            adapter = ViewPage2AdapterAct(this@RecommendActivity, fragments)
             isSaveEnabled = false
             TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
                 tab.text = tabs[tabPosition].kindName

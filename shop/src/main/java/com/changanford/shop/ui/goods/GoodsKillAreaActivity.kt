@@ -56,8 +56,13 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         }
         override fun onFinish() {}
     }.start()
-    override fun initView() {
+
+    override fun onResume() {
+        super.onResume()
         updateMainGio("限时秒杀页", "限时秒杀页")
+    }
+
+    override fun initView() {
         binding.inKill.rvDate.adapter=dateAdapter
         binding.inKill.rvTime.adapter=timeAdapter
         binding.rvList.adapter=mAdapter

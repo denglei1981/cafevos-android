@@ -60,7 +60,7 @@ object GIOUtils {
         map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
         map["fy_pageType_var"] = GioPageConstant.mainTabName
         map["fy_prePageType_var"] = prePageType.ifEmpty { GioPageConstant.prePageType }
-        map["fy_prePageName_var"] = prePageName.ifEmpty { GioPageConstant.prePageTypeName }
+        map["fy_prePageName_var"] = prePageName.ifEmpty { prePageTypeName }
 
         trackCustomEvent("fy_homePageView", map)
     }
@@ -102,16 +102,20 @@ object GIOUtils {
     }
 
     //资讯详情页面浏览
-    fun infoDetailInfo() {
+    fun infoDetailInfo(prePageName: String = "", prePageType: String = "") {
         val map = HashMap<String, String>()
         //上一级页面类型
-        map["fy_prePageType_var"] = if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
+        map["fy_prePageType_var"] = if (prePageType.isNotEmpty()) {
+            prePageType
+        } else if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
             GioPageConstant.mainTabName
         } else {
             infoEntrance
         }
         //上一级页面名称
-        map["fy_prePageName_var"] = if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
+        map["fy_prePageName_var"] = if (prePageName.isNotEmpty()) {
+            prePageName
+        } else if (infoEntrance.isEmpty() || infoEntrance.startsWith("发现-")) {
             GioPageConstant.mainSecondPageName()
         } else {
             infoEntrance

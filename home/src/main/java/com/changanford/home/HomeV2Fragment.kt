@@ -137,14 +137,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) { // 不禁用刷新
-                currentPosition = position
-                GioPageConstant.findSecondPageName = when (position) {
-                    0 -> "发现页-推荐"
-                    1 -> "发现页-活动"
-                    2 -> "发现页-资讯"
-                    else -> "发现页-推荐"
-                }
-                GIOUtils.homePageView()
 //                when (position) {
 //                    0 -> {
 //                        binding.refreshLayout.setEnableRefresh(true)
@@ -158,6 +150,17 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectTab(tab, true)
+                GioPageConstant.prePageType = GioPageConstant.mainTabName
+                GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
+                GioPageConstant.mainTabName = "发现页"
+                currentPosition = tab.position
+                GioPageConstant.findSecondPageName = when (tab.position) {
+                    0 -> "发现页-推荐"
+                    1 -> "发现页-活动"
+                    2 -> "发现页-资讯"
+                    else -> "发现页-推荐"
+                }
+                GIOUtils.homePageView()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {

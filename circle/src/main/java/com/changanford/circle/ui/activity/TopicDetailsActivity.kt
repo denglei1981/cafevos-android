@@ -15,6 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
+import com.changanford.circle.bean.SugesstionTopicDetailBean
 import com.changanford.circle.databinding.ActivityTopicDetailsBinding
 import com.changanford.circle.ext.loadImage
 
@@ -336,14 +337,20 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 GIOUtils.topicDetailPageView(topicId, it)
             }
         }
+
+        topGioBean.observe(this) {
+            updateMainGio(it.name, "话题详情页")
+        }
     }
+
+    private val topGioBean = MutableLiveData<SugesstionTopicDetailBean>()
 
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.topPicDetailsTopBean.observe(this) {
+            topGioBean.value = it
             topicName.value = it.name
-            updateMainGio(it.name, "话题详情页")
             initListener(it.name)
             binding.barTitleTv.text = it.name
             binding.topContent.run {

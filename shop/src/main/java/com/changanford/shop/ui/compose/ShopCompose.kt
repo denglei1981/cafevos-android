@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.compose
 
+import android.os.Bundle
 import android.text.TextUtils
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,11 +32,15 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.changanford.common.MyApp
 import com.changanford.common.R
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.ScreenUtils
@@ -131,7 +136,11 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
             .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp)
             .clickable(indication = null,
                 interactionSource = remember { MutableInteractionSource() }) {
-                GoodsDetailsActivity.start(spuId)
+                val bundle = Bundle()
+                bundle.putString("spuId", spuId)
+                bundle.putParcelable(GioPageConstant.shopPreBean, GioPreBean("推荐榜单页", "推荐榜单页"))
+                startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
+//                GoodsDetailsActivity.start(spuId)
             },
             verticalAlignment = Alignment.CenterVertically
         ) {

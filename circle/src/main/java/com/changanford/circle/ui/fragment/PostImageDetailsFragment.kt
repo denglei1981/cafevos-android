@@ -46,6 +46,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
@@ -352,6 +353,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvTalkOut.setOnClickListener {
                 GIOUtils.postDetailIsCheckTopic = true
+                GioPageConstant.topicEntrance = "帖子详情页"
                 GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
@@ -359,6 +361,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvTalkWeb.setOnClickListener {
                 GIOUtils.postDetailIsCheckTopic = true
+                GioPageConstant.topicEntrance = "帖子详情页"
                 GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)
@@ -366,6 +369,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             }
             binding.viewLongType.tvTalkOut.setOnClickListener {
                 GIOUtils.postDetailIsCheckTopic = true
+                GioPageConstant.topicEntrance = "帖子详情页"
                 GIOUtils.postPrePostName = tvTalkWeb.text.toString()
                 val bundle = Bundle()
                 bundle.putString("topicId", mData.topicId)

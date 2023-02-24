@@ -64,8 +64,13 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     var searchType = -1
 
     var historyList: MutableList<SearchRecordEntity>? = null
-    override fun initView() {
+
+    override fun onResume() {
+        super.onResume()
         updateMainGio("搜索页", "搜索页")
+    }
+
+    override fun initView() {
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
         searchType = if (!TextUtils.isEmpty(searchTypStr)) {
             searchTypStr?.toIntOrNull()!!

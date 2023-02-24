@@ -49,7 +49,6 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
 
     override fun initView() {
 //        "${MConstant.imgcdn}".logE()
-        updateMainGio("我的帖子页", "我的帖子页")
         PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value?.let {
             num = it.size
         }
@@ -231,5 +230,6 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
             isRefresh = false
             initRefreshData(1)
         }
+        updateMainGio("我的帖子页", "我的帖子页")
     }
 }

@@ -28,9 +28,13 @@ class SpecialListActivity :
         SpecialListAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateMainGio("专题列表页", "专题列表页")
+    }
+
     override fun initView() {
         binding.layoutTitle.tvTitle.text = "专题列表"
-        updateMainGio("专题列表页", "专题列表页")
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)

@@ -19,6 +19,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
@@ -106,7 +107,9 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
     override fun initView() {
         addLiveDataBus()
-        updateMainGio("商品详情页", "商品详情页")
+        intent.getParcelableExtra<GioPreBean>(GioPageConstant.shopPreBean)?.let {
+            gioPreBean = it
+        }
         binding.inEmpty.imgBack.setOnClickListener { this.finish() }
         spuId = intent.getStringExtra("spuId") ?: "0"
         if ("0" == spuId) {
@@ -137,6 +140,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
     private var gioPreBean = GioPreBean()
     override fun onResume() {
         super.onResume()
+        updateMainGio("商品详情页", "商品详情页")
         goodsDetailsBean.observe(this) {
             val isSeckill = if (it.killStates == 5) "是" else "否"
             GIOUtils.productDetailPageView(

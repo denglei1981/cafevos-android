@@ -8,10 +8,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.data.InfoDetailsChangeData
@@ -24,14 +28,17 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
-class SearchShopFragment: BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchShopResultViewModel>(),OnRefreshListener,OnLoadMoreListener {
+class SearchShopFragment :
+    BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolySearchShopResultViewModel>(),
+    OnRefreshListener, OnLoadMoreListener {
 
     private var selectPosition: Int = -1;// 记录选中的 条目
-    val searchShopResultAdapter : SearchShopResultAdapter by lazy {
+    val searchShopResultAdapter: SearchShopResultAdapter by lazy {
         SearchShopResultAdapter()
     }
+
     companion object {
-        fun newInstance(skwContent:String): SearchShopFragment {
+        fun newInstance(skwContent: String): SearchShopFragment {
             val fg = SearchShopFragment()
             val bundle = Bundle()
             bundle.putString(JumpConstant.SEARCH_CONTENT, skwContent)
@@ -58,23 +65,23 @@ class SearchShopFragment: BaseLoadSirFragment<HomeBaseRecyclerViewBinding, PolyS
 
             }
         }
-        searchShopResultAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val item = searchShopResultAdapter.getItem(position)
-                selectPosition = position
-                // todo 跳转到商品
-                JumpUtils.instans!!.jump(3,item.mallMallSpuId)
-//                if(item.jumpDataType==null||item.jumpDataType == "0"){
-//                    JumpUtils.instans!!.jump(3,item.mallMallSpuId)
-//                }else{
-//                    JumpUtils.instans!!.jump(
-//                        item.jumpDataType.toInt(),
-//                        item.jumpDataValue
-//                    )
-//                }
-
-            }
-        })
+        searchShopResultAdapter.setOnItemClickListener { adapter, view, position ->
+            val item = searchShopResultAdapter.getItem(position)
+            selectPosition = position
+            val bundle = Bundle()
+            bundle.putString("spuId", item.mallMallSpuId)
+            bundle.putParcelable(GioPageConstant.shopPreBean, GioPreBean("搜索结果页", "搜索结果页"))
+            startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
+            //                JumpUtils.instans!!.jump(3,item.mallMallSpuId)
+            //                if(item.jumpDataType==null||item.jumpDataType == "0"){
+            //                    JumpUtils.instans!!.jump(3,item.mallMallSpuId)
+            //                }else{
+            //                    JumpUtils.instans!!.jump(
+            //                        item.jumpDataType.toInt(),
+            //                        item.jumpDataValue
+            //                    )
+            //                }
+        }
     }
 
     override fun initData() {

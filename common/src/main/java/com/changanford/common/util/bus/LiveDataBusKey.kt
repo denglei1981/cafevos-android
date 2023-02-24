@@ -305,5 +305,6 @@ object LiveDataBusKey {
     const val UPDATE_GOODS_DETAILS_GIO = "updateGoodsDetailsGio"
     const val UPDATE_TASK_LIST_GIO = "updateTaskListGio"
     const val UPDATE_MAIN_GIO = "updateMainGio"
+    const val UPDATE_INFO_DETAIL_GIO = "updateInfoDetailGio"
 }
 

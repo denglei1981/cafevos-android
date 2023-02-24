@@ -3,6 +3,7 @@ package com.changanford.shop
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
+import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -14,6 +15,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.wutil.ViewPage2AdapterFragment
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
@@ -31,6 +33,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import java.lang.reflect.Field
 import java.net.URLDecoder
 
 
@@ -80,13 +83,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 }
 
                 override fun onPageSelected(position: Int) {
-                    val mList = viewModel.advertisingList.value
-                    if (!mList.isNullOrEmpty()) {
-                        mList[position].adName?.let { it1 ->
-                            GIOUtils.homePageExposure(
-                                "广告位banner", (position + 1).toString(),
-                                it1
-                            )
+                    if ("商城页" == GioPageConstant.mainTabName) {
+                        val mList = viewModel.advertisingList.value
+                        if (!mList.isNullOrEmpty()) {
+                            mList[position].adName?.let { it1 ->
+                                GIOUtils.homePageExposure(
+                                    "广告位banner", (position + 1).toString(),
+                                    it1
+                                )
+                            }
                         }
                     }
 
@@ -147,7 +152,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             mAdapter.data[position].apply {
                 WBuriedUtil.clickShopKill(spuName, seckillFb)
                 GoodsDetailsActivity.start(getJdType(), getJdValue())
-                GIOUtils.homePageClick("限时秒杀", (position+1).toString(), spuName)
+                GIOUtils.homePageClick("限时秒杀", (position + 1).toString(), spuName)
             }
 
 //            if("ON_GOING"==mAdapter.data[position].seckillStatus)GoodsDetailsActivity.start(mAdapter.data[position].mallMallSpuId)

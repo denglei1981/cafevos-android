@@ -55,7 +55,6 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     override fun initView() {
 //        StatusBarUtil.setTranslucentForImageView(this, null)
-        updateMainGio("任务中心页", "任务中心页")
         setLoadSir(binding.root)
         binding.imBack.setOnClickListener {
             back()
@@ -137,6 +136,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         }
         show7Day()
         GIOUtils.taskCenterPageView(gioPreBean.prePageName, gioPreBean.prePageType)
+        updateMainGio("任务中心页", "任务中心页")
     }
 
     fun task() {

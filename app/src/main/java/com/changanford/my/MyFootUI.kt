@@ -30,8 +30,12 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     private val titles = arrayListOf("资讯", "帖子", "活动", "商品")
     private var oldPosition = 0
 
-    override fun initView() {
+    override fun onResume() {
+        super.onResume()
         updateMainGio("我的足迹页", "我的足迹页")
+    }
+
+    override fun initView() {
         GioPageConstant.infoEntrance = "我的足迹-资讯"
         GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"

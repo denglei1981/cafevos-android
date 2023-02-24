@@ -49,6 +49,11 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
     private var shoppingEdit: Boolean = false  // 购物车编辑状态
     private val singleCheck = false
 
+    override fun onResume() {
+        super.onResume()
+        updateMainGio("购物车页", "购物车页")
+    }
+
     override fun initView() {
         val height: Int = ImmersionBar.getStatusBarHeight(this)
         binding.layoutTop.root.run {
@@ -60,7 +65,6 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             )
         }
         binding.layoutTop.tvTitle.text = "购物车"
-        updateMainGio("购物车页", "购物车页")
         binding.rvShopping.adapter = shoppingCartAdapter
         binding.layoutTop.imgBack.setOnClickListener {
             onBackPressed()

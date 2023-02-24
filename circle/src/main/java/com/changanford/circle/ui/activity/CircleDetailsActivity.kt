@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
@@ -182,9 +183,10 @@ class CircleDetailsActivity :
         ) {
             postEntity = it as ArrayList<PostEntity>
         }
-        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_CIRCLE_DETAILS_GIO).observe(this) {
-            gioPreBean = it
-        }
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_CIRCLE_DETAILS_GIO)
+            .observe(this) {
+                gioPreBean = it
+            }
     }
 
     private fun initListener(circleName: String) {
@@ -441,21 +443,26 @@ class CircleDetailsActivity :
 
     }
 
+    private val circleNameData = MutableLiveData<String>()
+
     override fun onResume() {
         super.onResume()
         viewModel.getCircleDetails(circleId)
+        circleNameData.observe(this){
+            updateMainGio(it, "圈子详情页")
+        }
     }
 
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.circleDetailsBean.observe(this) {
-            updateMainGio(it?.name.toString(), "圈子详情页")
             if (it == null) {
                 showFailure("服务器开小差，请稍候再试")
                 return@observe
             }
             circleName = it.name
+            circleNameData.value=it.name
             if (isFirst) {
                 initMyView(it.userId.toString())
                 isFirst = false

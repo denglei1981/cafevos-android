@@ -68,7 +68,6 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
         LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_PERSONAL_GIO).observe(this) {
             gioPreBean = it
         }
-        updateMainGio("圈子热门榜单页", "圈子热门榜单页")
     }
 
     private var isFirstIn = true
@@ -82,6 +81,7 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
         } else {
             GIOUtils.hotCircleDetailPageView(topName,gioPreBean.prePageName,gioPreBean.prePageType)
         }
+        updateMainGio("圈子热门榜单页", "圈子热门榜单页")
     }
 
     override fun initData() {

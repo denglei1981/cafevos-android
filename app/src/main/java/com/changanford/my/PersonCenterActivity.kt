@@ -26,10 +26,7 @@ import com.changanford.common.ui.dialog.SelectCoverDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.gio.GIOUtils
-import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.util.gio.updatePersonalData
+import com.changanford.common.util.gio.*
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
@@ -175,7 +172,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     }
 
     override fun initView() {
-        updateMainGio("发帖人个人主页", "发帖人个人主页")
+        updateInfoDetailGio("发帖人个人主页", "发帖人个人主页")
         StatusBarUtil.setStatusBarMarginTop(binding.toolbar, this)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutEmptyUser.collectToolbar.conTitle, this)
         binding.layoutEmptyUser.collectToolbar.ivBack.setOnClickListener {
@@ -404,7 +401,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             }
             isFirstIn = false
         }
-
+        updateMainGio("发帖人个人主页", "发帖人个人主页")
     }
 
     private fun showUserInfo(userInfoBean: UserInfoBean?) {

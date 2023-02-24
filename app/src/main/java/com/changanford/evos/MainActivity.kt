@@ -65,6 +65,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private lateinit var updateViewModel: UpdateViewModel
     lateinit var navController: NavController
+    private var isFirstToTab = true
 
     var jumpIndex: String = ""
 
@@ -132,8 +133,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            GioPageConstant.prePageType = GioPageConstant.mainTabName
-            GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
+            if (!isFirstToTab) {
+                GioPageConstant.prePageType = GioPageConstant.mainTabName
+                GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
+            }
             when (destination.id) {
                 R.id.carFragment -> {
                     GioPageConstant.mainTabName = "爱车页"
@@ -211,7 +214,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE)
                 .postValue(GioPageConstant.mainTabName)
             StatusBarUtil.setLightStatusBar(this, destination.id != R.id.carFragment)
-            GIOUtils.homePageView()
+
+            if (!isFirstToTab) {
+                GIOUtils.homePageView()
+            }
+            isFirstToTab = false
         }
     }
 
