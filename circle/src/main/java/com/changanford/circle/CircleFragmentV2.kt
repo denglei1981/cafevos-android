@@ -271,6 +271,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     }
 
+    private var isFirstToGio = true
+
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
@@ -318,7 +320,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         magicIndicator.navigator = commonNavigator
 //        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
 
-
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(
                 position: Int,
@@ -339,6 +340,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 super.onPageSelected(position)
                 magicIndicator.onPageSelected(position)
                 // 埋点
+                GioPageConstant.prePageType = GioPageConstant.mainTabName
+                GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
+                GioPageConstant.mainTabName = "社区页"
                 when (position) {
                     0 -> {
                         GioPageConstant.communitySecondPageName = "社区页-广场"
@@ -353,7 +357,11 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                         BuriedUtil.instant?.communityMainTopMenu("问答")
                     }
                 }
-                GIOUtils.homePageView()
+                if (!isFirstToGio) {
+                    GIOUtils.homePageView()
+                } else {
+                    isFirstToGio = false
+                }
             }
 
         })

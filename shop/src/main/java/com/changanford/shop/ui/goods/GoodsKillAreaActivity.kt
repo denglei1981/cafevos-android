@@ -3,14 +3,18 @@ package com.changanford.shop.ui.goods
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.SeckillTimeRange
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsKillAreaAdapter
@@ -79,7 +83,14 @@ class GoodsKillAreaActivity: BaseActivity<ActGoodsKillAreaBinding, GoodsViewMode
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
 //                GoodsDetailsActivity.start(spuId)
-                GoodsDetailsActivity.start(getJdType(),jumpDataValue?:spuId)
+//                GoodsDetailsActivity.start(getJdType(),jumpDataValue?:spuId)
+                val bundle = Bundle()
+                bundle.putString("spuId", spuId)
+                bundle.putParcelable(
+                    GioPageConstant.shopPreBean,
+                    GioPreBean("限时秒杀页", "限时秒杀页")
+                )
+                startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
             }
 //            if("ON_GOING"==mAdapter.data[position].timeState)GoodsDetailsActivity.start(mAdapter.data[position].spuId)
         }

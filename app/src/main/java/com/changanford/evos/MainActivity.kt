@@ -445,7 +445,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it || UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it) {
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it
+                    || UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it
+                    || UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS == it
+                ) {
                     viewModel.getUserInfo()
                 } else if (UserManger.UserLoginStatus.USER_LOGIN_OUT == it) {
                     initGioUserId()

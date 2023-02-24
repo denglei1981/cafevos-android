@@ -138,7 +138,10 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                 interactionSource = remember { MutableInteractionSource() }) {
                 val bundle = Bundle()
                 bundle.putString("spuId", spuId)
-                bundle.putParcelable(GioPageConstant.shopPreBean, GioPreBean("推荐榜单页", "推荐榜单页"))
+                bundle.putParcelable(
+                    GioPageConstant.shopPreBean,
+                    GioPreBean("推荐榜单页", "推荐榜单页")
+                )
                 startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
 //                GoodsDetailsActivity.start(spuId)
             },
