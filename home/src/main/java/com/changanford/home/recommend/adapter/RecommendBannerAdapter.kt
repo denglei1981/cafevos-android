@@ -5,6 +5,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.load
 import com.changanford.home.R
 import com.changanford.home.databinding.ItemRecommendBarBannerBinding
@@ -22,6 +23,9 @@ class RecommendBannerAdapter : BaseBannerAdapter<AdBean?>() {
                     ivBanner.load(data.adImg)
                     ivBanner.setOnClickListener {
                         data.adName?.let { it1 ->
+                            GioPageConstant.maJourneyId = data.maJourneyId
+                            GioPageConstant.maPlanId = data.maPlanId
+                            GioPageConstant.maJourneyActCtrlId = data.maJourneyActCtrlId
                             GIOUtils.homePageClick("广告位banner",(position+1).toString(),
                                 it1
                             )

@@ -62,10 +62,11 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
                     circleSquareAdapter.topBinding.bViewpager.visibility = View.VISIBLE
                     circleSquareAdapter.topBinding.bViewpager.refreshData(it)
                     if (!it.isNullOrEmpty()) {
+                        val item = it[0]
                         it[0].adName?.let { it1 ->
                             GIOUtils.homePageExposure(
                                 "广告位banner", 1.toString(),
-                                it1
+                                it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                             )
                         }
                     }

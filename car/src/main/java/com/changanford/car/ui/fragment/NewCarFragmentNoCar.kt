@@ -27,6 +27,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 import kotlin.math.abs
@@ -150,8 +151,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             setIndicatorView(headerBinding.drIndicator)
             setOnPageClickListener { _, position ->
                 if (!FastClickUtils.isFastClick()) {
+                    val item = topBannerList[position]
                     topBannerList[position].apply {
                         JumpUtils.instans?.jump(mainJumpType, mainJumpVal)
+                        GioPageConstant.maJourneyId = item.maJourneyId
+                        GioPageConstant.maPlanId = item.maPlanId
+                        GioPageConstant.maJourneyActCtrlId = item.maJourneyActCtrlId
                         GIOUtils.homePageClick("广告banner", (position + 1).toString(), name)
                     }
                 }

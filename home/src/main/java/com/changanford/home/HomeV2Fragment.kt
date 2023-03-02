@@ -23,6 +23,7 @@ import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.NewEstOnePop
+import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
@@ -31,6 +32,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
@@ -52,6 +54,7 @@ import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
+import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
 import java.util.*
@@ -381,6 +384,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         }
+        viewModel.getUpdateAgree(this)
         viewModel.getNewEstOne()
         //是否领取福币
         viewModel.isGetIntegral()
@@ -459,6 +463,31 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         }
+
+        viewModel.updateAgreeBean.observe(this) { bizCodeBean ->
+            bizCodeBean?.let {
+                it.windowMsg?.let {
+                    android.os.Handler(Looper.myLooper()!!).postDelayed({
+                        UpdateAgreePop(
+                            requireContext(),
+                            it,
+                            object : UpdateAgreePop.UpdateAgreePopListener {
+                                override fun clickCancel() {
+                                    requireActivity().finish()
+                                }
+
+                                override fun clickSure() {
+                                    bizCodeBean.ids?.let { it1 -> addRecord(it1) }
+                                }
+
+                            }).apply {
+                            showPopupWindow()
+                        }
+                    }, 500)
+                }
+            }
+        }
+
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {

@@ -1423,7 +1423,7 @@ interface NetWorkApi {
     suspend fun bizCode(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<bizCodeBean>
+    ): CommonResponse<BizCodeBean>
 
     //协议记录提交
     @POST("/con/agreementHub/addRecords")

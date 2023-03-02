@@ -89,7 +89,6 @@ abstract class BaseApplication : MultiDexApplication() {
         //采集数据开关
         GrowingAutotracker.get().setDataCollectionEnabled(true)
 
-        GioKit.with(this).build()
     }
 
     //友盟初始化

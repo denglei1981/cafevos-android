@@ -26,6 +26,10 @@ object GioPageConstant {
     var prePageType = "无"
     var prePageTypeName = "无"
     var postDetailsName = ""
+
+    var maPlanId:String? = ""
+    var maJourneyActCtrlId:String? = ""
+    var maJourneyId:String? = ""
     const val shopPreBean = "shopPreBean"
 
     fun mainSecondPageName(): String {

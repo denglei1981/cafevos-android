@@ -113,8 +113,8 @@ public class MyHeaderView extends LinearLayout implements RefreshHeader {
                 break;
             case ReleaseToRefresh:
                 imageView.setImageResource(R.mipmap.refreshtitleset);
-                Vibrator vibrator = (Vibrator)getContext().getSystemService(getContext().VIBRATOR_SERVICE);
-                vibrator.vibrate(100);
+//                Vibrator vibrator = (Vibrator)getContext().getSystemService(getContext().VIBRATOR_SERVICE);
+//                vibrator.vibrate(100);
                 break;
         }
     }

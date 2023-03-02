@@ -30,6 +30,9 @@ class AdBean(
     var tagIds: Any,
     var tagNames: Any,
     var code:String? = "",
+    var maPlanId:String? = "",
+    var maJourneyActCtrlId:String? = "",
+    var maJourneyId:String? = "",
 ) {
 
     fun getAdImgUrl(): String {

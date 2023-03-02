@@ -126,10 +126,11 @@ open class RecommendFragment :
                         super.onPageSelected(position)
                         if (GioPageConstant.mainSecondPageName() == "发现页-推荐") {
                             val bean = it.bViewpager.data as List<AdBean>
+                            val item = bean[position]
                             bean[position].adName?.let { it1 ->
                                 GIOUtils.homePageExposure(
                                     "广告位banner", (position + 1).toString(),
-                                    it1
+                                    it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                                 )
                             }
                         }
@@ -233,10 +234,11 @@ open class RecommendFragment :
                 }
                 headNewBinding?.bViewpager?.refreshData(it.data)
                 if (!it.data.isNullOrEmpty()) {
+                    val item = it.data[0]
                     it.data[0].adName?.let { it1 ->
                         GIOUtils.homePageExposure(
                             "广告位banner", 1.toString(),
-                            it1
+                            it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                         )
                     }
                 }

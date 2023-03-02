@@ -49,6 +49,7 @@ data class MessageItemData(
     val jumpDataValue: String,
     val messageContent: String,
     val messageTitle: String,
+    val sourceType: String?,
     val sendTime: Long,
     var status: Int,//消息状态 0 未读取， 1 已读取
     val userMessageId: Int,

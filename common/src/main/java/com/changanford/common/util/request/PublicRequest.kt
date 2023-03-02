@@ -2,7 +2,10 @@ package com.changanford.common.util.request
 
 import androidx.lifecycle.LifecycleOwner
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.BizCodeBean
+import com.changanford.common.bean.WindowMsg
 import com.changanford.common.net.*
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toastShow
 import com.luck.picture.lib.config.PictureSelectionConfig.listener
@@ -53,6 +56,22 @@ fun getBizCode(lifecycleOwner: LifecycleOwner, bizCodes: String, listener: GetRe
     }
 }
 
+fun getUpdateAgree(lifecycleOwner: LifecycleOwner, listener: GetUpdateAgreeResult) {
+    val ids = MConstant.agreementPrivacy + "," + MConstant.agreementRegister
+    lifecycleOwner.launchWithCatch {
+        val requestBody = HashMap<String, Any>()
+        requestBody["bizCodes"] = ids
+        val rkey = getRandomKey()
+        ApiClient.createApi<NetWorkApi>()
+            .bizCode(requestBody.header(rkey), requestBody.body(rkey))
+            .onSuccess {
+                it?.let {
+                    listener.success(it)
+                }
+            }
+    }
+}
+
 fun addRecord(id: String) {
     val activity = BaseApplication.curActivity
     activity?.launchWithCatch {
@@ -70,4 +89,8 @@ fun addRecord(id: String) {
 
 interface GetRequestResult {
     fun success(data: Any)
+}
+
+interface GetUpdateAgreeResult {
+    fun success(result: BizCodeBean)
 }

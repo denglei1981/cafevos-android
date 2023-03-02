@@ -82,6 +82,9 @@ object BannerControl {
         if (isShopTop) {
             GioPageConstant.infoEntrance = "商城-banner"
             itemData.adName?.let {
+                GioPageConstant.maJourneyId = itemData.maJourneyId
+                GioPageConstant.maPlanId = itemData.maPlanId
+                GioPageConstant.maJourneyActCtrlId = itemData.maJourneyActCtrlId
                 GIOUtils.homePageClick(
                     "广告位banner",
                     (position + 1).toString(),

@@ -1,8 +1,8 @@
 package com.changanford.common.util.gio
 
+import com.alibaba.fastjson.JSON
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.gio.GIOUtils.gioEmpty
 import com.changanford.common.util.gio.GioPageConstant.infoEntrance
 import com.changanford.common.util.gio.GioPageConstant.infoId
 import com.changanford.common.util.gio.GioPageConstant.infoName
@@ -66,7 +66,14 @@ object GIOUtils {
     }
 
     //导航流量区域曝光
-    fun homePageExposure(areaName: String, position: String, trafficName: String) {
+    fun homePageExposure(
+        areaName: String,
+        position: String,
+        trafficName: String,
+        planId: String?,
+        journeyId: String?,
+        controlId: String?
+    ) {
         val map = HashMap<String, String>()
 
         map["fy_pageName_var"] = GioPageConstant.mainSecondPageName()
@@ -76,9 +83,9 @@ object GIOUtils {
         map["fy_position_var"] = position
         //banner名称
         map["fy_trafficName_var"] = trafficName
-        map["fy_operationPlanID_var"] = "无"
-        map["fy_journeyID_var"] = "无"
-        map["fy_controlID_var"] = "无"
+        map["fy_operationPlanID_var"] = planId.gioEmpty()
+        map["fy_journeyID_var"] = journeyId.gioEmpty()
+        map["fy_controlID_var"] = controlId.gioEmpty()
 
         trackCustomEvent("fy_homePageExposure", map)
     }
@@ -94,9 +101,13 @@ object GIOUtils {
         map["fy_position_var"] = position
         //banner名称
         map["fy_trafficName_var"] = trafficName.gioEmpty()
-        map["fy_operationPlanID_var"] = "无"
-        map["fy_journeyID_var"] = "无"
-        map["fy_controlID_var"] = "无"
+        map["fy_operationPlanID_var"] = GioPageConstant.maPlanId.gioEmpty()
+        map["fy_journeyID_var"] = GioPageConstant.maJourneyId.gioEmpty()
+        map["fy_controlID_var"] = GioPageConstant.maJourneyActCtrlId.gioEmpty()
+
+        GioPageConstant.maJourneyId = ""
+        GioPageConstant.maPlanId = ""
+        GioPageConstant.maJourneyActCtrlId = ""
 
         trackCustomEvent("fy_homePageClick", map)
     }
@@ -1069,11 +1080,20 @@ object GIOUtils {
     }
 
     //消息列表点击
-    fun newsClick(title: String?) {
+    fun newsClick(title: String?, sourceType: String?) {
         val map = HashMap<String, String>()
 
-        map["fy_journeyID_var"] = "无"
-        map["fy_controlID_var"] = "无"
+        var journeyId = ""
+        var controlId = ""
+
+        if (!sourceType.isNullOrEmpty()) {
+            val json = JSON.parseObject(sourceType)
+            journeyId = json.getString("journeyId") ?: ""
+            controlId = json.getString("journeyActCtrlId") ?: ""
+        }
+
+        map["fy_journeyID_var"] = journeyId.gioEmpty()
+        map["fy_controlID_var"] = controlId.gioEmpty()
         map["fy_newName_var"] = title.gioEmpty()
 
         trackCustomEvent("fy_newsClick", map)

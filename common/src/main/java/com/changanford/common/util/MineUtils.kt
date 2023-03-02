@@ -447,6 +447,115 @@ object MineUtils {
         textView.movementMethod = LinkMovementMethod.getInstance()
     }
 
+    fun popUpdateAgree(textView: TextView, content: String, code: String) {
+        if (code.contains(",")) {//有2个协议
+            val s = code.split(",")
+            if (s.size == 2) {
+                val agree1 =
+                    if (s[0] == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+                val agree2 =
+                    if (s[1] == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+
+                val lookAll = "\n\n查看完整版"
+
+                val spannable = SpannableString(content + lookAll + agree1 + "和" + agree2)
+                val sizeSpannable = RelativeSizeSpan(1f)
+                spannable.setSpan(
+                    sizeSpannable,
+                    0,
+                    content.length,
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+                )
+
+                spannable.setSpan(
+                    object : ClickableSpan() {
+                        override fun onClick(widget: View) {
+                            val intent =
+                                Intent(BaseApplication.curActivity, AgentWebActivity::class.java)
+                            if (s[0] == MConstant.agreementPrivacy) {
+                                intent.putExtra("value", H5_privacy)
+                            } else {
+                                intent.putExtra("value", H5_regTerms)
+                            }
+                            BaseApplication.curActivity.startActivity(intent)
+                        }
+
+                        override fun updateDrawState(ds: TextPaint) {
+                            super.updateDrawState(ds)
+                            ds.color = Color.parseColor("#00095B")
+                            ds.isUnderlineText = false //去除超链接的下划线
+                        }
+                    }, content.length + lookAll.length,
+                    content.length + lookAll.length + agree1.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                spannable.setSpan(
+                    object : ClickableSpan() {
+                        override fun onClick(widget: View) {
+                            val intent =
+                                Intent(BaseApplication.curActivity, AgentWebActivity::class.java)
+                            if (s[1] == MConstant.agreementPrivacy) {
+                                intent.putExtra("value", H5_privacy)
+                            } else {
+                                intent.putExtra("value", H5_regTerms)
+                            }
+                            BaseApplication.curActivity.startActivity(intent)
+                        }
+
+                        override fun updateDrawState(ds: TextPaint) {
+                            super.updateDrawState(ds)
+                            ds.color = Color.parseColor("#00095B")
+                            ds.isUnderlineText = false //去除超链接的下划线
+                        }
+                    }, content.length + lookAll.length + agree1.length + 1,
+                    spannable.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                textView.text = spannable
+                textView.movementMethod = LinkMovementMethod.getInstance()
+            }
+        } else {
+            val agree = if (code == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+            val lookAll = "\n\n查看完整版"
+
+            val spannable = SpannableString(content + lookAll + agree)
+            val sizeSpannable = RelativeSizeSpan(1f)
+            spannable.setSpan(
+                sizeSpannable,
+                0,
+                content.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+
+            spannable.setSpan(
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        val intent =
+                            Intent(BaseApplication.curActivity, AgentWebActivity::class.java)
+                        if (code == MConstant.agreementPrivacy) {
+                            intent.putExtra("value", H5_privacy)
+                        } else {
+                            intent.putExtra("value", H5_regTerms)
+                        }
+                        BaseApplication.curActivity.startActivity(intent)
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.color = Color.parseColor("#00095B")
+                        ds.isUnderlineText = false //去除超链接的下划线
+                    }
+                }, content.length + lookAll.length,
+                content.length + lookAll.length + agree.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            textView.text = spannable
+            textView.movementMethod = LinkMovementMethod.getInstance()
+        }
+    }
+
     /**
      * 首次今日App提示协议
      */

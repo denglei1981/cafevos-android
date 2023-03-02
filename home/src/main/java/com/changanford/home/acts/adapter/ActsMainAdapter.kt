@@ -159,10 +159,11 @@ class ActsMainAdapter(
         this.adBean = list
         headerBinding?.bViewpager?.refreshData(list)
         if (!list.isNullOrEmpty()) {
+            val item = list[0]
             list[0].adName?.let { it1 ->
                 GIOUtils.homePageExposure(
                     "广告位banner", 1.toString(),
-                    it1
+                    it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                 )
             }
         }
@@ -193,10 +194,11 @@ class ActsMainAdapter(
                     super.onPageSelected(position)
                     if (GioPageConstant.mainSecondPageName() == "发现页-活动") {
                         val bean = data as List<CircleHeadBean>
+                        val item = bean[position]
                         bean[position].adName?.let { it1 ->
                             GIOUtils.homePageExposure(
                                 "广告位banner", (position + 1).toString(),
-                                it1
+                                it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                             )
                         }
                     }

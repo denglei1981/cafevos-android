@@ -86,10 +86,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     if ("商城页" == GioPageConstant.mainTabName) {
                         val mList = viewModel.advertisingList.value
                         if (!mList.isNullOrEmpty()) {
+                            val item = mList[position]
                             mList[position].adName?.let { it1 ->
                                 GIOUtils.homePageExposure(
                                     "广告位banner", (position + 1).toString(),
-                                    it1
+                                    it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                                 )
                             }
                         }
@@ -188,10 +189,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 0
             )
             if (!it.isNullOrEmpty()) {
+                val item = it[0]
                 it[0].adName?.let { it1 ->
                     GIOUtils.homePageExposure(
                         "广告位banner", 1.toString(),
-                        it1
+                        it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
                     )
                 }
             }

@@ -603,7 +603,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     private fun initGioUserId() {
         if (MConstant.userId.isEmpty()) {
-            GrowingAutotracker.get().cleanLoginUserId()
+//            GrowingAutotracker.get().cleanLoginUserId()
             Hawk.delete(HawkKey.CMC_OPEN_ID)
         } else {
             if (MConstant.userId.isNotEmpty()) {

@@ -305,6 +305,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                         false
                                     ).toString()
                                 )
+                                "点赞成功".toast()
                                 GIOUtils.infoLickClick(
                                     "发现-推荐",
                                     item.artSpecialTopicTitle,
@@ -321,6 +322,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                         false
                                     ).toString()
                                 )
+                                "取消点赞".toast()
                                 GIOUtils.cancelInfoLickClick(
                                     "发现-推荐",
                                     item.artSpecialTopicTitle,
@@ -536,7 +538,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                 item.postsCircleId,
                                 item.postsCircleName
                             )
-//                            "点赞成功".toast()
+                            "点赞成功".toast()
                             item.isLike = 1
                             tvLikeView.setThumb(R.mipmap.home_comment_like, true)
                             item.postsLikesCount++
@@ -551,7 +553,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                 item.postsCircleId,
                                 item.postsCircleName
                             )
-//                            "取消点赞".toast()
+                            "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--
                             tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, false)

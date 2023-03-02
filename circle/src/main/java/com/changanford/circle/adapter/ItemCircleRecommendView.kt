@@ -356,7 +356,7 @@ class ItemCircleRecommendView(
                                 item.circleId,
                                 item.circle?.name
                             )
-//                            "取消点赞".toast()
+                            "取消点赞".toast()
                         }
                         binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {

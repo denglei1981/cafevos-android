@@ -1,17 +1,16 @@
 package com.changanford.home.request
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.CouponsItemBean
-import com.changanford.common.bean.NewEstOneBean
-import com.changanford.common.bean.WResponseBean
-import com.changanford.common.bean.WaitReceiveBean
+import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.request.GetUpdateAgreeResult
 import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -143,6 +142,17 @@ class HomeV2ViewModel : BaseViewModel() {
                     }
                 }
         })
+    }
+
+    val updateAgreeBean = MutableLiveData<BizCodeBean>()
+
+    fun getUpdateAgree(lifecycleOwner: LifecycleOwner) {
+        com.changanford.common.util.request.getUpdateAgree(lifecycleOwner,
+            object : GetUpdateAgreeResult {
+                override fun success(result: BizCodeBean) {
+                    updateAgreeBean.value = result
+                }
+            })
     }
 
     /**

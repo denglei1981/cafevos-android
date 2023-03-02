@@ -74,6 +74,9 @@ data class NewCarBannerBean(
     val topImg: String? = null,
     val topJumpType: Int? = null,
     val topJumpVal: String? = null,
+    var maPlanId:String? = "",
+    var maJourneyActCtrlId:String? = "",
+    var maJourneyId:String? = "",
 )
 data class NewCarTagBean(
     val tagId:String?=null,

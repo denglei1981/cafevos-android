@@ -350,7 +350,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                         }.show()
                 }
                 it.item.setOnClickListener {
-                    GIOUtils.newsClick(item.messageTitle)
+                    GIOUtils.newsClick(item.messageTitle, item.sourceType)
                     when (item.jumpDataType) {
                         122 -> { // 优惠券弹窗
                             lifecycleOwner.launchWithCatch {
