@@ -182,6 +182,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 //            selectList.clear()
 //            postVideoAdapter.notifyDataSetChanged()
 //        })
+        viewModel.isEnablePost.observe(this) {
+            binding.title.barTvOther.isEnabled = it
+        }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
                 dialog.dismiss()

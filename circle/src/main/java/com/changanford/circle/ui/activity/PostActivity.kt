@@ -172,6 +172,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             Log.d("ImmersionBar", keyboardHeight.toString())
             binding.bottom.emojirec.visibility = View.GONE
         }
+        viewModel.isEnablePost.observe(this) {
+            binding.title.barTvOther.isEnabled = it
+        }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
                 dialog.dismiss()

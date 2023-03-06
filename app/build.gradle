@@ -68,6 +68,7 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "Boolean", "DEBUG_ENABLE", "false" //不显示log
+            manifestPlaceholders = [GIO_URL_SCHEME: "growing.7b07b81c0b9c049f"]
 //            android.applicationVariants.all{ variant ->
 //                variant.outputs.all{
 //                    variant.getPackageApplication().outputDirectory = new File(project.rootDir.path+"/build/outapks/release")
@@ -81,6 +82,7 @@ android {
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "Boolean", "DEBUG_ENABLE", "true" //显示log
+            manifestPlaceholders = [GIO_URL_SCHEME: "growing.5203f0f6016f1db6"]
         }
     }
 

@@ -47,6 +47,7 @@ class PostViewModule() : PostRoomViewModel() {
     val postDetailsBean = MutableLiveData<PostsDetailBean>()
     var downloadLocalMedias = ArrayList<LocalMedia>()
     var _downloadLocalMedias = MutableLiveData<ArrayList<LocalMedia>>()
+    val isEnablePost = MutableLiveData(true)
 
 
     val postError = MutableLiveData<String>()
@@ -63,7 +64,10 @@ class PostViewModule() : PostRoomViewModel() {
                 .onWithMsgFailure {
                     it?.toast()
                     postError.value = "error"
+                    isEnablePost.value = true
                 }
+        }, error = {
+            isEnablePost.value = true
         })
     }
 
@@ -139,6 +143,7 @@ class PostViewModule() : PostRoomViewModel() {
 
 
     fun getOSS() {
+        isEnablePost.value = false
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
@@ -148,7 +153,12 @@ class PostViewModule() : PostRoomViewModel() {
                 }
                 .onWithMsgFailure {
                     it?.toast()
+                    isEnablePost.value = true
+                }.onFailure {
+                    isEnablePost.value = true
                 }
+        }, error = {
+            isEnablePost.value = true
         })
     }
 

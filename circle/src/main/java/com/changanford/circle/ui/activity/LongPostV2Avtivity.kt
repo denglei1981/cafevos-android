@@ -167,6 +167,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             binding.bottom.emojirec.visibility = View.GONE
 
         }
+        viewModel.isEnablePost.observe(this) {
+            binding.title.barTvOther.isEnabled = it
+        }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             isunSave = false
             FMMeadia = it as LocalMedia
