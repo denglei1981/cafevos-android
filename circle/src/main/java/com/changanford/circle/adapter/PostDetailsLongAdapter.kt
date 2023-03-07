@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.ImageList
@@ -14,6 +15,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toIntPx
 
 /**
  *Author lcw
@@ -36,17 +38,28 @@ class PostDetailsLongAdapter(context: Context) :
             startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
         }
         binding.bean = item
-        if(TextUtils.isEmpty(item.imgUrl)){
-            binding.ivIcon.visibility= View.GONE
-        }else{
-            binding.ivIcon.visibility= View.VISIBLE
+        if (TextUtils.isEmpty(item.imgUrl)) {
+            binding.ivIcon.visibility = View.GONE
+        } else {
+            binding.ivIcon.visibility = View.VISIBLE
             binding.ivIcon.load(item.imgUrl)
         }
-        if(TextUtils.isEmpty(item.imgDesc)){
-            binding.tvDesc.visibility=View.GONE
-        }else{
-            binding.tvDesc.visibility=View.VISIBLE
-            binding.tvDesc.text=item.imgDesc
+        if (TextUtils.isEmpty(item.imgDesc)) {
+            binding.tvDesc.visibility = View.GONE
+        } else {
+            binding.tvDesc.visibility = View.VISIBLE
+            binding.tvDesc.text = item.imgDesc
+        }
+//        setTopMargin(binding.tvDesc, 15, position)
+    }
+
+    private fun setTopMargin(view: View?, margin: Int, position: Int) {
+        view?.let {
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            if (position == 0) {
+                params.topMargin =
+                    0
+            } else params.topMargin = margin.toIntPx()
         }
 
     }

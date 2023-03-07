@@ -278,7 +278,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 viewLongType.ivVeryPost.visibility = View.GONE
                             }
                             if (mData.circleName.isNullOrEmpty()) {
-                                tvTwoFrom.visibility = View.GONE
+                                tvTwoFrom.visibility = View.INVISIBLE
                             } else {
                                 MUtils.postDetailsFrom(
                                     tvTwoFrom,
