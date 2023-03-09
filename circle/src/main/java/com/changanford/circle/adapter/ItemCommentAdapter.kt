@@ -17,7 +17,6 @@ import com.changanford.circle.databinding.ItemItemCommentBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.widget.CommentLoadMoreView
 import com.changanford.circle.widget.MyLinkMovementMethod
 import com.changanford.common.MyApp
@@ -31,6 +30,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 

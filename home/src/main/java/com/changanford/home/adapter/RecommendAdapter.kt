@@ -36,7 +36,6 @@ import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView

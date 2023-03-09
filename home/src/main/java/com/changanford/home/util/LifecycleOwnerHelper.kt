@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
  *Time on 2021/10/9
  *Purpose
  */
-fun LifecycleOwner.launchWithCatch(block: Block<Unit>) {
-    lifecycleScope.launch {
-        try {
-            block.invoke()
-        } catch (error: ApiException) {
-            error.errorMessage.toast()
-        }
-    }
-}
+//fun LifecycleOwner.launchWithCatch(block: Block<Unit>) {
+//    lifecycleScope.launch {
+//        try {
+//            block.invoke()
+//        } catch (error: ApiException) {
+//            error.errorMessage.toast()
+//        }
+//    }
+//}

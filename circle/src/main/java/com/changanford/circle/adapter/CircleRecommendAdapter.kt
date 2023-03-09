@@ -16,9 +16,7 @@ import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleRecommendOneBinding
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
-import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
@@ -31,10 +29,7 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
-import com.changanford.common.util.SetFollowState
+import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.dealMuchImage

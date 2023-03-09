@@ -12,14 +12,13 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.shop.R
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.databinding.ItemShoppingCartBinding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
-import com.changanford.shop.utils.WCommonUtil
-import com.changanford.shop.utils.launchWithCatch
 
 /**
  *   购物车

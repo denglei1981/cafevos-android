@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ReportDislikeBody
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.widget.dialog.CircleDislikeDialog
 import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
@@ -23,6 +22,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast

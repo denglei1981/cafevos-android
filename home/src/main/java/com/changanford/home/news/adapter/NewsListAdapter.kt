@@ -19,7 +19,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
-import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -28,7 +28,6 @@ import com.changanford.home.SetFollowState
 import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
@@ -154,15 +153,6 @@ class NewsListAdapter(
             if (LoginUtil.isLongAndBindPhone()) {
                 if (item.authors != null) {
                     if (item.isLike == 0) {
-                        item.isLike = 1
-                        val likesCount = item.likesCount.plus(1)
-                        item.likesCount = likesCount
-                        tvLikeCount.setPageTitleText(
-                            CountUtils.formatNum(
-                                likesCount.toString(),
-                                false
-                            ).toString()
-                        )
                         GIOUtils.infoLickClick(
                             if (type.isNotEmpty()) {
                                 type
@@ -174,15 +164,6 @@ class NewsListAdapter(
                             item.title
                         )
                     } else {
-                        item.isLike = 0
-                        val likesCount = item.likesCount.minus(1)
-                        item.likesCount = likesCount
-                        tvLikeCount.setPageTitleText(
-                            CountUtils.formatNum(
-                                likesCount.toString(),
-                                false
-                            ).toString()
-                        )
                         GIOUtils.cancelInfoLickClick(
                             if (type.isNotEmpty()) {
                                 type
@@ -194,8 +175,30 @@ class NewsListAdapter(
                             item.title
                         )
                     }
-                    actionLike(item.artId)
-                    setLikeState(tvLikeCount, item, true)
+                    actionLike(item.artId) {
+                        if (item.isLike == 0) {
+                            item.isLike = 1
+                            val likesCount = item.likesCount.plus(1)
+                            item.likesCount = likesCount
+                            tvLikeCount.setPageTitleText(
+                                CountUtils.formatNum(
+                                    likesCount.toString(),
+                                    false
+                                ).toString()
+                            )
+                        } else {
+                            item.isLike = 0
+                            val likesCount = item.likesCount.minus(1)
+                            item.likesCount = likesCount
+                            tvLikeCount.setPageTitleText(
+                                CountUtils.formatNum(
+                                    likesCount.toString(),
+                                    false
+                                ).toString()
+                            )
+                        }
+                        setLikeState(tvLikeCount, item, true)
+                    }
                 }
             }
         }
@@ -241,7 +244,7 @@ class NewsListAdapter(
     }
 
     // 喜欢
-    private fun actionLike(artId: String) {
+    private fun actionLike(artId: String, block: () -> Unit) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["artId"] = artId
@@ -249,6 +252,7 @@ class NewsListAdapter(
             ApiClient.createApi<HomeNetWork>()
                 .actionLike(requestBody.header(rkey), requestBody.body(rkey)).also {
                     it.msg.toast()
+                    block.invoke()
                 }
 
         }

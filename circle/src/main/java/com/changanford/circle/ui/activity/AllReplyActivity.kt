@@ -9,7 +9,6 @@ import com.changanford.circle.databinding.ActivityAllReplyBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.AllReplyViewModel
 import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
@@ -23,6 +22,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 
 /**

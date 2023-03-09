@@ -10,6 +10,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.home.adapter.HomePublishAdapter
@@ -19,7 +20,6 @@ import com.changanford.home.data.PublishData
 import com.changanford.home.data.ResultData
 import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.BasePopup
 import kotlin.also
 import kotlin.onSuccess

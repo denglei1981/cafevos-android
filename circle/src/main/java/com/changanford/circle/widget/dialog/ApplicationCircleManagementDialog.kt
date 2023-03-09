@@ -19,7 +19,6 @@ import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ext.loadImageNoOther
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.HideKeyboardUtil
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.utils.setDialogParams
 import com.changanford.common.MyApp
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
@@ -28,6 +27,7 @@ import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.*
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.luck.picture.lib.entity.LocalMedia

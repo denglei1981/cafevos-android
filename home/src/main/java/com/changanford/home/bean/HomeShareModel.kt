@@ -16,6 +16,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.api.HomeNetWork
@@ -23,7 +24,6 @@ import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.dialog.DislikeDialog
 import com.changanford.home.news.dialog.ReportDialog
-import com.changanford.home.util.launchWithCatch
 
 
 private var shareto: String? = null

@@ -15,7 +15,6 @@ import com.changanford.circle.databinding.ItemPostDetailsCommentBinding
 import com.changanford.circle.ext.ImageOptions
 import com.changanford.circle.ext.loadImage
 import com.changanford.circle.utils.AnimScaleInUtil
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.widget.CommentLoadMoreView
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
@@ -25,6 +24,7 @@ import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 

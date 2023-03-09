@@ -8,13 +8,12 @@ import androidx.lifecycle.LifecycleOwner
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.DialogCircleAskScreenBinding
-import com.changanford.circle.ui.ask.adapter.AskScreenItemAdapter
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.BaseAppCompatDialog
+import com.changanford.common.util.launchWithCatch
 
 
 class CircleAskScreenDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner) :

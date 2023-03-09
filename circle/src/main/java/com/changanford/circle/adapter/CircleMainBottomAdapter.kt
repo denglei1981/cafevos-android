@@ -13,7 +13,6 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.databinding.ItemCircleMainBottomBinding
 import com.changanford.circle.ext.*
 import com.changanford.circle.utils.AnimScaleInUtil
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.PostDataBean
@@ -28,6 +27,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.*
 import com.luck.picture.lib.tools.ScreenUtils
 

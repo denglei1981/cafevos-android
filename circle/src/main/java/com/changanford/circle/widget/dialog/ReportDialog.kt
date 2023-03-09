@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ReportDislikeBody
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.MyApp
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -22,6 +21,7 @@ import com.changanford.common.net.header
 import com.changanford.common.ui.dialog.BaseDialog
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 

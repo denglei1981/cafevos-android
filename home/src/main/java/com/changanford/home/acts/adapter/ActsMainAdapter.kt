@@ -19,6 +19,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.net.*
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.acts.dialog.UnitActsPop
@@ -30,7 +31,6 @@ import com.changanford.home.data.EnumBean
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.HomeActsBottomBinding
 import com.changanford.home.databinding.HomeActsHeaderBinding
-import com.changanford.home.util.launchWithCatch
 import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
 import com.xiaomi.push.it

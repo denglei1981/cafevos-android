@@ -20,7 +20,6 @@ import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
 import com.changanford.circle.ext.loadCircleImage
 
 import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter

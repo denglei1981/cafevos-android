@@ -20,6 +20,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -28,7 +29,6 @@ import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.CommentListBean
 import com.changanford.home.databinding.ItemHomeNewsCommentBinding
 import com.changanford.home.util.AnimScaleInUtil
-import com.changanford.home.util.launchWithCatch
 import com.changanford.home.widget.MyLinkMovementMethod
 
 

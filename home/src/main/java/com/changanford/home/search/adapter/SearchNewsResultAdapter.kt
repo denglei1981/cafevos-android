@@ -10,11 +10,11 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.net.*
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
-import com.changanford.home.util.launchWithCatch
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 

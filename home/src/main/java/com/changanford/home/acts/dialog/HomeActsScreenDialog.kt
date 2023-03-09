@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.changanford.common.bean.CityX
 import com.changanford.common.bean.Province
 import com.changanford.common.net.*
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.widget.picker.CityPicker
 import com.changanford.common.widget.picker.annotation.AddressMode.PROVINCE_CITY
 import com.changanford.common.widget.picker.contract.OnAddressPickedListener
@@ -27,7 +28,6 @@ import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.DialogHomeActsScreenBinding
-import com.changanford.home.util.launchWithCatch
 
 
 class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner) :

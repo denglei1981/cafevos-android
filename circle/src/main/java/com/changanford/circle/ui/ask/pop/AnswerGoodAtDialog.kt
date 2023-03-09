@@ -10,13 +10,13 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.databinding.DialogCircleAskScreenBinding
 import com.changanford.circle.ui.ask.adapter.AskScreenItemAdapter
-import com.changanford.circle.utils.launchWithCatch
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.ResultData
 import com.changanford.common.listener.AskCallback
 import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.BaseAppCompatDialog
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toastShow
 
 

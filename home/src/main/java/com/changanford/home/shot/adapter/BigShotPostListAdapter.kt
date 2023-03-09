@@ -11,6 +11,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.net.*
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -22,7 +23,6 @@ import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.databinding.ItemBigShotItemsBinding
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.util.launchWithCatch
 import com.google.android.material.button.MaterialButton
 
 class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
