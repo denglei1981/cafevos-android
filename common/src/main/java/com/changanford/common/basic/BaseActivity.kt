@@ -28,6 +28,7 @@ import com.changanford.common.basic.BaseApplication.Companion.currentViewModelSc
 import com.changanford.common.net.*
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.launchWithCatch
@@ -103,6 +104,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean){
+            return
         }
         //全局监听回到前台
         try {
