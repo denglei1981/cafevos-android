@@ -139,6 +139,17 @@
                         android:scaleType="centerCrop"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_very_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:src="@mipmap/circle_very_post"
+                        app:layout_constraintStart_toStartOf="@+id/iv_cover"
+                        app:layout_constraintTop_toTopOf="@+id/iv_cover" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_one_title"
                         android:layout_width="0dp"
@@ -322,6 +333,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_20"
+                        android:layout_marginEnd="15dp"
                         android:layout_marginTop="17dp"
                         android:lineSpacingMultiplier="1.5"
                         android:textColor="@color/color_33"

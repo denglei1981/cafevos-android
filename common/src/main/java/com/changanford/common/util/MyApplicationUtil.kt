@@ -1,6 +1,5 @@
 package com.changanford.common.util
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -28,9 +27,6 @@ import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
-import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
-import com.growingio.android.sdk.autotrack.GrowingAutotracker
-import com.growingio.giokit.GioKit
 import com.lansosdk.videoeditor.LanSoEditor
 import com.lansosdk.videoeditor.LanSongFileUtil
 import com.tencent.bugly.crashreport.CrashReport

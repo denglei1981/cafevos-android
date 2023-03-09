@@ -31,7 +31,6 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
 import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
-import com.growingio.giokit.GioKit
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -75,20 +74,20 @@ abstract class BaseApplication : MultiDexApplication() {
     }
 
     fun initGio() {
-        val accountID = if (MConstant.isDebug) "a3f971f8c6df1e03" else "8a3904394deb2af0"
-        val dataSourceID = if (MConstant.isDebug) "9fd2dfc69845771d" else "bf70c87ef6f9616f"
-        val uRLScheme =
-            if (MConstant.isDebug) "growing.5203f0f6016f1db6" else "growing.7b07b81c0b9c049f"
-        val apiHost =
-            if (MConstant.isDebug) "https://ubacollectuat.changanford.cn" else "https://ubacollect.changanford.cn"
-
-        val sConfiguration = CdpAutotrackConfiguration(accountID, uRLScheme)
-            .setDataCollectionServerHost(apiHost)
-            .setDataSourceId(dataSourceID)
-            .setDebugEnabled(MConstant.isDebug)
-        GrowingAutotracker.startWithConfiguration(this, sConfiguration)
-        //采集数据开关
-        GrowingAutotracker.get().setDataCollectionEnabled(true)
+//        val accountID = if (MConstant.isDebug) "a3f971f8c6df1e03" else "8a3904394deb2af0"
+//        val dataSourceID = if (MConstant.isDebug) "9fd2dfc69845771d" else "bf70c87ef6f9616f"
+//        val uRLScheme =
+//            if (MConstant.isDebug) "growing.5203f0f6016f1db6" else "growing.7b07b81c0b9c049f"
+//        val apiHost =
+//            if (MConstant.isDebug) "https://ubacollectuat.changanford.cn" else "https://ubacollect.changanford.cn"
+//
+//        val sConfiguration = CdpAutotrackConfiguration(accountID, uRLScheme)
+//            .setDataCollectionServerHost(apiHost)
+//            .setDataSourceId(dataSourceID)
+//            .setDebugEnabled(MConstant.isDebug)
+//        GrowingAutotracker.startWithConfiguration(this, sConfiguration)
+//        //采集数据开关
+//        GrowingAutotracker.get().setDataCollectionEnabled(true)
 
     }
 

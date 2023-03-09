@@ -148,7 +148,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         clImageAndText.visibility = View.VISIBLE
                         clImage.visibility = View.GONE
                         if (mData.isGood == 1) {
-                            MUtils.setDrawableStar(tvOneTitle, R.mipmap.circle_very_post)
+//                            MUtils.setDrawableStar(tvOneTitle, R.mipmap.circle_very_post)
+                            ivVeryPost.visibility = View.VISIBLE
                         }
                         tvOneTitle.text = mData.title
                         if (mData.circleName.isNullOrEmpty()) {
