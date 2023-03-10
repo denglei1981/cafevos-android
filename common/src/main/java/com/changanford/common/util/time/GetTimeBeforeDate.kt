@@ -21,7 +21,5 @@ object GetTimeBeforeDate {
 
         val stringDate: String = simpleDateFormat.format(date)
 
-
-
     }
 }

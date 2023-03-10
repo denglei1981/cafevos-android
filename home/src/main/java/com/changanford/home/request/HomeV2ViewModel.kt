@@ -146,6 +146,7 @@ class HomeV2ViewModel : BaseViewModel() {
 
     val updateAgreeBean = MutableLiveData<BizCodeBean>()
 
+    //隐私协议更新弹窗
     fun getUpdateAgree(lifecycleOwner: LifecycleOwner) {
         com.changanford.common.util.request.getUpdateAgree(lifecycleOwner,
             object : GetUpdateAgreeResult {

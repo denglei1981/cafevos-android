@@ -46,12 +46,15 @@ import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
+import com.changanford.evos.utils.pop.*
 import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
+import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.shop.ShopFragment
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
+import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -66,6 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var updateViewModel: UpdateViewModel
     lateinit var navController: NavController
     private var isFirstToTab = true
+    private lateinit var popViewModel: PopViewModel
 
     var jumpIndex: String = ""
 
@@ -230,7 +234,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         getDeviceWidth()
 //        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
         updateViewModel = createViewModel(UpdateViewModel::class.java)
-        updateViewModel.getUpdateInfo()
+        popViewModel = createViewModel(PopViewModel::class.java)
+//        updateViewModel.getUpdateInfo()
+        popViewModel.getPopData()
         viewModel.requestDownLogin()
 
         getNavigator()
@@ -375,6 +381,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
         registerConnChange()
         viewModel.getQuestionTagInfo()
+        popViewModel.popBean.observe(this) {
+            PopHelper(this, popViewModel).initPopJob()
+        }
     }
 
     private lateinit var currentNavController: LiveData<NavController>

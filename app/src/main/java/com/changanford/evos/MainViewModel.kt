@@ -10,6 +10,7 @@ import com.changanford.common.manger.UserManger.saveUserInfo
 import com.changanford.common.net.*
 import com.changanford.common.utilext.logE
 import com.changanford.common.wutil.WConstant
+import com.changanford.evos.utils.pop.SingleJob
 import com.changanford.my.utils.downLoginBg
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,17 +64,18 @@ class MainViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 获取问答 tagInfo
      * */
-    fun getQuestionTagInfo(){
+    fun getQuestionTagInfo() {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
                 body["dictType"] = "qa_question_type"
                 val rKey = getRandomKey()
                 apiService.getQuestionTagInfo(body.header(rKey), body.body(rKey)).onSuccess {
-                    WConstant.questionTagList=it
+                    WConstant.questionTagList = it
                 }
             }
         }
@@ -82,16 +84,16 @@ class MainViewModel : ViewModel() {
     var userInfo: MutableLiveData<UserInfoBean> = MutableLiveData()
 
     fun getUserInfo() {
-            viewModelScope.launch {
-                fetchRequest {
-                    val body = HashMap<String, String>()
-                    val rkey = getRandomKey()
-                    apiService.queryUserInfo(body.header(rkey), body.body(rkey))
-                }.onSuccess {
-                    it?.let {
-                        userInfo.postValue(it)
-                    }
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, String>()
+                val rkey = getRandomKey()
+                apiService.queryUserInfo(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    userInfo.postValue(it)
                 }
             }
+        }
     }
 }

@@ -30,13 +30,15 @@ class NewEstOnePop(context: Context, private val estOneBean: NewEstOneBean) :
     }
 
     private fun initView() {
-        val data = estOneBean.ads[0]
-        viewDataBinding?.let {
-            GlideUtils.loadBD(data.adImg, viewDataBinding.ivBg)
-            it.ivClose.setOnClickListener { dismiss() }
-            it.ivBg.setOnClickListener {
-                JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
-                dismiss()
+        val data = estOneBean.appVo?.ads?.get(0)
+        data?.let {
+            viewDataBinding?.let {
+                GlideUtils.loadBD(data.adImg, viewDataBinding.ivBg)
+                it.ivClose.setOnClickListener { dismiss() }
+                it.ivBg.setOnClickListener {
+                    JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
+                    dismiss()
+                }
             }
         }
     }

@@ -374,7 +374,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             it?.apply {
                 if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        GetFbPop(this@HomeV2Fragment, viewModel, this).apply {
+                        GetFbPop(requireContext(), viewModel, this,this@HomeV2Fragment).apply {
                             setOutSideDismiss(false)
                             showPopupWindow()
                         }
@@ -384,10 +384,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         }
-        viewModel.getUpdateAgree(this)
-        viewModel.getNewEstOne()
-        //是否领取福币
-        viewModel.isGetIntegral()
+//        viewModel.getUpdateAgree(this)
+//        viewModel.getNewEstOne()
+//        //是否领取福币
+//        viewModel.isGetIntegral()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -450,13 +450,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         viewModel.newEstOneBean.observe(this) {
 
-            if (!it.ads.isNullOrEmpty()) {
-                if (!Hawk.get(MineUtils.getTodayTime() + it.ads[0].adId.toString(), false)) {
+            if (!it.appVo?.ads.isNullOrEmpty()) {
+                if (!Hawk.get(MineUtils.getTodayTime() + it.appVo?.ads?.get(0)?.adId.toString(), false)) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
                         NewEstOnePop(requireContext(), it).apply {
                             showPopupWindow()
                             setOnPopupWindowShowListener {
-                                Hawk.put(MineUtils.getTodayTime() + it.ads[0].adId.toString(), true)
+                                Hawk.put(MineUtils.getTodayTime() + it.appVo?.ads?.get(0)?.adId.toString(), true)
                             }
                         }
                     }, 500)

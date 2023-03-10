@@ -6,6 +6,11 @@ package com.changanford.common.bean
  *Purpose
  */
 data class NewEstOneBean(
+    val appVo: NewEstOneItem?,
+    val maVo: NewEstOneItem?,
+)
+
+data class NewEstOneItem(
     val ads: ArrayList<NewEstOneItemBean> = arrayListOf(),
     val showType: String = ""
 )

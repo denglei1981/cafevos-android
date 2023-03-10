@@ -84,7 +84,8 @@ abstract class BaseApplication : MultiDexApplication() {
         val sConfiguration = CdpAutotrackConfiguration(accountID, uRLScheme)
             .setDataCollectionServerHost(apiHost)
             .setDataSourceId(dataSourceID)
-            .setDebugEnabled(MConstant.isDebug)
+//            .setDebugEnabled(MConstant.isDebug)
+            .setDebugEnabled(false)
         GrowingAutotracker.startWithConfiguration(this, sConfiguration)
         //采集数据开关
         GrowingAutotracker.get().setDataCollectionEnabled(true)
