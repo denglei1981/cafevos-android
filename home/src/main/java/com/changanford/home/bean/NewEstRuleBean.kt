@@ -5,5 +5,4 @@ package com.changanford.home.bean
  *Time on 2023/3/10
  *Purpose
  */
-data class NewEstRuleBean(val days: Int, val daysNum: Int, val oneDayNum: Int) {
-}
+data class NewEstRuleBean(val days: Int, val daysNum: Int, val oneDayNum: Int)

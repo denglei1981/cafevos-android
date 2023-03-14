@@ -1,7 +1,6 @@
 package com.changanford.common.util.time
 
 import android.annotation.SuppressLint
-import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -13,13 +12,14 @@ import java.util.*
 object GetTimeBeforeDate {
 
     @SuppressLint("SimpleDateFormat")
-    fun getTimeDate(before: Int) {
+    fun getTimeDate(before: Int): String {
+
+        val useData = if (before == 0) 0 else -before
         val calendar: Calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_MONTH, -before)
+        calendar.add(Calendar.DAY_OF_MONTH, useData)
         val date = calendar.time
         val simpleDateFormat = SimpleDateFormat("yyyyMMdd")
 
-        val stringDate: String = simpleDateFormat.format(date)
-
+        return simpleDateFormat.format(date)
     }
 }

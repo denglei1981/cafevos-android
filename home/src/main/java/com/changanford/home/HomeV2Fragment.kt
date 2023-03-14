@@ -448,21 +448,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }, 500)
             }
         }
-        viewModel.newEstOneBean.observe(this) {
-
-            if (!it.appVo?.ads.isNullOrEmpty()) {
-                if (!Hawk.get(MineUtils.getTodayTime() + it.appVo?.ads?.get(0)?.adId.toString(), false)) {
-                    android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        NewEstOnePop(requireContext(), it).apply {
-                            showPopupWindow()
-                            setOnPopupWindowShowListener {
-                                Hawk.put(MineUtils.getTodayTime() + it.appVo?.ads?.get(0)?.adId.toString(), true)
-                            }
-                        }
-                    }, 500)
-                }
-            }
-        }
 
         viewModel.updateAgreeBean.observe(this) { bizCodeBean ->
             bizCodeBean?.let {
@@ -493,7 +478,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             .observe(this) {
                 when (it) {
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        viewModel.getNewEstOne()
+//                        viewModel.getNewEstOne()
                     }
                     else -> {}
                 }
@@ -626,13 +611,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun addLiveDataBus() {
         //登录回调
-        LiveDataBus.get()
-            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
-                    viewModel.isGetIntegral()
-                }
-            }
+//        LiveDataBus.get()
+//            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+//            .observe(this) {
+//                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+//                    viewModel.isGetIntegral()
+//                }
+//            }
         LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE, String::class.java).observe(this) {
             if (it == "发现页") {
 

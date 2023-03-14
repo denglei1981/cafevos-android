@@ -121,4 +121,62 @@ class PopViewModel : ViewModel() {
         }
     }
 
+    fun getLoginSuccessData() {
+        viewModelScope.launch {
+            try {
+                val receive = async {
+                    //优惠券弹窗
+                    if (MConstant.token.isEmpty()) return@async CommonResponse(
+                        data = null,
+                        msg = "",
+                        code = 1
+                    )
+                    val body = HashMap<String, Any>()
+                    val randomKey = getRandomKey()
+                    body["popup"] = "YES"
+                    fetchRequest {
+                        createApi<HomeNetWork>()
+                            .receiveList(body.header(randomKey), body.body(randomKey))
+                    }
+                }
+
+                val newEstOne = async {
+                    //广告弹窗
+                    val body = HashMap<String, Any>()
+                    val randomKey = getRandomKey()
+                    body["posCode"] = "index_popover"
+                    fetchRequest {
+                        createApi<HomeNetWork>()
+                            .newEstOne(body.header(randomKey), body.body(randomKey))
+                    }
+                }
+
+                val popRule = async {
+                    //首页弹窗配置获取
+                    val requestBody = HashMap<String, Any>()
+                    val rKey = getRandomKey()
+                    fetchRequest {
+                        createApi<HomeNetWork>()
+                            .popRule(requestBody.header(rKey), requestBody.body(rKey))
+                    }
+                }
+
+                val receiveResult = receive.await()
+                val newEstOneResult = newEstOne.await()
+                val popRuleResult = popRule.await()
+
+                val mainPopBean = MainPopBean(
+                    null,
+                    null,
+                    receiveResult.data,
+                    newEstOneResult.data,
+                    null,
+                    popRuleResult.data
+                )
+                popBean.value = mainPopBean
+            } catch (error: Throwable) {
+                error.message?.logE()
+            }
+        }
+    }
 }

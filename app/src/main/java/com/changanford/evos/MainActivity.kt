@@ -2,14 +2,12 @@ package com.changanford.evos
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.compose.DesignElements.map
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -19,7 +17,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.CircleFragmentV2
-import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.GioPreBean
@@ -36,12 +33,9 @@ import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.room.Db
-import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
-import com.changanford.common.widget.pop.HomeGuidePop
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
@@ -49,18 +43,15 @@ import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.utils.pop.*
 import com.changanford.evos.view.SpecialAnimaTab
 import com.changanford.home.HomeV2Fragment
-import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.shop.ShopFragment
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.majiajie.pagerbottomtabstrip.NavigationController
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
-import razerdp.basepopup.BasePopupWindow
 
 
 @Route(path = ARouterHomePath.MainActivity)
@@ -377,7 +368,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             }
         })
         LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this) {
-            updateViewModel.getUpdateInfo()
+//            updateViewModel.getUpdateInfo()
         }
         registerConnChange()
         viewModel.getQuestionTagInfo()
@@ -459,8 +450,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it
-                    || UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it
+                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+                    viewModel.getUserInfo()
+                    popViewModel.getLoginSuccessData()
+                } else if (UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it
                     || UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS == it
                 ) {
                     viewModel.getUserInfo()

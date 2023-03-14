@@ -85,7 +85,7 @@ class UpdatePopJob : SingleJob {
                 activity.finish()
             }
             dialog.dismiss()
-
+            callback.invoke()
         }.setTitle(info.versionName ?: "更新")
             .setMsg(info.versionContent ?: "体验全新功能")
             .setCancelable(false).show()
