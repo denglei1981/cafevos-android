@@ -33,7 +33,7 @@ class NewEstOnePopJob : SingleJob {
     override fun handle(): Boolean {
         val rule = popViewModel?.popBean?.value?.popRuleBean ?: return false
         val dayNum = getDayNum()//获取今天弹窗次数
-        if (dayNum > rule.oneDayNum) return false //今天的弹窗次数大于一天最大次数
+        if (dayNum >= rule.oneDayNum) return false //今天的弹窗次数大于一天最大次数
 //        if (getDaysNum() > rule.daysNum) return false //本地储存天数次数大于配置天数的弹窗次数
         val bean = popViewModel?.popBean?.value?.newEstOneBean ?: return false
         if (bean.appVo == null || bean.appVo?.ads.isNullOrEmpty()) return false
