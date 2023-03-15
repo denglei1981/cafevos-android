@@ -2,7 +2,10 @@ package com.changanford.evos.utils.pop
 
 import android.content.Context
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.evos.PopViewModel
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.widget.pop.GetFbPop
@@ -49,6 +52,9 @@ class GetFbPopJob : SingleJob {
             Looper.myLooper()?.let {
                 android.os.Handler(it).postDelayed({
                     GetFbPop(context!!, homeV2ViewModel!!, fbBean, lifecycleOwner!!).apply {
+                        LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).observe(context as AppCompatActivity){
+                            dismiss()
+                        }
                         setOutSideDismiss(false)
                         showPopupWindow()
                         onDismissListener = object : BasePopupWindow.OnDismissListener() {

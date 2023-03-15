@@ -2,8 +2,11 @@ package com.changanford.evos.utils.pop
 
 import android.content.Context
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.bean.NewEstOneItemBean
 import com.changanford.common.ui.NewEstOnePop
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.time.GetTimeBeforeDate
 import com.changanford.evos.PopViewModel
 import com.orhanobut.hawk.Hawk
@@ -34,10 +37,7 @@ class NewEstOnePopJob : SingleJob {
         val rule = popViewModel?.popBean?.value?.popRuleBean ?: return false
         val dayNum = getDayNum()//获取今天弹窗次数
         if (dayNum >= rule.oneDayNum) return false //今天的弹窗次数大于一天最大次数
-//        if (getDaysNum() > rule.daysNum) return false //本地储存天数次数大于配置天数的弹窗次数
-        val bean = popViewModel?.popBean?.value?.newEstOneBean ?: return false
-        if (bean.appVo == null || bean.appVo?.ads.isNullOrEmpty()) return false
-        if (bean.maVo == null || bean.maVo?.ads.isNullOrEmpty()) return false
+        popViewModel?.popBean?.value?.newEstOneBean ?: return false
         mDays = rule.days
         mDayNum = rule.oneDayNum
         mDaysNum = rule.daysNum
@@ -50,19 +50,21 @@ class NewEstOnePopJob : SingleJob {
 
         if (!bean.maVo?.ads.isNullOrEmpty() && getDaysNum(bean.maVo?.ads?.get(0)?.adId) < mDaysNum) {
             bean.maVo?.let {
-                if (getDaysNum(it.ads[0].adId) < mDaysNum)
-                    useBean = it.ads[0]
+                useBean = it.ads[0]
             }
-        } else if (!bean.appVo?.ads.isNullOrEmpty()) {
+        } else if (!bean.appVo?.ads.isNullOrEmpty() && getDaysNum(bean.appVo?.ads?.get(0)?.adId) < mDaysNum) {
             bean.appVo?.let {
-                if (getDaysNum(it.ads[0].adId) < mDaysNum)
-                    useBean = it.ads[0]
+                useBean = it.ads[0]
             }
         }
 
         if (useBean != null) {
             android.os.Handler(Looper.myLooper()!!).postDelayed({
                 NewEstOnePop(context!!, useBean!!).apply {
+                    LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE)
+                        .observe(context as AppCompatActivity) {
+                            dismiss()
+                        }
                     showPopupWindow()
                     setOnPopupWindowShowListener {
                         addEstOneDayNum(useBean!!.adId)
@@ -76,6 +78,8 @@ class NewEstOnePopJob : SingleJob {
                     }
                 }
             }, 0)
+        } else {
+            callback.invoke()
         }
     }
 

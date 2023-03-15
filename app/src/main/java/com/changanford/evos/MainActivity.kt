@@ -5,13 +5,12 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -229,7 +228,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 //        updateViewModel.getUpdateInfo()
         popViewModel.getPopData()
         viewModel.requestDownLogin()
-
+        PopHelper.initPopHelper(this, popViewModel)
         getNavigator()
         initBottomNavigation()
 //        if (Hawk.get(HawkKey.GUIDE_HOME,false) == false) {
@@ -309,10 +308,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                 }
                 return@Observer
             }
+            if (PopHelper.updateDialog != null) {
+                return@Observer
+            }
             info?.let {
                 if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
                     return@Observer
                 }
+                LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).postValue("")
+                PopHelper.isInsertUpdate()
                 var dialog = UpdateAlertDialog(this)
                 dialog.builder().setPositiveButton("立即更新") {
                     toastShow("正在下载")
@@ -325,6 +329,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                                 finish()
                             } else {
                                 updatingAlertDialog.dismiss()
+                                PopHelper.updateDialog = null
+                                PopHelper.resumeRule()
                             }
                         }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1).show()
                         apkDownload.download(info.downloadUrl ?: "", object : DownloadProgress {
@@ -357,10 +363,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         finish()
                     }
                     dialog.dismiss()
-
+                    PopHelper.updateDialog = null
+                    PopHelper.resumeRule()
                 }.setTitle(info.versionName ?: "更新")
-                    .setMsg(info.versionContent ?: "体验全新功能")
-                    .setCancelable(false).show()
+                    .run {
+                        PopHelper.updateDialog = this.dialog
+                        setMsg(info.versionContent ?: "体验全新功能")
+                        setCancelable(false).show()
+                    }
                 info.downloadUrl?.let {
                     MConstant.newApk = true
                     MConstant.newApkUrl = it
@@ -373,10 +383,30 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         registerConnChange()
         viewModel.getQuestionTagInfo()
         popViewModel.popBean.observe(this) {
-            PopHelper(this, popViewModel).initPopJob()
+            PopHelper.initPopJob()
         }
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onStop(owner: LifecycleOwner) {
+                super.onStop(owner)
+                //后台
+                isBackstage = true
+            }
+
+
+            override fun onStart(owner: LifecycleOwner) {
+                super.onStart(owner)
+                //前台
+                if (isBackstage) {
+                    updateViewModel.getUpdateInfo()
+                }
+                isBackstage = false
+            }
+
+        })
     }
 
+    private var isBackstage = false
     private lateinit var currentNavController: LiveData<NavController>
 
     /**
@@ -452,7 +482,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             .observe(this) {
                 if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
                     viewModel.getUserInfo()
-                    popViewModel.getLoginSuccessData()
+                    popViewModel.getPopData(
+                        isUpdate = false,
+                        isGetIntegral = false,
+                        isReceiveList = true,
+                        isNewEstOne = true,
+                        isBizCode = false
+                    )
                 } else if (UserManger.UserLoginStatus.USE_UNBIND_MOBILE == it
                     || UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS == it
                 ) {

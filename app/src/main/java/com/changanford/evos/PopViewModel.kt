@@ -20,18 +20,27 @@ class PopViewModel : ViewModel() {
 
     val popBean = MutableLiveData<MainPopBean>()
 
-    fun getPopData() {
+    fun getPopData(
+        isUpdate: Boolean = true,
+        isGetIntegral: Boolean = true,
+        isReceiveList: Boolean = true,
+        isNewEstOne: Boolean = true,
+        isBizCode: Boolean = true
+    ) {
         viewModelScope.launch {
             try {
                 val updateInfo = async {
-                    //更新弹窗
-                    val body = HashMap<String, Any>()
-                    body["type"] = 0
-                    val rKey = getRandomKey()
-                    fetchRequest {
-                        apiService.getUpdateInfo(body.header(rKey), body.body(rKey))
+                    if (isUpdate) {
+                        //更新弹窗
+                        val body = HashMap<String, Any>()
+                        body["type"] = 0
+                        val rKey = getRandomKey()
+                        fetchRequest {
+                            apiService.getUpdateInfo(body.header(rKey), body.body(rKey))
+                        }
+                    } else {
+                        CommonResponse(data = null, msg = "", code = 1)
                     }
-
                 }
 
                 val integral = async {
@@ -41,12 +50,17 @@ class PopViewModel : ViewModel() {
                         msg = "",
                         code = 1
                     )
-                    val body = HashMap<String, Any>()
-                    val randomKey = getRandomKey()
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .isGetIntegral(body.header(randomKey), body.body(randomKey))
+                    if (isGetIntegral) {
+                        val body = HashMap<String, Any>()
+                        val randomKey = getRandomKey()
+                        fetchRequest {
+                            createApi<HomeNetWork>()
+                                .isGetIntegral(body.header(randomKey), body.body(randomKey))
+                        }
+                    } else {
+                        CommonResponse(data = null, msg = "", code = 1)
                     }
+
                 }
 
                 val receive = async {
@@ -56,46 +70,61 @@ class PopViewModel : ViewModel() {
                         msg = "",
                         code = 1
                     )
-                    val body = HashMap<String, Any>()
-                    val randomKey = getRandomKey()
-                    body["popup"] = "YES"
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .receiveList(body.header(randomKey), body.body(randomKey))
-                    }
-                }
-
-                val newEstOne = async {
-                    //广告弹窗
-                    val body = HashMap<String, Any>()
-                    val randomKey = getRandomKey()
-                    body["posCode"] = "index_popover"
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .newEstOne(body.header(randomKey), body.body(randomKey))
+                    if (isReceiveList) {
+                        val body = HashMap<String, Any>()
+                        val randomKey = getRandomKey()
+                        body["popup"] = "YES"
+                        fetchRequest {
+                            createApi<HomeNetWork>()
+                                .receiveList(body.header(randomKey), body.body(randomKey))
+                        }
+                    } else {
+                        CommonResponse(data = null, msg = "", code = 1)
                     }
                 }
 
                 val bizCode = async {
                     //隐私协议更新弹窗
-                    val ids = MConstant.agreementPrivacy + "," + MConstant.agreementRegister
-                    val requestBody = HashMap<String, Any>()
-                    requestBody["bizCodes"] = ids
-                    val rKey = getRandomKey()
-                    fetchRequest {
-                        createApi<NetWorkApi>()
-                            .bizCode(requestBody.header(rKey), requestBody.body(rKey))
+                    if(isBizCode){
+                        val ids = MConstant.agreementPrivacy + "," + MConstant.agreementRegister
+                        val requestBody = HashMap<String, Any>()
+                        requestBody["bizCodes"] = ids
+                        val rKey = getRandomKey()
+                        fetchRequest {
+                            createApi<NetWorkApi>()
+                                .bizCode(requestBody.header(rKey), requestBody.body(rKey))
+                        }
+                    }else{
+                        CommonResponse(data = null, msg = "", code = 1)
                     }
-
                 }
 
                 val popRule = async {
                     //首页弹窗配置获取
-                    val requestBody = HashMap<String, Any>()
-                    val rKey = getRandomKey()
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .popRule(requestBody.header(rKey), requestBody.body(rKey))
+                    if(isNewEstOne){
+                        val requestBody = HashMap<String, Any>()
+                        val rKey = getRandomKey()
+                        fetchRequest {
+                            createApi<HomeNetWork>()
+                                .popRule(requestBody.header(rKey), requestBody.body(rKey))
+                        }
+                    }else{
+                        CommonResponse(data = null, msg = "", code = 1)
+                    }
+                }
+
+                val newEstOne = async {
+                    //广告弹窗
+                    if (isNewEstOne) {
+                        val body = HashMap<String, Any>()
+                        val randomKey = getRandomKey()
+                        body["posCode"] = "index_popover"
+                        fetchRequest {
+                            createApi<HomeNetWork>()
+                                .newEstOne(body.header(randomKey), body.body(randomKey))
+                        }
+                    } else {
+                        CommonResponse(data = null, msg = "", code = 1)
                     }
                 }
 
@@ -121,62 +150,4 @@ class PopViewModel : ViewModel() {
         }
     }
 
-    fun getLoginSuccessData() {
-        viewModelScope.launch {
-            try {
-                val receive = async {
-                    //优惠券弹窗
-                    if (MConstant.token.isEmpty()) return@async CommonResponse(
-                        data = null,
-                        msg = "",
-                        code = 1
-                    )
-                    val body = HashMap<String, Any>()
-                    val randomKey = getRandomKey()
-                    body["popup"] = "YES"
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .receiveList(body.header(randomKey), body.body(randomKey))
-                    }
-                }
-
-                val newEstOne = async {
-                    //广告弹窗
-                    val body = HashMap<String, Any>()
-                    val randomKey = getRandomKey()
-                    body["posCode"] = "index_popover"
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .newEstOne(body.header(randomKey), body.body(randomKey))
-                    }
-                }
-
-                val popRule = async {
-                    //首页弹窗配置获取
-                    val requestBody = HashMap<String, Any>()
-                    val rKey = getRandomKey()
-                    fetchRequest {
-                        createApi<HomeNetWork>()
-                            .popRule(requestBody.header(rKey), requestBody.body(rKey))
-                    }
-                }
-
-                val receiveResult = receive.await()
-                val newEstOneResult = newEstOne.await()
-                val popRuleResult = popRule.await()
-
-                val mainPopBean = MainPopBean(
-                    null,
-                    null,
-                    receiveResult.data,
-                    newEstOneResult.data,
-                    null,
-                    popRuleResult.data
-                )
-                popBean.value = mainPopBean
-            } catch (error: Throwable) {
-                error.message?.logE()
-            }
-        }
-    }
 }

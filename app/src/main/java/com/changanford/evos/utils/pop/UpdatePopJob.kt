@@ -52,6 +52,8 @@ class UpdatePopJob : SingleJob {
                         activity.finish()
                     } else {
                         updatingAlertDialog.dismiss()
+                        PopHelper.updateDialog = null
+                        callback.invoke()
                     }
                 }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1).show()
                 apkDownload.download(info.downloadUrl ?: "", object : DownloadProgress {
@@ -84,11 +86,15 @@ class UpdatePopJob : SingleJob {
                 val activity = context as Activity
                 activity.finish()
             }
+            PopHelper.updateDialog = null
             dialog.dismiss()
             callback.invoke()
         }.setTitle(info.versionName ?: "更新")
-            .setMsg(info.versionContent ?: "体验全新功能")
-            .setCancelable(false).show()
+            .run {
+                setMsg(info.versionContent ?: "体验全新功能")
+                setCancelable(false).show()
+                PopHelper.updateDialog = this.dialog
+            }
         info.downloadUrl?.let {
             MConstant.newApk = true
             MConstant.newApkUrl = it

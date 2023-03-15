@@ -3,7 +3,10 @@ package com.changanford.evos.utils.pop
 import android.app.Activity
 import android.content.Context
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import com.changanford.common.ui.UpdateAgreePop
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.request.addRecord
 import com.changanford.evos.PopViewModel
 
@@ -51,6 +54,9 @@ class UpdateAgreeJob : SingleJob {
                     }
 
                 }).apply {
+                LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).observe(context as AppCompatActivity){
+                    dismiss()
+                }
                 showPopupWindow()
             }
         }, 0)
