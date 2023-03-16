@@ -255,6 +255,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_MAIN_GIO).observe(this) {
             gioPreBean = it
         }
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onStop(owner: LifecycleOwner) {
+                super.onStop(owner)
+                //后台
+                isBackstage = true
+            }
+
+
+            override fun onStart(owner: LifecycleOwner) {
+                super.onStart(owner)
+                //前台
+                if (isBackstage) {
+                    updateViewModel.getUpdateInfo()
+                }
+                isBackstage = false
+            }
+
+        })
     }
 
     private var gioPreBean = GioPreBean()
@@ -385,25 +404,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         popViewModel.popBean.observe(this) {
             PopHelper.initPopJob()
         }
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStop(owner: LifecycleOwner) {
-                super.onStop(owner)
-                //后台
-                isBackstage = true
-            }
-
-
-            override fun onStart(owner: LifecycleOwner) {
-                super.onStart(owner)
-                //前台
-                if (isBackstage) {
-                    updateViewModel.getUpdateInfo()
-                }
-                isBackstage = false
-            }
-
-        })
     }
 
     private var isBackstage = false
