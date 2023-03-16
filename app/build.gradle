@@ -44,7 +44,7 @@ android {
         applicationId "com.changanford.evos"
         minSdkVersion minSDKVersion
         targetSdkVersion targetSDKVersion
-        versionCode 422
+        versionCode 423
         versionName "1.2.6"
         resConfigs "zh"
 //        ndk {
