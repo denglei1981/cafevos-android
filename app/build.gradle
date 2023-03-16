@@ -171,6 +171,7 @@ dependencies {
     implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
     //gio埋点
     implementation "com.growingio.android:autotracker-cdp:$versions_gio"
+    implementation "androidx.lifecycle:lifecycle-process:2.2.0"
     // GioKit
 //    debugImplementation "com.growingio.giokit:giokit:1.3.0"
 //    releaseImplementation "com.growingio.giokit:giokit-no-op:1.3.0"

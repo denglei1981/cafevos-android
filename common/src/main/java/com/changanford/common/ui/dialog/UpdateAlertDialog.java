@@ -246,6 +246,10 @@ public class UpdateAlertDialog {
         dialog.show();
     }
 
+    public Dialog getDialog(){
+        return dialog;
+    }
+
     public boolean isShowing() {
         if (dialog != null) {
             if (dialog.isShowing())

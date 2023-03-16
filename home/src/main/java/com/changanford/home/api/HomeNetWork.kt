@@ -422,10 +422,17 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<WaitReceiveBean>>
 
-    // 首页弹窗
+    // 首页广告弹窗
     @POST("/con/ads/newEstOne")
     suspend fun newEstOne(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<NewEstOneBean>
+
+    //首页广告弹窗配置
+    @POST("/con/ads/popRule")
+    suspend fun popRule(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewEstRuleBean>
 }

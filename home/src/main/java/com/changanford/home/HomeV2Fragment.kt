@@ -374,7 +374,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             it?.apply {
                 if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        GetFbPop(this@HomeV2Fragment, viewModel, this).apply {
+                        GetFbPop(requireContext(), viewModel, this,this@HomeV2Fragment).apply {
                             setOutSideDismiss(false)
                             showPopupWindow()
                         }
@@ -384,10 +384,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }
             }
         }
-        viewModel.getUpdateAgree(this)
-        viewModel.getNewEstOne()
-        //是否领取福币
-        viewModel.isGetIntegral()
+//        viewModel.getUpdateAgree(this)
+//        viewModel.getNewEstOne()
+//        //是否领取福币
+//        viewModel.isGetIntegral()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -448,21 +448,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 }, 500)
             }
         }
-        viewModel.newEstOneBean.observe(this) {
-
-            if (!it.ads.isNullOrEmpty()) {
-                if (!Hawk.get(MineUtils.getTodayTime() + it.ads[0].adId.toString(), false)) {
-                    android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        NewEstOnePop(requireContext(), it).apply {
-                            showPopupWindow()
-                            setOnPopupWindowShowListener {
-                                Hawk.put(MineUtils.getTodayTime() + it.ads[0].adId.toString(), true)
-                            }
-                        }
-                    }, 500)
-                }
-            }
-        }
 
         viewModel.updateAgreeBean.observe(this) { bizCodeBean ->
             bizCodeBean?.let {
@@ -493,7 +478,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             .observe(this) {
                 when (it) {
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        viewModel.getNewEstOne()
+//                        viewModel.getNewEstOne()
                     }
                     else -> {}
                 }
@@ -626,13 +611,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun addLiveDataBus() {
         //登录回调
-        LiveDataBus.get()
-            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this) {
-                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
-                    viewModel.isGetIntegral()
-                }
-            }
+//        LiveDataBus.get()
+//            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+//            .observe(this) {
+//                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
+//                    viewModel.isGetIntegral()
+//                }
+//            }
         LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE, String::class.java).observe(this) {
             if (it == "发现页") {
 
