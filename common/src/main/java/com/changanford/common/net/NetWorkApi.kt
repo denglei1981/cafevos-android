@@ -22,7 +22,8 @@ interface NetWorkApi {
     /**--------------------------------app---------------------------------------**/
     @POST("/appinit/getpk")
     suspend fun getKey(@Body requestBody: RequestBody): CommonResponse<String>
-
+    @POST("/appinit/getpk_v2")
+    suspend fun getKeyV2(@Body requestBody: RequestBody): CommonResponse<String>
     @POST("/base/app/getLastestAppVersion")
     suspend fun getUpdateInfo(
         @HeaderMap headMap: Map<String, String>,

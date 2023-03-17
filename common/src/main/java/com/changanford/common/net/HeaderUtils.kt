@@ -9,6 +9,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
 import com.changanford.common.utilext.logE
 import com.gofo.widget.SwipeHelper
+import com.internet.fn.FetchNet
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -86,7 +87,8 @@ fun handlePubKey(pubKey: String, key: String): String {
     if (pubKey.isNullOrEmpty() || pubKey.length <= 8) {
         return "publicKey Error!"
     }
-    var encPubKey = SwipeHelper().stringFromJNI(pubKey)
+//    var encPubKey = SwipeHelper().stringFromJNI(pubKey)
+    var encPubKey = FetchNet().changeTheColor(pubKey)
     val seccode = RsaUtils.encryptByPublicKey(encPubKey, key)
     return seccode
 }

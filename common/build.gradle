@@ -84,6 +84,7 @@ dependencies {
     api project(path: ':lansong')
     //aar文件，否则打包失败
     api(name: 'opensslSDK', ext: 'aar')
+    api(name: 'changecolor', ext: 'aar')
     api(name: 'alipaySdk-15.7.5-20200422171636-noUtdid', ext: 'aar')
     api(name: 'openDefault-9.12.0', ext: 'aar')
 

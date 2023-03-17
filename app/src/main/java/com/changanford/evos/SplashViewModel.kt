@@ -61,7 +61,7 @@ class SplashViewModel : ViewModel() {
         }
         viewModelScope.launch {
             fetchRequest {
-                apiService.getKey("".body())
+                apiService.getKeyV2("".body())
             }.onSuccess {
                 if (it != null) {
                     MConstant.pubKey = it
