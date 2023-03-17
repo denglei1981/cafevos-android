@@ -10,6 +10,7 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
@@ -47,6 +48,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.toIntPx
+import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -55,6 +57,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import java.lang.reflect.Field
+import kotlin.concurrent.thread
 
 
 /**
@@ -82,6 +85,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
     override fun initView() {
+        initTabAndViewPager()
+        binding.ivMenu.post {
+            initMagicIndicator()
+        }
         easyViewPager()
         bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
@@ -142,8 +149,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_POST.toString())
             }
         }
-        initTabAndViewPager()
-        initMagicIndicator()
         viewModel.getInitQuestion()
     }
 

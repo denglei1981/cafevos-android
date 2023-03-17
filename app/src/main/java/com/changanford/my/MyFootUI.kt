@@ -1,6 +1,7 @@
 package com.changanford.my
 
 import android.graphics.Typeface
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -39,8 +40,9 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         GioPageConstant.infoEntrance = "我的足迹-资讯"
         GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"
+        binding.layoutSearch.root.visibility = View.GONE
         setLoadSir(binding.root)
-        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this) {
             showContent()
         }
         initViewpager()

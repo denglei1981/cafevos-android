@@ -215,12 +215,13 @@ class NewsVideoDetailFragment :
                 toastShow(it.message)
             }
         })
-        viewModel.recommendNewsLiveData.observe(this, Observer {
+        viewModel.recommendNewsLiveData.observe(this) {
             if (it.isSuccess) {
                 if (it.data != null) {
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
-                        newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+                        newsRecommendListAdapter.setList(it.data.recommendArticles)
                         inflateHeader.grRecommend.visibility = View.VISIBLE
+                        inflateHeader.tvHomeMore.visibility=View.GONE
                     } else {
                         inflateHeader.grRecommend.visibility = View.GONE
                     }
@@ -232,8 +233,8 @@ class NewsVideoDetailFragment :
                     }
                 }
             }
-        })
-        viewModel.commentSateLiveData.observe(this, Observer {
+        }
+        viewModel.commentSateLiveData.observe(this) {
             if (it.isSuccess) {
 
                 toastShow("评论成功")
@@ -253,7 +254,7 @@ class NewsVideoDetailFragment :
                 toastShow(it.message)
             }
 
-        })
+        }
         viewModel.actionLikeLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
