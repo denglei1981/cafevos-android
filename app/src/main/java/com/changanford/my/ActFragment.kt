@@ -203,7 +203,6 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             }
             "actMyJoin" -> {
                 viewModel.queryMineJoinAc(pageSize) { reponse ->
-                    LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
                     reponse?.data?.total?.let {
                         total = it
                     }
@@ -211,6 +210,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
             }
         }
+        LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
     }
 
     override fun showEmpty(): View? {

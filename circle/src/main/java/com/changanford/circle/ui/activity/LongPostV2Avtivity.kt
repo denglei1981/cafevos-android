@@ -6,9 +6,10 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
-import android.text.*
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
@@ -54,7 +55,10 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.util.image.ImageCompress.compressImage
-import com.changanford.common.utilext.*
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.logD
+import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -62,15 +66,10 @@ import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.yw.li_model.adapter.EmojiAdapter
-import com.zs.easy.imgcompress.EasyImgCompress
-import com.zs.easy.imgcompress.bean.ErrorBean
-import com.zs.easy.imgcompress.listener.OnCompressMultiplePicsListener
-import com.zs.easy.imgcompress.util.GBMBKBUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -616,9 +615,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun setEditContent(emoJi: String?) {
-        val index = editText?.selectionStart
-        val editContent = editText?.text
-        index?.let { editContent?.insert(it, emoJi) }
+        val rootView = window.decorView
+        val focusView = rootView.findFocus()
+        if(focusView is EditText) {
+            val index = focusView.selectionStart
+            val editContent = focusView.text
+            index.let { editContent?.insert(it, emoJi) }
+        }
     }
 
     private fun getEmojiStringByUnicode(unicode: Int): String {

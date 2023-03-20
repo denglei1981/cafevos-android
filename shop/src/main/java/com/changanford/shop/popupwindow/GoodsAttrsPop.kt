@@ -71,8 +71,8 @@ open class GoodsAttrsPop(
         if (control.isInvalidSelectAttrs(_skuCode)) {
             dataBean.skuVos.filter { it.stock.toInt() > 0 }
                 .sortedWith(compareBy { it.fbPrice.toLong() }).let {
-                if (it.isNotEmpty()) _skuCode = it[0].skuCode
-            }
+                    if (it.isNotEmpty()) _skuCode = it[0].skuCode
+                }
         }
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
@@ -121,6 +121,7 @@ open class GoodsAttrsPop(
                         if (limitBuyNum != 0) "<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock = dataBean.stock
                     WCommonUtil.htmlToString(viewDataBinding.tvStock, "（${htmlStr}库存${nowStock}件）")
+                    viewDataBinding.tvStock.visibility = View.INVISIBLE
                     var isLimitBuyNum = false//是否限购
                     val max: Int = if (limitBuyNum in 1..nowStock) {
                         isLimitBuyNum = true
