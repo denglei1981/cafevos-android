@@ -1432,4 +1432,14 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     *   点赞资讯？
+     *  /con/article/actionLike
+     * */
+    @POST("/con/article/actionLike")
+    suspend fun actionLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

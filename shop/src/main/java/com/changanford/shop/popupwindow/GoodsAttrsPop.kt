@@ -70,6 +70,7 @@ open class GoodsAttrsPop(
         //没有选中sku时默认选中最低sku （113新增）
         if (control.isInvalidSelectAttrs(_skuCode)) {
             dataBean.skuVos.filter { it.stock.toInt() > 0 }
+                .filter { it.skuStatus == "ON_SHELVE" }
                 .sortedWith(compareBy { it.fbPrice.toLong() }).let {
                     if (it.isNotEmpty()) _skuCode = it[0].skuCode
                 }

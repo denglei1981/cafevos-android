@@ -195,7 +195,7 @@ data class GoodsItemBean(
      * 销量-（维保列表销量和其它商品销量字段不统一）
      * */
     fun getSales(): String {
-        return if(mallWbGoodsId==null)"$salesCount" else exchageCount?:"0"
+        return if (mallWbGoodsId == null) "$salesCount" else exchageCount ?: "0"
     }
 }
 
@@ -306,7 +306,7 @@ data class ConfirmOrderInfoBean(
 data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
-    val spuSource : String = "0",//来源(0-后台;1-京东)
+    val spuSource: String = "0",//来源(0-后台;1-京东)
     var price: String? = "0",
     var orginPrice0: String? = "0",//原价
     var orginPrice: String? = null,//原价
@@ -371,7 +371,7 @@ data class GoodsDetailBean(
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
     var limitSeckill: String? = "",
-    var mallMallRefundId:String?="" // 退款id
+    var mallMallRefundId: String? = "" // 退款id
 
 ) {
     fun getLimitBuyNum(): Int {
@@ -452,7 +452,8 @@ data class SkuVo(
     val skuCode: String = "",
     val skuId: String = "0",
     val skuImg: String = "",
-    val stock: String = "0",
+    var stock: String = "0",
+    val skuStatus: String = "",//上线:ON_SHELVE  下线:UNDER_SHELVE
     var skuTxt: String? = "",
     var mallMallSkuSpuSeckillRangeId: String? = "0",
     var orginPrice: String? = "0",//原价
@@ -461,7 +462,8 @@ data class SkuVo(
 
 data class OptionVo(
     val optionId: String = "0",
-    val optionName: String = ""
+    val optionName: String = "",
+    var isVisibility: Boolean = false
 )
 
 /**
@@ -677,8 +679,8 @@ data class OrderItemBean(
     var packageJump: PackageJumpBean? = null,
     var refundStatus: String? = "",
     var refundTimes: Int? = null, // 申请售后次数
-    var timestamp:Long?=null,
-    var mallMallRefundId:String?=null //退款id
+    var timestamp: Long? = null,
+    var mallMallRefundId: String? = null //退款id
 
 ) {
     fun getRMBPrice() {
@@ -962,21 +964,24 @@ data class CouponsItemBean(
     var couponSendId: String, // 发放id
     var conditionName: String,
 
-) {
+    ) {
     fun getRmbToFb(conditionMoney: String? = this.conditionMoney): Long {
-        return ((conditionMoney?:"0").toFloat() * 100).toLong()
+        return ((conditionMoney ?: "0").toFloat() * 100).toLong()
     }
 
     /**
      * 计算折扣金额
      * [couponRatio]折扣比例 0.1-9.9折 -5折
      * */
-    fun discountAmount(totalPrice: Long,couponRatio: Float? = (this.couponRatio ?: "0").toFloat()): Long {
+    fun discountAmount(
+        totalPrice: Long,
+        couponRatio: Float? = (this.couponRatio ?: "0").toFloat()
+    ): Long {
         if (couponRatio == null || couponRatio == 0f) return 0
 //        //优惠向下
 //        return totalPrice-WCommonUtil.getHeatNum("${totalPrice * (couponRatio / 10)}").toLong()
         //截取2位
-        return WCommonUtil.getHeatNum("${totalPrice-totalPrice * (couponRatio / 10)}").toLong()
+        return WCommonUtil.getHeatNum("${totalPrice - totalPrice * (couponRatio / 10)}").toLong()
     }
 
     fun getShowMoney(): SpannableString {
@@ -1015,14 +1020,14 @@ data class CouponsItemBean(
 
     // 领取条件
     private fun getCouponConditionName(): String {
-        if(TextUtils.isEmpty(conditionName)){
+        if (TextUtils.isEmpty(conditionName)) {
             return ""
         }
         return "领取条件: ".plus(conditionName).plus("\n")
     }
 
     private fun getUseLimitStr(): String {
-        if(TextUtils.isEmpty(desc)){
+        if (TextUtils.isEmpty(desc)) {
             return ""
         }
         return "使用限制: ".plus(desc).plus("\n")
@@ -1069,7 +1074,7 @@ data class WxPayBean(
 // ONLY_COST  仅退款
 // （如果是单个sku退，则需要传此参数 ， refundType =  allOrderRefund 的情况，singleRefundType参数和skuItem参数可不传）
 data class RefundOrderItemBean(
-    var specifications: String="",
+    var specifications: String = "",
     var spuName: String,
     var skuImg: String,
     var mallMallSkuId: String,
@@ -1080,9 +1085,9 @@ data class RefundOrderItemBean(
     var sharedFb: String,
     var sharedRmb: String,
     var orderNo: String,
-    var refundType:String,
-    var refundNum:String,
-    var fbOfUnitPrice:String,
+    var refundType: String,
+    var refundNum: String,
+    var fbOfUnitPrice: String,
 ) {
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {
@@ -1098,7 +1103,20 @@ data class RefundOrderItemBean(
 
 data class OtherInfoBean(var content: String? = null)
 
-data class ShopTagInfoBean(var tagId:String?=null,var tag:String?=null,var tagName:String?=null,var tagExtension:String?=null)
-data class RefundBean(var orderNo:String,var payFb:String?,var payRmb:String?,var refundType:String,var skuItem: RefundOrderItemBean?=null,var busSource :String= ""){
+data class ShopTagInfoBean(
+    var tagId: String? = null,
+    var tag: String? = null,
+    var tagName: String? = null,
+    var tagExtension: String? = null
+)
+
+data class RefundBean(
+    var orderNo: String,
+    var payFb: String?,
+    var payRmb: String?,
+    var refundType: String,
+    var skuItem: RefundOrderItemBean? = null,
+    var busSource: String = ""
+) {
 
 }

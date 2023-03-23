@@ -27,6 +27,7 @@ import com.changanford.common.net.*
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
@@ -294,43 +295,44 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 1 -> { // 点赞资讯。
                     if (LoginUtil.isLongAndBindPhone()) {
                         if (item.authors != null) {
-                            if (item.isLike == 0) {
-                                item.isLike = 1
-                                val likesCount = item.likeCount.plus(1)
-                                item.likeCount = likesCount
-                                tvLikeCount.setPageTitleText(
-                                    CountUtils.formatNum(
-                                        likesCount.toString(),
-                                        false
-                                    ).toString()
-                                )
-                                "点赞成功".toast()
-                                GIOUtils.infoLickClick(
-                                    "发现-推荐",
-                                    item.artSpecialTopicTitle,
-                                    item.artId,
-                                    item.artTitle
-                                )
-                            } else {
-                                item.isLike = 0
-                                val likesCount = item.likeCount.minus(1)
-                                item.likeCount = likesCount
-                                tvLikeCount.setPageTitleText(
-                                    CountUtils.formatNum(
-                                        likesCount.toString(),
-                                        false
-                                    ).toString()
-                                )
-                                "取消点赞".toast()
-                                GIOUtils.cancelInfoLickClick(
-                                    "发现-推荐",
-                                    item.artSpecialTopicTitle,
-                                    item.artId,
-                                    item.artTitle
-                                )
+                            actionLike(lifecycleOwner,item.artId) {
+                                if (item.isLike == 0) {
+                                    item.isLike = 1
+                                    val likesCount = item.likeCount.plus(1)
+                                    item.likeCount = likesCount
+                                    tvLikeCount.setPageTitleText(
+                                        CountUtils.formatNum(
+                                            likesCount.toString(),
+                                            false
+                                        ).toString()
+                                    )
+                                    "点赞成功".toast()
+                                    GIOUtils.infoLickClick(
+                                        "发现-推荐",
+                                        item.artSpecialTopicTitle,
+                                        item.artId,
+                                        item.artTitle
+                                    )
+                                } else {
+                                    item.isLike = 0
+                                    val likesCount = item.likeCount.minus(1)
+                                    item.likeCount = likesCount
+                                    tvLikeCount.setPageTitleText(
+                                        CountUtils.formatNum(
+                                            likesCount.toString(),
+                                            false
+                                        ).toString()
+                                    )
+                                    "取消点赞".toast()
+                                    GIOUtils.cancelInfoLickClick(
+                                        "发现-推荐",
+                                        item.artSpecialTopicTitle,
+                                        item.artId,
+                                        item.artTitle
+                                    )
+                                }
+                                setLikeState(tvLikeCount, item.isLike, true)
                             }
-                            actionLike(item.artId)
-                            setLikeState(tvLikeCount, item.isLike, true)
                         }
                     }
                 }
@@ -489,22 +491,6 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
         }
         this.notifyDataSetChanged()
-    }
-
-    // 资讯点赞
-    fun actionLike(artId: String) {
-        lifecycleOwner.launchWithCatch {
-            val requestBody = HashMap<String, Any>()
-            requestBody["artId"] = artId
-            val rkey = getRandomKey()
-            ApiClient.createApi<HomeNetWork>()
-                .actionLike(requestBody.header(rkey), requestBody.body(rkey))
-                .onSuccess {
-
-                }.onWithMsgFailure {
-                    it?.let { it1 -> toastShow(it1) }
-                }
-        }
     }
 
     fun setLikeState(tvLikeView: DrawCenterTextView, isLike: Int, isAnim: Boolean) {

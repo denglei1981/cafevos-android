@@ -98,9 +98,14 @@ class GoodsDetailsControl(
                 dataBean.skuImg = skuImg
             }
         } else {
-            skuCodeInitValue = "${dataBean.spuId}-"
-            dataBean.attributes.forEach { _ -> skuCodeInitValue += "0-" }
-            skuCodeInitValue = skuCodeInitValue.substring(0, skuCodeInitValue.length - 1)
+            dataBean.skuVos.filter { it.stock.toInt() > 0 }
+                .filter { it.skuStatus == "ON_SHELVE" }
+                .sortedWith(compareBy { it.fbPrice.toLong() }).let {
+                    if (it.isNotEmpty()) skuCodeInitValue = it[0].skuCode
+                }
+//            skuCodeInitValue = "${dataBean.spuId}-"
+//            dataBean.attributes.forEach { _ -> skuCodeInitValue += "0-" }
+//            skuCodeInitValue = skuCodeInitValue.substring(0, skuCodeInitValue.length - 1)
         }
         BannerControl.bindingBannerFromDetail(headerBinding.banner, dataBean.imgs, 0)
         //品牌参数

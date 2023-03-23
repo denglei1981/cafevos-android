@@ -9,6 +9,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toastShow
 import com.luck.picture.lib.config.PictureSelectionConfig.listener
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -86,6 +87,20 @@ fun addRecord(id: String) {
     }
 }
 
+fun actionLike(lifecycleOwner: LifecycleOwner, artId: String, block: () -> Unit) {
+    lifecycleOwner.launchWithCatch {
+        val requestBody = HashMap<String, Any>()
+        requestBody["artId"] = artId
+        val rkey = getRandomKey()
+        ApiClient.createApi<NetWorkApi>()
+            .actionLike(requestBody.header(rkey), requestBody.body(rkey))
+            .onSuccess {
+                block.invoke()
+            }.onWithMsgFailure {
+                it?.let { it1 -> toastShow(it1) }
+            }
+    }
+}
 
 interface GetRequestResult {
     fun success(data: Any)

@@ -19,7 +19,7 @@ class NewsRecommendListAdapter :
 
         holder.dataBinding?.let {
             it.tvHomeCount.text = item.getCommentDiscussAnViewCount()
-            it.tvHomeSubTitle.text = item.getSubTitleStr()
+            it.tvHomeSubTitle.text = item.summary
             it.tvHomeTitle.text = item.title
             GlideUtils.loadBD(item.getPicCover(), it.ivHomeNews)
         }

@@ -242,7 +242,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 //                        tvContent.text = mData.content
                         //todo
                         if (!TextUtils.isEmpty(mData.content)) {
-                            tvContent.text = Html.fromHtml(mData.content)
+//                            tvContent.text = Html.fromHtml(mData.content)
+                            tvContent.text = mData.content
                         } else {
                             tvContent.text = ""
                         }

@@ -73,7 +73,6 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                         trans.replace(R.id.frame_layout, NewsDetailFragment.newInstance(artId!!))
                     }
                     2 -> {
-
                         trans.replace(R.id.frame_layout, NewsPicsFragment.newInstance(artId!!))
                     }
                     3 -> {

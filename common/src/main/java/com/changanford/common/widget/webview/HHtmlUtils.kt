@@ -21,7 +21,7 @@ object HHtmlUtils {
                 "<style>img{max-width: 100%; width:auto; height:auto!important;} table{max-width:100%;height:auto;}</style>" +
                 "</head>"
         val headJD = "<head>" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.45,minimum-scale=0.25,maximum-scale=2, user-scalable=no\"> " +
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=0.44,minimum-scale=0.25,maximum-scale=2, user-scalable=no\"> " +
                 "<style>img{max-width: 100%; width:auto; height:auto!important;} table{max-width:100%;height:auto;}</style>" +
                 "</head>"
         return if (spuSource == "1") "<html>$headJD<body>$bodyHTML</body></html>" else "<html>$head<body>$bodyHTML</body></html>"

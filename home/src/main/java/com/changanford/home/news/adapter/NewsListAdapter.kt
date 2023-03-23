@@ -252,6 +252,7 @@ class NewsListAdapter(
             ApiClient.createApi<HomeNetWork>()
                 .actionLike(requestBody.header(rkey), requestBody.body(rkey)).also {
                     it.msg.toast()
+                }.onSuccess {
                     block.invoke()
                 }
 

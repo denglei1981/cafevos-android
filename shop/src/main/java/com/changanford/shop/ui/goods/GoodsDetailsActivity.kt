@@ -3,6 +3,7 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -158,10 +159,17 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
     override fun initData() {
         viewModel.goodsDetailData.observe(this) {
-            goodsDetailsBean.value = it
+            val newData = it.apply {
+                skuVos.forEach {skuVo->
+                    if (skuVo.skuStatus == "UNDER_SHELVE") {
+                        skuVo.stock = "0"
+                    }
+                }
+            }
+            goodsDetailsBean.value = newData
             binding.inEmpty.layoutEmpty.visibility = View.GONE
-            control.bindingData(it)
-            viewModel.collectionGoodsStates.postValue(it.collect == "YES")
+            control.bindingData(newData)
+            viewModel.collectionGoodsStates.postValue(newData.collect == "YES")
             GlobalScope.launch {
                 delay(1000L)
                 initH()
