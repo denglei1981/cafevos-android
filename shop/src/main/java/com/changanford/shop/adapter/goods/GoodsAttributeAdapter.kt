@@ -3,7 +3,6 @@ package com.changanford.shop.adapter.goods
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatCheckBox
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -80,7 +79,17 @@ class GoodsAttributeAdapter(
      * 存在指定optionId的sku组合并且库存不等于0即该optionId为可选状态反之禁选
      * */
     private fun isExistSku(optionId: String): Boolean {
-        return skuVos?.find { it.skuCodeArr[pos] == optionId && it.stock != "0" } != null
+        val skuCodeArr = currentSkuCode.split("-") as ArrayList
+        skuCodeArr[pos] = optionId
+        var codes = ""
+        skuCodeArr.forEach { codes += "$it-" }
+        codes = codes.substring(0, codes.length - 1)
+        skuVos?.filter { it.skuStatus == "UNDER_SHELVE" || it.stock == "0" }?.forEach {
+            if (it.skuCode == codes)
+                return false
+        }
+//        return skuVos?.find { it.skuCodeArr == skuCodeArr && it.stock != "0" } != null
+        return true
     }
 
     fun updateAdapter(skuCode: String) {

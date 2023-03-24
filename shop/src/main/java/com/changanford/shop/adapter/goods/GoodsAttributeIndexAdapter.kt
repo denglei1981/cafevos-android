@@ -85,12 +85,12 @@ class GoodsAttributeIndexAdapter(
                     newSkuVo?.filter { (it.skuCodeArr[pos] == this || "0" == this) && it.stock != "0" }
             }
             adapterMap.keys.forEach {
-                if (pos != it) {
+//                if (pos != it) {
                     adapterMap[it]?.apply {
-                        skuVos = newSkuVo
+//                        skuVos = newSkuVo
                         updateAdapter(skuCode)
                     }
-                }
+//                }
             }
         }
 //        resetAdapter(isClick)
