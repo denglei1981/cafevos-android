@@ -2,6 +2,7 @@ package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatCheckBox
@@ -79,8 +80,7 @@ class GoodsAttributeAdapter(
      * 存在指定optionId的sku组合并且库存不等于0即该optionId为可选状态反之禁选
      * */
     private fun isExistSku(optionId: String): Boolean {
-//        return skuVos?.find { it.skuCodeArr[pos] == optionId && it.stock != "0"} != null
-        return true
+        return skuVos?.find { it.skuCodeArr[pos] == optionId && it.stock != "0" } != null
     }
 
     fun updateAdapter(skuCode: String) {

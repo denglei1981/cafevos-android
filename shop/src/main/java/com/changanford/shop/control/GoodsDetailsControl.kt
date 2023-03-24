@@ -92,7 +92,7 @@ class GoodsDetailsControl(
 //                skuCodeInitValue=skuCodeInitValue.substring(0,skuCodeInitValue.length-1)
 //            }
 //        }
-        if (dataBean.stock > 0 && skuVos.size == 1) {
+        if (skuVos.size == 1) {
             skuVos[0].apply {
                 skuCodeInitValue = skuCode
                 dataBean.skuImg = skuImg

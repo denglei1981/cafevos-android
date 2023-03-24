@@ -38,7 +38,7 @@ object MConstant {
         if (isCanQeck) SPUtils.getParam(
             BaseApplication.INSTANT,
             ISDEBUG,
-            false
+            true
         ) as Boolean else false
     }
     const val ISDEBUG = "isdebug"//SP保存测试环境
