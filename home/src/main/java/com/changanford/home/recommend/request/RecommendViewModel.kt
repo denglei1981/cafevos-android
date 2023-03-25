@@ -11,6 +11,7 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
+import com.changanford.home.util.HomeTimer
 import kotlinx.coroutines.launch
 
 class RecommendViewModel : BaseViewModel() {
@@ -22,6 +23,7 @@ class RecommendViewModel : BaseViewModel() {
     val fastEnterLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
     var pageNo: Int = 1
     fun getRecommend(isLoadMore: Boolean) {
+        HomeTimer.refreshTask(this)
         viewModelScope.launch {
             fetchRequest {
                 val paramMaps = HashMap<String, Any>()
