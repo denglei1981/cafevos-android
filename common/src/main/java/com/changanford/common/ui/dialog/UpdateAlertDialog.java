@@ -55,6 +55,8 @@ public class UpdateAlertDialog {
         img_line = (ImageView) view.findViewById(R.id.img_line);
         setGone();
         dialog = new Dialog(context, R.style.AlertDialogStyle);
+        //设置背景为透明
+        dialog.getWindow().setBackgroundDrawableResource(R.color.m_pop_bg);
         dialog.setContentView(view);
         lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
                 .getWidth() * 0.85), LayoutParams.WRAP_CONTENT));

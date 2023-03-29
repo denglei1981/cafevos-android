@@ -9,6 +9,7 @@ import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.evos.PopViewModel
+import com.changanford.evos.R
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -49,6 +50,7 @@ class ReceivePopJob : SingleJob {
                     LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).observe(context as AppCompatActivity){
                         dismiss()
                     }
+                    setBackground(R.color.m_pop_bg)
                     showPopupWindow()
                     onDismissListener = object : BasePopupWindow.OnDismissListener() {
                         override fun onDismiss() {

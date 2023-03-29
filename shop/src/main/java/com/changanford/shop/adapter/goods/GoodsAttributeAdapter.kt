@@ -84,6 +84,10 @@ class GoodsAttributeAdapter(
         var codes = ""
         skuCodeArr.forEach { codes += "$it-" }
         codes = codes.substring(0, codes.length - 1)
+        val isNullSku = skuVos?.find { it.skuCode == codes } == null
+        if (isNullSku) {
+            return false
+        }
         skuVos?.filter { it.skuStatus == "UNDER_SHELVE" || it.stock == "0" }?.forEach {
             if (it.skuCode == codes)
                 return false

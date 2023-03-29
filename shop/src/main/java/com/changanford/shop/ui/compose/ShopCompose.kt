@@ -2,6 +2,12 @@ package com.changanford.shop.ui.compose
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.webkit.WebView
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -9,16 +15,17 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,6 +36,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.rememberImagePainter
 import com.changanford.common.MyApp
 import com.changanford.common.R
@@ -43,6 +51,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.widget.webview.HHtmlUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
@@ -343,6 +352,73 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
                 text = stringResource(com.changanford.shop.R.string.str_hasChangeXa, "$salesCount"),
                 color = colorResource(R.color.color_33), fontSize = 10.sp
             )
+        }
+    }
+}
+
+@Composable
+fun ShopServiceDescription(urlPath: String?) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+    ) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(10.dp)
+                .background(color = colorResource(R.color.color_F4))
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 18.dp, bottom = if (expanded) 8.dp else 18.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 20.dp),
+                text = "服务说明",
+                color = colorResource(id = R.color.color_33),
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Image(
+                painter = rememberImagePainter(data = R.mipmap.ic_good_service),
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .clickable {
+                        expanded = !expanded
+                    }
+                    .graphicsLayer {
+                        rotationZ = if (expanded) 180f else 0f
+                    }
+                    .size(15.dp)
+            )
+        }
+        if (expanded) {
+            Surface(modifier = Modifier.padding(start = 13.dp, end = 13.dp)) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { context ->
+                        WebView(context).apply {
+                            loadDataWithBaseURL(
+                                null,
+                                urlPath?.let { HHtmlUtils.getHtmlData(it, "0") } ?: "",
+                                "text/html",
+                                "utf-8",
+                                null
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }

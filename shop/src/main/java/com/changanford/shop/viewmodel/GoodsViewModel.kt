@@ -17,6 +17,7 @@ import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
+import com.luck.picture.lib.config.PictureSelectionConfig.listener
 import kotlinx.coroutines.launch
 
 /**
@@ -24,50 +25,65 @@ import kotlinx.coroutines.launch
  * @Time : 2021/9/9 0009
  * @Description : GoodsViewModel
  */
-class GoodsViewModel: BaseViewModel() {
+class GoodsViewModel : BaseViewModel() {
     private var adsRepository: AdsRepository = AdsRepository(this)
+
     //广告
     var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
+
     //商品分类
-    var classificationLiveData =MutableLiveData<GoodsClassification?>()
+    var classificationLiveData = MutableLiveData<GoodsClassification?>()
+
     //首页
-    var shopHomeData =MutableLiveData<ShopHomeBean>()
+    var shopHomeData = MutableLiveData<ShopHomeBean>()
 
     var goodsDetailData: MutableLiveData<GoodsDetailBean> = MutableLiveData()
+
     //商品列表
-    var goodsListData =MutableLiveData<GoodsListBean?>()
+    var goodsListData = MutableLiveData<GoodsListBean?>()
+
     //秒杀时段
-    var seckillSessionsData =MutableLiveData<SeckillSessionsBean>()
+    var seckillSessionsData = MutableLiveData<SeckillSessionsBean>()
+
     //秒杀列表
-    var killGoodsListData =MutableLiveData<GoodsListBean?>()
+    var killGoodsListData = MutableLiveData<GoodsListBean?>()
+
     //评价列表基础信息
-    var commentInfoLiveData =MutableLiveData<CommentInfoBean?>()
+    var commentInfoLiveData = MutableLiveData<CommentInfoBean?>()
+
     //评价列表
-    var commentLiveData =MutableLiveData<CommentBean?>()
+    var commentLiveData = MutableLiveData<CommentBean?>()
+
     //商品收藏状态
     var collectionGoodsStates = MutableLiveData<Boolean>()
+
     //分类列表
     var typesBean = MutableLiveData<MutableList<GoodsTypesItemBean>>()
+
     //商品列表
     var goodsListLiveData = MutableLiveData<MutableList<GoodsItemBean>?>()
+
     //OtherInfoBean
     var otherInfoBeanLiveData = MutableLiveData<OtherInfoBean?>()
+
     /**
      * 获取banner
      * */
-    fun getBannerData(){
+    fun getBannerData() {
         adsRepository.getAds("mall_top_ad_v2")
     }
+
     /**
      * 获取秒杀banner
      * */
-    fun getKillBannerData(){
+    fun getKillBannerData() {
         adsRepository.getAds("recommend_seckill")
     }
+
     /**
      * 获取 商城首页
      * */
-    fun getShopHomeData(showLoading:Boolean=false){
+    fun getShopHomeData(showLoading: Boolean = false) {
         viewModelScope.launch {
             fetchRequest(showLoading = showLoading) {
                 body.clear()
@@ -76,14 +92,15 @@ class GoodsViewModel: BaseViewModel() {
             }.onSuccess {
                 shopHomeData.postValue(it)
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it?:"", MyApp.mContext)
+                ToastUtils.showLongToast(it ?: "", MyApp.mContext)
             }
         }
     }
+
     /**
      * 获取商品分类
      * */
-    fun getClassification(){
+    fun getClassification() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -93,30 +110,44 @@ class GoodsViewModel: BaseViewModel() {
                 classificationLiveData.postValue(it)
             }.onWithMsgFailure {
                 classificationLiveData.postValue(null)
-                ToastUtils.showLongToast(it?:"", MyApp.mContext)
+                ToastUtils.showLongToast(it ?: "", MyApp.mContext)
             }
         }
     }
+
     /**
      * 获取商品列表
      * [tagId]分类id
      * [ascOrDesc]正序(从小到大)/倒序(从大到小)(综合排序情况下，传倒序),可用值:AscOrDescEnum.ASC(code=ASC, dbCode=0, message=正序),AscOrDescEnum.DESC(code=DESC, dbCode=1, message=倒序)
      * [mallSortType]	排序规则,可用值:MallSortTypeEnum.COMPREHENSIVE(code=COMPREHENSIVE, message=综合排序),MallSortTypeEnum.SALES(code=SALES, message=销量排序),MallSortTypeEnum.PRICE(code=PRICE, message=价格排序)
      * */
-    fun getGoodsList(tagId:String,pageNo:Int,tagType:String?=null,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE"){
-        if("WB"==tagType){//获取维保商品数据
-            getMaintenanceGoodsList(tagId,pageNo,pageSize, ascOrDesc = ascOrDesc,mallSortType=mallSortType)
+    fun getGoodsList(
+        tagId: String,
+        pageNo: Int,
+        tagType: String? = null,
+        pageSize: Int = this.pageSize,
+        ascOrDesc: String = "DESC",
+        mallSortType: String = "COMPREHENSIVE"
+    ) {
+        if ("WB" == tagType) {//获取维保商品数据
+            getMaintenanceGoodsList(
+                tagId,
+                pageNo,
+                pageSize,
+                ascOrDesc = ascOrDesc,
+                mallSortType = mallSortType
+            )
             return
         }
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["pageNo"]=pageNo
-                body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["tagId"]=tagId
-                    it["ascOrDesc"]=ascOrDesc
-                    it["mallSortType"]=mallSortType
+                body["pageNo"] = pageNo
+                body["pageSize"] = pageSize
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["tagId"] = tagId
+                    it["ascOrDesc"] = ascOrDesc
+                    it["mallSortType"] = mallSortType
                 }
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
@@ -125,24 +156,32 @@ class GoodsViewModel: BaseViewModel() {
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {
-                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+                if (null != it) ToastUtils.showLongToast(it, MyApp.mContext)
             }
         }
     }
+
     /**
      * 维保商品
      * [tagId]分类id
      * */
-    fun getMaintenanceGoodsList(tagId:String,pageNo:Int,pageSize:Int=this.pageSize,ascOrDesc:String="DESC",mallSortType:String="COMPREHENSIVE",showLoading:Boolean=false){
+    fun getMaintenanceGoodsList(
+        tagId: String,
+        pageNo: Int,
+        pageSize: Int = this.pageSize,
+        ascOrDesc: String = "DESC",
+        mallSortType: String = "COMPREHENSIVE",
+        showLoading: Boolean = false
+    ) {
         viewModelScope.launch {
             fetchRequest(showLoading = showLoading) {
                 body.clear()
-                body["pageNo"]=pageNo
-                body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["tagId"]=tagId
-                    it["ascOrDesc"]=ascOrDesc
-                    it["mallSortType"]=mallSortType
+                body["pageNo"] = pageNo
+                body["pageSize"] = pageSize
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["tagId"] = tagId
+                    it["ascOrDesc"] = ascOrDesc
+                    it["mallSortType"] = mallSortType
                 }
                 val randomKey = getRandomKey()
                 shopApiService.maintenanceGoodsList(body.header(randomKey), body.body(randomKey))
@@ -151,36 +190,42 @@ class GoodsViewModel: BaseViewModel() {
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {
-                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+                if (null != it) ToastUtils.showLongToast(it, MyApp.mContext)
             }
         }
     }
+
     /**
      * 获取商品详情数据
      * [spuId]商品id  108
-    * */
-    fun queryGoodsDetails(spuId:String,showLoading: Boolean = false){
+     * */
+    fun queryGoodsDetails(spuId: String, showLoading: Boolean = false) {
         viewModelScope.launch {
             fetchRequest(showLoading) {
                 body.clear()
                 val randomKey = getRandomKey()
-                shopApiService.queryGoodsDetails(spuId,body.header(randomKey), body.body(randomKey))
+                shopApiService.queryGoodsDetails(
+                    spuId,
+                    body.header(randomKey),
+                    body.body(randomKey)
+                )
             }.onWithMsgFailure {
 //                ToastUtils.showLongToast(it,MyApp.mContext)
-                responseData.postValue(ResponseBean(false,msg = it))
+                responseData.postValue(ResponseBean(false, msg = it))
             }.onSuccess {
 //                addFootprint(spuId)
                 it?.apply {
-                   val goodsDetailsBean=normalSpuDetail?:seckillSpuDetail?:haggleSpuDetailDto
+                    val goodsDetailsBean = normalSpuDetail ?: seckillSpuDetail ?: haggleSpuDetailDto
                     goodsDetailData.postValue(goodsDetailsBean)
                 }
             }
         }
     }
+
     /**
      * 获取秒杀时段
      * */
-    fun getSckills(){
+    fun getSckills() {
         viewModelScope.launch {
             fetchRequest(true) {
                 body.clear()
@@ -193,18 +238,28 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 获取秒杀列表
      * [seckillRangeId]时段id
      * */
-    fun getGoodsKillList(seckillRangeId:String,pageNo:Int,pageSize:Int=this.pageSize,showLoading: Boolean = false){
+    fun getGoodsKillList(
+        seckillRangeId: String,
+        pageNo: Int,
+        pageSize: Int = this.pageSize,
+        showLoading: Boolean = false
+    ) {
         viewModelScope.launch {
-            fetchRequest(showLoading){
+            fetchRequest(showLoading) {
                 body.clear()
-                body["pageNo"]=pageNo
-                body["pageSize"]=pageSize
+                body["pageNo"] = pageNo
+                body["pageSize"] = pageSize
                 val randomKey = getRandomKey()
-                shopApiService.getGoodsKillList(seckillRangeId,body.header(randomKey), body.body(randomKey))
+                shopApiService.getGoodsKillList(
+                    seckillRangeId,
+                    body.header(randomKey),
+                    body.body(randomKey)
+                )
             }.onSuccess {
                 killGoodsListData.postValue(it)
             }.onFailure {
@@ -212,21 +267,22 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 秒杀提醒设置/取消
      * [states]SET,CANCEL
      * */
-    fun setKillNotices(states:String,rangeId:String,listener: OnPerformListener){
-        if(!isLogin())return
+    fun setKillNotices(states: String, rangeId: String, listener: OnPerformListener) {
+        if (!isLogin()) return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["setCancel"]=states
+                body["setCancel"] = states
 //                body["dto"]=HashMap<String,Any>().also {
 //                    it["setCancel"]=states
 //                }
                 val randomKey = getRandomKey()
-                shopApiService.setKillNotices(rangeId,body.header(randomKey), body.body(randomKey))
+                shopApiService.setKillNotices(rangeId, body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 listener.onFinish(0)
             }.onWithMsgFailure {
@@ -234,17 +290,23 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 评价列表基础信息
      * */
-    fun getGoodsEvalInfo(spuId:String,spuPageType:String?=null){
+    fun getGoodsEvalInfo(spuId: String, spuPageType: String? = null) {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body[if(WConstant.maintenanceType!=spuPageType)"mallMallSpuId" else "mallWbGoodsId"]=spuId
+                body[if (WConstant.maintenanceType != spuPageType) "mallMallSpuId" else "mallWbGoodsId"] =
+                    spuId
                 val randomKey = getRandomKey()
-                if(WConstant.maintenanceType!=spuPageType) shopApiService.goodsEvalInfo(body.header(randomKey), body.body(randomKey))
-                else  shopApiService.goodsEvalInfoWb(body.header(randomKey), body.body(randomKey))
+                if (WConstant.maintenanceType != spuPageType) shopApiService.goodsEvalInfo(
+                    body.header(
+                        randomKey
+                    ), body.body(randomKey)
+                )
+                else shopApiService.goodsEvalInfoWb(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentInfoLiveData.postValue(it)
             }.onWithMsgFailure {
@@ -252,25 +314,37 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 评价列表
      * [queryType] ALL  HAVE_IMG  REVIEWS  PRAISE NEGATIVE
      * */
-    fun getGoodsEvalList(spuId:String,pageNo:Int,spuPageType:String?=null,queryType:String?=null,pageSize:Int=this.pageSize,showLoading:Boolean=false){
+    fun getGoodsEvalList(
+        spuId: String,
+        pageNo: Int,
+        spuPageType: String? = null,
+        queryType: String? = null,
+        pageSize: Int = this.pageSize,
+        showLoading: Boolean = false
+    ) {
         viewModelScope.launch {
             fetchRequest(showLoading = showLoading) {
                 body.clear()
-                body["pageNo"]=pageNo
-                body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    if(WConstant.maintenanceType==spuPageType){
+                body["pageNo"] = pageNo
+                body["pageSize"] = pageSize
+                body["queryParams"] = HashMap<String, Any>().also {
+                    if (WConstant.maintenanceType == spuPageType) {
                         it["mallWbGoodsId"] = spuId
                     }
                     it["mallMallSpuId"] = spuId
-                    it["queryType"] = queryType?:"ALL"
+                    it["queryType"] = queryType ?: "ALL"
                 }
                 val randomKey = getRandomKey()
-                if(WConstant.maintenanceType==spuPageType)shopApiService.goodsEvalListWb(body.header(randomKey), body.body(randomKey))
+                if (WConstant.maintenanceType == spuPageType) shopApiService.goodsEvalListWb(
+                    body.header(
+                        randomKey
+                    ), body.body(randomKey)
+                )
                 else shopApiService.goodsEvalList(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 commentLiveData.postValue(it)
@@ -279,31 +353,33 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 添加足迹
      * */
-    private fun addFootprint(spuId:String){
-        if(MConstant.token.isEmpty())return
+    private fun addFootprint(spuId: String) {
+        if (MConstant.token.isEmpty()) return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
-                shopApiService.addFootprint(spuId,body.header(randomKey), body.body(randomKey))
+                shopApiService.addFootprint(spuId, body.header(randomKey), body.body(randomKey))
             }
         }
-   }
+    }
+
     /**
      * 收藏商品
      * [spuId]商品id
      * */
-    fun collectGoods(spuId:String){
-        if(!isLogin())return
-        if(MineUtils.getBindMobileJumpDataType(true))return
+    fun collectGoods(spuId: String) {
+        if (!isLogin()) return
+        if (MineUtils.getBindMobileJumpDataType(true)) return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
-                shopApiService.collectGoods(spuId,body.header(randomKey), body.body(randomKey))
+                shopApiService.collectGoods(spuId, body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it)
             }.onSuccess {
@@ -312,18 +388,19 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 取消收藏商品
      * [spuId]商品id
      * */
-    fun cancelCollectGoods(spuId:String){
-        if(!isLogin())return
-        if(MineUtils.getBindMobileJumpDataType(true))return
+    fun cancelCollectGoods(spuId: String) {
+        if (!isLogin()) return
+        if (MineUtils.getBindMobileJumpDataType(true)) return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["collectionType"]=5
-                body["collectionContentIds"]= arrayOf(spuId)
+                body["collectionType"] = 5
+                body["collectionContentIds"] = arrayOf(spuId)
                 val randomKey = getRandomKey()
                 shopApiService.cancelCollectGoods(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
@@ -334,18 +411,19 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 获取我的积分
      * */
-    fun getMyIntegral(){
-        if(!isLogin())return
+    fun getMyIntegral() {
+        if (!isLogin()) return
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
                 val randomKey = getRandomKey()
                 shopApiService.getMyIntegral(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it,MyApp.mContext)
+                ToastUtils.showLongToast(it, MyApp.mContext)
             }.onSuccess {
 
             }
@@ -355,7 +433,7 @@ class GoodsViewModel: BaseViewModel() {
     /**
      * 获取推荐榜单分类
      * */
-    fun getRecommendTypes(){
+    fun getRecommendTypes() {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
@@ -368,14 +446,15 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 获取推荐榜单分类
      * */
-    fun getRecommendList(kindId:String,showLoading:Boolean=false){
+    fun getRecommendList(kindId: String, showLoading: Boolean = false) {
         viewModelScope.launch {
-            fetchRequest(showLoading){
+            fetchRequest(showLoading) {
                 body.clear()
-                body["mallMallRecommendKindId"]=kindId
+                body["mallMallRecommendKindId"] = kindId
                 val randomKey = getRandomKey()
                 shopApiService.getRecommendList(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
@@ -386,6 +465,7 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 加入购物车
      * [mallMallSpuId]商品表id
@@ -393,15 +473,22 @@ class GoodsViewModel: BaseViewModel() {
      * [fbPer]单位原价(不计算折扣)(积分)
      * [num]购买数量
      * */
-    fun addShoppingCart(mallMallSpuId:String,skuId:String,fbPer:String,num:Int,listener: OnPerformListener?=null,showLoading:Boolean=false){
-        if(!isLogin())return
+    fun addShoppingCart(
+        mallMallSpuId: String,
+        skuId: String,
+        fbPer: String,
+        num: Int,
+        listener: OnPerformListener? = null,
+        showLoading: Boolean = false
+    ) {
+        if (!isLogin()) return
         viewModelScope.launch {
-            fetchRequest(showLoading){
+            fetchRequest(showLoading) {
                 body.clear()
-                body["mallMallSpuId"]=mallMallSpuId
-                body["skuId"]=skuId
-                body["fbPer"]=fbPer
-                body["num"]=num
+                body["mallMallSpuId"] = mallMallSpuId
+                body["skuId"] = skuId
+                body["fbPer"] = fbPer
+                body["num"] = num
                 val randomKey = getRandomKey()
                 shopApiService.addShoppingCart(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {
@@ -412,19 +499,26 @@ class GoodsViewModel: BaseViewModel() {
             }
         }
     }
+
     /**
      * 使用优惠券-商品列表
      * [couponRecordId]优惠券领取id
      * */
-    fun useCoupons(couponRecordId:String,searchKey:String?=null,pageNo:Int,pageSize:Int=this.pageSize,showLoading:Boolean=false){
+    fun useCoupons(
+        couponRecordId: String,
+        searchKey: String? = null,
+        pageNo: Int,
+        pageSize: Int = this.pageSize,
+        showLoading: Boolean = false
+    ) {
         viewModelScope.launch {
             fetchRequest(showLoading) {
                 body.clear()
-                body["pageNo"]=pageNo
-                body["pageSize"]=pageSize
-                body["queryParams"]=HashMap<String,Any>().also {
-                    it["couponRecordId"]=couponRecordId
-                    it["searchKey"]=searchKey?:""
+                body["pageNo"] = pageNo
+                body["pageSize"] = pageSize
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["couponRecordId"] = couponRecordId
+                    it["searchKey"] = searchKey ?: ""
                 }
                 val randomKey = getRandomKey()
                 shopApiService.useCoupons(body.header(randomKey), body.body(randomKey))
@@ -433,24 +527,42 @@ class GoodsViewModel: BaseViewModel() {
             }.onFailure {
                 goodsListData.postValue(null)
             }.onWithMsgFailure {
-                if(null!=it)ToastUtils.showLongToast(it,MyApp.mContext)
+                if (null != it) ToastUtils.showLongToast(it, MyApp.mContext)
             }
         }
     }
+
     /**
      * 秒杀规则说明
      * */
-    fun agreementHub(bizCode:String="mall_seckill_rule"){
+    fun agreementHub(bizCode: String = "mall_seckill_rule") {
         viewModelScope.launch {
             fetchRequest {
                 body.clear()
-                body["bizCode"]=bizCode
+                body["bizCode"] = bizCode
                 val randomKey = getRandomKey()
                 shopApiService.agreementHub(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 otherInfoBeanLiveData.postValue(it)
             }.onWithMsgFailure {
                 it?.toast()
+            }
+        }
+    }
+
+    val serviceDescriptionData = MutableLiveData<String?>()
+
+    fun getServiceDescription() {
+        viewModelScope.launch {
+            fetchRequest {
+                val requestBody = HashMap<String, Any>()
+                requestBody["bizCode"] = "shop_serve_explain"
+                val rkey = getRandomKey()
+                createApi<NetWorkApi>()
+                    .getBiz(requestBody.header(rkey), requestBody.body(rkey))
+                    .onSuccess {
+                        serviceDescriptionData.value = it?.content
+                    }
             }
         }
     }

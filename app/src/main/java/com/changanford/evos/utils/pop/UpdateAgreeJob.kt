@@ -9,6 +9,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.request.addRecord
 import com.changanford.evos.PopViewModel
+import com.changanford.evos.R
 
 /**
  *Author lcw
@@ -57,6 +58,7 @@ class UpdateAgreeJob : SingleJob {
                 LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).observe(context as AppCompatActivity){
                     dismiss()
                 }
+                setBackground(R.color.m_pop_bg)
                 showPopupWindow()
             }
         }, 0)

@@ -158,6 +158,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
     }
 
     override fun initData() {
+        viewModel.getServiceDescription()
         viewModel.goodsDetailData.observe(this) {
             val newData = it.apply {
                 skuVos.forEach {skuVo->

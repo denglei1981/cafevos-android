@@ -8,6 +8,7 @@ package com.changanford.common.bean
 
 data class BizCodeBean(
     val ids: String?,
+    val content:String?,
     val windowMsg: WindowMsg?
 )
 

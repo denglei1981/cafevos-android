@@ -1442,4 +1442,10 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    @POST("/con/agreementHub/bizCode")
+    suspend fun getBiz(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<BizCodeBean>
 }

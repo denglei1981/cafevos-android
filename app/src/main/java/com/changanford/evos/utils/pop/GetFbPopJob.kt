@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.evos.PopViewModel
+import com.changanford.evos.R
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.widget.pop.GetFbPop
 import razerdp.basepopup.BasePopupWindow
@@ -55,6 +56,7 @@ class GetFbPopJob : SingleJob {
                         LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).observe(context as AppCompatActivity){
                             dismiss()
                         }
+                        setBackground(R.color.m_pop_bg)
                         setOutSideDismiss(false)
                         showPopupWindow()
                         onDismissListener = object : BasePopupWindow.OnDismissListener() {

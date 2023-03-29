@@ -17,6 +17,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
@@ -28,11 +29,10 @@ import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.GoodsAttrsPop
 import com.changanford.shop.ui.compose.DetailsWalkCompose
-import com.changanford.shop.ui.order.OrderConfirmActivity
+import com.changanford.shop.ui.compose.ShopServiceDescription
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
-import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -116,7 +116,10 @@ class GoodsDetailsControl(
         }
         //详情
         val detailsHtml = dataBean.detailsHtml
-        CustomWebHelper(activity, headerBinding.webview, false).loadDataWithBaseURL(detailsHtml,dataBean.spuSource)
+        CustomWebHelper(activity, headerBinding.webview, false).loadDataWithBaseURL(
+            detailsHtml,
+            dataBean.spuSource
+        )
         //运费 0为包邮
         val freightPrice = dataBean.freightPrice
         if (freightPrice != "0.00" && "0" != freightPrice) headerBinding.inGoodsInfo.tvFreight.setHtmlTxt(
@@ -172,6 +175,12 @@ class GoodsDetailsControl(
         }
         getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
+        viewModel.serviceDescriptionData.observe(activity){
+            //服务说明
+            headerBinding.composeServiceDescription.setContent {
+                ShopServiceDescription(it)
+            }
+        }
         //推荐-逛一逛
         headerBinding.composeView.setContent {
             DetailsWalkCompose(dataBean.recommend)
@@ -283,10 +292,14 @@ class GoodsDetailsControl(
         var skuCodeTxt = ""
         val skuCodeTxtArr = arrayListOf<String>()
         for ((i, item) in dataBean.attributes.withIndex()) {
-            item.optionVos.find { skuCodes[i + 1] == it.optionId }?.let {
-                val optionName = it.optionName
-                skuCodeTxtArr.add(optionName)
-                skuCodeTxt += "$optionName  "
+            try {
+                item.optionVos.find { skuCodes[i + 1] == it.optionId }?.let {
+                    val optionName = it.optionName
+                    skuCodeTxtArr.add(optionName)
+                    skuCodeTxt += "$optionName  "
+                }
+            } catch (error: IndexOutOfBoundsException) {
+                error.message?.logE()
             }
         }
         dataBean.skuCodeTxts = skuCodeTxtArr
@@ -391,11 +404,13 @@ class GoodsDetailsControl(
      * */
     fun submitOrder() {
         skuCode.apply {
-            if (isInvalidSelectAttrs(this)) createAttribute()
-            else {
-                exchangeCtaClick()
-                OrderConfirmActivity.start(dataBean)
-            }
+//            if (isInvalidSelectAttrs(this)) createAttribute()
+//            if (dataBean.skuVos.size != 1)
+                createAttribute()
+//            else {
+//                exchangeCtaClick()
+//                OrderConfirmActivity.start(dataBean)
+//            }
         }
     }
 
@@ -442,7 +457,7 @@ class GoodsDetailsControl(
         }
     }
 
-     fun exchangeCtaClick() {
+    fun exchangeCtaClick() {
         dataBean.run {
             val isSeckill = if (killStates == 5) "是" else "否"
             updateGoodsDetails(spuName.toString(), "确认订单页")

@@ -9,6 +9,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.time.GetTimeBeforeDate
 import com.changanford.evos.PopViewModel
+import com.changanford.evos.R
 import com.orhanobut.hawk.Hawk
 import razerdp.basepopup.BasePopupWindow
 
@@ -65,6 +66,7 @@ class NewEstOnePopJob : SingleJob {
                         .observe(context as AppCompatActivity) {
                             dismiss()
                         }
+                    setBackground(R.color.m_pop_bg)
                     showPopupWindow()
                     setOnPopupWindowShowListener {
                         addEstOneDayNum(useBean!!.adId)
