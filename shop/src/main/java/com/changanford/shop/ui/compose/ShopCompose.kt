@@ -362,12 +362,12 @@ fun ShopServiceDescription(urlPath: String?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioMediumBouncy,
-                    stiffness = Spring.StiffnessLow
-                )
-            )
+//            .animateContentSize(
+//                animationSpec = spring(
+//                    dampingRatio = Spring.DampingRatioMediumBouncy,
+//                    stiffness = Spring.StiffnessLow
+//                )
+//            )
     ) {
         Spacer(
             modifier = Modifier
