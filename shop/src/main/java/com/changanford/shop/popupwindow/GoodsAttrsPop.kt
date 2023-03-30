@@ -75,6 +75,15 @@ open class GoodsAttrsPop(
                     if (it.isNotEmpty()) _skuCode = it[0].skuCode
                 }
         }
+        if (_skuCode.isEmpty()) {
+            val co = dataBean.skuVos[0].skuCode.split("-") as ArrayList<String>
+            var cos = ""
+            repeat(co.size) {
+                cos += "0-"
+            }
+            cos = cos.substring(0, cos.length - 1)
+            _skuCode = cos
+        }
         mAdapter.setSkuCodes(_skuCode)
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)

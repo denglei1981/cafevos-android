@@ -13,6 +13,7 @@ import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 import com.changanford.shop.utils.ScreenUtils
+import com.xiaomi.push.it
 
 
 class GoodsAttributeAdapter(
@@ -79,18 +80,27 @@ class GoodsAttributeAdapter(
      * 存在指定optionId的sku组合并且库存不等于0即该optionId为可选状态反之禁选
      * */
     private fun isExistSku(optionId: String): Boolean {
+        if (currentSkuCode.isEmpty()) return false
         val skuCodeArr = currentSkuCode.split("-") as ArrayList
         skuCodeArr[pos] = optionId
         var codes = ""
         skuCodeArr.forEach { codes += "$it-" }
         codes = codes.substring(0, codes.length - 1)
-        val isNullSku = skuVos?.find { it.skuCode == codes } == null
-        if (isNullSku) {
-            return false
+        if (!skuCodeArr.contains("0")) {
+            val isNullSku = skuVos?.find { it.skuCode == codes } == null
+            if (isNullSku) {
+                return false
+            }
         }
         skuVos?.filter { it.skuStatus == "UNDER_SHELVE" || it.stock == "0" }?.forEach {
             if (it.skuCode == codes)
                 return false
+        }
+        val isOver = skuVos?.filter { it.skuStatus == "ON_SHELVE" || it.stock != "0" }
+        isOver?.let {
+            if (isOver.isEmpty()) {
+                return false
+            }
         }
 //        return skuVos?.find { it.skuCodeArr == skuCodeArr && it.stock != "0" } != null
         return true
