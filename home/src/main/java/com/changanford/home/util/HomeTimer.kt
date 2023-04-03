@@ -9,7 +9,7 @@ object HomeTimer {
     var task: FourHourTask? = null
     var count = 1
     var recommendViewModel: RecommendViewModel? = null
-    const val timePeriod: Long = 4 * 55 * 60 * 1000
+    const val timePeriod: Long = (2 * 60 -1) * 60 * 1000
 
     class FourHourTask : TimerTask() {
         override fun run() {
