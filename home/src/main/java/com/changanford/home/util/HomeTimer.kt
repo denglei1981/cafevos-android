@@ -1,5 +1,6 @@
 package com.changanford.home.util
 
+import com.changanford.common.util.MConstant
 import com.changanford.home.recommend.request.RecommendViewModel
 import java.util.Timer
 import java.util.TimerTask
@@ -13,7 +14,9 @@ object HomeTimer {
 
     class FourHourTask : TimerTask() {
         override fun run() {
-            recommendViewModel?.getRecommend(false)
+            if (MConstant.token.isNotEmpty()) {
+                recommendViewModel?.getRecommend(false)
+            }
         }
     }
 
