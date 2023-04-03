@@ -1100,10 +1100,11 @@ object GIOUtils {
     }
 
     //车型点击
-    fun carClick(carName: String?, carType: String?) {
+    fun carClick(carName: String?, carType: String?, carCode: String?) {
         val map = HashMap<String, String>()
 
         map["fy_currentPageName_var"] = "爱车页"
+        map["fy_carSeriesCode_var"] = carCode.gioEmpty()
         map["fy_carName_var"] = carName.gioEmpty()
         map["fy_carType_var"] = carType.gioEmpty()
 

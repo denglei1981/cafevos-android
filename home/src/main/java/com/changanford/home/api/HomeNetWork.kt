@@ -423,7 +423,7 @@ interface HomeNetWork {
     ): CommonResponse<ArrayList<WaitReceiveBean>>
 
     // 首页广告弹窗
-    @POST("/con/ads/newEstOne")
+    @POST("/con/ads/newEstTwo")
     suspend fun newEstOne(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody

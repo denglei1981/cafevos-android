@@ -53,7 +53,7 @@ class CarIconAdapter(val activity: Activity) :
             executePendingBindings()
             root.setOnClickListener {
                 WBuriedUtil.clickCarEnjoy(item.spuName)
-                GIOUtils.carClick(item.spuName, item.carLbName)
+                GIOUtils.carClick(item.spuName, item.carLbName, item.spuCode)
                 GIOUtils.homePageClick("推荐车型", (position + 1).toString(), item.spuName)
                 JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
             }

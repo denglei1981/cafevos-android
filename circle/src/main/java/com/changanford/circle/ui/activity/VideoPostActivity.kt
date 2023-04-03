@@ -1016,7 +1016,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                             AliYunOssUploadOrDownFileConfig.OnUploadFile {
                             override fun onUploadFileSuccess(info: String) {
                                 val upLoadPath = if (path.endsWith(".mp4")) {
-                                    "$path${"?x-oss-process=video/snapshot,t_0,f_jpg,w_800,h_600,m_fast"}"
+                                    "$path${"?x-oss-process=video/snapshot,t_0,f_jpg,w_800,h_600,m_fast.jpg"}"
                                 } else path
                                 params["pics"] = upLoadPath
                                 upvideo(stsBean, dialog)
@@ -1356,8 +1356,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         postEntity.localMeadle = JSON.toJSONString(selectList)
         postEntity.actionCode =
             if (params["actionCode"] != null) params["actionCode"] as String else ""
-        postEntity.fmpath =
-            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+//        postEntity.fmpath =
+//            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
         postEntity.type = "3"  //视频帖子类型
         postEntity.title = binding.etBiaoti.text.toString()
         postEntity.address = if (params["address"] != null) params["address"] as String else ""
