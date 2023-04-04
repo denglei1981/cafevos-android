@@ -307,6 +307,7 @@ data class GoodsDetailBean(
     val attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
     val spuSource: String = "0",//来源(0-后台;1-京东)
+    val managerSpuDetail: String = "0",//来源(0-后台;1-京东)
     var price: String? = "0",
     var orginPrice0: String? = "0",//原价
     var orginPrice: String? = null,//原价

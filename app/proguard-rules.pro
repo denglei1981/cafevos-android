@@ -248,3 +248,6 @@
 -keepclassmembers class com.changanford.common.util.crash.ReflexUtil{*;}
 
 -keep class com.zs.easy.imgcompress.** {*;}
+
+-dontwarn org.jsoup.**
+-keep class org.jsoup.**{*;}

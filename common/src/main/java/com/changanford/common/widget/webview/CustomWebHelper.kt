@@ -1,5 +1,6 @@
 package com.changanford.common.widget.webview
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.http.SslError
 import android.os.Build
@@ -87,12 +88,12 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                             val split = param.split("&")
                             var jumpType = ""
                             var jumpData = ""
-                            split.forEach {s->
-                                if(s.contains("jumpDataType=")){
-                                    jumpType=s.substring(s.indexOf("=")+1,s.length)
+                            split.forEach { s ->
+                                if (s.contains("jumpDataType=")) {
+                                    jumpType = s.substring(s.indexOf("=") + 1, s.length)
                                 }
-                                if(s.contains("jumpDataValue=")){
-                                    jumpData=s.substring(s.indexOf("=")+1,s.length)
+                                if (s.contains("jumpDataValue=")) {
+                                    jumpData = s.substring(s.indexOf("=") + 1, s.length)
                                 }
                             }
                             try {
@@ -105,8 +106,11 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                         }
                         return true
                     }
-                    if (url.startsWith(DefaultWebClient.HTTP_SCHEME) || url.startsWith(DefaultWebClient.HTTPS_SCHEME)) {
-                        JumpUtils.instans?.jump(1,url)
+                    if (url.startsWith(DefaultWebClient.HTTP_SCHEME) || url.startsWith(
+                            DefaultWebClient.HTTPS_SCHEME
+                        )
+                    ) {
+                        JumpUtils.instans?.jump(1, url)
                         return true
                     }
                     return super.shouldOverrideUrlLoading(view, request)
@@ -129,10 +133,10 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
         }
     }
 
-    fun loadDataWithBaseURL(htmlData: String,spuSource:String = "0") {
+    fun loadDataWithBaseURL(htmlData: String, spuSource: String = "0") {
         webView?.loadDataWithBaseURL(
             null,
-            HHtmlUtils.getHtmlData(htmlData,spuSource) ?: "",
+            HHtmlUtils.getHtmlData(htmlData, spuSource) ?: "",
             "text/html",
             "utf-8",
             null
