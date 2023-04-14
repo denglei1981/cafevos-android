@@ -170,6 +170,11 @@ public class AlertDialog {
         return this;
     }
 
+    public AlertDialog setMsgHeight(int height) {
+        txt_msg.setHeight(height);
+        return this;
+    }
+
     public AlertDialog setMsgGravity() {
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         //此处相当于布局文件中的Android:layout_gravity属性
@@ -178,6 +183,18 @@ public class AlertDialog {
         param.rightMargin = IntExtKt.toIntPx(15);
         param.topMargin = IntExtKt.toIntPx(20);
         txt_msg.setLayoutParams(param);
+        return this;
+    }
+
+    public AlertDialog setMsgGravityCenter() {
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        //此处相当于布局文件中的Android:layout_gravity属性
+        param.gravity = Gravity.CENTER;
+        param.leftMargin = IntExtKt.toIntPx(15);
+        param.rightMargin = IntExtKt.toIntPx(15);
+        param.topMargin = IntExtKt.toIntPx(20);
+        txt_msg.setLayoutParams(param);
+        txt_msg.setGravity(Gravity.CENTER_VERTICAL);
         return this;
     }
 

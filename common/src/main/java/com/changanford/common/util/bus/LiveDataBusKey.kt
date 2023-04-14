@@ -307,5 +307,6 @@ object LiveDataBusKey {
     const val UPDATE_MAIN_GIO = "updateMainGio"
     const val UPDATE_INFO_DETAIL_GIO = "updateInfoDetailGio"
     const val UPDATE_MAIN_CHANGE = "updateMainChange"
+    const val DISMISS_PAY_WAITING = "dismissPayWait"
 }
 

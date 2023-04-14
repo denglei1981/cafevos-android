@@ -7,6 +7,8 @@ import com.changanford.common.MyApp
 import com.changanford.common.bean.*
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
@@ -132,7 +134,7 @@ class OrderViewModel: BaseViewModel() {
             payType=0
         }
         viewModelScope.launch {
-            fetchRequest (true){
+            fetchRequest (false){
                 body["orderConfirmType"]=orderConfirmType
                 body["zfb"]= fbPrice
                 body["zje"]= rmbPrice
@@ -150,8 +152,10 @@ class OrderViewModel: BaseViewModel() {
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
             }.onSuccess {
                 orderInfoLiveData.postValue(it)
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
             }.onWithMsgFailure {
                 ToastUtils.showLongToast(it,MyApp.mContext)
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
             }
         }
     }

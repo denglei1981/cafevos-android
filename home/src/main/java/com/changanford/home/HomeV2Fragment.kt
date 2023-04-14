@@ -22,12 +22,10 @@ import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
 import com.changanford.common.ui.GetCoupopBindingPop
-import com.changanford.common.ui.NewEstOnePop
 import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
@@ -49,12 +47,10 @@ import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.orhanobut.hawk.Hawk
 import com.scwang.smart.refresh.layout.api.RefreshHeader
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.constant.RefreshState
 import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
-import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
 import java.util.*
@@ -95,7 +91,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         TwoAdRvListAdapter()
     }
     var currentPosition = 0
-
 
     override fun initView() {
         //Tab+Fragment

@@ -195,4 +195,5 @@
     <color name="color_80F21C44">#80F21C44</color>
     <color name="color_73A3D8">#73A3D8</color>
     <color name="m_pop_bg">#E6000000</color>
+    <color name="m_pay_content">#B3000000</color>
 </resources>

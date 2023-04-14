@@ -21,6 +21,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.*
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -30,8 +31,11 @@ import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.request.getBizCode
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toIntDp
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.web.AndroidBug5497Workaround
+import com.changanford.common.widget.pop.PayWaitingPop
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
@@ -473,6 +477,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             if (ruleId.isNotEmpty()) {
                 addRecord(ruleId)
             }
+            showWaitPay()
             viewModel.createOrder(
                 orderConfirmType = orderConfirmType,
                 payFb = payFb,
@@ -770,5 +775,26 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 }
             }
         }
+    }
+
+    private fun showWaitPay() {
+        PayWaitingPop(this).apply {
+            setBackgroundColor(android.graphics.Color.TRANSPARENT)
+            setBlurBackgroundEnable(false)
+            showPopupWindow()
+            LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).observe(this@OrderConfirmActivity){
+                dismiss()
+            }
+        }
+    }
+
+    private fun showAddressError(){
+        AlertDialog(this).builder()
+            .setMsg("收货地址填写错误，请重新编辑")
+            .setMsgSize(15)
+            .setMsgHeight(80.toIntPx())
+            .setMsgGravityCenter()
+            .setMsgColor(ContextCompat.getColor(this, R.color.color_33))
+            .setNegativeButton("好的", R.color.color_01025C) { }.show()
     }
 }
