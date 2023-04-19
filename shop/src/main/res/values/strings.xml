@@ -223,4 +223,6 @@
     <string name="str_afterDetails">售后详情</string>
     <string name="str_since">起</string>
     <string name="str_carMaintenance">爱车养护</string>
+    <string name="str_order_list">订单列表</string>
+    <string name="str_Repayment">重新支付</string>
 </resources>

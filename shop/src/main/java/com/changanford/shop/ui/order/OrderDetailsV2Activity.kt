@@ -597,10 +597,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             //支付、确认收货、评价、再次购买
             R.id.btn_order_confirm -> confirmOrder()
             //修改收货地址
-            R.id.img_right, R.id.tv_userInfo, R.id.tv_locationInfo -> if ("WAIT_PAY" == dataBean.orderStatus) JumpUtils.instans?.jump(
-                20,
-                "1"
-            )
+//            R.id.img_right, R.id.tv_userInfo, R.id.tv_locationInfo -> if ("WAIT_PAY" == dataBean.orderStatus) JumpUtils.instans?.jump(
+//                20,
+//                "1"
+//            )
         }
     }
 
