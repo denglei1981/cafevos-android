@@ -1,5 +1,6 @@
 package com.changanford.common.bean
 
+import android.os.Parcelable
 import android.text.SpannableString
 import android.text.TextUtils
 import androidx.compose.runtime.MutableState
@@ -8,6 +9,8 @@ import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 /**
  * @Author : wenke
@@ -652,7 +655,7 @@ data class OrderItemBean(
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
     var rmbPrice: String? = null,
-    var orderReceiveAddress: OrderReceiveAddress,
+    var orderReceiveAddress: OrderReceiveAddress?=null,
     var skuList: MutableList<OrderItemBean> = mutableListOf(),
     var payFb: String? = null,
     var payRmb: String? = null,
@@ -778,15 +781,19 @@ data class OrderReceiveAddress(
     }
 }
 
+@Parcelize
 data class OrderInfoBean(
+    @SerializedName("privatePayNo")
     val orderNo: String,//订单号
     val cost: String? = "0",
+    val waitPayDuration: Long? = 0,
     var accountFb: String? = "",//账号余额
     var source: String? = "0",//1商品详情（原生）2 H5
     var payRmb: String? = null,
+    //支付方式(0纯积分/1纯现金/2混合支付)
     var payType: Int? = null,
     var payFb: String? = null,
-)
+):Parcelable
 
 data class ShopAddressInfoBean(
     val addressId: Int = 0,

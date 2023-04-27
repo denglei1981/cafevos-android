@@ -206,7 +206,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             isClickSubmit = false
             productOrderCreate(it.orderNo)
             orderCreate(it.orderNo)
-            PayConfirmActivity.start(it.orderNo)
+            PayConfirmActivity.start(it)
             LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
                 .postValue("$orderConfirmType")
             this.finish()

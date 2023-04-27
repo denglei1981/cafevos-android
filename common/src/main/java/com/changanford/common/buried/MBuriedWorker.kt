@@ -23,7 +23,7 @@ class MBuriedWorker(context: Context, workerParams: WorkerParameters) :
     CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
         val body = inputData.getString("body")
-        if (BuildConfig.DEBUG) Log.e("okhttp","body:$body")
+//        if (BuildConfig.DEBUG) Log.e("okhttp","body:$body")
         RepositoryManager.obtainService(NetWorkApi::class.java).buried(
             getBuriedHeader(body),
             getBuriedRequestBody(body)
@@ -33,7 +33,7 @@ class MBuriedWorker(context: Context, workerParams: WorkerParameters) :
 
                 override fun onFail(e: ApiException) {}
                 override fun onSuccess(response: BaseBean<String>) {
-                    Log.e("okhttp", "onSuccess:$response")
+//                    Log.e("okhttp", "onSuccess:$response")
                 }
             })
 

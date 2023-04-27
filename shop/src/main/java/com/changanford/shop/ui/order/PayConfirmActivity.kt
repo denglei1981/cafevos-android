@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
@@ -27,12 +28,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayWayBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -62,21 +65,32 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
         fun start(orderNo: String) {
             JumpUtils.instans?.jump(110, orderNo)
         }
+
+        fun start(orderInfoBean: OrderInfoBean) {
+            val bundle = Bundle()
+            bundle.putParcelable("orderInfoBean", orderInfoBean)
+            startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
+        }
     }
 
     private var timeCountControl: PayTimeCountControl? = null
     private var orderInfoBean: OrderInfoBean? = null
+    private var newOrderInfoBean: OrderInfoBean? = null
     private var dataBean: OrderItemBean? = null
     private var waitPayCountDown: Long = 1800//支付剩余时间 默认半小时
     private var isPaySuccessful = false//是否支付成功
     private var isClickSubmit = false
     private var orderNo: String? = null
+    private var isFromOrder = false
+
+    //    private var orderInfoBean: OrderInfoBean?=null
     override fun initView() {
         binding.topBar.setOnBackClickListener(this)
     }
 
     override fun initData() {
         orderNo = intent.getStringExtra("orderNo")
+        newOrderInfoBean = intent.getParcelableExtra("orderInfoBean")
         if (TextUtils.isEmpty(orderNo)) {
             //兼容以前版本
             intent.getStringExtra("orderInfo")?.apply {
@@ -86,10 +100,10 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 }
             }
         }
-        if (TextUtils.isEmpty(orderNo)) {
-            ToastUtils.reToast(R.string.str_parameterIllegal)
-            return
-        }
+//        if (TextUtils.isEmpty(orderNo)) {
+//            ToastUtils.reToast(R.string.str_parameterIllegal)
+//            return
+//        }
         initObserver()
     }
 
@@ -97,6 +111,22 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
         viewModel.orderItemLiveData.observe(this) { orderItem ->
             dataBean = orderItem
             bindingData()
+        }
+        newOrderInfoBean?.let { orderBean ->
+            viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this) {
+                it?.let {
+                    dataBean = OrderItemBean(
+                        waitPayCountDown = orderBean.waitPayDuration,
+                        payFb = orderBean.payFb,
+                        payRmb = orderBean.payRmb,
+                        payType = orderBean.payType.toString(),
+                        totalIntegral = it.integral.toInt().toString(),
+                        orderNo = orderBean.orderNo
+                    )
+                    isFromOrder = true
+                    bindingOrderData()
+                }
+            }
         }
         orderNo?.let { viewModel.getOrderDetail(it) }
         //福币支付回调
@@ -157,6 +187,58 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
 
                 false -> {
                     payResults(false)
+                }
+            }
+        }
+    }
+
+    //订单直接过来的
+    private fun bindingOrderData() {
+        dataBean?.apply {
+            if (waitPayCountDown == null || waitPayCountDown == 0L) {
+                payResults(false)
+                return
+            }
+            when (payType) {
+                "0" -> {
+                    binding.apply {
+                        layoutPay.visibility = View.VISIBLE
+                        btnSubmit.visibility = View.VISIBLE
+                        composeView.visibility = View.GONE
+                        model = dataBean
+                        tvAccountPoints.setHtmlTxt(
+                            getString(R.string.str_Xfb, totalIntegral),
+                            "#00095B"
+                        )
+                        //账户余额小于所支付额度 则余额不足
+                        if (totalIntegral!!.toFloat() < (payFb
+                                ?: "0").toFloat()
+                        ) btnSubmit.setStates(8)
+                        else btnSubmit.setStates(12)
+                        val payCountDown =
+                            waitPayCountDown ?: this@PayConfirmActivity.waitPayCountDown
+                        if (payCountDown > 0) {
+                            timeCountControl?.cancel()
+                            timeCountControl = PayTimeCountControl(
+                                payCountDown * 1000,
+                                tv = binding.tvPayTime,
+                                null,
+                                this@PayConfirmActivity
+                            )
+                            timeCountControl?.start()
+                        }
+                    }
+                }
+                //现金支付和混合支付 使用银联支付
+                else -> {
+                    binding.apply {
+                        layoutPay.visibility = View.INVISIBLE
+                        btnSubmit.visibility = View.INVISIBLE
+                        composeView.visibility = View.VISIBLE
+                        composeView.setContent {
+                            UnionPayCompose(dataBean, this@PayConfirmActivity)
+                        }
+                    }
                 }
             }
         }
@@ -252,9 +334,14 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
             if (!isClickSubmit) {
                 isClickSubmit = true
                 when (binding.btnSubmit.text) {
-                    getString(R.string.str_payConfirm), getString(R.string.str_Repayment) -> viewModel.fbPay(
-                        orderNo
-                    )
+                    getString(R.string.str_payConfirm), getString(R.string.str_Repayment) -> {
+                        if (isFromOrder) {
+                            payFb?.let { viewModel.fbPayBatch(orderNo, it) }
+                        } else {
+                            viewModel.fbPay(orderNo)
+                        }
+                    }
+
                     getString(R.string.str_order_list) -> JumpUtils.instans?.jump(52)
 
                     getString(R.string.str_orderDetails) -> {
@@ -448,7 +535,17 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 ) {
                     Button(
                         onClick = {
-                            viewModel.rmbPay(orderNo, selectedTag.value)
+                            if (isFromOrder) {
+                                payRmb?.let {
+                                    viewModel.rmbPayBatch(
+                                        orderNo,
+                                        it,
+                                        selectedTag.value
+                                    )
+                                }
+                            } else {
+                                viewModel.rmbPay(orderNo, selectedTag.value)
+                            }
                         },
                         enabled = selectedTag.value != "0" && countdown.value != timeStr,
                         shape = RoundedCornerShape(20.dp),

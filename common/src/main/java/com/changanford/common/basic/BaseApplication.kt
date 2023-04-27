@@ -29,6 +29,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.MyApplicationUtil
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
+import com.changanford.common.wutil.DebuggerUtils
 import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import kotlinx.coroutines.CoroutineScope
@@ -38,6 +39,7 @@ abstract class BaseApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         INSTANT = this
+        DebuggerUtils.checkDebuggableInNotDebugModel(this)
         // 获取隐私政策签署状态
         if ((SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {
             // 没签，等签署之后再调用registerPush()

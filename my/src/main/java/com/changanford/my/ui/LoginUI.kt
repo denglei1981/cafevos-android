@@ -7,6 +7,9 @@ import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
 import android.widget.CompoundButton
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
@@ -106,7 +109,23 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         setIntent(intent)
     }
 
+//    private val defaultLifecycleObserver = object : DefaultLifecycleObserver {
+//        override fun onStop(owner: LifecycleOwner) {
+//            super.onStop(owner)
+//            //后台
+//            ToastUtils.reToast("${resources.getString(R.string.app_name)}App已经进入后台")
+//        }
+//
+//
+//        override fun onStart(owner: LifecycleOwner) {
+//            super.onStart(owner)
+//            //前台
+//        }
+//
+//    }
+
     override fun initView() {
+//        ProcessLifecycleOwner.get().lifecycle.addObserver(defaultLifecycleObserver)
         updateMainGio("登陆页", "登陆页")
         GioPageConstant.topicEntrance = "登陆页"
         AppUtils.setStatusBarMarginTop(binding.back, this)
@@ -225,10 +244,12 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
                         finish()
                     }
+
                     UserManger.UserLoginStatus.USE_UNBIND_MOBILE -> {
                         RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
                         finish()
                     }
+
                     else -> {}
                 }
             })
@@ -369,6 +390,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun onDestroy() {
         super.onDestroy()
+//        ProcessLifecycleOwner.get().lifecycle.removeObserver(defaultLifecycleObserver)
         subscribe?.let {
             it.dispose()
         }

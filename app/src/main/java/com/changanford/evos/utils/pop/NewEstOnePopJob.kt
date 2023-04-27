@@ -3,6 +3,7 @@ package com.changanford.evos.utils.pop
 import android.content.Context
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.changanford.common.bean.NewEstOneBean
 import com.changanford.common.bean.NewEstOneItemBean
 import com.changanford.common.ui.NewEstOnePop
 import com.changanford.common.util.bus.LiveDataBus
@@ -45,23 +46,53 @@ class NewEstOnePopJob : SingleJob {
         return true
     }
 
-    override fun launch(callback: () -> Unit) {
-        val bean = popViewModel?.popBean?.value?.newEstOneBean ?: return
-        var useBean: NewEstOneItemBean? = null
-
-        if (!bean.maVo?.ads.isNullOrEmpty() && getDaysNum(bean.maVo?.ads?.get(0)?.adId) < mDaysNum) {
-            bean.maVo?.let {
-                useBean = it.ads[0]
-            }
-        } else if (!bean.appVo?.ads.isNullOrEmpty() && getDaysNum(bean.appVo?.ads?.get(0)?.adId) < mDaysNum) {
-            bean.appVo?.let {
-                useBean = it.ads[0]
+    private fun getMaVo(): NewEstOneItemBean? {
+        val bean = popViewModel?.popBean?.value?.newEstOneBean
+        if (bean?.maVo?.ads.isNullOrEmpty()) {
+            return null
+        }
+        bean?.maVo?.ads?.forEach {
+            if (getDaysNum(it.adId) < mDayNum) {
+                return it
             }
         }
+        return null
+    }
 
+    private fun getAppVo(): NewEstOneItemBean? {
+        val bean = popViewModel?.popBean?.value?.newEstOneBean
+        if (bean?.appVo?.ads.isNullOrEmpty()) {
+            return null
+        }
+        bean?.appVo?.ads?.forEach {
+            if (getDaysNum(it.adId) < mDayNum) {
+                return it
+            }
+        }
+        return null
+    }
+
+    override fun launch(callback: () -> Unit) {
+//        val bean = popViewModel?.popBean?.value?.newEstOneBean ?: return
+        var useBean: NewEstOneItemBean? = null
+
+//        if (!bean.maVo?.ads.isNullOrEmpty() && getDaysNum(bean.maVo?.ads?.get(0)?.adId) < mDaysNum) {
+//            bean.maVo?.let {
+//                useBean = it.ads[0]
+//            }
+//        } else if (!bean.appVo?.ads.isNullOrEmpty() && getDaysNum(bean.appVo?.ads?.get(0)?.adId) < mDaysNum) {
+//            bean.appVo?.let {
+//                useBean = it.ads[0]
+//            }
+//        }
+        useBean = if (getMaVo() != null) {
+            getMaVo()
+        } else {
+            getAppVo()
+        }
         if (useBean != null) {
             android.os.Handler(Looper.myLooper()!!).postDelayed({
-                NewEstOnePop(context!!, useBean!!).apply {
+                NewEstOnePop(context!!, useBean).apply {
                     LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE)
                         .observe(context as AppCompatActivity) {
                             dismiss()
@@ -69,7 +100,7 @@ class NewEstOnePopJob : SingleJob {
                     setBackground(R.color.m_pop_bg)
                     showPopupWindow()
                     setOnPopupWindowShowListener {
-                        addEstOneDayNum(useBean!!.adId)
+                        addEstOneDayNum(useBean.adId)
                         addDayNum()
                     }
                     onDismissListener = object : BasePopupWindow.OnDismissListener() {

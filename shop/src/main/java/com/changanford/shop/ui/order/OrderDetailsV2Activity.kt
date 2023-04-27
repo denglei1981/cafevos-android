@@ -265,7 +265,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             }
         }
         isApplyRefund(dataBean)
-        bindingAddressInfo(dataBean.orderReceiveAddress, false)
+        dataBean.orderReceiveAddress?.let { bindingAddressInfo(it, false) }
         //优惠积分
         val preferentialFb = dataBean.preferentialFb
         if (null != preferentialFb && "0" != preferentialFb) {
@@ -672,8 +672,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inSaleBottom.btnOrderInvoice.text = "申请发票"
                     binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
                         if (dataBean != null) {
-                            dataBean.addressInfo = localDataBean.orderReceiveAddress.addressName
-                            dataBean.addressId = localDataBean.orderReceiveAddress.addressId.toInt()
+                            dataBean.addressInfo = localDataBean.orderReceiveAddress?.addressName.toString()
+                            dataBean.addressId = localDataBean.orderReceiveAddress?.addressId?.toInt()!!
                         }
                         localDataBean.mallMallOrderId?.let {
                             val invoiceInfo = InvoiceInfo(
