@@ -45,6 +45,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
     }
 
     override fun initView() {
+        title = "我的活动页"
         binding.collectToolbar.toolbarTitle.text = "我的活动"
         binding.collectToolbar.toolbarSave.text = "草稿箱"
         binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))

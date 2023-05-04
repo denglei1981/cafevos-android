@@ -88,6 +88,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
     private var tabs: ArrayList<QuestionTagBean>? = null
     private var questionInfoBean: QuestionInfoBean? = null
     override fun initView() {
+        title = "问答页"
         StatusBarUtil.setStatusBarColor(this, R.color.transparent)
         initSmartRefreshLayout()
         initAppbarLayout()

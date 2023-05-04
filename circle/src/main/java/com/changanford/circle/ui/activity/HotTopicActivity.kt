@@ -46,6 +46,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     }
 
     override fun initView() {
+        title = "话题列表页"
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
         type = intent.getIntExtra(IntentKey.TOPIC_TYPE, 0)
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)

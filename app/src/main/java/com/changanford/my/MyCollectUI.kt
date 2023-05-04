@@ -60,6 +60,7 @@ class MyCollectUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     var index = 0
     override fun initView() {
+        title = "我的收藏页"
         setLoadSir(binding.root)
         LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).observe(this){
             showContent()

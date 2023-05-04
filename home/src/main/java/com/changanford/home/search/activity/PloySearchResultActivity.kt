@@ -68,6 +68,7 @@ class PloySearchResultActivity :
     }
 
     override fun initView() {
+        title = "搜索结果页"
         GioPageConstant.infoEntrance = "搜索结果页"
         ImmersionBar.with(this)
             .fitsSystemWindows(true)

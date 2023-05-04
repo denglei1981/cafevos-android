@@ -108,6 +108,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
     override fun initView() {
         addLiveDataBus()
+        title = "商品详情页"
         intent.getParcelableExtra<GioPreBean>(GioPageConstant.shopPreBean)?.let {
             gioPreBean = it
         }
@@ -161,7 +162,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
         viewModel.getServiceDescription()
         viewModel.goodsDetailData.observe(this) {
             val newData = it.apply {
-                skuVos.forEach {skuVo->
+                skuVos.forEach { skuVo ->
                     if (skuVo.skuStatus == "UNDER_SHELVE") {
                         skuVo.stock = "0"
                     }
@@ -221,7 +222,10 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
             R.id.btn_cart -> control.addShoppingCart(0)
             //查看评价
             R.id.tv_goodsCommentLookAll -> {
-                updateGoodsDetails(headerBinding.inGoodsInfo.tvGoodsTitle.text.toString(), "商品评价页")
+                updateGoodsDetails(
+                    headerBinding.inGoodsInfo.tvGoodsTitle.text.toString(),
+                    "商品评价页"
+                )
                 GoodsEvaluateActivity.start(spuId)
             }
             //选择商品属性

@@ -127,6 +127,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
     private var locaPostEntity: PostEntity? = null
     override fun initView() {
+        title = "发帖页"
         binding.etBiaoti.requestFocus()
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)

@@ -130,6 +130,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     override fun initView() {
+        title = "发帖页"
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvTitle.text = "发帖"

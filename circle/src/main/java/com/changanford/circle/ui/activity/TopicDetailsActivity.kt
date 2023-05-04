@@ -82,6 +82,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     override fun initView() {
+        title = "话题详情页"
         initMagicIndicator()
         GioPageConstant.topicDetailTabName = "推荐"
         GioPageConstant.prePageType = "话题详情页"

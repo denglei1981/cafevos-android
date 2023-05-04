@@ -92,6 +92,7 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+        title = "资讯详情页"
         isPortrait = false
         super.initView(savedInstanceState)
     }

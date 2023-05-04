@@ -34,6 +34,7 @@ class SpecialListActivity :
     }
 
     override fun initView() {
+        title = "专题列表页"
         binding.layoutTitle.tvTitle.text = "专题列表"
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.smartLayout.setOnRefreshListener(this)

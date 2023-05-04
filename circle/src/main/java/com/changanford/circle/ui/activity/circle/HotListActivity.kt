@@ -61,6 +61,7 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
     }
 
     override fun initView() {
+        title = "圈子热门榜单页"
         binding.run {
             AppUtils.setStatusBarMarginTop(topBar, this@HotListActivity)
             ivBack.setOnClickListener { finish() }

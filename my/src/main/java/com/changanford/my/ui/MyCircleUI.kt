@@ -45,6 +45,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
     }
 
     override fun initView() {
+        title = "我的圈子页"
         setLoadSir(binding.root)
         binding.collectToolbar.toolbarTitle.text = "我的圈子"
         binding.collectToolbar.toolbarSave.setOnClickListener {

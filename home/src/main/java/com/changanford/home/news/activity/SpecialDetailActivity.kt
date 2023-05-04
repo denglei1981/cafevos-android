@@ -41,6 +41,7 @@ class SpecialDetailActivity :
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
+        title = "专题详情页"
         updateInfoDetailGio("专题详情页", "专题详情页")
         binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.recyclerView.layoutManager =

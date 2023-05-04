@@ -140,6 +140,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     }
                     isJumpMenu = false
                 }
+
                 R.id.myFragment -> {
                     GioPageConstant.mainTabName = "我的页"
                     // 埋点
@@ -149,6 +150,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     }
                     isJumpMenu = false
                 }
+
                 R.id.circleFragment -> {// 社区
                     GioPageConstant.mainTabName = "社区页"
                     // 埋点
@@ -184,6 +186,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         }
                     }
                 }
+
                 R.id.homeFragment -> {
                     GioPageConstant.mainTabName = "发现页"
                     // 埋点
@@ -200,6 +203,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     }
                     isJumpMenu = false
                 }
+
                 else -> {
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                 }
@@ -216,6 +220,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+        title = "主页"
         activityAlive = true
         if (MConstant.app_mourning_mode == 1) {
             BlackWhiteMode(window = window)
@@ -350,7 +355,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                                 PopHelper.updateDialog = null
                                 PopHelper.resumeRule()
                             }
-                        }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1).show()
+                        }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1)
+                            .show()
                         apkDownload.download(info.downloadUrl ?: "", object : DownloadProgress {
                             override fun sendProgress(progress: Int) {
                                 updatingAlertDialog.updateProgress(progress)
@@ -566,22 +572,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                         1 -> {
                             navController.navigate(R.id.homeFragment)
                         }
+
                         2 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.white)
                             navController.navigate(R.id.circleFragment)
                         }
+
                         3 -> {
                             setHomBottomNavi(View.VISIBLE)
                             navController.navigate(R.id.carFragment)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
 
                         }
+
                         4 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                             navController.navigate(R.id.shopFragment)
                         }
+
                         5 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)

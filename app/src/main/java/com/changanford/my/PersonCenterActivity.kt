@@ -172,6 +172,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     }
 
     override fun initView() {
+        title = "发帖个人主页"
         updateInfoDetailGio("发帖人个人主页", "发帖人个人主页")
         StatusBarUtil.setStatusBarMarginTop(binding.toolbar, this)
         StatusBarUtil.setStatusBarMarginTop(binding.layoutEmptyUser.collectToolbar.conTitle, this)

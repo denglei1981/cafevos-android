@@ -54,6 +54,7 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
     private var typeId:String="0"//圈子分类ID 默认全部
     private var typeName:String=""
     override fun initView() {
+        title = "全部圈子页"
         binding.run {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CircleListActivity)
             ivBack.setOnClickListener { finish() }

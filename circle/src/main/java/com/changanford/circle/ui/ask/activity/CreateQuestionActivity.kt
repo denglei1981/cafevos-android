@@ -80,6 +80,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
     var cotnent: String = ""
 
     override fun initView() {
+        title = "提问页"
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.layoutTitle.tvTitle.text = "提问"
         binding.layoutTitle.barTvOther.text = "发布"

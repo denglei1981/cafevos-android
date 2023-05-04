@@ -133,6 +133,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
     }
 
     override fun initView() {
+        title = "发帖页"
         ImmersionBar.with(this)
             .keyboardEnable(true)
             .init()  //顶起页面底部

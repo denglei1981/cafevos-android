@@ -71,6 +71,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     }
 
     override fun initView() {
+        title = "搜索页"
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
         searchType = if (!TextUtils.isEmpty(searchTypStr)) {
             searchTypStr?.toIntOrNull()!!

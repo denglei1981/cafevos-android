@@ -37,6 +37,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
     }
 
     override fun initView() {
+        title = "我的足迹页"
         GioPageConstant.infoEntrance = "我的足迹-资讯"
         GioPageConstant.postEntrance = "我的足迹-帖子"
         binding.collectToolbar.toolbarTitle.text = "我的足迹"

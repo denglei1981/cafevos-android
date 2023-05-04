@@ -35,6 +35,7 @@ class PostDetailsActivity :
     }
 
     override fun initView() {
+        title = "帖子详情页"
         postsId = intent.getStringExtra("postsId").toString()
         setLoadSir(binding.frameLayout)
         bus()

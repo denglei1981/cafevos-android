@@ -37,6 +37,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     }
 
     override fun initView() {
+        title = "搜索页"
         GioPageConstant.prePageType = "搜索页"
         GioPageConstant.prePageTypeName = "搜索页"
         section = intent.getIntExtra(IntentKey.TOPIC_SECTION, 0)

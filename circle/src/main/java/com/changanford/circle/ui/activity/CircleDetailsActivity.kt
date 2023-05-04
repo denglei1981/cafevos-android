@@ -129,6 +129,7 @@ class CircleDetailsActivity :
     }
 
     override fun initView() {
+        title = "圈子详情页"
         GioPageConstant.circleDetailTabName = "推荐"
         circleId = intent.getStringExtra("circleId").toString()
         initMagicIndicator()

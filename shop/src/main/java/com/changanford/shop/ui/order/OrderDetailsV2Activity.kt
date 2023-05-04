@@ -79,6 +79,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     @SuppressLint("SimpleDateFormat")
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     override fun initView() {
+        title = "订单详情页"
         binding.topBar.setActivity(this)
         orderNo = intent.getStringExtra("orderNo") ?: ""
         if (orderNo.isEmpty()) {

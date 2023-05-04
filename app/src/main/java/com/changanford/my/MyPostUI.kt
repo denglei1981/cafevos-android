@@ -48,6 +48,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
     }
 
     override fun initView() {
+        title = "我的帖子页"
 //        "${MConstant.imgcdn}".logE()
         PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value?.let {
             num = it.size
