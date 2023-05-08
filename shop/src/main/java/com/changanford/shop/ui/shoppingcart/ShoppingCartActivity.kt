@@ -55,6 +55,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
     }
 
     override fun initView() {
+        title = "购物车页"
         val height: Int = ImmersionBar.getStatusBarHeight(this)
         binding.layoutTop.root.run {
             this.setPadding(
@@ -93,6 +94,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                         binding.checkStatus.isVisible = true
                     }
                 }
+
                 "完成" -> {
                     shoppingEdit = false
                     shoppingCartAdapter.shoppingEdit = false

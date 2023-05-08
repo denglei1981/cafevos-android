@@ -54,6 +54,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     }
 
     override fun initView() {
+        title = "任务中心页"
 //        StatusBarUtil.setTranslucentForImageView(this, null)
         setLoadSir(binding.root)
         binding.imBack.setOnClickListener {

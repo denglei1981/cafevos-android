@@ -394,7 +394,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         )
                     }
 
-                    else -> OrderDetailsV2Activity.start(orderNo)
+//                    else -> OrderDetailsV2Activity.start(orderNo)
                 }
             }
         }

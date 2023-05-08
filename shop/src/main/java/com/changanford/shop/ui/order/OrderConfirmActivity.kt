@@ -188,6 +188,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     bindingAddress(Gson().fromJson(it, AddressBeanItem::class.java))
                 }
             }
+        // 地址错误
+        LiveDataBus.get().withs<String>(LiveDataBusKey.SHOW_ERROR_ADDRESS).observe(this){
+            showAddressError(it)
+        }
         //优惠券、skuItems
         viewModel.createOrderBean.observe(this) {
             createOrderBean = it
@@ -512,7 +516,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             updateBtnUi()
             binding.inAddress.tvAddressRemark.visibility = View.VISIBLE
             binding.inAddress.tvAddress.text =
-                "${item.provinceName}${item.cityName}${item.districtName}${item.addressName}"
+                "${item.provinceName}${item.cityName}${item.districtName?:""}${item.addressName}"
             binding.inAddress.tvAddressRemark.text = "${item.consignee}   ${item.phone}"
         }
     }
@@ -788,13 +792,13 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         }
     }
 
-    private fun showAddressError(){
+    private fun showAddressError(errorMsg:String){
         AlertDialog(this).builder()
-            .setMsg("收货地址填写错误，请重新编辑")
+            .setMsg(errorMsg)
             .setMsgSize(15)
             .setMsgHeight(80.toIntPx())
             .setMsgGravityCenter()
             .setMsgColor(ContextCompat.getColor(this, R.color.color_33))
-            .setNegativeButton("好的", R.color.color_01025C) { }.show()
+            .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20)}.show()
     }
 }

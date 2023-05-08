@@ -168,6 +168,11 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         getData(true)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFB()
+    }
+
     private fun getData(showLoading: Boolean = false) {
         viewModel.getBannerData()
         viewModel.getShopHomeData(showLoading)
@@ -198,6 +203,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 }
             }
         }
+        viewModel.fbData.observe(this) {
+            //我的福币
+            binding.inTop.compose.setContent {
+                HomeMyIntegralCompose(it.totalIntegral)
+            }
+        }
         viewModel.shopHomeData.observe(this) {
             bindCarNum(it.shoppingCartCount ?: 0)
             mAdapter.setList(it.indexSeckillDtoList)
@@ -205,10 +216,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
                 tvShopMoreKill.visibility = visibility
                 tvKillTitle.visibility = visibility
-                //我的福币
-                compose.setContent {
-                    HomeMyIntegralCompose(it.totalIntegral)
-                }
+//                //我的福币
+//                compose.setContent {
+//                    HomeMyIntegralCompose(it.totalIntegral)
+//                }
                 //推荐
                 if (it.mallSpuKindDtos != null && it.mallSpuKindDtos?.size!! > 0) {
                     tvAllList.visibility = View.VISIBLE
@@ -262,6 +273,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS, UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
                         getData()
                     }
+
                     else -> {}
                 }
             }

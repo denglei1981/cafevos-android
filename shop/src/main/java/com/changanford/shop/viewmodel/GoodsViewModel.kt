@@ -97,6 +97,23 @@ class GoodsViewModel : BaseViewModel() {
         }
     }
 
+    //首页
+    var fbData = MutableLiveData<ShopHomeBean>()
+
+    fun getFB(){
+        viewModelScope.launch {
+            fetchRequest() {
+                body.clear()
+                val randomKey = getRandomKey()
+                shopApiService.queryShopHomeData(body.header(randomKey), body.body(randomKey))
+            }.onSuccess {
+                fbData.postValue(it)
+            }.onWithMsgFailure {
+                ToastUtils.showLongToast(it ?: "", MyApp.mContext)
+            }
+        }
+    }
+
     /**
      * 获取商品分类
      * */

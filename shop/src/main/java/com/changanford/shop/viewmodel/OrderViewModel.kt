@@ -177,8 +177,12 @@ class OrderViewModel : BaseViewModel() {
                 orderInfoLiveData.postValue(it)
                 LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
             }.onWithMsgFailure {
-                ToastUtils.showLongToast(it, MyApp.mContext)
                 LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
+                if(it?.contains("地址") == true){
+                    LiveDataBus.get().with(LiveDataBusKey.SHOW_ERROR_ADDRESS).postValue(it.toString())
+                }else{
+                    ToastUtils.showLongToast(it, MyApp.mContext)
+                }
             }
         }
     }

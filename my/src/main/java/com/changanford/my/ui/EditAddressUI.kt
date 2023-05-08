@@ -74,7 +74,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
             }
         }
 
-        viewModel.allCity.observe(this, Observer {
+        viewModel.allCity.observe(this) {
             provinces.clear()
             it?.forEach { p ->
                 var province = ProvinceEntity(p.province.regionId, p.province.regionName)
@@ -95,7 +95,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                     showPicker()
                 }
             }
-        })
+        }
 
         var name = binding.etAddressName.textChanges()
         var phone = binding.etAddressPhone.textChanges()
@@ -189,7 +189,7 @@ class EditAddressUI : BaseMineUI<UiEditAddressBinding, AddressViewModel>(),
                     setDefaultValue(
                         "${it.provinceName}",
                         "${it.cityName}",
-                        "${it.districtName}"
+                        "${it.districtName.ifEmpty { "" }}"
                     )
                 }
                 setOnAddressPickedListener(this@EditAddressUI)
