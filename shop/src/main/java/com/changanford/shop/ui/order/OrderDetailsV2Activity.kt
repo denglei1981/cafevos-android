@@ -9,6 +9,7 @@ import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemChildClickListener
@@ -385,17 +386,17 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 
     // 优惠券是否展示
     private fun showCounpon() {
-        if (TextUtils.isEmpty(dataBean.couponDiscount)) {
-            binding.inGoodsInfo1.grCoupon.visibility = View.GONE
-        } else {
-            if (dataBean.couponDiscount.toInt() > 0) {
+//        if (TextUtils.isEmpty(dataBean.couponDiscount)) {
+//            binding.inGoodsInfo1.grCoupon.visibility = View.GONE
+//        } else {
+//            if (dataBean.couponDiscount.toInt() > 0) {
                 binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
                 binding.inGoodsInfo1.tvCouponMoney.text =
                     "-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
-            } else {
-                binding.inGoodsInfo1.grCoupon.visibility = View.GONE
-            }
-        }
+//            } else {
+//                binding.inGoodsInfo1.grCoupon.visibility = View.GONE
+//            }
+//        }
     }
 
 

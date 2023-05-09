@@ -130,7 +130,7 @@ class AddressListUI : BaseMineUI<UiAddressListBinding, AddressViewModel>() {
                 it.itemAddName.text = "${item.consignee}  ${item.phone}"
                 //广东东莞没有区
                 it.itemAddress.text =
-                    "${item.provinceName}${item.cityName}${item.districtName?:""}${item.addressName}"
+                    "${item.provinceName}${item.cityName?:""}${item.districtName?:""}${item.addressName}"
                 it.cbDef.isChecked = item.isDefault == 1
                 it.cbDef.setTextColor(Color.parseColor(if (item.isDefault == 1) "#01025C" else "#72747B"))
                 it.cbDef.setOnClickListener {

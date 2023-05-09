@@ -34,7 +34,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
-            android:visibility="gone"
             tools:visibility="visible"
             android:layout_marginTop="@dimen/dp_27"
             android:id="@+id/tv_memberDiscount"
@@ -46,7 +45,6 @@
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
         <com.changanford.shop.view.TypefaceTextView
-            android:visibility="gone"
             tools:visibility="visible"
             android:id="@+id/tv_memberDiscount_value"
             app:layout_constraintEnd_toEndOf="parent"

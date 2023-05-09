@@ -516,7 +516,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             updateBtnUi()
             binding.inAddress.tvAddressRemark.visibility = View.VISIBLE
             binding.inAddress.tvAddress.text =
-                "${item.provinceName}${item.cityName}${item.districtName?:""}${item.addressName}"
+                "${item.provinceName}${item.cityName?:""}${item.districtName?:""}${item.addressName}"
             binding.inAddress.tvAddressRemark.text = "${item.consignee}   ${item.phone}"
         }
     }
@@ -799,6 +799,6 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             .setMsgHeight(80.toIntPx())
             .setMsgGravityCenter()
             .setMsgColor(ContextCompat.getColor(this, R.color.color_33))
-            .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20)}.show()
+            .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20, "1")}.show()
     }
 }

@@ -116,7 +116,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
             viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this) {
                 it?.let {
                     dataBean = OrderItemBean(
-                        waitPayCountDown = orderBean.waitPayDuration,
+                        waitPayCountDown = (orderBean.waitPayDuration)?.div(1000),
                         payFb = orderBean.payFb,
                         payRmb = orderBean.payRmb,
                         payType = orderBean.payType.toString(),
@@ -307,8 +307,14 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
         binding.inPayResults.apply {
             model = dataBean
             layoutPayResults.visibility = View.VISIBLE
-            if (dataBean?.payType != "FB_PAY") tvPayResultsPrice.text = "共计￥${dataBean?.payRmb}"
-            else tvPayResultsPrice.text = "共计${dataBean?.payFb}福币"
+            if (isFromOrder) {
+                if (dataBean?.payType != "0") tvPayResultsPrice.text = "共计￥${dataBean?.payRmb}"
+                else tvPayResultsPrice.text = "共计${dataBean?.payFb}福币"
+            } else {
+                if (dataBean?.payType != "FB_PAY") tvPayResultsPrice.text =
+                    "共计￥${dataBean?.payRmb}"
+                else tvPayResultsPrice.text = "共计${dataBean?.payFb}福币"
+            }
             tvPayResultsState.setText(if (isPaySuccessful) R.string.str_paySucces else R.string.str_payFailure)
             val dTop = ContextCompat.getDrawable(
                 this@PayConfirmActivity,
