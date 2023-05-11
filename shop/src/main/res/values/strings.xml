@@ -42,7 +42,8 @@
     <string name="str_orderLeaveMessage">订单留言</string>
     <string name="str_optionalMore100Words">选填，100字以内</string>
     <string name="str_amountGoods">商品金额</string>
-    <string name="str_memberDiscount">会员优惠</string>
+    <string name="str_memberDiscount">会员折扣</string>
+    <string name="str_bargaining_discounts">砍价优惠</string>
     <string name="str_freight">运费</string>
     <string name="str_combinedXintegral">合计：<font color="#00095B">1300福币 </font></string>
     <string name="str_payType">支付方式</string>
@@ -112,6 +113,7 @@
     <string name="str_common">共</string>
     <string name="str_jsp">件商品</string>
     <string name="str_rmb">¥</string>
+    <string name="str_div_rmb">-¥</string>
     <string name="str_orderNo0">订单编号</string>
     <string name="str_orderTime">下单时间</string>
     <string name="str_allOrders">所有订单</string>

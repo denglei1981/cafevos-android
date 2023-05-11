@@ -37,6 +37,7 @@
         <!-- 商品订单-->
         <activity
             android:name=".ui.order.OrdersGoodsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!-- 商品订单-订单详情-->
         <activity

@@ -348,7 +348,10 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         }
                     }
 
-                    getString(R.string.str_order_list) -> JumpUtils.instans?.jump(52)
+                    getString(R.string.str_order_list) -> {
+                        JumpUtils.instans?.jump(52)
+                        if (isPaySuccessful) this@PayConfirmActivity.finish()
+                    }
 
                     getString(R.string.str_orderDetails) -> {
                         val jumpDataType = dataBean?.jumpDataType

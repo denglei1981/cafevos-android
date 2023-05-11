@@ -613,6 +613,7 @@ data class OrderItemBean(
     val params: Params = Params(),
     val phone: String = "",
     var preferentialFb: String? = "0",
+    var fbMemberDiscount: String? = "0",
     val remark: String = "",
     val searchValue: String = "",
     val seckill: String = "",//是否秒杀

@@ -2,118 +2,156 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bord_f4_t_10dp"
         android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_20"
         android:paddingBottom="@dimen/dp_16">
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_amount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_amountGoods"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_amount_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:start_txt="@string/str_rmb"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
+            app:start_txt="@string/str_rmb" />
+
         <com.changanford.shop.view.TypefaceTextView
-            tools:visibility="visible"
-            android:layout_marginTop="@dimen/dp_27"
             android:id="@+id/tv_memberDiscount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_27"
             android:text="@string/str_memberDiscount"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
-        <com.changanford.shop.view.TypefaceTextView
-            tools:visibility="visible"
-            android:id="@+id/tv_memberDiscount_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:start_txt="@string/str_reduction"
-            android:text="@{model.preferentialFb}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_27"
-            android:id="@+id/tv_freight"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_memberDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_freight"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_freight_value"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_freight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:start_txt="@string/str_rmb"
-            android:text="¥0.00"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginTop="@dimen/dp_27"
-            android:id="@+id/tv_coupons"
+            android:textSize="@dimen/sp_13"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_freight"
+            tools:visibility="visible" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_memberDiscount_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{model.preferentialFb}"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
+            app:start_txt="@string/str_reduction"
+            tools:visibility="visible" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_27"
+            android:text="@string/str_freight"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_amount" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freight_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥0.00"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_freight"
+            app:start_txt="@string/str_rmb" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_coupons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_27"
             android:text="@string/str_coupons"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_memberDiscount" />
+
         <com.changanford.shop.view.TypefaceTextView
-            android:onClick="onClick"
             android:id="@+id/tv_coupons_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/right_99"
+            android:drawablePadding="@dimen/dp_5"
+            android:onClick="onClick"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_coupons"
+            app:start_txt="@string/str_subtractRmb" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_bargaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:start_txt="@string/str_subtractRmb"
-            android:drawablePadding="@dimen/dp_5"
-            android:drawableEnd="@mipmap/right_99"
+            android:layout_marginTop="@dimen/dp_27"
+            android:text="@string/str_bargaining_discounts"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13" />
+            android:textSize="@dimen/sp_13"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_coupons"
+            tools:visibility="visible" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_tv_bargaining_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_33"
+            android:textSize="@dimen/sp_13"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_bargaining"
+            app:start_txt="@string/str_reduction"
+            tools:visibility="visible" />
+
         <View
             android:id="@+id/view_divider"
-            android:layout_marginTop="@dimen/dp_17"
-            app:layout_constraintTop_toBottomOf="@id/tv_coupons"
-            android:background="@color/color_ED"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_1"/>
+            android:layout_height="@dimen/dp_0_1"
+            android:layout_marginTop="@dimen/dp_17"
+            android:background="@color/color_ED"
+            app:layout_constraintTop_toBottomOf="@id/tv_bargaining" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_total"
-            android:layout_marginTop="@dimen/dp_17"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:start_txt="@string/str_combined"
-            tools:text="@string/str_combinedXintegral"
+            android:layout_marginTop="@dimen/dp_17"
             android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:start_txt="@string/str_combined"
+            tools:text="@string/str_combinedXintegral" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -189,11 +189,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 }
             }
         // 地址错误
-        LiveDataBus.get().withs<String>(LiveDataBusKey.SHOW_ERROR_ADDRESS).observe(this){
+        LiveDataBus.get().withs<String>(LiveDataBusKey.SHOW_ERROR_ADDRESS).observe(this) {
             showAddressError(it)
         }
         //优惠券、skuItems
         viewModel.createOrderBean.observe(this) {
+            it?.let { it1 -> setDiscount(it1) }
             createOrderBean = it
             infoBean.freightPrice = it?.freight ?: "0.00"
             binding.inOrderInfo.apply {
@@ -220,6 +221,19 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             .observe(this) {
                 bindCoupon(it)
             }
+    }
+
+    private fun setDiscount(order:CreateOrderBean) {
+        var disCount = 0
+        order.skuItems?.forEach { goodsBean ->
+            goodsBean.unitPriceFbOld?.let {
+                disCount += it.toInt() - (goodsBean.unitPriceFb?.toInt() ?:  0)
+            }
+        }
+        binding.inOrderInfo.apply {
+            tvMemberDiscountValue.visibility = View.VISIBLE
+            tvMemberDiscountValue.setText(WCommonUtil.getRMB("$disCount"))
+        }
     }
 
     var productNumber = 0
@@ -377,6 +391,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 minFb = totalPayFb - fbBalance
                 fbBalance
             }
+
             else -> {
                 minFb = 0
                 fbBalance
@@ -425,12 +440,13 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             tvAmountValue.text = WCommonUtil.getRMB("${infoBean.totalOriginalFb}")
             //是否有砍价
             dataListBean?.find { it.spuPageType == "2" }?.let {
-                tvMemberDiscount.visibility = View.VISIBLE
-                tvMemberDiscount.setText(R.string.str_bargainingFavorable)
-                tvMemberDiscountValue.visibility = View.VISIBLE
+                tvBargaining.visibility = View.VISIBLE
+                tvBargaining.setText(R.string.str_bargainingFavorable)
+                tvTvBargainingValue.visibility = View.VISIBLE
                 //砍价优惠=原总价-减现总价（注：前提砍价不能加入购物车）
                 val preferentialFb = infoBean.totalOriginalFb - infoBean.totalFb
-                tvMemberDiscountValue.setText(WCommonUtil.getRMB("$preferentialFb"))
+                tvTvBargainingValue.setText(WCommonUtil.getRMB("$preferentialFb"))
+                tvMemberDiscountValue.setText(WCommonUtil.getRMB("0"))
             }
         }
     }
@@ -476,12 +492,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private fun submitOrder() {
         if (!isClickSubmit) {
+            showWaitPay()
             isClickSubmit = true
             val consumerMsg = binding.inGoodsInfo.edtLeaveMsg.text.toString()
             if (ruleId.isNotEmpty()) {
                 addRecord(ruleId)
             }
-            showWaitPay()
             viewModel.createOrder(
                 orderConfirmType = orderConfirmType,
                 payFb = payFb,
@@ -516,7 +532,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             updateBtnUi()
             binding.inAddress.tvAddressRemark.visibility = View.VISIBLE
             binding.inAddress.tvAddress.text =
-                "${item.provinceName}${item.cityName?:""}${item.districtName?:""}${item.addressName}"
+                "${item.provinceName}${item.cityName ?: ""}${item.districtName ?: ""}${item.addressName}"
             binding.inAddress.tvAddressRemark.text = "${item.consignee}   ${item.phone}"
         }
     }
@@ -588,17 +604,20 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     rbRmb.visibility = View.GONE
                     clickPayWay(0)
                 }
+
                 maxUseFb > 0 -> {
                     rbFbAndRmb.visibility = View.VISIBLE
                     rbCustom.visibility = View.VISIBLE
                     clickPayWay(0)
                 }
+
                 totalPayFb == 0 -> {
                     rbRmb.visibility = View.GONE
                     rbCustom.visibility = View.GONE
                     rbFbAndRmb.visibility = View.VISIBLE
                     clickPayWay(0)
                 }
+
                 else -> {
                     if (maxUseFb == 0) rbFbAndRmb.visibility = View.GONE
                     rbRmb.visibility = View.VISIBLE
@@ -786,19 +805,21 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             setBackgroundColor(android.graphics.Color.TRANSPARENT)
             setBlurBackgroundEnable(false)
             showPopupWindow()
-            LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).observe(this@OrderConfirmActivity){
-                dismiss()
-            }
+            LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING)
+                .observe(this@OrderConfirmActivity) {
+                    dismiss()
+                }
         }
     }
 
-    private fun showAddressError(errorMsg:String){
+    private fun showAddressError(errorMsg: String) {
         AlertDialog(this).builder()
             .setMsg(errorMsg)
             .setMsgSize(15)
             .setMsgHeight(80.toIntPx())
             .setMsgGravityCenter()
             .setMsgColor(ContextCompat.getColor(this, R.color.color_33))
-            .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20, "1")}.show()
+            .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20, "1") }
+            .show()
     }
 }

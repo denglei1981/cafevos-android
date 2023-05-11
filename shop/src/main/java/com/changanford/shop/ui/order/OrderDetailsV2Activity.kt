@@ -172,6 +172,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inAddress.imgRight.visibility = View.VISIBLE
                     topBShow()
                 }
+
                 "待发货" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     //支付时间
@@ -191,6 +192,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     topAllShowRefundShow(dataBean)
 
                 }
+
                 "待收货" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     //发货时间
@@ -204,10 +206,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showGetShop(true)
                     topAllShowRefundShow(dataBean)
                 }
+
                 "退款中" -> {
                     BottomGon()
                     topAllShowRefundShow(dataBean)
                 }
+
                 "待评价" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     //发货时间
@@ -221,6 +225,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showExpress(dataBean, true)
                     showComment(dataBean, false)
                 }
+
                 "已完成" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     //发货时间
@@ -236,6 +241,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     showInvoiceState(dataBean)
                     BottomBShow()
                 }
+
                 "售后已处理" -> {
                     totalPayName = R.string.str_realPayTotalAmount
                     binding.inAddress.apply {
@@ -252,6 +258,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inBottom.btnOrderConfirm.visibility = View.GONE
                     binding.tvOrderRemainingTime.setText(R.string.prompt_refundComplete)
                 }
+
                 "已关闭" -> {
                     binding.inOrderInfo.layoutOrderClose.visibility = View.GONE
                     dataBean.statusDesc?.let {
@@ -279,6 +286,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 tvMemberDiscount.visibility = View.VISIBLE
             }
         }
+        binding.inGoodsInfo1.tvIntegralVip.setText(com.changanford.common.wutil.WCommonUtil.getRMB("${dataBean.fbMemberDiscount}"))
         val freightPrice = dataBean.freightPrice
         if ("0" == freightPrice) dataBean.freightPrice = "0.00"
         dataBean.orderTimeTxt = simpleDateFormat.format(dataBean.orderTime ?: 0)
@@ -378,6 +386,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                 binding.inGoodsInfo1.tvHaggleMoney.text =
                     "-".plus(WCommonUtil.getRMB(dataBean.haggleDiscount))
             }
+
             else -> {
                 binding.inGoodsInfo1.grHaggle.visibility = View.GONE
             }
@@ -390,9 +399,9 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 //            binding.inGoodsInfo1.grCoupon.visibility = View.GONE
 //        } else {
 //            if (dataBean.couponDiscount.toInt() > 0) {
-                binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
-                binding.inGoodsInfo1.tvCouponMoney.text =
-                    "-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
+        binding.inGoodsInfo1.grCoupon.visibility = View.VISIBLE
+        binding.inGoodsInfo1.tvCouponMoney.text =
+            "-".plus(WCommonUtil.getRMBBigDecimal(dataBean.couponDiscount))
 //            } else {
 //                binding.inGoodsInfo1.grCoupon.visibility = View.GONE
 //            }
@@ -518,7 +527,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     fun showShoppingInfo(localDataBean: OrderItemBean) {
         orderDetailsItemV2Adapter.orderNo = localDataBean.orderNo
         localDataBean.mallMallRefundId?.let {
-            orderDetailsItemV2Adapter.refundId= it
+            orderDetailsItemV2Adapter.refundId = it
         }
         orderDetailsItemV2Adapter.orderStatus = localDataBean.orderStatus
         localDataBean.receiveTime?.let { time ->
@@ -528,8 +537,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
             orderDetailsItemV2Adapter.timestamp = time.toString()
 
         }
-        localDataBean.busSource?.let{ s->
-            orderDetailsItemV2Adapter.busSource=s
+        localDataBean.busSource?.let { s ->
+            orderDetailsItemV2Adapter.busSource = s
 
         }
         orderDetailsItemV2Adapter.setList(localDataBean.skuList)
@@ -549,6 +558,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     }
                 })
             }
+
             getString(R.string.str_applyRefund), getString(R.string.str_contactCustomerService) -> {
                 JumpUtils.instans?.jump(
                     11,
@@ -674,8 +684,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                     binding.inSaleBottom.btnOrderInvoice.text = "申请发票"
                     binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
                         if (dataBean != null) {
-                            dataBean.addressInfo = localDataBean.orderReceiveAddress?.addressName.toString()
-                            dataBean.addressId = localDataBean.orderReceiveAddress?.addressId?.toInt()!!
+                            dataBean.addressInfo =
+                                localDataBean.orderReceiveAddress?.addressName.toString()
+                            dataBean.addressId =
+                                localDataBean.orderReceiveAddress?.addressId?.toInt()!!
                         }
                         localDataBean.mallMallOrderId?.let {
                             val invoiceInfo = InvoiceInfo(
@@ -687,6 +699,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         }
                     }
                 }
+
                 "ON_GOING", "ENDED" -> {// 已申请未开票
                     binding.inSaleBottom.btnOrderInvoice.text = "查看发票"
                     binding.inSaleBottom.btnOrderInvoice.setOnClickListener {
