@@ -108,6 +108,7 @@
             android:name=".ui.goods.CarMaintenanceActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.coupon.CouponMiddleActivity" />
+        <activity android:name=".ui.sale.RefundProgressMultipleActivity" />
         <!--================================= 商城 End-->
     </application>
 </manifest>

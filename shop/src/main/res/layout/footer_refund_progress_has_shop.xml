@@ -33,6 +33,7 @@
             layout="@layout/layout_refund_single_shop_info" />
 
         <LinearLayout
+            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_120"
             android:background="@color/color_F4"

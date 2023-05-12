@@ -145,7 +145,9 @@ class OrderDetailsItemV2Adapter(var orderStatusListener:OrderStatusListener) :
                 }
 
             }
+            executePendingBindings()
         }
+
     }
 
     fun getShoppingList() {

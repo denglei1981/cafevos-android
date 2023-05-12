@@ -3,6 +3,7 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -21,6 +22,7 @@ import com.changanford.common.bean.RefundBean
 import com.changanford.common.bean.ShopAddressInfoBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MTextUtil
@@ -313,7 +315,10 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 
     fun topAllShowRefundShow(dataBean: OrderItemBean) {
         binding.inRefund.conRefundProgress.setOnClickListener {
-            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+//            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+            val bundle = Bundle()
+            bundle.putString("orderNo", orderNo)
+            startARouter(ARouterShopPath.RefundProgressMultipleActivity, bundle)
         }
         if (!TextUtils.isEmpty(dataBean.refundStatus)) {
             binding.inRefund.conRefundProgress.visibility = View.VISIBLE

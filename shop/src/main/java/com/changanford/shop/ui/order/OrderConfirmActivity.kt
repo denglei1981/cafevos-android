@@ -223,11 +223,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             }
     }
 
-    private fun setDiscount(order:CreateOrderBean) {
+    private fun setDiscount(order: CreateOrderBean) {
         var disCount = 0
         order.skuItems?.forEach { goodsBean ->
             goodsBean.unitPriceFbOld?.let {
-                disCount += it.toInt() - (goodsBean.unitPriceFb?.toInt() ?:  0)
+                disCount += (it.toInt() - (goodsBean.unitPriceFb?.toInt() ?: 0)) * goodsBean.num
             }
         }
         binding.inOrderInfo.apply {

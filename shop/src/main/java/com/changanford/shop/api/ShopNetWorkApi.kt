@@ -5,6 +5,7 @@ import com.changanford.common.net.CommonResponse
 import com.changanford.shop.bean.InvoiceDetails
 import com.changanford.shop.bean.PackMainData
 import com.changanford.shop.bean.RefundProgressBean
+import com.changanford.shop.bean.RefundProgressMultipleBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -297,5 +298,11 @@ interface ShopNetWorkApi {
      * */
     @POST("/con/agreementHub/bizCode")
     suspend fun agreementHub(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OtherInfoBean>
+
+    /**
+     *  协议文本
+     * */
+    @POST("/mall/refund/progressList")
+    suspend fun getProgressList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<RefundProgressMultipleBean>>
 
 }

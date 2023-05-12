@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_5"
-            android:text="@{model.fbOfUnitPrice}"
+            android:text="@={model.fbOfUnitPrice}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             app:end_txt="@string/str_integral"

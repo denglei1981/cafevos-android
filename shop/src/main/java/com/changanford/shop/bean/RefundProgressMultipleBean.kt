@@ -1,0 +1,35 @@
+package com.changanford.shop.bean
+
+import com.changanford.common.bean.RefundOrderItemBean
+
+/**
+ *Author lcw
+ *Time on 2023/5/12
+ *Purpose
+ */
+data class RefundProgressMultipleBean(
+    val busSource: String,
+    val fbRefund: String?,
+    val fbRefundApply: String?,
+    val mallMallRefundId: Int,
+    val mallRefundType: String,
+    val applyTime: Long,
+    val orderNo: String,
+    val refundDescImgs: List<String>,
+    val refundDescText: String? = null,
+    val refundDetailStatus: String,
+    val refundLogMap: RefundLogMap,
+    val refundMethod: String,
+    val refundNo: String,
+    val refundReason: String,
+    val refundStatus: String,
+    val refundTimes: Int,
+    val rmbRefund: String?,
+    val rmbRefundApply: String?,
+    var isExpand: Boolean,
+    val sku: RefundOrderItemBean? = null
+)
+
+data class RefundLogMap(
+    val ON_GOING: ArrayList<RefundStautsBean>
+)

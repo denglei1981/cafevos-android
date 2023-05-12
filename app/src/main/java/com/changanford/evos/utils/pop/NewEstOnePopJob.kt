@@ -52,7 +52,7 @@ class NewEstOnePopJob : SingleJob {
             return null
         }
         bean?.maVo?.ads?.forEach {
-            if (getDaysNum(it.adId) < mDayNum) {
+            if (getDaysNum(it.adId) < mDaysNum) {
                 return it
             }
         }
@@ -65,7 +65,7 @@ class NewEstOnePopJob : SingleJob {
             return null
         }
         bean?.appVo?.ads?.forEach {
-            if (getDaysNum(it.adId) < mDayNum) {
+            if (getDaysNum(it.adId) < mDaysNum) {
                 return it
             }
         }
