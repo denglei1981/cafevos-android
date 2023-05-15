@@ -104,7 +104,7 @@ class RefundViewModel : BaseViewModel() {
      *  撤销退款申请
      * */
     var cancelRefundLiveData: MutableLiveData<String> = MutableLiveData()
-    fun cancelRefund(mallMallRefundId: String) {
+    fun cancelRefund(mallMallRefundId: String, block: (() -> Unit)? = null) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
@@ -113,6 +113,7 @@ class RefundViewModel : BaseViewModel() {
                 .cancelRefund(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     cancelRefundLiveData.postValue("成功")
+                    block?.invoke()
                 }
                 .onWithMsgFailure {
                     it?.toast()
@@ -236,7 +237,7 @@ class RefundViewModel : BaseViewModel() {
         })
     }
 
-    var refundMultipleBean = MutableLiveData<ArrayList<RefundProgressMultipleBean>>()
+    var refundMultipleBean = MutableLiveData<ArrayList<RefundProgressMultipleBean>?>()
 
     fun getOrderMultiple(orderNo: String) {
         launch(block = {
@@ -249,6 +250,7 @@ class RefundViewModel : BaseViewModel() {
                     refundMultipleBean.value = it
                 }
                 .onWithMsgFailure {
+                    refundMultipleBean.value = null
                     it?.toast()
                 }
         })

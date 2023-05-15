@@ -11,7 +11,10 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.BackEnumBean
 import com.changanford.common.bean.RefundBean
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.CustomImageSpanV2
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityRefundNoShippedBinding
@@ -27,9 +30,10 @@ import com.luck.picture.lib.tools.DoubleUtils
 class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, RefundViewModel>() {
     var backEnumBean:BackEnumBean?=null
     override fun initView() {
+        AppUtils.setStatusBarMarginTop(binding.layoutTop.root, this)
         binding.layoutTop.tvTitle.text = "退款"
 
-        binding.layoutTop.imgBack.setOnClickListener {
+        binding.layoutTop.ivBack.setOnClickListener {
             onBackPressed()
         }
         binding.tvReason.setOnClickListener {
@@ -79,14 +83,14 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
             refundBean =RefundBean(it.orderNo,it.payFb,it.payRmb,"allOrderRefund")
             showTotalTag(binding.tvRefundMoney, refundBean!!)
         })
-        viewModel.invoiceLiveData.observe(this, Observer {
-
+        viewModel.invoiceLiveData.observe(this) {
             // 申请退款成功
-            if(it=="success"){
+            if (it == "success") {
+                LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).postValue("")
                 this.finish()
             }
 
-        })
+        }
     }
 
     fun showZero(text: AppCompatTextView?, item: RefundBean) {

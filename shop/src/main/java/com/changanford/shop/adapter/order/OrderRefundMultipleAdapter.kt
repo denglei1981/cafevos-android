@@ -1,15 +1,17 @@
 package com.changanford.shop.adapter.order
 
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.PayShowBean
+import com.changanford.common.bean.RefundBean
+import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
@@ -21,15 +23,16 @@ import com.changanford.shop.databinding.FooterRefundProgressHasShopBinding
 import com.changanford.shop.databinding.ItemRefundProgressMultipleBinding
 import com.changanford.shop.ui.sale.adapter.RefundImgsAdapter
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
+import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
-import java.util.Objects
+import com.google.gson.Gson
 
 /**
  *Author lcw
  *Time on 2023/5/12
  *Purpose
  */
-class OrderRefundMultipleAdapter(private val baseViewModel: BaseViewModel) :
+class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
     BaseQuickAdapter<RefundProgressMultipleBean, BaseDataBindingHolder<ItemRefundProgressMultipleBinding>>(
         R.layout.item_refund_progress_multiple
     ) {
@@ -38,7 +41,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: BaseViewModel) :
         item: RefundProgressMultipleBean
     ) {
         holder.dataBinding?.run {
-            setStatusEnum(item.refundStatus, tvTips)
+            setStatusEnum(item.refundStatus, tvTips, this, item, holder.layoutPosition)
             setFinishValue(tvSubTips, item)
             tvTime.text = TimeUtils.MillisToStr(item.applyTime)
 
@@ -47,7 +50,6 @@ class OrderRefundMultipleAdapter(private val baseViewModel: BaseViewModel) :
             recyclerView.adapter = refundProgressAdapter
 
             setFootView(layoutRefundInfo, item)
-
             if (item.isExpand) {
                 refundProgressAdapter.setNewInstance(item.refundLogMap.ON_GOING)
                 layoutRefundInfo.root.visibility = View.VISIBLE
@@ -168,7 +170,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: BaseViewModel) :
 
             val newList = refundProgressBean.refundDescImgs.filter { it != "" }
 
-            if (!newList.isNullOrEmpty()) {
+            if (newList.isNotEmpty()) {
                 refundImgsAdapter.setNewInstance(newList as MutableList<String>?)
                 ft.layoutRefundInfo.tvSupply.visibility = View.VISIBLE
                 ft.layoutRefundInfo.llSpreak.visibility = View.VISIBLE
@@ -182,18 +184,57 @@ class OrderRefundMultipleAdapter(private val baseViewModel: BaseViewModel) :
         }
     }
 
-    private fun setStatusEnum(state: String, tv: TextView) {
+    private fun setStatusEnum(
+        state: String,
+        tv: TextView,
+        binding: ItemRefundProgressMultipleBinding,
+        item: RefundProgressMultipleBean,
+        position: Int
+    ) {
         when (state) {
             "ON_GOING" -> {
                 tv.text = "退款中"
+                binding.tvInputOrder.visibility = View.VISIBLE
+                binding.tvHandle.visibility = View.VISIBLE
+                binding.tvHandle.text = "填写物流"
+                binding.tvInputOrder.text = "撤销退款"
+                binding.tvInputOrder.setOnClickListener {
+                    //撤销退款
+                    baseViewModel.cancelRefund(item.mallMallRefundId) {
+                        item.refundStatus = "CLOSED"
+                        notifyItemChanged(position)
+                    }
+                }
+                binding.tvHandle.setOnClickListener {
+                    //填写物流
+                    val bundle = Bundle()
+                    bundle.putString("value", item.mallMallRefundId)
+                    startARouter(ARouterShopPath.RefundLogisticsActivity, bundle)
+                }
             }
 
             "FINISH" -> {
                 tv.text = "退款完成"
+                binding.tvInputOrder.visibility = View.GONE
+                binding.tvHandle.visibility = View.GONE
             }
 
             "CLOSED" -> {
                 tv.text = "退款关闭"
+                binding.tvInputOrder.visibility = View.VISIBLE
+                binding.tvHandle.visibility = View.GONE
+                binding.tvInputOrder.text = "申请售后"
+                binding.tvInputOrder.setOnClickListener {
+                    val gson = Gson()
+                    val refundBean = RefundBean(
+                        item.orderNo,
+                        item.fbRefundApply,
+                        item.rmbRefundApply,
+                        "allOrderRefund"
+                    )
+                    val refundJson = gson.toJson(refundBean)
+                    JumpUtils.instans?.jump(121, refundJson)
+                }
             }
         }
     }

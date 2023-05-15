@@ -683,6 +683,7 @@ data class OrderItemBean(
     var mallMallspuId: String = "",
     var packageJump: PackageJumpBean? = null,
     var refundStatus: String? = "",
+    var packageId: String? = "",
     var refundTimes: Int? = null, // 申请售后次数
     var timestamp: Long? = null,
     var mallMallRefundId: String? = null //退款id

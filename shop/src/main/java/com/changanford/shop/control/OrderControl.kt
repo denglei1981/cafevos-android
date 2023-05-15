@@ -306,7 +306,7 @@ class OrderControl(val context: Context,val viewModel: OrderViewModel?) {
                 }
                 //查看物流
                 2->{
-                    if(packageJump==null){
+                    if(packageId==null){
                         MultiplePackageActivity.start(orderNo)
                     }else{
                         packageJump?.apply {

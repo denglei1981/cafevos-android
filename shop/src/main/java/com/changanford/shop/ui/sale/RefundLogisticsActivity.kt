@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.chad.library.adapter.base.listener.OnItemDragListener
@@ -19,6 +20,7 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
@@ -44,6 +46,7 @@ import com.yalantis.ucrop.UCrop
 /**
  *  退货填写物流信息
  * */
+@Route(path = ARouterShopPath.RefundLogisticsActivity)
 class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, RefundViewModel>() {
 
     lateinit var refundApplyPicAdapter: RefundApplyPicAdapter

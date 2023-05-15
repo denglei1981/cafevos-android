@@ -309,5 +309,6 @@ object LiveDataBusKey {
     const val UPDATE_MAIN_CHANGE = "updateMainChange"
     const val DISMISS_PAY_WAITING = "dismissPayWait"
     const val SHOW_ERROR_ADDRESS = "showErrorAddress"
+    const val REFUND_NOT_SHOP_SUCCESS = "refundNotShoppSuccess"
 }
 

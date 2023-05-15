@@ -43,6 +43,8 @@ object ARouterShopPath {
 
     const val RefundApplySingleActivity = "/shop/RefundApplySingleActivity"//单个sku 退款申请
 
+    const val RefundLogisticsActivity = "/shop/RefundLogisticsActivity"//填写物流
+
     const val RefundProgressHasShopActivity = "/shop/RefundProgressHasShopActivity" // 退款进度  单个sku
 
     const val MultiplePackageActivity ="/shop/MultiplePackageActivity"
