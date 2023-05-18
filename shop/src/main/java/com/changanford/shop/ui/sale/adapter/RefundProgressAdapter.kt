@@ -1,6 +1,7 @@
 package com.changanford.shop.ui.sale.adapter
 
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -33,7 +34,8 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
                 item.refundDetailStatus,
                 tvShoperStates
             )
-            baseViewModel.StatusEnum("MallRefundStatusEnum", item.refundStauts, tvRefundStates)
+            setBotStatus(item.refundStauts,tvRefundStates)
+//            baseViewModel.StatusEnum("MallRefundStatusEnum", item.refundStauts, tvRefundStates)
             if (holder.layoutPosition == 1) {
                 ivRight.visibility = View.VISIBLE
                 tvRefundStates.visibility=View.VISIBLE
@@ -76,5 +78,20 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
 
     }
 
+    private fun setBotStatus(state: String,tv: TextView){
+        when (state) {
+            "ON_GOING" -> {
+                tv.text = "退款中"
+            }
+
+            "FINISH" -> {
+                tv.text = "退款完成"
+            }
+
+            "CLOSED" -> {
+                tv.text = "退款关闭"
+            }
+        }
+    }
 }
 

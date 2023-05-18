@@ -20,6 +20,8 @@ class RefundProgressMultipleActivity :
     BaseActivity<ActRefundProgressMultipleBinding, RefundViewModel>() {
 
     private var orderNo: String = ""
+    private var isShowBack: Boolean = false
+    private var mallOrderSkuId: String? = null
 
     private val adapter by lazy {
         OrderRefundMultipleAdapter(viewModel)
@@ -28,30 +30,39 @@ class RefundProgressMultipleActivity :
     override fun initView() {
         title = "退款进度"
         orderNo = intent.getStringExtra("orderNo").toString()
+        isShowBack = intent.getBooleanExtra("isShowBack", false)
+        mallOrderSkuId = intent.getStringExtra("mallOrderSkuId")
         binding.tobBar.setTitle("退款进度")
+        adapter.isShowBack = isShowBack
         binding.recyclerView.adapter = adapter
         initListener()
     }
 
-    private fun initListener(){
+    private fun initListener() {
         binding.tobBar.setOnBackClickListener(object : TopBar.OnBackClickListener {
             override fun onBackClick() {
                 onBackPressed()
             }
         })
         binding.smartLayout.setOnRefreshListener {
-            viewModel.getOrderMultiple(orderNo)
+            viewModel.getOrderMultiple(orderNo, mallOrderSkuId)
         }
 
-        LiveDataBus.get().withs<String>(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).observe(this){
+        LiveDataBus.get().withs<String>(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).observe(this) {
+            adapter.isShowBack = it=="true"
             initData()
         }
     }
 
     override fun initData() {
-        viewModel.getOrderMultiple(orderNo)
+        viewModel.getOrderMultiple(orderNo, mallOrderSkuId)
         viewModel.refundMultipleBean.observe(this) {
             binding.smartLayout.finishRefresh()
+            if (it?.isNotEmpty() == true) {
+                if (it.size == 1) {
+                    it[0].isExpand = true
+                }
+            }
             adapter.setList(it)
         }
     }

@@ -9,12 +9,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.PayShowBean
 import com.changanford.common.bean.RefundBean
+import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.bean.RefundProgressMultipleBean
@@ -26,6 +30,7 @@ import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.ui.shoppingcart.adapter.GoodsAttributeAdapter
 import com.google.gson.Gson
+import java.math.BigDecimal
 
 /**
  *Author lcw
@@ -36,12 +41,15 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
     BaseQuickAdapter<RefundProgressMultipleBean, BaseDataBindingHolder<ItemRefundProgressMultipleBinding>>(
         R.layout.item_refund_progress_multiple
     ) {
+
+    var isShowBack = false
+
     override fun convert(
         holder: BaseDataBindingHolder<ItemRefundProgressMultipleBinding>,
         item: RefundProgressMultipleBean
     ) {
         holder.dataBinding?.run {
-            setStatusEnum(item.refundStatus, tvTips, this, item, holder.layoutPosition)
+            setStatusEnum(item.refundStatus, tvTips, this, item)
             setFinishValue(tvSubTips, item)
             tvTime.text = TimeUtils.MillisToStr(item.applyTime)
 
@@ -49,16 +57,18 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             refundProgressAdapter.addHeaderView(View(context), 0)
             recyclerView.adapter = refundProgressAdapter
 
-            setFootView(layoutRefundInfo, item)
+            setFootView(layoutRefundInfo, item, this)
             if (item.isExpand) {
-                refundProgressAdapter.setNewInstance(item.refundLogMap.ON_GOING)
+                refundProgressAdapter.setNewInstance(item.refundList)
                 layoutRefundInfo.root.visibility = View.VISIBLE
                 ivExpand.rotation = 180f
                 tvExpand.text = "收起"
             } else {
-                if (item.refundLogMap.ON_GOING.isNotEmpty()) {
+                if (item.refundList?.isNotEmpty() == true) {
                     val arrayList = ArrayList<RefundStautsBean>()
-                    arrayList.add(item.refundLogMap.ON_GOING[0])
+                    item.refundList?.let {
+                        arrayList.add(it[0])
+                    }
                     refundProgressAdapter.setNewInstance(arrayList)
                 }
                 layoutRefundInfo.root.visibility = View.GONE
@@ -75,13 +85,15 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
 
     private fun setFootView(
         footerBinding: FooterRefundProgressHasShopBinding,
-        refundProgressBean: RefundProgressMultipleBean
+        refundProgressBean: RefundProgressMultipleBean,
+        binding: ItemRefundProgressMultipleBinding
     ) {
         val refundImgsAdapter = RefundImgsAdapter()
         footerBinding.let { ft ->
             ft.llBottom.visibility = View.GONE
             ft.layoutRefundInfo.tvReasonNum.text = refundProgressBean.refundNo
-            refundProgressBean.refundReason.let {
+            refundProgressBean.refundReason?.let {
+//                setBotStatus(it,ft.layoutRefundInfo.tvResonShow)
                 baseViewModel.StatusEnum(
                     "MallRefundReasonEnum",
                     it,
@@ -101,46 +113,49 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
 
             when (refundProgressBean.refundMethod) {
                 "ONLY_COST" -> { // 仅退款
-//                    binding.tobBar.setTitle("退款进度")
-                    ft.tvInputOrder.visibility = View.GONE
+                    binding.tvHandle.visibility = View.GONE
                     ft.layoutRefundInfo.tvRefundType.text = "仅退款"
                 }
 
                 "CONTAIN_GOODS" -> {
-//                    binding.tobBar.setTitle("退款进度")
-                    ft.tvInputOrder.visibility = View.VISIBLE
+                    binding.tvHandle.visibility = View.VISIBLE
                     ft.layoutRefundInfo.tvRefundType.text = "退货退款"
                 }
 
             }
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
-                    ft.tvHandle.visibility = View.VISIBLE
-                    ft.tvInputOrder.visibility = View.VISIBLE
-                    ft.tvHandle.text = "撤销退款申请"
+                    binding.tvHandle.visibility = View.VISIBLE
+                    binding.tvInputOrder.visibility = View.VISIBLE
+                    binding.tvHandle.text = "撤销退款"
 
                     when (refundProgressBean.refundDetailStatus) {
                         "WAIT_CHECK", "OVERTIME" -> {
-                            ft.tvInputOrder.visibility = View.GONE
+                            binding.tvInputOrder.visibility = View.GONE
                         }
 
                         "CANCELD_REFUND", "WAIT_RECEIVE_RETURNS" -> {
-                            ft.tvInputOrder.visibility = View.GONE
-                            ft.tvHandle.visibility = View.GONE
+                            binding.tvInputOrder.visibility = View.GONE
+                            binding.tvHandle.visibility = View.GONE
                         }
                     }
                 }
 
                 "CLOSED" -> { // 退款关闭
-                    ft.tvInputOrder.visibility = View.GONE
-                    ft.tvHandle.visibility = View.VISIBLE
-                    ft.tvHandle.text = "申请售后"
+                    binding.tvInputOrder.visibility = View.GONE
+                    if (isShowBack) {
+                        binding.tvHandle.visibility = View.VISIBLE
+                        binding.tvHandle.text = "申请售后"
+                    } else {
+                        binding.tvHandle.visibility = View.GONE
+                    }
+
 
                 }
 
                 else -> {
-                    ft.tvInputOrder.visibility = View.GONE
-                    ft.tvHandle.visibility = View.GONE
+                    binding.tvInputOrder.visibility = View.GONE
+                    binding.tvHandle.visibility = View.GONE
                 }
             }
             if (refundProgressBean.sku == null) {
@@ -184,28 +199,44 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
         }
     }
 
+    private fun setBotStatus(state: String,tv:TextView){
+        when (state) {
+            "ON_GOING" -> {
+                tv.text = "退款中"
+            }
+
+            "FINISH" -> {
+                tv.text = "退款完成"
+            }
+
+            "CLOSED" -> {
+                tv.text = "退款关闭"
+            }
+        }
+    }
+
     private fun setStatusEnum(
         state: String,
         tv: TextView,
         binding: ItemRefundProgressMultipleBinding,
         item: RefundProgressMultipleBean,
-        position: Int
     ) {
         when (state) {
             "ON_GOING" -> {
                 tv.text = "退款中"
                 binding.tvInputOrder.visibility = View.VISIBLE
                 binding.tvHandle.visibility = View.VISIBLE
-                binding.tvHandle.text = "填写物流"
-                binding.tvInputOrder.text = "撤销退款"
-                binding.tvInputOrder.setOnClickListener {
+                binding.tvInputOrder.text = "填写物流"
+                binding.tvHandle.text = "撤销退款"
+                binding.tvHandle.setOnClickListener {
                     //撤销退款
                     baseViewModel.cancelRefund(item.mallMallRefundId) {
-                        item.refundStatus = "CLOSED"
-                        notifyItemChanged(position)
+//                        item.refundStatus = "CLOSED"
+//                        notifyItemChanged(position)
+                        LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).postValue("true")
                     }
                 }
-                binding.tvHandle.setOnClickListener {
+                binding.tvInputOrder.setOnClickListener {
                     //填写物流
                     val bundle = Bundle()
                     bundle.putString("value", item.mallMallRefundId)
@@ -221,19 +252,60 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
 
             "CLOSED" -> {
                 tv.text = "退款关闭"
-                binding.tvInputOrder.visibility = View.VISIBLE
-                binding.tvHandle.visibility = View.GONE
-                binding.tvInputOrder.text = "申请售后"
-                binding.tvInputOrder.setOnClickListener {
-                    val gson = Gson()
-                    val refundBean = RefundBean(
-                        item.orderNo,
-                        item.fbRefundApply,
-                        item.rmbRefundApply,
-                        "allOrderRefund"
-                    )
-                    val refundJson = gson.toJson(refundBean)
-                    JumpUtils.instans?.jump(121, refundJson)
+                binding.tvInputOrder.visibility = View.GONE
+                if (isShowBack) {
+                    binding.tvHandle.visibility = View.VISIBLE
+                    binding.tvHandle.text = "申请售后"
+                } else {
+                    binding.tvHandle.visibility = View.GONE
+                }
+                binding.tvHandle.setOnClickListener {
+                    if (item.busSource == "WB" && item.sku == null) {//如果是维保订单，并且没有退过，直接跳转仅退款。历史愿意跳转到了这里
+                        val toJson =
+                            "{\"orderNo\":\"${item.orderNo}\",\"refundType\":\"allOrderRefund\"}"
+                        JumpUtils.instans?.jump(121, toJson)
+                    } else if (item.sku != null) {
+                        val itemUse = item.sku
+                        itemUse.orderNo = item.orderNo
+                        itemUse.price =
+                            "${
+                                item.fbRefundApply?.toInt()?.plus(
+                                    (WCommonUtil.getRoundedNum(
+                                        item.rmbRefundApply,
+                                        2
+                                    ) * BigDecimal(100)).intValueExact()
+                                )
+                            }"
+                        val gsonItem = Gson()
+                        val gsonItemtoJson = gsonItem.toJson(itemUse)
+                        val refundOrderItemBean: RefundOrderItemBean? =
+                            if (gsonItemtoJson == null) null else Gson().fromJson(
+                                gsonItemtoJson,
+                                RefundOrderItemBean::class.java
+                            )
+                        val refundBean = RefundBean(
+                            item.orderNo,
+                            item.fbRefundApply,
+                            item.rmbRefundApply,
+                            "singleRefund",
+                            refundOrderItemBean,
+                            item.busSource
+                        )
+                        val gson = Gson()
+                        val toJson = gson.toJson(refundBean)
+                        JumpUtils.instans?.jump(121, toJson)
+                    } else {
+                        val gson = Gson()
+                        val refundBean = RefundBean(
+                            item.orderNo,
+                            item.fbRefundApply,
+                            item.rmbRefundApply,
+                            "allOrderRefund"
+                        )
+                        val refundJson = gson.toJson(refundBean)
+                        JumpUtils.instans?.jump(121, refundJson)
+                    }
+
                 }
             }
         }

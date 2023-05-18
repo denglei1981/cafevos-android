@@ -1111,6 +1111,15 @@ object GIOUtils {
         trackCustomEvent("fy_carClick", map)
     }
 
+    //首页弹窗点击
+    fun screenEntryPopoverClick(adName: String?) {
+        val map = HashMap<String, String>()
+
+        map["fy_screenEntryPopoverName_var"] = adName.gioEmpty()
+
+        trackCustomEvent("fy_screenEntryPopoverClick", map)
+    }
+
     //用户勾选隐私协议
     fun privacyClick() {
         val map = HashMap<String, String>()

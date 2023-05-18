@@ -72,8 +72,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
 
     val orderDetailsItemV2Adapter: OrderDetailsItemV2Adapter by lazy {
         OrderDetailsItemV2Adapter(object : OrderDetailsItemV2Adapter.OrderStatusListener {
-            override fun orderStatusShow(item: OrderItemBean, needShow: Boolean) {
-                topRefundShow(dataBean, needShow)
+            override fun orderStatusShow(
+                item: OrderItemBean,
+                needShow: Boolean,
+                isShowBack: Boolean
+            ) {
+                topRefundShow(dataBean, needShow, isShowBack)
             }
         })
     }
@@ -270,7 +274,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
                         View.INVISIBLE
                     BottomGon()
                     if (!TextUtils.isEmpty(dataBean.refundStatus)) {
-                        topRefundShow(dataBean = dataBean)
+                        topRefundShow(dataBean = dataBean, isShowBack = false)
                     }
                 }
             }
@@ -316,8 +320,13 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     fun topAllShowRefundShow(dataBean: OrderItemBean) {
         binding.inRefund.conRefundProgress.setOnClickListener {
 //            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+            val mallOrderSkuId = viewModel.orderItemLiveData.value?.mallOrderSkuId
             val bundle = Bundle()
             bundle.putString("orderNo", orderNo)
+            bundle.putBoolean("isShowBack", binding.inRefund.tvStatus.text == "退款关闭")
+            mallOrderSkuId?.let {
+                bundle.putString("mallOrderSkuId", it)
+            }
             startARouter(ARouterShopPath.RefundProgressMultipleActivity, bundle)
         }
         if (!TextUtils.isEmpty(dataBean.refundStatus)) {
@@ -339,10 +348,18 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
 
-    fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true) {
+    fun topRefundShow(dataBean: OrderItemBean, needShow: Boolean = true, isShowBack: Boolean) {
 
         binding.inRefund.conRefundProgress.setOnClickListener {
-            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+//            JumpUtils.instans?.jump(124, dataBean.mallMallRefundId)
+            val mallOrderSkuId = viewModel.orderItemLiveData.value?.mallOrderSkuId
+            val bundle = Bundle()
+            bundle.putString("orderNo", orderNo)
+            bundle.putBoolean("isShowBack", isShowBack)
+            mallOrderSkuId?.let {
+                bundle.putString("mallOrderSkuId", it)
+            }
+            startARouter(ARouterShopPath.RefundProgressMultipleActivity, bundle)
         }
         if (needShow) {
             binding.inRefund.conRefundProgress.visibility = View.VISIBLE

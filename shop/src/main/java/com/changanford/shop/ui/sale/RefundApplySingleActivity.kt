@@ -325,6 +325,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
             }
             if(it=="success"){
                 LiveDataBus.get().with(LiveDataBusKey.SINGLE_REFUND).postValue("success")
+                LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).postValue("")
                 this.finish()
             }
         })

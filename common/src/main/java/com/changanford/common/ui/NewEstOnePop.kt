@@ -8,6 +8,7 @@ import com.changanford.common.bean.NewEstOneBean
 import com.changanford.common.bean.NewEstOneItemBean
 import com.changanford.common.databinding.PopNewEstOneBinding
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -31,11 +32,12 @@ class NewEstOnePop(context: Context, private val estOneBean: NewEstOneItemBean) 
     }
 
     private fun initView() {
-        estOneBean?.let {data->
+        estOneBean?.let { data ->
             viewDataBinding?.let {
                 GlideUtils.loadBD(data.adImg, viewDataBinding.ivBg)
                 it.ivClose.setOnClickListener { dismiss() }
                 it.ivBg.setOnClickListener {
+                    GIOUtils.screenEntryPopoverClick(data.adName)
                     JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
                     dismiss()
                 }

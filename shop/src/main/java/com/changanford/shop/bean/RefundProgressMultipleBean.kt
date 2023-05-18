@@ -18,7 +18,8 @@ data class RefundProgressMultipleBean(
     val refundDescImgs: List<String>,
     val refundDescText: String? = null,
     val refundDetailStatus: String,
-    val refundLogMap: RefundLogMap,
+    var refundList: MutableList<RefundStautsBean>? = mutableListOf(),
+    val refundLogMap: RefundOutStautsBean,
     val refundMethod: String,
     val refundNo: String,
     val refundReason: String,
@@ -28,8 +29,4 @@ data class RefundProgressMultipleBean(
     val rmbRefundApply: String?,
     var isExpand: Boolean,
     val sku: RefundOrderItemBean? = null
-)
-
-data class RefundLogMap(
-    val ON_GOING: ArrayList<RefundStautsBean>
 )

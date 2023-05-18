@@ -16,6 +16,7 @@ import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.bean.RefundProgressMultipleBean
 import com.changanford.shop.bean.RefundStautsBean
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 
 
@@ -239,15 +240,40 @@ class RefundViewModel : BaseViewModel() {
 
     var refundMultipleBean = MutableLiveData<ArrayList<RefundProgressMultipleBean>?>()
 
-    fun getOrderMultiple(orderNo: String) {
+    fun getOrderMultiple(orderNo: String, mallOrderSkuId: String?) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
             body["orderNo"] = orderNo
+            mallOrderSkuId?.let {
+                body["mallOrderSkuId"] = it
+            }
             ApiClient.createApi<ShopNetWorkApi>()
                 .getProgressList(body.header(rKey), body.body(rKey))
-                .onSuccess {
-                    refundMultipleBean.value = it
+                .onSuccess {data->
+                    data?.forEach {
+                        // 组装数据
+                        val list: MutableList<RefundStautsBean> = mutableListOf()
+                        val onGoing = it.refundLogMap.ON_GOING
+                        val closed = it.refundLogMap.CLOSED
+                        val success = it.refundLogMap.SUCESS
+                        val finish = it.refundLogMap.FINISH
+                        if (success != null && success.size > 0) {
+                            list.addAll(success)
+                        }
+                        if (finish != null && finish.size > 0) {
+                            list.addAll(finish)
+                        }
+                        if (closed != null && closed.size > 0) {
+                            list.addAll(closed)
+                        }
+                        if (onGoing != null && onGoing.size > 0) {
+                            list.addAll(onGoing)
+                        }
+
+                        it.refundList = list
+                    }
+                    refundMultipleBean.value = data
                 }
                 .onWithMsgFailure {
                     refundMultipleBean.value = null
