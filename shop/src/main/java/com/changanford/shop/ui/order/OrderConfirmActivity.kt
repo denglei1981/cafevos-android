@@ -192,6 +192,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         LiveDataBus.get().withs<String>(LiveDataBusKey.SHOW_ERROR_ADDRESS).observe(this) {
             showAddressError(it)
         }
+        LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING)
+            .observe(this@OrderConfirmActivity) {
+                payWaitingPop?.dismiss()
+            }
         //优惠券、skuItems
         viewModel.createOrderBean.observe(this) {
             it?.let { it1 -> setDiscount(it1) }
@@ -800,16 +804,19 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         }
     }
 
+    private var payWaitingPop: PayWaitingPop? = null
+
     private fun showWaitPay() {
-        PayWaitingPop(this).apply {
-            setBackgroundColor(android.graphics.Color.TRANSPARENT)
-            setBlurBackgroundEnable(false)
-            showPopupWindow()
-            LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING)
-                .observe(this@OrderConfirmActivity) {
-                    dismiss()
-                }
+        if (payWaitingPop == null) {
+            payWaitingPop = PayWaitingPop(this).apply {
+                setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                setBlurBackgroundEnable(false)
+                showPopupWindow()
+            }
+        } else {
+            payWaitingPop?.showPopupWindow()
         }
+
     }
 
     private fun showAddressError(errorMsg: String) {
