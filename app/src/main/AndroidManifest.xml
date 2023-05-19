@@ -53,9 +53,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/fordicon"
+        android:debuggable="false"
         android:supportsRtl="true"
         android:theme="@style/Theme.EVOS"
-        tools:replace="android:allowBackup,android:theme">
+        tools:replace="android:allowBackup,android:theme"
+        tools:ignore="HardcodedDebugMode">
         <meta-data
             android:name="CHANNEL_VALUE"
             android:value="${channel_value}" />
