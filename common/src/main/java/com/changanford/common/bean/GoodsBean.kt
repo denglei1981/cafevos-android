@@ -274,6 +274,35 @@ data class ConfirmOrderBean(
     }
 }
 
+data class OrderConfirmSkuItems(
+    var busSourse: Int = 0,
+    var num: Int = 0,
+    var skuId: String? = null,
+    var stockState: String? = null //库存状态 0无货 1提示7天内发货”
+//    var sourceSku: String? = null,
+) {
+    fun initBean(spuPageType: String?) {
+        busSourse = 0
+        when (spuPageType ?: "") {
+            //秒杀
+            "SECKILL" -> {
+                busSourse = 1
+//                skuId=mallMallSkuSpuSeckillRangeId?:skuId
+            }
+            //砍价
+            "2" -> {
+                busSourse = 2
+            }
+
+            WConstant.maintenanceType -> {//维保商品
+                busSourse = 3
+//                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
+//                vin= vinCode?:""
+            }
+        }
+    }
+}
+
 data class ConfirmOrderInfoBean(
     var busSourse: Int = 0,
     var carModel: String? = null,
@@ -294,6 +323,7 @@ data class ConfirmOrderInfoBean(
             "2" -> {
                 busSourse = 2
             }
+
             WConstant.maintenanceType -> {//维保商品
                 busSourse = 3
 //                body["mallMallWbVinSpuId"]= mallMallWbVinSpuId?:""
@@ -375,7 +405,9 @@ data class GoodsDetailBean(
     var mallSkuState: String? = null,
     var shoppingCartCount: Int = 0,//购物车数量
     var limitSeckill: String? = "",
-    var mallMallRefundId: String? = "" // 退款id
+    var mallMallRefundId: String? = "", // 退款id
+    var noStock: Boolean = false,
+    var showSevenTips: Boolean = false,
 
 ) {
     fun getLimitBuyNum(): Int {
@@ -656,7 +688,7 @@ data class OrderItemBean(
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
     var rmbPrice: String? = null,
-    var orderReceiveAddress: OrderReceiveAddress?=null,
+    var orderReceiveAddress: OrderReceiveAddress? = null,
     var skuList: MutableList<OrderItemBean> = mutableListOf(),
     var payFb: String? = null,
     var payRmb: String? = null,
@@ -795,7 +827,7 @@ data class OrderInfoBean(
     //支付方式(0纯积分/1纯现金/2混合支付)
     var payType: Int? = null,
     var payFb: String? = null,
-):Parcelable
+) : Parcelable
 
 data class ShopAddressInfoBean(
     val addressId: Int = 0,
@@ -1000,6 +1032,7 @@ data class CouponsItemBean(
                 val moneyStr = "￥".plus(couponMoney)
                 return SpannableStringUtils.textSizeSpan(moneyStr, 0, 1, 12)
             }
+
             "DISCOUNT" -> { // 折扣
                 val moneyStr = couponRatio.toString().plus("折")
                 return SpannableStringUtils.textSizeSpan(
@@ -1019,9 +1052,11 @@ data class CouponsItemBean(
             "MALL_COUPON" -> {
                 "劵类型: 商城劵\n"
             }
+
             "SERVICE_COUPON" -> {
                 "劵类型: 服务劵\n"
             }
+
             else -> {
                 "劵类型: 商城劵\n"
             }
@@ -1057,9 +1092,11 @@ data class CouponsItemBean(
             "LEGISLATIVE_REDUCTION" -> { // 满减,立减
                 "无门槛"
             }
+
             "FULL_MINUS", "DISCOUNT" -> {
                 "满${conditionMoney}元可用"
             }
+
             else -> {
                 ""
 

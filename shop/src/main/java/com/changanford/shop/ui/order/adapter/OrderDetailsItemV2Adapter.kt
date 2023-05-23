@@ -18,6 +18,7 @@ import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
@@ -146,6 +147,16 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
                     GoodsDetailsActivity.start(item.mallMallspuId)
                 }
 
+            }
+
+            if (tvSaleHandler.text.toString() == "退款中") {
+                tvSaleHandler.setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
+                tvSaleHandler.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_blue_stroke_gray)
+            } else {
+                tvSaleHandler.setTextColor(ContextCompat.getColor(context, R.color.color_00))
+                tvSaleHandler.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_white_stroke_gray)
             }
 
             tvSaleHandler.setOnClickListener {// 退货申请 单个商品

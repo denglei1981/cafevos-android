@@ -83,6 +83,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
     //    private lateinit var dataBean:GoodsDetailBean
     private var isClickSubmit = false
     private var ruleId = ""
+    private val orderSkuItems = ArrayList<OrderConfirmSkuItems>()
 
     //    private var spuPageType=""//商品类型
     private var dataListBean: ArrayList<GoodsDetailBean>? = null
@@ -135,6 +136,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         initObserve()
         edtCustomOnTextChanged()
         formattingData()
+        initOrderSkuItems()
     }
 
     /**
@@ -176,6 +178,17 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         bindInfo()
         //获取优惠券信息
         viewModel.confirmOrder(orderConfirmType, skuItems)
+    }
+
+    private fun initOrderSkuItems() {
+        dataListBean?.forEach {
+            val spuPageType = it.spuPageType
+            val skuItem = OrderConfirmSkuItems(
+                skuId = it.skuId, num = it.buyNum
+            )
+            skuItem.initBean(spuPageType)
+            orderSkuItems.add(skuItem)
+        }
     }
 
     override fun initData() {}
@@ -225,6 +238,30 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             .observe(this) {
                 bindCoupon(it)
             }
+        viewModel.jdCheckBean.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                it.forEach { skuItem ->
+                    dataListBean?.forEach { goodsBean ->
+                        if (skuItem.skuId == goodsBean.skuId) {
+                            if (skuItem.stockState == "0") {
+                                goodsBean.noStock = true
+                            } else if (skuItem.stockState == "1") {
+                                goodsBean.showSevenTips = true
+                            }
+
+                        }
+                    }
+                }
+                goodsInfoAdapter.setList(dataListBean)
+                val noStocks = dataListBean?.find { it.noStock }
+                if (noStocks == null) {
+                    binding.inBottom.btnSubmit.noStock = false
+                } else {
+                    binding.inBottom.btnSubmit.noStock = true
+                    binding.inBottom.btnSubmit.updateEnabled(false)
+                }
+            }
+        }
     }
 
     private fun setDiscount(order: CreateOrderBean) {
@@ -538,6 +575,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             binding.inAddress.tvAddress.text =
                 "${item.provinceName}${item.cityName ?: ""}${item.districtName ?: ""}${item.addressName}"
             binding.inAddress.tvAddressRemark.text = "${item.consignee}   ${item.phone}"
+            showWaitPay()
+            viewModel.jdOrderCreateBeforeCheck(item.addressId.toString(), orderSkuItems)
         }
     }
 

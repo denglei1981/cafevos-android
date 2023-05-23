@@ -15,6 +15,7 @@ import com.changanford.shop.R
 class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButton(context, attrs) {
     private var btnStates =
         -1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换
+
     // 6已售罄 7详情秒杀未开始 8余额不足 9提交订单 10 已提醒 11订单详情 12确认支付 13订单列表 14 重新支付
     private val statesTxt = arrayOf(
         R.string.str_toSnapUp,
@@ -37,6 +38,14 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
     init {
         initAttributes(context, attrs)
     }
+
+    var noStock = false
+        set(value) {
+            if (value) {
+                updateEnabled(false)
+            }
+            field = value
+        }
 
     @SuppressLint("Recycle", "CustomViewStyleable")
     private fun initAttributes(context: Context, attrs: AttributeSet?) {
@@ -102,6 +111,10 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
      * [btnSource]按钮来源 0商品详情底部、1商品详情选择属性弹窗
      * */
     fun updateEnabled(isEnabled: Boolean, btnSource: Int = -1) {
+        if (noStock) {
+            this.isEnabled = false
+            return
+        }
         this.isEnabled = isEnabled
         if (isEnabled) {
             setBackgroundResource(R.drawable.btn_selector)

@@ -26,15 +26,31 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_hint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_goods_order_bt"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="预计7天内发货"
+            android:textColor="@color/color_FF"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/img_goodsCover"
+            app:layout_constraintLeft_toLeftOf="@+id/img_goodsCover"
+            app:layout_constraintRight_toRightOf="@+id/img_goodsCover" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_11"
-            android:text="@{model.spuName}"
             android:layout_marginEnd="15dp"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{model.spuName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
@@ -69,6 +85,18 @@
             app:layout_constraintStart_toEndOf="@id/rv_goods_property"
             app:layout_constraintTop_toTopOf="@id/rv_goods_property"
             tools:text="×1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_no_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="该商品当前区域无货"
+            android:textColor="@color/color_99"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
+            app:layout_constraintStart_toStartOf="@id/tv_goodsTitle" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_rmbPrice"

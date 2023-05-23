@@ -305,4 +305,10 @@ interface ShopNetWorkApi {
     @POST("/mall/refund/progressList")
     suspend fun getProgressList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<RefundProgressMultipleBean>>
 
+    /**
+     *  下单前对京东sku和用户地址进行验证
+     * */
+    @POST("/mall/order/jdOrderCreateBeforeCheck")
+    suspend fun jdOrderCreateBeforeCheck(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<OrderConfirmSkuItems>>
+
 }

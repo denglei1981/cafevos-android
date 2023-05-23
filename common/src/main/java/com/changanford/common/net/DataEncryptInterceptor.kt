@@ -9,6 +9,8 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.longE
 import com.changanford.common.utilext.toast
 import com.google.gson.Gson
@@ -83,6 +85,10 @@ class DataEncryptInterceptor : Interceptor {
                     val activity = BaseApplication.curActivity
                     startARouter(ARouterCarControlPath.NothingActivity)
                     activity.finish()
+                }
+                if(commonResponse.code==StatusCode.ERROR_ADDRESS){
+                    LiveDataBus.get().with(LiveDataBusKey.SHOW_ERROR_ADDRESS)
+                        .postValue(commonResponse.msg)
                 }
                 if (commonResponse.code == StatusCode.UN_LOGIN) {  //登录过期 清空token 跳转到登录页面
                     AppUtils.Unbinduserid()

@@ -123,6 +123,8 @@
             android:background="@drawable/shape_white_stroke_gray"
             android:gravity="center"
             android:paddingStart="8dp"
+            android:minWidth="70dp"
+            android:minHeight="@dimen/dp_28"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="@dimen/dp_4"

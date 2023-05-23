@@ -30,4 +30,9 @@ object StatusCode {
      * 请求成功，data数据为null,或者返回的列表数据为null
      */
     const val DATA_IS_NULL_ERROR = 100002
+
+    /**
+     * 下单地址错误
+     */
+    const val ERROR_ADDRESS = 1000
 }

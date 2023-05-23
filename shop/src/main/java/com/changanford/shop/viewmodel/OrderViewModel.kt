@@ -178,11 +178,34 @@ class OrderViewModel : BaseViewModel() {
                 LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
             }.onWithMsgFailure {
                 LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
-                if(it?.contains("地址") == true){
-                    LiveDataBus.get().with(LiveDataBusKey.SHOW_ERROR_ADDRESS).postValue(it.toString())
-                }else{
+//                if (it?.contains("地址") == true) {
+////                    LiveDataBus.get().with(LiveDataBusKey.SHOW_ERROR_ADDRESS)
+////                        .postValue(it.toString())
+//                } else {
                     ToastUtils.showLongToast(it, MyApp.mContext)
-                }
+//                }
+            }
+        }
+    }
+
+    val jdCheckBean = MutableLiveData<ArrayList<OrderConfirmSkuItems>>()
+
+    fun jdOrderCreateBeforeCheck(addressId: String, skuItems: ArrayList<OrderConfirmSkuItems>) {
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["addressId"] = addressId
+                body["skuItems"] = skuItems
+                val randomKey = getRandomKey()
+                shopApiService.jdOrderCreateBeforeCheck(
+                    body.header(randomKey),
+                    body.body(randomKey)
+                )
+            }.onWithMsgFailure {
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
+            }.onSuccess {
+                jdCheckBean.value = it
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_PAY_WAITING).postValue("")
             }
         }
     }
@@ -193,7 +216,7 @@ class OrderViewModel : BaseViewModel() {
      * */
     fun confirmOrder(orderConfirmType: Int, skuItems: ArrayList<ConfirmOrderInfoBean>) {
         viewModelScope.launch {
-            fetchRequest(true) {
+            fetchRequest(false) {
                 body.clear()
                 body["orderConfirmType"] = orderConfirmType
                 body["skuItems"] = skuItems
