@@ -27,6 +27,10 @@ class PayWaitingPop(context: Context) : BasePopupWindow(context) {
         anim.start()
     }
 
+    fun setContent(content: String) {
+        viewBinding.tvHint.text = content
+    }
+
     override fun onBackPressed(): Boolean {
         return false
     }

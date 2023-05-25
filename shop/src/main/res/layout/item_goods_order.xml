@@ -26,6 +26,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_goodsCover_bg"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:background="#1A0C0C0C"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/img_goodsCover"
+            app:layout_constraintLeft_toLeftOf="@+id/img_goodsCover"
+            app:layout_constraintRight_toRightOf="@+id/img_goodsCover"
+            app:layout_constraintTop_toTopOf="@+id/img_goodsCover"
+            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            tools:visibility="visible" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_hint"
             android:layout_width="0dp"
@@ -49,7 +63,7 @@
             android:layout_marginStart="@dimen/dp_11"
             android:layout_marginEnd="15dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@{model.spuName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_14"
@@ -90,7 +104,7 @@
             android:id="@+id/tv_no_stock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="3dp"
+            android:layout_marginBottom="1dp"
             android:text="该商品当前区域无货"
             android:textColor="@color/color_99"
             android:textSize="14sp"

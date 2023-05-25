@@ -533,7 +533,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private fun submitOrder() {
         if (!isClickSubmit) {
-            showWaitPay()
+            showWaitPay("订单提交中")
             isClickSubmit = true
             val consumerMsg = binding.inGoodsInfo.edtLeaveMsg.text.toString()
             if (ruleId.isNotEmpty()) {
@@ -575,7 +575,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             binding.inAddress.tvAddress.text =
                 "${item.provinceName}${item.cityName ?: ""}${item.districtName ?: ""}${item.addressName}"
             binding.inAddress.tvAddressRemark.text = "${item.consignee}   ${item.phone}"
-            showWaitPay()
+            showWaitPay("订单处理中")
             viewModel.jdOrderCreateBeforeCheck(item.addressId.toString(), orderSkuItems)
         }
     }
@@ -845,14 +845,16 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private var payWaitingPop: PayWaitingPop? = null
 
-    private fun showWaitPay() {
+    private fun showWaitPay(content:String) {
         if (payWaitingPop == null) {
             payWaitingPop = PayWaitingPop(this).apply {
                 setBackgroundColor(android.graphics.Color.TRANSPARENT)
                 setBlurBackgroundEnable(false)
+                setContent(content)
                 showPopupWindow()
             }
         } else {
+            payWaitingPop?.setContent(content)
             payWaitingPop?.showPopupWindow()
         }
 

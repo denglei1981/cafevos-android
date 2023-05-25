@@ -41,15 +41,22 @@ class ConfirmOrderGoodsInfoAdapter :
                 R.color.color_99
             ) else ContextCompat.getColor(context, R.color.color_33)
             tvGoodsTitle.setTextColor(txColor)
-
+            tvNumber.setTextColor(
+                if (item.noStock) ContextCompat.getColor(
+                    context,
+                    R.color.color_99
+                ) else ContextCompat.getColor(context, R.color.color_74889D)
+            )
             if (item.noStock) {
                 tvNoStock.visibility = View.VISIBLE
                 tvRmbPrice.visibility = View.INVISIBLE
                 tvFbPrice.visibility = View.INVISIBLE
+                imgGoodsCoverBg.visibility = View.VISIBLE
             } else {
                 tvNoStock.visibility = View.GONE
                 tvRmbPrice.visibility = View.VISIBLE
                 tvFbPrice.visibility = View.VISIBLE
+                imgGoodsCoverBg.visibility = View.GONE
             }
 
             executePendingBindings()
