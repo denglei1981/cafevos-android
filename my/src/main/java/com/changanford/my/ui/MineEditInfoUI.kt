@@ -203,7 +203,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         ).observe(this, Observer<String?> {
             Log.e("---------", it)
             //需要审核
-//            binding.editNickname.rightDesc = it
+            binding.editNickname.rightDesc = it
             body["nickname"] = it.toString()
 
             val map = HashMap<String, String>()
