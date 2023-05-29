@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Debug
 import android.os.Process
+import android.util.Log
 import com.changanford.common.BuildConfig
+import com.changanford.common.utilext.toastShow
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -54,6 +56,9 @@ object DebuggerUtils{
 
                         //判断是否被其他进程跟踪，是就退出
                         if (isUnderTraced()) {
+                            exitProcess(0)
+                        }
+                        if (isDebuggable(context)) {
                             exitProcess(0)
                         }
                     } catch (e: InterruptedException) {

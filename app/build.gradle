@@ -7,20 +7,6 @@ plugins {
     id 'com.growingio.android.autotracker'
 }
 
-//apply plugin: 'com.growingio.giokit'
-//
-//giokitExt {
-//    debugMode false
-//    enableRelease false
-//    // 统计该域值下所有埋点信息，如 com.growingio 表示统计 com.growingio 包名下的埋点代码
-//    trackFinder {
-//        domain = ["com.changanford.evos"]
-//        // 若用户自己封装了SDK customEvent 方法，可通过在此设置来查找封装类调用的代码
-//        // className "com.growingio.giokit.demo.AutotrackerUtils"
-//        // methodName "trackCustomEvent"
-//    }
-//}
-
 def keystorePropertiesFile = rootProject.file("./keystore.properties")
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
@@ -44,12 +30,12 @@ android {
         applicationId "com.changanford.evos"
         minSdkVersion minSDKVersion
         targetSdkVersion targetSDKVersion
-        versionCode 425
-        versionName "1.2.8"
+        versionCode 426
+        versionName "1.2.9"
         resConfigs "zh"
-//        ndk {
-//            abiFilters "armeabi-v7a",'arm64-v8a'
-//        }
+        ndk {
+            abiFilters "armeabi-v7a",'arm64-v8a'
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     splits {

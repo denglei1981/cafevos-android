@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.http.SslError
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +17,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.SslErrorHandler
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -25,7 +27,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
-import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.ShareBean
@@ -43,9 +44,9 @@ import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.web.AgentWebActivity.Companion.isOnPause
 import com.changanford.common.wutil.UnionPayUtils
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
@@ -54,6 +55,8 @@ import com.just.agentweb.WebViewClient
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.xiaomi.push.it
+
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -211,6 +214,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                             toastShow("支付成功")
                             agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
                         }
+
                         false -> {
                             toastShow("支付失败")
                             agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
@@ -242,6 +246,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     0 -> {//成功
                         agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
                     }
+
                     else -> {//1 失败 2 取消
                         agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
                     }
@@ -321,6 +326,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                         agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
                         doGetAccessCode()
                     }
+
                     else -> {
 
                     }
@@ -805,6 +811,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //                    bundle.putString("jsonStr", mjsonpost)
 //                    startARouter(ARouterHomePath.HomePostActivity, bundle)
                 }
+
                 REQUEST_PIC -> {//选择图片
 //                    selectList =
 //                        data!!.getSerializableExtra("picList") as ArrayList<LocalMedia>
@@ -813,6 +820,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //                    bundle.putString("jsonStr", mjsonpost)
 //                    startARouter(ARouterHomePath.HomePostActivity, bundle)
                 }
+
                 SCAN_REQUEST_CODE -> {
                     agentWeb.jsAccessEntrace.quickCallJs(data?.getStringExtra(SCAN_RESULT))
                 }

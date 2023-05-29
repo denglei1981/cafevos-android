@@ -452,9 +452,9 @@ object MineUtils {
             val s = code.split(",")
             if (s.size == 2) {
                 val agree1 =
-                    if (s[0] == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+                    if (s[0] == MConstant.agreementPrivacy) "《福域APP/小程序个人信息保护政策》" else "《福域APP会员服务协议》"
                 val agree2 =
-                    if (s[1] == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+                    if (s[1] == MConstant.agreementPrivacy) "《福域APP/小程序个人信息保护政策》" else "《福域APP会员服务协议》"
 
                 val lookAll = "\n\n查看完整版"
 
@@ -516,7 +516,7 @@ object MineUtils {
                 textView.movementMethod = LinkMovementMethod.getInstance()
             }
         } else {
-            val agree = if (code == MConstant.agreementPrivacy) "《福域APP个人隐私协议》" else "《福域APP会员服务协议》"
+            val agree = if (code == MConstant.agreementPrivacy) "《福域APP/小程序个人信息保护政策》" else "《福域APP会员服务协议》"
             val lookAll = "\n\n查看完整版"
 
             val spannable = SpannableString(content + lookAll + agree)
@@ -566,9 +566,9 @@ object MineUtils {
 
         val title = ""
         val titleC =
-            "感谢您信任并使用福域！在使用前，请您务必仔细阅读并充分理解“福域APP会员服务协议”和“福域APP个人隐私协议”相关条款内容，在确认充分理解并同意后使用福域相关产品或服务。点击同意即代表您已阅读并同意"
+            "感谢您信任并使用福域！在使用前，请您务必仔细阅读并充分理解“福域APP会员服务协议”和“福域APP/小程序个人信息保护政策”相关条款内容，在确认充分理解并同意后使用福域相关产品或服务。点击同意即代表您已阅读并同意"
         val content = "《福域APP会员服务协议》"
-        val content1 = "《福域APP个人隐私协议》"
+        val content1 = "《福域APP/小程序个人信息保护政策》"
 
         val spannable =
             SpannableString("${title}${titleC}${content}和${content1}，如果您不同意，将可能影响使用福域的产品和服务。我们将按法律法规要求，采取相应安全保护措施，尽力保护您的个人信息安全可控。")
