@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
+import android.webkit.CookieManager;
 
 import com.changanford.common.basic.BaseApplication;
 
@@ -60,6 +61,11 @@ public class FastClickUtils {
     }
 
     public static void relaunchApp() {
+
+        CookieManager.getInstance().removeAllCookies(null);
+
+        CookieManager.getInstance().flush();
+
         PackageManager packageManager = BaseApplication.INSTANT.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(BaseApplication.INSTANT.getPackageName());
         if (intent == null) return;

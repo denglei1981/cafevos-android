@@ -57,13 +57,12 @@ dependencies {
     //权限
     api "com.qw:soulpermission:1.1.8"
     //AgentWeb
-//    api "com.github.Justson.AgentWeb:agentweb-core:v4.1.9@aar"
-//    api "com.github.Justson.AgentWeb:agentweb-filechooser:v4.1.9@aar"
-//    api "com.github.Justson:Downloader:v4.1.9@aar"
-    api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.6-androidx@aar' // (必选)
-    api 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.6-androidx@aar' // (可选)
-    api 'com.github.Justson:Downloader:v5.0.4-androidx@aar'
-
+//    api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.6-androidx@aar' // (必选)
+//    api 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.6-androidx@aar' // (可选)
+//    api 'com.github.Justson:Downloader:v5.0.4-androidx@aar'
+    api 'com.github.Justson.AgentWeb:agentweb-core:v5.0.0-alpha.1-androidx' // (必选)
+    api 'com.github.Justson.AgentWeb:agentweb-filechooser:v5.0.0-alpha.1-androidx' // (可选)
+    api 'com.github.Justson:Downloader:v5.0.0-androidx'
     //rxjava
     api "io.reactivex.rxjava2:rxjava:2.2.21"
     api "io.reactivex.rxjava2:rxandroid:2.1.1"

@@ -1,13 +1,11 @@
 package com.changanford.common.basic
 
-import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
-import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
@@ -25,11 +23,11 @@ import com.changanford.common.buried.RetrofitClientConfig
 import com.changanford.common.sharelib.ModuleConfigureConstant
 import com.changanford.common.sharelib.manager.ShareManager
 import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.DebuggerUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MyApplicationUtil
 import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
-import com.changanford.common.wutil.DebuggerUtils
 import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import kotlinx.coroutines.CoroutineScope

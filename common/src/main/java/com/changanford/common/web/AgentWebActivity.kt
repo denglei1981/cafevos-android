@@ -18,6 +18,7 @@ import android.view.View
 import android.webkit.GeolocationPermissions
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
+import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -49,6 +50,7 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.AgentWebActivity.Companion.isOnPause
 import com.changanford.common.wutil.UnionPayUtils
 import com.just.agentweb.AgentWeb
+import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
 import com.just.agentweb.WebViewClient
@@ -566,6 +568,13 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     loadingDialog?.dismiss()
                 }
 
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+                    return false
+                }
+
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
                     loadingDialog?.show()
@@ -668,7 +677,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     }
 
     override fun onDestroy() {
+        AgentWebConfig.clearDiskCache(this)
         agentWeb.webLifeCycle.onDestroy()
+        agentWeb.destroy()
         totalWebNum -= 1
         super.onDestroy()
     }
