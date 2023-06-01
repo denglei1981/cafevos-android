@@ -248,6 +248,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:nestedScrollingEnabled="false"
+                            android:overScrollMode="never"
                             android:orientation="horizontal"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
