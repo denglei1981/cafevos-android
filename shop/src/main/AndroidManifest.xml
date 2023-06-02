@@ -39,11 +39,11 @@
             android:name=".ui.order.OrdersGoodsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <!-- 商品订单-订单详情-->
-        <activity
-            android:name=".ui.order.OrderDetailsActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+<!--        &lt;!&ndash; 商品订单-订单详情&ndash;&gt;-->
+<!--        <activity-->
+<!--            android:name=".ui.order.OrderDetailsActivity"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:screenOrientation="portrait" />-->
         <!-- 所有订单-->
         <activity
             android:name=".ui.order.AllOrderActivity"

@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.core.LogisticsCenter
 import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.callback.NavigationCallback
 import com.alibaba.android.arouter.launcher.ARouter
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
 
 
