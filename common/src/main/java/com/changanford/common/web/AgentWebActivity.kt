@@ -6,8 +6,8 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.net.http.SslError
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,10 +15,10 @@ import android.os.Message
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.webkit.CookieManager
 import android.webkit.GeolocationPermissions
 import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
-import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -47,7 +47,6 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
-import com.changanford.common.web.AgentWebActivity.Companion.isOnPause
 import com.changanford.common.wutil.UnionPayUtils
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.AgentWebConfig
@@ -57,7 +56,6 @@ import com.just.agentweb.WebViewClient
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.xiaomi.push.it
 
 
 /**********************************************************************************
@@ -572,7 +570,17 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     view: WebView?,
                     request: WebResourceRequest?
                 ): Boolean {
-                    return false
+                    val url = request?.url.toString()
+                    if (url.startsWith("http:") || url.startsWith("https:")) {
+                        return false
+                    }
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                    } catch (e: java.lang.Exception) {
+                        Log.e("TAG", " Exception is ==== >>> $e")
+                    }
+                    return true
                 }
 
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
