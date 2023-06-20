@@ -23,6 +23,7 @@ import com.changanford.circle.databinding.ItemLongPostIvBinding
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import java.util.logging.Handler
@@ -35,6 +36,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
     var selectionIndex = -1// 光标的位置
     var selectionPosition = -1 // 光标所在插入位置
     var currentTxtView: EditText? = null
+    var needGone = false
 
     init {
         addChildClickViewIds(R.id.iv_delete)
@@ -43,7 +45,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
 
     override fun convert(holder: BaseViewHolder, item: LongPostBean) {
         val binding: ItemLongPostIvBinding = DataBindingUtil.bind(holder.itemView)!!
-
+        binding.root.visibility = if (needGone) View.GONE else View.VISIBLE
         if (item.localMedias == null) {
             showEtContent(binding, item)
         } else {
@@ -51,6 +53,15 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         }
     }
 
+    override fun addData(data: LongPostBean) {
+        super.addData(data)
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
+    }
+
+    override fun removeAt(position: Int) {
+        super.removeAt(position)
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
+    }
 
     fun showImage(binding: ItemLongPostIvBinding, item: LongPostBean) {
         GlideUtils.loadRoundFilePath(
@@ -105,12 +116,13 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
             override fun afterTextChanged(editable: Editable?) {
                 if (!TextUtils.isEmpty(editable)) {
                     item.content = editable.toString()
-                }else{
+                } else {
                     item.content = ""
                 }
                 selectionIndex = binding.tvTex.selectionStart
                 selectionPosition = getItemPosition(item) // 获取位置。
                 currentTxtView = binding.tvTex
+                LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
             }
 
         }

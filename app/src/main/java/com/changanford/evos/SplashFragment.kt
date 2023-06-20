@@ -49,9 +49,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
 //            }
 //        })
         lifecycleScope.launch {
-            if (!MainActivity.activityAlive) {
-                delay(4000)
-            }
+//            if (!MainActivity.activityAlive) {
+//                delay(4000)
+//            }
             viewModel.getKey()
             viewModel.key.observe(this@SplashFragment) {
                 MConstant.pubKey = it

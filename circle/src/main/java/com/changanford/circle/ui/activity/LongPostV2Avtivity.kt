@@ -16,7 +16,10 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -65,11 +68,13 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -83,6 +88,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private val longpostadapter by lazy {
         LongPostV2Adapter(binding.longpostrec.layoutManager as LinearLayoutManager)
     }
+
+    private var postViewType = MutableLiveData(0)
 
     private lateinit var plateBean: PlateBean
     private var platename: String = ""
@@ -144,10 +151,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvTitle.text = "发帖"
         binding.title.barTvOther.visibility = View.VISIBLE
-        binding.title.barTvOther.text = "发布"
+        binding.title.barTvOther.text = "下一步"
+        binding.title.barTvOther.background =
+            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         headBinding = DataBindingUtil.bind(headview)!!
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
         bus()
@@ -178,7 +186,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
             headBinding.ivAddfm.visibility = View.GONE
             headBinding.tvFm.visibility = View.GONE
+            checkViewTwoTypeContent()
         })
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
+            checkViewOneTypeContent()
+        }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
                 dialog.dismiss()
@@ -281,6 +293,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 val showCity = it.city.plus("·").plus(it.addrName)
                 buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
+        postViewType.observe(this) {
+            setViewType()
+        }
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean.plate.forEach {
@@ -449,6 +464,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         initbuttom()
         onclick()
         initlocaData()
+        initListener()
         if (isH5Post) {
             postType = intent.extras?.getInt("postType") ?: 0
             jsonStr = intent.extras?.getString("jsonStr") ?: ""
@@ -470,6 +486,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             (params["topicName"] as String).isNotEmpty().let {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
+        }
+    }
+
+    private fun initListener() {
+        headBinding.etBiaoti.addTextChangedListener {
+            checkViewOneTypeContent()
         }
     }
 
@@ -618,7 +640,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun setEditContent(emoJi: String?) {
         val rootView = window.decorView
         val focusView = rootView.findFocus()
-        if(focusView is EditText) {
+        if (focusView is EditText) {
             val index = focusView.selectionStart
             val editContent = focusView.text
             index.let { editContent?.insert(it, emoJi) }
@@ -664,8 +686,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun onclick() {
 
         binding.title.barImgBack.setOnClickListener {
-            savePostDialog()
-
+            if (postViewType.value == 1) {
+                postViewType.value = 0
+            } else {
+                savePostDialog()
+            }
         }
 
         binding.bottom.ivEmoj.setOnClickListener {
@@ -684,7 +709,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
         }
         binding.title.barTvOther.setOnClickListener {
-            ispost()
+            if (postViewType.value == 0) {
+                postViewType.value = 1
+            } else {
+                ispost()
+            }
         }
 
         buttomTypeAdapter.setOnItemChildClickListener { adapter, view, position ->
@@ -698,11 +727,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         params.remove("topicId")
                         params.remove("topicName")
                     }
+
                     3 -> {
                         params.remove("circleId")
                         params.remove("circleName")
                         circlename = ""
                     }
+
                     4 -> {
                         params.remove("lat")
                         params.remove("lon")
@@ -724,12 +755,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
+
                 2 -> { // 话题
                     toHuati()
                 }
+
                 3 -> {// 圈子
                     toQuanzi()
                 }
+
                 4 -> { // 选择地址。
                     if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
@@ -784,15 +818,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
 
 
-        longpostadapter.setOnItemChildClickListener(object : OnItemChildClickListener {
-            override fun onItemChildClick(
-                adapter: BaseQuickAdapter<*, *>,
-                view: View,
-                position: Int
-            ) {
-                if (view.id == R.id.iv_delete) {
-                    longpostadapter.remove(position)
-                } else if (view.id == R.id.iv_pic) {
+        longpostadapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.iv_delete -> {
+                    longpostadapter.removeAt(position)
+                    checkViewOneTypeContent()
+                }
+
+                R.id.iv_pic -> {
                     isunSave = true
                     PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
                         object : OnResultCallbackListener<LocalMedia> {
@@ -828,7 +861,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                             }
 
                         })
-                } else if (view.id == R.id.ivFm) {
+                }
+
+                R.id.ivFm -> {
                     val array = ArrayList<String>()
                     array.add("编辑图片")
                     array.add("删除图片")
@@ -859,6 +894,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                             ITEM_SELECTPIC
                                         )
                                     }
+
                                     "删除图片" -> {
                                         longpostadapter.getItem(position).localMedias = null
                                         longpostadapter.notifyDataSetChanged()
@@ -868,7 +904,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         }).show()
                 }
             }
-        })
+        }
 
         longpostadapter.draggableModule.setOnItemDragListener(object : OnItemDragListener {
             override fun onItemDragStart(viewHolder: RecyclerView.ViewHolder?, pos: Int) {
@@ -958,13 +994,16 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 "请选择封面".toast()
                 return
             }
+
             biaoti.isEmpty() || biaoti.length > 20 -> {
                 "请输入1-20字的帖子标题".toast()
                 return
             }
+
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
+
             else -> {
                 params["title"] = biaoti
                 //埋点
@@ -1054,6 +1093,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                     })
 
                             }
+
                             "编辑封面" -> {
                                 val bundle = Bundle()
                                 bundle.putParcelableArrayList("picList", arrayListOf(FMMeadia))
@@ -1062,6 +1102,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                 bundle.putBoolean("longPostFM", true)
                                 startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
                             }
+
                             "删除封面" -> {
                                 FMMeadia = null
                                 headBinding.ivAddfm.visibility = View.VISIBLE
@@ -1196,7 +1237,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         // 移除都是空的情况。
         val last =
             upedimgs.filter { !TextUtils.isEmpty(it.imgDesc) || !TextUtils.isEmpty(it.imgUrl) }
-        params["imgUrl"] = last
+        last?.let {
+            params["imgUrl"] = last
+        }
         params["isPublish"] = 2
         buttomlabelAdapter.data.forEach {
             if (it.isselect) {
@@ -1252,6 +1295,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                     }
                 }
+
                 ITEM_SELECTPIC -> {
                     val media = data!!.getParcelableArrayListExtra<LocalMedia>("itemMedia")
                     val itemposition = data!!.getIntExtra("position", 0)
@@ -1260,6 +1304,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         content = media!![0].contentDesc
                     }
                     longpostadapter.notifyDataSetChanged()
+                    checkViewOneTypeContent()
                 }
             }
         }
@@ -1275,7 +1320,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         val postsId = intent?.getStringExtra("postsId")
         postsId?.let {
             //赋值
-            viewModel.postDetailsBean.observe(this, {
+            viewModel.postDetailsBean.observe(this) {
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
                         headBinding.etBiaoti.setText(locaPostEntity.title)
@@ -1365,7 +1410,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         })
                     }
                 }
-            })
+            }
             viewModel.getPostById(it)
         }
     }
@@ -1502,6 +1547,80 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     }, true)
             )
             .show()
+    }
+
+    private fun checkViewOneTypeContent() {
+        val titleHasContent = headBinding.etBiaoti.text?.isNotEmpty()
+        val contentHasContent =
+            upedimgs.any { !TextUtils.isEmpty(it.imgDesc) || !TextUtils.isEmpty(it.imgUrl) }
+        val content =
+            longpostadapter.data.filter { it.content?.isNotEmpty() == true || it.localMedias != null }
+        binding.title.barTvOther.text = "下一步"
+        if (titleHasContent == true && content.isNotEmpty()) {
+            binding.title.barTvOther.isEnabled = true
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+        } else {
+            binding.title.barTvOther.isEnabled = false
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        }
+    }
+
+    private fun checkViewTwoTypeContent() {
+        binding.title.barTvOther.text = "完成"
+        if (FMMeadia == null) {
+            binding.title.barTvOther.isEnabled = false
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        } else {
+            binding.title.barTvOther.isEnabled = true
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+        }
+    }
+
+    private fun setViewType() {
+        when (postViewType.value) {
+            0 -> {
+                headBinding.tFl.visibility = View.GONE
+                headBinding.tvFmTips2.visibility = View.GONE
+                headBinding.icAttribute.root.visibility = View.GONE
+                binding.bottom.root.visibility = View.VISIBLE
+                headBinding.etBiaoti.visibility = View.VISIBLE
+                headBinding.tvline.visibility=View.VISIBLE
+                val layoutManager = object :LinearLayoutManager(this){
+                    override fun canScrollVertically(): Boolean {
+                        return true
+                    }
+                }
+                binding.longpostrec.layoutManager = layoutManager
+                longpostadapter.needGone = false
+                longpostadapter.notifyDataSetChanged()
+                checkViewOneTypeContent()
+            }
+
+            1 -> {
+                headBinding.tFl.visibility = View.VISIBLE
+                headBinding.tvFmTips2.visibility = View.VISIBLE
+                headBinding.icAttribute.root.visibility = View.VISIBLE
+                binding.bottom.root.visibility = View.GONE
+                headBinding.etBiaoti.visibility = View.GONE
+                headBinding.tvline.visibility=View.GONE
+                binding.longpostrec.scrollToPosition(0)
+                val layoutManager = object :LinearLayoutManager(this){
+                    override fun canScrollVertically(): Boolean {
+                        return false
+                    }
+                }
+                binding.longpostrec.layoutManager = layoutManager
+                longpostadapter.needGone = true
+                longpostadapter.notifyDataSetChanged()
+                checkViewTwoTypeContent()
+            }
+
+            else -> {}
+        }
     }
 
     fun showLoctionServicePermission() {

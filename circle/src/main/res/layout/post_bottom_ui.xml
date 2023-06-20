@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
+    android:paddingBottom="10dp"
     android:orientation="vertical">
 
 
@@ -33,6 +34,7 @@
             android:layout_marginStart="18dp"
             android:gravity="start"
             android:paddingTop="10dp"
+            android:visibility="gone"
             android:paddingBottom="10dp"
             android:text="标签"
             android:textColor="@color/text_color"
@@ -48,7 +50,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/iv_pic"
             app:layout_constraintEnd_toStartOf="@+id/tv_more"
@@ -62,6 +64,7 @@
             android:drawableEnd="@drawable/circle_right_arrow_black"
             android:drawablePadding="4dp"
             android:text="@string/more"
+            android:visibility="gone"
             android:textColor="@color/color_blue_ff00695b"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@+id/labelrec"
@@ -71,6 +74,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:src="@drawable/icon_more_shade"
             app:layout_constraintBottom_toBottomOf="@+id/tv_more"
             app:layout_constraintEnd_toStartOf="@+id/tv_more"
@@ -79,13 +83,12 @@
 
         <LinearLayout
             android:id="@+id/iv_pic"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginStart="19dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/iv_huati"
-            app:layout_constraintHorizontal_weight="1.5"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -113,6 +116,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
@@ -148,6 +152,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_loc"
@@ -206,14 +211,13 @@
 
         <LinearLayout
             android:id="@+id/iv_emoj"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginStart="@dimen/dp_43"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1.5"
-            app:layout_constraintStart_toEndOf="@id/iv_loc"
+            app:layout_constraintStart_toEndOf="@id/iv_pic"
             app:layout_constraintTop_toBottomOf="@id/tv_bq">
 
             <androidx.appcompat.widget.AppCompatImageView

@@ -205,6 +205,7 @@ object MConstant {
 
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
+    var mainActivityIsOpen = false
 
     //H5通用协议地址
     var H5_PUBLIC_INSTRUCTIONS = "${H5_BASE_URL_CSCIR}/richTextAp?key=%s"
@@ -233,6 +234,6 @@ object MConstant {
     const val agreementShop = "user_agreement_mall"
 
     //注销协议code
-    const val userAgreementCancellation="user_agreement_cancellation"
+    const val userAgreementCancellation = "user_agreement_cancellation"
 
 }

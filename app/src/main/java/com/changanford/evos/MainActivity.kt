@@ -220,6 +220,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+        MConstant.mainActivityIsOpen = true
         title = "主页"
         activityAlive = true
         if (MConstant.app_mourning_mode == 1) {
