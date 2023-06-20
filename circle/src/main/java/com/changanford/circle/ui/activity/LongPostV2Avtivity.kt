@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.media.ExifInterface
@@ -27,8 +28,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
@@ -68,13 +67,11 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -168,6 +165,30 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
     }
 
+    private fun showTopic(name: String) {
+        headBinding.icAttribute.run {
+            tvTopic.visibility = View.GONE
+            llTopic.visibility = View.VISIBLE
+            tvTopicName.text = name
+        }
+    }
+
+    private fun showAddress(address: String) {
+        headBinding.icAttribute.run {
+            tvAddress.visibility = View.GONE
+            llAddress.visibility = View.VISIBLE
+            tvAddressName.text = address
+        }
+    }
+
+    private fun showCircle(circleName: String) {
+        headBinding.icAttribute.run {
+            tvCircle.visibility = View.GONE
+            llCircle.visibility = View.VISIBLE
+            tvCircleName.text = circleName
+        }
+    }
+
     override fun observe() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
@@ -256,29 +277,34 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             params["city"] = it.cityName
         })
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-            .observe(this,
-                Observer {
-                    isunSave = false
-                    buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
-                    params["topicId"] = it.topicId.toString()
-                })
-
-
-        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
-            {
+            .observe(
+                this
+            ) {
                 isunSave = false
-                address = it.address ?: it.name ?: ""
-                params["address"] = address
-                params["addrName"] = it.name
-                it.location?.let { mit ->
-                    params["lat"] = mit.latitude
-                    params["lon"] = mit.longitude
-                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
-                }
-                params["province"] = it.province ?: address
-                val showCity = it.city.plus("·").plus(it.name)
-                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
-            })
+                buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
+                params["topicId"] = it.topicId.toString()
+
+                showTopic(it.name)
+            }
+
+
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(
+            this
+        ) {
+            isunSave = false
+            address = it.address ?: it.name ?: ""
+            params["address"] = address
+            params["addrName"] = it.name
+            it.location?.let { mit ->
+                params["lat"] = mit.latitude
+                params["lon"] = mit.longitude
+                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+            }
+            params["province"] = it.province ?: address
+            val showCity = it.city.plus("·").plus(it.name)
+            buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
+            showAddress(address)
+        }
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
@@ -309,20 +335,21 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-            .observe(this,
-                {
-                    isunSave = false
-                    params.remove("lat")
-                    params.remove("lon")
-                    params.remove("city")
-                    params.remove("province")
-                    params.remove("cityCode")
-                    params.remove("address")
-                    params.remove("addrName")
-                    address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+            .observe(
+                this
+            ) {
+                isunSave = false
+                params.remove("lat")
+                params.remove("lon")
+                params.remove("city")
+                params.remove("province")
+                params.remove("cityCode")
+                params.remove("address")
+                params.remove("addrName")
+                address = ""
+                buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
-                })
+            }
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
             // todo  加图片，加一片那种。
@@ -479,6 +506,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             circlename.isNotEmpty().let {
                 buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
+            showCircle(circlename)
         }
         if (isTopPost) {
             params["topicId"] = intent.extras?.getString("topId") ?: "0"
@@ -486,9 +514,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             (params["topicName"] as String).isNotEmpty().let {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
+            showTopic(intent.extras?.getString("topName") ?: "")
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initListener() {
         headBinding.etBiaoti.addTextChangedListener {
             checkViewOneTypeContent()
@@ -527,12 +557,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     3,
                     ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
                 )
+                showTopic(locaPostEntity!!.topicName)
             }
             if (locaPostEntity!!.circleName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
                     4,
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
+                showCircle(locaPostEntity!!.circleName)
             }
             showLocaPostCity()
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
@@ -565,6 +597,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             var showCity = ""
             if (lp.city.isNotEmpty() && lp.addrName.isNotEmpty()) {
                 showCity = locaPostEntity!!.city.plus("·").plus(locaPostEntity!!.addrName)
+            }
+            if (showCity.isNotEmpty()) {
+                showAddress(showCity)
             }
             if (lp.city.isEmpty()) {
                 showCity = "定位"
@@ -788,6 +823,50 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.bottom.ivHuati.setOnClickListener {
             toHuati()
         }
+        headBinding.icAttribute.apply {
+            rlTopic.setOnClickListener { toHuati() }
+            tvDeleteTopic.setOnClickListener {
+                params.remove("topicId")
+                headBinding.icAttribute.run {
+                    tvTopic.visibility = View.VISIBLE
+                    llTopic.visibility = View.GONE
+                    tvTopicName.text = ""
+                }
+            }
+            rlCircle.setOnClickListener { toQuanzi() }
+            tvDeleteCircle.setOnClickListener {
+                params.remove("circleId")
+
+                headBinding.icAttribute.run {
+                    tvCircle.visibility = View.VISIBLE
+                    llCircle.visibility = View.GONE
+                    tvCircleName.text = ""
+                }
+            }
+            rlAddress.setOnClickListener {
+                isunSave = true
+                startARouter(ARouterCirclePath.ChooseLocationActivity)
+            }
+            tvDeleteAddress.setOnClickListener {
+                headBinding.icAttribute.run {
+
+                    isunSave = false
+                    params.remove("lat")
+                    params.remove("lon")
+                    params.remove("city")
+                    params.remove("province")
+                    params.remove("cityCode")
+                    params.remove("address")
+                    params.remove("addrName")
+                    address = ""
+
+                    tvAddress.visibility = View.VISIBLE
+                    llAddress.visibility = View.GONE
+                    tvAddressName.text = ""
+                }
+            }
+
+        }
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
             val meadiaList: ArrayList<LocalMedia> = arrayListOf()
@@ -995,8 +1074,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 return
             }
 
-            biaoti.isEmpty() || biaoti.length > 20 -> {
-                "请输入1-20字的帖子标题".toast()
+            biaoti.isEmpty() || biaoti.length > 30 || biaoti.length < 2 -> {
+                "请输入2-30字的帖子标题".toast()
                 return
             }
 
@@ -1013,7 +1092,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun initandonclickhead() {
-        val bthinttxt = "标题 (1-20字之间)"
+        val bthinttxt = "标题 (2-30字之间)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -1058,7 +1137,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             val array = ArrayList<String>()
             array.add("重选封面")
             array.add("编辑封面")
-            array.add("删除封面")
+//            array.add("删除封面")
             HomeBottomDialog(this, *array.toTypedArray())
                 .setOnClickItemListener(object :
                     HomeBottomDialog.OnClickItemListener {
@@ -1293,6 +1372,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         params["circleId"] = data.getIntExtra("circleId", 0)
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
+                        showCircle(circlename)
                     }
                 }
 
@@ -1588,8 +1668,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 headBinding.icAttribute.root.visibility = View.GONE
                 binding.bottom.root.visibility = View.VISIBLE
                 headBinding.etBiaoti.visibility = View.VISIBLE
-                headBinding.tvline.visibility=View.VISIBLE
-                val layoutManager = object :LinearLayoutManager(this){
+                headBinding.tvline.visibility = View.VISIBLE
+                val layoutManager = object : LinearLayoutManager(this) {
                     override fun canScrollVertically(): Boolean {
                         return true
                     }
@@ -1601,14 +1681,16 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
 
             1 -> {
+                hideKeyboard(this.window.decorView.windowToken)
+                binding.bottom.emojirec.visibility = View.GONE
                 headBinding.tFl.visibility = View.VISIBLE
                 headBinding.tvFmTips2.visibility = View.VISIBLE
                 headBinding.icAttribute.root.visibility = View.VISIBLE
                 binding.bottom.root.visibility = View.GONE
                 headBinding.etBiaoti.visibility = View.GONE
-                headBinding.tvline.visibility=View.GONE
+                headBinding.tvline.visibility = View.GONE
                 binding.longpostrec.scrollToPosition(0)
-                val layoutManager = object :LinearLayoutManager(this){
+                val layoutManager = object : LinearLayoutManager(this) {
                     override fun canScrollVertically(): Boolean {
                         return false
                     }

@@ -15,6 +15,7 @@
         android:paddingEnd="20dp">
 
         <View
+            android:id="@+id/v_line_one"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/color_ee" />
@@ -36,6 +37,7 @@
                 android:src="@mipmap/c_ht" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_topic"
@@ -48,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/iv_topic"
                 android:background="@drawable/bg_f0f3fb_12"
                 android:orientation="horizontal"
@@ -60,6 +63,8 @@
                     android:id="@+id/tv_topic_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/circle_8195C8"
                     android:textSize="12sp"
                     tools:text="春日热“练”" />
@@ -106,6 +111,7 @@
                 android:src="@mipmap/c_qz" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_circle"
@@ -118,19 +124,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/iv_circle"
                 android:background="@drawable/bg_f0f3fb_12"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:visibility="gone"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:visibility="gone"
                 tools:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_circle_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/circle_8195C8"
                     android:textSize="12sp"
                     tools:text="春日热“练”" />
@@ -177,6 +186,7 @@
                 android:src="@mipmap/circle_post_address_ic" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_address"
@@ -189,6 +199,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/iv_address"
                 android:background="@drawable/bg_f0f3fb_12"
                 android:orientation="horizontal"
@@ -201,11 +212,15 @@
                     android:id="@+id/tv_address_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@color/circle_8195C8"
                     android:textSize="12sp"
                     tools:text="春日热“练”" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_delete_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="5dp"

@@ -60,6 +60,7 @@ import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
+import com.gyf.immersionbar.OnKeyboardListener
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
@@ -131,8 +132,17 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     override fun initView() {
         title = "发帖页"
-        ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
+        ImmersionBar.with(this).keyboardEnable(true)
+            .setOnKeyboardListener { isPopup, keyboardHeight ->
+                if (isPopup) {
+                    binding.bottom.llContent.visibility = View.VISIBLE
+                    binding.bottom.emojirec.visibility = View.GONE
+                } else {
+                    binding.bottom.llContent.visibility = View.GONE
+                }
+            }.init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
+        binding.icAttribute.vLineOne.visibility = View.GONE
         binding.title.barTvTitle.text = "发帖"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "发布"
@@ -140,7 +150,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         postPicAdapter = PostPicAdapter(type)
-        var bthinttxt = "标题 (1-20字之间)"
+        var bthinttxt = "标题 (2-30字之间)"
         var spannableString = SpannableString(bthinttxt)
         var intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -162,17 +172,17 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         isCirclePost = intent.extras?.getBoolean("isCirclePost") ?: false
         isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
         binding.etBiaoti.requestFocus()
-
+        binding.bottom.llContent.visibility = View.GONE
 
     }
 
 
     override fun observe() {
         super.observe()
-        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
-            Log.d("ImmersionBar", keyboardHeight.toString())
-            binding.bottom.emojirec.visibility = View.GONE
-        }
+//        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
+//            Log.d("ImmersionBar", keyboardHeight.toString())
+//            binding.bottom.emojirec.visibility = View.GONE
+//        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -233,30 +243,34 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["city"] = it.cityName
         })
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-            .observe(this,
-                Observer {
-                    isunSave = false
-                    buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
-                    params["topicId"] = it.topicId.toString()
-                })
-
-
-        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
-            {
+            .observe(
+                this
+            ) {
                 isunSave = false
-                address = it.address ?: it.name ?: ""
-                params["address"] = address
-                params["addrName"] = it.name
-                it.location?.let { mit ->
-                    params["lat"] = mit.latitude
-                    params["lon"] = mit.longitude
-                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
-                }
-                params["province"] = it.province ?: address
-                val showCity = it.city.plus("·").plus(it.name)
-                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
+                buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
+                params["topicId"] = it.topicId.toString()
+                showTopic(it.name)
+            }
+
+
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(
+            this
+        ) {
+            isunSave = false
+            address = it.address ?: it.name ?: ""
+            params["address"] = address
+            params["addrName"] = it.name
+            it.location?.let { mit ->
+                params["lat"] = mit.latitude
+                params["lon"] = mit.longitude
+                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+            }
+            params["province"] = it.province ?: address
+            val showCity = it.city.plus("·").plus(it.name)
+            buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
 //                binding.tvLocation.text = it.name
-            })
+            showAddress(address)
+        }
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
                 isunSave = false
@@ -289,20 +303,21 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-            .observe(this,
-                {
-                    isunSave = false
-                    params.remove("lat")
-                    params.remove("lon")
-                    params.remove("city")
-                    params.remove("province")
-                    params.remove("cityCode")
-                    params.remove("address")
-                    params.remove("addrName")
-                    address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+            .observe(
+                this
+            ) {
+                isunSave = false
+                params.remove("lat")
+                params.remove("lon")
+                params.remove("city")
+                params.remove("province")
+                params.remove("cityCode")
+                params.remove("address")
+                params.remove("addrName")
+                address = ""
+                buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
 //                    binding.tvLocation.text = "不显示位置"
-                })
+            }
 
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
             isunSave = false
@@ -422,6 +437,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             circlename.isNotEmpty().let {
                 buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
+            showCircle(circlename)
         }
 
         if (isTopPost) {
@@ -430,6 +446,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             (params["topicName"] as String).isNotEmpty().let {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
+            showTopic(intent.extras?.getString("topName") ?: "")
         }
         binding.bottom.tvMore.setOnClickListener {
             showMoreTag()
@@ -467,14 +484,64 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     3,
                     ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
                 )
+                showTopic(locaPostEntity!!.topicName)
             }
             if (locaPostEntity!!.circleName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
                     4,
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
+                showCircle(locaPostEntity!!.circleName)
             }
             showLocaPostCity()
+        } else {
+            isunSave = true // 不要自动保存
+            PictureUtil.openGallery(
+                this,
+                selectList,
+                object : OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        if (result != null) {
+                            selectList.clear()
+                            selectList.addAll(result)
+                        }
+                        val bundle = Bundle()
+                        bundle.putParcelableArrayList("picList", selectList)
+                        bundle.putInt("position", 0)
+                        bundle.putInt("showEditType", -1)
+                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+
+                    }
+
+                    override fun onCancel() {
+                        isunSave = false
+                    }
+
+                })
+        }
+    }
+
+    private fun showTopic(name: String) {
+        binding.icAttribute.run {
+            tvTopic.visibility = View.GONE
+            llTopic.visibility = View.VISIBLE
+            tvTopicName.text = name
+        }
+    }
+
+    private fun showAddress(address: String) {
+        binding.icAttribute.run {
+            tvAddress.visibility = View.GONE
+            llAddress.visibility = View.VISIBLE
+            tvAddressName.text = address
+        }
+    }
+
+    private fun showCircle(circleName: String) {
+        binding.icAttribute.run {
+            tvCircle.visibility = View.GONE
+            llCircle.visibility = View.VISIBLE
+            tvCircleName.text = circleName
         }
     }
 
@@ -530,11 +597,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         params.remove("topicId")
                         params.remove("topicName")
                     }
+
                     3 -> {
                         params.remove("circleId")
                         params.remove("circleName")
                         circlename = ""
                     }
+
                     4 -> {
                         params.remove("lat")
                         params.remove("lon")
@@ -556,12 +625,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
+
                 2 -> { // 话题
                     toHuati()
                 }
+
                 3 -> {// 圈子
                     toQuanzi()
                 }
+
                 4 -> { // 选择地址。
                     if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
@@ -587,6 +659,51 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
 
         })
+
+        binding.icAttribute.apply {
+            rlTopic.setOnClickListener { toHuati() }
+            tvDeleteTopic.setOnClickListener {
+                params.remove("topicId")
+                binding.icAttribute.run {
+                    tvTopic.visibility = View.VISIBLE
+                    llTopic.visibility = View.GONE
+                    tvTopicName.text = ""
+                }
+            }
+            rlCircle.setOnClickListener { toQuanzi() }
+            tvDeleteCircle.setOnClickListener {
+                params.remove("circleId")
+
+                binding.icAttribute.run {
+                    tvCircle.visibility = View.VISIBLE
+                    llCircle.visibility = View.GONE
+                    tvCircleName.text = ""
+                }
+            }
+            rlAddress.setOnClickListener {
+                isunSave = true
+                startARouter(ARouterCirclePath.ChooseLocationActivity)
+            }
+            tvDeleteAddress.setOnClickListener {
+                binding.icAttribute.run {
+
+                    isunSave = false
+                    params.remove("lat")
+                    params.remove("lon")
+                    params.remove("city")
+                    params.remove("province")
+                    params.remove("cityCode")
+                    params.remove("address")
+                    params.remove("addrName")
+                    address = ""
+
+                    tvAddress.visibility = View.VISIBLE
+                    llAddress.visibility = View.GONE
+                    tvAddressName.text = ""
+                }
+            }
+
+        }
 
         binding.bottom.ivQuanzi.setOnClickListener {
             toQuanzi()
@@ -666,7 +783,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
                 postPicAdapter.notifyDataSetChanged()
-                binding.mscr.smoothScrollTo(0, 0);
+//                binding.mscr.smoothScrollTo(0, 0);
             }
         }
 
@@ -829,16 +946,20 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 "请选择图片".toast()
                 return
             }
-            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 20 -> {
-                "请输入1-20字的帖子标题".toast()
+
+            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 30 || biaoti.length < 2 -> {
+                "请输入2-30字的帖子标题".toast()
                 return
             }
+
             content.isNullOrEmpty() -> {
                 "请输入正文内容".toast()
             }
+
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
+
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
@@ -1077,15 +1198,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     postPicAdapter.setList(selectList)
                     postPicAdapter.notifyDataSetChanged()
                 }
+
                 UCrop.RESULT_ERROR -> {
                     val cropError = UCrop.getError(data!!)
                 }
+
                 REQUEST_CIRCLE -> {
 
                     if (data != null) {
                         params["circleId"] = data.getIntExtra("circleId", 0)
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
+                        showCircle(circlename)
                     }
                 }
 //                REQUEST_LOCATION_SERVICE->{ //打开了定位回调。
@@ -1184,6 +1308,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             var showCity = ""
             if (lp.city.isNotEmpty() && lp.addrName.isNotEmpty()) {
                 showCity = locaPostEntity!!.city.plus("·").plus(locaPostEntity!!.addrName)
+            }
+            if (showCity.isNotEmpty()) {
+                showAddress(showCity)
             }
             if (lp.city.isEmpty()) {
                 showCity = "定位"

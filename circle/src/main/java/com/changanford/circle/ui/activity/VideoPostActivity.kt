@@ -127,6 +127,16 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
     private var locaPostEntity: PostEntity? = null
     override fun initView() {
+        ImmersionBar.with(this).keyboardEnable(true)
+            .setOnKeyboardListener { isPopup, keyboardHeight ->
+                if (isPopup) {
+                    binding.bottom.llContent.visibility = View.VISIBLE
+                    binding.bottom.emojirec.visibility = View.GONE
+                } else {
+                    binding.bottom.llContent.visibility = View.GONE
+                }
+            }.init()  //顶起页面底部
+        binding.icAttribute.vLineOne.visibility = View.GONE
         title = "发帖页"
         binding.etBiaoti.requestFocus()
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
@@ -140,7 +150,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        val bthinttxt = "标题 (1-20字之间)"
+        val bthinttxt = "标题 (2-30字之间)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -166,19 +176,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.bottom.tvMore.setOnClickListener {
             showMoreTag()
         }
+        binding.bottom.llContent.visibility = View.GONE
     }
 
     override fun observe() {
         super.observe()
-        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
-            Log.d("ImmersionBar", keyboardHeight.toString())
-//            if (isPopup) {
-//                iskeybarOpen = true
-            binding.bottom.emojirec.visibility = View.GONE
-//            } else {
-//                iskeybarOpen = false
-//            }
-        }
+//        ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
+//            Log.d("ImmersionBar", keyboardHeight.toString())
+////            if (isPopup) {
+////                iskeybarOpen = true
+//            binding.bottom.emojirec.visibility = View.GONE
+////            } else {
+////                iskeybarOpen = false
+////            }
+//        }
 //        LiveDataBus.get().with(LiveDataBusKey.CLEARVIDEOPOSTDATA).observe(this, Observer {
 //            selectList.clear()
 //            postVideoAdapter.notifyDataSetChanged()
@@ -217,32 +228,33 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             params["city"] = it.cityName
         })
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-            .observe(this,
-                Observer {
-                    // 已改角标
-                    isunSave = false
-                    buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
-                    params["topicId"] = it.topicId.toString()
-                })
-
-
-        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this,
-            {
-                isunSave = false
-                address = it.address ?: it.name ?: ""
-                params["address"] = address
-                params["addrName"] = it.name
-                it.location?.let { mit ->
-                    params["lat"] = mit.latitude
-                    params["lon"] = mit.longitude
-                    viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
-                }
-                params["province"] = it.province ?: address
+            .observe(this
+            ) {
                 // 已改角标
-                val showCity = it.city.plus("·").plus(it.name)
-                buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
+                isunSave = false
+                buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
+                params["topicId"] = it.topicId.toString()
+                showTopic(it.name)
+            }
 
-            })
+
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this
+        ) {
+            isunSave = false
+            address = it.address ?: it.name ?: ""
+            params["address"] = address
+            params["addrName"] = it.name
+            it.location?.let { mit ->
+                params["lat"] = mit.latitude
+                params["lon"] = mit.longitude
+                viewModel.getCityDetailBylngAndlat(it.location.latitude, it.location.longitude)
+            }
+            params["province"] = it.province ?: address
+            // 已改角标
+            val showCity = it.city.plus("·").plus(it.name)
+            buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
+            showAddress(address)
+        }
 
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
@@ -347,7 +359,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
 
         //赋值
-        viewModel.postDetailsBean.observe(this, {
+        viewModel.postDetailsBean.observe(this) {
             it?.let { locaPostEntity ->
                 if (locaPostEntity != null) {//同草稿逻辑
                     viewModel.downGlideImgs(listOf(ImageList(locaPostEntity.pics)))
@@ -405,7 +417,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     }
                 }
             }
-        })
+        }
 
 
     }
@@ -468,6 +480,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             circlename.isNotEmpty().let {
                 buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
             }
+            showCircle(circlename)
         }
 
         if (isTopPost) {
@@ -476,6 +489,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             (params["topicName"] as String).isNotEmpty().let {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
             }
+            showTopic(intent.extras?.getString("topName") ?: "")
         }
     }
 
@@ -511,12 +525,14 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     3,
                     ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
                 )
+                showTopic(locaPostEntity!!.topicName)
             }
             if (locaPostEntity!!.circleName.isNotEmpty()) {
                 buttomTypeAdapter.setData(
                     4,
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
+                showCircle(locaPostEntity!!.circleName)
             }
             showLocaPostCity()
             if (locaPostEntity!!.fmpath.isNotEmpty()) {
@@ -524,6 +540,56 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 postVideoAdapter.notifyDataSetChanged()
             }
             jsonStr2obj(locaPostEntity!!.localMeadle)
+        }else{
+            PictureUtil.ChoseVideo(
+                this,
+                selectList,
+                object : OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        isHasVideoPath = false
+                        if (result != null) {
+                            SelectlocalMedia = result[0]
+                            startARouterForResult(
+                                this@VideoPostActivity,
+                                ARouterCirclePath.PictureEditAudioActivity,
+                                Bundle().apply {
+                                    putString("path", result[0].realPath)
+                                },
+                                PictureEditAudioActivity.EDIT_VIDEOPATH
+                            )
+                        }
+                    }
+
+                    override fun onCancel() {
+                        isunSave = false
+
+                    }
+
+                })
+        }
+    }
+
+    private fun showTopic(name: String) {
+        binding.icAttribute.run {
+            tvTopic.visibility = View.GONE
+            llTopic.visibility = View.VISIBLE
+            tvTopicName.text = name
+        }
+    }
+
+    private fun showAddress(address: String) {
+        binding.icAttribute.run {
+            tvAddress.visibility = View.GONE
+            llAddress.visibility = View.VISIBLE
+            tvAddressName.text = address
+        }
+    }
+
+    private fun showCircle(circleName: String) {
+        binding.icAttribute.run {
+            tvCircle.visibility = View.GONE
+            llCircle.visibility = View.VISIBLE
+            tvCircleName.text = circleName
         }
     }
 
@@ -569,6 +635,50 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 )
             }
         }
+        binding.icAttribute.apply {
+            rlTopic.setOnClickListener { toHuati() }
+            tvDeleteTopic.setOnClickListener {
+                params.remove("topicId")
+                binding.icAttribute.run {
+                    tvTopic.visibility = View.VISIBLE
+                    llTopic.visibility = View.GONE
+                    tvTopicName.text = ""
+                }
+            }
+            rlCircle.setOnClickListener { toQuanzi() }
+            tvDeleteCircle.setOnClickListener {
+                params.remove("circleId")
+
+                binding.icAttribute.run {
+                    tvCircle.visibility = View.VISIBLE
+                    llCircle.visibility = View.GONE
+                    tvCircleName.text = ""
+                }
+            }
+            rlAddress.setOnClickListener {
+                isunSave = true
+                startARouter(ARouterCirclePath.ChooseLocationActivity)
+            }
+            tvDeleteAddress.setOnClickListener {
+                binding.icAttribute.run {
+
+                    isunSave = false
+                    params.remove("lat")
+                    params.remove("lon")
+                    params.remove("city")
+                    params.remove("province")
+                    params.remove("cityCode")
+                    params.remove("address")
+                    params.remove("addrName")
+                    address = ""
+
+                    tvAddress.visibility = View.VISIBLE
+                    llAddress.visibility = View.GONE
+                    tvAddressName.text = ""
+                }
+            }
+
+        }
         emojiAdapter.setItems(emojiList)
         emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
@@ -603,16 +713,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 "请选择视频".toast()
                 return
             }
-            biaoti.isEmpty() || biaoti.length > 20 -> {
-                "请输入1-20字的帖子标题".toast()
+
+            biaoti.isEmpty() || biaoti.length > 30 || biaoti.length < 2 -> {
+                "请输入2-30字的帖子标题".toast()
                 return
             }
+
             content.isNullOrEmpty() -> {
                 "请输入正文内容".toast()
             }
+
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
+
             else -> {
                 params["content"] = content
                 params["title"] = biaoti
@@ -659,7 +773,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postVideoAdapter.getItem(position))
                 postVideoAdapter.remove(postVideoAdapter.getItem(position))
-                binding.mscr.smoothScrollTo(0, 0);
+//                binding.mscr.smoothScrollTo(0, 0);
             }
         }
 
@@ -763,9 +877,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                     }
 
                                 }
+
                                 "重选视频" -> {
                                     cxsp()
                                 }
+
                                 "编辑视频" -> {
                                     val permissions = Permissions.build(
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -822,11 +938,13 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         params.remove("topicId")
                         params.remove("topicName")
                     }
+
                     3 -> {
                         params.remove("circleId")
                         params.remove("circleName")
                         circlename = ""
                     }
+
                     4 -> {
                         params.remove("lat")
                         params.remove("lon")
@@ -847,12 +965,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 0, 1 -> { // 选择板块
                     showPlate()
                 }
+
                 2 -> { // 话题
                     toHuati()
                 }
+
                 3 -> {// 圈子
                     toQuanzi()
                 }
+
                 4 -> { // 选择地址。
                     if (!LocationServiceUtil.isLocServiceEnable(this)) {//没有打开定位服务
                         openLocationService()
@@ -1168,16 +1289,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     postVideoAdapter.fmPath = resultUri?.path
                     postVideoAdapter.notifyDataSetChanged()
                 }
+
                 UCrop.RESULT_ERROR -> {
                     val cropError = UCrop.getError(data!!)
                 }
+
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
                         params["circleId"] = data.getIntExtra("circleId", 0)
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
+                        showCircle(circlename)
                     }
                 }
+
                 PictureEditAudioActivity.EDIT_VIDEOPATH -> {
 
                     canEditVideo = true
@@ -1194,6 +1319,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     postVideoAdapter.notifyDataSetChanged()
 
                 }
+
                 VideoChoseFMActivity.FM_CALLBACK -> {
 
                 }
@@ -1216,6 +1342,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             var showCity = ""
             if (lp.city.isNotEmpty() && lp.addrName.isNotEmpty()) {
                 showCity = locaPostEntity!!.city.plus("·").plus(locaPostEntity!!.addrName)
+            }
+            if (showCity.isNotEmpty()) {
+                showAddress(showCity)
             }
             if (lp.city.isEmpty()) {
                 showCity = "定位"

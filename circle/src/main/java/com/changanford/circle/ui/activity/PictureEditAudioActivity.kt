@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
@@ -114,7 +115,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
-        binding.title.barTvTitle.text ="视频裁剪"
+        binding.title.barTvTitle.text = "视频最长15秒"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
@@ -138,11 +139,12 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initData() {
         binding.mRecyclerView.addOnScrollListener(mOnScrollListener)
         initEditVideo()
         initPlay()
-        binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
+        binding.tvchoosetime.text = "已选取${gettext(leftProgress, rightProgress)}s"
         startCropTime = (leftProgress / 1000).toInt()
         endcropTime = (rightProgress / 1000).toInt()
         binding.title.barTvOther.setOnClickListener {
@@ -232,8 +234,8 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         thread {
             cutpath = mEditor.executeCutVideo(path, leftProgress, rightProgress)
             cutHandler.sendMessage(Message().apply {
-                    what=1
-                    obj =cutpath
+                what = 1
+                obj = cutpath
             })
         }
 
@@ -418,6 +420,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onRangeSeekBarValuesChanged(
         bar: RangeSeekBar?,
         minValue: Long,
@@ -434,13 +437,14 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         Log.d(TAG, "-----rightProgress----->>>>>>$rightProgress");
         startCropTime = (leftProgress / 1000).toInt()
         endcropTime = (rightProgress / 1000).toInt()
-        binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
+        binding.tvchoosetime.text = "已选取${gettext(leftProgress, rightProgress)}s"
         when (action) {
             MotionEvent.ACTION_DOWN -> {
                 Log.d(TAG, "-----ACTION_DOWN---->>>>>>")
                 isSeeking = false;
                 videoPause();
             }
+
             MotionEvent.ACTION_MOVE -> {
                 Log.d(TAG, "-----ACTION_MOVE---->>>>>>");
                 isSeeking = true;
@@ -448,6 +452,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                     (if (pressedThumb == RangeSeekBar.Thumb.MIN) leftProgress else rightProgress).toInt()
                 )
             }
+
             MotionEvent.ACTION_UP -> {
                 Log.d(TAG, "-----ACTION_UP--leftProgress--->>>>>>$leftProgress");
                 isSeeking = false;
@@ -463,7 +468,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
     private fun initPlay() {
         binding.uVideoView.setVideoPath(path)
         //设置videoview的OnPrepared监听
-        binding.uVideoView.setOnPreparedListener(MediaPlayer.OnPreparedListener { mp -> //得到视频宽高信息
+        binding.uVideoView.setOnPreparedListener { mp -> //得到视频宽高信息
             videoWidth = mp.videoWidth
             videoHeight = mp.videoHeight
             //Log.e(TAG, " TANHQ===> videoWidth: " + videoWidth + ", videoHeight: " + videoHeight);
@@ -476,7 +481,9 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                     videoStart()
                 }
             }
-        })
+            mp.isLooping = true
+
+        }
         //first
 //        binding.uVideoView.start()
 //        Timer().schedule(300) {
@@ -527,6 +534,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
             }
         }
 
+        @SuppressLint("SetTextI18n")
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             isSeeking = false
@@ -560,7 +568,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                 val num = 1.34567
                 val df = DecimalFormat("#.###")
                 df.roundingMode = RoundingMode.CEILING
-                binding.tvchoosetime.text = "${gettext(leftProgress, rightProgress)}s"
+                binding.tvchoosetime.text = "已选取${gettext(leftProgress, rightProgress)}s"
                 binding.uVideoView.seekTo(leftProgress.toInt())
             }
             lastScrollX = scrollX
@@ -573,17 +581,17 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
 
 
     override fun onDestroy() {
-        if (:: animator.isInitialized && animator!= null) {
+        if (::animator.isInitialized && animator != null) {
             animator.cancel()
         }
         if (binding.uVideoView != null) {
             binding.uVideoView.stopPlayback()
         }
-        if ( :: mExtractVideoInfoUtil.isInitialized && mExtractVideoInfoUtil != null) {
+        if (::mExtractVideoInfoUtil.isInitialized && mExtractVideoInfoUtil != null) {
             mExtractVideoInfoUtil.release()
         }
         binding.mRecyclerView.removeOnScrollListener(mOnScrollListener)
-        if (:: mExtractFrameWorkThread.isInitialized && mExtractFrameWorkThread != null) {
+        if (::mExtractFrameWorkThread.isInitialized && mExtractFrameWorkThread != null) {
             mExtractFrameWorkThread.stopExtract()
         }
         mUIHandler.removeCallbacksAndMessages(null)
