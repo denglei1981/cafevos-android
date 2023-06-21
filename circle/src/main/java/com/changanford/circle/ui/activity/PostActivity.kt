@@ -952,13 +952,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 return
             }
 
-            content.isNullOrEmpty() -> {
-                "请输入正文内容".toast()
-            }
+//            content.isNullOrEmpty() -> {
+//                "请输入正文内容".toast()
+//            }
 
-            platename.isEmpty() -> {
-                "请选择模块".toast()
-            }
+//            platename.isEmpty() -> {
+//                "请选择模块".toast()
+//            }
 
             else -> {
                 params["content"] = content

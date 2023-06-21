@@ -1630,13 +1630,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun checkViewOneTypeContent() {
-        val titleHasContent = headBinding.etBiaoti.text?.isNotEmpty()
-        val contentHasContent =
-            upedimgs.any { !TextUtils.isEmpty(it.imgDesc) || !TextUtils.isEmpty(it.imgUrl) }
+        val titleContent = headBinding.etBiaoti.text
+        val titleHasContent = titleContent?.isNotEmpty() == true && titleContent.length > 1
         val content =
             longpostadapter.data.filter { it.content?.isNotEmpty() == true || it.localMedias != null }
         binding.title.barTvOther.text = "下一步"
-        if (titleHasContent == true && content.isNotEmpty()) {
+        if (titleHasContent && content.isNotEmpty()) {
             binding.title.barTvOther.isEnabled = true
             binding.title.barTvOther.background =
                 ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
@@ -1648,7 +1647,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun checkViewTwoTypeContent() {
-        binding.title.barTvOther.text = "完成"
+        binding.title.barTvOther.text = "发布"
         if (FMMeadia == null) {
             binding.title.barTvOther.isEnabled = false
             binding.title.barTvOther.background =
