@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_bottom"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -34,11 +35,11 @@
             android:layout_marginStart="18dp"
             android:gravity="start"
             android:paddingTop="10dp"
-            android:visibility="gone"
             android:paddingBottom="10dp"
             android:text="标签"
             android:textColor="@color/text_color"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/labelrec"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/labelrec" />
@@ -64,9 +65,9 @@
             android:drawableEnd="@drawable/circle_right_arrow_black"
             android:drawablePadding="4dp"
             android:text="@string/more"
-            android:visibility="gone"
             android:textColor="@color/color_blue_ff00695b"
             android:textSize="@dimen/sp_12"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/labelrec"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/labelrec" />
@@ -74,8 +75,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:src="@drawable/icon_more_shade"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_more"
             app:layout_constraintEnd_toStartOf="@+id/tv_more"
             app:layout_constraintTop_toTopOf="@+id/tv_more" />
@@ -85,11 +86,12 @@
             android:id="@+id/iv_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginStart="19dp"
+            android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visiabl="gone">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -116,8 +118,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="gone"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_quanzi"
             app:layout_constraintHorizontal_weight="1.5"
@@ -152,8 +154,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="gone"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/iv_loc"
             app:layout_constraintHorizontal_weight="1.5"
@@ -213,12 +215,13 @@
             android:id="@+id/iv_emoj"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginStart="@dimen/dp_43"
+            android:gravity="center"
             android:orientation="horizontal"
+            app:layout_goneMarginLeft="19dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_pic"
-            app:layout_constraintTop_toBottomOf="@id/tv_bq">
+            >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"

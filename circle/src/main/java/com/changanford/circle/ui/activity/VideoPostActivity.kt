@@ -228,7 +228,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             params["city"] = it.cityName
         })
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-            .observe(this
+            .observe(
+                this
             ) {
                 // 已改角标
                 isunSave = false
@@ -238,7 +239,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
 
 
-        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(this
+        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION, PoiInfo::class.java).observe(
+            this
         ) {
             isunSave = false
             address = it.address ?: it.name ?: ""
@@ -540,7 +542,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 postVideoAdapter.notifyDataSetChanged()
             }
             jsonStr2obj(locaPostEntity!!.localMeadle)
-        }else{
+        } else {
             PictureUtil.ChoseVideo(
                 this,
                 selectList,
@@ -811,10 +813,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
 
                 val array = ArrayList<String>()
+                array.add("选择封面")
                 if (videoList.size >= 1) {
                     array.add("重选视频")
                 }
-                array.add("选择封面")
                 if (canEditVideo) {
                     array.add("编辑视频")
                 } else {
@@ -1031,6 +1033,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
 
         binding.bottom.tvPic.text = "视频"
+        binding.bottom.ivPic.visibility = View.GONE
         binding.bottom.ivPic.setOnClickListener {
 
 

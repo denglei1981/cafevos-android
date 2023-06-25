@@ -67,6 +67,7 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
@@ -479,6 +480,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     override fun initData() {
+        initListener()
         initandonclickhead()
         viewModel.getPlate()
         viewModel.getTags() //标签
@@ -491,7 +493,6 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         initbuttom()
         onclick()
         initlocaData()
-        initListener()
         if (isH5Post) {
             postType = intent.extras?.getInt("postType") ?: 0
             jsonStr = intent.extras?.getString("jsonStr") ?: ""
@@ -522,6 +523,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun initListener() {
         headBinding.etBiaoti.addTextChangedListener {
             checkViewOneTypeContent()
+            it?.let { editable ->
+                if (editable.length < 2) {
+                    headBinding.tvNoTips.visibility = View.VISIBLE
+                } else {
+                    headBinding.tvNoTips.visibility = View.GONE
+                }
+            }
         }
     }
 
@@ -1135,8 +1143,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
         headBinding.ivFm.setOnClickListener {
             val array = ArrayList<String>()
-            array.add("重选封面")
             array.add("编辑封面")
+            array.add("重选封面")
 //            array.add("删除封面")
             HomeBottomDialog(this, *array.toTypedArray())
                 .setOnClickItemListener(object :

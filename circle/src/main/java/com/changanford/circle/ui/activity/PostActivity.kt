@@ -52,6 +52,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.CREATE_LOCATION
 import com.changanford.common.util.image.ImageCompress
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -325,7 +326,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             selectList.addAll(it as Collection<LocalMedia>)
             postPicAdapter.setList(selectList)
         })
-
+        LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
+            isunSave = false
+            selectList[0] = it as LocalMedia
+            postPicAdapter.setList(selectList)
+        })
 //        viewModel.keywords.observe(this, Observer {
 //            buttomlabelAdapter.addData(it)
 //            if (locaPostEntity != null) {
@@ -771,11 +776,63 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                     })
             } else {
-                val bundle = Bundle()
-                bundle.putParcelableArrayList("picList", selectList)
-                bundle.putInt("position", position)
-                bundle.putInt("showEditType", -1)
-                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                if(position==0){
+                    val array = java.util.ArrayList<String>()
+                    array.add("编辑封面")
+                    array.add("重选封面")
+                    HomeBottomDialog(this, *array.toTypedArray())
+                        .setOnClickItemListener(object :
+                            HomeBottomDialog.OnClickItemListener {
+                            override fun onClickItem(position: Int, str: String) {
+                                isunSave = true
+                                when (str) {
+                                    "重选封面" -> {
+                                        PictureUtil.openGalleryOnePic(this@PostActivity,
+                                            object : OnResultCallbackListener<LocalMedia> {
+                                                override fun onResult(result: MutableList<LocalMedia>?) {
+                                                    val localMedia = result?.get(0)
+                                                    localMedia?.let {
+                                                        val bundle = Bundle()
+                                                        bundle.putParcelableArrayList(
+                                                            "picList",
+                                                            arrayListOf(localMedia)
+                                                        )
+                                                        bundle.putInt("position", 0)
+                                                        bundle.putInt("showEditType", -1)
+                                                        bundle.putBoolean("longPostFM", true)
+                                                        startARouter(
+                                                            ARouterCirclePath.PictureeditlActivity,
+                                                            bundle
+                                                        )
+                                                    }
+                                                }
+
+                                                override fun onCancel() {
+                                                    isunSave = false
+                                                }
+
+                                            })
+
+                                    }
+
+                                    "编辑封面" -> {
+                                        val bundle = Bundle()
+                                        bundle.putParcelableArrayList("picList", arrayListOf(selectList[0]))
+                                        bundle.putInt("position", 0)
+                                        bundle.putInt("showEditType", -1)
+                                        bundle.putBoolean("longPostFM", true)
+                                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                                    }
+                                }
+                            }
+                        }).show()
+                }else{
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("picList", selectList)
+                    bundle.putInt("position", position)
+                    bundle.putInt("showEditType", -1)
+                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                }
             }
         }
         postPicAdapter.setOnItemChildClickListener { adapter, view, position ->
