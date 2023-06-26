@@ -543,6 +543,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun showCircle(circleName: String) {
+        if (circleName == "发布到广场") {
+            return
+        }
         binding.icAttribute.run {
             tvCircle.visibility = View.GONE
             llCircle.visibility = View.VISIBLE

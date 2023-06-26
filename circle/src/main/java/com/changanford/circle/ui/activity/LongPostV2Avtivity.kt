@@ -22,6 +22,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -67,8 +68,9 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
 import com.yw.li_model.adapter.EmojiAdapter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
@@ -183,6 +185,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun showCircle(circleName: String) {
+        if (circleName == "发布到广场") {
+            return
+        }
         headBinding.icAttribute.run {
             tvCircle.visibility = View.GONE
             llCircle.visibility = View.VISIBLE
@@ -321,7 +326,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
         postViewType.observe(this) {
-            setViewType()
+            hideKeyboard(binding.longpostrec.windowToken)
+            lifecycleScope.launch {
+                delay(200)
+                setViewType()
+            }
         }
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
@@ -1469,7 +1478,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                             viewModel.downGlideImgs(templist)
                         }
                         //监听下载的图片
-                        viewModel._downloadLocalMedias.observe(this, {
+                        viewModel._downloadLocalMedias.observe(this) {
                             //选择的图片重置
                             //封面逻辑
                             FMMeadia = it[0]
@@ -1495,7 +1504,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                     longpostadapter.notifyDataSetChanged()
                                 }
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -1676,19 +1685,24 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 binding.bottom.root.visibility = View.VISIBLE
                 headBinding.etBiaoti.visibility = View.VISIBLE
                 headBinding.tvline.visibility = View.VISIBLE
-                val layoutManager = object : LinearLayoutManager(this) {
-                    override fun canScrollVertically(): Boolean {
-                        return true
+                binding.longpostrec.isNestedScrollingEnabled = true
+                binding.longpostrec.isVerticalScrollBarEnabled = true
+                val linearLayoutManager: LinearLayoutManager =
+                    object : LinearLayoutManager(this) {
+                        override fun canScrollVertically(): Boolean {
+                            return true
+                        }
                     }
-                }
-                binding.longpostrec.layoutManager = layoutManager
+                binding.longpostrec.layoutManager = linearLayoutManager
                 longpostadapter.needGone = false
                 longpostadapter.notifyDataSetChanged()
                 checkViewOneTypeContent()
             }
 
             1 -> {
-                hideKeyboard(this.window.decorView.windowToken)
+                longpostadapter.needGone = true
+                longpostadapter.notifyDataSetChanged()
+                binding.longpostrec.scrollToPosition(0)
                 binding.bottom.emojirec.visibility = View.GONE
                 headBinding.tFl.visibility = View.VISIBLE
                 headBinding.tvFmTips2.visibility = View.VISIBLE
@@ -1696,15 +1710,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 binding.bottom.root.visibility = View.GONE
                 headBinding.etBiaoti.visibility = View.GONE
                 headBinding.tvline.visibility = View.GONE
-                binding.longpostrec.scrollToPosition(0)
-                val layoutManager = object : LinearLayoutManager(this) {
-                    override fun canScrollVertically(): Boolean {
-                        return false
+                binding.longpostrec.isNestedScrollingEnabled = false
+                binding.longpostrec.isVerticalScrollBarEnabled = false
+                val linearLayoutManager: LinearLayoutManager =
+                    object : LinearLayoutManager(this) {
+                        override fun canScrollVertically(): Boolean {
+                            return false
+                        }
                     }
-                }
-                binding.longpostrec.layoutManager = layoutManager
-                longpostadapter.needGone = true
-                longpostadapter.notifyDataSetChanged()
+                binding.longpostrec.layoutManager = linearLayoutManager
                 checkViewTwoTypeContent()
             }
 

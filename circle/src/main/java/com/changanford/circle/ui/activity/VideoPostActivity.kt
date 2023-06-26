@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
@@ -10,7 +11,6 @@ import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -43,6 +43,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -61,15 +62,13 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
-import com.xiaomi.push.it
 import com.yalantis.ucrop.UCrop
 import com.yw.li_model.adapter.EmojiAdapter
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -588,6 +587,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     }
 
     private fun showCircle(circleName: String) {
+        if (circleName == "发布到广场") {
+            return
+        }
         binding.icAttribute.run {
             tvCircle.visibility = View.GONE
             llCircle.visibility = View.VISIBLE
@@ -1164,6 +1166,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             })
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun upvideo(stsBean: STSBean, dialog: LoadDialog) {
         AliYunOssUploadOrDownFileConfig.getInstance(this).initOss(
             stsBean.endpoint, stsBean.accessKeyId,
@@ -1193,6 +1196,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         params["type"] = 3
         if (!isHasVideoPath) {
             // TODO 重选视频后， 把isHasVideoPath  置于 FALSE
+            val mExtractVideoInfoUtil = ExtractVideoInfoUtil(ytPath)
+            val videoTime = mExtractVideoInfoUtil.videoLength.toLong()
+            params["videoTime"] = TimeUtils().getVideoTime(videoTime)
             params["videoUrl"] = path
         }
         AliYunOssUploadOrDownFileConfig.getInstance(this)
