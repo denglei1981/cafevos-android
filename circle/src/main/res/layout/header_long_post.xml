@@ -86,6 +86,7 @@
             android:maxLength="30"
             android:minEms="6"
             android:paddingLeft="20dp"
+            android:textColorHint="@color/color_cc"
             android:paddingRight="20dp"
             android:textColor="@color/text_color"
             android:textSize="20sp"
@@ -114,6 +115,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/color_F21C44"
             android:textSize="12sp"
+            android:visibility="gone"
             android:text="标题字数不得少于2个字"
             android:layout_height="wrap_content"/>
 

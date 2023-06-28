@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.media.ExifInterface
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Spannable
@@ -17,6 +16,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
@@ -36,13 +36,12 @@ import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.LongPostV2Adapter
 import com.changanford.circle.bean.*
+import com.changanford.circle.databinding.HeaderEmojiBinding
 import com.changanford.circle.databinding.HeaderLongPostBinding
 import com.changanford.circle.databinding.LongpostactivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
-import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
@@ -68,13 +67,18 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.yw.li_model.adapter.EmojiAdapter
+import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.common.basic.BaseActivity
+import com.luck.picture.lib.thread.PictureThreadUtils.runOnUiThread
+import com.xiaomi.push.it
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -82,6 +86,7 @@ import kotlin.concurrent.schedule
 class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>() {
 
     private lateinit var headBinding: HeaderLongPostBinding
+
     private val headview by lazy {
         layoutInflater.inflate(R.layout.header_long_post, null)
     }
@@ -136,7 +141,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         ButtomlabelAdapter()
     }
     private val emojiAdapter by lazy {
-        EmojiAdapter(this)
+        EmojiAdapter()
     }
 
     companion object {
@@ -200,6 +205,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
             binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.clEmojiHead.visibility = View.GONE
 
         }
         viewModel.isEnablePost.observe(this) {
@@ -217,6 +223,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         })
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
             checkViewOneTypeContent()
+        }
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_JIAO).observe(this) {
+            headBinding.etBiaoti.text?.let { editable ->
+                if (editable.length < 2) {
+                    headBinding.tvNoTips.visibility = View.VISIBLE
+                }
+            }
         }
         viewModel.postsuccess.observe(this, Observer {
             if (dialog.isShowing) {
@@ -533,12 +546,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         headBinding.etBiaoti.addTextChangedListener {
             checkViewOneTypeContent()
             it?.let { editable ->
-                if (editable.length < 2) {
-                    headBinding.tvNoTips.visibility = View.VISIBLE
-                } else {
+                if (editable.length >= 2) {
                     headBinding.tvNoTips.visibility = View.GONE
                 }
             }
+        }
+        binding.bottom.ivDown.setOnClickListener {
+            binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.clEmojiHead.visibility = View.GONE
         }
     }
 
@@ -675,18 +690,16 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 )
             }
         }
-        emojiAdapter.setItems(emojiList)
+        emojiAdapter.setList(emojiList)
         headBinding.etBiaoti.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 editText = headBinding.etBiaoti
             }
         }
-        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                val emoji = emojiAdapter.getItem(position)
-                setEditContent(emoji)
-            }
-        })
+        emojiAdapter.setOnItemClickListener { adapter, view, position ->
+            val emoji = emojiAdapter.getItem(position)
+            setEditContent(emoji)
+        }
     }
 
     private fun setEditContent(emoJi: String?) {
@@ -752,10 +765,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             Timer().schedule(80) {
                 binding.bottom.emojirec.post {
                     if (binding.bottom.emojirec.isShown) {
-
                         binding.bottom.emojirec.visibility = View.GONE
+                        binding.bottom.clEmojiHead.visibility = View.GONE
                     } else {
                         binding.bottom.emojirec.visibility = View.VISIBLE
+                        binding.bottom.clEmojiHead.visibility = View.VISIBLE
                     }
                 }
             }
@@ -887,9 +901,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
             val meadiaList: ArrayList<LocalMedia> = arrayListOf()
+            val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
             PictureUtil.openGallery(
-                this, meadiaList,
-                object : OnResultCallbackListener<LocalMedia> {
+                this, meadiaList, maxNum = 9 - mSelectPics.size,
+                onResultCallbackListener = object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
                         if (result != null) {
                             meadiaList.clear()
@@ -1010,13 +1025,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 // 开始时，item背景色变化，demo这里使用了一个动画渐变，使得自然
                 val startColor = Color.WHITE
                 val endColor = Color.rgb(245, 245, 245)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val v = ValueAnimator.ofArgb(startColor, endColor)
-                    v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
-                    v.duration = 300
-                    v.start()
-                }
+                val v = ValueAnimator.ofArgb(startColor, endColor)
+                v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
+                v.duration = 300
+                v.start()
                 holder.itemView.alpha = 0.7f
+//                "postionStar====${pos}".logE()
             }
 
             override fun onItemDragMoving(
@@ -1034,14 +1048,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 // 结束时，item背景色变化，demo这里使用了一个动画渐变，使得自然
                 val startColor = Color.rgb(245, 245, 245)
                 val endColor = Color.WHITE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    val v = ValueAnimator.ofArgb(startColor, endColor)
-                    v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
-                    v.duration = 300
-                    v.start()
-                }
+                val v = ValueAnimator.ofArgb(startColor, endColor)
+                v.addUpdateListener { animation -> holder.itemView.setBackgroundColor(animation.animatedValue as Int) }
+                v.duration = 300
+                v.start()
                 holder.itemView.alpha = 1f
-                longpostadapter.notifyDataSetChanged()
+                resetAdapter()
+//                "postionEnd====${pos}".logE()
 //                val longBean = longpostadapter.getItem(pos)
 //                val prePosition = pos - 1
 //                if (prePosition > 0) {
@@ -1067,6 +1080,61 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 //                }
             }
         })
+    }
+
+    private fun resetAdapter() {
+        val data = longpostadapter.data
+        val copyOnWriteArrayList = CopyOnWriteArrayList<LongPostBean>()
+        copyOnWriteArrayList.addAll(data)
+        lifecycleScope.launch {
+            addEdite(copyOnWriteArrayList)
+            delay(300)
+            removeEdite(copyOnWriteArrayList)
+            addEdite(copyOnWriteArrayList)
+            longpostadapter.data = copyOnWriteArrayList
+            longpostadapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun addEdite(data: CopyOnWriteArrayList<LongPostBean>) {
+        for (i in 0 until data.size - 1) {
+            val item = data[i]
+            if (item.localMedias != null) {
+                val nextItem = data[i + 1]
+                if (nextItem.localMedias != null) {
+                    val newTxt = LongPostBean("")
+                    data.add(i + 1, newTxt)
+                }
+            }
+        }
+        if (data[data.size - 1].localMedias != null) {
+            val newTxt = LongPostBean("")
+            data.add(data.size, newTxt)
+        }
+    }
+
+    private fun removeEdite(copyOnWriteArrayList: CopyOnWriteArrayList<LongPostBean>) {
+        for (i in copyOnWriteArrayList.size - 1 downTo 0) {
+            val item = copyOnWriteArrayList[i]
+            if (item.localMedias == null) {
+                val preIndex = i - 1
+                if (preIndex >= 0) {
+                    val preItem = copyOnWriteArrayList[preIndex]
+                    if (preItem.localMedias == null) { // 是文本
+                        val content =
+                            if (preItem.content?.trim()
+                                    ?.isNotEmpty() == true && item.content?.trim()
+                                    ?.isNotEmpty() == true
+                            ) preItem.content + "\n" else preItem.content
+                        val newContent =
+                            content.plus(item.content)
+                        item.content = newContent// 新文本内容
+                        copyOnWriteArrayList.remove(preItem) // 移除前一个文本
+                    }
+                }
+
+            }
+        }
     }
 
     private fun toQuanzi() {
@@ -1109,7 +1177,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun initandonclickhead() {
-        val bthinttxt = "标题 (2-30字之间)"
+        val bthinttxt = "标题 (2-30字)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -1647,11 +1715,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun checkViewOneTypeContent() {
+        if (postViewType.value==1){return}
         val titleContent = headBinding.etBiaoti.text
         val titleHasContent = titleContent?.isNotEmpty() == true && titleContent.length > 1
         val content =
             longpostadapter.data.filter { it.content?.isNotEmpty() == true || it.localMedias != null }
-        binding.title.barTvOther.text = "下一步"
         if (titleHasContent && content.isNotEmpty()) {
             binding.title.barTvOther.isEnabled = true
             binding.title.barTvOther.background =
@@ -1664,7 +1732,6 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun checkViewTwoTypeContent() {
-        binding.title.barTvOther.text = "发布"
         if (FMMeadia == null) {
             binding.title.barTvOther.isEnabled = false
             binding.title.barTvOther.background =
@@ -1679,6 +1746,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun setViewType() {
         when (postViewType.value) {
             0 -> {
+                binding.title.barTvOther.text = "下一步"
                 headBinding.tFl.visibility = View.GONE
                 headBinding.tvFmTips2.visibility = View.GONE
                 headBinding.icAttribute.root.visibility = View.GONE
@@ -1700,10 +1768,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
 
             1 -> {
+                binding.title.barTvOther.text = "发布"
                 longpostadapter.needGone = true
                 longpostadapter.notifyDataSetChanged()
                 binding.longpostrec.scrollToPosition(0)
                 binding.bottom.emojirec.visibility = View.GONE
+                binding.bottom.clEmojiHead.visibility = View.GONE
                 headBinding.tFl.visibility = View.VISIBLE
                 headBinding.tvFmTips2.visibility = View.VISIBLE
                 headBinding.icAttribute.root.visibility = View.VISIBLE

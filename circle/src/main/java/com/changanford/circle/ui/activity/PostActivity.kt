@@ -11,9 +11,10 @@ import android.text.*
 import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.View
-import androidx.compose.ui.res.booleanResource
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +31,6 @@ import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.PostActivityBinding
-import com.changanford.circle.utils.GsonUtils
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
@@ -45,14 +45,11 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
-import com.changanford.common.sharelib.util.JsonUtil
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.bus.LiveDataBusKey.CREATE_LOCATION
 import com.changanford.common.util.image.ImageCompress
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -61,13 +58,12 @@ import com.changanford.common.widget.HomeBottomDialog
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
-import com.gyf.immersionbar.OnKeyboardListener
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
-import com.yw.li_model.adapter.EmojiAdapter
-import io.reactivex.exceptions.Exceptions
+import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.circle.databinding.HeaderEmojiBinding
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
@@ -75,7 +71,6 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
-import kotlin.concurrent.thread
 
 /**
  * 发图片帖子
@@ -116,7 +111,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         ButtomlabelAdapter()
     }
     private val emojiAdapter by lazy {
-        EmojiAdapter(this)
+        EmojiAdapter()
     }
     private var locaPostEntity: PostEntity? = null
     private var isunSave: Boolean = false
@@ -138,6 +133,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 if (isPopup) {
                     binding.bottom.llContent.visibility = View.VISIBLE
                     binding.bottom.emojirec.visibility = View.GONE
+                    binding.bottom.clEmojiHead.visibility = View.GONE
                 } else {
                     binding.bottom.llContent.visibility = View.GONE
                 }
@@ -149,9 +145,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+        binding.title.barTvOther.background =
+            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         postPicAdapter = PostPicAdapter(type)
-        var bthinttxt = "标题 (2-30字之间)"
+        var bthinttxt = "标题 (2-30字)"
         var spannableString = SpannableString(bthinttxt)
         var intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -174,9 +171,38 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
         binding.etBiaoti.requestFocus()
         binding.bottom.llContent.visibility = View.GONE
+        initListener()
 
     }
 
+    private fun checkNext() {
+        val hasTitle = binding.etBiaoti.text.length >= 2
+        val hasPath = postPicAdapter.data.size != 0
+        if (hasTitle && hasPath) {
+            binding.title.barTvOther.isEnabled = true
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+        } else {
+            binding.title.barTvOther.isEnabled = false
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        }
+    }
+
+    private fun initListener() {
+        binding.etBiaoti.addTextChangedListener {
+            checkNext()
+            it?.let { editable ->
+                if (editable.length >= 2) {
+                    binding.tvNoTips.visibility = View.GONE
+                }
+            }
+        }
+        binding.bottom.ivDown.setOnClickListener {
+            binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.clEmojiHead.visibility = View.GONE
+        }
+    }
 
     override fun observe() {
         super.observe()
@@ -184,6 +210,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 //            Log.d("ImmersionBar", keyboardHeight.toString())
 //            binding.bottom.emojirec.visibility = View.GONE
 //        }
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
+            checkNext()
+        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -568,7 +597,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         }
 
-
+        binding.etContent.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.etBiaoti.text?.let { editable ->
+                    if (editable.length < 2) {
+                        binding.tvNoTips.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
         binding.title.barImgBack.setOnClickListener {
             back()
         }
@@ -579,10 +616,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             Timer().schedule(80) {
                 binding.bottom.emojirec.post {
                     if (binding.bottom.emojirec.isShown) {
-
                         binding.bottom.emojirec.visibility = View.GONE
+                        binding.bottom.clEmojiHead.visibility = View.GONE
                     } else {
                         binding.bottom.emojirec.visibility = View.VISIBLE
+                        binding.bottom.clEmojiHead.visibility = View.VISIBLE
                     }
                 }
             }
@@ -779,7 +817,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                     })
             } else {
-                if(position==0){
+                if (position == 0) {
                     val array = java.util.ArrayList<String>()
                     array.add("编辑封面")
                     array.add("重选封面")
@@ -820,7 +858,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                                     "编辑封面" -> {
                                         val bundle = Bundle()
-                                        bundle.putParcelableArrayList("picList", arrayListOf(selectList[0]))
+                                        bundle.putParcelableArrayList(
+                                            "picList",
+                                            arrayListOf(selectList[0])
+                                        )
                                         bundle.putInt("position", 0)
                                         bundle.putInt("showEditType", -1)
                                         bundle.putBoolean("longPostFM", true)
@@ -829,7 +870,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                                 }
                             }
                         }).show()
-                }else{
+                } else {
                     val bundle = Bundle()
                     bundle.putParcelableArrayList("picList", selectList)
                     bundle.putInt("position", position)
@@ -843,6 +884,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
                 postPicAdapter.notifyDataSetChanged()
+                checkNext()
 //                binding.mscr.smoothScrollTo(0, 0);
             }
         }
@@ -943,26 +985,24 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 )
             }
         }
-        emojiAdapter.setItems(emojiList)
-        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                val emoji = emojiAdapter.getItem(position)
+        emojiAdapter.setList(emojiList)
+        emojiAdapter.setOnItemClickListener { adapter, view, position ->
+            val emoji = emojiAdapter.getItem(position)
 
-                val index = if (binding.etBiaoti.hasFocus()) {
-                    binding.etBiaoti.selectionStart
-                } else {
-                    binding.etContent.selectionStart
-                }
-
-                val editContent = if (binding.etBiaoti.hasFocus()) {
-                    binding.etBiaoti.text
-                } else {
-                    binding.etContent.text
-                }
-                editContent?.insert(index, emoji)
+            val index = if (binding.etBiaoti.hasFocus()) {
+                binding.etBiaoti.selectionStart
+            } else {
+                binding.etContent.selectionStart
             }
 
-        })
+            val editContent = if (binding.etBiaoti.hasFocus()) {
+                binding.etBiaoti.text
+            } else {
+                binding.etContent.text
+            }
+            editContent?.insert(index, emoji)
+
+        }
     }
 
     fun openLocationService() {

@@ -115,7 +115,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
-        binding.title.barTvTitle.text = "视频最长15秒"
+        binding.title.barTvTitle.text = "视频最长60秒"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
         binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)

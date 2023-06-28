@@ -311,5 +311,6 @@ object LiveDataBusKey {
     const val SHOW_ERROR_ADDRESS = "showErrorAddress"
     const val REFUND_NOT_SHOP_SUCCESS = "refundNotShoppSuccess"
     const val LONG_POST_CONTENT = "longPostContent"
+    const val LONG_POST_JIAO = "longPostJIAO"
 }
 

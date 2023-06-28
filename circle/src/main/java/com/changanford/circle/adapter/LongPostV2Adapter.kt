@@ -3,30 +3,22 @@ package com.changanford.circle.adapter
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginBottom
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.BaseDraggableModule
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.LongPostBean
-import com.changanford.circle.databinding.ItemLongPostEtBinding
 import com.changanford.circle.databinding.ItemLongPostIvBinding
 import com.changanford.common.util.PictureUtil
-import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.toast
-import java.util.logging.Handler
 
 
 class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
@@ -51,6 +43,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         } else {
             showImage(binding, item)
         }
+        binding.executePendingBindings()
     }
 
     override fun addData(data: LongPostBean) {
@@ -63,7 +56,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
     }
 
-    fun showImage(binding: ItemLongPostIvBinding, item: LongPostBean) {
+  private  fun showImage(binding: ItemLongPostIvBinding, item: LongPostBean) {
         GlideUtils.loadRoundFilePath(
             PictureUtil.getFinallyPath(item.localMedias!!),
             binding.ivPic
@@ -72,24 +65,40 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         binding.gPic.visibility = View.VISIBLE
 
         android.os.Handler().post {
-            val itemPosition = getItemPosition(item)
-            val preIndex = itemPosition - 1
-            if (preIndex > 0) {
-                val preItem = getItem(preIndex)
-                if (preItem.localMedias != null) { // 是图
-                    val newTxt = LongPostBean("")
-                    addData(itemPosition, newTxt)
-                }
-            }
-            if (data.size == itemPosition + 1) {//把图拖动到最后一个了,加一个文本
-                addData(LongPostBean(""))
-            }
+//            val itemPosition = getItemPosition(item)
+//            var nextLongPostBean: LongPostBean? = null
+//            if ((itemPosition + 1) < itemCount) {
+//                try {
+//                    nextLongPostBean = getItem(itemPosition + 1)
+//                    if (nextLongPostBean.localMedias != null) {
+//                        val newTxt = LongPostBean("")
+//                        addData(itemPosition + 1, newTxt)
+//                    }
+//                } catch (error: IndexOutOfBoundsException) {
+////                    showImage(binding, item)
+//                }
+//            }
+//            else {
+//                val newTxt = LongPostBean("")
+//                addData(itemPosition + 1, newTxt)
+//            }
+//            val preIndex = itemPosition - 1
+//            if (preIndex > 0) {
+//                val preItem = getItem(preIndex)
+//                if (preItem.localMedias != null) { // 是图
+//                    val newTxt = LongPostBean("")
+//                    addData(itemPosition, newTxt)
+//                }
+//            }
+//            if (data.size == itemPosition + 1) {//把图拖动到最后一个了,加一个文本
+////                addData(LongPostBean(""))
+//            }
 
         }
 
     }
 
-    fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
+  private  fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
         binding.tvTex.visibility = View.VISIBLE
         binding.gPic.visibility = View.GONE
         binding.tvTex.isEnabled = true
@@ -100,7 +109,6 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         if (item.content?.isNotEmpty() == true || item.content != "/null/") {
             binding.tvTex.hint = item.hintStr
             binding.tvTex.setText(item.content)
-
         } else {
             binding.tvTex.setText("")
         }
@@ -126,24 +134,29 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
             }
 
         }
+        binding.tvTex.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                LiveDataBus.get().with(LiveDataBusKey.LONG_POST_JIAO).postValue("")
+            }
+        }
         binding.tvTex.addTextChangedListener(watcher)
         binding.tvTex.tag = watcher
         // 获取他前面是否为文本
-
-        android.os.Handler().post {
-            val itemPosition = getItemPosition(item)
-            val preIndex = itemPosition - 1
-            if (preIndex > 0) {
-                val preItem = getItem(preIndex)
-                if (preItem.localMedias == null) { // 是文本
-                    val content = preItem.content
-                    val newContent = content.plus(item.content)
-                    item.content = newContent// 新文本内容
-                    binding.tvTex.setText(item.content)
-                    remove(preItem) // 移除前一个文本
-                }
-            }
-        }
+//        binding.tvTex.post {
+//            val itemPosition = getItemPosition(item)
+//            val preIndex = itemPosition - 1
+//            if (preIndex >= 0) {
+//                val preItem = getItem(preIndex)
+//                if (preItem.localMedias == null) { // 是文本
+//                    val content =
+//                        if (preItem.content?.isNotEmpty() == true) preItem.content + "\n" else ""
+//                    val newContent = if (item.content?.isNotEmpty() == true)content.plus(item.content) else content
+//                    item.content = newContent// 新文本内容
+        binding.tvTex.setText(item.content)
+//                    remove(preItem) // 移除前一个文本
+//                }
+//            }
+//        }
     }
 
     override fun addDraggableModule(baseQuickAdapter: BaseQuickAdapter<*, *>): BaseDraggableModule {

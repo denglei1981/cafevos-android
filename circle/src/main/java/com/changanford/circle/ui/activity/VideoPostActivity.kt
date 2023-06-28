@@ -12,6 +12,9 @@ import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,11 +66,12 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
-import com.yw.li_model.adapter.EmojiAdapter
+import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.circle.databinding.HeaderEmojiBinding
+import com.jakewharton.rxbinding4.view.systemUiVisibilityChanges
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -85,6 +89,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var address: String = ""
     private var selectList = ArrayList<LocalMedia>()
     private var tempList = ArrayList<LocalMedia>() //临时的
+
     private var nomalwith = 500;
     private var nomalhight = 500;
     private lateinit var plateBean: PlateBean
@@ -122,7 +127,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         ButtomlabelAdapter()
     }
     private val emojiAdapter by lazy {
-        EmojiAdapter(this)
+        EmojiAdapter()
     }
     private var locaPostEntity: PostEntity? = null
     override fun initView() {
@@ -131,6 +136,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 if (isPopup) {
                     binding.bottom.llContent.visibility = View.VISIBLE
                     binding.bottom.emojirec.visibility = View.GONE
+                    binding.bottom.clEmojiHead.visibility=View.GONE
                 } else {
                     binding.bottom.llContent.visibility = View.GONE
                 }
@@ -145,11 +151,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+        binding.title.barTvOther.background = ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        val bthinttxt = "标题 (2-30字之间)"
+        val bthinttxt = "标题 (2-30字)"
         val spannableString = SpannableString(bthinttxt)
         val intstart = bthinttxt.indexOf('(')
         val intend = bthinttxt.length
@@ -176,6 +182,44 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             showMoreTag()
         }
         binding.bottom.llContent.visibility = View.GONE
+        initListener()
+    }
+
+    private fun checkNext(){
+        val hasTitle = binding.etBiaoti.text!!.length >= 2
+        if (hasTitle ) {
+            binding.title.barTvOther.isEnabled = true
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+        } else {
+            binding.title.barTvOther.isEnabled = false
+            binding.title.barTvOther.background =
+                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        }
+    }
+
+    private fun initListener(){
+        binding.etBiaoti.addTextChangedListener {
+            checkNext()
+            it?.let { editable ->
+                if (editable.length >= 2) {
+                    binding.tvNoTips.visibility = View.GONE
+                }
+            }
+        }
+        binding.bottom.ivDown.setOnClickListener {
+            binding.bottom.emojirec.visibility = View.GONE
+            binding.bottom.clEmojiHead.visibility=View.GONE
+        }
+        binding.etContent.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.etBiaoti.text?.let { editable ->
+                    if (editable.length < 2) {
+                        binding.tvNoTips.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
     }
 
     override fun observe() {
@@ -683,26 +727,24 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
 
         }
-        emojiAdapter.setItems(emojiList)
-        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                val emoji = emojiAdapter.getItem(position)
+        emojiAdapter.setList(emojiList)
+        emojiAdapter.setOnItemClickListener { adapter, view, position ->
+            val emoji = emojiAdapter.getItem(position)
 
-                val index = if (binding.etBiaoti.hasFocus()) {
-                    binding.etBiaoti.selectionStart
-                } else {
-                    binding.etContent.selectionStart
-                }
-
-                val editContent = if (binding.etBiaoti.hasFocus()) {
-                    binding.etBiaoti.text
-                } else {
-                    binding.etContent.text
-                }
-                editContent?.insert(index, emoji)
+            val index = if (binding.etBiaoti.hasFocus()) {
+                binding.etBiaoti.selectionStart
+            } else {
+                binding.etContent.selectionStart
             }
 
-        })
+            val editContent = if (binding.etBiaoti.hasFocus()) {
+                binding.etBiaoti.text
+            } else {
+                binding.etContent.text
+            }
+            editContent?.insert(index, emoji)
+
+        }
     }
 
     private fun getEmojiStringByUnicode(unicode: Int): String {
@@ -749,10 +791,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             Timer().schedule(80) {
                 binding.bottom.emojirec.post {
                     if (binding.bottom.emojirec.isShown) {
-
                         binding.bottom.emojirec.visibility = View.GONE
+                        binding.bottom.clEmojiHead.visibility=View.GONE
                     } else {
                         binding.bottom.emojirec.visibility = View.VISIBLE
+                        binding.bottom.clEmojiHead.visibility=View.VISIBLE
                     }
                 }
             }

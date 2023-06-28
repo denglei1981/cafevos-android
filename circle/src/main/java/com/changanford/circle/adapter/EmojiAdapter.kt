@@ -1,15 +1,16 @@
-package com.yw.li_model.adapter
+package com.changanford.circle.adapter
 
-import android.content.Context
-import androidx.databinding.ViewDataBinding
+import androidx.databinding.DataBindingUtil
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemChatEmojiBinding
-import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 
-class EmojiAdapter(context: Context) :
-    BaseAdapterOneLayout<String>(context, R.layout.item_chat_emoji) {
-    override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int) {
-        val binding = vdBinding as ItemChatEmojiBinding
+class EmojiAdapter :
+    BaseQuickAdapter<String, BaseViewHolder>( R.layout.item_chat_emoji) {
+
+    override fun convert(holder: BaseViewHolder, item: String) {
+        val binding :ItemChatEmojiBinding= DataBindingUtil.bind(holder.itemView)!!
         binding.tvContent.text = item
         binding.bean = item
     }

@@ -13,13 +13,11 @@ import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.baidu.mapapi.search.core.PoiInfo
@@ -42,7 +40,6 @@ import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -63,7 +60,7 @@ import com.google.gson.Gson
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.yw.li_model.adapter.EmojiAdapter
+import com.changanford.circle.adapter.EmojiAdapter
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
@@ -125,7 +122,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
         ButtomlabelAdapter()
     }
     private val emojiAdapter by lazy {
-        EmojiAdapter(this)
+        EmojiAdapter()
     }
 
     companion object {
@@ -548,7 +545,7 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
                 )
             }
         }
-        emojiAdapter.setItems(emojiList)
+        emojiAdapter.setList(emojiList)
         headBinding.etBiaoti.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 editText = headBinding.etBiaoti
@@ -561,12 +558,10 @@ class LongPostAvtivity : BaseActivity<LongpostactivityBinding, PostViewModule>()
 
             }
         }
-        emojiAdapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                val emoji = emojiAdapter.getItem(position)
-                setEditContent(emoji)
-            }
-        })
+        emojiAdapter.setOnItemClickListener { adapter, view, position ->
+            val emoji = emojiAdapter.getItem(position)
+            setEditContent(emoji)
+        }
 
 //        binding.tvLocation.setOnClickListener {
 //            startARouter(ARouterCirclePath.ChooseLocationActivity)

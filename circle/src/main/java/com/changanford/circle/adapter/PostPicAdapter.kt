@@ -6,6 +6,8 @@ import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.entity.LocalMedia
 
@@ -55,5 +57,10 @@ class PostPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseVi
                 R.mipmap.ic_def_square_img
             )
         }
+    }
+
+    override fun setList(list: Collection<LocalMedia>?) {
+        super.setList(list)
+        LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
     }
 }
