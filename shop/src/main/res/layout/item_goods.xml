@@ -55,12 +55,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_second_name"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/style_txt_ellipsize"
             tools:text="抽绳双肩包"
-            android:text="@{model.secondName}"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_13" />
 <!--        <include-->

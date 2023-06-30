@@ -220,6 +220,7 @@ object MConstant {
     var isCarOwner = 0
 
     var deviceWidth = 0
+    var deviceHeight = 0
 
     //个人隐私协议code
     const val agreementPrivacy = "user_agreement_privacy"

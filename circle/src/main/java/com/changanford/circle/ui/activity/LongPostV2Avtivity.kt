@@ -555,6 +555,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             binding.bottom.emojirec.visibility = View.GONE
             binding.bottom.clEmojiHead.visibility = View.GONE
         }
+        binding.longpostrec.setOnTouchListener { v, event ->
+            if (event.y>headBinding.etBiaoti.y){
+                longpostadapter.currentTxtView?.let {
+                    it.requestFocus()
+                    HideKeyboardUtil.showSoftInput(it)
+                }
+            }
+            false
+        }
     }
 
     private fun initlocaData() {

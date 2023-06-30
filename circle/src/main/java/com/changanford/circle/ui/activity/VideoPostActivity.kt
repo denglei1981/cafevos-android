@@ -14,7 +14,6 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +34,6 @@ import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
@@ -67,8 +65,6 @@ import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
-import com.changanford.circle.databinding.HeaderEmojiBinding
-import com.jakewharton.rxbinding4.view.systemUiVisibilityChanges
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
@@ -136,7 +132,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 if (isPopup) {
                     binding.bottom.llContent.visibility = View.VISIBLE
                     binding.bottom.emojirec.visibility = View.GONE
-                    binding.bottom.clEmojiHead.visibility=View.GONE
+                    binding.bottom.clEmojiHead.visibility = View.GONE
                 } else {
                     binding.bottom.llContent.visibility = View.GONE
                 }
@@ -151,7 +147,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
         binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        binding.title.barTvOther.background =
+            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
@@ -185,9 +182,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         initListener()
     }
 
-    private fun checkNext(){
+    private fun checkNext() {
         val hasTitle = binding.etBiaoti.text!!.length >= 2
-        if (hasTitle ) {
+        if (hasTitle) {
             binding.title.barTvOther.isEnabled = true
             binding.title.barTvOther.background =
                 ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
@@ -198,7 +195,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
     }
 
-    private fun initListener(){
+    private fun initListener() {
         binding.etBiaoti.addTextChangedListener {
             checkNext()
             it?.let { editable ->
@@ -209,7 +206,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
         binding.bottom.ivDown.setOnClickListener {
             binding.bottom.emojirec.visibility = View.GONE
-            binding.bottom.clEmojiHead.visibility=View.GONE
+            binding.bottom.clEmojiHead.visibility = View.GONE
         }
         binding.etContent.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
@@ -300,7 +297,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             showAddress(address)
         }
-
+        LiveDataBus.get().with(LiveDataBusKey.OPEN_CHOOSE_POST).observe(this) {
+            openChooseVideo()
+        }
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean.plate.forEach {
@@ -586,32 +585,36 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             jsonStr2obj(locaPostEntity!!.localMeadle)
         } else {
-            PictureUtil.ChoseVideo(
-                this,
-                selectList,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        isHasVideoPath = false
-                        if (result != null) {
-                            SelectlocalMedia = result[0]
-                            startARouterForResult(
-                                this@VideoPostActivity,
-                                ARouterCirclePath.PictureEditAudioActivity,
-                                Bundle().apply {
-                                    putString("path", result[0].realPath)
-                                },
-                                PictureEditAudioActivity.EDIT_VIDEOPATH
-                            )
-                        }
-                    }
-
-                    override fun onCancel() {
-                        isunSave = false
-
-                    }
-
-                })
+            openChooseVideo()
         }
+    }
+
+    private fun openChooseVideo() {
+        PictureUtil.ChoseVideo(
+            this,
+            selectList,
+            object : OnResultCallbackListener<LocalMedia> {
+                override fun onResult(result: MutableList<LocalMedia>?) {
+                    isHasVideoPath = false
+                    if (result != null) {
+                        SelectlocalMedia = result[0]
+                        startARouterForResult(
+                            this@VideoPostActivity,
+                            ARouterCirclePath.PictureEditAudioActivity,
+                            Bundle().apply {
+                                putString("path", result[0].realPath)
+                            },
+                            PictureEditAudioActivity.EDIT_VIDEOPATH
+                        )
+                    }
+                }
+
+                override fun onCancel() {
+                    isunSave = false
+
+                }
+
+            })
     }
 
     private fun showTopic(name: String) {
@@ -792,10 +795,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 binding.bottom.emojirec.post {
                     if (binding.bottom.emojirec.isShown) {
                         binding.bottom.emojirec.visibility = View.GONE
-                        binding.bottom.clEmojiHead.visibility=View.GONE
+                        binding.bottom.clEmojiHead.visibility = View.GONE
                     } else {
                         binding.bottom.emojirec.visibility = View.VISIBLE
-                        binding.bottom.clEmojiHead.visibility=View.VISIBLE
+                        binding.bottom.clEmojiHead.visibility = View.VISIBLE
                     }
                 }
             }

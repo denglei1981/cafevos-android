@@ -312,5 +312,6 @@ object LiveDataBusKey {
     const val REFUND_NOT_SHOP_SUCCESS = "refundNotShoppSuccess"
     const val LONG_POST_CONTENT = "longPostContent"
     const val LONG_POST_JIAO = "longPostJIAO"
+    const val OPEN_CHOOSE_POST = "openChoosePost"
 }
 

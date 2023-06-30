@@ -666,6 +666,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun getDeviceWidth() {
         runOnUiThread {
             MConstant.deviceWidth = DisplayUtil.getScreenWidth(this)
+            MConstant.deviceHeight = DisplayUtil.getScreenHeight(this)
         }
     }
 }

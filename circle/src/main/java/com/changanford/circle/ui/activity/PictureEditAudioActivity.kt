@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
 import android.util.Log
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -31,6 +32,8 @@ import com.changanford.common.util.FileSizeUtil
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.toIntDp
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.lansosdk.videoeditor.VideoEditor
 import com.luck.picture.lib.tools.ScreenUtils
@@ -151,6 +154,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
             oncut()
         }
         binding.title.barImgBack.setOnClickListener {
+            LiveDataBus.get().with(LiveDataBusKey.OPEN_CHOOSE_POST).postValue("")
             finish()
         }
         LiveDataBus.get().with(LiveDataBusKey.PICTURESEDITED).observe(this, Observer {
@@ -158,8 +162,12 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         })
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            binding.title.barImgBack.callOnClick()
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
     }
 
     fun oncut() {
@@ -471,6 +479,14 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.uVideoView.setOnPreparedListener { mp -> //得到视频宽高信息
             videoWidth = mp.videoWidth
             videoHeight = mp.videoHeight
+            if (videoHeight.toIntDp() > (MConstant.deviceHeight / 2).toIntDp()) {
+                val lp = FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.WRAP_CONTENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+                )
+                lp.setMargins(60.toIntPx(), 0, 60.toIntPx(), 0)
+                binding.uVideoView.layoutParams = lp
+            }
             //Log.e(TAG, " TANHQ===> videoWidth: " + videoWidth + ", videoHeight: " + videoHeight);
 
             //设置MediaPlayer的OnSeekComplete监听

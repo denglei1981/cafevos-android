@@ -37,6 +37,8 @@ class GoodsAdapter :
             }
 //            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
 //            inVip.model=item
+            tvSecondName.visibility=if (item.secondName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+            tvSecondName.text = item.secondName
             tvIntegral.visibility = View.VISIBLE
             item.getRMB(item.normalFb)
             setTagType(item, this)
