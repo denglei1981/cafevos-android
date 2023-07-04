@@ -529,6 +529,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
             showLocaPostCity()
         } else {
+            val postsId = intent?.getStringExtra("postsId")
+            if (postsId!=null){
+                return
+            }
             isunSave = true // 不要自动保存
             PictureUtil.openGallery(
                 this,
@@ -1336,7 +1340,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             })
 
             //赋值
-            viewModel.postDetailsBean.observe(this, {
+            viewModel.postDetailsBean.observe(this) {
                 it?.let { locaPostEntity ->
                     if (locaPostEntity != null) {//同草稿逻辑
                         locaPostEntity.imageList?.let { it1 -> viewModel.downGlideImgs(it1) }
@@ -1362,6 +1366,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         if (TextUtils.isEmpty(locaPostEntity.address)) {
                             params["address"] = ""
                         }
+                        params["addrName"] = locaPostEntity.addrName?: ""
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon
                         params["province"] = locaPostEntity!!.province
@@ -1374,19 +1379,39 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                                 ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
                             )
                         }
-                        if (locaPostEntity!!.topicName?.isNotEmpty() == true)
+                        if (locaPostEntity!!.topicName?.isNotEmpty() == true){
                             buttomTypeAdapter.setData(
                                 3,
                                 ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
                             )
-                        if (locaPostEntity!!.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                            4,
-                            ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
-                        )
+                            showTopic(locaPostEntity.topicName!!)
+                        }
 
+                        if (locaPostEntity!!.circleName?.isNotEmpty() == true){
+                            buttomTypeAdapter.setData(
+                                4,
+                                ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
+                            )
+                            showCircle(locaPostEntity.circleName!!)
+                        }
 
                         showLocaPostCity()
-
+                        locaPostEntity.let { lp ->
+                            var showCity = ""
+                            if (lp.city.isNotEmpty() && lp.addrName?.isNotEmpty() == true) {
+                                showCity = locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
+                            }
+                            if (showCity.isNotEmpty()) {
+                                showAddress(showCity)
+                            }
+                            if (lp.city.isEmpty()) {
+                                showCity = "定位"
+                            }
+                            buttomTypeAdapter.setData(
+                                0,
+                                ButtomTypeBean(showCity, 1, 4)
+                            )
+                        }
 
                         //选择的标签
                         if (locaPostEntity!!.keywords?.isNotEmpty() == true) {
@@ -1397,7 +1422,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         }
                     }
                 }
-            })
+            }
             viewModel.getPostById(it)
         }
     }

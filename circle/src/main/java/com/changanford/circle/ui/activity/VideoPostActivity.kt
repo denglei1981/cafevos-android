@@ -427,6 +427,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     if (TextUtils.isEmpty(locaPostEntity.address)) {
                         params["address"] = ""
                     }
+                    params["addrName"] = locaPostEntity.addrName?: ""
                     params["lat"] = locaPostEntity.lat
                     params["lon"] = locaPostEntity.lon
                     params["province"] = locaPostEntity.province
@@ -442,15 +443,37 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                             ButtomTypeBean(locaPostEntity.plateName, 1, 1)
                         )
                     }
-                    if (locaPostEntity.topicName?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                        3,
-                        ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
-                    )
-                    if (locaPostEntity.circleName?.isNotEmpty() == true) buttomTypeAdapter.setData(
-                        4,
-                        ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
-                    )
+                    if (locaPostEntity.topicName?.isNotEmpty() == true) {
+                        buttomTypeAdapter.setData(
+                            3,
+                            ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
+                        )
+                        showTopic(locaPostEntity.topicName)
+                    }
+                    if (locaPostEntity.circleName?.isNotEmpty() == true){
+                        buttomTypeAdapter.setData(
+                            4,
+                            ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
+                        )
+                        showCircle(locaPostEntity.circleName)
+                    }
                     showLocaPostCity()
+                    locaPostEntity.let { lp ->
+                        var showCity = ""
+                        if (lp.city.isNotEmpty() && lp.addrName?.isNotEmpty() == true) {
+                            showCity = locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
+                        }
+                        if (showCity.isNotEmpty()) {
+                            showAddress(showCity)
+                        }
+                        if (lp.city.isEmpty()) {
+                            showCity = "定位"
+                        }
+                        buttomTypeAdapter.setData(
+                            0,
+                            ButtomTypeBean(showCity, 1, 4)
+                        )
+                    }
 //                        jsonStr2obj(locaPostEntity!!.localMeadle)
                     //选择的标签
                     if (TextUtils.isEmpty(locaPostEntity.keywords)) {
@@ -585,6 +608,10 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
             jsonStr2obj(locaPostEntity!!.localMeadle)
         } else {
+            val postsId = intent?.getStringExtra("postsId")
+            if (postsId!=null){
+                return
+            }
             openChooseVideo()
         }
     }

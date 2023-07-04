@@ -556,11 +556,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             binding.bottom.clEmojiHead.visibility = View.GONE
         }
         binding.longpostrec.setOnTouchListener { v, event ->
-            if (event.y>headBinding.etBiaoti.y){
+            if (event.y > headBinding.etBiaoti.y) {
                 val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
-                if (!mSelectPics.isNullOrEmpty()&&mSelectPics.size>2){
+                if (!mSelectPics.isNullOrEmpty() && mSelectPics.size > 2) {
 
-                }else{
+                } else {
                     longpostadapter.currentTxtView?.let {
                         it.requestFocus()
                         HideKeyboardUtil.showSoftInput(it)
@@ -946,6 +946,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             when (view.id) {
                 R.id.iv_delete -> {
                     longpostadapter.removeAt(position)
+                    resetAdapter()
                     checkViewOneTypeContent()
                 }
 
@@ -1095,6 +1096,17 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         })
     }
 
+    private fun resetEditeAdapter(){
+        val data = longpostadapter.data
+        val copyOnWriteArrayList = CopyOnWriteArrayList<LongPostBean>()
+        copyOnWriteArrayList.addAll(data)
+        lifecycleScope.launch {
+            addEdite(copyOnWriteArrayList)
+            longpostadapter.data = copyOnWriteArrayList
+            longpostadapter.notifyDataSetChanged()
+        }
+    }
+
     private fun resetAdapter() {
         val data = longpostadapter.data
         val copyOnWriteArrayList = CopyOnWriteArrayList<LongPostBean>()
@@ -1110,6 +1122,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun addEdite(data: CopyOnWriteArrayList<LongPostBean>) {
+        if (data.isNotEmpty()){
+            if (data[0].localMedias!=null){
+                val newTxt = LongPostBean("")
+                data.add(0, newTxt)
+            }
+        }
         for (i in 0 until data.size - 1) {
             val item = data[i]
             if (item.localMedias != null) {
@@ -1119,6 +1137,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     data.add(i + 1, newTxt)
                 }
             }
+        }
+        if (data.size - 1 < 0) {
+            return
         }
         if (data[data.size - 1].localMedias != null) {
             val newTxt = LongPostBean("")
@@ -1521,6 +1542,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         }
                         params["lat"] = locaPostEntity.lat
                         params["lon"] = locaPostEntity.lon
+                        params["addrName"] = locaPostEntity.addrName?: ""
                         params["province"] = locaPostEntity.province
                         params["cityCode"] = locaPostEntity.cityCode
                         params["city"] = locaPostEntity.city
@@ -1536,14 +1558,32 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                 3,
                                 ButtomTypeBean(locaPostEntity.topicName ?: "", 1, 2)
                             )
+                            showTopic(locaPostEntity.topicName)
                         }
                         if (locaPostEntity.circleName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 4,
                                 ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
                             )
+                            showCircle(locaPostEntity.circleName)
                         }
                         showLocaPostCity()
+                        locaPostEntity.let { lp ->
+                            var showCity = ""
+                            if (lp.city.isNotEmpty() && lp.addrName?.isNotEmpty() == true) {
+                                showCity = locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
+                            }
+                            if (showCity.isNotEmpty()) {
+                                showAddress(showCity)
+                            }
+                            if (lp.city.isEmpty()) {
+                                showCity = "定位"
+                            }
+                            buttomTypeAdapter.setData(
+                                0,
+                                ButtomTypeBean(showCity, 1, 4)
+                            )
+                        }
                         //选择的标签
                         if (TextUtils.isEmpty(locaPostEntity.keywords)) {
                             buttomlabelAdapter.data.forEach {
@@ -1582,8 +1622,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                     )
                                     //展示选择的图片
                                     longpostadapter.addData(longPostBean)
-                                    longpostadapter.notifyDataSetChanged()
                                 }
+                            }
+                            lifecycleScope.launch {
+                                delay(500)
+                                resetEditeAdapter()
                             }
                         }
                     }
@@ -1728,7 +1771,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun checkViewOneTypeContent() {
-        if (postViewType.value==1){return}
+        if (postViewType.value == 1) {
+            return
+        }
         val titleContent = headBinding.etBiaoti.text
         val titleHasContent = titleContent?.isNotEmpty() == true && titleContent.length > 1
         val content =
