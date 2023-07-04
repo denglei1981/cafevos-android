@@ -557,9 +557,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
         binding.longpostrec.setOnTouchListener { v, event ->
             if (event.y>headBinding.etBiaoti.y){
-                longpostadapter.currentTxtView?.let {
-                    it.requestFocus()
-                    HideKeyboardUtil.showSoftInput(it)
+                val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
+                if (!mSelectPics.isNullOrEmpty()&&mSelectPics.size>2){
+
+                }else{
+                    longpostadapter.currentTxtView?.let {
+                        it.requestFocus()
+                        HideKeyboardUtil.showSoftInput(it)
+                    }
                 }
             }
             false
@@ -910,9 +915,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.bottom.ivPic.setOnClickListener {
             isunSave = true
             val meadiaList: ArrayList<LocalMedia> = arrayListOf()
-            val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
             PictureUtil.openGallery(
-                this, meadiaList, maxNum = 9 - mSelectPics.size,
+                this, meadiaList,
                 onResultCallbackListener = object : OnResultCallbackListener<LocalMedia> {
                     override fun onResult(result: MutableList<LocalMedia>?) {
                         if (result != null) {
