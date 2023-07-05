@@ -558,12 +558,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.longpostrec.setOnTouchListener { v, event ->
             if (event.y > headBinding.etBiaoti.y) {
                 val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
-                if (!mSelectPics.isNullOrEmpty() && mSelectPics.size > 2) {
+                if (!mSelectPics.isNullOrEmpty() && mSelectPics.size > 2 ) {
 
                 } else {
-                    longpostadapter.currentTxtView?.let {
-                        it.requestFocus()
-                        HideKeyboardUtil.showSoftInput(it)
+                    if (postViewType.value != 1){
+                        longpostadapter.currentTxtView?.let {
+                            it.requestFocus()
+                            HideKeyboardUtil.showSoftInput(it)
+                        }
                     }
                 }
             }
@@ -1096,7 +1098,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         })
     }
 
-    private fun resetEditeAdapter(){
+    private fun resetEditeAdapter() {
         val data = longpostadapter.data
         val copyOnWriteArrayList = CopyOnWriteArrayList<LongPostBean>()
         copyOnWriteArrayList.addAll(data)
@@ -1122,8 +1124,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun addEdite(data: CopyOnWriteArrayList<LongPostBean>) {
-        if (data.isNotEmpty()){
-            if (data[0].localMedias!=null){
+        if (data.isNotEmpty()) {
+            if (data[0].localMedias != null) {
                 val newTxt = LongPostBean("")
                 data.add(0, newTxt)
             }
@@ -1542,7 +1544,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         }
                         params["lat"] = locaPostEntity.lat
                         params["lon"] = locaPostEntity.lon
-                        params["addrName"] = locaPostEntity.addrName?: ""
+                        params["addrName"] = locaPostEntity.addrName ?: ""
                         params["province"] = locaPostEntity.province
                         params["cityCode"] = locaPostEntity.cityCode
                         params["city"] = locaPostEntity.city
@@ -1571,7 +1573,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                         locaPostEntity.let { lp ->
                             var showCity = ""
                             if (lp.city.isNotEmpty() && lp.addrName?.isNotEmpty() == true) {
-                                showCity = locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
+                                showCity =
+                                    locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
                             }
                             if (showCity.isNotEmpty()) {
                                 showAddress(showCity)
