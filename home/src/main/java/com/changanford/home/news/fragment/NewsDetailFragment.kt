@@ -51,7 +51,6 @@ import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
-import com.huawei.hms.scankit.p.da
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
