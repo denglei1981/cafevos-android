@@ -48,16 +48,16 @@
     <application
         android:name="com.changanford.common.MyApp"
         android:allowBackup="false"
+        android:debuggable="false"
         android:icon="@mipmap/fordicon"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/fordicon"
-        android:debuggable="false"
         android:supportsRtl="true"
         android:theme="@style/Theme.EVOS"
-        tools:replace="android:allowBackup,android:theme"
-        tools:ignore="HardcodedDebugMode">
+        tools:ignore="HardcodedDebugMode"
+        tools:replace="android:allowBackup,android:theme">
         <meta-data
             android:name="CHANNEL_VALUE"
             android:value="${channel_value}" />
@@ -88,13 +88,14 @@
         <!--                <category android:name="android.intent.category.LAUNCHER" />-->
         <!--            </intent-filter>-->
         <!--        </activity>-->
-<!--        android:excludeFromRecents="${SPL_SHOW}"-->
-<!--        android:taskAffinity="${SPL_TASK}"    -->
+        <!--        android:excludeFromRecents="${SPL_SHOW}"-->
+        <!--        android:taskAffinity="${SPL_TASK}"    -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.changanford.evos"
             android:theme="@style/AppTheme.StartingWindowTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -114,6 +115,7 @@
             <intent-filter>
                 <data android:scheme="${GIO_URL_SCHEME}" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
@@ -132,12 +134,14 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"
+            android:taskAffinity="com.changanford.evos"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- <receiver android:name="com.changan.oushangCos1.utils.tools.NetworkConnectChangedReceiver"></receiver> -->
         <!--            android:taskAffinity="com.changanford.evos"-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:taskAffinity="com.changanford.evos"
             android:theme="@style/Theme.AppCompat.NoActionBar.Transparent">
             <!--            android:taskAffinity="com.changanford.evos"-->
             <intent-filter>
@@ -195,14 +199,13 @@
         <activity
             android:name="com.changanford.my.activity.MyStarPostsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.changanford.my.activity.OtherMedalActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name="com.changanford.my.activity.OtherMedalActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.changanford.evos.ui.pay.AlipayMiniProgramCallbackActivity"
-            android:launchMode="singleTask"
-            >
+            android:launchMode="singleTask">
             <!--            android:taskAffinity="com.changanford.evos"-->
             <intent-filter>
                 <!--action.VIEW和category.DEFAULT必须设置-->
@@ -214,6 +217,32 @@
                 <data android:scheme="hyunionpay" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="androidx.compose.ui.tooling.PreviewActivity"
+            android:exported="false"
+            tools:replace="android:exported" />
+
+        <service
+            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+            android:directBootAware="false"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            tools:replace="android:exported" />
+
+        <receiver
+            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.DUMP"
+            tools:replace="android:exported">
+
+            <intent-filter>
+
+                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

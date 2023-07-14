@@ -89,7 +89,8 @@
         </receiver>
         <activity
             android:name=".receiver.MyMessageHelpReceiver"
-            android:exported="true"></activity>
+            android:taskAffinity="com.changanford.evos"
+            android:exported="true"/>
         <service
             android:name=".receiver.MyMessageIntentService"
             android:exported="false">

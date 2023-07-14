@@ -7,6 +7,7 @@ import com.changanford.common.buried.RetrofitClient
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.COOKIE_DB
+import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.gofo.widget.SwipeHelper
 import com.internet.fn.FetchNet
@@ -99,7 +100,7 @@ fun decryResult(result: String, key: String): String = AESUtil.decrypts(result, 
 
 fun Map<String, Any>.body(key: String): RequestBody {
     if (MConstant.isShowLog)
-        Log.d("OkHttp--body----------", JSON.toJSONString(this))
+        "OkHttp--body----------${ JSON.toJSONString(this)}".logD()
     return getAESBody(this, key).toRequestBody("application/json;charset=utf-8".toMediaType())
 }
 

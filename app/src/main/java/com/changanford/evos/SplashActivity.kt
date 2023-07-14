@@ -49,7 +49,6 @@ class SplashActivity : BaseMineUI<ActivitySplashBinding, EmptyViewModel>() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     val topClassName = it.taskInfo.topActivity?.className
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        Log.e("topClassName", "${topClassName.toString()}====${it.taskInfo.taskId}")
                     }
                     if (topClassName == "com.changanford.evos.SplashActivity") {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
