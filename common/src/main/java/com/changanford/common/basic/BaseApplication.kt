@@ -11,9 +11,17 @@ import androidx.multidex.MultiDexApplication
 import com.alibaba.android.arouter.launcher.ARouter
 import com.alibaba.sdk.android.push.CommonCallback
 import com.alibaba.sdk.android.push.huawei.HuaWeiRegister
-import com.alibaba.sdk.android.push.impl.*
+import com.alibaba.sdk.android.push.impl.HuaweiMsgParseImpl
+import com.alibaba.sdk.android.push.impl.MeizuMsgParseImpl
+import com.alibaba.sdk.android.push.impl.OppoMsgParseImpl
+import com.alibaba.sdk.android.push.impl.VivoMsgParseImpl
+import com.alibaba.sdk.android.push.impl.XiaoMiMsgParseImpl
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory
-import com.alibaba.sdk.android.push.register.*
+import com.alibaba.sdk.android.push.register.MeizuRegister
+import com.alibaba.sdk.android.push.register.MiPushRegister
+import com.alibaba.sdk.android.push.register.OppoRegister
+import com.alibaba.sdk.android.push.register.ThirdPushManager
+import com.alibaba.sdk.android.push.register.VivoRegister
 import com.baidu.location.LocationClient
 import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
@@ -30,6 +38,9 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.logD
 import com.growingio.android.sdk.autotrack.CdpAutotrackConfiguration
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
+import com.tencent.smtt.export.external.TbsCoreSettings
+import com.tencent.smtt.sdk.QbSdk
+import com.tencent.smtt.sdk.QbSdk.PreInitCallback
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -69,6 +80,7 @@ abstract class BaseApplication : MultiDexApplication() {
             initshare()
             initUmeng()
             initGio()
+            initX5()
         }
         initRetrofitClientConfig()
     }
@@ -90,6 +102,26 @@ abstract class BaseApplication : MultiDexApplication() {
         //采集数据开关
         GrowingAutotracker.get().setDataCollectionEnabled(true)
 
+    }
+
+    fun initX5(){
+        QbSdk.initX5Environment(this, object : PreInitCallback {
+            override fun onCoreInitFinished() {
+                // 内核初始化完成，可能为系统内核，也可能为系统内核
+            }
+
+            /**
+             * 预初始化结束
+             * 由于X5内核体积较大，需要依赖网络动态下发，所以当内核不存在的时候，默认会回调false，此时将会使用系统内核代替
+             * @param isX5 是否使用X5内核
+             */
+            override fun onViewInitFinished(isX5: Boolean) {}
+        })
+        val map= HashMap<String, Any?>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+        QbSdk.setDownloadWithoutWifi(true)
     }
 
     //友盟初始化

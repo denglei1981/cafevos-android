@@ -44,6 +44,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.tencent.smtt.sdk.WebView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.Serializable
@@ -55,7 +56,7 @@ import kotlin.collections.set
  * H5调用原生方法
  */
 class AgentWebInterface(
-    var agentWeb: AgentWeb,
+    val webView:WebView,
     var activity: AgentWebActivity?,
     val jsCallback: JsCallback
 ) {
@@ -231,7 +232,7 @@ class AgentWebInterface(
                             }
                             path?.let {
                                 var base64Str = FileHelper.getImageStr(path)
-                                agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                                activity?.quickCallJs(callback, base64Str)
                             }
                         }
                     }
@@ -598,10 +599,10 @@ class AgentWebInterface(
                                         }
                                     })
                             }
-                            agentWeb.jsAccessEntrace.quickCallJs(callback, "1")
+                            activity?.quickCallJs(callback, "1")
                         } catch (e: java.lang.Exception) {
                             "保存失败".toast()
-                            agentWeb.jsAccessEntrace.quickCallJs(callback, "0")
+                            activity?.quickCallJs(callback, "0")
                         }
                     }
 
@@ -842,7 +843,7 @@ class AgentWebInterface(
                         for (media in result) {
                             val path: String = PictureUtil.getFinallyPath(media)
                             val base64Str = FileHelper.getImageStr(path)
-                            agentWeb.jsAccessEntrace.quickCallJs(callback, base64Str)
+                            activity?.quickCallJs(callback, base64Str)
                         }
                     }
                 }
@@ -891,7 +892,7 @@ class AgentWebInterface(
                             val imgPath = FileHelper.getImageStr(path)
                             base64Str += "$imgPath,"
                         }
-                        if (base64Str.isNotEmpty()) agentWeb.jsAccessEntrace.quickCallJs(
+                        if (base64Str.isNotEmpty()) activity?.quickCallJs(
                             callback,
                             base64Str.substring(0, base64Str.length - 1)
                         )
@@ -914,9 +915,9 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun webGoBack() {
-        agentWeb.webCreator.webView.post{
-            if (agentWeb.webCreator.webView.canGoBack()) {
-                agentWeb.webCreator.webView.goBack()
+        webView.post{
+            if (webView.canGoBack()) {
+                webView.goBack()
             } else {
                 activity?.finish()
             }

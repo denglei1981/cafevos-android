@@ -139,6 +139,11 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.FordAlbumActivity" />
         <activity android:name=".ui.activity.FordAlbumDetailsActivity" />
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
         <!--银商支付 END-->
     </application>
 

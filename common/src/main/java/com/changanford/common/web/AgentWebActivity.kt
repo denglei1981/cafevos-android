@@ -7,21 +7,15 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
-import android.net.http.SslError
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.text.TextUtils
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.webkit.CookieManager
-import android.webkit.GeolocationPermissions
-import android.webkit.SslErrorHandler
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -48,14 +42,16 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.UnionPayUtils
-import com.just.agentweb.AgentWeb
 import com.just.agentweb.AgentWebConfig
-import com.just.agentweb.DefaultWebClient
-import com.just.agentweb.WebChromeClient
-import com.just.agentweb.WebViewClient
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback
+import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.sdk.WebSettings
+import com.tencent.smtt.sdk.WebView
+import org.json.JSONArray
+import org.json.JSONException
 
 
 /**********************************************************************************
@@ -75,7 +71,6 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
     //    private lateinit var mineSignViewModel: MineSignViewModel //获取个人信息，获取U享卡列表
     lateinit var headerView: View
-    lateinit var agentWeb: AgentWeb
     var url: String = ""
     private var subcallback = "subcallback"//右上角图标文字点击时给h5的回调
     private var uploadImgCallback = ""//上传图片回调
@@ -131,8 +126,8 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             if (handleH5Back()) {
                 return@setOnClickListener
             }
-            if (agentWeb.webCreator.webView.canGoBack()) {
-                agentWeb.webCreator.webView.goBack()
+            if (binding.webView.canGoBack()) {
+                binding.webView.goBack()
             } else {
                 finish()
             }
@@ -152,6 +147,56 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //            Observer {
 //                postEntity = it
 //            })
+    }
+
+    fun quickCallJs(
+        method: String,
+        vararg params: String?,
+        callback: ValueCallback<String?>? = ValueCallback { }
+    ) {
+        val sb = StringBuilder()
+        sb.append("javascript:$method")
+        if (params.isEmpty()) {
+            sb.append("()")
+        } else {
+            sb.append("(").append(concat(*params)).append(")")
+        }
+        binding.webView.evaluateJavascript(sb.toString(), callback)
+    }
+
+    private fun concat(vararg params: String?): String {
+        val mStringBuilder = java.lang.StringBuilder()
+        for (i in params.indices) {
+            val param = params[i]
+            if (!isJson(param)) {
+                mStringBuilder.append("\"").append(param).append("\"")
+            } else {
+                mStringBuilder.append(param)
+            }
+            if (i != params.size - 1) {
+                mStringBuilder.append(" , ")
+            }
+        }
+        return mStringBuilder.toString()
+    }
+
+    private fun isJson(target: String?): Boolean {
+        if (TextUtils.isEmpty(target)) {
+            return false
+        }
+        var tag = false
+        tag = try {
+            if (target?.startsWith("[") == true) {
+                JSONArray(target)
+            } else {
+                org.json.JSONObject(target)
+            }
+            true
+        } catch (ignore: JSONException) {
+            //            ignore.printStackTrace();
+            false
+        }
+        return tag
     }
 
     /**
@@ -212,12 +257,14 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     when (it) {
                         true -> {
                             toastShow("支付成功")
-                            agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
+                            quickCallJs(payCallback, "true") {}
+//                            quickCallJs(payCallback, "true")
                         }
 
                         false -> {
                             toastShow("支付失败")
-                            agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
+                            quickCallJs(payCallback, "false") {}
+//                            quickCallJs(payCallback, "false")
                         }
                     }
                 }
@@ -228,13 +275,13 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 if (totalWebNum == localWebNum) {
                     when (it) {
                         0 -> {
-                            agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
+                            quickCallJs(payCallback, "true") {}
                         }//成功
                         1 -> {
-                            agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
+                            quickCallJs(payCallback, "false") {}
                         }//失败
                         2 -> {
-                            agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
+                            quickCallJs(payCallback, "false") {}
                         }//取消
                     }
                 }
@@ -244,11 +291,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             if (totalWebNum == localWebNum) {
                 when (it) {
                     0 -> {//成功
-                        agentWeb.jsAccessEntrace.quickCallJs(payCallback, "true")
+                        quickCallJs(payCallback, "true") {}
                     }
 
                     else -> {//1 失败 2 取消
-                        agentWeb.jsAccessEntrace.quickCallJs(payCallback, "false")
+                        quickCallJs(payCallback, "false") {}
                     }
                 }
             }
@@ -262,7 +309,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         })
 //        //登录成功
 //        LiveDataBus.get().with(LiveDataBusKey.WEB_LOGIN_SUCCESS).observe(this, Observer {
-//            agentWeb.jsAccessEntrace.quickCallJs(it as String?)
+//            quickCallJs(it as String?)
 //        })
         //上传图片
         LiveDataBus.get().with(LiveDataBusKey.WEB_UPLOAD_IMG).observe(this, Observer {
@@ -281,14 +328,14 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                             if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
                                 viewModel.initLocationOption()
                             } else {
-                                agentWeb.jsAccessEntrace.quickCallJs(getLocationCallback, "false")
+                                quickCallJs(getLocationCallback, "false") {}
                                 toastShow("手机没有打开定位权限,请手动去设置页打开权限")
                             }
                         }
 
                         override fun onPermissionDenied(permission: Permission?) {
                             toastShow("用户拒绝了权限")
-                            agentWeb.jsAccessEntrace.quickCallJs(getLocationCallback, "false")
+                            quickCallJs(getLocationCallback, "false") {}
                         }
 
                     })
@@ -296,7 +343,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                agentWeb.jsAccessEntrace.quickCallJs(shareCallBack, it.toString())
+                quickCallJs(shareCallBack, it.toString()) {}
                 shareViewModule.shareBack(shareBean)
             }
         })
@@ -311,19 +358,19 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 when (it) {
                     //登录成功
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
+                        quickCallJs(loginAppCallBack, "true") {}
                         doGetAccessCode()
                     }
 
                     //取消绑定手机号
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "false")
-                        agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "false")
+                        quickCallJs(loginAppCallBack, "false") {}
+                        quickCallJs(bindPhoneCallBack, "false") {}
                     }
                     //绑定手机号成功
                     UserManger.UserLoginStatus.USE_BIND_MOBILE_SUCCESS -> {
-                        agentWeb.jsAccessEntrace.quickCallJs(loginAppCallBack, "true")
-                        agentWeb.jsAccessEntrace.quickCallJs(bindPhoneCallBack, "true")
+                        quickCallJs(loginAppCallBack, "true") {}
+                        quickCallJs(bindPhoneCallBack, "true")
                         doGetAccessCode()
                     }
 
@@ -359,7 +406,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             .observe(this,
                 Observer {
                     it?.let {
-                        agentWeb.jsAccessEntrace.quickCallJs(chooseAddressCallback, it)
+                        quickCallJs(chooseAddressCallback, it)
                     }
                 })
 
@@ -374,7 +421,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         LiveDataBus.get().with(LiveDataBusKey.WEB_ORDER_PAY_STATUS, Boolean::class.java)
             .observe(this,
                 Observer {
-                    agentWeb.jsAccessEntrace.quickCallJs(h5OrderPayCallback, it.toString())
+                    quickCallJs(h5OrderPayCallback, it.toString())
                 })
 
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_MYINFO, String::class.java).observe(this) {
@@ -383,7 +430,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 try {
                     var userJson = JSON.toJSONString(infoBean)
                     if (!userJson.isNullOrEmpty()) {
-                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
+                        quickCallJs(getMyInfoCallback, userJson)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -393,7 +440,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //                .observe(this) { infoBean ->
 //                    val userJson = infoBean?.userJson
 //                    if (!userJson.isNullOrEmpty()) {
-//                        agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, userJson)
+//                        quickCallJs(getMyInfoCallback, userJson)
 //                    }
 //                }
 //                mineSignViewModel.getUserInfo()
@@ -416,20 +463,20 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //                    override fun onSuccess(response: BaseBean<UniCarAuth>) {
 //                        if (response.data != null && response.data.isAuth != null && response.data.isAuth) {
 //                            if (response.data.carAuth != null) {
-//                                agentWeb.jsAccessEntrace.quickCallJs(
+//                                quickCallJs(
 //                                    getCurVinCallback,
 //                                    response.data.carAuth!!.vin
 //                                )
 //                            } else {
-//                                agentWeb.jsAccessEntrace.quickCallJs(getCurVinCallback, "")
+//                                quickCallJs(getCurVinCallback, "")
 //                            }
 //                        } else {
-//                            agentWeb.jsAccessEntrace.quickCallJs(getCurVinCallback, "")
+//                            quickCallJs(getCurVinCallback, "")
 //                        }
 //                    }
 //
 //                    override fun onFail(e: ApiException) {
-//                        agentWeb.jsAccessEntrace.quickCallJs(getCurVinCallback, "")
+//                        quickCallJs(getCurVinCallback, "")
 //                    }
 //                })
             })
@@ -447,7 +494,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
          */
         LiveDataBus.get().with(LiveDataBusKey.MINE_CAR_CARD_NUM, String::class.java).observe(this,
             Observer {
-                agentWeb.jsAccessEntrace.quickCallJs(addPlateNumCallback, it.toString())
+                quickCallJs(addPlateNumCallback, it.toString())
             })
 
         /**
@@ -455,7 +502,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
          */
         LiveDataBus.get().with(LiveDataBusKey.JUMP_JR_BACK, String::class.java).observe(this,
             Observer {
-                agentWeb.jsAccessEntrace.quickCallJs(jrsdkCallBack, it.toString())
+                quickCallJs(jrsdkCallBack, it.toString())
             })
         /**
          * 砍价下单回调
@@ -471,7 +518,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             ) {
                 viewModel.getMyBindCarList(object : MyBindCarList {
                     override fun myBindCarList(string: String) {
-                        agentWeb.jsAccessEntrace.quickCallJs(it, string)
+                        quickCallJs(it, string)
                     }
 
                 })
@@ -481,7 +528,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     fun getAccessCode(clientId: String, redirectUrl: String, callback: String) {
         if (UserManger.isLogin()) {
             viewModel?.getH5AccessCode(clientId, redirectUrl) {
-                agentWeb.jsAccessEntrace.quickCallJs(callback, it)
+                quickCallJs(callback, it)
             }
         } else {
             getAccessCodeCallBack = callback
@@ -494,7 +541,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private fun doGetAccessCode() {
         if (getAccessCodeCallBack.isNotEmpty()) {
             viewModel?.getH5AccessCode(clientId, redirectUrl) {
-                agentWeb.jsAccessEntrace.quickCallJs(getAccessCodeCallBack, it)
+                quickCallJs(getAccessCodeCallBack, it)
                 getAccessCodeCallBack = ""
             }
         }
@@ -515,7 +562,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //        cacViewModule.getCACToken()
         LiveDataBus.get().with(LiveDataBusKey.H5POST_SUCCESS).observe(this, Observer {
             it?.let {
-                agentWeb.jsAccessEntrace.quickCallJs(h5callback, it.toString())
+                quickCallJs(h5callback, it.toString())
             }
         })
     }
@@ -531,94 +578,123 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
          */
         viewModel._pic.observe(this, Observer {//图片上传的地址
             Log.e("UPIMG", it)
-            agentWeb.jsAccessEntrace.quickCallJs(uploadImgCallback, it)
+            quickCallJs(uploadImgCallback, it)
         })
         viewModel._location.observe(this, Observer {
-            agentWeb.jsAccessEntrace.quickCallJs(getLocationCallback, it)
+            quickCallJs(getLocationCallback, it)
         })
 //        mineSignViewModel.uniUserInfo.observe(this, Observer {
 //            try {
-//                agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, JSON.toJSONString(it))
+//                quickCallJs(getMyInfoCallback, JSON.toJSONString(it))
 //            } catch (e: Exception) {
 //                e.printStackTrace()
-//                agentWeb.jsAccessEntrace.quickCallJs(getMyInfoCallback, it.toString())
+//                quickCallJs(getMyInfoCallback, it.toString())
 //            }
 //        })
     }
-
-
-    private fun initWeb() {
-        agentWeb = AgentWeb.with(this)
-            .setAgentWebParent(binding.llWebparent, LinearLayout.LayoutParams(-1, -1))
-            .closeIndicator()
-            .setWebChromeClient(mWebChromeClient)
-            .setWebViewClient(object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                    "---url----$url".logE()
-                    if (agentWeb.webCreator.webView.canGoBack()) {
-                        headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
-                            View.VISIBLE
-                    } else {
-                        headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
-                            View.GONE
-                    }
-                    loadingDialog?.dismiss()
-                }
-
-                override fun shouldOverrideUrlLoading(
-                    view: WebView?,
-                    request: WebResourceRequest?
-                ): Boolean {
-                    val url = request?.url.toString()
-                    if (url.startsWith("http:") || url.startsWith("https:")) {
-                        return false
-                    }
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(intent)
-                    } catch (e: java.lang.Exception) {
-                        Log.e("TAG", " Exception is ==== >>> $e")
-                    }
-                    return true
-                }
-
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                    loadingDialog?.show()
-                }
-
-                //忽略浏览器报错
-                override fun onReceivedSslError(
-                    view: WebView?,
-                    handler: SslErrorHandler?,
-                    error: SslError?
-                ) {
-                    handler?.proceed()
-                }
-            })
-            .setMainFrameErrorView(R.layout.agentweb_error_page, -1)
-            .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK) //                .setWebLayout(new WebLayout(this))
-            .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.DERECT) //打开其他应用时，弹窗咨询用户是否前往其他应用
-            .interceptUnkownUrl() //拦截找不到相关页面的Scheme
-            .createAgentWeb()
-            .ready()
-            .go(url)
-        agentWeb.jsInterfaceHolder.addJavaObject(
-            "FORDApp", AgentWebInterface(agentWeb, this@AgentWebActivity, this)
-        )
-        agentWeb.agentWebSettings.webSettings.javaScriptEnabled = true
-        agentWeb.agentWebSettings.webSettings.mediaPlaybackRequiresUserGesture = false
-        agentWeb.agentWebSettings.webSettings.userAgentString =
-            "${agentWeb.agentWebSettings.webSettings.userAgentString} ford-evos"
-        AndroidBug5497Workaround.assistActivity(this)
+    private fun initWebViewSettings() {
+        val mWebSettings = binding.webView.settings
+        mWebSettings.setJavaScriptEnabled(true)
+        mWebSettings.javaScriptCanOpenWindowsAutomatically = true
+        mWebSettings.allowFileAccess = true
+        mWebSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
+        mWebSettings.setSupportZoom(true)
+        mWebSettings.builtInZoomControls = true
+        mWebSettings.useWideViewPort = true
+        mWebSettings.setSupportMultipleWindows(true)
+        mWebSettings.setAppCacheEnabled(true)
+        mWebSettings.domStorageEnabled = true
+        mWebSettings.setGeolocationEnabled(true)
+        mWebSettings.setAppCacheMaxSize(Long.MAX_VALUE)
+        mWebSettings.pluginState = WebSettings.PluginState.ON_DEMAND
+        mWebSettings.cacheMode = WebSettings.LOAD_NO_CACHE
     }
 
-    var mWebChromeClient: WebChromeClient = object : WebChromeClient() {
+    private fun initWeb() {
+//        agentWeb = AgentWeb.with(this)
+//            .setAgentWebParent(binding.llWebparent, LinearLayout.LayoutParams(-1, -1))
+//            .closeIndicator()
+        binding.webView.webChromeClient = mWebChromeClient
+        binding.webView.webViewClient = object : com.tencent.smtt.sdk.WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                if (binding.webView.canGoBack()) {
+                    headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
+                        View.VISIBLE
+                } else {
+                    headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
+                        View.GONE
+                }
+                loadingDialog?.dismiss()
+            }
+
+
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: com.tencent.smtt.export.external.interfaces.WebResourceRequest?
+            ): Boolean {
+                if (url.startsWith("http:") || url.startsWith("https:")) {
+                    return false
+                }
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    startActivity(intent)
+                } catch (e: java.lang.Exception) {
+                    " Exception is ==== >>> $e".logE()
+                }
+                return true
+            }
+
+            override fun onPageStarted(
+                view: WebView?,
+                url: String?,
+                favicon: Bitmap?
+            ) {
+                super.onPageStarted(view, url, favicon)
+                loadingDialog?.show()
+            }
+
+            override fun onReceivedSslError(
+                p0: WebView?,
+                p1: com.tencent.smtt.export.external.interfaces.SslErrorHandler?,
+                p2: com.tencent.smtt.export.external.interfaces.SslError?
+            ) {
+                p1?.proceed()
+                super.onReceivedSslError(p0, p1, p2)
+            }
+
+            override fun onReceivedError(p0: WebView?, p1: Int, p2: String?, p3: String?) {
+                super.onReceivedError(p0, p1, p2, p3)
+                "webError${p2}".logE()
+            }
+
+        }
+        binding.webView.apply {
+            addJavascriptInterface(
+                AgentWebInterface(
+                    this,
+                    this@AgentWebActivity,
+                    this@AgentWebActivity
+                ), "FORDApp"
+            )
+//            settings.javaScriptEnabled = true
+//            settings.mediaPlaybackRequiresUserGesture = false
+//            settings.setAllowUniversalAccessFromFileURLs(true)
+            initWebViewSettings()
+            settings.userAgentString =
+                "${settings.userAgentString} ford-evos"
+        }
+        binding.webView.settingsExtension.setAutoRecoredAndRestoreScaleEnabled(true)
+        AndroidBug5497Workaround.assistActivity(this)
+        binding.webView.loadUrl(url)
+    }
+
+    var mWebChromeClient = object : com.tencent.smtt.sdk.WebChromeClient() {
         override fun onGeolocationPermissionsShowPrompt(
             origin: String?,
-            callback: GeolocationPermissions.Callback?
+            callback: GeolocationPermissionsCallback?
         ) {
+//            super.onGeolocationPermissionsShowPrompt(origin, callback)
             var mSuper = this
             SoulPermission.getInstance()
                 .checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
@@ -647,12 +723,13 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
                     })
         }
+
     }
 
 
     private fun handleH5Back(): Boolean {
         if (!backEventCallBack.isNullOrEmpty()) {
-            agentWeb.jsAccessEntrace.quickCallJs(backEventCallBack)
+            quickCallJs(backEventCallBack)
             return true
         }
         return false
@@ -665,29 +742,34 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         if (handleH5Back()) {
             return true
         }
-        if (agentWeb.handleKeyEvent(keyCode, event)) {
+        if (binding.webView.canGoBack()) {
+            binding.webView.goBack()
             return true
+        } else {
+            finish()
         }
+//        if (agentWeb.handleKeyEvent(keyCode, event)) {
+//            return true
+//        }
         return super.onKeyDown(keyCode, event)
     }
 
     override fun onPause() {
         if (isOnPause) {
-            agentWeb.webLifeCycle.onPause()
+            binding.webView.onPause()
         }
         super.onPause()
     }
 
     override fun onResume() {
-        agentWeb.webLifeCycle.onResume()
-        agentWeb.jsAccessEntrace.quickCallJs("AppViewDidShow")
+        binding.webView.onResume()
+        quickCallJs("AppViewDidShow")
         super.onResume()
     }
 
     override fun onDestroy() {
         AgentWebConfig.clearDiskCache(this)
-        agentWeb.webLifeCycle.onDestroy()
-        agentWeb.destroy()
+        binding.webView.destroy()
         totalWebNum -= 1
         super.onDestroy()
     }
@@ -805,11 +887,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private fun bindListener() {
         headerView.findViewById<TextView>(R.id.bar_tv_other).setOnClickListener {
 //            toastShow("点击文字")
-            agentWeb.jsAccessEntrace.quickCallJs(subcallback)
+            quickCallJs(subcallback)
         }
         headerView.findViewById<ImageView>(R.id.bar_img_more).setOnClickListener {
 //            toastShow("点击图标")
-            agentWeb.jsAccessEntrace.quickCallJs(subcallback)
+            quickCallJs(subcallback)
         }
     }
 
@@ -841,7 +923,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 }
 
                 SCAN_REQUEST_CODE -> {
-                    agentWeb.jsAccessEntrace.quickCallJs(data?.getStringExtra(SCAN_RESULT))
+                    data?.getStringExtra(SCAN_RESULT)?.let { quickCallJs(it) }
                 }
 
             }

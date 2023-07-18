@@ -73,6 +73,7 @@ object MyApplicationUtil {
         initThirdPush()
         initshare()
         applicationContext.initGio()
+        applicationContext.initX5()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             initBugfy()
         }

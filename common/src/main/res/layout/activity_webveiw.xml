@@ -17,16 +17,16 @@
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="visible"
             />
-        <LinearLayout
+        <com.tencent.smtt.sdk.WebView
             app:layout_constraintTop_toBottomOf="@id/title_bar"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/ll_webparent"
+            android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical">
 
 
-        </LinearLayout>
+        </com.tencent.smtt.sdk.WebView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 
