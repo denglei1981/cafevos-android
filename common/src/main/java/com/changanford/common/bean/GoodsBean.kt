@@ -1008,7 +1008,7 @@ data class CouponsItemBean(
 
     ) {
     fun getRmbToFb(conditionMoney: String? = this.conditionMoney): Long {
-        return ((conditionMoney ?: "0").toFloat() * 100).toLong()
+        return ((conditionMoney ?: "0").toDouble() * 100).toLong()
     }
 
     /**

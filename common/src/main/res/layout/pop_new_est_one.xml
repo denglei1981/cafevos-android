@@ -14,7 +14,7 @@
             android:id="@+id/iv_bg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:scaleType="center"
             app:layout_constraintWidth_percent="0.78"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

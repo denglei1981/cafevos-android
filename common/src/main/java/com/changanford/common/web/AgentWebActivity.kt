@@ -684,7 +684,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             settings.userAgentString =
                 "${settings.userAgentString} ford-evos"
         }
-        binding.webView.settingsExtension.setAutoRecoredAndRestoreScaleEnabled(true)
+//        binding.webView.settingsExtension.setAutoRecoredAndRestoreScaleEnabled(true)
         AndroidBug5497Workaround.assistActivity(this)
         binding.webView.loadUrl(url)
     }
