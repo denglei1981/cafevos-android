@@ -15,6 +15,10 @@ fun trackCustomEvent(type: String, map: HashMap<String, String>) {
     GrowingAutotracker.get().trackCustomEvent(type, map)
 }
 
+fun setTrackCmcUserId(userId:String){
+    GrowingAutotracker.get().setLoginUserId(userId)
+}
+
 fun updatePersonalData(prePageName: String, prePageType: String) {
     LiveDataBus.get().with(LiveDataBusKey.UPDATE_PERSONAL_GIO)
         .postValue(GioPreBean(prePageName = prePageName, prePageType = prePageType))

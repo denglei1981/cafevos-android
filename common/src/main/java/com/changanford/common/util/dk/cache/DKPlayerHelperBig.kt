@@ -77,6 +77,7 @@ class DKPlayerHelperBig(private val context: Activity, private val mVideoView: V
     }
 
     fun backPressed(back: (() -> Unit)) {
+        release()
         if (!mVideoView.onBackPressed()) {
             back()
         }

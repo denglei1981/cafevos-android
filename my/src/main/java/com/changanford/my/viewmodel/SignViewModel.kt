@@ -13,6 +13,7 @@ import com.changanford.common.net.*
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
+import com.changanford.common.util.gio.setTrackCmcUserId
 import com.changanford.common.util.gio.trackCustomEvent
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.room.UserDatabase
@@ -577,7 +578,7 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun getUserInfo() {
+    fun getUserInfo(type: Int? = 0) {
         if (UserManger.isLogin()) {
             viewModelScope.launch {
                 fetchRequest {
@@ -585,7 +586,17 @@ class SignViewModel : ViewModel() {
                     var rkey = getRandomKey()
                     apiService.queryUserInfo(body.header(rkey), body.body(rkey))
                 }.onSuccess {
-                    it?.let { saveUserInfo(it) }
+                    it?.let {
+                        if (type == 1) {
+                            setTrackCmcUserId(it.cmcOpenid)
+                            val trackMap = HashMap<String, String>()
+                            trackMap["fy_signInChannel_var"] = signInChannel
+                            if (signInChannel.isNotEmpty()) {
+                                trackCustomEvent("fy_signInSuccess", trackMap)
+                            }
+                        }
+                        saveUserInfo(it)
+                    }
                 }.onFailure {
                     saveUserInfo(null)
                 }
@@ -641,6 +652,7 @@ class SignViewModel : ViewModel() {
                     "1" -> {
                         apiService.mineGrowUp(body.header(rkey), body.body(rkey))
                     }
+
                     else -> {
                         apiService.mineGrowUpLog(body.header(rkey), body.body(rkey))
                     }
@@ -715,6 +727,7 @@ class SignViewModel : ViewModel() {
                 0 -> {
                     allMedal.postValue(medals)
                 }
+
                 else -> {
                     allMedal.postValue(medalMap[medalType])
                 }
@@ -1015,12 +1028,7 @@ class SignViewModel : ViewModel() {
             MConstant.token = it.token
             MConstant.mine_phone = "${it.phone}"
             SPUtils.putToken(it.token)
-            getUserInfo()
-            val trackMap = HashMap<String, String>()
-            trackMap["fy_signInChannel_var"] = signInChannel
-            if (signInChannel.isNotEmpty()) {
-                trackCustomEvent("fy_signInSuccess", trackMap)
-            }
+            getUserInfo(1)
             if (ruleId.isNotEmpty()) {
                 addRecord(ruleId)
             }
@@ -1030,6 +1038,7 @@ class SignViewModel : ViewModel() {
                         .with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
                         .postValue(UserManger.UserLoginStatus.USE_UNBIND_MOBILE)
                 }
+
                 else -> {
                     if (it.unbandNotify == 1) {
                         UnBindWeChatTipsDialog(BaseApplication.curActivity).setContent(1)

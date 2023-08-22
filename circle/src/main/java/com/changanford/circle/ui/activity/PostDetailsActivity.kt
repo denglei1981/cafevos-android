@@ -30,6 +30,7 @@ class PostDetailsActivity :
 
     private var postsId = ""
     private var postsBean = MutableLiveData<PostsDetailBean>()
+    private var videoFragment: PostVideoDetailsFragment? = null
     override fun onRetryBtnClick() {
 
     }
@@ -105,11 +106,13 @@ class PostDetailsActivity :
             when (it.type) {
                 3 -> {//视频
                     ImmersionBar.with(this).statusBarDarkFont(false).init()
+                    videoFragment = PostVideoDetailsFragment(it)
                     trans.replace(
                         R.id.frame_layout,
-                        PostVideoDetailsFragment(it)
+                        videoFragment!!
                     )
                 }
+
                 else -> {//图文 图片
                     trans.replace(
                         R.id.frame_layout,
@@ -148,4 +151,12 @@ class PostDetailsActivity :
         return super.dispatchTouchEvent(ev)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (videoFragment == null) {
+            super.onBackPressed()
+        } else {
+            videoFragment?.backPressed { super.onBackPressed() }
+        }
+    }
 }

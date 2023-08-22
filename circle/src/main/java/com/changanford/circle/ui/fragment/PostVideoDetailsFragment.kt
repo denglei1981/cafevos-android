@@ -69,6 +69,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.DKPlayerHelper
+import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -89,7 +90,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
     constructor() : this(PostsDetailBean())
 
-    private lateinit var playerHelper: DKPlayerHelper //播放器帮助类
+    private lateinit var playerHelper: DKPlayerHelperBig //播放器帮助类
 
     private var page = 1
     private var checkPosition = 0
@@ -107,7 +108,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     @SuppressLint("SetTextI18n")
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.relativeLayout, requireActivity())
-        playerHelper = DKPlayerHelper(requireActivity(), binding.videoView)
+        playerHelper = DKPlayerHelperBig(requireActivity(), binding.videoView)
         playerHelper.fullScreenGone()//隐藏全屏按钮
         playerHelper.startPlay(mData.videoUrl)
         playerHelper.setMyOnVisibilityChanged {
@@ -215,6 +216,12 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
         }
     }
 
+    fun backPressed(back: () -> Unit) {
+        playerHelper.backPressed {
+            back()
+        }
+    }
+
     private fun showContent() {
         val layoutParams = binding.videoView.layoutParams
         layoutParams.height =
@@ -272,7 +279,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     private fun initListener() {
         binding.run {
             backImg.setOnClickListener {
-                requireActivity().finish()
+                backPressed {
+                    requireActivity().finish()
+                }
             }
             tvTalk.setOnClickListener {
                 page = 1

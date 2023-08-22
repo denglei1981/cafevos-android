@@ -161,7 +161,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         } else {
             sb.append("(").append(concat(*params)).append(")")
         }
-        binding.webView.evaluateJavascript(sb.toString(), callback)
+        binding.webView.post {
+            binding.webView.evaluateJavascript(sb.toString(), callback)
+        }
     }
 
     private fun concat(vararg params: String?): String {
