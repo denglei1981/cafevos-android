@@ -33,6 +33,7 @@ import com.changanford.shop.ui.compose.ShopServiceDescription
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
+import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -293,11 +294,20 @@ class GoodsDetailsControl(
         val skuCodeTxtArr = arrayListOf<String>()
         for ((i, item) in dataBean.attributes.withIndex()) {
             try {
-                item.optionVos.find { skuCodes[i + 1] == it.optionId }?.let {
-                    val optionName = it.optionName
-                    skuCodeTxtArr.add(optionName)
-                    skuCodeTxt += "$optionName  "
+                item.optionVos.forEach { optionVo ->
+                    skuCodes.forEach { code->
+                        if (optionVo.optionId==code){
+                            val optionName = optionVo.optionName
+                            skuCodeTxtArr.add(optionName)
+                            skuCodeTxt += "$optionName  "
+                        }
+                    }
                 }
+//                item.optionVos.find { skuCodes[i + 1] == it.optionId }?.let {
+//                    val optionName = it.optionName
+//                    skuCodeTxtArr.add(optionName)
+//                    skuCodeTxt += "$optionName  "
+//                }
             } catch (error: IndexOutOfBoundsException) {
                 error.message?.logE()
             }

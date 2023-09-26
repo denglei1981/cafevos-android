@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
+import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.load
@@ -16,6 +17,8 @@ import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
+import com.tencent.mm.opensdk.utils.Log
+import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -85,7 +88,20 @@ open class GoodsAttrsPop(
             _skuCode = cos
         }
         mAdapter.setSkuCodes(_skuCode)
-        mAdapter.setList(dataBean.attributes)
+        val useAttributes = ArrayList<Attribute>()
+        if (_skuCode.contains("-")) {
+            val list = _skuCode.split("-") as ArrayList<String>
+            list.removeAt(0)
+            list.forEachIndexed { index, s ->
+                dataBean.attributes.forEachIndexed { _, attribute ->
+                    val addAttribute = attribute.optionVos.find { it.optionId == s }
+                    if (addAttribute != null) {
+                        useAttributes.add(attribute)
+                    }
+                }
+            }
+        }
+        mAdapter.setList(useAttributes)
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity) { code ->
             dataBean.skuVos.apply {
@@ -130,7 +146,10 @@ open class GoodsAttrsPop(
                     val htmlStr =
                         if (limitBuyNum != 0) "<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
                     val nowStock = dataBean.stock
-                    WCommonUtil.htmlToString(viewDataBinding.tvStock, "（${htmlStr}库存${nowStock}件）")
+                    WCommonUtil.htmlToString(
+                        viewDataBinding.tvStock,
+                        "（${htmlStr}库存${nowStock}件）"
+                    )
                     viewDataBinding.tvStock.visibility = View.INVISIBLE
                     var isLimitBuyNum = false//是否限购
                     val max: Int = if (limitBuyNum in 1..nowStock) {

@@ -118,32 +118,47 @@ public class AppUtils {
      * 判断 用户是否安装微信客户端
      */
     public static boolean isWeixinAvilible(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.tencent.mm")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+//        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+//        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+//        if (pinfo != null) {
+//            for (int i = 0; i < pinfo.size(); i++) {
+//                String pn = pinfo.get(i).packageName;
+//                if (pn.equals("com.tencent.mm")) {
+//                    return true;
+//                }
+//            }
+//        }
+        return isAppInstalled(context,"com.tencent.mm");
     }
 
     /**
      * 判断 用户是否安装QQ客户端
      */
     public static boolean isQQClientAvailable(Context context) {
-        final PackageManager packageManager = context.getPackageManager();
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equalsIgnoreCase("com.tencent.qqlite") || pn.equalsIgnoreCase("com.tencent.mobileqq")) {
-                    return true;
-                }
+//        final PackageManager packageManager = context.getPackageManager();
+//        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+//        if (pinfo != null) {
+//            for (int i = 0; i < pinfo.size(); i++) {
+//                String pn = pinfo.get(i).packageName;
+//                if (pn.equalsIgnoreCase("com.tencent.qqlite") || pn.equalsIgnoreCase("com.tencent.mobileqq")) {
+//                    return true;
+//                }
+//            }
+//        }
+        boolean qq = isAppInstalled(context, "com.tencent.qqlite");
+        boolean qq2 = isAppInstalled(context, "com.tencent.mobileqq");
+        return qq || qq2;
+    }
+
+    public static boolean isAppInstalled(Context ctx, String PackageName) {
+        try {
+            PackageManager packageManager = ctx.getPackageManager();
+            PackageInfo info = packageManager.getPackageInfo(PackageName, 0);
+            if (info != null) {
+                return true;
             }
+        } catch (Exception e) {
+            /// loge(e);
         }
         return false;
     }
@@ -153,18 +168,18 @@ public class AppUtils {
      * 判断是否安装新浪微博
      */
     public static boolean isSinaInstalled(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.sina.weibo")) {
-                    return true;
-                }
-            }
-        }
+//        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+//        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+//        if (pinfo != null) {
+//            for (int i = 0; i < pinfo.size(); i++) {
+//                String pn = pinfo.get(i).packageName;
+//                if (pn.equals("com.sina.weibo")) {
+//                    return true;
+//                }
+//            }
+//        }
 
-        return false;
+        return isAppInstalled(context, "com.sina.weibo");
     }
 
 
@@ -312,7 +327,7 @@ public class AppUtils {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
-            marginParams.topMargin = marginParams.topMargin + height ;
+            marginParams.topMargin = marginParams.topMargin + height;
         }
     }
 
@@ -374,7 +389,7 @@ public class AppUtils {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
