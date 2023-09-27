@@ -133,6 +133,7 @@
                                 android:layout_marginTop="@dimen/dp_4"
                                 android:layout_marginBottom="@dimen/dp_12"
                                 android:text="再签到5天领"
+                                android:visibility="gone"
                                 android:textColor="#B9B9B9"
                                 android:textSize="@dimen/sp_12"
                                 app:layout_constraintBottom_toTopOf="@+id/task_finish"

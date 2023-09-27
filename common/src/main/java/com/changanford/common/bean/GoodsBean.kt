@@ -337,7 +337,7 @@ data class ConfirmOrderInfoBean(
  * 商品详情
  * */
 data class GoodsDetailBean(
-    val attributes: List<Attribute> = listOf(),
+    var attributes: List<Attribute> = listOf(),
     val detailsHtml: String = "",
     val spuSource: String = "0",//来源(0-后台;1-京东)
     val managerSpuDetail: String = "0",//来源(0-后台;1-京东)

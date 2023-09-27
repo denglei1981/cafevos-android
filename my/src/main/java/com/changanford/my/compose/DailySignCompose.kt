@@ -120,12 +120,12 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 }
             }
         }
-        Text(
-            text = "连续签到赢大礼 ${if (daySignBean != null && !MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
-            fontSize = 10.sp,
-            color = Color(0xff999999),
-            modifier = Modifier.padding(top = 10.dp)
-        )
+//        Text(
+//            text = "连续签到赢大礼 ${if (daySignBean != null && !MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
+//            fontSize = 10.sp,
+//            color = Color(0xff999999),
+//            modifier = Modifier.padding(top = 10.dp)
+//        )
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)

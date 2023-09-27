@@ -101,7 +101,8 @@ open class GoodsAttrsPop(
                 }
             }
         }
-        mAdapter.setList(useAttributes)
+        dataBean.attributes = useAttributes
+        mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity) { code ->
             dataBean.skuVos.apply {
