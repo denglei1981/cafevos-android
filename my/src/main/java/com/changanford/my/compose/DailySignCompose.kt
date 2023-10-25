@@ -75,7 +75,15 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             }
 
             var isOpenTips by remember {
-                mutableStateOf(Hawk.get(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)&&(System.currentTimeMillis()-Hawk.get(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0) > 30*24*60*60*1000))
+                mutableStateOf(
+                    Hawk.get(
+                        HawkKey.IS_OPEN_SIGN_IN_TIPS,
+                        false
+                    ) && (System.currentTimeMillis() - Hawk.get(
+                        HawkKey.OPEN_SIGN_IN_TIPS_TIME,
+                        0
+                    ) > 30 * 24 * 60 * 60 * 1000)
+                )
             }
             val tipsImage = if (isOpenTips) {
                 R.mipmap.sign_in_tips_open
@@ -120,12 +128,17 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 }
             }
         }
-//        Text(
-//            text = "连续签到赢大礼 ${if (daySignBean != null && !MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
-//            fontSize = 10.sp,
-//            color = Color(0xff999999),
-//            modifier = Modifier.padding(top = 10.dp)
-//        )
+        if (daySignBean != null && !MConstant.token.isNullOrEmpty()){
+            val mSignDay = daySignBean.ontinuous ?: 0
+            if (mSignDay > 0) {
+                Text(
+                    text = "连续签到赢大礼 ${if (!MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
+                    fontSize = 10.sp,
+                    color = Color(0xff999999),
+                    modifier = Modifier.padding(top = 10.dp)
+                )
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)
@@ -153,23 +166,26 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
 }
 
 
-private fun signInTipsClick(isOpenTips: Boolean,result: (Boolean) -> Unit) {
+private fun signInTipsClick(isOpenTips: Boolean, result: (Boolean) -> Unit) {
     if (MConstant.token.isEmpty()) {
         startARouter(ARouterMyPath.SignUI)
         return
     }
-    if (isOpenTips){
-        testCalendar(2){
+    if (isOpenTips) {
+        testCalendar(2) {
             Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, 0)
             Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, false)
             result(false)
             "签到提醒关闭成功".toast()
         }
-    }else {
+    } else {
         showTimePicker { it1, it2 ->
             //添加事件
             var time = TimeUtils.MillisTo_M_H(System.currentTimeMillis())//yyyy.MM.dd HH:mm
-            testCalendar(1,TimeUtils.MillisTo_M_H_REVERSE(time.substring(0,11).plus("$it1:$it2"))){
+            testCalendar(
+                1,
+                TimeUtils.MillisTo_M_H_REVERSE(time.substring(0, 11).plus("$it1:$it2"))
+            ) {
                 Hawk.put(HawkKey.OPEN_SIGN_IN_TIPS_TIME, System.currentTimeMillis())
                 Hawk.put(HawkKey.IS_OPEN_SIGN_IN_TIPS, true)
                 result(true)
@@ -222,12 +238,14 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                                 )
                             )
                         ).padding(top = 10.dp, start = 7.dp, end = 7.dp, bottom = 5.dp)
+
                         3 -> background(color = Color(0xffF8FAFB)).padding(
                             top = 10.dp,
                             start = 7.dp,
                             end = 7.dp,
                             bottom = 5.dp
                         )
+
                         else -> background(color = Color(0xffF8FAFB)).padding(
                             top = 10.dp,
                             start = 7.dp,
@@ -283,12 +301,12 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
     }
 }
 
-fun showTimePicker(result:(String,String)->Unit){
+fun showTimePicker(result: (String, String) -> Unit) {
     var timePicker = TimePicker(BaseApplication.curActivity)
     timePicker.apply {
         setTitle("每日提醒时间")
         setOnTimePickedListener { hour, minute, second ->
-            result("$hour","$minute")
+            result("$hour", "$minute")
         }
         show()
     }

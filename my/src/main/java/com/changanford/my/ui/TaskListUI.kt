@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -151,11 +152,12 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             bean?.let {
                 it.data?.apply {
                     dayAdapter.reissueIntegral = abs(this.reissueIntegral?.toInt()!!)
+                    binding.des.isVisible = ontinuous > 0
                     binding.des.text =
                         "已连续签到${ontinuous ?: 0}天，明天签到+${nextIntegral ?: 0}福币+${nextGrowth ?: 0}成长值"
-                    if (ontinuous == null) {
-                        binding.des.text = "连续签到赚丰厚奖励"
-                    }
+//                    if (ontinuous == null) {
+//                        binding.des.text = "连续签到赚丰厚奖励"
+//                    }
                     roundList?.forEach {
                         it.isNowDay = TimeUtils.getNowDay().equals(it.date)
                         if (TimeUtils.getNowDay().equals(it.date)) {

@@ -6,7 +6,7 @@ package com.changanford.common.bean
 data class MonthSignBean(
     var multiple: String,//获得加速倍数
     var reissueIntegral: String,//补签需要消耗的积分
-    var ontinuous: String = "0",//连续签到天数
+    var ontinuous: Int = 0,//连续签到天数
     var cumulation: String,//累计签到天数
     var totalIntegral: String,//签到获得总积分
     var totalGrowth: String,//签到获得总成长值

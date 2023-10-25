@@ -588,7 +588,9 @@ class SignViewModel : ViewModel() {
                 }.onSuccess {
                     it?.let {
                         if (type == 1) {
-                            setTrackCmcUserId(it.cmcOpenid)
+                            if (it.cmcOpenid!=null){
+                                setTrackCmcUserId(it.cmcOpenid)
+                            }
                             val trackMap = HashMap<String, String>()
                             trackMap["fy_signInChannel_var"] = signInChannel
                             if (signInChannel.isNotEmpty()) {
