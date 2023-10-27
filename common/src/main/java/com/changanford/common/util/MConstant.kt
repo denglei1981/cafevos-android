@@ -238,6 +238,6 @@ object MConstant {
     const val userAgreementCancellation = "user_agreement_cancellation"
 
     //口碑url
-    const val mouthUrl = "https://www.baidu.com/"
+    const val mouthUrl = "https://h5fym.fuyu.club/post-h5"
 
 }
