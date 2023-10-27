@@ -237,4 +237,7 @@ object MConstant {
     //注销协议code
     const val userAgreementCancellation = "user_agreement_cancellation"
 
+    //口碑url
+    const val mouthUrl = "https://www.baidu.com/"
+
 }

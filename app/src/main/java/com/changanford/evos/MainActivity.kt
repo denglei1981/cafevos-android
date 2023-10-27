@@ -5,11 +5,18 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.*
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -24,7 +31,14 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.APKDownload
+import com.changanford.common.util.BlackWhiteMode
+import com.changanford.common.util.ChangeIconUtils
+import com.changanford.common.util.DeviceUtils
+import com.changanford.common.util.DisplayUtil
+import com.changanford.common.util.DownloadProgress
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
@@ -34,12 +48,14 @@ import com.changanford.common.util.room.Db
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
+import com.changanford.common.wutil.ForegroundCallbacks
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
-import com.changanford.evos.utils.pop.*
+import com.changanford.evos.utils.pop.PopHelper
 import com.changanford.evos.view.SpecialAnimaTab
+import com.changanford.evos.view.SpecialTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
@@ -53,7 +69,8 @@ import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
 
 
 @Route(path = ARouterHomePath.MainActivity)
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
+    ForegroundCallbacks.Listener {
 
     private lateinit var updateViewModel: UpdateViewModel
     lateinit var navController: NavController
@@ -72,56 +89,102 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     private fun initBottomNavigation() {
-        val navigationController: NavigationController = binding.homeBottomNavi.custom()
-            .addItem(
-                newItem(
-                    R.mipmap.icon_homeu,
-                    R.mipmap.icon_home_b,
-                    R.mipmap.icon_home_c,
-                    "发现",
-                    12f
+        val navigationController: NavigationController = binding.homeBottomNavi.custom().apply {
+            if (ChangeIconUtils.isOpenYearIcon()) {//新年icon
+                addItem(
+                    newDefaultItem(
+                        R.mipmap.icon_year_home,
+                        R.mipmap.icon_year_home_,
+                        "发现",
+                        12f
+                    )
                 )
-            )
-            .addItem(
-                newItem(
-                    R.mipmap.icon_circleu,
-                    R.mipmap.icon_circle_b,
-                    R.mipmap.icon_circle_c,
-                    "社区",
-                    12f
+                addItem(
+                    newDefaultItem(
+                        R.mipmap.icon_year_circleu,
+                        R.mipmap.icon_year_circleu_,
+                        "社区",
+                        12f
+                    )
                 )
-            )
-            .addItem(
-                newItem(
-                    R.mipmap.icon_caru,
-                    R.mipmap.icon_car_b,
-                    R.mipmap.icon_car_c,
-                    "爱车",
-                    1f
+                addItem(
+                    newDefaultItem(
+                        R.mipmap.icon_year_caru,
+                        R.mipmap.icon_year_caru_,
+                        "爱车",
+                        1f
+                    )
                 )
-            )
 //        R.mipmap.icon_car_b,
 //        R.mipmap.icon_car_c,
-            .addItem(
-                newItem(
-                    R.mipmap.icon_shopu,
-                    R.mipmap.icon_shop_b,
-                    R.mipmap.icon_shop_c,
-                    "商城",
-                    13f
+                addItem(
+                    newDefaultItem(
+                        R.mipmap.icon_year_shopu,
+                        R.mipmap.icon_year_shopu_,
+                        "商城",
+                        13f
+                    )
                 )
-            )
-            .addItem(
-                newItem(
-                    R.mipmap.icon_myu,
-                    R.mipmap.icon_my_b,
-                    R.mipmap.icon_my_c,
-                    "我的",
-                    18f,
-                    -10f
+                addItem(
+                    newDefaultItem(
+                        R.mipmap.icon_year_myu,
+                        R.mipmap.icon_year_myu_,
+                        "我的",
+                        18f,
+                        -10f
+                    )
                 )
-            )
-            .build()
+            } else {//正常icon
+                addItem(
+                    newItem(
+                        R.mipmap.icon_homeu,
+                        R.mipmap.icon_home_b,
+                        R.mipmap.icon_home_c,
+                        "发现",
+                        12f
+                    )
+                )
+                addItem(
+                    newItem(
+                        R.mipmap.icon_circleu,
+                        R.mipmap.icon_circle_b,
+                        R.mipmap.icon_circle_c,
+                        "社区",
+                        12f
+                    )
+                )
+                addItem(
+                    newItem(
+                        R.mipmap.icon_caru,
+                        R.mipmap.icon_car_b,
+                        R.mipmap.icon_car_c,
+                        "爱车",
+                        1f
+                    )
+                )
+//        R.mipmap.icon_car_b,
+//        R.mipmap.icon_car_c,
+                addItem(
+                    newItem(
+                        R.mipmap.icon_shopu,
+                        R.mipmap.icon_shop_b,
+                        R.mipmap.icon_shop_c,
+                        "商城",
+                        13f
+                    )
+                )
+                addItem(
+                    newItem(
+                        R.mipmap.icon_myu,
+                        R.mipmap.icon_my_b,
+                        R.mipmap.icon_my_c,
+                        "我的",
+                        18f,
+                        -10f
+                    )
+                )
+            }
+        }.build()
         BottomNavigationUtils.setupWithNavController(PAGE_IDS, navigationController, navController)
 
 
@@ -220,6 +283,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView() {
+        //添加app前后台监听
+        ForegroundCallbacks.get(this).addListener(this)
         MConstant.mainActivityIsOpen = true
         title = "主页"
         activityAlive = true
@@ -461,6 +526,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         return mainTab
     }
 
+    private fun newDefaultItem(
+        drawable: Int,
+        checkedDrawable: Int,
+        text: String,
+        xfloat: Float = 0f,
+        yfloat: Float = 0f
+    ): BaseTabItem {
+        val mainTab = SpecialTab(this)
+        if (text != "我的") {
+            mainTab.setmsgGone()
+        }
+        mainTab.setTextDefaultColor(resources.getColor(R.color.tab_nomarl))
+        mainTab.setTextCheckedColor(resources.getColor(R.color.black))
+        mainTab.setYfloat(yfloat)
+        mainTab.setXfloat(xfloat)
+        mainTab.initialize(drawable, checkedDrawable, text)
+        return mainTab
+    }
+
     private var PAGE_IDS = intArrayOf(
         R.id.homeFragment,
         R.id.circleFragment,
@@ -526,9 +610,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             })
         LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this, Observer {
             if (it as Boolean) {//true 显示
-                ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgVisible()
+                if (ChangeIconUtils.isOpenYearIcon()) {
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgVisible()
+                } else {
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgVisible()
+                }
             } else {
-                ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgGone()
+                if (ChangeIconUtils.isOpenYearIcon()) {
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgGone()
+                } else {
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgGone()
+                }
             }
         })
         viewModel.userInfo.observe(this) {
@@ -614,6 +706,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onDestroy() {
         super.onDestroy()
+        // 移除app前后台监听
+        ForegroundCallbacks.get(this).removeListener(this)
         unRegisterConnChange()
     }
 
@@ -667,6 +761,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         runOnUiThread {
             MConstant.deviceWidth = DisplayUtil.getScreenWidth(this)
             MConstant.deviceHeight = DisplayUtil.getScreenHeight(this)
+        }
+    }
+
+    override fun onForeground() {
+
+    }
+
+    override fun onBackground() {
+        if (ChangeIconUtils.isOpenYearIcon()) {
+            ChangeIconUtils.setAlias1(this)
+        } else {
+            ChangeIconUtils.setDefaultAlias(this)
         }
     }
 }

@@ -4,18 +4,12 @@ import android.app.ActivityManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.MConstant
 import com.changanford.evos.databinding.ActivitySplashBinding
 import com.changanford.my.BaseMineUI
-import com.xiaomi.push.it
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 @Route(path = ARouterHomePath.SplashActivity)

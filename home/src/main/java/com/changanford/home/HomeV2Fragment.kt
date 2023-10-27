@@ -26,12 +26,14 @@ import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -105,10 +107,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         fragmentList.add(recommendFragment)
         fragmentList.add(actsParentsFragment)
         fragmentList.add(newsListFragment)
+        fragmentList.add(Fragment())
 //        fragmentList.add(bigShotFragment)
         titleList.add(getString(R.string.home_recommend))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
+        titleList.add(getString(R.string.home_mouth))
 //        titleList.add(getString(R.string.home_big_shot))
         pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
         binding.homeViewpager.adapter = pagerAdapter
@@ -147,18 +151,26 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                selectTab(tab, true)
                 GioPageConstant.prePageType = GioPageConstant.mainTabName
                 GioPageConstant.prePageTypeName = GioPageConstant.mainSecondPageName()
                 GioPageConstant.mainTabName = "发现页"
-                currentPosition = tab.position
                 GioPageConstant.findSecondPageName = when (tab.position) {
                     0 -> "发现页-推荐"
                     1 -> "发现页-活动"
                     2 -> "发现页-资讯"
+                    3 -> "发现页-口碑"
                     else -> "发现页-推荐"
                 }
+                if (tab.position == 3) {//口碑跳转h5
+                    JumpUtils.instans?.jump(1,MConstant.mouthUrl)
+                    binding.homeViewpager.post {
+                        binding.homeViewpager.currentItem = currentPosition
+                    }
+                    return
+                }
+                currentPosition = tab.position
                 GIOUtils.homePageView()
+                selectTab(tab, true)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -200,6 +212,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                             .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
                             .postValue(true)
                     }
+
                     1f -> { // 关闭，
                         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
                     }
@@ -244,12 +257,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             0 -> {
                 JumpUtils.instans!!.jump(108)
             }
+
             1 -> {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
             }
+
             2 -> {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
             }
+
             3 -> {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_USER.toString())
             }
@@ -299,6 +315,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
+            if (i == binding.homeTab.tabCount - 1) {
+                mTabText.setDrawableLeft(R.mipmap.icon_home_mouth, R.dimen.dp_20)
+            }
             //更改选中项样式
             //设置样式
             binding.homeTab.getTabAt(i)?.customView = view
@@ -338,9 +357,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                         1 -> {//发布活动
                             JumpUtils.instans?.jump(13)
                         }
+
                         2 -> {//问卷调查
                             JumpUtils.instans?.jump(12)
                         }
+
                         3 -> {//扫一扫
                             JumpUtils.instans?.jump(61)
                         }
@@ -369,7 +390,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             it?.apply {
                 if (isPop == 1) {
                     android.os.Handler(Looper.myLooper()!!).postDelayed({
-                        GetFbPop(requireContext(), viewModel, this,this@HomeV2Fragment).apply {
+                        GetFbPop(requireContext(), viewModel, this, this@HomeV2Fragment).apply {
                             setOutSideDismiss(false)
                             showPopupWindow()
                         }
@@ -391,9 +412,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                 }
+
                 MotionEvent.ACTION_UP -> {
                     JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     binding.header.finishTwoLevel()
                 }
@@ -475,6 +498,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
 //                        viewModel.getNewEstOne()
                     }
+
                     else -> {}
                 }
             }

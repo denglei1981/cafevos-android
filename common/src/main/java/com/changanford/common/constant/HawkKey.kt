@@ -11,4 +11,5 @@ object HawkKey {
     const val IS_OPEN_SIGN_IN_TIPS = "isOpenSignInTips"
     const val OPEN_SIGN_IN_TIPS_TIME = "OpenSignInTipsTime"
     const val CMC_OPEN_ID = "cmcOpenId"
+    const val SETTING_RECOMMEND = "settingRecommend"
 }

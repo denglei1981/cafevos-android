@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
@@ -30,6 +31,8 @@ import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiSeetingBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
+import com.orhanobut.hawk.Hawk
+import com.xiaomi.push.it
 import java.lang.reflect.InvocationTargetException
 import kotlin.concurrent.thread
 
@@ -67,13 +70,19 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
             RouterManger.needLogin(true).startARouter(ARouterMyPath.AccountSafeUI)
         }
         binding.setbg.setOnClickListener {
-            if (MConstant.isCanQeck&&FastClickUtils.fastRepeatClick()) {
+            if (MConstant.isCanQeck && FastClickUtils.fastRepeatClick()) {
                 startARouter(ARouterMyPath.BateActivity)
             }
         }
         binding.setFord.setOnClickListener {
             startARouter(ARouterMyPath.AboutUI)
         }
+        binding.swRecommend.apply {
+            setOnCheckedChangeListener { _, isChecked ->
+                Hawk.put(HawkKey.SETTING_RECOMMEND, isChecked)
+            }
+        }
+        binding.swRecommend.isChecked = Hawk.get(HawkKey.SETTING_RECOMMEND, true)
         //推送通知
         binding.setNotice.setOnClickListener {
             var dilaog = AlertThreeFilletDialog(BaseApplication.curActivity).builder()
@@ -135,7 +144,8 @@ class SettingUI : BaseMineUI<UiSeetingBinding, SignViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        binding.setMsgenable.text = if (NotificationUtil.isNotificationEnabled(this)) "已开启" else "已关闭"
+        binding.setMsgenable.text =
+            if (NotificationUtil.isNotificationEnabled(this)) "已开启" else "已关闭"
     }
 }
 

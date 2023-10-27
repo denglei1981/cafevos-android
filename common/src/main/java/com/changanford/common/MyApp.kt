@@ -18,7 +18,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.crash.CrashProtect
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
-import com.changanford.common.widget.smart.MyHeaderViewNew
+import com.changanford.common.wutil.ForegroundCallbacks
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
@@ -82,6 +82,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         }
         initLoadSir()// 初始化界面管理类。
         isRunInBackGround()
+        ForegroundCallbacks.init(this)
         val cmcOpenId = Hawk.get<String>(HawkKey.CMC_OPEN_ID)
         cmcOpenId?.let {
             GrowingAutotracker.get().setLoginUserId(it)
