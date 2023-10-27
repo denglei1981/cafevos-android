@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:thumb="@drawable/switch_ios_thumb"
+            android:thumb="@drawable/switch_ios_thumb_selector"
             android:track="@drawable/switch_ios_track_selector"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
