@@ -24,7 +24,7 @@ object ChangeIconUtils {
     fun isOpenYearIcon(): Boolean {
         val sdf = SimpleDateFormat("yyyyMMdd")
         val time = sdf.format(Date()).toInt()
-        if (time in 20231027..20231027) {
+        if (time in 20231101..20231130) {
             return true
         }
         return false

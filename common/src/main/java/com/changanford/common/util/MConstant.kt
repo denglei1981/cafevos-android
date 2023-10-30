@@ -238,6 +238,6 @@ object MConstant {
     const val userAgreementCancellation = "user_agreement_cancellation"
 
     //口碑url
-    const val mouthUrl = "https://h5fym.fuyu.club/post-h5"
+    val mouthUrl by lazy { if (isCanQeck) if (isDebug) "https://h5fymqa.fuyu.club/post-h5/" else "https://h5fym.fuyu.club/post-h5" else "https://h5fym.fuyu.club/post-h5"}
 
 }

@@ -89,7 +89,7 @@ dependencies {
     //网络
     api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
     //侧滑删除
-    api "com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0"
+    api "com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.1"
     //adapter
     api "com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.11"
     //badger

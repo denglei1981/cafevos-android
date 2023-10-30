@@ -132,7 +132,7 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             val mSignDay = daySignBean.ontinuous ?: 0
             if (mSignDay > 0) {
                 Text(
-                    text = "连续签到赢大礼 ${if (!MConstant.token.isNullOrEmpty()) "，已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
+                    text = "${if (!MConstant.token.isNullOrEmpty()) "已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
                     fontSize = 10.sp,
                     color = Color(0xff999999),
                     modifier = Modifier.padding(top = 10.dp)
