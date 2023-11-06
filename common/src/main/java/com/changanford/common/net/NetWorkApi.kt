@@ -1448,4 +1448,16 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<BizCodeBean>
+
+    @POST("/user/getCmcUserStatus")
+    suspend fun getCmcUserStatus(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    @POST("base/config/getConfigValueByKey")
+    suspend fun queryCmcStatePhone(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CmcStatePhoneBean>
 }

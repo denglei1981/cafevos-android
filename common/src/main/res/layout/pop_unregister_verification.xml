@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_whit5_bg"
+            android:paddingBottom="27dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.85">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/unregister_top_icon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="41dp"
+                android:lineSpacingMultiplier="1.3"
+                tools:text="您当前使用的服务包含福域、微客服、福特商城"
+                android:textColor="@color/color_33"
+                android:textSize="14sp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:text="福域APP仅可注销福域账号"
+                android:layout_marginTop="25dp"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content"
+                android:textColor="@color/color_33"
+                android:textSize="14sp"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginEnd="23dp"
+                android:background="@drawable/app_color_20"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_unregister"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="23dp"
+                android:background="@drawable/app_a6_20"
+                android:gravity="center"
+                android:text="我知道了，继续注销福域账号"
+                android:textColor="#161616"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cancel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

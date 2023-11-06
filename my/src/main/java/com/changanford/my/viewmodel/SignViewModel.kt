@@ -22,11 +22,13 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.UnBindWeChatTipsDialog
+import com.changanford.common.wutil.ValidateLogonUtil
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.utils.downLoginBg
 import com.changanford.my.utils.getDiskCacheDir
 import com.changanford.my.utils.getDiskCachePath
 import com.luck.picture.lib.entity.LocalMedia
+import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -90,6 +92,20 @@ class SignViewModel : ViewModel() {
             }.onFailure {
                 changeAllToRead.postValue(false)
             }
+        }
+    }
+
+    val cmaStateData = MutableLiveData<CommonResponse<Any>>()
+
+    fun getCmcUserStatus() {
+        viewModelScope.launch {
+            val result = fetchRequest {
+                val body = HashMap<String, String>()
+                body["phone"] = MConstant.mine_phone
+                val rkey = getRandomKey()
+                apiService.getCmcUserStatus(body.header(rkey), body.body(rkey))
+            }
+            cmaStateData.value = result
         }
     }
 
@@ -395,6 +411,27 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    val cmcStatePhoneBean = MutableLiveData<CmcStatePhoneBean>()
+
+    fun queryCmcStatePhone(isLogon: Boolean = false) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["configKey"] = "cancel_login_register_cmc"
+                body["obj"] = true
+                var rkey = getRandomKey()
+                apiService.queryCmcStatePhone(body.header(rkey), body.body(rkey))
+                    .onSuccess {
+                        if (isLogon) {
+                            it?.let { it1 -> ValidateLogonUtil.showValidateLogon(it1) }
+                        } else {
+                            cmcStatePhoneBean.value = it
+                        }
+                    }.onWithMsgFailure { it?.toast() }
+            }
+        }
+    }
+
     fun monthSignDetail(date: String, result: (CommonResponse<MonthSignBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
@@ -500,8 +537,14 @@ class SignViewModel : ViewModel() {
             }.onSuccess {
                 signInChannel = "手机号登陆"
                 loginSuccess(it)
-            }.onWithMsgFailure {
-                it?.toast()
+            }.onWithAllFailure {
+                if (it.code == 50) {
+                   queryCmcStatePhone(true)
+                } else {
+                    it.msg?.let {
+                        toastShow(it)
+                    }
+                }
             }
         }
     }
@@ -588,7 +631,7 @@ class SignViewModel : ViewModel() {
                 }.onSuccess {
                     it?.let {
                         if (type == 1) {
-                            if (it.cmcOpenid!=null){
+                            if (it.cmcOpenid != null) {
                                 setTrackCmcUserId(it.cmcOpenid)
                             }
                             val trackMap = HashMap<String, String>()
@@ -785,9 +828,13 @@ class SignViewModel : ViewModel() {
                 UserManger.deleteUserInfo()
                 it?.jumpData = BindMobileJumpData()
                 loginSuccess(it)
-            }.onWithMsgFailure {
-                it?.let {
-                    toastShow(it)
+            }.onWithAllFailure {
+                if (it.code == 50) {
+                   queryCmcStatePhone(true)
+                } else {
+                    it.msg?.let {
+                        toastShow(it)
+                    }
                 }
             }
         }

@@ -195,6 +195,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                     .with(LiveDataBusKey.MINE_REFRESH_CIRCLE_STATUS, Boolean::class.java)
                     .postValue(true)
                 initRefreshData(1)
+                checkMap.clear()
             } else {
                 it?.let {
                     showToast(it)
@@ -350,7 +351,10 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                 checkMap[item.userId] = isChecked
                 setCheckNum()
             }
-            checkBox.isChecked = checkMap[item.userId]!!
+            checkMap[item.userId]?.let {
+                checkBox.isChecked =it
+            }
+//            checkBox.isChecked = checkMap[item.userId]!!
             icon.setOnClickListener {
 //                RouterManger.param("value", item.userId).startARouter(ARouterMyPath.TaCentreInfoUI)
 

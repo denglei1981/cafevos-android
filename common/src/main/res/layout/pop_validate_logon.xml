@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cs_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_whit5_bg"
+            android:paddingBottom="27dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.85">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="60dp"
+                android:lineSpacingMultiplier="1.3"
+                android:textColor="@color/color_33"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="该账号的手机号已经被其他端使用请联系客服处理" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cs_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/logon_phone_bg"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12.5dp"
+                    android:layout_marginBottom="12.5dp"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/logon_phone_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_kf_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="1dp"
+                    android:text="客服电话"
+                    android:textColor="@color/color_33"
+                    android:textSize="11sp"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_icon"
+                    app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/color_33"
+                    android:textSize="11sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_kf_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_kf_title"
+                    tools:text="023-88888888" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_call_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/logon_call_phone_bg"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="立即拨打"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15.5dp"
+                android:textColor="@color/color_01025C"
+                android:textSize="11sp"
+                app:layout_constraintLeft_toLeftOf="@+id/cs_phone"
+                app:layout_constraintRight_toRightOf="@+id/cs_phone"
+                app:layout_constraintTop_toBottomOf="@+id/cs_phone"
+                tools:text="客服在线时间：工作日早上9点到下午6点" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="31dp"
+            android:src="@mipmap/close_new_est"
+            app:layout_constraintLeft_toLeftOf="@+id/cs_content"
+            app:layout_constraintRight_toRightOf="@+id/cs_content"
+            app:layout_constraintTop_toBottomOf="@+id/cs_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -16,12 +16,14 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.request.getBizCode
+import com.changanford.common.widget.pop.UnregisterVerificationPop
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemClearAccountVerifyBinding
 import com.changanford.my.databinding.UiClearAccountConBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：ClearAccountUI
@@ -44,7 +46,6 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
         binding.clearToolbar.toolbarTitle.text = "申请注销"
 
         binding.clearRcy.rcyCommonView.adapter = clearAdapter
-
         viewModel.clearBean.observe(this, Observer {
             completeRefresh(it, clearAdapter)
             it?.forEach {
@@ -74,18 +75,41 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
         }
 
         binding.btnClearAccount.setOnClickListener {
-            if (bizCode.isNotEmpty()) {
-                addRecord(bizCode)
-            }
-            RouterManger.startARouter(ARouterMyPath.MineCancelAccountConfirmUI)
+            viewModel.getCmcUserStatus()
         }
 
         //取消注销申请  注销账户成功
         LiveDataBus.get().with(LiveDataBusKey.MINE_CANCEL_ACCOUNT, Boolean::class.java)
-            .observe(this,
-                Observer {
-                    if (it) back()
-                })
+            .observe(this
+            ) {
+                if (it) back()
+            }
+        viewModel.cmaStateData.observe(this) {
+            if (it.code != 121) {
+                starMineCancelAccount()
+            } else {
+                viewModel.queryCmcStatePhone()
+            }
+        }
+        viewModel.cmcStatePhoneBean.observe(this){
+            showUnregisterVerificationPop(it.cancel)
+        }
+    }
+
+    private fun starMineCancelAccount() {
+        if (bizCode.isNotEmpty()) {
+            addRecord(bizCode)
+        }
+        RouterManger.startARouter(ARouterMyPath.MineCancelAccountConfirmUI)
+    }
+
+    private fun showUnregisterVerificationPop(msg:String) {
+        UnregisterVerificationPop(this,msg) {
+            starMineCancelAccount()
+        }.apply {
+            setBackground(R.color.m_pop_bg)
+            showPopupWindow()
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {

@@ -95,6 +95,14 @@ fun <T> CommonResponse<T>.onWithMsgFailure(block: (msg: String?) -> Unit): Commo
     return this
 }
 
+fun <T> CommonResponse<T>.onWithAllFailure(block: (CommonResponse<T>) -> Unit): CommonResponse<T> {
+    if (this.code != 0) {
+        //TODO 做一些统一的处理
+        block(this)
+    }
+    return this
+}
+
 private fun getApiException(e: Throwable): ApiException {
     return when (e) {
         is UnknownHostException -> {

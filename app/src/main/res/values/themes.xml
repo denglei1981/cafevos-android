@@ -21,10 +21,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-
     <!-- 应用启动页(StartingWindow)的theme -->
     <style name="AppTheme.StartingWindowTheme" parent="Theme.EVOS">
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@mipmap/splash</item>
 <!--        <item name="android:windowFullscreen">true</item>-->
     </style>
 

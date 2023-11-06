@@ -740,20 +740,33 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     /**
      * 处理返回
      */
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+//        if (handleH5Back()) {
+//            return true
+//        }
+//        if (binding.webView.canGoBack()) {
+//            binding.webView.goBack()
+//            return true
+//        } else {
+//            finish()
+//        }
+////        if (agentWeb.handleKeyEvent(keyCode, event)) {
+////            return true
+////        }
+//        return super.onKeyDown(keyCode, event)
+//    }
+
+    override fun onBackPressed() {
         if (handleH5Back()) {
-            return true
+            return
         }
         if (binding.webView.canGoBack()) {
             binding.webView.goBack()
-            return true
+            return
         } else {
             finish()
         }
-//        if (agentWeb.handleKeyEvent(keyCode, event)) {
-//            return true
-//        }
-        return super.onKeyDown(keyCode, event)
+        super.onBackPressed()
     }
 
     override fun onPause() {
