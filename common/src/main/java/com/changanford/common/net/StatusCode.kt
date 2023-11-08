@@ -35,4 +35,14 @@ object StatusCode {
      * 下单地址错误
      */
     const val ERROR_ADDRESS = 1000
+
+    /**
+     * 登录、绑定手机号弹窗
+     */
+    const val LOGON_POP = 50
+
+    /**
+     * 注销弹窗
+     */
+    const val UNREGISTER_POP = 121
 }

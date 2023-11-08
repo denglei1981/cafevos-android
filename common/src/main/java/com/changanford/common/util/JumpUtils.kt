@@ -147,6 +147,7 @@ class JumpUtils {
                 bundle.putString("artId", value)
                 startARouter(ARouterHomePath.InfoDetailActivity, bundle)
             }
+
             3 -> {//商品详情
                 if (value != null) {
                     bundle.putString("spuId", value)
@@ -156,36 +157,44 @@ class JumpUtils {
                     startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
                 }
             }
+
             4 -> {//帖子详情
                 bundle.putString("postsId", value)
                 startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             }
+
             5 -> {//商城订单详情
                 if (value != null) {
                     bundle.putString("orderNo", value)
                 }
                 startARouter(ARouterShopPath.OrderDetailActivity, bundle, true)
             }
+
             6 -> {//圈子详情
                 bundle.putString("circleId", value)
                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
             }
+
             7 -> {//专题列表
                 startARouter(ARouterHomePath.SpecialListActivity, bundle)
             }
+
             8 -> {//专题详情
                 bundle.putString(JumpConstant.SPECIAL_TOPIC_ID, value)
                 startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
             }
+
             9 -> {//话题详情
                 bundle.putString("topicId", value)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
+
             10 -> {//成长值详情
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     RouterManger.needLogin(true).startARouter(ARouterMyPath.MineTaskListUI)
                 }
             }
+
             11 -> {//填写意见反馈
                 if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
@@ -193,41 +202,51 @@ class JumpUtils {
                     startARouter(ARouterMyPath.MineEditFeedbackUI, bundle)
                 }
             }
+
             12 -> {//去发布调查
                 startARouter(ARouterCirclePath.ReleaseUpActivity, true)
             }
+
             13 -> {//去发布活动',
                 startARouter(ARouterCirclePath.releasactivity, true)
             }
+
             14 -> {//去发帖',
                 jump(102)
             }
+
             15 -> {//2级评论''
 
             }
+
             16 -> {//任务中心,
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     RouterManger.needLogin(true).startARouter(ARouterMyPath.MineTaskListUI)
                 }
             }
+
             17 -> {//车主认证',
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+
                     MineUtils.getBindMobileJumpDataType() -> {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
+
                     else -> {
 //                        startARouter(ARouterMyPath.UniCarAuthUI)
                         toCarAuth()
                     }
                 }
             }
+
             18 -> {//绑定手机号',
                 startARouter(ARouterMyPath.MineBindMobileUI, true)
 
             }
+
             19 -> {//小程序',
                 if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
@@ -260,6 +279,7 @@ class JumpUtils {
                     "传入参数为空".toast()
                 }
             }
+
             20 -> {//地址管理',
                 if (value.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.MineAddressListUI, true)
@@ -272,91 +292,114 @@ class JumpUtils {
                 }
 
             }
+
             21 -> {//设置',
                 startARouter(ARouterMyPath.MineSettingUI)
 
             }
+
             22 -> {//' |=>|会员身份,
                 startARouter(ARouterMyPath.UniUserIdcardUI, true)
 
             }
+
             23 -> {//我的发布',
                 startARouter(ARouterMyPath.MineFollowUI, true)
 
             }
+
             24 -> {//我的消息',
                 startARouter(ARouterMyPath.MineMessageUI, true)
 
             }
+
             25 -> {//我的关注',
                 bundle.putInt(RouterManger.KEY_TO_ID, 2)
                 startARouter(ARouterMyPath.MineFansUI, bundle, true)
             }
+
             26 -> {//我的活动',
                 startARouter(ARouterMyPath.MineJoinAcUI, bundle, true)
 
             }
+
             27 -> {//我的收藏',
                 startARouter(ARouterMyPath.MineCollectUI, bundle, true)
 
             }
+
             28 -> {//我的圈子',value=1进入我管理的
                 startARouter(ARouterMyPath.MineCircleUI, bundle, true)
 
             }
+
             29 -> {//所有勋章
 //                startARouter(ARouterMyPath.MineMedalUI,true)
                 startARouter(ARouterMyPath.AllMedalUI, bundle, true)
             }
+
             30 -> {//积分纪录,
                 startARouter(ARouterMyPath.MineIntegralUI, bundle, true)
 
             }
+
             31 -> {//‘云豆详情',
             }
+
             32 -> {//‘成长值',
                 startARouter(ARouterMyPath.MineGrowUpUI, true)
 
             }
+
             34 -> {//用户个人信息页面,
                 startARouter(ARouterMyPath.MineEditInfoUI, true)
 
             }
+
             35 -> {//他人主页 需要userId
                 startARouter(ARouterMyPath.PersonCenterActivity, bundle, true)
 
             }
+
             36 -> {//聚合订单列表页
                 startARouter(ARouterShopPath.AllOrderActivity, bundle, true)
             }
+
             37 -> {//签到
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+
                     MineUtils.getBindMobileJumpDataType() -> {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
+
                     else -> {
                         mineDaySign()
                     }
                 }
             }
+
             38 -> {//我的足迹
                 startARouter(ARouterMyPath.MineFootprintUI, bundle, true)
             }
+
             39 -> {//常见问题
                 startARouter(ARouterMyPath.MineFeedbackUI)
             }
+
             40 -> {//我的粉丝
                 bundle.putInt(RouterManger.KEY_TO_ID, 1)
                 startARouter(ARouterMyPath.MineFansUI, bundle, true)
             }
+
             41 -> {//我的爱车
 //                startARouter(ARouterMyPath.MineLoveCarListUI, true)
                 //2022-07-13测试要求有车才到爱车没有车跳认证
                 instans?.jump(17)
             }
+
             42 -> {//意见反馈记录
                 if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
@@ -364,6 +407,7 @@ class JumpUtils {
                     startARouter(ARouterMyPath.MineFeedbackListUI)
                 }
             }
+
             43 -> {//公民认证详情页
                 try {
                     var json = JSON.parseObject(value)
@@ -381,6 +425,7 @@ class JumpUtils {
                     e.printStackTrace()
                 }
             }
+
             44 -> {//邀请新用户
                 if (MConstant.token.isNullOrEmpty()) {
                     startARouter(ARouterMyPath.SignUI)
@@ -388,6 +433,7 @@ class JumpUtils {
                     toShare()
                 }
             }
+
             45 -> {
                 //编辑已发布的活动
                 val bundle = Bundle()
@@ -396,6 +442,7 @@ class JumpUtils {
                     startARouter(ARouterCirclePath.ReleaseEditActivity, bundle)
                 }
             }
+
             46 -> {
                 //问卷编辑
                 val bundle = Bundle()
@@ -404,6 +451,7 @@ class JumpUtils {
                 }
                 startARouter(ARouterCirclePath.ReleaseUpActivity, bundle)
             }
+
             47 -> { //messageType(1->系统消息 2->互动消息 3->交易消息) |消息列表
                 if (!value.isNullOrEmpty()) {
                     bundle.putInt("messageType", value.toInt())
@@ -414,9 +462,11 @@ class JumpUtils {
                     }
                 }
             }
+
             48 -> {//秒杀列表
                 startARouter(ARouterShopPath.GoodsKillAreaActivity)
             }
+
             49 -> {
                 RouterManger
                     .needLogin(true)
@@ -425,6 +475,7 @@ class JumpUtils {
                     .param("title", "福特员工")
                     .startARouter(ARouterMyPath.FordUserAuthUI)
             }
+
             50 -> {//认证详情
                 try {
                     value?.let {
@@ -449,11 +500,13 @@ class JumpUtils {
                                 CommonUtils.isCrmSuccess(status) -> {
                                     ARouterMyPath.MineLoveCarInfoUI
                                 }
+
                                 CommonUtils.isCrmStatusIng(status) || (CommonUtils.isCrmFail(status) && CommonUtils.isCrmChangeBindFail(
                                     isNeedChangeBind
                                 )) -> {
                                     ARouterMyPath.CarAuthIngUI
                                 }
+
                                 else -> {
                                     ARouterMyPath.UniCarAuthUI
                                 }
@@ -466,25 +519,30 @@ class JumpUtils {
                     ).startARouter(ARouterMyPath.UniCarAuthUI)
                 }
             }
+
             52 -> {//商城订单列表
                 if (!TextUtils.isEmpty(value)) bundle.putInt(
                     "states", value!!.toInt()
                 )//指定选中状态 0全部 1待付款,2待发货,3待收货,4待评价
                 startARouter(ARouterShopPath.OrderGoodsActivity, bundle, true)
             }
+
             54 -> {// 车主认证列表(车主认证部分)
                 "此功能暂未开放".toast()
 //                startARouter(ARouterMyPath.MineLoveCarListUI)
             }
+
             55 -> {//月签到详情
                 startARouter(ARouterMyPath.SignMonth)
 
             }
+
             59 -> {
                 value?.let {
                     it.toast()
                 }
             }
+
             60 -> {
                 value?.let {
                     try {
@@ -527,6 +585,7 @@ class JumpUtils {
                     }
                 }
             }
+
             61 -> {//扫一扫
                 SoulPermission.getInstance().checkAndRequestPermission(
                     Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
@@ -541,9 +600,11 @@ class JumpUtils {
                     }
                 )
             }
+
             69 -> {
                 showMapDialog(value)
             }
+
             71 -> {////'71'|在线客服链接|跳转新版意见反馈页面|有意见反馈跳列表，无意见反馈跳添加页面
                 /**
                  * 需要参数，在线客服H5链接（string），是否有意见反馈（意见反馈 等于1 已提交意见反馈）
@@ -558,6 +619,7 @@ class JumpUtils {
 //                    }
 //                }
             }
+
             73 -> { //新增跳转类型73，需要位置权限的H5页面
                 if (isOPen(BaseApplication.curActivity)) {
                     SoulPermission.getInstance().checkAndRequestPermission(
@@ -577,66 +639,82 @@ class JumpUtils {
                 }
 
             }
+
             99 -> {//不跳转
             }
+
             100 -> {//登录页面
                 startARouter(ARouterMyPath.SignUI)
             }
+
             101 -> {
                 bundle.putInt("jumpValue", 1)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
+
             102 -> {//' |=> |'社区',
                 bundle.putInt("jumpValue", 2)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
+
             103 -> {//' |=> |'爱车',
                 bundle.putInt("jumpValue", 3)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
+
             104 -> {//' |=> |'商城',
                 bundle.putInt("jumpValue", 4)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
+
             105 -> {//' |=> |'我的',
                 bundle.putInt("jumpValue", 5)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
+
             106 -> {//'H5页面'（需要登录）,
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+
                     else -> {
                         startARouter(ARouterHomePath.AgentWebActivity, bundle)
                     }
                 }
             }
+
             107 -> {//'H5页面'（不仅登录需要绑定手机号）,
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+
                     MineUtils.getBindMobileJumpDataType() -> {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
+
                     else -> {
                         startARouter(ARouterHomePath.AgentWebActivity, bundle)
                     }
                 }
             }
+
             108 -> {// 聚合搜索。
                 bundle.putString(JumpConstant.SEARCH_TYPE, value)
                 startARouter(ARouterHomePath.PolySearchActivity, bundle = bundle)
             }
+
             109 -> {// 商品订单确认 需要绑定手机号
                 when {
                     MConstant.token.isNullOrEmpty() -> {
                         startARouter(ARouterMyPath.SignUI)
                     }
+
                     MineUtils.getBindMobileJumpDataType() -> {
                         startARouter(ARouterMyPath.MineBindMobileUI)
                     }
+
                     else -> {
                         if (!TextUtils.isEmpty(value)) {
                             bundle.putString("goodsInfo", value)//商品信息列表
@@ -645,12 +723,14 @@ class JumpUtils {
                     }
                 }
             }
+
             110 -> {// 支付确认
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("orderNo", value)//订单号
                     startARouter(ARouterShopPath.PayConfirmActivity, bundle, true)
                 }
             }
+
             111 -> {//商品评价列表
                 if (!TextUtils.isEmpty(value)) {
                     /*"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"
@@ -660,6 +740,7 @@ class JumpUtils {
                     startARouter(ARouterShopPath.GoodsEvaluateActivity, bundle, true)
                 }
             }
+
             112 -> {//商品订单评价
                 if (!TextUtils.isEmpty(value)) {
                     // "{\"orderNo\": \"M0565984864114180096\",\"skuList\":[{\"skuImg\":\"pg\",\"mallOrderSkuId\":104,\"mallMallspuId\":1292,\"spuName\": \"石头\"}],\"reviewEval\": false}"
@@ -667,25 +748,30 @@ class JumpUtils {
                     startARouter(ARouterShopPath.PostEvaluationActivity, bundle, true)
                 }
             }
+
             113 -> {//话题列表
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
+
             114 -> {//我的问答它的问答
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("value", value)
                     startARouter(ARouterCirclePath.QuestionActivity, bundle, true)
                 }
             }
+
             115 -> { // 自己可以编辑技术详情的主页
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("value", value)
                     startARouter(ARouterCirclePath.MechanicMainActivity, bundle, true)
                 }
             }
+
             116 -> { //提问
                 startARouter(ARouterCirclePath.CreateQuestionActivity, bundle, true)
                 GIOUtils.askPageView()
             }
+
             117 -> { //圈子成员列表
                 if (!TextUtils.isEmpty(value)) {
                     JSON.parseObject(value)?.apply {
@@ -697,15 +783,19 @@ class JumpUtils {
                     }
                 }
             }
+
             118 -> { // 优惠券列表
                 startARouter(ARouterShopPath.CouponActivity, bundle, true)
             }
+
             119 -> { // 购物车
                 startARouter(ARouterShopPath.ShoppingCartActivity, bundle, true)
             }
+
             120 -> { // 申请发票  start 已实现
                 startARouter(ARouterShopPath.InvoiceActivity, bundle, true)
             }
+
             121 -> {// 申请退款--- 未发货
                 val gson = Gson()
                 val orderString = bundle.getString("value")
@@ -741,41 +831,51 @@ class JumpUtils {
                 }
 
             }
+
             122 -> { // 跳优惠券弹窗
                 val getCoupopPop =
                     GetCoupopBindingPop(BaseApplication.curActivity, BaseApplication.curActivity)
                 getCoupopPop.showPopupWindow()
             }
+
             123 -> { // 查看发票详情 start 已实现
                 startARouter(ARouterShopPath.InvoiceLookActivity, bundle, true)
             }
+
             124 -> {
                 // 整单退退款进度 start 已实现
                 startARouter(ARouterShopPath.RefundProgressActivity, bundle, true)
 //                startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
             }
+
             125 -> { //单个sku退款申请。
                 startARouter(ARouterShopPath.RefundApplySingleActivity, bundle, true)
             }
+
             126 -> {// 单个sku 退款进度  start 已实现
                 startARouter(ARouterShopPath.RefundProgressHasShopActivity, bundle, true)
             }
+
             127 -> { // 多包裹信息  start 已实现
                 startARouter(ARouterShopPath.MultiplePackageActivity, bundle, true)
             }
+
             128 -> { // 使用优惠券
                 if (!TextUtils.isEmpty(value)) {
                     bundle.putString("itemBean", value)//CouponsItemBean
                     startARouter(ARouterShopPath.UseCouponsActivity, bundle, true)
                 }
             }
+
             129 -> { //爱车养护
                 startARouter(ARouterShopPath.CarMaintenanceActivity, bundle)
             }
+
             130 -> {//我的勋章
                 startARouter(ARouterMyPath.MineMedalUI, true)
 //                startARouter(ARouterMyPath.AllMedalUI, bundle, true)
             }
+
             131 -> { // 发帖----///发帖 1、图文      2、长贴       3、视频
                 //长帖
                 value?.let { s ->
@@ -784,13 +884,16 @@ class JumpUtils {
                         1 -> {
                             startARouter(ARouterCirclePath.PostActivity, bundle, true)
                         }
+
                         2 -> {
                             startARouter(ARouterCirclePath.LongPostAvtivity, bundle, true)
                         }
+
                         3 -> {
                             // 视频
                             startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
                         }
+
                         else -> {
                             startARouter(ARouterCirclePath.PostActivity, bundle, true)
                         }
@@ -798,24 +901,36 @@ class JumpUtils {
                 }
 
             }
+
             133 -> {//圈子分类页    value  = 圈子分类名称
                 startARouter(ARouterCirclePath.CircleListActivity, bundle)
             }
+
             134 -> {//创建圈子
                 startARouter(ARouterCirclePath.CreateCircleActivity, true)
             }
+
             135 -> {//圈子热门榜单页
                 startARouter(ARouterCirclePath.HotListActivity, bundle)
             }
+
             138 -> {//商城-推荐榜单-榜单列表页：type = 138 value = 榜单名称
                 startARouter(ARouterShopPath.RecommendActivity, bundle)
             }
+
             139 -> {//勋章详情
                 startARouter(ARouterMyPath.MedalDetailUI, bundle, true)
             }
+
             140 -> {//新增收货地址
                 startARouter(ARouterMyPath.EditAddressUI, bundle, true)
             }
+
+            142 -> {//跳转h5并隐藏导航栏
+                bundle.putBoolean("isGoneTitle", true)
+                startARouter(ARouterHomePath.AgentWebActivity, bundle)
+            }
+
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {
@@ -863,7 +978,12 @@ class JumpUtils {
                         return@let
                     }
                     "签到成功，福币+${it.integral},成长值+${it.growth}".toast()
-                    GIOUtils.taskCenterCtaClick("立即签到", it.integral.toString(), "签到", it.actionCode)
+                    GIOUtils.taskCenterCtaClick(
+                        "立即签到",
+                        it.integral.toString(),
+                        "签到",
+                        it.actionCode
+                    )
                     if (it.additionStatus == 1) {//有额外弹框
                         var bundle = Bundle()
                         bundle.putString("signInfo", JSON.toJSONString(it))
@@ -898,6 +1018,7 @@ class JumpUtils {
                         1 -> {//已认证成功
                             isAuth = 2
                         }
+
                         else -> {
                             it.carList?.let {
                                 it.forEach {
@@ -924,6 +1045,7 @@ class JumpUtils {
                         0, 1 -> {//未认证，或者是认证
                             startARouter(ARouterMyPath.UniCarAuthUI)
                         }
+
                         2, 3 -> {//有认证成功的数据
 //                            instans?.jump(41)
                             startARouter(ARouterMyPath.MineLoveCarListUI, true)

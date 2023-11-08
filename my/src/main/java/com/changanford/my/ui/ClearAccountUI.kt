@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CancelVerifyBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.StatusCode
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -85,7 +86,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
                 if (it) back()
             }
         viewModel.cmaStateData.observe(this) {
-            if (it.code != 121) {
+            if (it.code != StatusCode.UNREGISTER_POP) {
                 starMineCancelAccount()
             } else {
                 viewModel.queryCmcStatePhone()

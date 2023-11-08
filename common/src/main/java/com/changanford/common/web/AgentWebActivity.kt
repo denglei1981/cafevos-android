@@ -17,6 +17,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
@@ -120,7 +121,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             createViewModel(PayViewModule::class.java)
 //        mineSignViewModel =
 //            ViewModelProvider(this, getFactoryProducer()).get(MineSignViewModel::class.java)
+        val isGoneTitle = intent.getBooleanExtra("isGoneTitle", false)
         headerView = findViewById(R.id.title_bar)
+        if (isGoneTitle) {
+            headerView.isVisible = false
+        }
 //        AppUtils.setStatusBarHeight(headerView,this)
         headerView.findViewById<ImageView>(R.id.bar_img_back).setOnClickListener {
             if (handleH5Back()) {
@@ -594,6 +599,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 //            }
 //        })
     }
+
     private fun initWebViewSettings() {
         val mWebSettings = binding.webView.settings
         mWebSettings.setJavaScriptEnabled(true)

@@ -538,7 +538,7 @@ class SignViewModel : ViewModel() {
                 signInChannel = "手机号登陆"
                 loginSuccess(it)
             }.onWithAllFailure {
-                if (it.code == 50) {
+                if (it.code == StatusCode.LOGON_POP) {
                    queryCmcStatePhone(true)
                 } else {
                     it.msg?.let {
@@ -829,7 +829,7 @@ class SignViewModel : ViewModel() {
                 it?.jumpData = BindMobileJumpData()
                 loginSuccess(it)
             }.onWithAllFailure {
-                if (it.code == 50) {
+                if (it.code == StatusCode.LOGON_POP) {
                    queryCmcStatePhone(true)
                 } else {
                     it.msg?.let {
