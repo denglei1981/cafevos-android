@@ -29,10 +29,10 @@ import java.io.File
  * *********************************************************************************
  */
 object MConstant {
-    val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.changanford.cn" else "https://evosapi.changanford.cn" else "https://evosapi.changanford.cn" }
-    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+    val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.fuyu.club" else "https://evosapi.fuyu.club" else "https://evosapi.fuyu.club" }
+    val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" }
 
-    //    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" else "https://evosh5.changanford.cn/common/#" }
+    //    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" }
     //这里修改默认的环境，isCanQeck字段为true时生效
     val isDebug by lazy {
         if (isCanQeck) SPUtils.getParam(
@@ -83,7 +83,7 @@ object MConstant {
 
     var pubKey = ""
     var token: String = ""
-    val defaultImgCdn by lazy { if (isDebug && isCanQeck) "https://evosuserqa.changanford.cn/" else "https://evosuser.changanford.cn/" }
+    val defaultImgCdn by lazy { if (isDebug && isCanQeck) "https://evosuserqa.fuyu.club/" else "https://evosuser.fuyu.club/" }
     var imgcdn = defaultImgCdn
     var userId = ""
     var configBean: ConfigBean? = null
@@ -147,7 +147,7 @@ object MConstant {
     //福币规则：/#/richTextAp?key=user_agreement_fuUb
     var H5_MINE_FORD_AGREEMENT = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_fuUb"
 
-    //车主权益 https://evosh5qa.changanford.cn/common/#/richTextAp?key=user_agreement_ownerRights
+    //车主权益 https://evosh5qa.fuyu.club/common/#/richTextAp?key=user_agreement_ownerRights
     var H5_CAR_QY = "${H5_BASE_URL_CSCIR}/richTextAp?key=user_agreement_ownerRights"
 
     var H5_MINE_GROW_UP = "${H5_BASE_URL_CSCIR}/growthValue"
@@ -156,10 +156,10 @@ object MConstant {
      *《福域APP商城服务条款》
      * */
     val H5_SHOP_AGREEMENT = "${H5_BASE_URL_CSCIR}/mallClause"
-    val H5_BASE_URL by lazy { if (isCanQeck && isDebug) "https://evosh5qa.changanford.cn" else "https://evosh5.changanford.cn" }
+    val H5_BASE_URL by lazy { if (isCanQeck && isDebug) "https://evosh5qa.fuyu.club" else "https://evosh5.fuyu.club" }
 
     //H5活动
-    private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" else "https://evosh5.changanford.cn/activity/#" }
+    private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" }
 
     /**
      * %s
@@ -198,10 +198,10 @@ object MConstant {
 
 
     //埋点测试
-    val BASE_URL_BURIED = "https://evosmdqa.changanford.cn"
+    val BASE_URL_BURIED = "https://evosmdqa.fuyu.club"
 
     //埋点正式
-    val BASE_URL_BURIED_PROD = "https://evosmd.changanford.cn/buried"
+    val BASE_URL_BURIED_PROD = "https://evosmd.fuyu.club/buried"
 
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
