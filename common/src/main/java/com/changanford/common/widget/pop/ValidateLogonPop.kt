@@ -10,6 +10,7 @@ import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.CmcStatePhoneBean
 import com.changanford.common.databinding.PopValidateLogonBinding
+import com.changanford.common.util.MineUtils
 import com.changanford.common.utilext.toast
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
@@ -40,11 +41,7 @@ class ValidateLogonPop(private val bean: CmcStatePhoneBean) :
                     "电话为空".toast()
                     return@setOnClickListener
                 }
-                val intent = Intent()
-                intent.action = Intent.ACTION_CALL
-                val data = Uri.parse("tel:${bean.LRPhone}")
-                intent.data = data
-                BaseApplication.curActivity.startActivity(intent)
+                MineUtils.callPhone(BaseApplication.curActivity,bean.LRPhone)
             }
             tvContent.text = bean.LRContent
             tvPhone.text = bean.LRPhone
