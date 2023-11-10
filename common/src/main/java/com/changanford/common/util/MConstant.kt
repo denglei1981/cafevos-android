@@ -198,10 +198,12 @@ object MConstant {
 
 
     //埋点测试
-    val BASE_URL_BURIED = "https://evosmdqa.fuyu.club"
+//    val BASE_URL_BURIED = "https://evosmdqa.fuyu.club"
+    val BASE_URL_BURIED = "https://evosmdqa.changanford.cn"
 
     //埋点正式
-    val BASE_URL_BURIED_PROD = "https://evosmd.fuyu.club/buried"
+//    val BASE_URL_BURIED_PROD = "https://evosmd.fuyu.club/buried"
+    val BASE_URL_BURIED_PROD = "https://evosmd.changanford.cn/buried"
 
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()

@@ -141,11 +141,10 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 when {
                     aliPay != null -> UnionPayUtils.goUnionPay(this@PayConfirmActivity, 1, aliPay)
                     wxPay != null -> UnionPayUtils.goUnionPay(
-                        this@PayConfirmActivity,
-                        2,
-                        Gson().toJson(wxPay)
+                            this@PayConfirmActivity,
+                            2,
+                            Gson().toJson(wxPay)
                     )
-
                     uacPay != null -> UnionPayUtils.goUnionPay(this@PayConfirmActivity, 3, uacPay)
                 }
             }

@@ -69,7 +69,7 @@
                     android:layout_marginTop="1dp"
                     android:text="客服电话"
                     android:textColor="@color/color_33"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     app:layout_constraintLeft_toRightOf="@+id/iv_icon"
                     app:layout_constraintTop_toTopOf="@+id/iv_icon" />
 
@@ -77,11 +77,11 @@
                     android:id="@+id/tv_phone"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="2dp"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/color_33"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_kf_title"
                     app:layout_constraintTop_toBottomOf="@+id/tv_kf_title"
                     tools:text="023-88888888" />
