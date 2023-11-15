@@ -24,7 +24,6 @@ import com.changanford.my.databinding.ItemClearAccountVerifyBinding
 import com.changanford.my.databinding.UiClearAccountConBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import razerdp.basepopup.BasePopupWindow
 
 /**
  *  文件名：ClearAccountUI
@@ -89,7 +88,7 @@ class ClearAccountUI : BaseMineUI<UiClearAccountConBinding, SignViewModel>() {
             if (it.code != StatusCode.UNREGISTER_POP) {
                 starMineCancelAccount()
             } else {
-                viewModel.queryCmcStatePhone()
+               showUnregisterVerificationPop(it.msg)
             }
         }
         viewModel.cmcStatePhoneBean.observe(this){
