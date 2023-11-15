@@ -22,7 +22,7 @@ class UpdateViewModel : ViewModel() {
                 apiService.getUpdateInfo(body.header(rkey), body.body(rkey))
             }
             if (request.code == 0) {
-                _updateInfo.postValue(request.data!!)
+                _updateInfo.postValue(request.data)
             } else {
                 _updateInfo.postValue(null)
             }
