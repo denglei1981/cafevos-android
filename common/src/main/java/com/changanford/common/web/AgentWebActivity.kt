@@ -13,7 +13,6 @@ import android.os.Looper
 import android.os.Message
 import android.text.TextUtils
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,6 +31,7 @@ import com.changanford.common.pay.PayViewModule
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
+import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
@@ -643,6 +643,30 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             ): Boolean {
                 if (url.startsWith("http:") || url.startsWith("https:")) {
                     return false
+                }
+                if (url.startsWith("tel:")) {
+                    SoulPermission.getInstance()
+                        .checkAndRequestPermission(
+                            Manifest.permission.CALL_PHONE,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+                            object : CheckRequestPermissionListener {
+                                override fun onPermissionOk(permission: Permission?) {
+                                    val intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(url)
+                                    )
+                                    startActivity(intent)
+                                }
+
+                                override fun onPermissionDenied(permission: Permission?) {
+                                    val pop = ConfirmPop(this@AgentWebActivity)
+                                    pop.contentText.text = "您已禁止了通话权限，请到设置中心去打开"
+                                    pop.submitBtn.setOnClickListener {
+                                        SoulPermission.getInstance().goPermissionSettings();
+                                    }
+                                    pop.showPopupWindow()
+                                }
+                            })
+                    return true
                 }
                 try {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
