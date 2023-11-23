@@ -18,12 +18,14 @@ import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.request.getBizCode
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.styleAuthCheck
+import com.changanford.common.utilext.toast
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -37,7 +39,9 @@ import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -237,6 +241,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     binding.vinLine.visibility = View.GONE
                     isClick = false
                 }
+
                 3, 4 -> {//审核失败
                     binding.submit.text = "重新提交"
                     binding.authStatusLayout.authReason.visibility = View.VISIBLE
@@ -281,6 +286,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         )
                         imgType = 1
                     }
+
                     2 -> { // 驾驶证
                         idCardLayout(2, carItemBean.idsImg)
                         pathMap[7] = OcrRequestBean(
@@ -303,6 +309,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             carItemBean.ownerCertImg
                         )
                     }
+
                     2 -> {//发票
                         imgType = 5
                         drivingLayout(2, carItemBean.ownerCertImg)
@@ -408,6 +415,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     addIdcardHint.visibility = if (isClick) View.VISIBLE else View.GONE
                     idCard(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
+
                 2 -> {
                     authIdcard.styleAuthCheck(false)
                     authDriver.styleAuthCheck(true)
@@ -436,6 +444,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                     addDrivingHint.visibility = if (isClick) View.VISIBLE else View.GONE
                     xsz(!imgUrl.isNullOrEmpty(), imgUrl, 1)
                 }
+
                 2 -> {
                     authDriving.styleAuthCheck(false)
                     authFp.styleAuthCheck(true)
@@ -507,50 +516,73 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
     }
 
     fun uploadFile(localMedia: LocalMedia) {
-        var path = PictureUtil.getFinallyPath(localMedia)
-        when (imgType) {
-            4 -> {//行驶证
-                xsz(true, path)
-            }
-            5 -> {//发票
-                fp(true, path)
-                showVIN(null, true)
-            }
-            7 -> {//驾驶证
-                jsz(true, path)
-            }
-            else -> {//身份证
-                idCard(true, path)
-            }
-        }
-        uploadDialog.show()
-        signViewModel.uploadFile(this, arrayListOf(path), object : UploadPicCallback {
-            override fun onUploadSuccess(files: ArrayList<String>) {
-                ocr(files.get(0))
-            }
+        val oldPath = PictureUtil.getFinallyPath(localMedia)
+        ImageCompress.compressImage(
+            this,
+            arrayListOf(oldPath),
+            object : ImageCompress.ImageCompressResult {
+                override fun compressSuccess(list: List<File>) {
+                    val path = list[0].absolutePath
+                    when (imgType) {
+                        4 -> {//行驶证
+                            xsz(true, path)
+                        }
 
-            override fun onUploadFailed(errCode: String) {
-                uploadDialog.dismiss()
-                when (imgType) {
-                    1 -> {//身份证
-                        idCard(false)
+                        5 -> {//发票
+                            fp(true, path)
+                            showVIN(null, true)
+                        }
+
+                        7 -> {//驾驶证
+                            jsz(true, path)
+                        }
+
+                        else -> {//身份证
+                            idCard(true, path)
+                        }
                     }
-                    4 -> {//行驶证
-                        xsz(false)
-                    }
-                    5 -> {//发票
-                        fp(false)
-                    }
-                    7 -> {//驾驶证
-                        jsz(false)
-                    }
+                    uploadDialog.show()
+                    signViewModel.uploadFile(
+                        this@CarAuthSubmitUI,
+                        arrayListOf(path),
+                        object : UploadPicCallback {
+                            override fun onUploadSuccess(files: ArrayList<String>) {
+                                ocr(files.get(0))
+                            }
+
+                            override fun onUploadFailed(errCode: String) {
+                                uploadDialog.dismiss()
+                                when (imgType) {
+                                    1 -> {//身份证
+                                        idCard(false)
+                                    }
+
+                                    4 -> {//行驶证
+                                        xsz(false)
+                                    }
+
+                                    5 -> {//发票
+                                        fp(false)
+                                    }
+
+                                    7 -> {//驾驶证
+                                        jsz(false)
+                                    }
+                                }
+                            }
+
+                            override fun onuploadFileprogress(progress: Long) {
+
+                            }
+                        })
                 }
-            }
 
-            override fun onuploadFileprogress(progress: Long) {
+                override fun compressFailed() {
+                    "压缩失败".toast()
+                }
 
-            }
-        })
+            })
+
     }
 
     fun ocr(path: String) {
@@ -558,18 +590,21 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
             1 -> {
                 pathMap.put(imgType, OcrRequestBean("${MConstant.imgcdn}${path}", "ID_CARD", path))
             }
+
             4 -> {
                 pathMap.put(
                     imgType,
                     OcrRequestBean("${MConstant.imgcdn}${path}", "WALK_LICENCE", path)
                 )
             }
+
             5 -> {
                 pathMap.put(
                     imgType,
                     OcrRequestBean("${MConstant.imgcdn}${path}", "CAR_INVOICE", path)
                 )
             }
+
             7 -> {
                 pathMap.put(
                     imgType,
@@ -613,6 +648,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             uploadDialog.dismiss()
                         }
                     }
+
                     4 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
                             it.data?.let { s ->
@@ -633,6 +669,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                             uploadDialog.dismiss()
                         }
                     }
+
                     5 -> {
                         viewModel.cmcImageUpload("${MConstant.imgcdn}${path}", imgType) {
                             it.data?.let { s ->
@@ -664,7 +701,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
         }
     }
 
-/*------------------------对图片的初始化-------------------------------*/
+    /*------------------------对图片的初始化-------------------------------*/
 
     private fun xsz(isSuccess: Boolean, path: String? = "", pathType: Int = 0) {
         binding.includeDrivingLayout.apply {
@@ -672,9 +709,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 pathType == 1 -> {
                     authDrivingPic.load(path, R.mipmap.ic_xsz_ex)
                 }
+
                 isSuccess -> {
                     GlideUtils.loadRoundFilePath(path, authDrivingPic)
                 }
+
                 else -> {
                     authDrivingPic.setImageResource(R.mipmap.ic_xsz_ex)
                 }
@@ -692,16 +731,19 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 pathType == 1 -> {
                     authFpPic.load(path, R.mipmap.ic_auth_fp_ex)
                 }
+
                 isSuccess -> {
                     GlideUtils.loadRoundFilePath(path, authFpPic)
                 }
+
                 else -> {
                     authFpPic.setImageResource(R.mipmap.ic_auth_fp_ex)
                 }
             }
             addFp.isSelected = isSuccess
             addFpHint.isSelected = isSuccess
-            addFpHint.text = if (isSuccess) "点击更换机动车销售统一发票" else "点击上传机动车销售统一发票"
+            addFpHint.text =
+                if (isSuccess) "点击更换机动车销售统一发票" else "点击上传机动车销售统一发票"
             authFpPicBg.visibility = if (isSuccess) View.VISIBLE else View.GONE
         }
     }
@@ -713,9 +755,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 pathType == 1 -> {
                     authIdcardPic.load(path, R.mipmap.ic_idcard_ex)
                 }
+
                 isSuccess -> {
                     GlideUtils.loadRoundFilePath(path, authIdcardPic)
                 }
+
                 else -> {
                     authIdcardPic.setImageResource(R.mipmap.ic_idcard_ex)
                 }
@@ -733,9 +777,11 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 pathType == 1 -> {
                     authDriverPic.load(path, R.mipmap.ic_auth_driver_ex)
                 }
+
                 isSuccess -> {
                     GlideUtils.loadRoundFilePath(path, authDriverPic)
                 }
+
                 else -> {
                     authDriverPic.setImageResource(R.mipmap.ic_auth_driver_ex)
                 }
@@ -806,6 +852,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         return
                     }
                 }
+
                 driverLayout.visibility == View.VISIBLE -> {
                     idcardOcrBean = pathMap[7]
                     body["idsType"] = 2
@@ -860,6 +907,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                         return
                     }
                 }
+
                 fpLayout.visibility == View.VISIBLE -> {
                     ocrBean = pathMap[5]
                     body["ownerCertType"] = 2
@@ -914,6 +962,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                                 .startARouter(ARouterMyPath.CarAuthSuccessUI)
                             finish()
                         }
+
                         else -> {
                             if (it.isNeedChangeBind == 1) {
                                 RouterManger.param(
