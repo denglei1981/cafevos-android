@@ -22,205 +22,358 @@ interface ShopNetWorkApi {
      * 商品详情
      * */
     @POST("/mall/spus/{spuId}/get")
-    suspend fun queryGoodsDetails(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewGoodsDetailBean>
+    suspend fun queryGoodsDetails(
+        @Path("spuId") spuId: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewGoodsDetailBean>
+
     /**
      * 首页点击更多秒杀接口
      * */
     @POST("/mall/sckills/get")
-    suspend fun getSckills(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<SeckillSessionsBean>
+    suspend fun getSckills(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<SeckillSessionsBean>
+
     /**
      * 商品分类
      * */
     @POST("/mall/spus/getTags")
-    suspend fun getClassification(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsClassification>
+    suspend fun getClassification(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GoodsClassification>
+
     /**
      * 商城列表
      * */
     @POST("/mall/spus/get")
-    suspend fun queryGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
+    suspend fun queryGoodsList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GoodsListBean>
+
     /**
      * 首页
      * */
     @POST("/mall/index")
-    suspend fun queryShopHomeData(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopHomeBean>
+    suspend fun queryShopHomeData(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopHomeBean>
+
     /**
      * 秒杀列表
      * */
     @POST("/mall/seckills/{seckillRangeId}/spus/get")
-    suspend fun getGoodsKillList(@Path("seckillRangeId")seckillRangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
+    suspend fun getGoodsKillList(
+        @Path("seckillRangeId") seckillRangeId: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GoodsListBean>
+
     /**
      *秒杀提醒设置/取消
-    * */
+     * */
     @POST("/mall/seckills/spus/{mallMallSpuSeckillRangeId}/noticesSetting")
-    suspend fun setKillNotices(@Path("mallMallSpuSeckillRangeId")rangeId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun setKillNotices(
+        @Path("mallMallSpuSeckillRangeId") rangeId: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *订单评价
      * */
     @POST("/mall/eval/create")
-    suspend fun orderEval(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun orderEval(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      *评价列表基础信息
      * */
     @POST("/mall/eval/info")
-    suspend fun goodsEvalInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentInfoBean>
+    suspend fun goodsEvalInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommentInfoBean>
+
     /**
      *评价列表
      * */
     @POST("/mall/eval/list")
-    suspend fun goodsEvalList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+    suspend fun goodsEvalList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommentBean>
+
     /**
      *评价列表基础信息-维保
      * */
     @POST("/mall/wb/evalPageInfo")
-    suspend fun goodsEvalInfoWb(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentInfoBean>
+    suspend fun goodsEvalInfoWb(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommentInfoBean>
+
     /**
      *评价列表-维保
      * */
     @POST("/mall/wb/evalsList")
-    suspend fun goodsEvalListWb(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CommentBean>
+    suspend fun goodsEvalListWb(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CommentBean>
+
     /**
      *订单创建
      * */
     @POST("/mall/order/create")
-    suspend fun orderCreate(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderInfoBean>
+    suspend fun orderCreate(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OrderInfoBean>
+
     /**
      *商城订单列表
      * */
     @POST("/mall/order/list")
-    suspend fun shopOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    suspend fun shopOrderList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopOrderBean>
+
     /**
      *商城订单列表
      * */
     @POST("/mall/order/list/v2")
-    suspend fun shopOrderListV2(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    suspend fun shopOrderListV2(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopOrderBean>
+
     /**
      *商城订单列表-退款
      * */
     @POST("/mall/orderRefund/list")
-    suspend fun shopOrderRefundList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderRefundBean>
+    suspend fun shopOrderRefundList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopOrderRefundBean>
+
     /**
      *商城订单列表-退款
      * */
     @POST("/mall/orderRefund/list/v2")
-    suspend fun shopOrderRefundListV2(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderRefundBean>
+    suspend fun shopOrderRefundListV2(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopOrderRefundBean>
+
     /**
      *所有订单
      * */
     @POST("/userOrderMergeInfo/getAllUserOrderMergeInfo")
-    suspend fun getAllOrderList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ShopOrderBean>
+    suspend fun getAllOrderList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopOrderBean>
+
     /**
      *添加足迹
      * */
     @POST("/mall/addFootprint/{spuId}")
-    suspend fun addFootprint(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun addFootprint(
+        @Path("spuId") spuId: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *收藏商品
      * */
     @POST("/mall/collectGoods/{spuId}")
-    suspend fun collectGoods(@Path("spuId")spuId:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun collectGoods(
+        @Path("spuId") spuId: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *取消收藏商品
      * */
     @POST("/userCollection/cancleMyCollections")
-    suspend fun cancelCollectGoods(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun cancelCollectGoods(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      *订单详情
      * */
     @POST("/mall/order/detail")
-    suspend fun orderDetail(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderItemBean>
+    suspend fun orderDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OrderItemBean>
+
     /**
      *取消订单
      * */
     @POST("/mall/pay/cancel")
-    suspend fun orderCancel(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun orderCancel(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *申请退货
      * */
     @POST("/mall/orders/{orderNo}/rtGoods")
-    suspend fun applyRefund(@Path("orderNo")orderNo:String,@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun applyRefund(
+        @Path("orderNo") orderNo: String,
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *我的积分
      * */
     @POST("/mall/index/myPoints")
-    suspend fun getMyIntegral(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun getMyIntegral(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      *虚拟币支付
      * */
     @POST("/app/pay/virtualCoinPay")
-    suspend fun fbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun fbPay(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      *订单直接购买入口的虚拟币支付
      * */
     @POST("/app/pay/virtualCoinPayBatch")
-    suspend fun fbPayBatch(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun fbPayBatch(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      *现金支付
      * */
     @POST("/app/pay/reqPay")
-    suspend fun rmbPay(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<PayBackBean>
+    suspend fun rmbPay(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PayBackBean>
 
     /**
      *订单直接购买入口的现金支付
      * */
     @POST("/app/pay/reqPayBatch")
-    suspend fun rmbPayBatch(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<PayBackBean>
+    suspend fun rmbPayBatch(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PayBackBean>
 
     /**
      *订单确认收货
      * */
     @POST("/mall/order/confirmReceipt")
-    suspend fun confirmReceipt(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun confirmReceipt(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      * 获取订单类型
-    * */
+     * */
     @POST("/base/config/getConfigValueByKey")
-    suspend fun getOrderKey(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
+    suspend fun getOrderKey(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OrderTypesBean>
+
     /**
      * 修改商品待支付状态的收货地址
      * */
     @POST("/mall/updateAdrrByOrderNo")
-    suspend fun updateAddressByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OrderTypesBean>
+    suspend fun updateAddressByOrderNo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OrderTypesBean>
+
     /**
      * 维保商品列表
      * */
     @POST("/mall/wb/list")
-    suspend fun maintenanceGoodsList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
+    suspend fun maintenanceGoodsList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GoodsListBean>
+
     /**
      * 推荐商品分类
      * */
     @POST("/mall/recommend/kindsGet")
-    suspend fun getRecommendTypes(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsTypesItemBean>>
+    suspend fun getRecommendTypes(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<GoodsTypesItemBean>>
+
     /**
      * 推荐商品列表
      * */
     @POST("/mall/recommend/spuGet")
-    suspend fun getRecommendList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<GoodsItemBean>>
+    suspend fun getRecommendList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<GoodsItemBean>>
+
     /**
      * 加入购物车
      * */
     @POST("/mall/userSkuAdd")
-    suspend fun addShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun addShoppingCart(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
+
     /**
      * 确认订单接口
      * */
     @POST("/mall/mallOrderConfirm")
-    suspend fun confirmOrder(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CreateOrderBean>
+    suspend fun confirmOrder(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CreateOrderBean>
 
     /**
      *  购物车详情
      * */
     @POST("/mall/userSkuIndex")
-    suspend fun getShoppingCartList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<MutableList<GoodsDetailBean>>
+    suspend fun getShoppingCartList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<MutableList<GoodsDetailBean>>
 
     /**
      *  删除购物车商品
      * */
     @POST("/mall/delUserSkuByIds")
-    suspend fun deleteShoppingCart(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun deleteShoppingCart(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
 
     /**
@@ -228,38 +381,56 @@ interface ShopNetWorkApi {
      *          // {"pageNo":1,"pageSize":20,"queryParams":{"states":1}}  1.未使用 2.已使用 3.已失效
      * */
     @POST("/mall/coupon/get")
-    suspend fun getCouponList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ListMainBean<CouponsItemBean>>
+    suspend fun getCouponList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ListMainBean<CouponsItemBean>>
 
     /**
      * 下单后，修改地址
      */
     @POST("/mall/updateAdrr")
-    suspend fun  updateAddress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun updateAddress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      * 开发票
      * */
     @POST("/mall/userInvoiceAdd")
-    suspend fun  userInvoiceAdd(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun userInvoiceAdd(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      *  购物车数量加减
      * */
     @POST("/mall/userSkuNumChange")
-    suspend fun  userSkuNumChange(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<*>
+    suspend fun userSkuNumChange(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<*>
 
     /**
      * 优惠券-使用-搜索列表
      * */
     @POST("/mall/coupon/spus/get")
-    suspend fun useCoupons(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<GoodsListBean>
+    suspend fun useCoupons(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<GoodsListBean>
 
 
     /**
      * 查看发票
      * */
     @POST("/mall/userInvoiceDetail")
-    suspend fun  userInvoiceDetail(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
+    suspend fun userInvoiceDetail(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InvoiceDetails>
 
 
     /**
@@ -267,48 +438,89 @@ interface ShopNetWorkApi {
      * */
     ///mall/refund
     @POST("/mall/refund")
-    suspend fun  applyRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<InvoiceDetails>
+    suspend fun applyRefund(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<InvoiceDetails>
 
     /**
      *  退款进度
      * */
     @POST("/mall/refund/progress")
-    suspend fun  refundProgress(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+    suspend fun refundProgress(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<RefundProgressBean>
 
     /**
      * 撤销退款申请
      * */
     @POST("/mall/cancelRefund")
-    suspend fun  cancelRefund(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+    suspend fun cancelRefund(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<RefundProgressBean>
 
     /**
      * 查看包裹详情
      * */
     @POST("/logistics/getLogisticsByOrderNo")
-    suspend fun  getLogisticsByOrderNo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<PackMainData>
+    suspend fun getLogisticsByOrderNo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PackMainData>
 
     /**
      *  填写物流信息
      * */
     @POST("/mall/fillInLogistics")
-    suspend fun  fillInLogistics(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<RefundProgressBean>
+    suspend fun fillInLogistics(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<RefundProgressBean>
 
     /**
      *  协议文本
      * */
     @POST("/con/agreementHub/bizCode")
-    suspend fun agreementHub(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<OtherInfoBean>
+    suspend fun agreementHub(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<OtherInfoBean>
 
     /**
      *  协议文本
      * */
     @POST("/mall/refund/progressList")
-    suspend fun getProgressList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<RefundProgressMultipleBean>>
+    suspend fun getProgressList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<RefundProgressMultipleBean>>
 
     /**
      *  下单前对京东sku和用户地址进行验证
      * */
     @POST("/mall/order/jdOrderCreateBeforeCheck")
-    suspend fun jdOrderCreateBeforeCheck(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<OrderConfirmSkuItems>>
+    suspend fun jdOrderCreateBeforeCheck(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<OrderConfirmSkuItems>>
 
+    /**
+     *  缺货订阅
+     * */
+    @POST("/mall/spu/ifOutStockSubscribe")
+    suspend fun ifOutStockSubscribe(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *  是否订阅
+     * */
+    @POST("/mall/spu/isOutStockSubscribe")
+    suspend fun isOutStockSubscribe(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Boolean>
 }

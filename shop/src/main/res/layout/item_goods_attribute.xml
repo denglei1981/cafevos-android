@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.OptionVo" />
     </data>
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
-        android:paddingEnd="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
         tools:ignore="RtlSymmetry">
+
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:ellipsize="end"
-            android:singleLine="true"
             android:id="@+id/checkBox"
-            android:text="@{model.optionName}"
-            android:gravity="center"
-            android:textSize="@dimen/sp_14"
-            android:button="@null"
-            android:background="@drawable/radiobutton_bt_goods"
+            style="@style/rb_goods0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
+            android:background="@drawable/radiobutton_bt_goods"
+            android:button="@null"
+            android:ellipsize="end"
+            android:gravity="center"
             android:minWidth="@dimen/dp_70"
             android:minHeight="@dimen/dp_32"
-            style="@style/rb_goods0"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:singleLine="true"
+            android:layout_marginTop="6dp"
+            android:text="@{model.optionName}"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="黑色" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_no_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="13dp"
+            android:layout_marginEnd="1dp"
+            android:visibility="invisible"
+            android:background="@drawable/bord_e_6dp"
+            android:paddingStart="4.5dp"
+            android:paddingEnd="4.5dp"
+            tools:visibility="visible"
+            android:text="缺货"
+            android:textColor="@color/color_99"
+            app:layout_constraintBottom_toTopOf="@+id/checkBox"
+            android:textSize="10sp"
+            app:layout_constraintRight_toRightOf="@+id/checkBox"
+            app:layout_constraintTop_toTopOf="@+id/checkBox" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

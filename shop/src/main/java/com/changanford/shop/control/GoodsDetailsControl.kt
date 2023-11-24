@@ -144,6 +144,7 @@ class GoodsDetailsControl(
                     tvFbPrice.setTextColor(textColor)
                 }
             }
+
             "SECKILL" -> {//秒杀信息
 //                dataBean.isUpdateBuyNum=false//秒杀商品禁止修改商品数量
                 val secKillInfo = dataBean.secKillInfo
@@ -176,7 +177,7 @@ class GoodsDetailsControl(
         }
         getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
-        viewModel.serviceDescriptionData.observe(activity){
+        viewModel.serviceDescriptionData.observe(activity) {
             //服务说明
             headerBinding.composeServiceDescription.setContent {
                 ShopServiceDescription(it)
@@ -295,8 +296,8 @@ class GoodsDetailsControl(
         for ((i, item) in dataBean.attributes.withIndex()) {
             try {
                 item.optionVos.forEach { optionVo ->
-                    skuCodes.forEach { code->
-                        if (optionVo.optionId==code){
+                    skuCodes.forEach { code ->
+                        if (optionVo.optionId == code) {
                             val optionName = optionVo.optionName
                             skuCodeTxtArr.add(optionName)
                             skuCodeTxt += "$optionName  "
@@ -340,7 +341,8 @@ class GoodsDetailsControl(
         _skuCode: String?,
         btnSubmit: KillBtnView,
         btnCart: KillBtnView? = null,
-        source: Int = 0
+        source: Int = 0,
+        hasTips: Boolean = false
     ) {
         _dataBean.apply {
 //            val totalPayFb=fbPrice.toInt()*buyNum
@@ -350,7 +352,7 @@ class GoodsDetailsControl(
             )//2/7 秒杀已结束或者未开始
             else if (stock < 1) {//库存不足,已售罄、已抢光
                 btnSubmit.setStates(
-                    if ("SECKILL" == spuPageType) 1 else 6,
+                    if ("SECKILL" == spuPageType) 1 else if (hasTips) 15 else 6,
                     true,
                     btnSource = source
                 )
@@ -367,7 +369,10 @@ class GoodsDetailsControl(
             //处理购物车按钮
             if ("SECKILL" == spuPageType) {//秒杀商品不具备加入购物车功能
                 btnCart?.updateEnabled(false, source)
-            } else btnCart?.updateEnabled(btnSubmit.isEnabled, source)
+            } else btnCart?.updateEnabled(
+                if (btnSubmit.getStates() == 6) false else btnSubmit.isEnabled,
+                source
+            )
 
         }
     }
@@ -416,7 +421,7 @@ class GoodsDetailsControl(
         skuCode.apply {
 //            if (isInvalidSelectAttrs(this)) createAttribute()
 //            if (dataBean.skuVos.size != 1)
-                createAttribute()
+            createAttribute()
 //            else {
 //                exchangeCtaClick()
 //                OrderConfirmActivity.start(dataBean)

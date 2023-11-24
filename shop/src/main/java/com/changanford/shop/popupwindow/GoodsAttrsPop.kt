@@ -6,12 +6,28 @@ import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
+import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.Attribute
 import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithAllSuccess
+import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.ui.LoadingDialog
+import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
+import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
@@ -52,16 +68,65 @@ open class GoodsAttrsPop(
             recyclerView.adapter = mAdapter
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
-                dismiss()
-                control.exchangeCtaClick()
-                OrderConfirmActivity.start(dataBean)
+                if (btnBuy.getStates() == 6) {
+                    activity.launchWithCatch {
+                        val dialog = LoadingDialog(BaseApplication.curActivity)
+                        dialog.show()
+                        val bodyPostSet = MyApp.mContext.createHashMap()
+                        bodyPostSet["skuId"] = dataBean.skuId
+
+                        val rKey = getRandomKey()
+                        ApiClient.createApi<ShopNetWorkApi>()
+                            .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
+                            .onWithAllSuccess {
+                                dialog.dismiss()
+                                it.msg.toast()
+                                skuCodeHasTips(true)
+                            }.onWithMsgFailure {
+                                dialog.dismiss()
+                                it?.toast()
+                            }
+                    }
+                } else {
+                    dismiss()
+                    control.exchangeCtaClick()
+                    OrderConfirmActivity.start(dataBean)
+                }
             }
             btnCart.setOnClickListener {
                 dismiss()
                 control.addShoppingCart(1)
             }
         }
+    }
 
+    private fun isOutStockSubscribe() {
+        activity.launchWithCatch {
+            val dialog = LoadingDialog(BaseApplication.curActivity)
+            dialog.show()
+            val bodyPostSet = MyApp.mContext.createHashMap()
+            bodyPostSet["skuId"] = dataBean.skuId
+
+            val rKey = getRandomKey()
+            ApiClient.createApi<ShopNetWorkApi>()
+                .isOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
+                .onSuccess {
+                    dialog.dismiss()
+                    skuCodeHasTips(it == true)
+                }.onFailure {
+                    dialog.dismiss()
+                }
+        }
+    }
+
+    private fun skuCodeHasTips(hasTips: Boolean) {
+        control.bindingBtn(
+            dataBean,
+            _skuCode,
+            viewDataBinding.btnBuy,
+            viewDataBinding.btnCart,
+            1, hasTips
+        )
     }
 
     @SuppressLint("StringFormatMatches")
@@ -158,13 +223,18 @@ open class GoodsAttrsPop(
                         limitBuyNum
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
-                    control.bindingBtn(
-                        dataBean,
-                        _skuCode,
-                        viewDataBinding.btnBuy,
-                        viewDataBinding.btnCart,
-                        1
-                    )
+
+                    if (nowStock == 0) {
+                        isOutStockSubscribe()
+                    }else{
+                        control.bindingBtn(
+                            dataBean,
+                            _skuCode,
+                            viewDataBinding.btnBuy,
+                            viewDataBinding.btnCart,
+                            1
+                        )
+                    }
                 }
             }
         }
