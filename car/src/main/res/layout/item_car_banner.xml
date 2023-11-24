@@ -7,14 +7,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.changanford.common.ui.AutoScaleWidthImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageCarIntro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:adjustViewBounds="true"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
+            android:scaleType="centerCrop"
             tools:srcCompat="@mipmap/ic_def_square_img" />
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/img_bottom"
