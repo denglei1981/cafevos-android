@@ -7,14 +7,10 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,37 +22,28 @@ import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.control.CarControl
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
-import com.changanford.common.MyApp
+import com.changanford.car.widget.NewNestedScrollView
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.bean.NewCarInfoBean
-import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.UserManger
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.title.CarScaleTransitionPagerTitleView
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import kotlin.math.abs
 
 
@@ -77,6 +64,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         )
     }
     private var oldScrollY = 0
+    private var isScrollWhite = true
     var itemPunchWhat: Int = 0
     private var maxSlideY = 800//最大滚动距离
     private val carControl by lazy {
@@ -85,7 +73,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             this,
             viewModel,
             mAdapter,
-            headerBinding
+            headerBinding,
+            binding
         )
     }
     private var carInfoBean: MutableList<NewCarInfoBean>? = null
@@ -99,21 +88,66 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //        layoutParams.topMargin = paddingTop
 //        binding.magicTab.layoutParams = layoutParams
 
-        binding.rlTitle.setPadding(0,paddingTop,0,0)
+        binding.rlTitle.setPadding(0, paddingTop, 0, 0)
 
         binding.apply {
-            srl.setOnRefreshListener {
-                getData()
-                it.finishRefresh()
-            }
+//            srl.setOnRefreshListener {
+//                getData()
+//                it.finishRefresh()
+//            }
             recyclerView.adapter = mAdapter
             recyclerView.addOnScrollListener(onScrollListener)
-            mAdapter.addHeaderView(headerBinding.root)
-            headerBinding.apply {
-                btnSubmit.setOnClickListener { //立即订购
-                    WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
+            nestScroll.addScrollChangeListener(object :NewNestedScrollView.AddScrollChangeListener{
+                override fun onScrollChange(
+                    scrollX: Int,
+                    scrollY: Int,
+                    oldScrollX: Int,
+                    mOldScrollY: Int
+                ) {
+                    oldScrollY = scrollY
+                    if (!mMagicTabHasInit) return
+                    if (oldScrollY >= binding.srl.height - (60.toIntPx()) - binding.rlTitle.bottom) {
+                        if (isScrollWhite) {
+                            val nav = binding.magicTab.navigator as CommonNavigator
+                            nav.adapter = blackAdapter
+                            binding.rlTitle.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.white
+                                )
+                            )
+                            binding.magicTab.navigator = nav
+                            isScrollWhite = false
+                        }
+                    } else {
+                        if (!isScrollWhite) {
+                            val nav = binding.magicTab.navigator as CommonNavigator
+                            nav.adapter = whiteAdapter
+                            binding.rlTitle.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.transparent
+                                )
+                            )
+                            binding.magicTab.navigator = nav
+                            isScrollWhite = true
+                        }
+
+                    }
                 }
-            }
+
+                override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
+                   if (state==NewNestedScrollView.ScrollState.IDLE){
+                       updateControl()
+                   }
+                }
+            })
+//            mAdapter.addHeaderView(headerBinding.root)
+//            headerBinding.apply {
+//                btnSubmit.setOnClickListener { //立即订购
+//                    WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
+//                }
+//            }
         }
         initObserve()
         initBanner()
@@ -141,13 +175,13 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             oldScrollY = 0
             it?.apply {
                 if (size == 0) {
-                    headerBinding.carTopViewPager.isVisible = false
+                    binding.carTopViewPager.isVisible = false
                     return@observe
                 }
-                headerBinding.carTopViewPager.isVisible = true
+                binding.carTopViewPager.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
-                headerBinding.carTopViewPager.apply {
+                binding.carTopViewPager.apply {
                     post {
                         val params = layoutParams
                         params.height = binding.srl.height - (50.toIntPx())
@@ -159,8 +193,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     create(topBannerList)
                     updateControl()
                     Handler(Looper.myLooper()!!).postDelayed({
-                        "banner>>>>高度：${headerBinding.carTopViewPager.height}".wLogE()
-                        val bannerHeight = headerBinding.carTopViewPager.height
+                        "banner>>>>高度：${binding.carTopViewPager.height}".wLogE()
+                        val bannerHeight = binding.carTopViewPager.height
                         maxSlideY = bannerHeight / 2
                     }, 500)
                 }
@@ -183,58 +217,104 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
     }
 
+    private var mMagicTabHasInit = false
+
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.TRANSPARENT)
         val commonNavigator = CommonNavigator(context)
 //        commonNavigator.isAdjustMode = true
-        commonNavigator.adapter = object : CommonNavigatorAdapter() {
-            override fun getCount(): Int {
-                return topBannerList.size
-            }
-
-            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView =
-                    CarScaleTransitionPagerTitleView(context)
-                simplePagerTitleView.text = topBannerList[index].name
-                simplePagerTitleView.textSize = 16f
-                simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
-                simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(context, R.color.white66)
-                simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(context, R.color.white)
-                simplePagerTitleView.setOnClickListener {
-                    headerBinding.carTopViewPager.currentItem = index
-                }
-                return simplePagerTitleView
-            }
-
-            override fun getIndicator(context: Context): IPagerIndicator {
-                val indicator = LinePagerIndicator(context)
-                indicator.mode = LinePagerIndicator.MODE_EXACTLY
-                indicator.lineHeight =
-                    UIUtil.dip2px(context, 3.0).toFloat()
-                indicator.lineWidth =
-                    UIUtil.dip2px(context, 22.0).toFloat()
-                indicator.roundRadius =
-                    UIUtil.dip2px(context, 1.5).toFloat()
-                indicator.startInterpolator = AccelerateInterpolator()
-                indicator.endInterpolator = DecelerateInterpolator(2.0f)
-                indicator.setColors(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.white
-                    )
-                )
-                return indicator
-            }
-        }
+        commonNavigator.adapter = whiteAdapter
         magicIndicator.navigator = commonNavigator
+        mMagicTabHasInit = true
+    }
 
+    private val whiteAdapter = object : CommonNavigatorAdapter() {
+        override fun getCount(): Int {
+            return topBannerList.size
+        }
+
+        override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+            val simplePagerTitleView =
+                CarScaleTransitionPagerTitleView(context)
+            simplePagerTitleView.text = topBannerList[index].name
+            simplePagerTitleView.textSize = 16f
+            simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+            simplePagerTitleView.normalColor =
+                ContextCompat.getColor(context, R.color.white66)
+            simplePagerTitleView.selectedColor =
+                ContextCompat.getColor(context, R.color.white)
+            simplePagerTitleView.setOnClickListener {
+                binding.carTopViewPager.currentItem = index
+            }
+            return simplePagerTitleView
+        }
+
+        override fun getIndicator(context: Context): IPagerIndicator {
+            val indicator = LinePagerIndicator(context)
+            indicator.mode = LinePagerIndicator.MODE_EXACTLY
+            indicator.lineHeight =
+                UIUtil.dip2px(context, 3.0).toFloat()
+            indicator.lineWidth =
+                UIUtil.dip2px(context, 22.0).toFloat()
+            indicator.roundRadius =
+                UIUtil.dip2px(context, 1.5).toFloat()
+            indicator.startInterpolator = AccelerateInterpolator()
+            indicator.endInterpolator = DecelerateInterpolator(2.0f)
+            indicator.setColors(
+                ContextCompat.getColor(
+                    context,
+                    R.color.white
+                )
+            )
+            return indicator
+        }
+    }
+
+    private val blackAdapter = object : CommonNavigatorAdapter() {
+        override fun getCount(): Int {
+            return topBannerList.size
+        }
+
+        override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+            val simplePagerTitleView =
+                CarScaleTransitionPagerTitleView(context)
+            simplePagerTitleView.text = topBannerList[index].name
+            simplePagerTitleView.textSize = 16f
+            simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+            simplePagerTitleView.normalColor =
+                ContextCompat.getColor(context, R.color.black66)
+            simplePagerTitleView.selectedColor =
+                ContextCompat.getColor(context, R.color.black)
+            simplePagerTitleView.setOnClickListener {
+                binding.carTopViewPager.currentItem = index
+            }
+            return simplePagerTitleView
+        }
+
+        override fun getIndicator(context: Context): IPagerIndicator {
+            val indicator = LinePagerIndicator(context)
+            indicator.mode = LinePagerIndicator.MODE_EXACTLY
+            indicator.lineHeight =
+                UIUtil.dip2px(context, 3.0).toFloat()
+            indicator.lineWidth =
+                UIUtil.dip2px(context, 22.0).toFloat()
+            indicator.roundRadius =
+                UIUtil.dip2px(context, 1.5).toFloat()
+            indicator.startInterpolator = AccelerateInterpolator()
+            indicator.endInterpolator = DecelerateInterpolator(2.0f)
+            indicator.setColors(
+                ContextCompat.getColor(
+                    context,
+                    R.color.black
+                )
+            )
+            return indicator
+        }
     }
 
     private fun initBanner() {
-        headerBinding.carTopViewPager.apply {
+        binding.carTopViewPager.apply {
             setAutoPlay(false)
 //            setScrollDuration(500)
             setCanLoop(true)
@@ -287,11 +367,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     updateControl()
                 }
             })
-            setIndicatorView(headerBinding.drIndicator)
+            setIndicatorView(binding.drIndicator)
         }
 //        headerBinding.drIndicator.setIndicatorGap(20)
 //            .setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
-        headerBinding.carTopViewPager.isSaveEnabled = false
+        binding.carTopViewPager.isSaveEnabled = false
     }
 
     /**
@@ -300,7 +380,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     @SuppressLint("NotifyDataSetChanged")
     private fun updateControl(isHidden: Boolean = hidden) {
         "更新控制>>>isHidden:$isHidden>>>oldScrollY:$oldScrollY>>>maxSlideY:$maxSlideY>>>videoPlayState:$videoPlayState".wLogE()
-        headerBinding.carTopViewPager.apply {
+        binding.carTopViewPager.apply {
             val item = if (topBannerList.size > 0) topBannerList[currentItem] else null
             //可见 并且 滚动距离小于最大控制距离
             if (!isHidden && oldScrollY < maxSlideY) {
@@ -383,15 +463,13 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                getPositionAndOffset()
+//                getPositionAndOffset()
                 updateControl()
             }
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            oldScrollY += dy
-            Log.e("asdasd","$oldScrollY===${binding.srl.height-(60.toIntPx())-binding.rlTitle.bottom}")
         }
     }
 

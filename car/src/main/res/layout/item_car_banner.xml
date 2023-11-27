@@ -28,13 +28,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/imageCarIntro" />
 
-        <com.dueeeke.videoplayer.player.VideoView
-            android:id="@+id/videoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="@dimen/dp_500"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_top_left"
             android:layout_width="wrap_content"
@@ -76,7 +69,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_bottom_left"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="41dp"
             android:layout_marginStart="17dp"
             android:layout_marginEnd="7dp"
             android:background="@drawable/bg_car_l_b"
@@ -93,7 +86,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_bottom_right"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="41dp"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="17dp"
             android:background="@drawable/bg_car_r_b"
@@ -106,6 +99,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.85" />
+
+        <com.dueeeke.videoplayer.player.VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/dp_500"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_bottom_tips"
