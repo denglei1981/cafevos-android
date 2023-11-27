@@ -313,5 +313,6 @@ object LiveDataBusKey {
     const val LONG_POST_CONTENT = "longPostContent"
     const val LONG_POST_JIAO = "longPostJIAO"
     const val OPEN_CHOOSE_POST = "openChoosePost"
+    const val CLICK_CAR = "clickCar"
 }
 

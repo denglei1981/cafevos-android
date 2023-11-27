@@ -33,6 +33,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.title.CarScaleTransitionPagerTitleView
 import com.changanford.common.wutil.wLogE
@@ -89,7 +90,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //        binding.magicTab.layoutParams = layoutParams
 
         binding.rlTitle.setPadding(0, paddingTop, 0, 0)
-
+        LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).observe(this) {
+            StatusBarUtil.setLightStatusBar(requireActivity(), !isScrollWhite)
+        }
         binding.apply {
 //            srl.setOnRefreshListener {
 //                getData()
@@ -97,7 +100,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 //            }
             recyclerView.adapter = mAdapter
             recyclerView.addOnScrollListener(onScrollListener)
-            nestScroll.addScrollChangeListener(object :NewNestedScrollView.AddScrollChangeListener{
+            nestScroll.addScrollChangeListener(object :
+                NewNestedScrollView.AddScrollChangeListener {
                 override fun onScrollChange(
                     scrollX: Int,
                     scrollY: Int,
@@ -108,6 +112,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if (!mMagicTabHasInit) return
                     if (oldScrollY >= binding.srl.height - (60.toIntPx()) - binding.rlTitle.bottom) {
                         if (isScrollWhite) {
+                            StatusBarUtil.setLightStatusBar(requireActivity(), true)
                             val nav = binding.magicTab.navigator as CommonNavigator
                             nav.adapter = blackAdapter
                             binding.rlTitle.setBackgroundColor(
@@ -121,6 +126,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         }
                     } else {
                         if (!isScrollWhite) {
+                            StatusBarUtil.setLightStatusBar(requireActivity(), false)
                             val nav = binding.magicTab.navigator as CommonNavigator
                             nav.adapter = whiteAdapter
                             binding.rlTitle.setBackgroundColor(
@@ -137,9 +143,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                 }
 
                 override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
-                   if (state==NewNestedScrollView.ScrollState.IDLE){
-                       updateControl()
-                   }
+                    if (state == NewNestedScrollView.ScrollState.IDLE) {
+                        updateControl()
+                    }
                 }
             })
 //            mAdapter.addHeaderView(headerBinding.root)
