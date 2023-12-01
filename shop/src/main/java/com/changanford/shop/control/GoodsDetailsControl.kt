@@ -321,7 +321,7 @@ class GoodsDetailsControl(
         headerBinding.inKill.model = dataBean
         headerBinding.inVip.model = dataBean
         headerBinding.inGoodsInfo.model = dataBean
-        bindingBtn(dataBean, null, binding.inBottom.btnBuy, binding.inBottom.btnCart, 0)
+        bindingBtn(dataBean, null, null, binding.inBottom.btnCart, 0)
     }
 
     /**
@@ -339,40 +339,42 @@ class GoodsDetailsControl(
     fun bindingBtn(
         _dataBean: GoodsDetailBean,
         _skuCode: String?,
-        btnSubmit: KillBtnView,
+        btnSubmit: KillBtnView? = null,
         btnCart: KillBtnView? = null,
         source: Int = 0,
         hasTips: Boolean = false
     ) {
         _dataBean.apply {
 //            val totalPayFb=fbPrice.toInt()*buyNum
-            if ("SECKILL" == spuPageType && 5 != killStates) btnSubmit.setStates(
+            if ("SECKILL" == spuPageType && 5 != killStates) btnSubmit?.setStates(
                 killStates,
                 btnSource = source
             )//2/7 秒杀已结束或者未开始
             else if (stock < 1) {//库存不足,已售罄、已抢光
-                btnSubmit.setStates(
+                btnSubmit?.setStates(
                     if ("SECKILL" == spuPageType) 1 else if (hasTips) 15 else 6,
                     true,
                     btnSource = source
                 )
             } else if (1 == source || (0 == source && !isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))) {
                 if (null != _skuCode && isInvalidSelectAttrs(_skuCode)) {
-                    btnSubmit.setText(R.string.str_immediatelyChange)
-                    btnSubmit.updateEnabled(false)
+                    btnSubmit?.setText(R.string.str_immediatelyChange)
+                    btnSubmit?.updateEnabled(false)
                 }
 //                else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
 //                    btnSubmit.setStates(8,btnSource=source)
 //                }
-                else btnSubmit.setStates(5, btnSource = source)
-            } else btnSubmit.setStates(5, btnSource = source)
+                else btnSubmit?.setStates(5, btnSource = source)
+            } else btnSubmit?.setStates(5, btnSource = source)
             //处理购物车按钮
             if ("SECKILL" == spuPageType) {//秒杀商品不具备加入购物车功能
                 btnCart?.updateEnabled(false, source)
-            } else btnCart?.updateEnabled(
-                if (btnSubmit.getStates() == 6) false else btnSubmit.isEnabled,
-                source
-            )
+            } else (if (btnSubmit?.getStates() == 6) false else btnSubmit?.isEnabled)?.let {
+                btnCart?.updateEnabled(
+                    it,
+                    source
+                )
+            }
 
         }
     }

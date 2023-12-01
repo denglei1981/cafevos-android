@@ -2,10 +2,15 @@ package com.changanford.shop.popupwindow
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
@@ -21,6 +26,8 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithAllSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.ui.LoadingDialog
+import com.changanford.common.ui.dialog.AlertThreeFilletDialog
+import com.changanford.common.util.AppUtils.getPackageName
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
@@ -80,10 +87,19 @@ open class GoodsAttrsPop(
                             .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
                             .onWithAllSuccess {
                                 dialog.dismiss()
-                                if (checkNotifySetting(activity)){
+                                if (checkNotifySetting(activity)) {
                                     "已设置到货提醒,补货后将通知您".toast()
-                                }else{
-                                    "福域消息推送为关闭状态，设置到货提醒没有提示打开消息推送".toast()
+                                } else {
+                                    AlertThreeFilletDialog(context).builder()
+                                        .setMsg("福域消息推送为关闭状态，设置到货提醒没有提示打开消息推送？")
+                                        .setNegativeButton(
+                                            "取消", R.color.color_7174
+                                        ) { v ->
+
+                                        }
+                                        .setPositiveButton("确认", R.color.black) {
+                                            starSetting()
+                                        }.show()
                                 }
 //                                it.msg.toast()
                                 skuCodeHasTips(true)
@@ -103,6 +119,21 @@ open class GoodsAttrsPop(
                 control.addShoppingCart(1)
             }
         }
+    }
+
+    private fun starSetting() {
+        val localIntent = Intent()
+        //直接跳转到应用通知设置的代码：
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //8.0及以上
+            localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            localIntent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+            localIntent.data = Uri.fromParts("package", getPackageName(), null)
+        } else //5.0以上到8.0以下
+            localIntent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+        localIntent.putExtra("app_package", getPackageName())
+        localIntent.putExtra("app_uid", activity.applicationInfo.uid)
+        activity.startActivity(localIntent)
+
     }
 
     private fun checkNotifySetting(context: Context): Boolean {
@@ -157,13 +188,14 @@ open class GoodsAttrsPop(
                 }
         }
         if (_skuCode.isEmpty()) {
-            val co = dataBean.skuVos[0].skuCode.split("-") as ArrayList<String>
-            var cos = ""
-            repeat(co.size) {
-                cos += "0-"
-            }
-            cos = cos.substring(0, cos.length - 1)
-            _skuCode = cos
+//            val co = dataBean.skuVos[0].skuCode.split("-") as ArrayList<String>
+//            var cos = ""
+//            repeat(co.size) {
+//                cos += "0-"
+//            }
+//            cos = cos.substring(0, cos.length - 1)
+//            _skuCode = cos
+            _skuCode = dataBean.skuVos[0].skuCode
         }
         mAdapter.setSkuCodes(_skuCode)
         val useAttributes = ArrayList<Attribute>()
@@ -179,7 +211,9 @@ open class GoodsAttrsPop(
                 }
             }
         }
-        dataBean.attributes = useAttributes
+        if (useAttributes.isNotEmpty()){
+            dataBean.attributes = useAttributes
+        }
         mAdapter.setList(dataBean.attributes)
         skuCodeLiveData.postValue(_skuCode)
         skuCodeLiveData.observe(activity) { code ->
@@ -239,7 +273,7 @@ open class GoodsAttrsPop(
 
                     if (nowStock == 0) {
                         isOutStockSubscribe()
-                    }else{
+                    } else {
                         control.bindingBtn(
                             dataBean,
                             _skuCode,
