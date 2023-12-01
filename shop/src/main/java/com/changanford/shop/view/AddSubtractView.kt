@@ -70,17 +70,20 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null) : LinearLay
             // +
             R.id.tv_addNumber -> {
                 if (isAdd) {
-                    if (number < maxValue) number++
-                    else ToastUtils.reToast(if (isLimitBuyNum) R.string.str_purchaseQuantityHasExceededLimit else R.string.str_insufficientInventory)
+                    if (number < maxValue) {
+                        number++
+                        setNumber(number)
+                    } else ToastUtils.reToast(if (isLimitBuyNum) R.string.str_purchaseQuantityHasExceededLimit else R.string.str_insufficientInventory)
                 } else ToastUtils.reToast(R.string.str_propertiesAreNotFullySelected)
             }
             //-
             R.id.tv_reduction -> {
-                if (number > minValue) number--
-                else ToastUtils.showLongToast("最少购买${minValue}件")
+                if (number > minValue) {
+                    number--
+                    setNumber(number)
+                } else ToastUtils.showLongToast("最少购买${minValue}件")
             }
         }
-        setNumber(number)
     }
 
     fun setNumber(newNumber: Int, isPostValue: Boolean = true) {

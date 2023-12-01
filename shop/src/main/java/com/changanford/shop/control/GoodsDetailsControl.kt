@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.bean.SkuVo
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -410,6 +411,17 @@ class GoodsDetailsControl(
      * */
     fun isInvalidSelectAttrs(skuCode: String): Boolean {
         return skuCode.contains("-") && skuCode.split("-").find { it == "0" } != null
+    }
+
+    fun isNoStock(skuCode: String,skuVos: ArrayList<SkuVo>):Boolean{
+        skuVos.forEach {
+            if (it.skuCode==skuCode){
+                if (it.stock=="0"){
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     fun onDestroy() {

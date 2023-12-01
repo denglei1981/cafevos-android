@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +77,10 @@ open class GoodsAttrsPop(
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
                 if (btnBuy.getStates() == 6) {
+                    if (control.isInvalidSelectAttrs(_skuCode)) {
+                        "属性未选择完全".toast()
+                        return@setOnClickListener
+                    }
                     if (checkNotifySetting(activity)) {
                         activity.launchWithCatch {
                             val dialog = LoadingDialog(BaseApplication.curActivity)
@@ -85,7 +90,10 @@ open class GoodsAttrsPop(
 
                             val rKey = getRandomKey()
                             ApiClient.createApi<ShopNetWorkApi>()
-                                .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
+                                .ifOutStockSubscribe(
+                                    bodyPostSet.header(rKey),
+                                    bodyPostSet.body(rKey)
+                                )
                                 .onWithAllSuccess {
                                     dialog.dismiss()
                                     "已设置到货提醒,补货后将通知您".toast()
@@ -106,8 +114,13 @@ open class GoodsAttrsPop(
                             ) {
                                 dilaog.dismiss()
                             }
-                            .setPositiveButton("去设置", com.changanford.common.R.color.actionsheet_blue) {
-                                com.changanford.common.wutil.WCommonUtil.openNotificationSetting(context)
+                            .setPositiveButton(
+                                "去设置",
+                                com.changanford.common.R.color.actionsheet_blue
+                            ) {
+                                com.changanford.common.wutil.WCommonUtil.openNotificationSetting(
+                                    context
+                                )
                             }.show()
                     }
                 } else {
@@ -218,7 +231,7 @@ open class GoodsAttrsPop(
                 }
             }
         }
-        if (useAttributes.isNotEmpty()){
+        if (useAttributes.isNotEmpty()) {
             dataBean.attributes = useAttributes
         }
         mAdapter.setList(dataBean.attributes)
@@ -240,7 +253,8 @@ open class GoodsAttrsPop(
                         viewDataBinding.tvFbPrice.setText(fbPrice)
                     } else {
                         dataBean.skuImg = dataBean.imgs[0]
-                        dataBean.stock = dataBean.allSkuStock
+//                        dataBean.stock = dataBean.allSkuStock
+                        dataBean.stock = 1
                         dataBean.fbPrice = dataBean.orFbPrice
                         dataBean.orginPrice = dataBean.orginPrice0
                         viewDataBinding.addSubtractView.setIsAdd(false)
@@ -249,6 +263,12 @@ open class GoodsAttrsPop(
                         viewDataBinding.tvFbPrice.setText(price)
                         viewDataBinding.tvRmbPrice.setText(dataBean.getRMB(price))
                     }
+                    viewDataBinding.addSubtractView.setIsUpdateBuyNum(
+                        !control.isNoStock(
+                            _skuCode,
+                            dataBean.skuVos
+                        )
+                    )
                     dataBean.price = dataBean.orginPrice
                     dataBean.mallMallSkuSpuSeckillRangeId = mallMallSkuSpuSeckillRangeId
                     control.memberExclusive(dataBean)
@@ -278,7 +298,7 @@ open class GoodsAttrsPop(
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
 
-                    if (nowStock == 0) {
+                    if (nowStock == 0&&!control.isInvalidSelectAttrs(_skuCode)) {
                         isOutStockSubscribe()
                     } else {
                         control.bindingBtn(
