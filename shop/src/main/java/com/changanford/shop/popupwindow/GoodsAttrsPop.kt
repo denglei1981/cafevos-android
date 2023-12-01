@@ -1,9 +1,11 @@
 package com.changanford.shop.popupwindow
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
@@ -19,7 +21,6 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithAllSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.ui.LoadingDialog
-import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
@@ -33,11 +34,10 @@ import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
-import com.tencent.mm.opensdk.utils.Log
-import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
+
 
 /**
  * @Author : wenke
@@ -80,7 +80,12 @@ open class GoodsAttrsPop(
                             .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
                             .onWithAllSuccess {
                                 dialog.dismiss()
-                                it.msg.toast()
+                                if (checkNotifySetting(activity)){
+                                    "已设置到货提醒,补货后将通知您".toast()
+                                }else{
+                                    "福域消息推送为关闭状态，设置到货提醒没有提示打开消息推送".toast()
+                                }
+//                                it.msg.toast()
                                 skuCodeHasTips(true)
                             }.onWithMsgFailure {
                                 dialog.dismiss()
@@ -99,6 +104,14 @@ open class GoodsAttrsPop(
             }
         }
     }
+
+    private fun checkNotifySetting(context: Context): Boolean {
+        val manager = NotificationManagerCompat.from(
+            context
+        )
+        return manager.areNotificationsEnabled()
+    }
+
 
     private fun isOutStockSubscribe() {
         activity.launchWithCatch {
