@@ -14,14 +14,15 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
-import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
-import com.tencent.mm.opensdk.utils.Log
-import com.xiaomi.push.it
+import com.faendir.rhino_android.RhinoAndroidHelper
+import org.mozilla.javascript.Scriptable
+import org.mozilla.javascript.Undefined
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
+
 
 /**
  * @Author : wenke
@@ -54,7 +55,20 @@ open class GoodsAttrsPop(
             btnBuy.setOnClickListener {
                 dismiss()
                 control.exchangeCtaClick()
-                OrderConfirmActivity.start(dataBean)
+                //这里参数context使用Android的Context
+                val ctx= RhinoAndroidHelper(context).enterContext()
+                val scope: Scriptable = ctx.initStandardObjects()
+                var result: Any? = null
+                try {
+                    val o = ctx.evaluateString(scope, "18 > 17", "", 1, null)
+                    if (o !== Scriptable.NOT_FOUND && o !is Undefined) {
+                        result = o as Any //执行
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+//                OrderConfirmActivity.start(dataBean)
             }
             btnCart.setOnClickListener {
                 dismiss()
