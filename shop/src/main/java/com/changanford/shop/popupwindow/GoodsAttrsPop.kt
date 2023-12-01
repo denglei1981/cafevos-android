@@ -76,37 +76,39 @@ open class GoodsAttrsPop(
             imgClose.setOnClickListener { this@GoodsAttrsPop.dismiss() }
             btnBuy.setOnClickListener {
                 if (btnBuy.getStates() == 6) {
-                    activity.launchWithCatch {
-                        val dialog = LoadingDialog(BaseApplication.curActivity)
-                        dialog.show()
-                        val bodyPostSet = MyApp.mContext.createHashMap()
-                        bodyPostSet["skuId"] = dataBean.skuId
+                    if (checkNotifySetting(activity)) {
+                        activity.launchWithCatch {
+                            val dialog = LoadingDialog(BaseApplication.curActivity)
+                            dialog.show()
+                            val bodyPostSet = MyApp.mContext.createHashMap()
+                            bodyPostSet["skuId"] = dataBean.skuId
 
-                        val rKey = getRandomKey()
-                        ApiClient.createApi<ShopNetWorkApi>()
-                            .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
-                            .onWithAllSuccess {
-                                dialog.dismiss()
-                                if (checkNotifySetting(activity)) {
+                            val rKey = getRandomKey()
+                            ApiClient.createApi<ShopNetWorkApi>()
+                                .ifOutStockSubscribe(bodyPostSet.header(rKey), bodyPostSet.body(rKey))
+                                .onWithAllSuccess {
+                                    dialog.dismiss()
                                     "已设置到货提醒,补货后将通知您".toast()
-                                } else {
-                                    AlertThreeFilletDialog(context).builder()
-                                        .setMsg("福域消息推送为关闭状态，设置到货提醒没有提示打开消息推送？")
-                                        .setNegativeButton(
-                                            "取消", R.color.color_7174
-                                        ) { v ->
-
-                                        }
-                                        .setPositiveButton("确认", R.color.black) {
-                                            starSetting()
-                                        }.show()
-                                }
 //                                it.msg.toast()
-                                skuCodeHasTips(true)
-                            }.onWithMsgFailure {
-                                dialog.dismiss()
-                                it?.toast()
+                                    skuCodeHasTips(true)
+                                }.onWithMsgFailure {
+                                    dialog.dismiss()
+                                    it?.toast()
+                                }
+                        }
+                    } else {
+                        val dilaog = AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+                        dilaog.setTitle("温馨提示")
+                            .setMsg("是否前往设置修改消息推送权限？")
+                            .setCancelable(true)
+                            .setNegativeButton(
+                                "取消", com.changanford.common.R.color.actionsheet_blue
+                            ) {
+                                dilaog.dismiss()
                             }
+                            .setPositiveButton("去设置", com.changanford.common.R.color.actionsheet_blue) {
+                                com.changanford.common.wutil.WCommonUtil.openNotificationSetting(context)
+                            }.show()
                     }
                 } else {
                     dismiss()
@@ -195,7 +197,12 @@ open class GoodsAttrsPop(
 //            }
 //            cos = cos.substring(0, cos.length - 1)
 //            _skuCode = cos
-            _skuCode = dataBean.skuVos[0].skuCode
+            dataBean.skuVos
+//                .filter { it.stock.toInt() > 0 }
+//                .filter { it.skuStatus == "ON_SHELVE" }
+                .sortedWith(compareBy { it.fbPrice.toLong() }).let {
+                    if (it.isNotEmpty()) _skuCode = it[0].skuCode
+                }
         }
         mAdapter.setSkuCodes(_skuCode)
         val useAttributes = ArrayList<Attribute>()
