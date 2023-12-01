@@ -923,6 +923,7 @@ data class CreateOrderBean(
     var freight: String? = null,
     var orderConfirmType: Int = 0,
     var payBfb: String? = null,
+    var mallPayConfig: String? = null,
     var totalIntegral: Int? = 0,
     var coupons: ArrayList<CouponsItemBean>? = null,
     var skuItems: ArrayList<OrderSkuItem>? = null,
