@@ -14,6 +14,7 @@ import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAttributeIndexAdapter
 import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.PopGoodsSelectattributeBinding
+import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.utils.WCommonUtil
 import com.faendir.rhino_android.RhinoAndroidHelper
@@ -68,7 +69,7 @@ open class GoodsAttrsPop(
                     e.printStackTrace()
                 }
 
-//                OrderConfirmActivity.start(dataBean)
+                OrderConfirmActivity.start(dataBean)
             }
             btnCart.setOnClickListener {
                 dismiss()
