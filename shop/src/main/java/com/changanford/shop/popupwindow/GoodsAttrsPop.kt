@@ -56,19 +56,6 @@ open class GoodsAttrsPop(
             btnBuy.setOnClickListener {
                 dismiss()
                 control.exchangeCtaClick()
-                //这里参数context使用Android的Context
-                val ctx= RhinoAndroidHelper(context).enterContext()
-                val scope: Scriptable = ctx.initStandardObjects()
-                var result: Any? = null
-                try {
-                    val o = ctx.evaluateString(scope, "18 > 17", "", 1, null)
-                    if (o !== Scriptable.NOT_FOUND && o !is Undefined) {
-                        result = o as Any //执行
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
                 OrderConfirmActivity.start(dataBean)
             }
             btnCart.setOnClickListener {

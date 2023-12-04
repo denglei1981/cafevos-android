@@ -76,6 +76,11 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivit
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        back()
+    }
+
     open fun hasLoadMore(): Boolean {
         return false
     }

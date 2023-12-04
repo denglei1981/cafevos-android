@@ -5,6 +5,7 @@ import android.text.SpannableString
 import android.text.TextUtils
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
+import com.alibaba.fastjson.JSON
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
@@ -409,7 +410,7 @@ data class GoodsDetailBean(
     var noStock: Boolean = false,
     var showSevenTips: Boolean = false,
 
-) {
+    ) {
     fun getLimitBuyNum(): Int {
         return if ("YES" == limitBuy) (limitBuyNum ?: "0").toInt() else 0
     }
@@ -928,10 +929,20 @@ data class CreateOrderBean(
     var coupons: ArrayList<CouponsItemBean>? = null,
     var skuItems: ArrayList<OrderSkuItem>? = null,
 ) {
-    fun getRmbBfb(payBfb: String? = this.payBfb): Float {
-        "payBfb:$payBfb".wLogE("okhttp")
-        return if (TextUtils.isEmpty(payBfb)) -1f
-        else payBfb!!.toFloat() / 100f
+    fun getRmbBfb(payBfb: String? = this.mallPayConfig): Float {
+        return try {
+            "payBfb:$payBfb".wLogE("okhttp")
+            val json = JSON.parseObject(payBfb)
+            val pct = json.getString("pay_pct")
+            val mPayType = json.getInteger("pay_type")
+            val mixPayType = json.getInteger("mix_pay_type")
+            if (mPayType == 2 && mixPayType == 1) {
+                -1f
+            } else if (TextUtils.isEmpty(pct)) -1f
+            else pct.toFloat() / 100f
+        } catch (e: java.lang.Exception) {
+            -1f
+        }
     }
 }
 
