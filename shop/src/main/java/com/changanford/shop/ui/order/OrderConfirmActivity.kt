@@ -17,6 +17,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
@@ -410,7 +412,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //这里参数context使用Android的Context
         val ctx = RhinoAndroidHelper(this).enterContext()
         val scope: Scriptable = ctx.initStandardObjects()
-        var result = 0
+        var useMoney = money
+        if (useMoney < 0) {
+            useMoney = 0f
+        }
         try {
             val obj: JSONObject = JSON.parseObject(createOrderBean?.mallPayConfig)
             val fixedAmountExpression: JSONArray = obj.getJSONArray("fixed_amount_expression")
@@ -419,12 +424,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             }
             fixedAmountExpression.forEachIndexed { index, any ->
                 val item = fixedAmountExpression.getJSONObject(index)
-                val express = item.getString("expression").replace("x", money.toString())
+                val express = item.getString("expression").replace("x", useMoney.toString())
                 val o = ctx.evaluateString(scope, express, "", 1, null)
                 if (o !== Scriptable.NOT_FOUND && o !is Undefined) {
                     o as Boolean //执行
                     if (o) {
-                        return (item.getString("default_amount").replace("x", money.toString())
+                        return (item.getString("default_amount").replace("x", useMoney.toString())
                             .toFloat() * 100).toInt()
                     }
                 }
@@ -466,62 +471,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"), "#00095B")
         //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
         var minFb = 0
-        if (!isMixPayRegular()) {//不是固定金额就取比例
-            minFb = if (minRmbProportion > 0f) WCommonUtil.getHeatNumUP(
-                "${totalPayFb * minRmbProportion}",
-                0
-            ).toInt() else 0
-        } else {//找出每个商品至少支付多少人民币
-            dataListBean?.forEach { goodsDetailBean ->
-                if (itemCoupon == null) {//没有优惠券
-                    minFb += getExpressionMoney(FBToRmb(goodsDetailBean.fbPrice).toFloat()) * goodsDetailBean.buyNum
-                } else {//用了优惠券的折扣要分摊到每一项有效商品上
-                    if (itemCoupon.conditionMoney.isNullOrEmpty()) {//立减多少 全部商品分摊优惠券折扣
-                        val preferential =//一个商品折扣多少钱
-                            WCommonUtil.getHeatNumUP(
-                                "${((goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum) / totalPayFb) * itemCoupon.discountsFb}",
-                                0
-                            ).toInt()
-                        var hasPreferential = preferential
-                        for (i in 0 until goodsDetailBean.buyNum) {
-                            if (i != goodsDetailBean.buyNum - 1) {
-                                val onePreferential = preferential / goodsDetailBean.buyNum
-                                hasPreferential += onePreferential
-                                minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - onePreferential).toString()).toFloat())
-                            } else {//最后一个要减
-                                val lastPreferential = preferential - hasPreferential
-                                minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - lastPreferential).toString()).toFloat())
-                            }
-                        }
-                    } else {//满减 不满足的踢出
-                        val conditionMoney = itemCoupon.conditionMoney!!.toInt()
-                        if (FBToRmb(goodsDetailBean.fbPrice).toFloat() < conditionMoney) {
-                            minFb += getExpressionMoney(FBToRmb(goodsDetailBean.fbPrice).toFloat()) * goodsDetailBean.buyNum
-                        } else {
-                            //排除不满足的。剩下的来瓜分优惠券
-                            var canPreferentialGoodsPrice = 0
-                            dataListBean?.filter { it.fbPrice.toInt() > conditionMoney }
-                                ?.forEach { d -> canPreferentialGoodsPrice += d.fbPrice.toInt() }
-                            val preferential =//一个商品折扣多少钱
-                                WCommonUtil.getHeatNumUP(
-                                    "${((goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum) / canPreferentialGoodsPrice) * itemCoupon.discountsFb}",
-                                    0
-                                ).toInt()
-                            var hasPreferential = preferential
-                            for (i in 0 until goodsDetailBean.buyNum) {
-                                if (i != goodsDetailBean.buyNum - 1) {
-                                    val onePreferential = preferential / goodsDetailBean.buyNum
-                                    hasPreferential += onePreferential
-                                    minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - onePreferential).toString()).toFloat())
-                                } else {//最后一个要减
-                                    val lastPreferential = preferential - hasPreferential
-                                    minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - lastPreferential).toString()).toFloat())
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (totalPayFb != 0) {
+            minFb = countMinFb(itemCoupon)
         }
         var maxFb: Int = totalPayFb - minFb
         if (maxFb < 0) {
@@ -555,6 +506,68 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         ("totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>>" +
                 ">totalFb:${infoBean.totalFb}>totalOriginalFb:${infoBean.totalOriginalFb}").wLogE("okhttp")
         initPayWay()
+    }
+
+    private fun countMinFb(itemCoupon: CouponsItemBean? = null): Int {
+        var minFb = 0
+        if (!isMixPayRegular()) {//不是固定金额就取比例
+            minFb = if (minRmbProportion > 0f) WCommonUtil.getHeatNumUP(
+                "${totalPayFb * minRmbProportion}",
+                0
+            ).toInt() else 0
+        } else {//找出每个商品至少支付多少人民币
+            dataListBean?.forEach { goodsDetailBean ->
+                if (itemCoupon == null) {//没有优惠券
+                    minFb += getExpressionMoney(FBToRmb(goodsDetailBean.fbPrice).toFloat()) * goodsDetailBean.buyNum
+                } else {//用了优惠券的折扣要分摊到每一项有效商品上
+                    if (itemCoupon.conditionMoney.isNullOrEmpty()) {//立减多少 全部商品分摊优惠券折扣
+                        val preferential =//一个商品折扣多少钱
+                            WCommonUtil.getHeatNumUP(
+                                "${((goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum) / totalPayFb) * itemCoupon.discountsFb}",
+                                0
+                            ).toInt()
+//                        var hasPreferential = preferential
+//                        for (i in 0 until goodsDetailBean.buyNum) {
+//                            if (i != goodsDetailBean.buyNum - 1) {
+                        val onePreferential = preferential / goodsDetailBean.buyNum
+//                                hasPreferential += onePreferential
+                        minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - onePreferential).toString()).toFloat()) * goodsDetailBean.buyNum
+//                            } else {//最后一个要减
+//                                val lastPreferential = preferential - hasPreferential
+//                                minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - lastPreferential).toString()).toFloat())
+//                            }
+//                        }
+                    } else {//满减 不满足的踢出
+                        val conditionMoney = itemCoupon.conditionMoney!!.toInt()
+                        if (FBToRmb(goodsDetailBean.fbPrice).toFloat() < conditionMoney) {
+                            minFb += getExpressionMoney(FBToRmb(goodsDetailBean.fbPrice).toFloat()) * goodsDetailBean.buyNum
+                        } else {
+                            //排除不满足的。剩下的来瓜分优惠券
+                            var canPreferentialGoodsPrice = 0
+                            dataListBean?.filter { it.fbPrice.toInt() > conditionMoney }
+                                ?.forEach { d -> canPreferentialGoodsPrice += d.fbPrice.toInt() }
+                            val preferential =//一个商品折扣多少钱
+                                WCommonUtil.getHeatNumUP(
+                                    "${((goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum) / canPreferentialGoodsPrice) * itemCoupon.discountsFb}",
+                                    0
+                                ).toInt()
+//                            var hasPreferential = preferential
+//                            for (i in 0 until goodsDetailBean.buyNum) {
+//                                if (i != goodsDetailBean.buyNum - 1) {
+                            val onePreferential = preferential / goodsDetailBean.buyNum
+//                                    hasPreferential += onePreferential
+                            minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - onePreferential).toString()).toFloat()) * goodsDetailBean.buyNum
+//                                } else {//最后一个要减
+//                                    val lastPreferential = preferential - hasPreferential
+//                                    minFb += getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toInt() - lastPreferential).toString()).toFloat())
+//                                }
+//                            }
+                        }
+                    }
+                }
+            }
+        }
+        return minFb
     }
 
     private fun bindInfo() {
