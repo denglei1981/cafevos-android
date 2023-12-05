@@ -10,40 +10,33 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_f6"
+        android:background="@color/white"
         android:paddingBottom="15dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_bg"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="250dp"
             android:background="@color/black"
             android:scaleType="fitXY"
             app:layout_constraintDimensionRatio="w,129:375"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/v_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_bg" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/circle_white_5_bg"
-            android:padding="@dimen/dp_16"
-            app:layout_constraintTop_toTopOf="@+id/v_line">
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_45"
+            android:background="@color/transparent"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_bg">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_icon"
-                android:layout_width="@dimen/dp_80"
-                android:layout_height="@dimen/dp_80"
+                android:layout_width="88dp"
+                android:layout_height="88dp"
                 android:scaleType="center"
                 android:src="@color/color_00095B"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -53,11 +46,12 @@
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_15"
-                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textSize="18sp"
                 app:layout_constraintLeft_toRightOf="@+id/iv_icon"
                 app:layout_constraintRight_toLeftOf="@+id/tv_join"
                 app:layout_constraintTop_toTopOf="@+id/iv_icon"
@@ -67,7 +61,7 @@
                 android:id="@+id/tv_join"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_follow_bg"
+                android:background="@drawable/circle_top_join_bg"
                 android:minWidth="@dimen/dp_47"
                 android:minHeight="@dimen/dp_25"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,10 +85,13 @@
                 android:id="@+id/tv_content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:textColor="@color/circle_74889D"
-                android:textSize="@dimen/sp_13"
+                android:maxLines="1"
+                android:textColor="@color/color_withe_a50"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@id/recyclerView"
                 app:layout_constraintEnd_toEndOf="@id/tv_join"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
@@ -118,21 +115,23 @@
                 android:id="@+id/tv_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_5"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_12"
+                android:layout_marginTop="@dimen/dp_13"
+                android:drawableStart="@mipmap/circle_left_post_tag"
+                android:drawablePadding="2dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
                 app:layout_constraintTop_toBottomOf="@id/recyclerView"
                 tools:text="1233 帖子" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/circle_f2_17"
+                android:layout_height="40dp"
+                android:layout_marginBottom="13dp"
+                android:background="@drawable/circle_people_top_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/recyclerView"
-                app:layout_constraintStart_toStartOf="@id/iv_icon"
-                app:layout_constraintTop_toBottomOf="@id/tv_num">
+                app:layout_constraintStart_toStartOf="@id/iv_icon">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/ry_personal"
@@ -151,10 +150,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="12dp"
-                    android:drawableEnd="@mipmap/circle_right_black_small"
-                    android:drawablePadding="7dp"
-                    android:gravity="center"
-                    android:textColor="@color/color_33"
+                    android:drawableEnd="@mipmap/circle_right_white_small"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:text="3455成员" />
             </LinearLayout>
@@ -164,17 +162,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/cl_top">
+            app:layout_constraintTop_toBottomOf="@+id/iv_bg">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_notice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/circle_white_5_bg"
-                android:padding="@dimen/dp_16"
                 android:visibility="gone"
                 tools:visibility="visible">
 
@@ -183,9 +180,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="公告栏"
-                    android:textColor="@color/color_33"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -195,9 +191,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@mipmap/right_99"
                     android:text="更多"
-
-                    android:textColor="@color/color_99"
-                    android:textSize="13sp"
+                    android:textColor="@color/color_d916"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_notice"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_notice" />
@@ -207,6 +202,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="11dp"
+                    android:background="@drawable/circle_notice_ry_bg"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_notice"
@@ -215,13 +211,29 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <cn.bingoogolapple.bgabanner.BGABanner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_168"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                style="@style/BannerDefaultStyle"
+                app:banner_pointDrawable="@drawable/indicator_style_circle"
+                app:banner_indicatorGravity="bottom"
+                app:banner_pointTopBottomMargin="@dimen/dp_20"
+                app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
+                app:banner_aspectRatio="1.67"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/circle_white_5_bg"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/cl_notice"
@@ -231,12 +243,9 @@
                     android:id="@+id/tv_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:paddingStart="16dp"
                     android:text="圈内活动"
-                    android:textColor="@color/color_33"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="RtlSymmetry" />
@@ -246,10 +255,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@mipmap/right_99"
-                    android:padding="@dimen/dp_16"
                     android:text="更多"
-                    android:textColor="@color/color_99"
-                    android:textSize="13sp"
+                    android:textColor="@color/color_d916"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_activity"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_activity" />
@@ -259,8 +267,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="11dp"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
+                    android:orientation="vertical"
                     android:paddingBottom="16dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_activity"
@@ -299,8 +306,8 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@mipmap/right_99"
                     android:text="更多"
-                    android:textColor="@color/color_99"
-                    android:textSize="13sp"
+                    android:textColor="@color/color_d916"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_topic"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_topic" />
@@ -309,8 +316,8 @@
                     android:id="@+id/ry_topic"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxHeight="63dp"
                     android:layout_marginTop="11dp"
+                    android:maxHeight="63dp"
                     app:layout_constraintLeft_toLeftOf="@+id/tv_topic"
                     app:layout_constraintRight_toRightOf="@+id/tv_topic_more"
                     app:layout_constraintTop_toBottomOf="@+id/tv_topic" />

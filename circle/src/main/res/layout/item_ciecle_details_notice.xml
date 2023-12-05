@@ -8,9 +8,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginBottom="6dp"
-        android:background="@drawable/bg_f9_3"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="9dp"
@@ -18,13 +17,13 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_top"
-            android:layout_width="28dp"
+            android:layout_width="34dp"
             android:layout_height="16.5dp"
             android:layout_marginEnd="4dp"
             android:background="@drawable/bg_e3e8_3"
             android:gravity="center"
             android:text="置顶"
-            android:textColor="@color/circle_8195C8"
+            android:textColor="@color/circle_1700F4"
             android:textSize="10sp"
             tools:ignore="HardcodedText,SmallSp" />
 
@@ -35,8 +34,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/color_33"
-            android:textSize="13sp"
+            android:textColor="@color/color_d916"
+            android:textSize="12sp"
             tools:text="福域探险者有活动啦，赶快参加吧！" />
     </LinearLayout>
 </layout>

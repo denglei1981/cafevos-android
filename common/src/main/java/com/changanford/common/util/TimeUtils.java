@@ -83,6 +83,7 @@ public class TimeUtils {
     public static String FORMATE_DATE_STR = "yyyy-MM-dd HH:mm:ss";
     public static String FORMATE_DATE_STR1 = "yyyy-MM-dd HH:mm:ss";
     public static String FORMATE_DATE_YMDHM = "yyyy-MM-dd HH:mm";
+    public static String FORMATE_DATE_YMDHM2 = "yyyy/MM/dd HH:mm";
     public static String FORMATE_DATE_HM = "mm:ss";
     public static String FORMATE_DATE_STR_O = "yyyy.MM.dd HH:mm";
 
@@ -172,6 +173,15 @@ public class TimeUtils {
         }
         Date date = new Timestamp(timeMillis);
         SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_YMDHM);
+        return sf.format(date);
+    }
+
+    public static String MillisTo_YMDHM2(Long timeMillis) {
+        if (timeMillis == null) {
+            return "";
+        }
+        Date date = new Timestamp(timeMillis);
+        SimpleDateFormat sf = new SimpleDateFormat(FORMATE_DATE_YMDHM2);
         return sf.format(date);
     }
 

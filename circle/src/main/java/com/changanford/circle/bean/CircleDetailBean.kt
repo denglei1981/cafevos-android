@@ -47,6 +47,9 @@ data class WonderfulControlsBean(
     val wonderfulId: String,
     val wonderfulType: String,
     val circleId: String,
+    val beginTime: Long,
+    val endTime: Long,
+    val activityTag: String,
 )
 
 data class CircleNoticesBean(

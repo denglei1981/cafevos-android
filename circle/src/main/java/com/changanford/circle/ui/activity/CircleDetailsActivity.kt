@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.MutableLiveData
@@ -59,7 +61,9 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.wutil.FlowLayoutManager
+import com.changanford.common.wutil.ScreenUtils
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -136,7 +140,7 @@ class CircleDetailsActivity :
         setLoadSir(binding.clContent)
         binding.run {
             backImg.setOnClickListener { finish() }
-            AppUtils.setStatusBarPaddingTop(binding.topContent.vLine, this@CircleDetailsActivity)
+            AppUtils.setStatusBarPaddingTop(binding.topContent.clTop, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
             topContent.recyclerView.apply {
                 layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
@@ -153,19 +157,21 @@ class CircleDetailsActivity :
             }
         }
         //处理滑动顶部效果
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val absOffset = abs(verticalOffset).toFloat() * 2.5F
+        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val absOffset = abs(verticalOffset).toFloat() * 4.5F
             //滑动到高度一半不是白色状态
-            if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
+            if (absOffset < appBarLayout.height * 0.3F && !isWhite) {
                 binding.backImg.setImageResource(R.mipmap.whit_left)
-                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
+//                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
+                binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.white))
                 isWhite = true
             }
             //超过高度一半是白色状态
-            else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
+            else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
                 binding.backImg.setImageResource(R.mipmap.back_xhdpi)
-                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+//                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+                binding.shareImg.setColorFilter(Color.parseColor("#000000"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.black))
                 isWhite = false
             }
@@ -178,7 +184,7 @@ class CircleDetailsActivity :
                 binding.toolbar.background.mutate().alpha = 255
                 binding.barTitleTv.alpha = 1.0F
             }
-        })
+        }
         PostDatabase.getInstance(this).getPostDao().findAll().observe(
             this
         ) {
@@ -188,6 +194,7 @@ class CircleDetailsActivity :
             .observe(this) {
                 gioPreBean = it
             }
+        viewModel.getBannerData()
     }
 
     private fun initListener(circleName: String) {
@@ -207,12 +214,15 @@ class CircleDetailsActivity :
                     0 -> {
                         GioPageConstant.circleDetailTabName = "推荐"
                     }
+
                     1 -> {
                         GioPageConstant.circleDetailTabName = "最新"
                     }
+
                     2 -> {
                         GioPageConstant.circleDetailTabName = "精华"
                     }
+
                     3 -> {
                         GioPageConstant.circleDetailTabName = "圈主专区"
                     }
@@ -250,10 +260,12 @@ class CircleDetailsActivity :
                                         RouterManger.param("postEntity", postEntity)
                                             .startARouter(ARouterCirclePath.PostActivity)
                                     }
+
                                     "3" -> {
                                         RouterManger.param("postEntity", postEntity)
                                             .startARouter(ARouterCirclePath.VideoPostActivity)
                                     }
+
                                     "4" -> {
                                         RouterManger.param("postEntity", postEntity)
                                             .startARouter(ARouterCirclePath.LongPostAvtivity)
@@ -449,7 +461,7 @@ class CircleDetailsActivity :
     override fun onResume() {
         super.onResume()
         viewModel.getCircleDetails(circleId)
-        circleNameData.observe(this){
+        circleNameData.observe(this) {
             updateMainGio(it, "圈子详情页")
         }
     }
@@ -463,13 +475,17 @@ class CircleDetailsActivity :
                 return@observe
             }
             circleName = it.name
-            circleNameData.value=it.name
+            circleNameData.value = it.name
             if (isFirst) {
                 initMyView(it.userId.toString())
                 isFirst = false
             }
             if (!it.wonderfulControls.isNullOrEmpty()) {
-                activityAdapter.setList(it.wonderfulControls)
+                if (it.wonderfulControls.size > 3) {
+                    activityAdapter.setList(it.wonderfulControls.subList(0, 3))
+                } else {
+                    activityAdapter.setList(it.wonderfulControls)
+                }
                 binding.topContent.clActivity.visibility = View.VISIBLE
             } else {
                 binding.topContent.clActivity.visibility = View.GONE
@@ -593,9 +609,11 @@ class CircleDetailsActivity :
                         "您申请的${mBean.memo}已通过，无需再次申请".toast()
                         return@observe
                     }
+
                     1 -> {
                         type = 1
                     }
+
                     3 -> {
                         type = 2
                     }
@@ -649,6 +667,14 @@ class CircleDetailsActivity :
 
                 }
             }
+        }
+        viewModel.advertisingList.observe(this) {
+            binding.topContent.banner.isVisible = it.isNullOrEmpty()
+            BannerControl.bindingBanner(
+                binding.topContent.banner,
+                it,
+                ScreenUtils.dp2px(this, 4f), true
+            )
         }
     }
 
@@ -722,6 +748,7 @@ class CircleDetailsActivity :
                     }
                 }
             }
+
             1 -> {
                 binding.topContent.run {
                     tvJoin.setBackgroundResource(R.drawable.circle_ee_12_bg)
@@ -737,6 +764,7 @@ class CircleDetailsActivity :
                     }
                 }
             }
+
             2 -> {
                 binding.topContent.run {
                     tvJoin.setBackgroundResource(R.drawable.circle_follow_bg)

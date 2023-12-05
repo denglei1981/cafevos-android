@@ -14,6 +14,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.repository.AdsRepository
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
@@ -28,7 +29,9 @@ import com.changanford.common.utilext.toast
  *Purpose
  */
 class CircleDetailsViewModel : BaseViewModel() {
-
+    private var adsRepository: AdsRepository = AdsRepository(this)
+    //广告
+    var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
     val tabList = arrayListOf("推荐", "最新", "精华", "圈主专区")
     val circleType = arrayListOf("4", "2", "3", "5")
 
@@ -45,6 +48,13 @@ class CircleDetailsViewModel : BaseViewModel() {
     val circleRolesBean = MutableLiveData<ArrayList<CircleStarRoleDto>>()
 
     val applyBean = MutableLiveData<CommonResponse<GetApplyManageBean>>()
+
+    /**
+     * 获取banner
+     * */
+    fun getBannerData() {
+        adsRepository.getAds("mall_top_ad_v2")
+    }
 
     fun getData(viewType: Int, page: Int) {
         launch(block = {

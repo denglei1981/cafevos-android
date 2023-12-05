@@ -8,45 +8,80 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp">
+        android:layout_marginBottom="15dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_bg"
-            android:layout_width="200dp"
-            android:layout_height="119dp"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
             android:scaleType="centerCrop"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_type"
-            android:layout_width="0dp"
-            android:layout_height="28dp"
-            android:background="@drawable/bg_item_activity_circle"
-            android:gravity="center"
+            android:id="@+id/tv_activity_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_circle_activity_left"
+            android:paddingLeft="7dp"
+            android:paddingTop="3dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="3dp"
             android:textColor="@color/white"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            android:textSize="10sp"
             app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
-            app:layout_constraintRight_toRightOf="@+id/iv_bg"
-            tools:text="报名活动" />
+            app:layout_constraintTop_toTopOf="@+id/iv_bg"
+            tools:text="进行中" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="12dp"
+                app:layout_constraintLeft_toRightOf="@+id/iv_bg"
+                app:layout_constraintTop_toTopOf="@+id/iv_bg"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxEms="7"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintRight_toLeftOf="@+id/tv_type"
+                android:singleLine="true"
+                android:textColor="@color/color_16"
+                android:textSize="14sp"
+                tools:text="asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginStart="3dp"
+                app:layout_constrainedWidth="true"
+                android:paddingStart="9dp"
+                android:paddingEnd="9dp"
+                android:background="@drawable/bg_dbdafb_18"
+                android:gravity="center"
+                android:textColor="@color/circle_1700F4"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="@+id/tv_content"
+                app:layout_constraintLeft_toRightOf="@+id/tv_content"
+                tools:text="报名活动" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/color_8016"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+            app:layout_constraintLeft_toLeftOf="@+id/ll_title"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
             android:layout_marginTop="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:gravity="center"
-            android:textColor="@color/color_33"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
-            app:layout_constraintRight_toRightOf="@+id/iv_bg"
+            android:background="#4A4A4A1A"
             app:layout_constraintTop_toBottomOf="@+id/iv_bg"
-            tools:text="长安福特未来活特未…" />
+            android:layout_height="0.5dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
