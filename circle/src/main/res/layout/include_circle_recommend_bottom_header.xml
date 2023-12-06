@@ -24,8 +24,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_header"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_marginTop="@dimen/dp_15"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
@@ -108,19 +108,13 @@
 
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_follow"
-            style="@style/followBtnStyle"
             android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:elevation="0dp"
+            android:layout_height="28dp"
             android:gravity="center"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:textAllCaps="false"
             android:textColor="@color/color_01025C"
             android:textSize="@dimen/sp_12"
-            app:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_header"
@@ -135,8 +129,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="@{postBean.showTitle}"
-            android:textColor="#ff2d2d2d"
-            android:textSize="17sp"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_header"

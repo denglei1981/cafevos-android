@@ -48,6 +48,9 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.location.LocationUtils
 import com.changanford.common.utilext.toIntPx
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.tencent.mm.opensdk.utils.Log
 import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -114,10 +117,12 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                                                 RouterManger.param("postEntity", postEntity)
                                                     .startARouter(ARouterCirclePath.PostActivity)
                                             }
+
                                             "3" -> {
                                                 RouterManger.param("postEntity", postEntity)
                                                     .startARouter(ARouterCirclePath.VideoPostActivity)
                                             }
+
                                             "4" -> {
                                                 RouterManger.param("postEntity", postEntity)
                                                     .startARouter(ARouterCirclePath.LongPostAvtivity)
@@ -172,7 +177,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
                 override fun checkPic() {
-                    startARouter(ARouterCirclePath.PostActivity, true)
+                    openChoose()
+//                    startARouter(ARouterCirclePath.PostActivity, true)
                 }
 
                 override fun checkVideo() {
@@ -185,10 +191,29 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 }
 
             }).run {
-            setBlurBackgroundEnable(false)
+//            setBackgroundColor(Color.TRANSPARENT)
             showPopupWindow(binding.ivMenu)
             initData()
         }
+    }
+
+    private fun openChoose() {
+        PictureUtil.chooseImageOrVideo(requireActivity(), object :
+            OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>?) {
+                result?.forEach {
+                    if (it.mimeType.contains("video") || it.mimeType.contains("mp4")) {//选择的视频
+
+                    } else {//选择的图片
+
+                    }
+                }
+            }
+
+            override fun onCancel() {
+
+            }
+        })
     }
 
     private fun initRecyclerData() {
@@ -226,9 +251,11 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
                         viewModel.getInitQuestion()
                     }
+
                     UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
                         SPUtils.setParam(requireContext(), "identityType", "")
                     }
+
                     else -> {}
                 }
             }
@@ -353,10 +380,12 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                         GioPageConstant.communitySecondPageName = "社区页-广场"
                         BuriedUtil.instant?.communityMainTopMenu("广场")
                     }
+
                     1 -> {
                         GioPageConstant.communitySecondPageName = "社区页-圈子"
                         BuriedUtil.instant?.communityMainTopMenu("圈子")
                     }
+
                     2 -> {
                         GioPageConstant.communitySecondPageName = "社区页-问答"
                         BuriedUtil.instant?.communityMainTopMenu("问答")

@@ -60,9 +60,9 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
     fun initData() {
         val param = SPUtils.getParam(context, "identityType", "").toString()
         val list = arrayListOf(
-            CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发长帖"),
-            CircleMainMenuBean(R.mipmap.circle_post_pic, "图片"),
-            CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
+            CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发文章"),
+            CircleMainMenuBean(R.mipmap.circle_post_pic, "发动态"),
+//            CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
             CircleMainMenuBean(R.mipmap.circle_post_question,"提问"),
 //            CircleMainMenuBean(R.mipmap.circle_post_question,"发活动"),
 //            CircleMainMenuBean(R.mipmap.circle_post_question,"发投票")
@@ -79,18 +79,19 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                 when (position) {
                     0 -> {
                         listener.checkLongBar()
-                        updateMainGio("扫一扫页", "扫一扫页")
+                        updateMainGio("发文章页", "发文章页")
                     }
                     1 -> {
                         listener.checkPic()
-                        updateMainGio("扫一扫页", "扫一扫页")
+                        updateMainGio("发动态页", "发动态页")
                     }
                     2 -> {
-                        listener.checkVideo()
-                        updateMainGio("扫一扫页", "扫一扫页")
+//                        listener.checkVideo()
+                        listener.checkQuestion()
+                        updateMainGio("提问页", "提问页")
                     }
                     3->{
-                        listener.checkQuestion()
+//                        listener.checkQuestion()
                         updateMainGio("提问页", "提问页")
                     }
 //                    4 -> {

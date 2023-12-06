@@ -7,79 +7,79 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:background="@color/transparent"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_long_bar"
-            android:layout_width="45dp"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:background="@drawable/circle_details_pop_bg"
-            android:layout_height="45dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/circle_post_long_bar_w"
-                android:layout_height="20dp" />
+                android:src="@mipmap/circle_post_long_bar_w" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="发长贴"
-                android:textSize="@dimen/sp_9"
                 android:textColor="@color/white"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/sp_9" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_pic_bar"
-            android:layout_width="45dp"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/circle_details_pop_bg"
-            android:layout_height="45dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/circle_post_pic_w"
-                android:layout_height="20dp" />
+                android:src="@mipmap/circle_post_pic_w" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="发图片"
-                android:textSize="@dimen/sp_9"
                 android:textColor="@color/white"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/sp_9" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_video_bar"
-            android:layout_width="45dp"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginBottom="10dp"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/circle_details_pop_bg"
-            android:layout_height="45dp">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/circle_post_video_w"
-                android:layout_height="20dp" />
+                android:src="@mipmap/circle_post_video_w" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="发视频"
-                android:textSize="@dimen/sp_9"
                 android:textColor="@color/white"
-                android:layout_height="wrap_content" />
+                android:textSize="@dimen/sp_9" />
 
         </LinearLayout>
     </LinearLayout>

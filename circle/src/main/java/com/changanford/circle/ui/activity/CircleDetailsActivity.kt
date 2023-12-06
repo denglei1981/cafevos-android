@@ -405,13 +405,15 @@ class CircleDetailsActivity :
             onDismissListener = object : BasePopupWindow.OnDismissListener() {
                 override fun onDismiss() {
                     isOpenMenuPop = false
-                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+//                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+                    binding.ivPostBar.rotation=0f
                 }
 
             }
             setOnPopupWindowShowListener {
                 isOpenMenuPop = true
-                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
+                binding.ivPostBar.rotation=45f
+//                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
             }
         }
     }
@@ -695,9 +697,9 @@ class CircleDetailsActivity :
                 simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_33)
+                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_9916)
                 simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.circle_app_color)
+                    ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_1700F4)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return simplePagerTitleView
             }
@@ -716,7 +718,7 @@ class CircleDetailsActivity :
                 indicator.setColors(
                     ContextCompat.getColor(
                         this@CircleDetailsActivity,
-                        R.color.circle_app_color
+                        R.color.color_1700F4
                     )
                 )
                 return indicator

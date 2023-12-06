@@ -41,21 +41,34 @@
             tools:text="重庆市" />
 
 
-        <com.changanford.common.widget.DrawCenterTextView
-            android:id="@+id/tv_like_count"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_7"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:minWidth="75dp"
-            android:textSize="@dimen/sp_12"
-            app:image="@mipmap/circle_no_like_image"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_location"
-            tools:text="1.2k" />
+            tools:ignore="SmallSp"
+            tools:text="5分钟前" />
+
+        <!--        <com.changanford.common.widget.DrawCenterTextView-->
+        <!--            android:id="@+id/tv_like_count"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:layout_marginTop="@dimen/dp_7"-->
+        <!--            android:drawablePadding="4dp"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:minWidth="75dp"-->
+        <!--            android:textSize="@dimen/sp_12"-->
+        <!--            app:image="@mipmap/circle_no_like_image"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_location"-->
+        <!--            tools:text="1.2k" />-->
 
         <com.changanford.common.widget.DrawCenterTextView
             android:id="@+id/tv_comment_count"
@@ -67,6 +80,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12"
+            android:visibility="gone"
             app:image="@mipmap/ic_circle_bottom_share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_like_count"
@@ -83,11 +97,53 @@
             android:text="@{postBean.timeAdnViewCount}"
             android:textColor="#74889D"
             android:textSize="@dimen/sp_12"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
             app:layout_constraintTop_toBottomOf="@+id/tv_location"
             tools:text="12313 3万浏览" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/item_comment_count_ic"
+            android:drawablePadding="3dp"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="123" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:textColor="@color/color_8016"
+            android:drawablePadding="3dp"
+            android:textSize="11sp"
+            android:drawableStart="@mipmap/item_good_count_ic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_comments"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="123" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:drawablePadding="3dp"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
+            android:drawableStart="@mipmap/item_views_count_ic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_like_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="123" />
 
         <View
             android:layout_width="0dp"

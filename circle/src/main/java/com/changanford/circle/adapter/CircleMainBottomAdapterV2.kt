@@ -7,6 +7,7 @@ import android.content.Intent
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -75,18 +76,20 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         val activity = BaseApplication.curActivity
         setTopMargin(binding?.root, 10, holder.layoutPosition)
         binding?.let {
-            binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
+            binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_like_image, false)
+                binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 
             } else {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_no_like_image, false)
+                binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
             }
 
             binding.layoutCount.tvLikeCount.setOnClickListener {
                 likePost(binding, item, holder.layoutPosition)
             }
-
+            binding.layoutCount.tvComments.text = item.getCommentCountNew()
+            binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
+            binding.layoutCount.tvTime.text = item.timeStr
             binding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     if (item.authorBaseVo != null) {
@@ -200,6 +203,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             binding.icMultVeryPost.visibility = View.GONE
                         }
                     }
+
                     picList.size == 1 -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
@@ -214,6 +218,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                         binding.icMultVeryPost.visibility = View.GONE
 
                     }
+
                     else -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.GONE
@@ -295,10 +300,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            binding.layoutCount.tvLikeCount.setThumb(
-                                R.mipmap.circle_like_image,
-                                true
-                            )
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic,)
                             item.likesCount++
                             "点赞成功".toast()
                             GIOUtils.postLickClick(
@@ -314,10 +316,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.layoutCount.tvLikeCount.setThumb(
-                                R.mipmap.circle_no_like_image,
-                                false
-                            )
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic,)
                             GIOUtils.cancelPostLickClick(
                                 currentPageName,
                                 item.topicId,
@@ -330,7 +329,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             )
                             "取消点赞".toast()
                         }
-                        binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
+                        binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {
                         it.msg.toast()
                     }
@@ -398,7 +397,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     /**
      *  设置关注状态。
      * */
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)

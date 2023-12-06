@@ -403,6 +403,11 @@ data class PostDataBean(
         return commentStr.plus("\t").plus(viewStr)
     }
 
+    fun getCommentCountNew():String{
+        if (commentCount==0L){return "0"}
+        return commentCount.toString()
+    }
+
     fun getCommentCountResult(): String {
         var commentCountResult: String = ""
         if (commentCount == 0L) {

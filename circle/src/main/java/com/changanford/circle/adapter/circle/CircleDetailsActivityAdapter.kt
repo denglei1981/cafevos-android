@@ -1,11 +1,9 @@
 package com.changanford.circle.adapter.circle
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.LightingColorFilter
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -15,6 +13,7 @@ import com.changanford.circle.databinding.ItemCircleDetailsActivityBinding
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.toIntPx
 
 
 /**
@@ -35,24 +34,29 @@ class CircleDetailsActivityAdapter :
             ivBg.setCircular(12)
             ivBg.loadCompress(item.coverImg)
             tvContent.text = item.title
-            tvTime.text="${TimeUtils.MillisTo_YMDHM2(item.beginTime)} - ${TimeUtils.MillisTo_YMDHM2(item.endTime)}"
+            tvTime.text =
+                "${TimeUtils.MillisTo_YMDHM2(item.beginTime)} - ${TimeUtils.MillisTo_YMDHM2(item.endTime)}"
 
-            when (holder.layoutPosition) {
-                0 -> {
+            llTitle.post {
+                val titleMaxWith = llTitle.width - tvType.width - 15
+                tvContent.maxWidth = titleMaxWith
+            }
+            when (item.activityTag) {
+                "NOT_BEGIN" -> {
                     tvActivityType.text = "未开始"
                     val sd = tvActivityType.background.mutate() as GradientDrawable
                     sd.setColor(ContextCompat.getColor(context, R.color.color_E67400))
                     sd.invalidateSelf()
                 }
 
-                1 -> {
+                "ON_GOING" -> {
                     tvActivityType.text = "进行中"
                     val sd = tvActivityType.background.mutate() as GradientDrawable
                     sd.setColor(ContextCompat.getColor(context, R.color.color_009987))
                     sd.invalidateSelf()
                 }
 
-                2 -> {
+                "ENDED" -> {
                     tvActivityType.text = "已结束"
                     val sd = tvActivityType.background.mutate() as GradientDrawable
                     sd.setColor(ContextCompat.getColor(context, R.color.color_00_a50))
@@ -90,6 +94,23 @@ class CircleDetailsActivityAdapter :
                     tvType.text = "问卷中心"
                 }
             }
+        }
+        setMargin(holder.itemView, 8, holder.layoutPosition)
+    }
+
+    /**
+     * 列表第一个item追加margin
+     */
+    private fun setMargin(view: View?, margin: Int, position: Int) {
+        view?.let {
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            if (position == 0) {
+                params.topMargin = margin.toIntPx()
+            } else params.topMargin = 0
+
+            if (position != itemCount-1) {
+                params.bottomMargin = 15.toIntPx()
+            } else params.bottomMargin = 0
         }
     }
 

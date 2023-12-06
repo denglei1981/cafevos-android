@@ -7,44 +7,33 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="18dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/ll_content"
-            android:layout_width="match_parent"
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="16dp"
+            android:minWidth="50dp"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            tools:text="发长贴" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                tools:src="@mipmap/circle_post_video" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="22dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="22dp"
+            tools:src="@mipmap/circle_post_video" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:minWidth="50dp"
-                android:textColor="@color/circle_666666"
-                android:textSize="15sp"
-                tools:text="发长贴" />
-        </LinearLayout>
 
-        <View
-            android:id="@id/v_line"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="12dp"
-            android:background="@color/color_f6" />
     </LinearLayout>
 
 </layout>

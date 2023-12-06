@@ -22,6 +22,16 @@ fun TextView.setDrawableLeft(@DrawableRes res: Int, @DimenRes size: Int) {
     this.setCompoundDrawables(drawableLeft, null, null, null)
 }
 
+fun TextView.setDrawableLeft(@DrawableRes res: Int) {
+    val drawableLeft = resources.getDrawable(res, null)
+    drawableLeft.setBounds(
+        0,
+        0,
+        drawableLeft.intrinsicWidth, drawableLeft.intrinsicHeight,
+    )
+    this.setCompoundDrawables(drawableLeft, null, null, null)
+}
+
 fun TextView.setDrawableTop(context: Context, @DrawableRes res: Int) {
     var drawableTop = ContextCompat.getDrawable(context, res)
     this.setCompoundDrawablesWithIntrinsicBounds(null, drawableTop, null, null)
