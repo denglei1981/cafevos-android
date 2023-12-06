@@ -19,6 +19,7 @@ import com.changanford.common.util.crash.CrashProtect
 import com.changanford.common.widget.smart.MyFooterView
 import com.changanford.common.widget.smart.MyHeaderView
 import com.changanford.common.wutil.ForegroundCallbacks
+import com.changanford.common.wutil.SharedPermissionUtils
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.kingja.loadsir.core.LoadSir
 import com.lansosdk.videoeditor.LanSoEditor
@@ -69,6 +70,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         super.onCreate()
         mContext = this
         Hawk.init(this).build()
+        SharedPermissionUtils.init(this)
         if (!BuildConfig.DEBUG) CrashProtect().doProtect(this)
         KeyboardVisibilityObserver.getInstance().init(this)
         if (!(SPUtils.getParam(this, "isPopAgreement", true) as Boolean)) {

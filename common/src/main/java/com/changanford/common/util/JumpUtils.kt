@@ -31,12 +31,14 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
 import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -587,18 +589,29 @@ class JumpUtils {
             }
 
             61 -> {//扫一扫
-                SoulPermission.getInstance().checkAndRequestPermission(
-                    Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
-                        override fun onPermissionOk(permission: Permission?) {
-                            updateMainGio("扫一扫页", "扫一扫页")
-                            startARouter(ARouterHomePath.CaptureActivity)
-                        }
-
-                        override fun onPermissionDenied(permission: Permission?) {
-                            "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
-                        }
-                    }
+                val success = {
+                    updateMainGio("扫一扫页", "扫一扫页")
+                    startARouter(ARouterHomePath.CaptureActivity)
+                }
+                val fail = {
+                    "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
+                }
+                val permissions = Permissions.build(
+                    Manifest.permission.CAMERA,
                 )
+                PermissionPopUtil.checkPermissionAndPop(permissions, success = success, fail = fail)
+//                SoulPermission.getInstance().checkAndRequestPermission(
+//                    Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
+//                        override fun onPermissionOk(permission: Permission?) {
+//                            updateMainGio("扫一扫页", "扫一扫页")
+//                            startARouter(ARouterHomePath.CaptureActivity)
+//                        }
+//
+//                        override fun onPermissionDenied(permission: Permission?) {
+//                            "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
+//                        }
+//                    }
+//                )
             }
 
             69 -> {
