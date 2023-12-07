@@ -65,10 +65,12 @@ import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.circle.config.CircleConfig
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -101,6 +103,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
     private var isunSave: Boolean = false  // 不自动保存 默认FALSE
 
     private var isHasVideoPath = false;//  有网络的图片url 路径
+    private var inLocalMedia: ArrayList<LocalMedia>? = null
 
     private val insertPostId by lazy {
         System.currentTimeMillis()
@@ -180,6 +183,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         }
         binding.bottom.llContent.visibility = View.GONE
         initListener()
+        inLocalMedia = intent.getParcelableArrayListExtra(CircleConfig.CIRCLE_TO_POST_KEY)
     }
 
     private fun checkNext() {
@@ -427,7 +431,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     if (TextUtils.isEmpty(locaPostEntity.address)) {
                         params["address"] = ""
                     }
-                    params["addrName"] = locaPostEntity.addrName?: ""
+                    params["addrName"] = locaPostEntity.addrName ?: ""
                     params["lat"] = locaPostEntity.lat
                     params["lon"] = locaPostEntity.lon
                     params["province"] = locaPostEntity.province
@@ -450,7 +454,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                         )
                         showTopic(locaPostEntity.topicName)
                     }
-                    if (locaPostEntity.circleName?.isNotEmpty() == true){
+                    if (locaPostEntity.circleName?.isNotEmpty() == true) {
                         buttomTypeAdapter.setData(
                             4,
                             ButtomTypeBean(locaPostEntity.circleName ?: "", 1, 3)
@@ -609,10 +613,25 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             jsonStr2obj(locaPostEntity!!.localMeadle)
         } else {
             val postsId = intent?.getStringExtra("postsId")
-            if (postsId!=null){
+            if (postsId != null) {
                 return
             }
-            openChooseVideo()
+            if (inLocalMedia.isNullOrEmpty()){
+                openChooseVideo()
+            }else{
+                isHasVideoPath = false
+                if (inLocalMedia != null) {
+                    SelectlocalMedia = inLocalMedia!![0]
+                    startARouterForResult(
+                        this@VideoPostActivity,
+                        ARouterCirclePath.PictureEditAudioActivity,
+                        Bundle().apply {
+                            putString("path", inLocalMedia!![0].realPath)
+                        },
+                        PictureEditAudioActivity.EDIT_VIDEOPATH
+                    )
+                }
+            }
         }
     }
 

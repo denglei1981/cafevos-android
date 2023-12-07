@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainViewPagerAdapter
+import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
@@ -52,6 +53,7 @@ import com.changanford.common.utilext.toIntPx
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.tencent.mm.opensdk.utils.Log
+import com.xiaomi.push.it
 import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -202,17 +204,19 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         PictureUtil.chooseImageOrVideo(requireActivity(), object :
             OnResultCallbackListener<LocalMedia> {
             override fun onResult(result: MutableList<LocalMedia>?) {
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(
+                    CircleConfig.CIRCLE_TO_POST_KEY,
+                    result as java.util.ArrayList<out Parcelable>
+                )
+                var isVideo = false
                 result?.forEach {
-                    if (it.mimeType.contains("video") || it.mimeType.contains("mp4")) {//选择的视频
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList(
-                            "asd",
-                            result as java.util.ArrayList<out Parcelable>
-                        )
-                        startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
-                    } else {//选择的图片
-                        startARouter(ARouterCirclePath.PostActivity, true)
-                    }
+                    isVideo = it.mimeType.contains("video") || it.mimeType.contains("mp4")
+                }
+                if (isVideo) {
+                    startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
+                } else {
+                    startARouter(ARouterCirclePath.PostActivity, bundle, true)
                 }
             }
 
