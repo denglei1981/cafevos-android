@@ -40,6 +40,7 @@ import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
+import com.changanford.home.news.activity.InfoDetailActivity
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsRecommendListAdapter
@@ -138,7 +139,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             if (!TextUtils.isEmpty(artId)) {
-                viewModel.getNewsDetail(artId)
+//                viewModel.getNewsDetail(artId)
                 viewModel.getNewsCommentList(artId, false)
                 viewModel.getArtAdditional(artId)
             } else {
@@ -174,7 +175,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this) {
             if (checkPosition == -1) {
                 return@observe
             }
@@ -187,14 +188,14 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
             // 有头布局。
             homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
-        })
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
+        }
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this) {
             val bean = homeNewsCommentAdapter.getItem(checkPosition)
             bean.let { _ ->
                 bean.childCount = it
             }
             homeNewsCommentAdapter.notifyItemChanged(checkPosition + 1)
-        })
+        }
     }
 
     /**
@@ -313,6 +314,10 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 toastShow(it.message)
             }
         })
+        val infoDetailActivity = activity as InfoDetailActivity
+        infoDetailActivity.getNewDetailBean()?.let {
+            showHeadInfo(it)
+        }
         viewModel.commentsLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
@@ -469,6 +474,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     )
                 }
             }
+
             1 -> {
                 newsDetailData?.isCollect = 0
                 collectCount = newsDetailData?.collectCount?.minus(1)
@@ -515,6 +521,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     )
                 }
             }
+
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
@@ -581,8 +588,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         setFollowState(inflateHeader.btFollow, newsData.authors)
         when (followType) {
             1 -> {
-                GIOUtils.followClick(newsData.authors.authorId, newsData.authors.nickname, "资讯详情页")
+                GIOUtils.followClick(
+                    newsData.authors.authorId,
+                    newsData.authors.nickname,
+                    "资讯详情页"
+                )
             }
+
             2 -> {
                 GIOUtils.cancelFollowClick(
                     newsData.authors.authorId,
@@ -605,6 +617,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     replay()
                 }
             }
+
             R.id.tv_news_to_like -> {
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
@@ -614,6 +627,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
 
             }
+
             R.id.tv_news_to_collect -> {
                 // 收藏
                 if (LoginUtil.isLongAndBindPhone()) {
@@ -621,6 +635,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
 
             }
+
             R.id.tv_news_to_msg -> { // 去评论。
 //                replay()
                 // 滑动到看评论的地方
@@ -637,6 +652,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
 
             }
+
             R.id.tv_news_to_share -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
@@ -650,6 +666,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                 }
 
             }
+
             R.id.iv_more -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(

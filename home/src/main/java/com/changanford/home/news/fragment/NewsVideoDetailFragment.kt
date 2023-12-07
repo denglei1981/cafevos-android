@@ -40,6 +40,7 @@ import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityHomeNewsVideoDetailBinding
 import com.changanford.home.databinding.IncludeHomePicVideoNewsContentBinding
+import com.changanford.home.news.activity.InfoDetailActivity
 import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsRecommendListAdapter
@@ -139,13 +140,18 @@ class NewsVideoDetailFragment :
     override fun initData() {
         artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
-            viewModel.getNewsDetail(artId)
+//            viewModel.getNewsDetail(artId)
             viewModel.getNewsCommentList(artId, false)
             viewModel.getArtAdditional(artId)
         } else {
             toastShow("没有该资讯类型")
         }
         bus()
+        val infoDetailActivity = activity as InfoDetailActivity
+        infoDetailActivity.getNewDetailBean()?.let {
+            showHeadInfo(it)
+            playVideo(it.videoUrl)
+        }
     }
 
     private val inflateHeader: IncludeHomePicVideoNewsContentBinding by lazy {

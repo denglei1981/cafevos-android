@@ -33,6 +33,7 @@ import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
+import com.changanford.home.news.activity.InfoDetailActivity
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
@@ -77,12 +78,17 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         artId = arguments?.getString(JumpConstant.NEWS_ART_ID).toString()
         if (!TextUtils.isEmpty(artId)) {
             if (!TextUtils.isEmpty(artId)) {
-                viewModel.getNewsDetail(artId)
+//                viewModel.getNewsDetail(artId)
                 viewModel.getNewsCommentList(artId, false)
 
             } else {
                 toastShow("没有该资讯类型")
             }
+        }
+        val infoDetailActivity = activity as InfoDetailActivity
+        infoDetailActivity.getNewDetailBean()?.let {
+            showHeadInfo(it)
+            showBanner(it)
         }
     }
 
