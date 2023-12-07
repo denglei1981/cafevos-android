@@ -121,7 +121,7 @@ class PhotoViewActivity : BaseActivity<PhotoviewActivityBinding, EmptyViewModel>
                 }
             }
             val fail = {
-
+                "储存权限已被关闭,请手动打开权限".toast()
             }
             PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
 //            SoulPermission.getInstance().checkAndRequestPermissions(permissions,object :CheckRequestPermissionsListener{

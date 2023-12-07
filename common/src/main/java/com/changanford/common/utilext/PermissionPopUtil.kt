@@ -1,6 +1,10 @@
 package com.changanford.common.utilext
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.widget.pop.PermissionTipsPop
 import com.orhanobut.hawk.Hawk
@@ -67,33 +71,42 @@ object PermissionPopUtil {
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR -> CALENDAR_TITLE
                 else -> ""
             }
-            if (!Hawk.get(permissionName,false)){
+            if (!Hawk.get(permissionName, false)) {
                 if (!pop.isShowing) {
                     pop.setTitle(useTitle)
                     pop.setContent(useTips)
                     pop.showPopupWindow()
                 }
+                Hawk.put(permissionName, true)
+            } else {
+                if (ContextCompat.checkSelfPermission(
+                        BaseApplication.curActivity,
+                        permissionName
+                    ) == PackageManager.PERMISSION_DENIED && !ActivityCompat.shouldShowRequestPermissionRationale(
+                        BaseApplication.curActivity,
+                        permissionName
+                    )
+                ) {
+                    //判断权限是否处于不再询问状态的代码有点小BUG，它必须申请过一次权限并且用户做出了选择之后判断才能够准确。
+                    // 该权限已经被永久禁止了
+                } else if (ContextCompat.checkSelfPermission(
+                        BaseApplication.curActivity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // 需要向用户请求获取该权限
+                    if (!pop.isShowing) {
+                        pop.setTitle(useTitle)
+                        pop.setContent(useTips)
+                        pop.showPopupWindow()
+                    }
+
+                } else {
+                    // 有权限访问外部存储空间
+
+                }
             }
-//            when (OSPermissionUtils.getAuthorizeStaus(
-//                BaseApplication.curActivity,
-//                permissionName
-//            )) {
-//                3 -> {//未申请过权限
-//                    if (!pop.isShowing) {
-//                        pop.setTitle(useTitle)
-//                        pop.setContent(useTips)
-//                        pop.showPopupWindow()
-//                    }
-//                }
-//
-//                2 -> {//申请过但是永久禁止弹窗
-//                }
-//
-//                0 -> {//申请权限成功
-//
-//                }
-//            }
-            Hawk.put(permissionName,true)
+
         }
 
         SoulPermission.getInstance()
