@@ -3,7 +3,7 @@ package com.changanford.common.utilext
 import android.Manifest
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.widget.pop.PermissionTipsPop
-import com.changanford.common.wutil.OSPermissionUtils
+import com.orhanobut.hawk.Hawk
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
@@ -18,11 +18,11 @@ object PermissionPopUtil {
 
     //拍照
     private const val CAMERA =
-        "用于扫一扫、发帖、图片、视频、提问、修改头像等需要拍摄照片或视频的功能"
+        "相机权限用于发帖、图片、视频、提问、修改头像等需要拍摄照片或视频的功能"
 
     //照片视频
-    private const val ALBUM =
-        "用于发帖、图片、视频、提问、修改头像、扫描二维码等需要获取图片或视频的功能"
+//    private const val ALBUM =
+//        "用于发帖、图片、视频、提问、修改头像、扫描二维码等需要获取图片或视频的功能"
 
     //手机存储
     private const val STORAGE =
@@ -53,7 +53,7 @@ object PermissionPopUtil {
 
             val useTips = when (permissionName) {
                 Manifest.permission.CAMERA -> CAMERA
-                Manifest.permission.READ_EXTERNAL_STORAGE -> ALBUM
+                Manifest.permission.READ_EXTERNAL_STORAGE -> STORAGE
                 Manifest.permission.WRITE_EXTERNAL_STORAGE -> STORAGE
                 Manifest.permission.ACCESS_FINE_LOCATION -> LOCATION
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR -> CALENDAR
@@ -67,25 +67,33 @@ object PermissionPopUtil {
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR -> CALENDAR_TITLE
                 else -> ""
             }
-            when (OSPermissionUtils.getAuthorizeStaus(
-                BaseApplication.curActivity,
-                permissionName
-            )) {
-                3 -> {//未申请过权限
-                    if (!pop.isShowing) {
-                        pop.setTitle(useTitle)
-                        pop.setContent(useTips)
-                        pop.showPopupWindow()
-                    }
-                }
-
-                2 -> {//申请过但是永久禁止弹窗
-                }
-
-                0 -> {//申请权限成功
-
+            if (!Hawk.get(permissionName,false)){
+                if (!pop.isShowing) {
+                    pop.setTitle(useTitle)
+                    pop.setContent(useTips)
+                    pop.showPopupWindow()
                 }
             }
+//            when (OSPermissionUtils.getAuthorizeStaus(
+//                BaseApplication.curActivity,
+//                permissionName
+//            )) {
+//                3 -> {//未申请过权限
+//                    if (!pop.isShowing) {
+//                        pop.setTitle(useTitle)
+//                        pop.setContent(useTips)
+//                        pop.showPopupWindow()
+//                    }
+//                }
+//
+//                2 -> {//申请过但是永久禁止弹窗
+//                }
+//
+//                0 -> {//申请权限成功
+//
+//                }
+//            }
+            Hawk.put(permissionName,true)
         }
 
         SoulPermission.getInstance()
