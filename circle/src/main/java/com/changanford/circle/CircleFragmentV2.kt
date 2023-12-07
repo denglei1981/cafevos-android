@@ -203,9 +203,11 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             override fun onResult(result: MutableList<LocalMedia>?) {
                 result?.forEach {
                     if (it.mimeType.contains("video") || it.mimeType.contains("mp4")) {//选择的视频
-
+                        val bundle =Bundle()
+//                        bundle.put("asd",result)
+                        startARouter(ARouterCirclePath.VideoPostActivity, true)
                     } else {//选择的图片
-
+                        startARouter(ARouterCirclePath.PostActivity, true)
                     }
                 }
             }
