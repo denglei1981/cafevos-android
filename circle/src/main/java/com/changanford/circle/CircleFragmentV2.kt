@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.TextUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -203,9 +204,12 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             override fun onResult(result: MutableList<LocalMedia>?) {
                 result?.forEach {
                     if (it.mimeType.contains("video") || it.mimeType.contains("mp4")) {//选择的视频
-                        val bundle =Bundle()
-//                        bundle.put("asd",result)
-                        startARouter(ARouterCirclePath.VideoPostActivity, true)
+                        val bundle = Bundle()
+                        bundle.putParcelableArrayList(
+                            "asd",
+                            result as java.util.ArrayList<out Parcelable>
+                        )
+                        startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
                     } else {//选择的图片
                         startARouter(ARouterCirclePath.PostActivity, true)
                     }
