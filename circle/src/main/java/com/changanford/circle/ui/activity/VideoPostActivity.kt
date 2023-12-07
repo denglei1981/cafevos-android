@@ -65,6 +65,7 @@ import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.common.utilext.PermissionPopUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
@@ -964,28 +965,46 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                                         Manifest.permission.READ_EXTERNAL_STORAGE,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                                     )
-                                    SoulPermission.getInstance()
-                                        .checkAndRequestPermissions(permissions, object :
-                                            CheckRequestPermissionsListener {
-                                            override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-                                                isunSave = true
-                                                startARouterForResult(
-                                                    this@VideoPostActivity,
-                                                    ARouterCirclePath.PictureEditAudioActivity,
-                                                    Bundle().apply {
-                                                        putString(
-                                                            "path",
-                                                            selectList[0].realPath
-                                                        )
-                                                    },
-                                                    PictureEditAudioActivity.EDIT_VIDEOPATH
+                                    val success = {
+                                        isunSave = true
+                                        startARouterForResult(
+                                            this@VideoPostActivity,
+                                            ARouterCirclePath.PictureEditAudioActivity,
+                                            Bundle().apply {
+                                                putString(
+                                                    "path",
+                                                    selectList[0].realPath
                                                 )
-                                            }
+                                            },
+                                            PictureEditAudioActivity.EDIT_VIDEOPATH
+                                        )
+                                    }
+                                    val fail = {
 
-                                            override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-                                            }
-
-                                        })
+                                    }
+                                    PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//                                    SoulPermission.getInstance()
+//                                        .checkAndRequestPermissions(permissions, object :
+//                                            CheckRequestPermissionsListener {
+//                                            override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
+//                                                isunSave = true
+//                                                startARouterForResult(
+//                                                    this@VideoPostActivity,
+//                                                    ARouterCirclePath.PictureEditAudioActivity,
+//                                                    Bundle().apply {
+//                                                        putString(
+//                                                            "path",
+//                                                            selectList[0].realPath
+//                                                        )
+//                                                    },
+//                                                    PictureEditAudioActivity.EDIT_VIDEOPATH
+//                                                )
+//                                            }
+//
+//                                            override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
+//                                            }
+//
+//                                        })
                                 }
 //                                "删除封面" -> {
 //                                    postVideoAdapter.fmPath = ""

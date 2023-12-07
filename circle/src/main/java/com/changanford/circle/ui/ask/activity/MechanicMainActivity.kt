@@ -144,12 +144,12 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
     private fun takePhoto() {
         PictureUtils.opencarcme(
             this@MechanicMainActivity,
-            object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>) {
                     // 结果回调
                     if (result.isNotEmpty()) {
                         for (media in result) {
-                            val path: String = PictureUtil.getFinallyPath(media)
+                            val path: String = media?.let { PictureUtil.getFinallyPath(it) }.toString()
 //                        loadCircleFilePath(path, binding.editIcon)
                             headIconPath = path
                             saveHeadIcon()
@@ -168,13 +168,13 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
      */
     private fun pic() {
         PictureUtils.openGarlly(this@MechanicMainActivity, object :
-            OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
+            OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
                 for (media in result) {
                     var path: String? = ""
-                    path = PictureUtil.getFinallyPath(media)
+                    path = media?.let { PictureUtil.getFinallyPath(it) }
 //                    loadCircleFilePath(path, binding.editIcon)
-                    headIconPath = path
+                    headIconPath = path.toString()
                     saveHeadIcon()
                 }
             }

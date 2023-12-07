@@ -3,6 +3,7 @@ package com.changanford.my.utils
 import android.Manifest
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
 import android.os.Environment
 import android.text.SpannableString
 import android.text.Spanned
@@ -16,13 +17,18 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouterForResult
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
 import com.changanford.common.util.MConstant.loginBgVideoUrl
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toastShow
+import com.changanford.common.web.AgentWebActivity
 import com.changanford.my.R
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
@@ -179,32 +185,56 @@ var refusePermission: Boolean = false
 fun downLoginBg(videoUrl: String?) {
     loginBgVideoUrl=videoUrl
     if (refusePermission||!SoulPermission.getInstance().checkSinglePermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).isGranted)return
-    SoulPermission.getInstance().checkAndRequestPermissions(
-        Permissions.build(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ), object : CheckRequestPermissionsListener {
-            override fun onAllPermissionOk(allPermissions: Array<Permission>) {
-                downFile(GlideUtils.handleImgUrl(videoUrl), object : OnDownloadListener {
-                    override fun onFail() {
-                        "登录视频下载失败".logE()
-                    }
-
-                    override fun onProgress(progress: Int) {
-//                "${progress}--".logE()
-                    }
-
-                    override fun onSuccess(file: File) {
-//            "${file.path}".logE()
-                        MConstant.isDownLoginBgSuccess = true
-                    }
-                })
+    val permissions = Permissions.build(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+    val success = {
+        downFile(GlideUtils.handleImgUrl(videoUrl), object : OnDownloadListener {
+            override fun onFail() {
+                "登录视频下载失败".logE()
             }
 
-            override fun onPermissionDenied(refusedPermissions: Array<Permission>) {
-                refusePermission = true
+            override fun onProgress(progress: Int) {
+//                "${progress}--".logE()
+            }
+
+            override fun onSuccess(file: File) {
+//            "${file.path}".logE()
+                MConstant.isDownLoginBgSuccess = true
             }
         })
+    }
+    val fail = {
+        refusePermission = true
+    }
+    PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//    SoulPermission.getInstance().checkAndRequestPermissions(
+//        Permissions.build(
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//            Manifest.permission.READ_EXTERNAL_STORAGE
+//        ), object : CheckRequestPermissionsListener {
+//            override fun onAllPermissionOk(allPermissions: Array<Permission>) {
+//                downFile(GlideUtils.handleImgUrl(videoUrl), object : OnDownloadListener {
+//                    override fun onFail() {
+//                        "登录视频下载失败".logE()
+//                    }
+//
+//                    override fun onProgress(progress: Int) {
+////                "${progress}--".logE()
+//                    }
+//
+//                    override fun onSuccess(file: File) {
+////            "${file.path}".logE()
+//                        MConstant.isDownLoginBgSuccess = true
+//                    }
+//                })
+//            }
+//
+//            override fun onPermissionDenied(refusedPermissions: Array<Permission>) {
+//                refusePermission = true
+//            }
+//        })
 
 }
 

@@ -9,10 +9,12 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ActvityCreateLocationBinding
 import com.changanford.circle.viewmodel.CreateLocationViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.picker.CityPicker
@@ -23,6 +25,7 @@ import com.changanford.common.widget.picker.entity.CountyEntity
 import com.changanford.common.widget.picker.entity.ProvinceEntity
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
@@ -159,18 +162,28 @@ class CreateLocationActivity :
     }
 
     fun soulPermission() {
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        viewModel.getLocation()
-                    }
-
-                    override fun onPermissionDenied(permission: Permission) {
-                        toastShow("拒绝定位,创建位置将失败")
-                    }
-                })
+        val permissions = Permissions.build(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        val success = {
+            viewModel.getLocation()
+        }
+        val fail = {
+            toastShow("拒绝定位,创建位置将失败")
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance()
+//            .checkAndRequestPermission(
+//                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                object : CheckRequestPermissionListener {
+//                    override fun onPermissionOk(permission: Permission) {
+//                        viewModel.getLocation()
+//                    }
+//
+//                    override fun onPermissionDenied(permission: Permission) {
+//                        toastShow("拒绝定位,创建位置将失败")
+//                    }
+//                })
     }
 
     override fun onBackPressed() {

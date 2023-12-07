@@ -21,7 +21,7 @@ import razerdp.util.animation.TranslationConfig
  *Time on 2023/12/6
  *Purpose
  */
-class PermissionTipsPop(private val context: Context): BasePopupWindow(context) {
+class PermissionTipsPop(private val context: Context) : BasePopupWindow(context) {
     private var binding: DialogPermissionTipsBinding =
         DataBindingUtil.bind(createPopupById(R.layout.dialog_permission_tips))!!
 
@@ -31,9 +31,10 @@ class PermissionTipsPop(private val context: Context): BasePopupWindow(context) 
     }
 
     fun setContent(content: String) {
-
         binding.tvContent.text = content
+    }
 
-
+    fun setTitle(title: String) {
+        binding.tvTitle.text = title
     }
 }

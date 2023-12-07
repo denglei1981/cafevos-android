@@ -29,6 +29,7 @@ import com.changanford.common.databinding.ActivityWebveiwBinding
 import com.changanford.common.manger.UserManger
 import com.changanford.common.pay.PayViewModule
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
 import com.changanford.common.ui.ConfirmPop
@@ -40,12 +41,14 @@ import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.UnionPayUtils
 import com.just.agentweb.AgentWebConfig
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback
 import com.tencent.smtt.sdk.ValueCallback
@@ -328,24 +331,40 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //地图定位
         LiveDataBus.get().with(LiveDataBusKey.WEB_GET_LOCATION).observe(this, Observer {
             getLocationCallback = it as String
-            SoulPermission.getInstance()
-                .checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-                    object : CheckRequestPermissionListener {
-                        override fun onPermissionOk(permission: Permission?) {
-                            if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
-                                viewModel.initLocationOption()
-                            } else {
-                                quickCallJs(getLocationCallback, "false") {}
-                                toastShow("手机没有打开定位权限,请手动去设置页打开权限")
-                            }
-                        }
-
-                        override fun onPermissionDenied(permission: Permission?) {
-                            toastShow("用户拒绝了权限")
-                            quickCallJs(getLocationCallback, "false") {}
-                        }
-
-                    })
+            val permissions = Permissions.build(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            )
+            val success = {
+                if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
+                    viewModel.initLocationOption()
+                } else {
+                    quickCallJs(getLocationCallback, "false") {}
+                    toastShow("手机没有打开定位权限,请手动去设置页打开权限")
+                }
+            }
+            val fail = {
+                toastShow("用户拒绝了权限")
+                quickCallJs(getLocationCallback, "false") {}
+            }
+            PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//            SoulPermission.getInstance()
+//                .checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+//                    object : CheckRequestPermissionListener {
+//                        override fun onPermissionOk(permission: Permission?) {
+//                            if (JumpUtils.instans?.isOPen(this@AgentWebActivity) == true) {
+//                                viewModel.initLocationOption()
+//                            } else {
+//                                quickCallJs(getLocationCallback, "false") {}
+//                                toastShow("手机没有打开定位权限,请手动去设置页打开权限")
+//                            }
+//                        }
+//
+//                        override fun onPermissionDenied(permission: Permission?) {
+//                            toastShow("用户拒绝了权限")
+//                            quickCallJs(getLocationCallback, "false") {}
+//                        }
+//
+//                    })
         })
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
@@ -728,32 +747,42 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         ) {
 //            super.onGeolocationPermissionsShowPrompt(origin, callback)
             var mSuper = this
-            SoulPermission.getInstance()
-                .checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
-                    object : CheckRequestPermissionListener {
-                        override fun onPermissionOk(permission: Permission?) {
-//                            mSuper.onGeolocationPermissionsShowPrompt(origin, callback)
-                            callback!!.invoke(origin, true, false)
-//                            toastShow("用户开启了权限")
-                        }
-
-                        override fun onPermissionDenied(permission: Permission?) {
-//                            AlertDialog(this@AgentWebActivity)
-//                                .builder()
-//                                .setTitle("提示")
-//                                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-//                                .setNegativeButton(
-//                                    "取消"
-//                                ) { }.setPositiveButton(
-//                                    "确定"
-//                                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
-                            callback!!.invoke(origin, true, true)
-
-//                            mSuper.onGeolocationPermissionsShowPrompt(origin, callback)
-//                            toastShow("用户拒绝了权限")
-                        }
-
-                    })
+            val permissions = Permissions.build(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            )
+            val success = {
+                callback!!.invoke(origin, true, false)
+            }
+            val fail = {
+                callback!!.invoke(origin, true, true)
+            }
+            PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//            SoulPermission.getInstance()
+//                .checkAndRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION,
+//                    object : CheckRequestPermissionListener {
+//                        override fun onPermissionOk(permission: Permission?) {
+////                            mSuper.onGeolocationPermissionsShowPrompt(origin, callback)
+//                            callback!!.invoke(origin, true, false)
+////                            toastShow("用户开启了权限")
+//                        }
+//
+//                        override fun onPermissionDenied(permission: Permission?) {
+////                            AlertDialog(this@AgentWebActivity)
+////                                .builder()
+////                                .setTitle("提示")
+////                                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+////                                .setNegativeButton(
+////                                    "取消"
+////                                ) { }.setPositiveButton(
+////                                    "确定"
+////                                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//                            callback!!.invoke(origin, true, true)
+//
+////                            mSuper.onGeolocationPermissionsShowPrompt(origin, callback)
+////                            toastShow("用户拒绝了权限")
+//                        }
+//
+//                    })
         }
 
     }
@@ -1073,25 +1102,43 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     }
 
     fun scan() {
-        SoulPermission.getInstance().checkAndRequestPermission(
-            Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
-                override fun onPermissionOk(permission: Permission?) {
-                    var bundle = Bundle()
-                    bundle.putBoolean("shouldCallback", true)
-                    startARouterForResult(
-                        this@AgentWebActivity,
-                        ARouterHomePath.CaptureActivity,
-                        bundle,
-                        SCAN_REQUEST_CODE,
-                        false
-                    )
-                }
-
-                override fun onPermissionDenied(permission: Permission?) {
-                    toastShow("没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限")
-                }
-            }
+        val permissions = Permissions.build(
+            Manifest.permission.CAMERA,
         )
+        val success = {
+            var bundle = Bundle()
+            bundle.putBoolean("shouldCallback", true)
+            startARouterForResult(
+                this@AgentWebActivity,
+                ARouterHomePath.CaptureActivity,
+                bundle,
+                SCAN_REQUEST_CODE,
+                false
+            )
+        }
+        val fail = {
+            toastShow("没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限")
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance().checkAndRequestPermission(
+//            Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
+//                override fun onPermissionOk(permission: Permission?) {
+//                    var bundle = Bundle()
+//                    bundle.putBoolean("shouldCallback", true)
+//                    startARouterForResult(
+//                        this@AgentWebActivity,
+//                        ARouterHomePath.CaptureActivity,
+//                        bundle,
+//                        SCAN_REQUEST_CODE,
+//                        false
+//                    )
+//                }
+//
+//                override fun onPermissionDenied(permission: Permission?) {
+//                    toastShow("没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限")
+//                }
+//            }
+//        )
     }
 
     fun clearPost() {

@@ -14,24 +14,24 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:textSize="18sp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_marginTop="140dp"
+            android:gravity="center"
             android:textColor="#b3ffffff"
-            android:text="福域申请相机权限目的的说明"
-            android:layout_height="wrap_content" />
+            android:textSize="18sp"
+            tools:text="福域申请权限目的的说明" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title"
-            android:gravity="center"
             android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             android:layout_marginTop="13dp"
-            android:textSize="14sp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
             android:textColor="#80ffffff"
-            tools:text="相机权限用于发帖、图片、视频、提问、修改头像等需要拍摄照片或视频的功能"
-            android:layout_height="wrap_content" />
+            android:textSize="14sp"
+            tools:text="相机权限用于发帖、图片、视频、提问、修改头像等需要拍摄照片或视频的功能" />
     </RelativeLayout>
 </layout>

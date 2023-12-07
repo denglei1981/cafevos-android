@@ -303,9 +303,9 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
     fun takePhoto() {
         PictureUtils.opencarcme(
             this@MineFeedbackInfoListUI,
-            object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
-                    uploadFile(result)
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>) {
+                    uploadFile(result as List<LocalMedia>)
                 }
 
                 override fun onCancel() {
@@ -320,8 +320,8 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
      */
     fun pic() {
         PictureUtils.openGarlly5(this@MineFeedbackInfoListUI, object :
-            OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
+            OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
                 val bundle = Bundle()
                 bundle.putInt("position", 0)
                 bundle.putInt("showEditType", 312)

@@ -32,6 +32,9 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterHomePath.SplashActivity
 import com.changanford.common.ui.dialog.PostDialog
+import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.wutil.WCommonUtil
+import com.qw.soul.permission.bean.Permissions
 
 
 /**
@@ -158,22 +161,36 @@ class CircleFragment : BaseFragment<FragmentCircleBinding, CircleViewModel>() {
 
     override fun initData() {
         binding.refreshLayout.post {
-            SoulPermission.getInstance()
-                .checkAndRequestPermission(
-                    Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                    object : CheckRequestPermissionListener {
-                        override fun onPermissionOk(permission: Permission) {
-                            if (JumpUtils.instans?.isOPen(requireContext()) == true) {
-                                getLocationData()
-                            } else {
-                                viewModel.communityIndex()
-                            }
-                        }
-
-                        override fun onPermissionDenied(permission: Permission) {
-                            viewModel.communityIndex()
-                        }
-                    })
+            val permissions = Permissions.build(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            )
+            val success = {
+                if (JumpUtils.instans?.isOPen(requireContext()) == true) {
+                    getLocationData()
+                } else {
+                    viewModel.communityIndex()
+                }
+            }
+            val fail = {
+                viewModel.communityIndex()
+            }
+            PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//            SoulPermission.getInstance()
+//                .checkAndRequestPermission(
+//                    Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                    object : CheckRequestPermissionListener {
+//                        override fun onPermissionOk(permission: Permission) {
+//                            if (JumpUtils.instans?.isOPen(requireContext()) == true) {
+//                                getLocationData()
+//                            } else {
+//                                viewModel.communityIndex()
+//                            }
+//                        }
+//
+//                        override fun onPermissionDenied(permission: Permission) {
+//                            viewModel.communityIndex()
+//                        }
+//                    })
         }
     }
 

@@ -26,15 +26,19 @@ import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.SelectPostDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.JumpUtils.Companion.instans
 import com.changanford.common.util.bus.*
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.BindingPhoneDialog
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
@@ -43,6 +47,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.smtt.sdk.WebView
 import kotlinx.coroutines.Dispatchers
@@ -568,46 +573,80 @@ class AgentWebInterface(
             .postValue(callback)
     }
 
+    private fun savePermissionSuccess(url: String, callback: String){
+        try {
+            if (url.contains(".gif")) {
+                GifUtils.saveGif(
+                    url,
+                    activity,
+                    MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
+                )
+                "保存成功".toast()
+            } else {
+                Glide.with(activity!!).asBitmap().load(url)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap?>?
+                        ) {
+                            PictureUtil.saveBitmapPhoto(resource)
+                        }
+                    })
+            }
+            activity?.quickCallJs(callback, "1")
+        } catch (e: java.lang.Exception) {
+            "保存失败".toast()
+            activity?.quickCallJs(callback, "0")
+        }
+    }
+
     /**
      * 保存一张网络图片
      * callback,返回1成功，0失败
      */
     @JavascriptInterface
     fun saveImg(url: String, callback: String) {
+        val permissions = Permissions.build(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        )
+        val fail = {
 
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        try {
-                            if (url.contains(".gif")) {
-                                GifUtils.saveGif(
-                                    url,
-                                    activity,
-                                    MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
-                                )
-                                "保存成功".toast()
-                            } else {
-                                Glide.with(activity!!).asBitmap().load(url)
-                                    .into(object : SimpleTarget<Bitmap?>() {
-                                        override fun onResourceReady(
-                                            resource: Bitmap,
-                                            transition: Transition<in Bitmap?>?
-                                        ) {
-                                            PictureUtil.saveBitmapPhoto(resource)
-                                        }
-                                    })
-                            }
-                            activity?.quickCallJs(callback, "1")
-                        } catch (e: java.lang.Exception) {
-                            "保存失败".toast()
-                            activity?.quickCallJs(callback, "0")
-                        }
-                    }
-
-                    override fun onPermissionDenied(permission: Permission) {}
-                })
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions,
+            { savePermissionSuccess(url, callback) }, fail)
+//        SoulPermission.getInstance()
+//            .checkAndRequestPermission(
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                object : CheckRequestPermissionListener {
+//                    override fun onPermissionOk(permission: Permission) {
+//                        try {
+//                            if (url.contains(".gif")) {
+//                                GifUtils.saveGif(
+//                                    url,
+//                                    activity,
+//                                    MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
+//                                )
+//                                "保存成功".toast()
+//                            } else {
+//                                Glide.with(activity!!).asBitmap().load(url)
+//                                    .into(object : SimpleTarget<Bitmap?>() {
+//                                        override fun onResourceReady(
+//                                            resource: Bitmap,
+//                                            transition: Transition<in Bitmap?>?
+//                                        ) {
+//                                            PictureUtil.saveBitmapPhoto(resource)
+//                                        }
+//                                    })
+//                            }
+//                            activity?.quickCallJs(callback, "1")
+//                        } catch (e: java.lang.Exception) {
+//                            "保存失败".toast()
+//                            activity?.quickCallJs(callback, "0")
+//                        }
+//                    }
+//
+//                    override fun onPermissionDenied(permission: Permission) {}
+//                })
     }
 
     /**
@@ -837,11 +876,11 @@ class AgentWebInterface(
             activity,
             isEnableCrop,
             isCompress,
-            object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>) {
                     if (result.isNotEmpty()) {
                         for (media in result) {
-                            val path: String = PictureUtil.getFinallyPath(media)
+                            val path: String = PictureUtil.getFinallyPath(media!!)
                             val base64Str = FileHelper.getImageStr(path)
                             activity?.quickCallJs(callback, base64Str)
                         }

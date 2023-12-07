@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -42,7 +41,6 @@ import com.changanford.common.bean.STSBean;
 import com.changanford.common.net.CommonResponse;
 import com.changanford.common.router.ARouterNavigationKt;
 import com.changanford.common.router.path.ARouterCirclePath;
-import com.changanford.common.router.path.ARouterMyPath;
 import com.changanford.common.ui.dialog.AlertDialog;
 import com.changanford.common.ui.dialog.LoadDialog;
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig;
@@ -63,6 +61,7 @@ import com.changanford.circle.ui.release.utils.ParamsUtils;
 import com.changanford.circle.ui.release.utils.SolveEditTextScrollClash;
 import com.changanford.circle.ui.release.widget.AttrbultPop;
 import com.changanford.circle.ui.release.widget.OpenCarcme;
+import com.changanford.common.utilext.PermissionPopUtil;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.broadcast.BroadcastAction;
 import com.luck.picture.lib.broadcast.BroadcastManager;
@@ -79,6 +78,7 @@ import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.ToastUtils;
 import com.qw.soul.permission.SoulPermission;
 import com.qw.soul.permission.bean.Permission;
+import com.qw.soul.permission.bean.Permissions;
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.scwang.smart.refresh.layout.util.SmartUtil;
 
@@ -90,8 +90,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
 
 
@@ -507,36 +509,60 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
     }
 
+    private Function0<Unit> successPer(){
+        startActivityForResult(new Intent(ReleaseActivity.this, MMapActivity.class), ADDRESSBACK);
+        return null;
+    }
+
+    private Function0<Unit> failPer(){
+        new AlertDialog(ReleaseActivity.this).builder()
+                .setTitle("提示")
+                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SoulPermission.getInstance().goPermissionSettings();
+                    }
+                }).show();
+        return null;
+    }
+
     private void StartBaduMap() {
-
-        SoulPermission.getInstance()
-                .checkAndRequestPermission(
-                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                        new CheckRequestPermissionListener() {
-                            @Override
-                            public void onPermissionOk(Permission permission) {
-                                startActivityForResult(new Intent(ReleaseActivity.this, MMapActivity.class), ADDRESSBACK);
-                            }
-
-                            @Override
-                            public void onPermissionDenied(Permission permission) {
-                                new AlertDialog(ReleaseActivity.this).builder()
-                                        .setTitle("提示")
-                                        .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                                        .setNegativeButton("取消", new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-
-                                            }
-                                        }).setPositiveButton("确定", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        SoulPermission.getInstance().goPermissionSettings();
-                                    }
-                                }).show();
-
-                            }
-                        });
+        Permissions permissions = Permissions.build(Manifest.permission.ACCESS_FINE_LOCATION);
+        PermissionPopUtil.INSTANCE.checkPermissionAndPop(permissions, Objects.requireNonNull(successPer()), Objects.requireNonNull(failPer()));
+//        SoulPermission.getInstance()
+//                .checkAndRequestPermission(
+//                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                        new CheckRequestPermissionListener() {
+//                            @Override
+//                            public void onPermissionOk(Permission permission) {
+//                                startActivityForResult(new Intent(ReleaseActivity.this, MMapActivity.class), ADDRESSBACK);
+//                            }
+//
+//                            @Override
+//                            public void onPermissionDenied(Permission permission) {
+//                                new AlertDialog(ReleaseActivity.this).builder()
+//                                        .setTitle("提示")
+//                                        .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                                        .setNegativeButton("取消", new View.OnClickListener() {
+//                                            @Override
+//                                            public void onClick(View v) {
+//
+//                                            }
+//                                        }).setPositiveButton("确定", new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        SoulPermission.getInstance().goPermissionSettings();
+//                                    }
+//                                }).show();
+//
+//                            }
+//                        });
 
     }
 

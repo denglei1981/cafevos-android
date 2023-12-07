@@ -73,11 +73,13 @@ import com.changanford.common.util.dk.cache.DKPlayerHelperBig
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.WImage
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 /**
@@ -664,29 +666,50 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private fun startBaduMap() {
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        val intent = Intent()
-                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
-                        intent.putExtra("lat", mData.lat)
-                        intent.putExtra("lon", mData.lon)
-                        intent.putExtra("address", mData.address)
-                        intent.putExtra("addrName", mData.showCity())
-                        startActivity(intent)
-                    }
-
-                    override fun onPermissionDenied(permission: Permission) {
-                        AlertDialog(MyApp.mContext).builder()
-                            .setTitle("提示")
-                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                            .setNegativeButton("取消") { }.setPositiveButton(
-                                "确定"
-                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
-                    }
-                })
+        val permissions = Permissions.build(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        val success = {
+            val intent = Intent()
+            intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+            intent.putExtra("lat", mData.lat)
+            intent.putExtra("lon", mData.lon)
+            intent.putExtra("address", mData.address)
+            intent.putExtra("addrName", mData.showCity())
+            startActivity(intent)
+        }
+        val fail = {
+            AlertDialog(MyApp.mContext).builder()
+                .setTitle("提示")
+                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                .setNegativeButton("取消") { }.setPositiveButton(
+                    "确定"
+                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance()
+//            .checkAndRequestPermission(
+//                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                object : CheckRequestPermissionListener {
+//                    override fun onPermissionOk(permission: Permission) {
+//                        val intent = Intent()
+//                        intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+//                        intent.putExtra("lat", mData.lat)
+//                        intent.putExtra("lon", mData.lon)
+//                        intent.putExtra("address", mData.address)
+//                        intent.putExtra("addrName", mData.showCity())
+//                        startActivity(intent)
+//                    }
+//
+//                    override fun onPermissionDenied(permission: Permission) {
+//                        AlertDialog(MyApp.mContext).builder()
+//                            .setTitle("提示")
+//                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                            .setNegativeButton("取消") { }.setPositiveButton(
+//                                "确定"
+//                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//                    }
+//                })
     }
 
     @Composable
