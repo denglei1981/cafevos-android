@@ -63,6 +63,7 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.HeaderEmojiBinding
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
@@ -120,6 +121,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private var circlePostTagDialog: CirclePostTagDialog? = null
+    private var inLocalMedia: ArrayList<LocalMedia>? = null
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -172,7 +174,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.etBiaoti.requestFocus()
         binding.bottom.llContent.visibility = View.GONE
         initListener()
-
+        inLocalMedia = intent.getParcelableArrayListExtra(CircleConfig.CIRCLE_TO_POST_KEY)
     }
 
     private fun checkNext() {
@@ -530,32 +532,42 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             showLocaPostCity()
         } else {
             val postsId = intent?.getStringExtra("postsId")
-            if (postsId!=null){
+            if (postsId != null) {
                 return
             }
             isunSave = true // 不要自动保存
-            PictureUtil.openGallery(
-                this,
-                selectList,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        if (result != null) {
-                            selectList.clear()
-                            selectList.addAll(result)
+            if (inLocalMedia.isNullOrEmpty()) {
+                PictureUtil.openGallery(
+                    this,
+                    selectList,
+                    object : OnResultCallbackListener<LocalMedia> {
+                        override fun onResult(result: MutableList<LocalMedia>?) {
+                            if (result != null) {
+                                selectList.clear()
+                                selectList.addAll(result)
+                            }
+                            val bundle = Bundle()
+                            bundle.putParcelableArrayList("picList", selectList)
+                            bundle.putInt("position", 0)
+                            bundle.putInt("showEditType", -1)
+                            startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+
                         }
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList("picList", selectList)
-                        bundle.putInt("position", 0)
-                        bundle.putInt("showEditType", -1)
-                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
 
-                    }
+                        override fun onCancel() {
+                            isunSave = false
+                        }
 
-                    override fun onCancel() {
-                        isunSave = false
-                    }
-
-                })
+                    })
+            } else {
+                selectList.clear()
+                selectList.addAll(inLocalMedia!!)
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("picList", selectList)
+                bundle.putInt("position", 0)
+                bundle.putInt("showEditType", -1)
+                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+            }
         }
     }
 
@@ -1366,7 +1378,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         if (TextUtils.isEmpty(locaPostEntity.address)) {
                             params["address"] = ""
                         }
-                        params["addrName"] = locaPostEntity.addrName?: ""
+                        params["addrName"] = locaPostEntity.addrName ?: ""
                         params["lat"] = locaPostEntity!!.lat
                         params["lon"] = locaPostEntity!!.lon
                         params["province"] = locaPostEntity!!.province
@@ -1379,7 +1391,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                                 ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
                             )
                         }
-                        if (locaPostEntity!!.topicName?.isNotEmpty() == true){
+                        if (locaPostEntity!!.topicName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 3,
                                 ButtomTypeBean(locaPostEntity!!.topicName ?: "", 1, 2)
@@ -1387,7 +1399,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                             showTopic(locaPostEntity.topicName!!)
                         }
 
-                        if (locaPostEntity!!.circleName?.isNotEmpty() == true){
+                        if (locaPostEntity!!.circleName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 4,
                                 ButtomTypeBean(locaPostEntity!!.circleName ?: "", 1, 3)
@@ -1399,7 +1411,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                         locaPostEntity.let { lp ->
                             var showCity = ""
                             if (lp.city.isNotEmpty() && lp.addrName?.isNotEmpty() == true) {
-                                showCity = locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
+                                showCity =
+                                    locaPostEntity.city.plus("·").plus(locaPostEntity.addrName)
                             }
                             if (showCity.isNotEmpty()) {
                                 showAddress(showCity)

@@ -3,7 +3,7 @@
     android:shape="oval"
     android:useLevel="false">
 
-    <solid android:color="@color/picture_commpile" />
+    <solid android:color="@color/picture_1700F4" />
     <stroke
         android:width="0.5dp"
         android:color="@color/picture_color_white" />
