@@ -38,7 +38,7 @@ object PermissionPopUtil {
 
     private const val CALENDAR = "添加日历提示签到功能"
 
-    private const val CAMERA_TITLE = "福域申请相机权限目的的说明"
+    private const val CAMERA_TITLE = "福域申请相机权限目的说明"
     private const val ALBUM_TITLE = "福域申请存储权限的使用说明"
     private const val STORAGE_TITLE = "福域申请存储权限的目的说明"
     private const val LOCATION_TITLE = "福域申请定位权限的目的说明"

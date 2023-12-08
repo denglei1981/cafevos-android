@@ -9,5 +9,5 @@ import androidx.annotation.ColorInt;
  */
 public class MColor {
     @ColorInt
-    public static final int PERMISSION_BG = 0xE6000000;
+    public static final int PERMISSION_BG = 0xD9000000;
 }

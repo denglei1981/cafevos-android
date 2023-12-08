@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:background="@color/black"
         tools:ignore="MissingDefaultResource">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="140dp"
             android:gravity="center"
-            android:textColor="#b3ffffff"
+            android:textColor="#E8ffffff"
             android:textSize="18sp"
             tools:text="福域申请权限目的的说明" />
 
@@ -30,7 +31,7 @@
             android:layout_marginTop="13dp"
             android:layout_marginEnd="32dp"
             android:gravity="center"
-            android:textColor="#80ffffff"
+            android:textColor="#b3ffffff"
             android:textSize="14sp"
             tools:text="相机权限用于发帖、图片、视频、提问、修改头像等需要拍摄照片或视频的功能" />
     </RelativeLayout>
