@@ -62,30 +62,37 @@ class CircleListAdapter :
                     isEnabled = true
                     setOnClickListener {
                         WBuriedUtil.clickCircleJoin(item.name)
-                        //申请加入圈子
-                        viewModel.joinCircle(item.circleId, object : OnPerformListener {
-                            override fun onFinish(code: Int) {
-                                when (code) {
-                                    1 -> {//状态更新为审核中
-                                        item.isJoin = "PENDING"
-                                        context.getString(R.string.str_appliedForMembership).toast()
+                        val joinFun = {
+                            //申请加入圈子
+                            viewModel.joinCircle(item.circleId, object : OnPerformListener {
+                                override fun onFinish(code: Int) {
+                                    when (code) {
+                                        1 -> {//状态更新为审核中
+                                            item.isJoin = "PENDING"
+                                            context.getString(R.string.str_appliedForMembership)
+                                                .toast()
+                                        }
+
+                                        2 -> {//已加入
+                                            item.isJoin = "JOINED"
+                                            context.getString(R.string.str_successfullyJoined)
+                                                .toast()
+                                        }
+
+                                        else -> {
+                                            item.isJoin = "TOJOIN"
+                                        }
                                     }
-                                    2 -> {//已加入
-                                        item.isJoin = "JOINED"
-                                        context.getString(R.string.str_successfullyJoined).toast()
-                                    }
-                                    else -> {
-                                        item.isJoin = "TOJOIN"
-                                    }
+                                    isJoin(btnJoin, item)
                                 }
-                                isJoin(btnJoin, item)
-                                GIOUtils.joinCircleClick(
-                                    "全部圈子",
-                                    item.circleId,
-                                    item.name
-                                )
-                            }
-                        })
+                            })
+                        }
+                        viewModel.checkJoinFun(item.circleId, joinFun)
+                        GIOUtils.joinCircleClick(
+                            "全部圈子",
+                            item.circleId,
+                            item.name
+                        )
                     }
                 }
                 //审核中
@@ -100,6 +107,7 @@ class CircleListAdapter :
                     setText(R.string.str_hasJoined)
                     setBackgroundResource(R.drawable.shadow_dd_12dp)
                 }
+
                 else -> visibility = View.GONE
             }
         }

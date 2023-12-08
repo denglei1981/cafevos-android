@@ -24,6 +24,8 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShowPopUtils
+import kotlinx.coroutines.launch
 
 /**
  *Author lcw
@@ -61,7 +63,7 @@ class CircleDetailsViewModel : BaseViewModel() {
         adsRepository.getAds("mall_top_ad_v2")
     }
 
-    fun checkJoin(circleId: String){
+    fun checkJoin(circleId: String) {
         joinRepository.checkJoin(circleId)
     }
 
@@ -90,6 +92,23 @@ class CircleDetailsViewModel : BaseViewModel() {
             pagingSourceFactory = { RecommendPostSource(recommendType) }).flow.cachedIn(
             viewModelScope
         )
+    }
+
+    fun checkJoinFun(circleId: String,block:()->Unit) {
+        viewModelScope.launch {
+            var body = HashMap<String, Any>()
+            body["circleId"] = circleId
+            var rkey = getRandomKey()
+            fetchRequest {
+                apiService.onlyAuthJoinCheck(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+              if (it?.canJoin == true){
+                  block.invoke()
+              }else{
+                  it?.alertMes?.let { it1 -> ShowPopUtils.showJoinCircleAuPop(it1) }
+              }
+            }
+        }
     }
 
     fun getRecommendPostData(viewType: Int, page: Int) {

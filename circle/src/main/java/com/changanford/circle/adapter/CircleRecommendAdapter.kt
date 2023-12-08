@@ -193,6 +193,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             binding.icMultVeryPost.visibility = View.GONE
                         }
                     }
+
                     picList.size == 1 -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.VISIBLE
@@ -207,6 +208,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         binding.icMultVeryPost.visibility = View.GONE
 
                     }
+
                     else -> {
                         binding.ivNine.visibility = View.GONE
                         binding.layoutOne.conOne.visibility = View.GONE
@@ -244,49 +246,56 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                 if (circleData.isJoin != "TOJOIN") {
                                     return@setOnClickListener
                                 }
-                                //申请加入圈子
-                                viewModel.joinCircle(
-                                    item.circleId.toString(),
-                                    object : OnPerformListener {
-                                        override fun onFinish(code: Int) {
-                                            when (code) {
-                                                1 -> {//状态更新为审核中
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "PENDING"
+                                val joinFun = {
+                                    //申请加入圈子
+                                    viewModel.joinCircle(
+                                        item.circleId.toString(),
+                                        object : OnPerformListener {
+                                            override fun onFinish(code: Int) {
+                                                when (code) {
+                                                    1 -> {//状态更新为审核中
+                                                        data.forEach {
+                                                            if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
+                                                                it.circle!!.isJoin = "PENDING"
+                                                            }
                                                         }
-                                                    }
-                                                    notifyDataSetChanged()
+                                                        notifyDataSetChanged()
 //                                                    tvJoinType.text = "  待审核"
 //                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
-                                                2 -> {//已加入
-                                                    data.forEach {
-                                                        if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
-                                                            it.circle!!.isJoin = "JOINED"
-                                                        }
                                                     }
-                                                    notifyDataSetChanged()
+
+                                                    2 -> {//已加入
+                                                        data.forEach {
+                                                            if (it.circle != null && it.circle!!.circleId == circleData.circleId) {
+                                                                it.circle!!.isJoin = "JOINED"
+                                                            }
+                                                        }
+                                                        notifyDataSetChanged()
 //                                                    tvJoinType.text = "  已加入"
 //                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                                                }
-                                                else -> {
+                                                    }
+
+                                                    else -> {
 //                                item.isJoin ="TOJOIN"
+                                                    }
                                                 }
+                                                GIOUtils.joinCircleClick(
+                                                    "社区-广场",
+                                                    item.circleId,
+                                                    item.circle?.name
+                                                )
                                             }
-                                            GIOUtils.joinCircleClick(
-                                                "社区-广场",
-                                                item.circleId,
-                                                item.circle?.name
-                                            )
-                                        }
-                                    })
+                                        })
+                                }
+                                item.circleId?.let { it1 -> viewModel.checkJoinFun(it1, joinFun) }
                             }
                         }
+
                         "PENDING" -> {//待审核
                             tvJoinType.text = "  审核中"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
                         }
+
                         "JOINED" -> {//已加入
                             tvJoinType.text = "  已加入"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
