@@ -99,7 +99,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
             }
 
             6 -> {//已售罄
-                setBackgroundResource(R.drawable.bg_btn_stock_tips)
+                setBackgroundResource(R.drawable.btn_selector)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = true
                 if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
