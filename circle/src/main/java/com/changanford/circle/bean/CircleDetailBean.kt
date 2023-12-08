@@ -1,5 +1,6 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.NewCirceTagBean
 
@@ -19,9 +20,13 @@ data class CircleDetailBean(
     val nameColor: Any? = Any(),
     val permissions: ArrayList<CirclePermissionsData>? = ArrayList(),
     val pic: String = "",
+    val bgImg: String? = null,
     val postsCount: Int = 0,
+    //仅车主可加圈0是 1否
+    val onlyAuthJoin: Int = 0,
     val isViewApplyMan: Int = 0,
     val shareBeanVO: CircleShareBean?,
+    val ads:ArrayList<AdBean>,
     val userCount: Int = 0,
     val userId: Int = 0,
     val wonderfulControls: ArrayList<WonderfulControlsBean>?,

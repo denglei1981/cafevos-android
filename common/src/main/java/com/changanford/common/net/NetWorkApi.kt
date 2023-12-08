@@ -1460,4 +1460,10 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CmcStatePhoneBean>
+
+    @POST("con/circle/onlyAuthJoinCheck")
+    suspend fun onlyAuthJoinCheck(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<JoinCircleCheckBean>
 }

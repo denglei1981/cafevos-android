@@ -11,10 +11,12 @@ import com.changanford.circle.source.RecommendPostSource
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.JoinCircleCheckBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
 import com.changanford.common.repository.AdsRepository
+import com.changanford.common.repository.JoinCircleRepository
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
@@ -30,8 +32,11 @@ import com.changanford.common.utilext.toast
  */
 class CircleDetailsViewModel : BaseViewModel() {
     private var adsRepository: AdsRepository = AdsRepository(this)
+    private var joinRepository = JoinCircleRepository(this)
+
     //广告
     var advertisingList: MutableLiveData<ArrayList<AdBean>> = adsRepository._ads
+    var joinCheckBean: MutableLiveData<JoinCircleCheckBean> = joinRepository._ads
     val tabList = arrayListOf("推荐", "最新", "精华", "圈主专区")
     val circleType = arrayListOf("4", "2", "3", "5")
 
@@ -54,6 +59,10 @@ class CircleDetailsViewModel : BaseViewModel() {
      * */
     fun getBannerData() {
         adsRepository.getAds("mall_top_ad_v2")
+    }
+
+    fun checkJoin(circleId: String){
+        joinRepository.checkJoin(circleId)
     }
 
     fun getData(viewType: Int, page: Int) {

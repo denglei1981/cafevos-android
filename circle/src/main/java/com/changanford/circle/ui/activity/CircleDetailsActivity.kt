@@ -38,6 +38,7 @@ import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseLoadSirActivity
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.GioPreBean
 import com.changanford.common.constant.IntentKey
@@ -64,7 +65,9 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.common.wutil.ScreenUtils
+import com.changanford.common.wutil.ShowPopUtils
 import com.google.android.material.appbar.AppBarLayout
+import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -194,7 +197,7 @@ class CircleDetailsActivity :
             .observe(this) {
                 gioPreBean = it
             }
-        viewModel.getBannerData()
+//        viewModel.getBannerData()
     }
 
     private fun initListener(circleName: String) {
@@ -406,13 +409,13 @@ class CircleDetailsActivity :
                 override fun onDismiss() {
                     isOpenMenuPop = false
 //                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
-                    binding.ivPostBar.rotation=0f
+                    binding.ivPostBar.rotation = 0f
                 }
 
             }
             setOnPopupWindowShowListener {
                 isOpenMenuPop = true
-                binding.ivPostBar.rotation=45f
+                binding.ivPostBar.rotation = 45f
 //                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
             }
         }
@@ -468,6 +471,8 @@ class CircleDetailsActivity :
         }
     }
 
+    private var onlyAuthJoin = 0
+
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
@@ -478,6 +483,7 @@ class CircleDetailsActivity :
             }
             circleName = it.name
             circleNameData.value = it.name
+            onlyAuthJoin = it.onlyAuthJoin
             if (isFirst) {
                 initMyView(it.userId.toString())
                 isFirst = false
@@ -555,8 +561,12 @@ class CircleDetailsActivity :
                     )
                 )
                 Glide.with(this@CircleDetailsActivity)
-                    .load(GlideUtils.handleImgUrl(it.pic))
-                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
+                    .load(
+                        if (it.bgImg.isNullOrEmpty()) R.mipmap.c_d_t_bg else GlideUtils.handleImgUrl(
+                            it.bgImg
+                        )
+                    )
+//                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
                     .into(ivBg)
                 ivIcon.setCircular(5)
                 ivIcon.loadImage(it.pic)
@@ -588,6 +598,7 @@ class CircleDetailsActivity :
                 gioPreBean.prePageName,
                 gioPreBean.prePageType
             )
+            setBannerList(it.ads)
         }
         viewModel.joinBean.observe(this) {
             it.msg.toast()
@@ -670,14 +681,30 @@ class CircleDetailsActivity :
                 }
             }
         }
-        viewModel.advertisingList.observe(this) {
-            binding.topContent.banner.isVisible = it.isNullOrEmpty()
-            BannerControl.bindingBanner(
-                binding.topContent.banner,
-                it,
-                ScreenUtils.dp2px(this, 4f), true
-            )
+        viewModel.joinCheckBean.observe(this) {
+            if (it.canJoin) {
+                viewModel.joinCircle(circleId)
+            } else {
+                it.alertMes?.let { it1 -> ShowPopUtils.showJoinCircleAuPop(it1) }
+            }
         }
+//        viewModel.advertisingList.observe(this) {
+//            binding.topContent.banner.isVisible = it.isNullOrEmpty()
+//            BannerControl.bindingBanner(
+//                binding.topContent.banner,
+//                it,
+//                ScreenUtils.dp2px(this, 4f), true
+//            )
+//        }
+    }
+
+    private fun setBannerList(ads: ArrayList<AdBean>) {
+        binding.topContent.banner.isVisible = ads.isNullOrEmpty()
+        BannerControl.bindingBanner(
+            binding.topContent.banner,
+            ads,
+            ScreenUtils.dp2px(this, 4f), true
+        )
     }
 
     private fun initMagicIndicator() {
@@ -741,7 +768,11 @@ class CircleDetailsActivity :
                         )
                     )
                     tvJoin.setOnClickListener {
-                        viewModel.joinCircle(circleId)
+                        if (onlyAuthJoin == 0) {//仅车主可以加圈，要调用接口判断是不是车主
+                            viewModel.checkJoin(circleId)
+                        } else {
+                            viewModel.joinCircle(circleId)
+                        }
                         GIOUtils.joinCircleClick(
                             "圈子详情页-${GioPageConstant.circleDetailTabName}",
                             circleId,
