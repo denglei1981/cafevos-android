@@ -765,10 +765,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun onForeground() {
-
+        MConstant.isOnBackground = false
     }
 
     override fun onBackground() {
+        MConstant.isOnBackground = true
         if (ChangeIconUtils.isOpenYearIcon()) {
             ChangeIconUtils.setAlias1(this)
         } else {

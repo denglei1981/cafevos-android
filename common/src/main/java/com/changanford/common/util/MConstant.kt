@@ -223,6 +223,7 @@ object MConstant {
 
     var deviceWidth = 0
     var deviceHeight = 0
+    var isOnBackground=false
 
     //个人隐私协议code
     const val agreementPrivacy = "user_agreement_privacy"
