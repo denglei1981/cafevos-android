@@ -157,10 +157,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.title.barTvTitle.text = "发帖"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
-        binding.title.barTvOther.background =
-            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
+//        binding.title.barTvOther.background =
+//            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_a680))
+        binding.title.barTvOther.textSize = 14f
         headBinding = DataBindingUtil.bind(headview)!!
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
         bus()
@@ -175,15 +175,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     private fun showTopic(name: String) {
         headBinding.icAttribute.run {
-            tvTopic.visibility = View.GONE
+            tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.VISIBLE
-            tvTopicName.text = name
+            tvTopicName.text = name.replace("#","")
         }
     }
 
     private fun showAddress(address: String) {
         headBinding.icAttribute.run {
-            tvAddress.visibility = View.GONE
+            tvAddress.visibility = View.VISIBLE
             llAddress.visibility = View.VISIBLE
             tvAddressName.text = address
         }
@@ -194,7 +194,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             return
         }
         headBinding.icAttribute.run {
-            tvCircle.visibility = View.GONE
+            tvCircle.visibility = View.VISIBLE
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }
@@ -497,7 +497,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     fun initEtContent() {
-        val default = LongPostBean(hintStr = "请输入正文内容，字数小于1000")
+        val default = LongPostBean(hintStr = "请输入正文，字数小于1000")
         longpostadapter.addData(default)
     }
 
@@ -1213,23 +1213,23 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun initandonclickhead() {
-        val bthinttxt = "标题 (2-30字)"
-        val spannableString = SpannableString(bthinttxt)
-        val intstart = bthinttxt.indexOf('(')
-        val intend = bthinttxt.length
-        spannableString.setSpan(
-            AbsoluteSizeSpan(60),
-            0,
-            intstart,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        spannableString.setSpan(
-            AbsoluteSizeSpan(40),
-            intstart,
-            intend,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        headBinding.etBiaoti.hint = spannableString
+        val bthinttxt = "请输入标题 (2-30个字)"
+//        val spannableString = SpannableString(bthinttxt)
+//        val intstart = bthinttxt.indexOf('(')
+//        val intend = bthinttxt.length
+//        spannableString.setSpan(
+//            AbsoluteSizeSpan(60),
+//            0,
+//            intstart,
+//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+//        )
+//        spannableString.setSpan(
+//            AbsoluteSizeSpan(40),
+//            intstart,
+//            intend,
+//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+//        )
+        headBinding.etBiaoti.hint = bthinttxt
         headBinding.etBiaoti.requestFocus()
         editText = headBinding.etBiaoti
 
@@ -1783,24 +1783,28 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             longpostadapter.data.filter { it.content?.isNotEmpty() == true || it.localMedias != null }
         if (titleHasContent && content.isNotEmpty()) {
             binding.title.barTvOther.isEnabled = true
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
         } else {
             binding.title.barTvOther.isEnabled = false
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_a680))
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         }
     }
 
     private fun checkViewTwoTypeContent() {
         if (FMMeadia == null) {
             binding.title.barTvOther.isEnabled = false
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_a680))
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         } else {
             binding.title.barTvOther.isEnabled = true
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
         }
     }
 

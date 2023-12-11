@@ -70,9 +70,9 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_1700F4))
+        binding.title.barTvOther.textSize = 14f
+//        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         cutpath = intent.extras?.getString("cutpath").toString()
         myHandler = MyHandler(this)
         initThumbs()

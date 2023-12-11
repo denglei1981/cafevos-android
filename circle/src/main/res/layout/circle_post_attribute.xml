@@ -24,6 +24,7 @@
             android:id="@+id/rl_topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingTop="17dp"
             android:paddingBottom="17dp">
@@ -34,38 +35,42 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="12dp"
-                android:src="@mipmap/c_ht" />
+                android:src="@mipmap/c_ht"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_topic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_topic"
                 android:text="添加话题"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/ll_topic"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="28dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_toEndOf="@+id/iv_topic"
-                android:background="@drawable/bg_f0f3fb_12"
+                android:layout_toEndOf="@+id/tv_topic"
+                android:background="@drawable/bg_081700f4_12"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_topic_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_post_topic_left"
+                    android:drawablePadding="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp"
                     tools:text="春日热“练”" />
 
@@ -76,7 +81,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="9dp"
                     android:text="X"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -86,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d" />
+                android:src="@mipmap/right_74889d"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <View
@@ -108,29 +114,31 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="12dp"
-                android:src="@mipmap/c_qz" />
+                android:src="@mipmap/c_qz"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_circle"
                 android:text="选择圈子"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/ll_circle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="28dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_toEndOf="@+id/iv_circle"
-                android:background="@drawable/bg_f0f3fb_12"
+                android:layout_toEndOf="@+id/tv_circle"
+                android:background="@drawable/bg_081700f4_12"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:visibility="gone"
                 tools:visibility="gone">
 
@@ -138,9 +146,11 @@
                     android:id="@+id/tv_circle_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_post_circle_left"
+                    android:drawablePadding="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp"
                     tools:text="春日热“练”" />
 
@@ -151,7 +161,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="9dp"
                     android:text="X"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -161,7 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d" />
+                android:src="@mipmap/right_74889d"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <View
@@ -183,29 +194,31 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="12dp"
-                android:src="@mipmap/circle_post_address_ic" />
+                android:src="@mipmap/circle_post_address_ic"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_address"
                 android:text="添加位置"
-                android:textColor="@color/color_33"
+                android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
             <LinearLayout
                 android:id="@+id/ll_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="28dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_toEndOf="@+id/iv_address"
-                android:background="@drawable/bg_f0f3fb_12"
+                android:layout_toEndOf="@+id/tv_address"
+                android:background="@drawable/bg_081700f4_12"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
                 android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -213,11 +226,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    android:drawableStart="@mipmap/ic_post_address_left"
+                    android:drawablePadding="3dp"
                     android:ellipsize="end"
+                    android:maxWidth="160dp"
                     android:maxLines="1"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp"
-                    tools:text="春日热“练”" />
+                    tools:text="春日热春日热春日热春日热春日热“练”" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_delete_address"
@@ -226,7 +242,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="9dp"
                     android:text="X"
-                    android:textColor="@color/circle_8195C8"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -236,7 +252,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d" />
+                android:src="@mipmap/right_74889d"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

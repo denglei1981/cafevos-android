@@ -136,6 +136,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                     binding.bottom.llContent.visibility = View.VISIBLE
                     binding.bottom.emojirec.visibility = View.GONE
                     binding.bottom.clEmojiHead.visibility = View.GONE
+                    binding.bottom.ivPic.visibility = View.GONE
                 } else {
                     binding.bottom.llContent.visibility = View.GONE
                 }
@@ -148,30 +149,30 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.title.barTvTitle.text = "发帖"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "发布"
-        binding.title.barTvOther.setTextColor(resources.getColor(R.color.white))
-        binding.title.barTvOther.textSize = 12f
-        binding.title.barTvOther.background =
-            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+        binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_a680))
+        binding.title.barTvOther.textSize = 14f
+//        binding.title.barTvOther.background =
+//            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
         "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
         "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
-        val bthinttxt = "标题 (2-30字)"
-        val spannableString = SpannableString(bthinttxt)
-        val intstart = bthinttxt.indexOf('(')
-        val intend = bthinttxt.length
-        spannableString.setSpan(
-            AbsoluteSizeSpan(60),
-            0,
-            intstart,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        spannableString.setSpan(
-            AbsoluteSizeSpan(40),
-            intstart,
-            intend,
-            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-        )
-        binding.etBiaoti.hint = spannableString
+        val bthinttxt = "标题 (2-30个字)"
+//        val spannableString = SpannableString(bthinttxt)
+//        val intstart = bthinttxt.indexOf('(')
+//        val intend = bthinttxt.length
+//        spannableString.setSpan(
+//            AbsoluteSizeSpan(60),
+//            0,
+//            intstart,
+//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+//        )
+//        spannableString.setSpan(
+//            AbsoluteSizeSpan(40),
+//            intstart,
+//            intend,
+//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+//        )
+        binding.etBiaoti.hint = bthinttxt
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
 
         isH5Post = intent.extras?.getBoolean("isH5Post") ?: false
@@ -190,12 +191,19 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         val hasTitle = binding.etBiaoti.text!!.length >= 2
         if (hasTitle) {
             binding.title.barTvOther.isEnabled = true
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
+            binding.title.barTvOther.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_1700F4
+                )
+            )
         } else {
             binding.title.barTvOther.isEnabled = false
-            binding.title.barTvOther.background =
-                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this, R.color.color_a680))
+//            binding.title.barTvOther.background =
+//                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         }
     }
 
@@ -529,7 +537,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         initbuttom()
         val manager = FullyGridLayoutManager(
             this,
-            4, GridLayoutManager.VERTICAL, false
+            3, GridLayoutManager.VERTICAL, false
         )
         binding.picsrec.layoutManager = manager
 //        postVideoAdapter.draggableModule.isDragEnabled = true
@@ -616,9 +624,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             if (postsId != null) {
                 return
             }
-            if (inLocalMedia.isNullOrEmpty()){
+            if (inLocalMedia.isNullOrEmpty()) {
                 openChooseVideo()
-            }else{
+            } else {
                 isHasVideoPath = false
                 if (inLocalMedia != null) {
                     SelectlocalMedia = inLocalMedia!![0]
@@ -665,7 +673,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun showTopic(name: String) {
         binding.icAttribute.run {
-            tvTopic.visibility = View.GONE
+            tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.VISIBLE
             tvTopicName.text = name
         }
@@ -673,7 +681,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
     private fun showAddress(address: String) {
         binding.icAttribute.run {
-            tvAddress.visibility = View.GONE
+            tvAddress.visibility = View.VISIBLE
             llAddress.visibility = View.VISIBLE
             tvAddressName.text = address
         }
@@ -684,7 +692,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             return
         }
         binding.icAttribute.run {
-            tvCircle.visibility = View.GONE
+            tvCircle.visibility = View.VISIBLE
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }

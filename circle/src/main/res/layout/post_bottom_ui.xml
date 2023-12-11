@@ -5,7 +5,7 @@
     android:id="@+id/ll_bottom"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
+    android:background="@color/color_F8F7FF"
     android:orientation="vertical">
 
 
@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fffafbfd"
-        android:paddingTop="15dp"
-        android:paddingBottom="10dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="15dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_bq"
@@ -84,10 +84,11 @@
 
         <LinearLayout
             android:id="@+id/iv_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="72dp"
+            android:layout_height="34dp"
             android:layout_marginStart="19dp"
             android:gravity="center"
+            android:background="@drawable/shape_whit12_bg"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +97,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@mipmap/c_pic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -106,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="图片"
-                android:textColor="@color/text_color"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_1700F4"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"
@@ -213,19 +216,21 @@
 
         <LinearLayout
             android:id="@+id/iv_emoj"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_43"
+            android:layout_width="72dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="@dimen/dp_10"
             android:gravity="center"
+            android:background="@drawable/shape_whit12_bg"
             android:orientation="horizontal"
             app:layout_goneMarginLeft="19dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_pic"
             >
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@mipmap/c_bq" />
 
             <TextView
@@ -233,7 +238,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="表情"
-                android:textColor="@color/text_color"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/color_1700F4"
                 android:textSize="13sp"
                 app:layout_constraintBottom_toBottomOf="@id/iv_pic"
                 app:layout_constraintRight_toRightOf="@id/iv_pic"

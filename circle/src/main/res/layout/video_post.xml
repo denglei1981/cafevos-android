@@ -49,10 +49,10 @@
             android:maxLength="30"
             android:minEms="6"
             android:paddingLeft="20dp"
-            android:textColorHint="@color/color_cc"
             android:paddingRight="20dp"
-            android:textColor="@color/text_color"
-            android:textSize="20sp"
+            android:textColor="@color/color_16"
+            android:textColorHint="@color/color_4d16"
+            android:textSize="18sp"
             android:theme="@style/MyEditText"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -73,31 +73,31 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_no_tips"
             android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tvline"
-            app:layout_constraintLeft_toLeftOf="@+id/tvline"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:text="标题字数不得少于2个字"
             android:textColor="@color/color_F21C44"
             android:textSize="12sp"
             android:visibility="gone"
-            android:text="标题字数不得少于2个字"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintLeft_toLeftOf="@+id/tvline"
+            app:layout_constraintTop_toBottomOf="@+id/tvline" />
 
         <EditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="190dp"
             android:layout_marginTop="20dp"
-            android:isScrollContainer="true"
             android:background="@null"
             android:gravity="top"
             android:hint="请输入正文内容，字数小于500"
+            android:isScrollContainer="true"
             android:maxLength="500"
             android:minHeight="270dp"
             android:paddingLeft="20dp"
-            android:textColorHint="@color/color_cc"
             android:paddingRight="20dp"
             android:paddingBottom="50dp"
-            android:textColor="@color/text_color"
+            android:textColor="@color/color_d916"
+            android:textColorHint="@color/color_4d16"
             android:textSelectHandle="@color/transparent"
             android:textSize="14sp"
             android:theme="@style/MyEditText"
@@ -108,9 +108,9 @@
         <View
             android:id="@+id/v_line"
             android:layout_width="match_parent"
+            android:layout_height="10dp"
             android:background="@color/color_F5"
-            app:layout_constraintTop_toBottomOf="@+id/et_content"
-            android:layout_height="10dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/et_content" />
 
         <include
             android:id="@+id/ic_attribute"
@@ -129,10 +129,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:text="0/500"
-            android:textColor="#AFB3B6"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="@color/color_8016"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_content"
             app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--    </androidx.core.widget.NestedScrollView>-->

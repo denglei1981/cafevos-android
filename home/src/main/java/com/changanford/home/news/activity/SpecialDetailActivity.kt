@@ -1,6 +1,8 @@
 package com.changanford.home.news.activity
 
+import android.util.Log
 import android.view.View
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -13,12 +15,14 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateInfoDetailGio
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -30,6 +34,7 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.google.android.material.appbar.AppBarLayout
+import com.gyf.immersionbar.ImmersionBar
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
@@ -44,6 +49,7 @@ class SpecialDetailActivity :
         title = "专题详情页"
         updateInfoDetailGio("专题详情页", "专题详情页")
         binding.layoutEmpty.llEmpty.visibility = View.GONE
+        binding.layoutBar.ivIcon.setCircular(12)
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = newsListAdapter
@@ -54,6 +60,7 @@ class SpecialDetailActivity :
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
                     JumpUtils.instans!!.jump(35, item.authors?.authorId)
                 }
+
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
 //                        var newsValueData = NewsValueData(item.artId, item.type)
@@ -72,7 +79,8 @@ class SpecialDetailActivity :
     var topicId: String? = null
     override fun initData() {
         topicId = intent.getStringExtra(JumpConstant.SPECIAL_TOPIC_ID) // 跳过来的详情。
-        StatusBarUtil.setStatusBarMarginTop(binding.layoutBar.conTitle, this)
+        ImmersionBar.with(this).titleBar(binding.layoutBar.root).init()
+//        StatusBarUtil.setStatusBarMarginTop(binding.layoutBar.conTitle, this)
         setAppbarPercent()
         binding.layoutBar.ivMenu.visibility = View.VISIBLE
         binding.layoutBar.ivBack.setOnClickListener {
@@ -115,7 +123,8 @@ class SpecialDetailActivity :
                 shares = it.data.shares
                 binding.specialDetailData = it.data
                 binding.layoutCollBar.tvTopic.text = it.data.summary
-                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivHeader)
+                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivIcon)
+                binding.layoutBar.ivIcon.load(it.data.getPicUrl())
                 Glide.with(this)
                     .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
                     .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 2)))
@@ -164,18 +173,26 @@ class SpecialDetailActivity :
     }
 
     private fun setAppbarPercent() {
-        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            "verticalOffset=$verticalOffset".logE()
-            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
-            "percent=$percent".logE()
-            if (percent > 0.8) {
+        binding.nestScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+            val topHeight = binding.layoutCollBar.collToolBar.bottom * 0.5
+            if (scrollY > topHeight) {
                 binding.layoutBar.conTitle.visibility = View.VISIBLE
-                "conContent=visiable".logE()
             } else {
                 binding.layoutBar.conTitle.visibility = View.GONE
-                "conContent=gone".logE()
             }
         })
+//        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+//            "verticalOffset=$verticalOffset".logE()
+//            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
+//            "percent=$percent".logE()
+//            if (percent > 0.8) {
+//                binding.layoutBar.conTitle.visibility = View.VISIBLE
+//                "conContent=visiable".logE()
+//            } else {
+//                binding.layoutBar.conTitle.visibility = View.GONE
+//                "conContent=gone".logE()
+//            }
+//        })
 
     }
 
