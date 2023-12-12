@@ -267,7 +267,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
         tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
-        val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+        val btnFollow = holder.getView<TextView>(R.id.btn_follow)
 
         val tvNewsTag = holder.getView<TextView>(R.id.tv_news_tag)
 
@@ -442,8 +442,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     /**
      *  设置关注状态。
      * */
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState(context)
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
+        val setFollowState = com.changanford.common.util.SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }
@@ -451,7 +451,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
 
     // 关注或者取消
-    private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+    private fun followAction(btnFollow: TextView, authorBaseVo: AuthorBaseVo, position: Int) {
 
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1

@@ -66,15 +66,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_topic"
-            style="@style/AppText.lineSpace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="@dimen/dp_20"
             android:gravity="center"
             android:textColor="@color/color_d916"
-            android:textSize="16sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_tips" />

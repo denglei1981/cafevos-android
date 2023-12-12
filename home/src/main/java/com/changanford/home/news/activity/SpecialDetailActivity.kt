@@ -1,6 +1,5 @@
 package com.changanford.home.news.activity
 
-import android.util.Log
 import android.view.View
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
@@ -21,9 +20,7 @@ import com.changanford.common.util.gio.updateInfoDetailGio
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.bean.HomeShareModel
@@ -33,7 +30,6 @@ import com.changanford.home.databinding.ActivitySpecialDetailBinding
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
-import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import jp.wasabeef.glide.transformations.BlurTransformation
 

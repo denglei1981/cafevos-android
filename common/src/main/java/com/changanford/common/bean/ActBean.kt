@@ -36,56 +36,64 @@ class ActBean {
 
 //            }
 //        }
-        addr = if(cityName.isNullOrEmpty()){
+        addr = if (cityName.isNullOrEmpty()) {
             "$activityAddr"
-        }else{
+        } else {
             "${cityName}•$activityAddr"
         }
         return "活动地点: $addr"
     }
+
     fun getActTimeS(): String {
         return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" - ")
             .plus(TimeUtils.formateActTime(endTime))
     }
+
     var activityAddr: String? = ""//活动详细地址(报名活动)
     var activityButton: String? =
         ""//报名活动按钮,可用值:ActivityButtonEnum.SIGN_NOT_BEGIN(code=SIGN_NOT_BEGIN, dbCode=0, message=报名未开始),ActivityButtonEnum.SIGN_NOW(code=SIGN_NOW, dbCode=1, message=立即报名),ActivityButtonEnum.SIGN_FULL(code=SIGN_FULL, dbCode=2, message=报名已满),ActivityButtonEnum.SIGNED(code=SIGNED, dbCode=3, message=已报名),ActivityButtonEnum.SIGN_ENDED(code=SIGN_END, dbCode=4, message=报名结束),ActivityButtonEnum.MUNUAL_END(code=MUNUAL_END, dbCode=5, message=结束),ActivityButtonEnum.VIEW_RESULT(code=VIEW_RESULT, dbCode=6, message=查看结果)
     val activityJoinCount: String? = "" //参加活动人数
     var activityTag: String? =
         ""//,,ActivityTagEnum.NOT_PASS(code=NOT_PASS, message=未通过)
-    fun showTag():String{
+
+    fun showTag(): String {
         return if (activityTag.isNullOrEmpty()) "" else {
-            when(activityTag){
-                "NOT_BEGIN"-> "未开始"
-                "ON_GOING"-> "进行中"
-                "ENDED"-> "已结束"
-                "SIGN_ING"-> "报名中"
-                "CHECKING"-> "审核中"
-                "OFF_SHELF"-> "已下架"
-                "NOT_PASS"-> "未通过"
+            when (activityTag) {
+                "NOT_BEGIN" -> "未开始"
+                "ON_GOING" -> "进行中"
+                "ENDED" -> "已结束"
+                "SIGN_ING" -> "报名中"
+                "CHECKING" -> "审核中"
+                "OFF_SHELF" -> "已下架"
+                "NOT_PASS" -> "未通过"
                 else -> ""
             }
         }
     }
-    fun showJoinNum():Boolean{
+
+    fun showJoinNum(): Boolean {
         return !activityJoinCount.isNullOrEmpty() && outChain != "YES" && activityTag != "NOT_PASS" && activityTag != "CHECKING"
     }
+
     var activityTotalCount: String = ""//	活动总人数（报名活动,-1表示不限制）
     val beginTime: Long = 0//活动开始时间
     val cityName: String = ""//城市名称
     val coverImg: String = ""//封面图片
     val deadLineTime: Long = 0//	报名活动截止时间
     val endTime: Long = 0//活动结束时间
-    val hot: String = ""//是否热门,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
+    val hot: String =
+        ""//是否热门,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
     var jumpDto: JumpDTO = JumpDTO()
     var needSignUp: String? = "YES"//是否报名（YES/NO），如果是NO则隐藏按钮（0830版本之后取消非报名常规活动）
-    val official: String? = ""//0-官方，1-个人，2-经销商,可用值:WonderfulOfficialEnum.OFFICIAL(code=0, dbCode=0, message=官方),WonderfulOfficialEnum.UNOFFICIAL(code=1, dbCode=1, message=个人),WonderfulOfficialEnum.DISTRIBUTOR(code=2, dbCode=2, message=经销商)
+    val official: String? =
+        ""//0-官方，1-个人，2-经销商,可用值:WonderfulOfficialEnum.OFFICIAL(code=0, dbCode=0, message=官方),WonderfulOfficialEnum.UNOFFICIAL(code=1, dbCode=1, message=个人),WonderfulOfficialEnum.DISTRIBUTOR(code=2, dbCode=2, message=经销商)
     var openTime: String? = ""//	报名活动开始时间
     var outChain: String? =
         ""//是否外链（若是 需回调接口/highlights/callBackOuterChain）,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
     val provinceName: String = ""//省名称
     var reason: String = ""//拒绝原因
-    val recommend: String = ""//是否推荐,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
+    val recommend: String =
+        ""//是否推荐,可用值:YesNoNumInDBEnum.YES(code=YES, dbCode=0, message=是, isTrue=true),YesNoNumInDBEnum.NO(code=NO, dbCode=1, message=否, isTrue=false)
     var status: String? =
         ""//status	状态（0-审核中、1-驳回、2-正常、3-下架）,可用值:WonderfulStatusEnum.CHECKING(code=0, dbCode=0, message=审核中),WonderfulStatusEnum.REJECT(code=1, dbCode=1, message=驳回),WonderfulStatusEnum.NORMAL(code=2, dbCode=2, message=正常),WonderfulStatusEnum.OFFLINE(code=3, dbCode=3, message=下架)
     val title: String = ""//	标题
@@ -97,17 +105,19 @@ class ActBean {
     var wonderfulType: Int =
         0//精彩类型,可用值:WonderfulTypeEnum.ONLINE_ACTIVITY(code=0, message=线上活动, desc=线上活动, dbCode=0),WonderfulTypeEnum.OFFLINE_ACTIVITY(code=1, message=线下活动, desc=线下活动, dbCode=1),WonderfulTypeEnum.UNOFFICIAL(code=2, message=问卷调研, desc=问卷调研, dbCode=2),WonderfulTypeEnum.CAR_FAC_ACTIVITY(code=3, message=福域活动, desc=福域活动, dbCode=3),WonderfulTypeEnum.VOTE(code=4, message=投票活动, desc=投票活动, dbCode=4),WonderfulTypeEnum.QUES(code=5, message=问卷中心(0815), desc=问卷中心(0815), dbCode=5)
     var total = 0//总记录数
-    fun showButton():Boolean{
+    fun showButton(): Boolean {
         return activityButton?.isNotEmpty() == true || voteButton?.isNotEmpty() == true
     }
-    fun isFinish():Boolean{
-        return  if (!activityButton.isNullOrEmpty()||!voteButton.isNullOrEmpty()){
+
+    fun isFinish(): Boolean {
+        return if (!activityButton.isNullOrEmpty() || !voteButton.isNullOrEmpty()) {
             activityButton == "MUNUAL_END" || voteButton == "MUNUAL_END"
         } else false
     }
-    fun buttonBgEnable():Boolean{
-        return if (!activityButton.isNullOrEmpty()){
-            when(activityButton){
+
+    fun buttonBgEnable(): Boolean {
+        return if (!activityButton.isNullOrEmpty()) {
+            when (activityButton) {
                 "SIGN_NOT_BEGIN" -> false
                 "SIGN_NOW" -> true
                 "SIGN_FULL" -> false
@@ -117,8 +127,8 @@ class ActBean {
                 "VIEW_RESULT" -> true
                 else -> false
             }
-        } else if(!voteButton.isNullOrEmpty()){
-            when(voteButton){
+        } else if (!voteButton.isNullOrEmpty()) {
+            when (voteButton) {
                 "VOTE_NOT_BEGIN" -> false
                 "VOTE_NOW" -> true
                 "VOTED" -> false
@@ -131,9 +141,10 @@ class ActBean {
             false
         }
     }
-    fun showButtonText():String{
+
+    fun showButtonText(): String {
         return if (!activityButton.isNullOrEmpty()) {
-            when(activityButton){
+            when (activityButton) {
                 "SIGN_NOT_BEGIN" -> "报名未开始"
                 "SIGN_NOW" -> "立即报名"
                 "SIGN_FULL" -> "报名已满"
@@ -143,8 +154,8 @@ class ActBean {
                 "VIEW_RESULT" -> "查看结果"
                 else -> ""
             }
-        } else if (!voteButton.isNullOrEmpty()){
-            when(voteButton){
+        } else if (!voteButton.isNullOrEmpty()) {
+            when (voteButton) {
                 "VOTE_NOT_BEGIN" -> "投票未开始"
                 "VOTE_NOW" -> "立即投票"
                 "VOTED" -> "已投票"
@@ -157,7 +168,8 @@ class ActBean {
             ""
         }
     }
-    fun showReedit():Boolean{
+
+    fun showReedit(): Boolean {
         return (wonderfulType == 1 || wonderfulType == 0 || wonderfulType == 4) && outChain != "YES"
     }
 }
@@ -172,18 +184,16 @@ data class JumpDTO(
 )
 
 data class UpdateActivityV2Req(
-    var dto:DtoBeanNew,
-    var wonderfulId:Int
-):Serializable
+    var dto: DtoBeanNew,
+    var wonderfulId: Int
+) : Serializable
 
 data class UpdateVoteReq(
-    var addVoteDto:VoteBean,
-    var wonderfulId:Int
+    var addVoteDto: VoteBean,
+    var wonderfulId: Int
 
-):Serializable
+) : Serializable
 /*********************************************************************/
-
-
 
 
 /**
@@ -249,14 +259,23 @@ data class InfoDataBean(
         return commentCountResult
     }
 
+    fun getCommentCountNew(): String {
+        if (commentCount == 0L) {
+            return "0"
+        }
+        return commentCount.toString()
+    }
+
     fun getCommentCountAnViewCount(): String {
-        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
+        val commentStr =
+            CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论")
         val viewStr = CountUtils.formatNum(viewsCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
 
     fun getCommentDiscussAnViewCount(): String {
-        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("讨论")
+        val commentStr =
+            CountUtils.formatNum(commentCount.toString(), false).toString().plus("讨论")
         val viewStr = CountUtils.formatNum(viewsCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
@@ -310,7 +329,7 @@ data class AuthorBaseVo(
     val headFrameImage: String = "",
     val userId: String = "",
     var carOwner: String = ""
-): Parcelable {
+) : Parcelable {
     fun getMemberNames(): String {
         return if (TextUtils.isEmpty(carOwner)) {
             ""
@@ -398,13 +417,16 @@ data class PostDataBean(
     var addrName: String? = ""
 ) {
     fun getCommentCountAnViewCount(): String {
-        val commentStr = CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论  ")
+        val commentStr =
+            CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论  ")
         val viewStr = CountUtils.formatNum(viewsCount.toString(), false).toString().plus("阅读")
         return commentStr.plus("\t").plus(viewStr)
     }
 
-    fun getCommentCountNew():String{
-        if (commentCount==0L){return "0"}
+    fun getCommentCountNew(): String {
+        if (commentCount == 0L) {
+            return "0"
+        }
         return commentCount.toString()
     }
 

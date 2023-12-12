@@ -2,6 +2,7 @@ package com.changanford.home.shot.adapter
 
 import android.text.TextUtils
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -99,15 +100,15 @@ class BigShotPostListAdapter(private val lifecycleOwner: LifecycleOwner) :
     }
 
     // 关注或者取消
-    private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo) {
+    private fun followAction(btnFollow: TextView, authorBaseVo: AuthorBaseVo) {
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
 //        authorBaseVo.isFollow = followType
         getFollow(authorBaseVo.authorId, followType)
     }
 
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState(context)
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
+        val setFollowState = com.changanford.common.util.SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }

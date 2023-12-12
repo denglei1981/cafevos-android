@@ -21,6 +21,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -74,7 +75,7 @@ class NewsListAdapter(
         }
 //        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
-        val btnFollow = holder.getView<MaterialButton>(R.id.btn_follow)
+        val btnFollow = holder.getView<TextView>(R.id.btn_follow)
 
         if (item.authors?.authorId != MConstant.userId && isShowFollow) {
             btnFollow.visibility = View.VISIBLE
@@ -88,32 +89,46 @@ class NewsListAdapter(
             setFollowState(btnFollow, it)
         }
         tvContent.text = item.title
-        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
-        val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
-        val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
-        val tvTime = holder.getView<TextView>(R.id.tv_time)
-
+//        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
+//        val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
+//        val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
+        val tvTime = holder.getView<TextView>(R.id.tv_post_time)
+        val tvLocation = holder.getView<TextView>(R.id.tv_location)
+        val viewCount = holder.getView<TextView>(R.id.tv_view_count)
+        val comments = holder.getView<TextView>(R.id.tv_comments)
+        val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
+        tvLocation.visibility = View.GONE
+        viewCount.text = item.viewsCount.toString()
+        comments.text = item.getCommentCountNew()
+        tvTime.text = item.timeStr
         val ivPlay = holder.getView<ImageView>(R.id.iv_play)
 
         val tvVideoTime = holder.getView<AppCompatTextView>(R.id.tv_video_times)
-        tvLikeCount.setPageTitleText(item.likesCount.toString())
-        setLikeState(tvLikeCount, item, false)
-        tvCommentCount.text = item.getCommentCountResult()
-        tvCommentCount.setOnTouchListener { v, event ->
-            GIOUtils.clickCommentInfo(
-                if (type.isNotEmpty()) {
-                    type
-                } else if (isSpecialDetail) {
-                    "专题详情页"
-                } else "发现-资讯",
-                item.specialTopicTitle,
-                item.artId,
-                item.title
-            )
-            false
+
+        tvLikeCount.text = ("${if (item.likesCount > 0) item.likesCount else "0"}")
+        if (item.isLike == 1) {
+            tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
+
+        } else {
+            tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
         }
-        tvLookCount.text = item.getTimeAdnViewCount()
-        tvTime.text = item.getTimeAdnViewCount()
+//        tvLikeCount.setPageTitleText(item.likesCount.toString())
+//        setLikeState(tvLikeCount, item, false)
+//        tvCommentCount.text = item.getCommentCountResult()
+//        tvCommentCount.setOnTouchListener { v, event ->
+//            GIOUtils.clickCommentInfo(
+//                if (type.isNotEmpty()) {
+//                    type
+//                } else if (isSpecialDetail) {
+//                    "专题详情页"
+//                } else "发现-资讯",
+//                item.specialTopicTitle,
+//                item.artId,
+//                item.title
+//            )
+//            false
+//        }
+//        tvLookCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.summary)) {
             tvTopic.visibility = View.GONE
@@ -127,6 +142,7 @@ class NewsListAdapter(
                 ivPlay.visibility = View.GONE
                 tvVideoTime.visibility = View.GONE
             }
+
             3 -> {
                 ivPlay.visibility = View.VISIBLE
                 tvVideoTime.visibility = View.VISIBLE
@@ -180,24 +196,15 @@ class NewsListAdapter(
                             item.isLike = 1
                             val likesCount = item.likesCount.plus(1)
                             item.likesCount = likesCount
-                            tvLikeCount.setPageTitleText(
-                                CountUtils.formatNum(
-                                    likesCount.toString(),
-                                    false
-                                ).toString()
-                            )
+
                         } else {
                             item.isLike = 0
                             val likesCount = item.likesCount.minus(1)
                             item.likesCount = likesCount
-                            tvLikeCount.setPageTitleText(
-                                CountUtils.formatNum(
-                                    likesCount.toString(),
-                                    false
-                                ).toString()
-                            )
+
                         }
                         setLikeState(tvLikeCount, item, true)
+                        tvLikeCount.text = ("${if (item.likesCount > 0) item.likesCount else "0"}")
                     }
                 }
             }
@@ -259,26 +266,26 @@ class NewsListAdapter(
         }
     }
 
-    fun setLikeState(tvLikeView: DrawCenterTextView, item: InfoDataBean, isAnim: Boolean) {
+    fun setLikeState(tvLikeView: TextView, item: InfoDataBean, isAnim: Boolean) {
         if (item.isLike == 0) {
-            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, isAnim)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
         } else {
-            tvLikeView.setThumb(R.mipmap.home_comment_like, isAnim)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
         }
     }
 
     /**
      *  设置关注状态。
      * */
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
-        val setFollowState = SetFollowState(context)
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
+        val setFollowState = com.changanford.common.util.SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }
     }
 
     // 关注或者取消
-    private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+    private fun followAction(btnFollow: TextView, authorBaseVo: AuthorBaseVo, position: Int) {
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
         var followType = authorBaseVo.isFollow
         followType = if (followType == 1) 2 else 1
@@ -292,6 +299,7 @@ class NewsListAdapter(
             1 -> {
                 GIOUtils.followClick(authorBaseVo.authorId, authorBaseVo.nickname, pageName)
             }
+
             2 -> {
                 GIOUtils.cancelFollowClick(
                     authorBaseVo.authorId,

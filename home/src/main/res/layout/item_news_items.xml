@@ -26,14 +26,13 @@
 
     <include
         android:id="@+id/layout_count"
-        layout="@layout/include_home_recommend_count"
+        layout="@layout/include_circle_recommend_bottom_count"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_44"
+        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_content"
-        app:layout_constraintWidth_percent="0.9" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_content" />
 
     <View
         android:id="@+id/home_v_line"

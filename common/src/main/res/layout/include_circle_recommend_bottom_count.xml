@@ -33,6 +33,7 @@
             android:background="@drawable/shape_f6f6_corners20"
             android:drawableStart="@mipmap/icon_circle_location"
             android:drawablePadding="@dimen/dp_4"
+            tools:visibility="gone"
             android:maxLines="1"
             android:textColor="@color/color_00095B"
             android:textSize="@dimen/sp_12"
@@ -42,11 +43,12 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_time"
+            android:id="@+id/tv_post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:textColor="@color/color_8016"
+            app:layout_goneMarginTop="0dp"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

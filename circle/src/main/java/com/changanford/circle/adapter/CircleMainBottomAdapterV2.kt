@@ -91,7 +91,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             }
             binding.layoutCount.tvComments.text = item.getCommentCountNew()
             binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
-            binding.layoutCount.tvTime.text = item.timeStr
+            binding.layoutCount.tvPostTime.text = item.timeStr
             binding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
                     if (item.authorBaseVo != null) {

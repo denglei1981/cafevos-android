@@ -44,11 +44,11 @@ class SetFollowState(var context: Context) {
                 btnFollow.setTextColor(
                     ContextCompat.getColor(
                         btnFollow.context,
-                        R.color.color_1700F4
+                        R.color.color_4d16
                     )
                 )
                 btnFollow.background =
-                    ContextCompat.getDrawable(btnFollow.context, R.drawable.cm_follow_new_bg)
+                    ContextCompat.getDrawable(btnFollow.context, R.drawable.cm_followed_new_bg)
 //                if (isGray) {
 //                    btnFollow.setBackgroundColor(ContextCompat.getColor(context, R.color.color_DD))
 //                } else {
