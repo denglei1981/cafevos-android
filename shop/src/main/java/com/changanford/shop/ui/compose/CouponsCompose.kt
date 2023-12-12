@@ -69,7 +69,7 @@ fun ChooseCouponsCompose(act:Activity,defaultItemBean:CouponsItemBean?=null,data
                 .postValue(selectedTag.value)
             act.finish()
         },shape = RoundedCornerShape(20.dp), contentPadding = PaddingValues(horizontal = 0.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_1700f4)),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)) {

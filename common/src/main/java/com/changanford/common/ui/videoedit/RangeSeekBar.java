@@ -117,7 +117,7 @@ public class RangeSeekBar extends View {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         rectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         rectPaint.setStyle(Paint.Style.FILL);
-        rectPaint.setColor(Color.parseColor("#00095B"));
+        rectPaint.setColor(Color.parseColor("#1700f4"));
     }
 
     @Override

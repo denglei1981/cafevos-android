@@ -235,7 +235,7 @@ class CarAuthSubmitUI : BaseMineUI<UiCarAuthSubmitBinding, CarAuthViewModel>() {
                 1, 2 -> {//审核中
                     binding.authStatusLayout.authStatus.text =
                         if (carItemBean.authStatus == 2) "审核中" else "审核中"
-                    binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#00095B"))
+                    binding.authStatusLayout.authStatus.setTextColor(Color.parseColor("#1700f4"))
                     binding.checkLayout.visibility = View.GONE
                     binding.submit.visibility = View.GONE
                     binding.vinLine.visibility = View.GONE

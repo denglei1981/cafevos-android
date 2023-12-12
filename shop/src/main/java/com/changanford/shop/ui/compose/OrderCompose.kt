@@ -56,11 +56,11 @@ fun PayWayCompose(){
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = stringResource(R.string.str_payWay),color= colorResource(R.color.color_33), fontSize = 14.sp)
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = stringResource(R.string.str_currencyAvailableFb),color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                Text(text = stringResource(R.string.str_currencyAvailableFb),color= colorResource(R.color.color_1700f4), fontSize = 12.sp)
                 Spacer(modifier = Modifier.width(5.dp))
                 Image(painter = painterResource(R.mipmap.ic_shop_fb_42), contentDescription = null)
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(text = "0）",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                Text(text = "0）",color= colorResource(R.color.color_1700f4), fontSize = 12.sp)
             }
             Spacer(modifier = Modifier.height(18.dp))
             Row {
@@ -110,7 +110,7 @@ fun PayWayCompose(){
                             payWayArr[0].isCheck!!.value = false
                             payWayArr[2].isCheck!!.value = false
                         }) {
-                    Text(text = "¥130",color= colorResource(R.color.color_00095B), fontSize = 14.sp)
+                    Text(text = "¥130",color= colorResource(R.color.color_1700f4), fontSize = 14.sp)
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -140,7 +140,7 @@ fun PayWayCompose(){
                     Spacer(modifier = Modifier.width(3.dp))
                     TextField(value = inputFb.value, onValueChange = {
                         inputFb.value= it
-                    }, colors =  TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent), textStyle = TextStyle(color = colorResource(R.color.color_00095B), fontSize = 14.sp), placeholder = {
+                    }, colors =  TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent), textStyle = TextStyle(color = colorResource(R.color.color_1700f4), fontSize = 14.sp), placeholder = {
                         Text(text = stringResource(R.string.str_pleaseEnterUseLuckyCurrency), color = colorResource(R.color.color_99), fontSize = 14.sp)
                     }, modifier = Modifier
                         .background(Color.Transparent)
@@ -175,7 +175,7 @@ fun OrderGoodsItem(imgWidth:Int=90,itemBean: OrderItemBean? =null){
                         Box(modifier = Modifier
                             .padding(horizontal = 5.dp, vertical = 2.dp)
                             .background(
-                                color = colorResource(R.color.color_B300095B),
+                                color = colorResource(R.color.color_B31700f4),
                                 shape = RoundedCornerShape(5.dp)
                             ), contentAlignment = Alignment.Center){
                             Text(text = getTag(), color = Color.White, fontSize = 11.sp)

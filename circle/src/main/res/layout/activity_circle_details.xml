@@ -83,7 +83,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="1dp"
+                                android:layout_marginEnd="21dp"
                                 android:layout_toStartOf="@+id/tv_post"
                                 android:src="@mipmap/circle_share_detail_top"
                                 app:layout_constraintBottom_toBottomOf="parent"

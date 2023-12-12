@@ -33,7 +33,7 @@
             android:minWidth="@dimen/dp_98"
             android:onClick="onClick"
             android:text="@string/str_cancelOrder"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"
             android:visibility="gone"

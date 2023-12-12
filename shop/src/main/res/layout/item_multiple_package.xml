@@ -35,7 +35,7 @@
                 android:paddingTop="2dp"
                 android:paddingEnd="15dp"
                 android:paddingBottom="2dp"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_package_name"
                 app:layout_constraintStart_toEndOf="@+id/tv_package_name"

@@ -47,7 +47,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
         binding.layoutTitle.barTvOther.setTextColor(
             ContextCompat.getColor(
                 this,
-                R.color.color_00095B
+                R.color.color_1700f4
             )
         )
         binding.layoutTitle.vLine.background=ContextCompat.getDrawable(this,R.color.transparent)

@@ -36,7 +36,7 @@
             android:background="@color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabSelectedTextColor="@color/color_00095B"
+            app:tabSelectedTextColor="@color/color_1700f4"
             app:tabTextColor="@color/color_33"
             app:tabIndicatorColor="@android:color/transparent"
             app:tabIndicatorHeight="@dimen/dp_0"/>

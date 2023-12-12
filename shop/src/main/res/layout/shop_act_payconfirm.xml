@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 app:end_txt="@string/str_integral"
                 android:text="@{model.payFb}"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_28" />
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_payTime"

@@ -104,7 +104,7 @@
                 android:layout_marginTop="13dp"
                 android:layout_marginEnd="13dp"
                 android:text="原因:审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="11sp"
                 tools:ignore="HardcodedText" />
 

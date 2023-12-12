@@ -45,14 +45,14 @@
     <string name="str_memberDiscount">会员折扣</string>
     <string name="str_bargaining_discounts">砍价优惠</string>
     <string name="str_freight">运费</string>
-    <string name="str_combinedXintegral">合计：<font color="#00095B">1300福币 </font></string>
+    <string name="str_combinedXintegral">合计：<font color="#1700f4">1300福币 </font></string>
     <string name="str_payType">支付方式</string>
     <string name="str_integralPay">福币支付</string>
     <string name="str_packageMail">快递包邮</string>
     <string name="str_payConfirm">确认支付</string>
     <string name="str_remainingTimePayment">支付剩余时间：</string>
     <string name="str_yourAccountPoints">您的账户：</string>
-    <string name="str_yourAccountPoints_font">您的账户：<font color="#00095B">1300福币</font></string>
+    <string name="str_yourAccountPoints_font">您的账户：<font color="#1700f4">1300福币</font></string>
     <string name="str_paySucces">支付成功</string>
     <string name="str_total">共计</string>
     <string name="str_payFailure">支付失败</string>
@@ -62,8 +62,8 @@
     <string name="str_color">颜色</string>
     <string name="str_specifications">规格</string>
     <string name="str_number">数量</string>
-    <string name="str_xgXjkcXj">（<font color="#00095B">限购5件</font> 库存1024件）</string>
-    <string name="str_yourAccountPointsF">您的账户：<font color="#00095B">1800</font>分</string>
+    <string name="str_xgXjkcXj">（<font color="#1700f4">限购5件</font> 库存1024件）</string>
+    <string name="str_yourAccountPointsF">您的账户：<font color="#1700f4">1800</font>分</string>
     <string name="str_limited">限量</string>
     <string name="str_a">件</string>
     <string name="str_toSnapUp">去抢购</string>
@@ -95,7 +95,7 @@
     <string name="str_toEvaluate">待评价</string>
     <string name="str_refundOrAfterSale">退款/售后</string>
     <string name="str_orderNo">订单编号：</string>
-    <string name="font_aCombined">合计:<font color="#00095B">1300福币</font></string>
+    <string name="font_aCombined">合计:<font color="#1700f4">1300福币</font></string>
     <string name="str_confirm">确认</string>
     <string name="str_determine">确定</string>
     <string name="prompt_cancelOrder">取消订单后，订单将不可恢复</string>

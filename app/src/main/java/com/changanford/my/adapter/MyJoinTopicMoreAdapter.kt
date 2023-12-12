@@ -67,7 +67,7 @@ class MyJoinTopicMoreAdapter :
                         t.btnType.setTextColor(
                             ContextCompat.getColor(
                                 context,
-                                R.color.color_00095B
+                                R.color.color_1700f4
                             )
                         )
                         t.rlReason.visibility = View.GONE
@@ -102,7 +102,7 @@ class MyJoinTopicMoreAdapter :
                             t.btnType.setTextColor(
                                 ContextCompat.getColor(
                                     context,
-                                    R.color.color_00095B
+                                    R.color.color_1700f4
                                 )
                             )
                             t.rlReason.visibility = View.GONE

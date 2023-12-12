@@ -117,7 +117,7 @@ class CircleActivityListAdapter :
 
             if (btnType.text == "立即报名"||btnType.text == "查看结果") {
                 btnType.setBackgroundResource(R.drawable.bg_f2f4_14)
-                btnType.setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
+                btnType.setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
             } else {
                 btnType.setBackgroundResource(R.drawable.bg_dd_14)
                 btnType.setTextColor(ContextCompat.getColor(context, R.color.white))

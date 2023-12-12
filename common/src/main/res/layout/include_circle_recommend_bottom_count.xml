@@ -30,25 +30,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_15"
-            android:background="@drawable/shape_f6f6_corners20"
             android:drawableStart="@mipmap/icon_circle_location"
             android:drawablePadding="@dimen/dp_4"
-            tools:visibility="gone"
             android:maxLines="1"
-            android:textColor="@color/color_00095B"
-            android:textSize="@dimen/sp_12"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_11"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="重庆市" />
-
+            tools:text="重庆市"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
             android:textColor="@color/color_8016"
-            app:layout_goneMarginTop="0dp"
+            android:layout_marginTop="10dp"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +111,7 @@
             android:drawablePadding="3dp"
             android:textColor="@color/color_8016"
             android:textSize="11sp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_location"
@@ -124,10 +122,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="11dp"
-            android:textColor="@color/color_8016"
-            android:drawablePadding="3dp"
-            android:textSize="11sp"
             android:drawableStart="@mipmap/item_good_count_ic"
+            android:drawablePadding="3dp"
+            android:textColor="@color/color_8016"
+            android:layout_marginTop="10dp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/tv_comments"
             app:layout_constraintTop_toBottomOf="@+id/tv_location"
@@ -138,10 +137,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="11dp"
+            android:drawableStart="@mipmap/item_views_count_ic"
             android:drawablePadding="3dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/color_8016"
             android:textSize="11sp"
-            android:drawableStart="@mipmap/item_views_count_ic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/tv_like_count"
             app:layout_constraintTop_toBottomOf="@+id/tv_location"
@@ -150,12 +150,11 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1px"
-            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_5"
             android:background="@color/color_f6"
             app:layout_constraintEnd_toEndOf="@+id/tv_time_look_count"
             app:layout_constraintStart_toStartOf="@+id/tv_like_count"
             app:layout_constraintTop_toBottomOf="@+id/tv_like_count" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

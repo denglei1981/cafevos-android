@@ -47,7 +47,7 @@ class RecommendActivity : BaseActivity<ActRecommendBinding, GoodsViewModel>() {
             binding.tabLayout,
             18f,
             Typeface.DEFAULT_BOLD,
-            R.color.color_00095B
+            R.color.color_1700f4
         )
     }
 

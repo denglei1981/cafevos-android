@@ -52,7 +52,7 @@ class CircleDetailsActivityAdapter :
                 "ON_GOING" -> {
                     tvActivityType.text = "进行中"
                     val sd = tvActivityType.background.mutate() as GradientDrawable
-                    sd.setColor(ContextCompat.getColor(context, R.color.color_009987))
+                    sd.setColor(ContextCompat.getColor(context, R.color.color_1700F4))
                     sd.invalidateSelf()
                 }
 
@@ -60,6 +60,13 @@ class CircleDetailsActivityAdapter :
                     tvActivityType.text = "已结束"
                     val sd = tvActivityType.background.mutate() as GradientDrawable
                     sd.setColor(ContextCompat.getColor(context, R.color.color_00_a50))
+                    sd.invalidateSelf()
+                }
+
+                else -> {
+                    tvActivityType.text = "报名中"
+                    val sd = tvActivityType.background.mutate() as GradientDrawable
+                    sd.setColor(ContextCompat.getColor(context, R.color.color_009987))
                     sd.invalidateSelf()
                 }
             }
@@ -108,7 +115,7 @@ class CircleDetailsActivityAdapter :
                 params.topMargin = margin.toIntPx()
             } else params.topMargin = 0
 
-            if (position != itemCount-1) {
+            if (position != itemCount - 1) {
                 params.bottomMargin = 15.toIntPx()
             } else params.bottomMargin = 0
         }

@@ -788,7 +788,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                             text = if (isFollow == 1) "已关注" else "关注",
                                             fontSize = 12.sp,
                                             color = colorResource(
-                                                com.changanford.common.R.color.color_00095B
+                                                com.changanford.common.R.color.color_1700f4
                                             )
                                         )
                                     }
@@ -798,7 +798,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                     Text(
                                         text = it,
                                         fontSize = 11.sp,
-                                        color = colorResource(com.changanford.common.R.color.color_00095B)
+                                        color = colorResource(com.changanford.common.R.color.color_1700f4)
                                     )
                                 }
                             }
@@ -830,7 +830,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     )
                     Text(text = circleName ?: "",
                         fontSize = 14.sp,
-                        color = colorResource(com.changanford.common.R.color.color_00095B),
+                        color = colorResource(com.changanford.common.R.color.color_1700f4),
                         modifier = Modifier
                             .weight(1f)
                             .clickable {

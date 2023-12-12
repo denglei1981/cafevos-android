@@ -105,7 +105,7 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                     val endDate=Date()
                     endDate.time=evalTime
                     val timeStr=DateTimeUtil.formatFriendly(starDate,endDate)
-                    Text(text = "${timeStr}追评",color= colorResource(R.color.color_00095B), fontSize = 12.sp)
+                    Text(text = "${timeStr}追评",color= colorResource(R.color.color_1700f4), fontSize = 12.sp)
                     Spacer(modifier = Modifier.height(11.dp))
                     Text(text = evalText?:"",color= colorResource(R.color.color_33), fontSize = 14.sp)
                 }

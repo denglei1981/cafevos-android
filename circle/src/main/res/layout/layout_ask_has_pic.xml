@@ -36,7 +36,7 @@
             android:paddingStart="@dimen/dp_5"
             android:paddingEnd="@dimen/dp_5"
             android:gravity="center"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:background="@drawable/border_0095b_2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -21,49 +21,103 @@
         android:orientation="horizontal">
 
 
-        <com.changanford.home.widget.DrawCenterTextView
-            android:id="@+id/tv_like_count"
+<!--        <com.changanford.home.widget.DrawCenterTextView-->
+<!--            android:id="@+id/tv_like_count"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:drawablePadding="4dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:minWidth="75dp"-->
+<!--            android:visibility="gone"-->
+<!--            android:textSize="@dimen/sp_12"-->
+<!--            app:image="@drawable/icon_big_shot_unlike"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="1.2k" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_comment_count"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_gravity="center_vertical"-->
+<!--            android:drawableStart="@drawable/icon_big_unmsg"-->
+<!--            android:drawablePadding="4dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:textColor="@color/color_99"-->
+<!--            android:textSize="@dimen/sp_12"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tv_like_count"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="1.2k" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_time_look_count"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="end|center_vertical"-->
+<!--            android:textColor="@color/color_gray_9fabb7"-->
+<!--            android:visibility="gone"-->
+<!--            android:textSize="@dimen/sp_12"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="12313 3万浏览" />-->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:minWidth="75dp"
-            android:textSize="@dimen/sp_12"
-            app:image="@drawable/icon_big_shot_unlike"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="1.2k" />
+            tools:ignore="SmallSp"
+            tools:text="5分钟前" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:drawableStart="@drawable/icon_big_unmsg"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_like_count"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="1.2k" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_time_look_count"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="end|center_vertical"
-            android:textColor="@color/color_gray_9fabb7"
-            android:textSize="@dimen/sp_12"
+            android:drawableStart="@mipmap/item_comment_count_ic"
+            android:drawablePadding="3dp"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="12313 3万浏览" />
+            tools:text="123" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:textColor="@color/color_8016"
+            android:drawablePadding="3dp"
+            android:textSize="11sp"
+            android:drawableStart="@mipmap/item_good_count_ic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_comment_count"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_view_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="11dp"
+            android:drawablePadding="3dp"
+            android:textColor="@color/color_8016"
+            android:textSize="11sp"
+            android:drawableStart="@mipmap/item_views_count_ic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_like_count"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

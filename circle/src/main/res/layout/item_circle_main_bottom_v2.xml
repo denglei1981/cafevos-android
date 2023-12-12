@@ -151,7 +151,7 @@
                 android:gravity="center"
                 android:paddingStart="11dp"
                 android:paddingEnd="5dp"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="12sp"
                 tools:text="查看全部120条评论" />
 

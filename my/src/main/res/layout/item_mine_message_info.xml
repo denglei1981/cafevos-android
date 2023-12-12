@@ -131,7 +131,7 @@
                 android:layout_marginRight="@dimen/dp_10"
                 android:layout_marginBottom="14dp"
                 android:text="查看详情"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

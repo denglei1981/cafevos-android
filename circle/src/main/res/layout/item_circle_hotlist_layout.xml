@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_ranking"
             android:layout_marginStart="@dimen/dp_10"
-            tools:background="@color/color_00095B"
+            tools:background="@color/color_1700f4"
             android:layout_width="@dimen/dp_80"
             android:layout_height="match_parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"/>

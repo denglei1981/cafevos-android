@@ -157,7 +157,7 @@
                 android:includeFontPadding="false"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:textColor="@color/color_CC00095B"
+                android:textColor="@color/color_CC1700f4"
                 android:textSize="@dimen/sp_12"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -230,7 +230,7 @@ public class AlertDialog {
             btn_pos.setText(text);
         }
         if (color == -1) {
-            color = R.color.color_00095B;
+            color = R.color.color_1700f4;
         }
         btn_pos.setTextColor(ContextCompat.getColor(context, color));
         btn_pos.setOnClickListener(new OnClickListener() {

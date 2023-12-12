@@ -44,7 +44,7 @@ public class AttribltAdapter extends BaseQuickAdapter<AttributeBean.AttributeCat
             tv.setChecked(true);
             ll_item.setBackgroundDrawable(getContext().getDrawable(R.drawable.shap_tabitemselect));
             attributeListBeanMap.put(attributeListBean.getAttributeId(), attributeListBean);
-            tv.setTextColor(BaseApplication.INSTANT.getResources().getColor(R.color.color_00095B));
+            tv.setTextColor(BaseApplication.INSTANT.getResources().getColor(R.color.color_1700f4));
         } else {
             tv.setChecked(false);
             ll_item.setBackgroundDrawable(getContext().getDrawable(R.drawable.shap_tabitembg));
@@ -56,7 +56,7 @@ public class AttribltAdapter extends BaseQuickAdapter<AttributeBean.AttributeCat
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     attributeListBean.setChecktype(1);
-                    tv.setTextColor(buttonView.getResources().getColor(R.color.color_00095B));
+                    tv.setTextColor(buttonView.getResources().getColor(R.color.color_1700f4));
                     getAttributeListBeanMap().remove(attributeListBean.getAttributeId());
                 } else {
                     tv.setTextColor(buttonView.getResources().getColor(R.color.text_colorv6));

@@ -401,7 +401,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                     //可支付结束时间=服务器当前时间+可支付剩余时间
 //                    val payEndTime=(nowTime?:System.currentTimeMillis())+(item.waitPayCountDown?:0)*1000
                     text=simpleDateFormat.format((item.payTimeDeadline?:"0").toLong())
-                    setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
+                    setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
                     visibility = View.VISIBLE
                 }
                 else -> text=""

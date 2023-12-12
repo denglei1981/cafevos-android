@@ -34,7 +34,7 @@
             android:minWidth="@dimen/dp_43"
             android:maxWidth="@dimen/dp_90"
             style="@style/w_style_txt_ellipsize"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:background="@drawable/border_0095b_2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

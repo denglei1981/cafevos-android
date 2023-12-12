@@ -12,7 +12,7 @@
             <item android:left="@dimen/dp_4" android:right="@dimen/dp_4">
                 <shape>
                     <corners android:radius="@dimen/dp_16"/>
-                    <solid android:color="@color/color_00095B"/>
+                    <solid android:color="@color/color_1700f4"/>
                 </shape>
             </item>
         </layer-list>

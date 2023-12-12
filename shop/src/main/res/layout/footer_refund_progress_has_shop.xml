@@ -65,7 +65,7 @@
                 android:background="@drawable/bord_00095b_1dp"
                 android:gravity="center"
                 android:text="填写物流信息"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:visibility="visible"
                 tools:text="撤销退款申请" />
 

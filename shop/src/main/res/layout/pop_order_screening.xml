@@ -40,7 +40,7 @@
             android:layout_height="@dimen/dp_53"
             android:gravity="center"
             android:text="@string/str_cancel"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_15" />
     </LinearLayout>
 </layout>

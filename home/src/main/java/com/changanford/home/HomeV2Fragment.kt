@@ -73,15 +73,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     val immersionBar: ImmersionBar by lazy {
         ImmersionBar.with(this)
     }
-    val recommendFragment: RecommendFragment by lazy {
+    private val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
     }
 
-    val actsParentsFragment: ActsParentsFragment by lazy {
+    private val actsParentsFragment: ActsParentsFragment by lazy {
         ActsParentsFragment.newInstance()
     }
 
-    val newsListFragment: NewsListFragment by lazy {
+    private val newsListFragment: NewsListFragment by lazy {
         NewsListFragment.newInstance()
     }
 
@@ -89,7 +89,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         BigShotFragment.newInstance()
     }
 
-    val twoAdRvListAdapter: TwoAdRvListAdapter by lazy {
+    private val twoAdRvListAdapter: TwoAdRvListAdapter by lazy {
         TwoAdRvListAdapter()
     }
     var currentPosition = 0

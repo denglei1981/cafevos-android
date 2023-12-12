@@ -262,7 +262,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                         //申请加入
                         Text(
                             text = stringResource(R.string.str_applyToJoin),
-                            color = colorResource(R.color.color_00095B),
+                            color = colorResource(R.color.color_1700f4),
                             fontSize = 12.sp,
                             textAlign = TextAlign.Center
                         )
@@ -492,7 +492,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
                 ) {
                     Text(
                         text = stringResource(R.string.str_inPk),
-                        color = colorResource(R.color.color_00095B),
+                        color = colorResource(R.color.color_1700f4),
                         fontSize = 12.sp
                     )
                 }
@@ -500,7 +500,7 @@ class NewCircleFragment : BaseFragment<FragmentCircleNewBinding, NewCircleViewMo
             Button(
                 contentPadding = PaddingValues(12.dp, 6.dp),
                 shape = RoundedCornerShape(12.dp),
-                modifier = Modifier.background(colorResource(R.color.color_00095B)),
+                modifier = Modifier.background(colorResource(R.color.color_1700f4)),
                 onClick = {}) {
                 Text(stringResource(R.string.str_toPlayList), fontSize = 12.sp, color = Color.White)
             }

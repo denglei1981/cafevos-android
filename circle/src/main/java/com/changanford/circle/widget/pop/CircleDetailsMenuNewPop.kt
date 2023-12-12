@@ -12,6 +12,7 @@ import com.changanford.circle.adapter.CircleMainMenuAdapter
 import com.changanford.circle.bean.CircleMainMenuBean
 import com.changanford.circle.bean.CirclePermissionsData
 import com.changanford.circle.databinding.PopCircleDetailsMenuBinding
+import com.changanford.circle.databinding.PopCircleDetailsNewMenuBinding
 import com.changanford.circle.databinding.PopCircleMainMenuBinding
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.constant.IntentKey
@@ -30,15 +31,15 @@ import razerdp.util.animation.TranslationConfig
  *Time on 2021/9/24
  *Purpose
  */
-class CircleDetailsMenuPop(
+class CircleDetailsMenuNewPop(
     private val context: Context,
     private val circleId: String,
     private val permissions: ArrayList<CirclePermissionsData>
 ) :
     BasePopupWindow(context) {
 
-    private var binding: PopCircleDetailsMenuBinding =
-        DataBindingUtil.bind(createPopupById(R.layout.pop_circle_details_menu))!!
+    private var binding: PopCircleDetailsNewMenuBinding =
+        DataBindingUtil.bind(createPopupById(R.layout.pop_circle_details_new_menu))!!
 
     init {
         contentView = binding.root

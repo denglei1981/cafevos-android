@@ -55,7 +55,7 @@
                 android:paddingRight="12dp"
                 android:paddingBottom="2dp"
                 android:text="创建地址"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="14sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

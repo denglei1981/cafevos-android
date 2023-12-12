@@ -31,6 +31,7 @@ import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -43,7 +44,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.xiaomi.push.it
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
-    BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(),LoadMoreModule {
+    BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(), LoadMoreModule {
     init {
         addItemType(0, R.layout.item_home_recommend_items_one)
         addItemType(1, R.layout.item_home_recommend_items_one)
@@ -74,9 +75,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //                if (!TextUtils.isEmpty(item.pic)) {
 //                    ivPic.loadCompress(item.pic)
 //                } else if (picLists != null) {
-                    ivPic.loadCompress(picLists?.get(0))
+                ivPic.loadCompress(picLists?.get(0))
 //                }
             }
+
             2 -> { //3张图
                 showPics(holder, item)
                 val veryPostIv = holder.getView<ImageView>(R.id.ic_mult_very_post)
@@ -101,9 +103,11 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             0 -> {
                                 onePic.loadCompress(s)
                             }
+
                             1 -> {
                                 twoPic.loadCompress(s)
                             }
+
                             2 -> {
                                 threePic.loadCompress(s)
                             }
@@ -111,6 +115,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     }
                 }
             }
+
             3 -> { // 活动
 //                showActs(holder, item)
                 try {
@@ -123,7 +128,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
     }
 
-    fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
+    private fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
         val item = recdate.wonderful
         val binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
         binding?.let {
@@ -212,6 +217,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 tvTagTwo.text = "线上活动"
                 tvHomeActAddress.visibility = View.GONE
             }
+
             1 -> {
                 tvTagTwo.text = "线下活动"
                 if (TextUtils.isEmpty(item.city)) {
@@ -223,11 +229,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
 
             }
+
             2 -> {
                 tvTagTwo.text = "调查问卷"
                 tvHomeActTimes.text = item.getEndTimeTips()
                 tvHomeActAddress.visibility = View.GONE
             }
+
             3 -> {
                 tvTagTwo.text = "福域活动"
                 tvHomeActAddress.visibility = View.GONE
@@ -238,10 +246,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 tvTagOne.text = context.getString(R.string.platform_acts)
                 tvTagOne.visibility = View.VISIBLE
             }
+
             2 -> {
                 tvTagOne.text = "经销商"
                 tvTagOne.visibility = View.VISIBLE
             }
+
             else -> {
                 tvTagOne.visibility = View.VISIBLE
                 tvTagOne.text = "个人"
@@ -251,7 +261,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     }
 
-    fun showPics(holder: BaseViewHolder, item: RecommendData) { // 图片
+    private fun showPics(holder: BaseViewHolder, item: RecommendData) { // 图片
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
@@ -288,24 +298,21 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
 
 
-        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
+        val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
         setLikeState(tvLikeCount, item.isLike, false) // 设置是否喜欢。
         tvLikeCount.setOnClickListener {
             when (item.rtype) {
                 1 -> { // 点赞资讯。
                     if (LoginUtil.isLongAndBindPhone()) {
                         if (item.authors != null) {
-                            actionLike(lifecycleOwner,item.artId) {
+                            actionLike(lifecycleOwner, item.artId) {
                                 if (item.isLike == 0) {
                                     item.isLike = 1
                                     val likesCount = item.likeCount.plus(1)
                                     item.likeCount = likesCount
-                                    tvLikeCount.setPageTitleText(
-                                        CountUtils.formatNum(
-                                            likesCount.toString(),
-                                            false
-                                        ).toString()
-                                    )
+                                    tvLikeCount.text =
+                                        CountUtils.formatNum(likesCount.toString(), false)
+                                            .toString()
                                     "点赞成功".toast()
                                     GIOUtils.infoLickClick(
                                         "发现-推荐",
@@ -317,12 +324,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                                     item.isLike = 0
                                     val likesCount = item.likeCount.minus(1)
                                     item.likeCount = likesCount
-                                    tvLikeCount.setPageTitleText(
-                                        CountUtils.formatNum(
-                                            likesCount.toString(),
-                                            false
-                                        ).toString()
-                                    )
+                                    tvLikeCount.text = (
+                                            CountUtils.formatNum(
+                                                likesCount.toString(),
+                                                false
+                                            ).toString()
+                                            )
                                     "取消点赞".toast()
                                     GIOUtils.cancelInfoLickClick(
                                         "发现-推荐",
@@ -336,6 +343,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         }
                     }
                 }
+
                 2 -> {// 点赞帖子
                     if (LoginUtil.isLongAndBindPhone()) {
                         likePost(tvLikeCount, item)
@@ -344,9 +352,13 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
         }
         val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
-        val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
-        tvLikeCount.setPageTitleText(item.getLikeCount())
+        val tvViewCount = holder.getView<TextView>(R.id.tv_view_count)
+        val tvPostTime = holder.getView<TextView>(R.id.tv_post_time)
+//        val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
+        tvLikeCount.text = (item.getLikeCount())
         tvCommentCount.text = item.getCommentCount()
+        tvPostTime.text = item.timeStr
+        tvViewCount.text = item.getViewCount()
         tvCommentCount.setOnTouchListener { v, event ->
             when (item.rtype) {
                 1 -> {//资讯
@@ -357,6 +369,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         item.artTitle
                     )
                 }
+
                 2 -> {//帖子
                     GIOUtils.clickCommentPost(
                         "发现-推荐",
@@ -372,7 +385,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             false
         }
-        tvTimeAndViewCount.text = item.getTimeAdnViewCount()
+//        tvTimeAndViewCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
             tvTopic.text = ""
@@ -417,6 +430,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
                 tvVideoTime.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
             }
+
             2 -> {// 帖子
                 tvNewsTag.visibility = View.GONE
                 if (!TextUtils.isEmpty(item.postsVideoTime)) {
@@ -426,6 +440,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 ivPlay.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
                 tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
             }
+
             else -> {
                 tvNewsTag.visibility = View.GONE
                 tvVideoTime.visibility = View.GONE
@@ -493,16 +508,16 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         this.notifyDataSetChanged()
     }
 
-    fun setLikeState(tvLikeView: DrawCenterTextView, isLike: Int, isAnim: Boolean) {
+    private fun setLikeState(tvLikeView: TextView, isLike: Int, isAnim: Boolean) {
         if (isLike == 0) {
-            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, isAnim)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
         } else {
-            tvLikeView.setThumb(R.mipmap.home_comment_like, isAnim)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
         }
     }
 
 
-    private fun likePost(tvLikeView: DrawCenterTextView, item: RecommendData) {
+    private fun likePost(tvLikeView: TextView, item: RecommendData) {
         val activity = BaseApplication.curActivity as AppCompatActivity
         activity.launchWithCatch {
             val body = MyApp.mContext.createHashMap()
@@ -525,7 +540,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             )
                             "点赞成功".toast()
                             item.isLike = 1
-                            tvLikeView.setThumb(R.mipmap.home_comment_like, true)
+                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
                             item.postsLikesCount++
                         } else {
                             GIOUtils.cancelPostLickClick(
@@ -541,9 +556,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--
-                            tvLikeView.setThumb(R.drawable.icon_big_shot_unlike, false)
+                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
                         }
-                        tvLikeView.setPageTitleText(item.getLikeCount())
+                        tvLikeView.text = item.getLikeCount()
                     } else {
                         it.msg.toast()
                     }

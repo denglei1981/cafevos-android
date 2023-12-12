@@ -59,7 +59,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:leftThumbDrawable="@mipmap/handle_right"
         app:leftThumbIndex="0"
-        app:lineColor="#00095B"
+        app:lineColor="#1700f4"
         app:lineHeight="0.5dp"
         app:rightThumbDrawable="@mipmap/handle_left"
         app:thumbWidth="12dp"

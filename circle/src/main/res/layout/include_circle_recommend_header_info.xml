@@ -60,7 +60,7 @@
             android:id="@+id/tv_sub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ff00095b"
+            android:textColor="#ff1700f4"
             android:textSize="@dimen/sp_10"
             android:visibility="@{author.showSubtitle()?View.VISIBLE:View.GONE}"
             tools:visibility="gone"

@@ -542,7 +542,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(context, R.color.color_33)
                 simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(context, R.color.color_00095B)
+                    ContextCompat.getColor(context, R.color.color_1700f4)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return simplePagerTitleView
             }
@@ -561,7 +561,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
                 indicator.setColors(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_00095B
+                        R.color.color_1700f4
                     )
                 )
                 return indicator
@@ -668,7 +668,7 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
             binding.topContent.btnFollow.setTextColor(
                 ContextCompat.getColor(
                     this,
-                    R.color.color_00095B
+                    R.color.color_1700f4
                 )
             )
             binding.topContent.btnFollow.text = "关注"

@@ -55,7 +55,7 @@ fun CarAuthHolder(
                 }else{
                     it.tvAuth.text = "已认证"
                 }
-//                d.setColor(Color.parseColor("#6900095B"))
+//                d.setColor(Color.parseColor("#691700f4"))
                 crmHint(3, it, item)
             }
             else -> {
@@ -121,12 +121,12 @@ private fun crmHint(
                 holder.btnAddCarNum.apply {
                     text = "添加车牌"
                     setBackgroundResource(R.drawable.shape_car_auth_btn_bg)
-                    setTextColor(Color.parseColor("#00095B"))
+                    setTextColor(Color.parseColor("#1700f4"))
                 }
             } else {
                 holder.btnAddCarNum.apply {
                     setBackgroundResource(R.drawable.shape_car_num_btn_bg)
-                    setTextColor(Color.parseColor("#00095B"))
+                    setTextColor(Color.parseColor("#1700f4"))
                     text = "${item.plateNum}"
                 }
             }

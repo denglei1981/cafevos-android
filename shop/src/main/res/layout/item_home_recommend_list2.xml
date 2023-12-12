@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-            tools:src="@color/color_00095B" />
+            tools:src="@color/color_1700f4" />
 
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_name"

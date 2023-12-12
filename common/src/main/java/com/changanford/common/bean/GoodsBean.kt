@@ -936,10 +936,11 @@ data class CreateOrderBean(
             val pct = json.getString("pay_pct")
             val mPayType = json.getInteger("pay_type")
             val mixPayType = json.getInteger("mix_pay_type")
-            if (mPayType == 2 && mixPayType == 1) {
-                -1f
-            } else if (TextUtils.isEmpty(pct)) -1f
-            else pct.toFloat() / 100f
+            if (mPayType == 2 && mixPayType == 0) {
+                pct.toFloat() / 100f
+            }
+//            else if (TextUtils.isEmpty(pct)) -1f
+            else -1f
         } catch (e: java.lang.Exception) {
             -1f
         }

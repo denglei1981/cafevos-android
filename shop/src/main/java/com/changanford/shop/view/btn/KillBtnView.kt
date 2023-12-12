@@ -136,10 +136,10 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
             setBackgroundResource(R.drawable.btn_selector)
             if (btnSource == 0) {
                 setBackgroundResource(R.drawable.border1dp_round_l20dp_00095b)
-                setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
+                setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
             } else if (btnSource == 1) {
                 setBackgroundResource(R.drawable.border1dp_round_20dp_00095b)
-                setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
+                setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
             }
         } else {
             setBackgroundResource(R.drawable.shadow_dd_20dp)

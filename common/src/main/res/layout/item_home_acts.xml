@@ -206,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_10"
                 android:layout_marginVertical="@dimen/dp_10"
-                android:textColor="#00095B"
+                android:textColor="#1700f4"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toTopOf="@id/reedit"
                 app:layout_constraintTop_toTopOf="parent"

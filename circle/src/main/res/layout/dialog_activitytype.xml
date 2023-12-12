@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_20"
-        android:textColor="#00095B"
+        android:textColor="#1700f4"
         android:background="@drawable/checkbox_type"
         android:button="@null"
         android:checked="false"
@@ -42,7 +42,7 @@
         android:background="@drawable/checkbox_type"
         android:button="@null"
         android:checked="true"
-        android:textColor="#00095B"
+        android:textColor="#1700f4"
         android:gravity="center"
         android:text="线上活动"
 

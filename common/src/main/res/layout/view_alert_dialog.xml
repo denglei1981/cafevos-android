@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:background="@drawable/alert_dialog_right_selector"
             android:gravity="center"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="15sp"
             tools:text="确定" />
     </LinearLayout>

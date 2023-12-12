@@ -207,7 +207,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         model = dataBean
                         tvAccountPoints.setHtmlTxt(
                             getString(R.string.str_Xfb, totalIntegral),
-                            "#00095B"
+                            "#1700f4"
                         )
                         //账户余额小于所支付额度 则余额不足
                         if (totalIntegral!!.toFloat() < (payFb
@@ -258,7 +258,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         model = dataBean
                         tvAccountPoints.setHtmlTxt(
                             getString(R.string.str_Xfb, totalIntegral),
-                            "#00095B"
+                            "#1700f4"
                         )
                         //账户余额小于所支付额度 则余额不足
                         if (totalIntegral!!.toFloat() < (payFb
@@ -558,7 +558,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         enabled = selectedTag.value != "0" && countdown.value != timeStr,
                         shape = RoundedCornerShape(20.dp),
                         contentPadding = PaddingValues(horizontal = 0.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value != "0" && countdown.value != timeStr) R.color.color_00095B else R.color.color_DD)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value != "0" && countdown.value != timeStr) R.color.color_1700f4 else R.color.color_DD)),
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp)

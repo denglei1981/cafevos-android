@@ -468,7 +468,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //总共支付 (商品金额+运费)
         totalPayFb = infoBean.getTotalPayFbPrice(couponsAmount, true)
         infoBean.totalPayFb = totalPayFb
-        binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"), "#00095B")
+        binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"), "#1700f4")
         //最少使用多少人民币（fb）=总金额*最低现金比 向上取整
         var minFb = 0
         if (totalPayFb != 0) {

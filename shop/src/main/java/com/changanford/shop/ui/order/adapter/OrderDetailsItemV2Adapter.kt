@@ -150,7 +150,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
             }
 
             if (tvSaleHandler.text.toString() == "退款中") {
-                tvSaleHandler.setTextColor(ContextCompat.getColor(context, R.color.color_00095B))
+                tvSaleHandler.setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
                 tvSaleHandler.background =
                     ContextCompat.getDrawable(context, R.drawable.shape_blue_stroke_gray)
             } else {

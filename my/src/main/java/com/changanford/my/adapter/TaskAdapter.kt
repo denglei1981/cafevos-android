@@ -148,7 +148,7 @@ fun GrowUpAndJifenViewHolder(
                 holder.dataBinding?.num?.text = "${item.integral}"
             } else {
                 holder.dataBinding?.num?.text = "+${item.integral}"
-                it.num.setTextColor(Color.parseColor("#00095B"))
+                it.num.setTextColor(Color.parseColor("#1700f4"))
             }
         }
     }

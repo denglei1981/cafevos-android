@@ -33,7 +33,7 @@
             android:background="@drawable/bg_my_topic_more"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="11sp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@+id/iv_circle"

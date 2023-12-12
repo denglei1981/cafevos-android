@@ -135,7 +135,7 @@
                 android:background="@drawable/shape_c_2e_r_12"
                 android:gravity="center"
                 android:text="获取验证码"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
@@ -228,7 +228,7 @@
                 android:background="@drawable/btn_one_clear_bg"
                 android:gravity="center"
                 android:text="确定"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/text_size_mid" />
 
         </LinearLayout>

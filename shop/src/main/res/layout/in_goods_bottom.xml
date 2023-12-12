@@ -94,7 +94,7 @@
                 app:layout_constraintEnd_toStartOf="@id/btn_buy"
                 app:layout_constraintStart_toEndOf="@id/tv_cart"
                 android:textSize="@dimen/sp_15"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:gravity="center"
                 android:text="@string/str_addShoppingCart"
                 android:minWidth="@dimen/dp_100"

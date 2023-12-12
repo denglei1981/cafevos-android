@@ -48,7 +48,7 @@ class CircleMemberManageActivity :
             tvRightMenu.setTextColor(
                 ContextCompat.getColor(
                     this@CircleMemberManageActivity,
-                    R.color.color_00095B
+                    R.color.color_1700f4
                 )
             )
             ivBack.setOnClickListener { finish() }

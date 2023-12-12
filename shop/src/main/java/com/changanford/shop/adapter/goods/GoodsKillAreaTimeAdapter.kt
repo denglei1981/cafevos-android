@@ -29,8 +29,8 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int,val listener:SelectTimeBackList
             }
             if(selectPos==position){
                 dataBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
-                dataBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
-                dataBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
+                dataBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
+                dataBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
                 lastBinding=dataBinding
             } else{
                 dataBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_f9_5dp)
@@ -45,8 +45,8 @@ class GoodsKillAreaTimeAdapter(var selectPos:Int,val listener:SelectTimeBackList
         selectPos=position
         if(::lastBinding.isInitialized&&itemBinding!=lastBinding){
             itemBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
-            itemBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
-            itemBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_00095B))
+            itemBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
+            itemBinding.tvState.setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
 
             lastBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_f9_5dp)
             lastBinding.tvTime.setTextColor(ContextCompat.getColor(context,R.color.color_99))

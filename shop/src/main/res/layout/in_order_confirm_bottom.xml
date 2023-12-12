@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model.totalPayFb}"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_14" />
         <com.changanford.shop.view.TypefaceTextView
             android:layout_marginTop="@dimen/dp_5"

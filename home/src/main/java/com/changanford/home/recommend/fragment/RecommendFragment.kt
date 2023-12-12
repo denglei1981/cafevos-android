@@ -48,7 +48,7 @@ import com.zhpan.bannerview.constants.PageStyle
 open class RecommendFragment :
     BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
-    val recommendAdapter: RecommendAdapter by lazy {
+    private val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
 

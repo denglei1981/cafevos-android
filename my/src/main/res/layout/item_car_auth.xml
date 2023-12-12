@@ -91,7 +91,7 @@
             android:background="@drawable/shape_car_auth_btn_bg"
             android:gravity="center"
             android:text="添加车牌"
-            android:textColor="#00095B"
+            android:textColor="#1700f4"
             android:textSize="@dimen/sp_14"
             tools:visibility="visible"
             android:visibility="gone"

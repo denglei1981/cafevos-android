@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 app:end_txt="@string/str_integral"
                 android:text="@{model.fbCost}"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_14"
                 app:lineHeight="@dimen/sp_14" />
         </LinearLayout>
@@ -56,7 +56,7 @@
             android:layout_height="@dimen/dp_40"
             android:minWidth="@dimen/dp_98"
             android:text="@string/str_cancelOrder"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"/>
         <androidx.appcompat.widget.AppCompatButton

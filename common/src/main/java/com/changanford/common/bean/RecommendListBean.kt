@@ -210,6 +210,24 @@ data class RecommendData(
         return timeAndViewCountResult
     }
 
+    fun getViewCount():String{
+        var viewCount: Long = 0
+        when (rtype) {
+            1 -> {
+                viewCount = artViewsCount
+
+            }
+            2 -> {
+                viewCount = postsViewsCount
+
+            }
+            3 -> {
+                viewCount = artViewsCount
+            }
+
+        }
+        return  CountUtils.formatNum(viewCount.toString(), false).toString()
+    }
 
     fun getPicLists(): List<String>? {
         return pisList

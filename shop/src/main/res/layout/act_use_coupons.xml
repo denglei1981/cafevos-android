@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/dp_38"
             tools:text="限时促销：以下商品可使用满100000打8.8折优惠券，最多减100"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_12"/>
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/sml"

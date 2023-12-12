@@ -101,7 +101,7 @@
                     android:background="@drawable/shape_r_16_c_95"
                     android:gravity="center"
                     android:text="添加车牌"
-                    android:textColor="@color/color_00095B"
+                    android:textColor="@color/color_1700f4"
                     android:textSize="@dimen/sp_13"
                     android:visibility="gone" />
 

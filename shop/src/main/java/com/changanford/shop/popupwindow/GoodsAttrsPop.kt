@@ -284,7 +284,7 @@ open class GoodsAttrsPop(
                     viewDataBinding.imgCover.load(dataBean.skuImg)
                     val limitBuyNum: Int = dataBean.getLimitBuyNum()
                     val htmlStr =
-                        if (limitBuyNum != 0) "<font color=\"#00095B\">限购${limitBuyNum}件</font> " else ""
+                        if (limitBuyNum != 0) "<font color=\"#1700f4\">限购${limitBuyNum}件</font> " else ""
                     val nowStock = dataBean.stock
                     WCommonUtil.htmlToString(
                         viewDataBinding.tvStock,
@@ -315,7 +315,7 @@ open class GoodsAttrsPop(
         viewDataBinding.tvAccountPoints.apply {
             visibility = if (MConstant.token.isNotEmpty()) View.VISIBLE else View.INVISIBLE
             text = "${dataBean.acountFb}"
-//            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#00095B")
+//            setHtmlTxt(context.getString(R.string.str_Xfb,"${dataBean.acountFb}"),"#1700f4")
         }
         viewDataBinding.addSubtractView.setNumber(dataBean.buyNum, false)
         viewDataBinding.addSubtractView.numberLiveData.observe(activity) {

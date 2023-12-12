@@ -47,7 +47,7 @@
             app:start_txt="@string/str_rmb"
             tools:text="0"
             android:text="@{model.rmbPrice}"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_20" />
         <View
             android:layout_marginStart="@dimen/dp_8"

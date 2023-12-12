@@ -158,7 +158,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
             ContextCompat.getDrawable(this, R.drawable.shape_search_bg_gray_f4)
         binding.rbCompany.background = ContextCompat.getDrawable(this, R.drawable.shape_bg_gray_e5)
         binding.rbPerson.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.rbCompany.setTextColor(ContextCompat.getColor(this, R.color.color_00095B))
+        binding.rbCompany.setTextColor(ContextCompat.getColor(this, R.color.color_1700f4))
     }
 
     private fun showPerson() {
@@ -168,7 +168,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         binding.rbPerson.background = ContextCompat.getDrawable(this, R.drawable.shape_bg_gray_e5)
         binding.rbCompany.background =
             ContextCompat.getDrawable(this, R.drawable.shape_search_bg_gray_f4)
-        binding.rbPerson.setTextColor(ContextCompat.getColor(this, R.color.color_00095B))
+        binding.rbPerson.setTextColor(ContextCompat.getColor(this, R.color.color_1700f4))
         binding.rbCompany.setTextColor(ContextCompat.getColor(this, R.color.black))
     }
 

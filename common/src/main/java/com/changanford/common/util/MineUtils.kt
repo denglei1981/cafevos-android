@@ -482,7 +482,7 @@ object MineUtils {
 
                         override fun updateDrawState(ds: TextPaint) {
                             super.updateDrawState(ds)
-                            ds.color = Color.parseColor("#00095B")
+                            ds.color = Color.parseColor("#1700f4")
                             ds.isUnderlineText = false //去除超链接的下划线
                         }
                     }, content.length + lookAll.length,
@@ -505,7 +505,7 @@ object MineUtils {
 
                         override fun updateDrawState(ds: TextPaint) {
                             super.updateDrawState(ds)
-                            ds.color = Color.parseColor("#00095B")
+                            ds.color = Color.parseColor("#1700f4")
                             ds.isUnderlineText = false //去除超链接的下划线
                         }
                     }, content.length + lookAll.length + agree1.length + 1,
@@ -543,7 +543,7 @@ object MineUtils {
 
                     override fun updateDrawState(ds: TextPaint) {
                         super.updateDrawState(ds)
-                        ds.color = Color.parseColor("#00095B")
+                        ds.color = Color.parseColor("#1700f4")
                         ds.isUnderlineText = false //去除超链接的下划线
                     }
                 }, content.length + lookAll.length,

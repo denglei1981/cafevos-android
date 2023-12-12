@@ -14,7 +14,7 @@
         android:id="@+id/car_model_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2000095B"
+        android:background="#201700f4"
         android:ellipsize="marquee"
         android:gravity="center_vertical"
         android:marqueeRepeatLimit="marquee_forever"
@@ -22,7 +22,7 @@
         android:paddingStart="@dimen/dp_29"
         android:singleLine="true"
         android:text=""
-        android:textColor="#00095B"
+        android:textColor="#1700f4"
         android:textSize="@dimen/sp_13"
         android:visibility="gone" />
 
@@ -161,7 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="《用户隐私协议》"
-                    android:textColor="#00095B"
+                    android:textColor="#1700f4"
                     android:textSize="@dimen/sp_12" />
 
             </LinearLayout>

@@ -21,7 +21,7 @@
             android:id="@+id/img_cover"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-            android:src="@color/color_00095B" />
+            android:src="@color/color_1700f4" />
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/wtv_title"
             android:layout_marginTop="@dimen/dp_5"

@@ -38,7 +38,7 @@
             android:minHeight="@dimen/dp_16"
             android:gravity="center"
             android:text="@string/str_refund"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_11"/>
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_orderNo"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             tools:text="待发货"
             android:text="@{model.orderStatusName}"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_12" />
         <include
             android:id="@+id/in_goodsInfo"
@@ -90,7 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_14" />
         <View
             android:id="@+id/view_divider"
@@ -123,7 +123,7 @@
             android:layout_height="@dimen/dp_30"
             tools:text="@string/str_immediatePayment"
             android:textStyle="bold"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_12" />
         <androidx.appcompat.widget.AppCompatButton
             style="?android:attr/borderlessButtonStyle"
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/dp_30"
             android:gravity="center_vertical"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_10"
             app:layout_constraintBottom_toBottomOf="@id/view_n"
             app:layout_constraintStart_toStartOf="parent"

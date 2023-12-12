@@ -5,9 +5,11 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -16,7 +18,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleDetailsPersonalAdapter
 import com.changanford.circle.adapter.circle.CircleDetailsActivityAdapter
@@ -32,6 +33,7 @@ import com.changanford.circle.utils.FlexboxLayoutManagerCustom
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
+import com.changanford.circle.widget.pop.CircleDetailsMenuNewPop
 import com.changanford.circle.widget.pop.CircleDetailsMenuPop
 import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
@@ -63,12 +65,8 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
-import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.ShowPopUtils
-import com.google.android.material.appbar.AppBarLayout
-import com.xiaomi.push.it
-import jp.wasabeef.glide.transformations.BlurTransformation
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -79,6 +77,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.Li
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import razerdp.basepopup.BasePopupWindow
 import kotlin.math.abs
+
 
 /**
  *Author lcw
@@ -143,10 +142,10 @@ class CircleDetailsActivity :
         setLoadSir(binding.clContent)
         binding.run {
             backImg.setOnClickListener { finish() }
-            AppUtils.setStatusBarPaddingTop(binding.topContent.clTop, this@CircleDetailsActivity)
+            AppUtils.setStatusBarPaddingTop(binding.topContent.clTopOne, this@CircleDetailsActivity)
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@CircleDetailsActivity)
             topContent.recyclerView.apply {
-                layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
+//                layoutManager = FlowLayoutManager(this@CircleDetailsActivity, true)
                 adapter = tagAdapter
             }
 
@@ -423,7 +422,7 @@ class CircleDetailsActivity :
 
     private fun showMenuPop() {
         viewModel.circleDetailsBean.value?.permissions?.let {
-            CircleDetailsMenuPop(this, circleId, it).run {
+            CircleDetailsMenuNewPop(this, circleId, it).run {
                 setBlurBackgroundEnable(false)
                 showPopupWindow(binding.tvPost)
                 initData()
@@ -526,7 +525,7 @@ class CircleDetailsActivity :
             initListener(it.name)
             tagAdapter.setList(it.tags)
             if (it.isOwner == 1) {//是圈主
-                binding.topContent.tvJoin.visibility = View.INVISIBLE
+                binding.topContent.tvJoin.visibility = View.GONE
             } else {
                 if (it.isApply == 0 || it.isApply == 1) {//未加入和审核中
                     binding.topContent.tvJoin.visibility = View.VISIBLE
@@ -534,7 +533,7 @@ class CircleDetailsActivity :
                     if (it.isViewApplyMan == 1) {//是否显示申请管理
                         binding.topContent.tvJoin.visibility = View.VISIBLE
                     } else {
-                        binding.topContent.tvJoin.visibility = View.INVISIBLE
+                        binding.topContent.tvJoin.visibility = View.GONE
                     }
                 }
             }
@@ -591,7 +590,6 @@ class CircleDetailsActivity :
                     binding.ivPostBar.visibility = View.GONE
                 }
             }
-            showContent()
             GIOUtils.circleDetailPageView(
                 it.circleId.toString(),
                 it.name,
@@ -599,6 +597,8 @@ class CircleDetailsActivity :
                 gioPreBean.prePageType
             )
             setBannerList(it.ads)
+            setPersonalMarginTop()
+            showContent()
         }
         viewModel.joinBean.observe(this) {
             it.msg.toast()
@@ -696,6 +696,30 @@ class CircleDetailsActivity :
 //                ScreenUtils.dp2px(this, 4f), true
 //            )
 //        }
+    }
+
+    private fun setPersonalMarginTop() {
+        binding.topContent.llPersonal.post {
+            val layoutParams = ConstraintLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            val iconTop = binding.topContent.ivIcon.bottom
+            val tvNumTop = binding.topContent.tvNum.bottom
+            layoutParams.width = 0
+            layoutParams.height = 40.toIntPx()
+            layoutParams.startToStart = R.id.cl_top_one
+            layoutParams.endToEnd = R.id.cl_top_one
+            layoutParams.topToBottom = R.id.cl_top_one
+            if (tvNumTop > iconTop) {
+                layoutParams.setMargins(0, 11.toIntPx(), 0, 0)
+            } else {
+                layoutParams.setMargins(0, 28.toIntPx(), 0, 0)
+            }
+            binding.topContent.llPersonal.layoutParams = layoutParams
+//            binding.topContent.llPersonal.background =
+//                ContextCompat.getDrawable(this, R.drawable.circle_people_top_bg)
+        }
     }
 
     private fun setBannerList(ads: ArrayList<AdBean>) {

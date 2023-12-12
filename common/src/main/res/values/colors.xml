@@ -106,8 +106,8 @@
     <color name="color_F9E4E6">#F9E4E6</color>
     <color name="color_F6664D">#F6664D</color>
     <color name="color_F4">#F4F4F4</color>
-    <color name="color_00095B">#00095B</color>
-    <color name="color_7D00095B">#7D00095B</color>
+    <color name="color_1700f4">#1700f4</color>
+    <color name="color_7D1700f4">#7D1700f4</color>
     <color name="color_F8F9F9">#F8F9F9</color>
     <color name="color_1A000000">#1A000000</color>
     <color name="color_0F1524">#0F1524</color>
@@ -140,13 +140,13 @@
 
     <color name="color_fefefe">#FEFEFE</color>
     <color name="color_7_2D384C">#2D384C</color>
-    <color name="color_6600095B">#6600095B</color>
+    <color name="color_661700f4">#661700f4</color>
     <color name="color_66FA863E">#66FA863E</color>
     <color name="color_F4F5F9">#F4F5F9</color>
     <color name="color_B30459E6">#b30459E6</color>
     <color name="color_b305BAD5">#b305BAD5</color>
-    <color name="color_CC00095B">#CC00095B</color>
-    <color name="color_B300095B">#B300095B</color>
+    <color name="color_CC1700f4">#CC1700f4</color>
+    <color name="color_B31700f4">#B31700f4</color>
     <color name="color_33F5F6F8">#33F5F6F8</color>
     <color name="color_666974">#666974</color>
     <color name="color_F2F4F9">#F2F4F9</color>
@@ -155,7 +155,7 @@
     <color name="color_66">#666666</color>
     <color name="color_34">#343434</color>
     <color name="color_14949494">#14949494</color>
-    <color name="color_blue_ff00695b">#ff00095b</color>
+    <color name="color_blue_ff00695b">#ff1700f4</color>
     <color name="color_gray_f2f4f9">#F2F4F9</color>
     <color name="color_gray_f9">#F9F9F9</color>
     <color name="color_8195C8">#8195C8</color>
@@ -166,7 +166,7 @@
     <color name="color_FB944F">#FB944F</color>
     <color name="color_66A1FA">#66A1FA</color>
     <color name="color_222B80">#222B80</color>
-    <color name="color_1A00095B">#1A00095B</color>
+    <color name="color_1A1700f4">#1A1700f4</color>
     <color name="color_80EEEEEE">#80EEEEEE</color>
     <color name="color_E1A743">#E1A743</color>
     <color name="color_4D000000">#4D000000</color>

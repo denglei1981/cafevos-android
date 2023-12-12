@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dp_20"
                         android:text="查看物流"
-                        android:textColor="@color/color_00095B"
+                        android:textColor="@color/color_1700f4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

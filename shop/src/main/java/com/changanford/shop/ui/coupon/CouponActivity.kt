@@ -112,7 +112,7 @@ class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
         binding.searchTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
-                R.color.color_00095B
+                R.color.color_1700f4
             )
         )
     }

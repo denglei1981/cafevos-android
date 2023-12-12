@@ -73,7 +73,7 @@
             android:layout_marginEnd="@dimen/dp_23"
             android:textStyle="bold"
             android:layout_marginTop="@dimen/dp_82"
-            android:backgroundTint="@color/color_00095B"
+            android:backgroundTint="@color/color_1700f4"
             android:text="@string/sure"
             android:textSize="15sp"
             android:textColor="@color/white"

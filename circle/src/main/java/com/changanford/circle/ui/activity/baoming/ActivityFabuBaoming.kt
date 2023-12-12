@@ -815,7 +815,7 @@ fun FabuButton(enable: Boolean = true, onclick: () -> Unit) {
             .height(40.dp)
             .fillMaxWidth(1f)
             .clip(RoundedCornerShape(20.dp))
-            .background(color = if (enable) Color(0xff00095B) else Color(0xffdddddd))
+            .background(color = if (enable) Color(0xff1700f4) else Color(0xffdddddd))
             .clickable {
                 if (enable) {
                     onclick()

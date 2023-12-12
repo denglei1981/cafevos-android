@@ -54,7 +54,7 @@
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textSize="14sp"
-            android:textColor="#00095B"
+            android:textColor="#1700f4"
             android:layout_height="wrap_content"
             android:text="继续编辑"/>
     </LinearLayout>

@@ -170,10 +170,10 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         var d = binding.tvAuth.background as GradientDrawable
         if (auth.isDefault == 0) {
             binding.tvAuth.text = "设为默认"
-            d.setColor(Color.parseColor("#6900095B"))
+            d.setColor(Color.parseColor("#691700f4"))
         } else {
             binding.tvAuth.text = "默认"
-            d.setColor(Color.parseColor("#b300095B"))
+            d.setColor(Color.parseColor("#b31700f4"))
             binding.tvAuth.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
 

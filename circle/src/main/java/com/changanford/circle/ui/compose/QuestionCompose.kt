@@ -116,7 +116,7 @@ fun EmptyQuestionCompose(height: Int = 0) {
                 //去提问
                 JumpUtils.instans?.jump(116)
             }, shape = RoundedCornerShape(15.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_1700f4)),
             contentPadding = PaddingValues(4.dp),
             modifier = Modifier
                 .width(82.dp)
@@ -172,7 +172,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean? = null) {
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
-                                colorResource(R.color.color_00095B),
+                                colorResource(R.color.color_1700f4),
                                 colorResource(R.color.color_222B80)
                             )
                         )
@@ -219,7 +219,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean? = null) {
                                     contentAlignment = Alignment.Center,
                                     modifier = Modifier
                                         .background(
-                                            colorResource(R.color.color_1A00095B),
+                                            colorResource(R.color.color_1A1700f4),
                                             shape = RoundedCornerShape(8.dp)
                                         )
                                         .padding(7.dp, 2.dp)
@@ -227,7 +227,7 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean? = null) {
                                     Text(
                                         text = userInfo.modelName.plus("车主"),
                                         fontSize = 10.sp,
-                                        color = colorResource(R.color.color_00095B),
+                                        color = colorResource(R.color.color_1700f4),
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
                                     )
@@ -267,11 +267,11 @@ fun ComposeQuestionTop(context: Context, dataBean: QuestionInfoBean? = null) {
 //                                        .size(width = 60.dp, height = 19.dp)
 //                                        .border(
 //                                            0.5.dp,
-//                                            color = colorResource(R.color.color_00095B),
+//                                            color = colorResource(R.color.color_1700f4),
 //                                            shape = RoundedCornerShape(2.dp)
 //                                        ),
 //                                        contentAlignment = Alignment.Center){
-//                                        Text(text = tagName, color = colorResource(R.color.color_00095B), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+//                                        Text(text = tagName, color = colorResource(R.color.color_1700f4), fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
 //                                    }
 //                                    Spacer(modifier = Modifier.width(5.dp))
 //                                }
@@ -439,7 +439,7 @@ private fun TopUI() {
             contentAlignment = Alignment.Center, modifier = Modifier
                 .border(
                     0.5.dp,
-                    color = colorResource(R.color.color_00095B),
+                    color = colorResource(R.color.color_1700f4),
                     shape = RoundedCornerShape(2.dp)
                 )
                 .padding(5.dp, 2.dp)
@@ -447,7 +447,7 @@ private fun TopUI() {
         ) {
             Text(
                 text = stringResource(R.string.str_vehicleFailure),
-                color = colorResource(R.color.color_00095B),
+                color = colorResource(R.color.color_1700f4),
                 fontSize = 12.sp
             )
         }
@@ -599,7 +599,7 @@ private fun AnswerUI(itemData: QuestionItemBean, personalPageType: String? = nul
                     //立即抢答
                     JumpUtils.instans?.jump(itemData.jumpType, itemData.jumpValue)
                 }, shape = RoundedCornerShape(15.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_00095B)),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.color_1700f4)),
                 contentPadding = PaddingValues(4.dp),
                 modifier = Modifier
                     .width(87.dp)
@@ -674,7 +674,7 @@ private fun UserInfoUI(itemData: QuestionItemBean, imgs: String?) {
                         userInfo.modelName?.let {
                             withStyle(
                                 style = SpanStyle(
-                                    color = colorResource(R.color.color_00095B),
+                                    color = colorResource(R.color.color_1700f4),
                                     fontSize = 11.sp
                                 )
                             ) {
@@ -706,13 +706,13 @@ private fun UserInfoUI(itemData: QuestionItemBean, imgs: String?) {
                     contentAlignment = Alignment.Center, modifier = Modifier
                         .defaultMinSize(47.dp, 16.dp)
                         .background(
-                            colorResource(R.color.color_1A00095B),
+                            colorResource(R.color.color_1A1700f4),
                             shape = RoundedCornerShape(8.dp)
                         )
                 ) {
                     Text(
                         text = stringResource(R.string.str_hasBeenAdopted),
-                        color = colorResource(R.color.color_00095B),
+                        color = colorResource(R.color.color_1700f4),
                         fontSize = 11.sp
                     )
                 }

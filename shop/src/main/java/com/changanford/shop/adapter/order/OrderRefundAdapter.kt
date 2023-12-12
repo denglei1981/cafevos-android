@@ -102,7 +102,7 @@ class OrderRefundAdapter : BaseQuickAdapter<OrderRefundItemBean, BaseDataBinding
                     Image(painter = painterResource(R.mipmap.ic_shop_fb_42), contentDescription = null)
                     Spacer(modifier = Modifier.width(3.dp))
                 }
-                Text(text = "$fbPrice$addStr${if(rmbPrice!="0")"￥$rmbPrice" else ""}", fontSize = 14.sp, color = colorResource(R.color.color_00095B))
+                Text(text = "$fbPrice$addStr${if(rmbPrice!="0")"￥$rmbPrice" else ""}", fontSize = 14.sp, color = colorResource(R.color.color_1700f4))
             }
         }
     }

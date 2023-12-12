@@ -28,7 +28,7 @@
         android:gravity="right|center_vertical"
         android:minHeight="@dimen/dp_46"
         android:text="待认证"
-        android:textColor="#00095B"
+        android:textColor="#1700f4"
         android:textSize="@dimen/sp_13"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/state_title"

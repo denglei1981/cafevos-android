@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_currencyAvailableFb"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_12"/>
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_maxUseFb"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:w_end_txt="@string/str_right_parentheses"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_12"/>
         <androidx.appcompat.widget.AppCompatRadioButton
             android:onClick="onClick"
@@ -157,7 +157,7 @@
                 android:layout_height="match_parent"
                 android:background="@null"
                 android:textColorHint="@color/color_99"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:hint="@string/str_pleaseEnterUseLuckyCurrency"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/sp_14" />

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="circle_white">#FFFFFF</color>
-    <color name="circle_app_color">#00095B</color>
-    <color name="color_fc88_a10">#A100095B</color>
+    <color name="circle_app_color">#1700f4</color>
+    <color name="color_fc88_a10">#A11700f4</color>
     <color name="circle_FAFBFD">#FAFBFD</color>
     <color name="circle_1B3B89">#1B3B89</color>
     <color name="circle_8195C8">#8195C8</color>
@@ -16,7 +16,7 @@
     <color name="circle_E3E8F4">#E3E8F4</color>
     <color name="circle_F9F9F9">#F9F9F9</color>
     <color name="circle_E5E5EE">#E5E5EE</color>
-    <color name="circle_00095">#00095b</color>
+    <color name="circle_00095">#1700f4</color>
     <color name="color_b0b3">#B0B3B5</color>
     <color name="color_00_a20">#33000000</color>
     <color name="color_2d">#2D2D2D</color>
@@ -24,6 +24,7 @@
     <color name="circle_01025c">#01025C</color>
     <color name="circle_01005E">#01005E</color>
     <color name="circle_1700F4">#1700F4</color>
+    <color name="circle_071dea">#071dea</color>
     <color name="circle_081700F4">#081700F4</color>
     <color name="circle_d91700F4">#d91700F4</color>
     <color name="circle_e6000000">#e6000000</color>

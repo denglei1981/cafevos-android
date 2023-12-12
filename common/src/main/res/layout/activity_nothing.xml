@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="3"
-            android:textColor="@color/color_00095B"
+            android:textColor="@color/color_1700f4"
             app:layout_constraintLeft_toLeftOf="@+id/tv_fly"
             app:layout_constraintTop_toBottomOf="@+id/tv_fly"
             tools:ignore="HardcodedText" />

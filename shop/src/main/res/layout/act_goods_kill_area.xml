@@ -20,7 +20,7 @@
             app:title_text="@string/str_limitedTimeSecondsKill"
             tools:minHeight="@dimen/dp_60"
             app:right_text="@string/str_ruleDescription"
-            app:right_text_color="@color/color_00095B"/>
+            app:right_text_color="@color/color_1700f4"/>
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smartRl"
             android:layout_width="match_parent"

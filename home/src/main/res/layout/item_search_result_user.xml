@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="车迷级公民"
-            android:textColor="#ff00095b"
+            android:textColor="#ff1700f4"
             android:textSize="@dimen/sp_10"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/iv_header"

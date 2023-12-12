@@ -134,7 +134,7 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
 //                    .weight(1f)
                     .height(24.dp)
                     .width(itemWidth.dp)
-                    .background(color = colorResource(if(selectedTag?.value==item.tag)R.color.color_00095B else R.color.color_F5), shape = RoundedCornerShape(12.dp))
+                    .background(color = colorResource(if(selectedTag?.value==item.tag)R.color.color_1700f4 else R.color.color_F5), shape = RoundedCornerShape(12.dp))
                     .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
                         selectedTag?.value=item.tag?:""
                         binding.smartRl.autoRefresh()

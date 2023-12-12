@@ -54,7 +54,7 @@
         android:background="@drawable/shape_c_ff_r_24_stroke_95"
         android:gravity="center"
         android:text="返回"
-        android:textColor="@color/color_00095B"
+        android:textColor="@color/color_1700f4"
         android:textSize="@dimen/sp_15" />
 
 </LinearLayout>

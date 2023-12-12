@@ -281,7 +281,7 @@ fun OwnerCertificationUnauthorized(
                             shape = RoundedCornerShape(24.dp),
                             border = BorderStroke(
                                 width = 1.dp,
-                                colorResource(if (isUse) R.color.color_00095B else R.color.color_DD)
+                                colorResource(if (isUse) R.color.color_1700f4 else R.color.color_DD)
                             ),
                             contentPadding = PaddingValues(10.dp),
                             colors = ButtonDefaults.buttonColors(
@@ -294,7 +294,7 @@ fun OwnerCertificationUnauthorized(
                             Text(
                                 stringResource(R.string.str_goToCertification),
                                 fontSize = 15.sp,
-                                color = colorResource(if (isUse) R.color.color_00095B else R.color.colorWhite)
+                                color = colorResource(if (isUse) R.color.color_1700f4 else R.color.colorWhite)
                             )
                         }
                     }
@@ -345,7 +345,7 @@ private fun AuditPromptCompose(carItemBean: CarItemBean? = null) {
         ) {
             Text(
                 text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),
-                color = colorResource(R.color.color_00095B),
+                color = colorResource(R.color.color_1700f4),
                 fontSize = 12.sp,
                 modifier = Modifier.weight(1f)
             )
@@ -409,7 +409,7 @@ fun CarAuthLayout(carItemBean: CarItemBean, auditBean: CarItemBean? = null) {
                         modifier = Modifier
                             .size(77.dp, 27.dp)
                             .background(
-                                color = Color(0x6900095B),
+                                color = Color(0x691700f4),
                                 shape = RoundedCornerShape(0.dp, 5.dp, 0.dp, 5.dp)
                             ),
                         contentAlignment = Alignment.Center
@@ -433,9 +433,9 @@ fun CarAuthLayout(carItemBean: CarItemBean, auditBean: CarItemBean? = null) {
                                 .offset(y = dimensionResource(id = R.dimen.dp_10))
                                 .background(
                                     color = if (carItemBean.plateNum?.isEmpty() == true || "无牌照" == carItemBean.plateNum) {
-                                        Color(0xff00095B)
+                                        Color(0xff1700f4)
                                     } else {
-                                        Color(0x2000095B)
+                                        Color(0x201700f4)
                                     },
                                     shape = RoundedCornerShape(17.dp)
                                 )
@@ -464,7 +464,7 @@ fun CarAuthLayout(carItemBean: CarItemBean, auditBean: CarItemBean? = null) {
                                 Text(
                                     text = it,
                                     fontSize = 15.sp,
-                                    color = Color(0xff00095B),
+                                    color = Color(0xff1700f4),
                                     modifier = Modifier.padding(5.dp)
                                 )
                             }
@@ -567,7 +567,7 @@ fun OwnerCertification(
                 enabled = isUse,
                 shape = RoundedCornerShape(24.dp),
                 contentPadding = PaddingValues(10.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (isUse) R.color.color_00095B else R.color.color_DD)),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (isUse) R.color.color_1700f4 else R.color.color_DD)),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -592,7 +592,7 @@ fun OwnerCertification(
             ) {
                 Text(
                     text = stringResource(R.string.str_yourCarBindingIsUnderReview_x),
-                    color = colorResource(R.color.color_00095B),
+                    color = colorResource(R.color.color_1700f4),
                     fontSize = 12.sp,
                     modifier = Modifier.weight(1f)
                 )
@@ -721,7 +721,7 @@ fun loveCarActivityAll(arrayList: ArrayList<LoveCarActivityListBean>) {
                             text = it.carSeriesName,
                             fontSize = if (pageState.currentPage == index) 20.sp else 16.sp
                         )
-                    }, selectedContentColor = colorResource(id = R.color.color_00095B),
+                    }, selectedContentColor = colorResource(id = R.color.color_1700f4),
                     unselectedContentColor = colorResource(id = R.color.color_99)
                 )
 

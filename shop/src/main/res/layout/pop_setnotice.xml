@@ -46,7 +46,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/str_toSetUp"
-                android:textColor="@color/color_00095B"
+                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_15" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </LinearLayout>

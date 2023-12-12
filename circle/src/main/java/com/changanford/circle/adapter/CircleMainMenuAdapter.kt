@@ -15,7 +15,7 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
  *Time on 2021/9/24
  *Purpose
  */
-class CircleMainMenuAdapter(context: Context) :
+class CircleMainMenuAdapter(context: Context, private val isCircleDetails: Boolean = false) :
     BaseAdapterOneLayout<CircleMainMenuBean>(context, R.layout.item_circle_main_menu) {
     override fun fillData(vdBinding: ViewDataBinding?, item: CircleMainMenuBean, position: Int) {
         val binding = vdBinding as ItemCircleMainMenuBinding
