@@ -9,7 +9,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import com.alibaba.fastjson.JSON
+import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
@@ -24,6 +26,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.GetCoupopBindingPop
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.ui.dialog.SignMaintainDialog
@@ -31,12 +34,14 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
 import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
@@ -587,18 +592,29 @@ class JumpUtils {
             }
 
             61 -> {//扫一扫
-                SoulPermission.getInstance().checkAndRequestPermission(
-                    Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
-                        override fun onPermissionOk(permission: Permission?) {
-                            updateMainGio("扫一扫页", "扫一扫页")
-                            startARouter(ARouterHomePath.CaptureActivity)
-                        }
-
-                        override fun onPermissionDenied(permission: Permission?) {
-                            "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
-                        }
-                    }
+                val success = {
+                    updateMainGio("扫一扫页", "扫一扫页")
+                    startARouter(ARouterHomePath.CaptureActivity)
+                }
+                val fail = {
+                    "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
+                }
+                val permissions = Permissions.build(
+                    Manifest.permission.CAMERA,
                 )
+                PermissionPopUtil.checkPermissionAndPop(permissions, success = success, fail = fail)
+//                SoulPermission.getInstance().checkAndRequestPermission(
+//                    Manifest.permission.CAMERA, object : CheckRequestPermissionListener {
+//                        override fun onPermissionOk(permission: Permission?) {
+//                            updateMainGio("扫一扫页", "扫一扫页")
+//                            startARouter(ARouterHomePath.CaptureActivity)
+//                        }
+//
+//                        override fun onPermissionDenied(permission: Permission?) {
+//                            "没有获取到相机权限,请手动去设置页打开权限,或者重试授权权限".toast()
+//                        }
+//                    }
+//                )
             }
 
             69 -> {
@@ -622,18 +638,28 @@ class JumpUtils {
 
             73 -> { //新增跳转类型73，需要位置权限的H5页面
                 if (isOPen(BaseApplication.curActivity)) {
-                    SoulPermission.getInstance().checkAndRequestPermission(
+                    val permissions = Permissions.build(
                         Manifest.permission.ACCESS_FINE_LOCATION,
-                        object : CheckRequestPermissionListener {
-                            override fun onPermissionOk(permission: Permission?) {
-                                startARouter(ARouterHomePath.AgentWebActivity, bundle)
-                            }
-
-                            override fun onPermissionDenied(permission: Permission?) {
-                                toastShow("没有获取到定位权限,请手动去设置页打开权限,或者重试授权权限")
-                            }
-                        }
                     )
+                    val success = {
+                        startARouter(ARouterHomePath.AgentWebActivity, bundle)
+                    }
+                    val fail = {
+                        toastShow("没有获取到定位权限,请手动去设置页打开权限,或者重试授权权限")
+                    }
+                    PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//                    SoulPermission.getInstance().checkAndRequestPermission(
+//                        Manifest.permission.ACCESS_FINE_LOCATION,
+//                        object : CheckRequestPermissionListener {
+//                            override fun onPermissionOk(permission: Permission?) {
+//                                startARouter(ARouterHomePath.AgentWebActivity, bundle)
+//                            }
+//
+//                            override fun onPermissionDenied(permission: Permission?) {
+//                                toastShow("没有获取到定位权限,请手动去设置页打开权限,或者重试授权权限")
+//                            }
+//                        }
+//                    )
                 } else {
                     toastShow("手机没有打开定位权限,请手动去设置页打开权限")
                 }

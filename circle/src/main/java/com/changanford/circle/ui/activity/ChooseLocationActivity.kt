@@ -37,7 +37,11 @@ import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.util.*
 import kotlin.collections.ArrayList
 import com.baidu.mapapi.search.poi.PoiCitySearchOption
+import com.changanford.circle.ui.release.LocationMMapActivity
+import com.changanford.common.MyApp
 import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.utilext.PermissionPopUtil
+import com.qw.soul.permission.bean.Permissions
 
 
 /**
@@ -339,23 +343,38 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         binding.title.barTvOther.textSize = 14f
 //        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
 
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        initlocation()
-                    }
-
-                    override fun onPermissionDenied(permission: Permission) {
-                        AlertDialog(this@ChooseLocationActivity).builder()
-                            .setTitle("提示")
-                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                            .setNegativeButton("取消") { finish() }.setPositiveButton(
-                                "确定"
-                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
-                    }
-                })
+        val permissions = Permissions.build(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        val success = {
+            initlocation()
+        }
+        val fail = {
+            AlertDialog(this@ChooseLocationActivity).builder()
+                .setTitle("提示")
+                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                .setNegativeButton("取消") { finish() }.setPositiveButton(
+                    "确定"
+                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance()
+//            .checkAndRequestPermission(
+//                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                object : CheckRequestPermissionListener {
+//                    override fun onPermissionOk(permission: Permission) {
+//                        initlocation()
+//                    }
+//
+//                    override fun onPermissionDenied(permission: Permission) {
+//                        AlertDialog(this@ChooseLocationActivity).builder()
+//                            .setTitle("提示")
+//                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                            .setNegativeButton("取消") { finish() }.setPositiveButton(
+//                                "确定"
+//                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//                    }
+//                })
         locaAdapter = LocaAdapter()
         binding.locrec.layoutManager = LinearLayoutManager(this)
         binding.locrec.adapter = locaAdapter

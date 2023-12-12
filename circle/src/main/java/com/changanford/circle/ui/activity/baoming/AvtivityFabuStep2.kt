@@ -57,6 +57,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.image.ImageCompress
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -68,6 +69,7 @@ import com.luck.picture.lib.tools.DoubleUtils
 import com.luck.picture.lib.tools.ToastUtils
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.scwang.smart.refresh.layout.util.SmartUtil
 import razerdp.basepopup.QuickPopupBuilder
@@ -835,27 +837,47 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
      * 选择地址
      */
     private fun StartBaduMap() {
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: Permission) {
-                        startActivityForResult(
-                            Intent(
-                                this@AvtivityFabuStep2,
-                                MMapActivity::class.java
-                            ), ReleaseActivity.ADDRESSBACK
-                        )
-                    }
-
-                    override fun onPermissionDenied(permission: Permission) {
-                        AlertDialog(this@AvtivityFabuStep2).builder()
-                            .setTitle("提示")
-                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                            .setNegativeButton("取消") { }.setPositiveButton(
-                                "确定"
-                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
-                    }
-                })
+        val permissions = Permissions.build(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        val success = {
+            startActivityForResult(
+                Intent(
+                    this@AvtivityFabuStep2,
+                    MMapActivity::class.java
+                ), ReleaseActivity.ADDRESSBACK
+            )
+        }
+        val fail = {
+            AlertDialog(this@AvtivityFabuStep2).builder()
+                .setTitle("提示")
+                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                .setNegativeButton("取消") { }.setPositiveButton(
+                    "确定"
+                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance()
+//            .checkAndRequestPermission(
+//                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                object : CheckRequestPermissionListener {
+//                    override fun onPermissionOk(permission: Permission) {
+//                        startActivityForResult(
+//                            Intent(
+//                                this@AvtivityFabuStep2,
+//                                MMapActivity::class.java
+//                            ), ReleaseActivity.ADDRESSBACK
+//                        )
+//                    }
+//
+//                    override fun onPermissionDenied(permission: Permission) {
+//                        AlertDialog(this@AvtivityFabuStep2).builder()
+//                            .setTitle("提示")
+//                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                            .setNegativeButton("取消") { }.setPositiveButton(
+//                                "确定"
+//                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//                    }
+//                })
     }
 }

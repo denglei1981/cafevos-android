@@ -278,11 +278,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             // 埋点
             BuriedUtil.instant?.discoverTopMenu(tab.text.toString())
             mTabText?.isSelected = true
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 20f
         } else {
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
             mTabText?.textSize = 17f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
@@ -306,12 +306,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 20f
 
             } else {
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
                 mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }

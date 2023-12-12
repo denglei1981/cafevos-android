@@ -24,7 +24,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
         R.string.str_remindMe,
         R.string.str_cancelReminder,
         R.string.str_immediatelyChange,
-        R.string.str_hasBeenSoldOut,
+        R.string.str_stock_tips,
         R.string.str_notStart,
         R.string.str_fbInsufficient,
         R.string.str_submitOrder,
@@ -32,7 +32,8 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
         R.string.str_orderDetails,
         R.string.str_payConfirm,
         R.string.str_order_list,
-        R.string.str_Repayment
+        R.string.str_Repayment,
+        R.string.str_has_tips
     )
 
     init {
@@ -96,8 +97,23 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
                 isEnabled = true
                 if (0 == btnSource && states == 5) setBackgroundResource(R.drawable.shape_00095b_r20dp)
             }
-            //已售罄,未开始,福币不足
-            6, 7, 8 -> {
+
+            6 -> {//已售罄
+                setBackgroundResource(R.drawable.btn_selector)
+//                setBackgroundResource(R.drawable.bg_btn_stock_tips)
+                setTextColor(ContextCompat.getColor(context, R.color.white))
+                isEnabled = true
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+            }
+
+            15 -> {//已订阅
+                setBackgroundResource(R.drawable.bord_d_20dp)
+                setTextColor(ContextCompat.getColor(context, R.color.white))
+                isEnabled = false
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+            }
+            //未开始,福币不足
+            7, 8 -> {
                 setBackgroundResource(R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = false

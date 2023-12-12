@@ -259,25 +259,25 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
     /**
      * 拍照
      */
-    private fun takePhoto() {
-        PictureUtils.opencarcme(this, object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
-                // 结果回调
-                if (result.isNotEmpty()) {
-                    for (media in result) {
-                        val path: String = PictureUtil.getFinallyPath(media)
-
-                        headIconPath = path
-                        saveHeadIcon()
-                    }
-                }
-            }
-
-            override fun onCancel() {
-                // 取消
-            }
-        })
-    }
+//    private fun takePhoto() {
+//        PictureUtils.opencarcme(this, object : OnResultCallbackListener<LocalMedia> {
+//            override fun onResult(result: List<LocalMedia>) {
+//                // 结果回调
+//                if (result.isNotEmpty()) {
+//                    for (media in result) {
+//                        val path: String = PictureUtil.getFinallyPath(media)
+//
+//                        headIconPath = path
+//                        saveHeadIcon()
+//                    }
+//                }
+//            }
+//
+//            override fun onCancel() {
+//                // 取消
+//            }
+//        })
+//    }
 
     /**
      * 新的保存
@@ -340,13 +340,13 @@ class PersonCenterActivity : BaseActivity<ActivityPersonCenterBinding, PersonCen
      */
     private fun pic() {
         PictureUtils.openGarlly2(this, 1, object :
-            OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
+            OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
                 for (media in result) {
                     var path: String? = ""
-                    path = PictureUtil.getFinallyPath(media)
+                    path = media?.let { PictureUtil.getFinallyPath(it) }
 //                    loadCircleFilePath(path, binding.editIcon)
-                    headIconPath = path
+                    headIconPath = path.toString()
                     saveHeadIcon()
                 }
             }

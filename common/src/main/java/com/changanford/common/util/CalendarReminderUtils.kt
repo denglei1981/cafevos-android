@@ -11,11 +11,13 @@ import android.os.Build
 import android.text.TextUtils
 import androidx.annotation.RequiresApi
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
+import java.lang.Exception
 import java.util.*
 
 object CalendarReminderUtils {
@@ -259,20 +261,36 @@ object CalendarReminderUtils {
  * type :1 增加，2 删除
  */
 fun testCalendar(type: Int,time:Long = System.currentTimeMillis(),result: ()->Unit = {}){
-    SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR),object :CheckRequestPermissionsListener{
-        override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                when(type){
-                    1-> CalendarReminderUtils.addCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟","每天要记得上福域签到哟",if(time>System.currentTimeMillis()) time else time + 24* 60* 60 * 1000,0)
-                    2 -> CalendarReminderUtils.deleteCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟")
-                }
-                result()
+    val permissions = Permissions.build(
+        Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR
+    )
+    val success = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            when(type){
+                1-> CalendarReminderUtils.addCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟","每天要记得上福域签到哟",if(time>System.currentTimeMillis()) time else time + 24* 60* 60 * 1000,0)
+                2 -> CalendarReminderUtils.deleteCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟")
             }
+            result()
         }
-        override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-            "没有相关权限".toast()
-        }
-
-    })
+    }
+    val fail = {
+        "没有相关权限".toast()
+    }
+    PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//    SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.READ_CALENDAR,Manifest.permission.WRITE_CALENDAR),object :CheckRequestPermissionsListener{
+//        override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                when(type){
+//                    1-> CalendarReminderUtils.addCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟","每天要记得上福域签到哟",if(time>System.currentTimeMillis()) time else time + 24* 60* 60 * 1000,0)
+//                    2 -> CalendarReminderUtils.deleteCalendarEvent(BaseApplication.curActivity,"每天要记得上福域签到哟")
+//                }
+//                result()
+//            }
+//        }
+//        override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
+//            "没有相关权限".toast()
+//        }
+//
+//    })
 
 }

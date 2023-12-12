@@ -264,9 +264,12 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
      */
     fun pic() {
         PictureUtils.openGarlly(this@MineEditFeedbackUI, 9 - datas.size, object :
-            OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
-                datas.addAll(result)
+            OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
+                result?.forEach {
+                    it?.let { it1 -> datas.add(it1) }
+                }
+//                datas.addAll(result)
                 picAdapter.addIcons(datas)
 
             }
@@ -284,9 +287,9 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
 
         PictureUtils.opencarcme(
             this@MineEditFeedbackUI,
-            object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
-                    datas.add(result.get(0))
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>) {
+                    result[0]?.let { datas.add(it) }
                     picAdapter.addIcons(datas)
 
                 }

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
+import com.changanford.common.bean.SkuVo
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -144,6 +145,7 @@ class GoodsDetailsControl(
                     tvFbPrice.setTextColor(textColor)
                 }
             }
+
             "SECKILL" -> {//秒杀信息
 //                dataBean.isUpdateBuyNum=false//秒杀商品禁止修改商品数量
                 val secKillInfo = dataBean.secKillInfo
@@ -176,7 +178,7 @@ class GoodsDetailsControl(
         }
         getSkuTxt(skuCodeInitValue)
         bindingComment(dataBean.mallOrderEval)
-        viewModel.serviceDescriptionData.observe(activity){
+        viewModel.serviceDescriptionData.observe(activity) {
             //服务说明
             headerBinding.composeServiceDescription.setContent {
                 ShopServiceDescription(it)
@@ -295,8 +297,8 @@ class GoodsDetailsControl(
         for ((i, item) in dataBean.attributes.withIndex()) {
             try {
                 item.optionVos.forEach { optionVo ->
-                    skuCodes.forEach { code->
-                        if (optionVo.optionId==code){
+                    skuCodes.forEach { code ->
+                        if (optionVo.optionId == code) {
                             val optionName = optionVo.optionName
                             skuCodeTxtArr.add(optionName)
                             skuCodeTxt += "$optionName  "
@@ -320,7 +322,7 @@ class GoodsDetailsControl(
         headerBinding.inKill.model = dataBean
         headerBinding.inVip.model = dataBean
         headerBinding.inGoodsInfo.model = dataBean
-        bindingBtn(dataBean, null, binding.inBottom.btnBuy, binding.inBottom.btnCart, 0)
+        bindingBtn(dataBean, null, null, binding.inBottom.btnCart, 0)
     }
 
     /**
@@ -338,36 +340,42 @@ class GoodsDetailsControl(
     fun bindingBtn(
         _dataBean: GoodsDetailBean,
         _skuCode: String?,
-        btnSubmit: KillBtnView,
+        btnSubmit: KillBtnView? = null,
         btnCart: KillBtnView? = null,
-        source: Int = 0
+        source: Int = 0,
+        hasTips: Boolean = false
     ) {
         _dataBean.apply {
 //            val totalPayFb=fbPrice.toInt()*buyNum
-            if ("SECKILL" == spuPageType && 5 != killStates) btnSubmit.setStates(
+            if ("SECKILL" == spuPageType && 5 != killStates) btnSubmit?.setStates(
                 killStates,
                 btnSource = source
             )//2/7 秒杀已结束或者未开始
             else if (stock < 1) {//库存不足,已售罄、已抢光
-                btnSubmit.setStates(
-                    if ("SECKILL" == spuPageType) 1 else 6,
+                btnSubmit?.setStates(
+                    if ("SECKILL" == spuPageType) 1 else if (hasTips) 15 else 6,
                     true,
                     btnSource = source
                 )
             } else if (1 == source || (0 == source && !isInvalidSelectAttrs(this@GoodsDetailsControl.skuCode))) {
                 if (null != _skuCode && isInvalidSelectAttrs(_skuCode)) {
-                    btnSubmit.setText(R.string.str_immediatelyChange)
-                    btnSubmit.updateEnabled(false)
+                    btnSubmit?.setText(R.string.str_immediatelyChange)
+                    btnSubmit?.updateEnabled(false)
                 }
 //                else if(MConstant.token.isNotEmpty()&&acountFb<totalPayFb){//福币余额不足
 //                    btnSubmit.setStates(8,btnSource=source)
 //                }
-                else btnSubmit.setStates(5, btnSource = source)
-            } else btnSubmit.setStates(5, btnSource = source)
+                else btnSubmit?.setStates(5, btnSource = source)
+            } else btnSubmit?.setStates(5, btnSource = source)
             //处理购物车按钮
             if ("SECKILL" == spuPageType) {//秒杀商品不具备加入购物车功能
                 btnCart?.updateEnabled(false, source)
-            } else btnCart?.updateEnabled(btnSubmit.isEnabled, source)
+            } else (if (btnSubmit?.getStates() == 6) false else btnSubmit?.isEnabled)?.let {
+                btnCart?.updateEnabled(
+                    it,
+                    source
+                )
+            }
 
         }
     }
@@ -405,6 +413,17 @@ class GoodsDetailsControl(
         return skuCode.contains("-") && skuCode.split("-").find { it == "0" } != null
     }
 
+    fun isNoStock(skuCode: String,skuVos: ArrayList<SkuVo>):Boolean{
+        skuVos.forEach {
+            if (it.skuCode==skuCode){
+                if (it.stock=="0"){
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     fun onDestroy() {
         timeCount?.cancel()
     }
@@ -416,7 +435,7 @@ class GoodsDetailsControl(
         skuCode.apply {
 //            if (isInvalidSelectAttrs(this)) createAttribute()
 //            if (dataBean.skuVos.size != 1)
-                createAttribute()
+            createAttribute()
 //            else {
 //                exchangeCtaClick()
 //                OrderConfirmActivity.start(dataBean)

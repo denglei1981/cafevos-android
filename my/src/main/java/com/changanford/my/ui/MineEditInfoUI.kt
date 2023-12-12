@@ -416,13 +416,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      */
     private fun pic() {
         PictureUtils.openHeadGarlly(this@MineEditInfoUI, 1,false,object :
-            OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
+            OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
                 for (media in result) {
                     var path: String? = ""
-                    path = PictureUtil.getFinallyPath(media)
+                    path = media?.let { PictureUtil.getFinallyPath(it) }
 //                    loadCircleFilePath(path, binding.editIcon)
-                    headIconPath = path
+                    headIconPath = path.toString()
                     saveHeadIcon()
                 }
             }
@@ -435,12 +435,12 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 拍照
      */
     private fun takePhoto() {
-        PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia> {
-            override fun onResult(result: List<LocalMedia>) {
+        PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia?> {
+            override fun onResult(result: List<LocalMedia?>) {
                 // 结果回调
                 if (result?.isNotEmpty() == true) {
                     for (media in result) {
-                        var path: String = PictureUtil.getFinallyPath(media)
+                        var path: String = media?.let { PictureUtil.getFinallyPath(it) }.toString()
 //                        loadCircleFilePath(path, binding.editIcon)
                         headIconPath = path
                         saveHeadIcon()

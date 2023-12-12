@@ -24,9 +24,11 @@ import com.changanford.common.sharelib.util.SharePlamFormData
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MTextUtil
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
@@ -69,33 +71,60 @@ class ShareViewModule : ViewModel() {
         val data1 = SharePlamFormData()
 //        toastShow("调起分享")
         if (shareBean.isimg == "1") {
-            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,object:CheckRequestPermissionListener{
-                override fun onPermissionOk(permission: Permission?) {
-                    getBitmap2Share(shareBean.imageUrl) { bitmap->
-                        data1.withSinaMessageBuilder(
-                            SharePlamFormData.SinaMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                        )
-                        data1.withQqMessageBuilder(
-                            SharePlamFormData.QQMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                        )
-                        data1.withQqMessageBuilder(
-                            SharePlamFormData.QQMessageBuilder().buildedrImageMessagezoom(shareBean.imageUrl,bitmap)
-                        )
-                        data1.withWxChatMessageBuilder(
-                            SharePlamFormData.WxChatMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                        )
-                        data1.withWxMomentMessageBuilder(
-                            SharePlamFormData.WxMomentMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                        )
+            val permissions = Permissions.build(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            )
+            val success={
+                getBitmap2Share(shareBean.imageUrl) { bitmap->
+                    data1.withSinaMessageBuilder(
+                        SharePlamFormData.SinaMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                    )
+                    data1.withQqMessageBuilder(
+                        SharePlamFormData.QQMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                    )
+                    data1.withQqMessageBuilder(
+                        SharePlamFormData.QQMessageBuilder().buildedrImageMessagezoom(shareBean.imageUrl,bitmap)
+                    )
+                    data1.withWxChatMessageBuilder(
+                        SharePlamFormData.WxChatMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                    )
+                    data1.withWxMomentMessageBuilder(
+                        SharePlamFormData.WxMomentMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                    )
 //                        showShareDialog(activity,shareBean,data1)
-                    }
                 }
-
-                override fun onPermissionDenied(permission: Permission?) {
-                    toastShow("没有权限")
-                }
-
-            })
+            }
+            val fail = {
+                toastShow("没有权限")
+            }
+            PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,object:CheckRequestPermissionListener{
+//                override fun onPermissionOk(permission: Permission?) {
+//                    getBitmap2Share(shareBean.imageUrl) { bitmap->
+//                        data1.withSinaMessageBuilder(
+//                            SharePlamFormData.SinaMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+//                        )
+//                        data1.withQqMessageBuilder(
+//                            SharePlamFormData.QQMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+//                        )
+//                        data1.withQqMessageBuilder(
+//                            SharePlamFormData.QQMessageBuilder().buildedrImageMessagezoom(shareBean.imageUrl,bitmap)
+//                        )
+//                        data1.withWxChatMessageBuilder(
+//                            SharePlamFormData.WxChatMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+//                        )
+//                        data1.withWxMomentMessageBuilder(
+//                            SharePlamFormData.WxMomentMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+//                        )
+////                        showShareDialog(activity,shareBean,data1)
+//                    }
+//                }
+//
+//                override fun onPermissionDenied(permission: Permission?) {
+//                    toastShow("没有权限")
+//                }
+//
+//            })
 
         }else{
             data1.withSinaMessageBuilder(

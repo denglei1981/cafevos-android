@@ -1,5 +1,6 @@
 package com.changanford.circle
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -11,16 +12,12 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.FragmentCircleV2Binding
-
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
@@ -42,19 +39,29 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.util.location.LocationUtils
+import com.changanford.common.utilext.MColor
 import com.changanford.common.utilext.toIntPx
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.tencent.mm.opensdk.utils.Log
 import com.xiaomi.push.it
 import kotlinx.coroutines.launch
+import com.changanford.common.widget.pop.PermissionTipsPop
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
+import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -63,7 +70,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import java.lang.reflect.Field
-import kotlin.concurrent.thread
 
 
 /**

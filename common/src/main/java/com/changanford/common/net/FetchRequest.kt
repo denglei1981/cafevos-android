@@ -65,6 +65,14 @@ fun <T> CommonResponse<T>.onSuccess(block: (T?) -> Unit): CommonResponse<T> {
     return this
 }
 
+fun <T> CommonResponse<T>.onWithAllSuccess(block: (CommonResponse<T>) -> Unit): CommonResponse<T> {
+    if (this.code == 0) {
+        //TODO 做一些统一的处理
+        block(this)
+    }
+    return this
+}
+
 /**
  * 请求失败或异常的处理
  */

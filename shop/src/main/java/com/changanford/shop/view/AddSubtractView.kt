@@ -30,7 +30,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null) : LinearLay
     var numberLiveData: MutableLiveData<Int> = MutableLiveData()
     private var isAdd = true//是否可以添加
     private var isLimitBuyNum: Boolean = false//是否库存限购
-    private var isRefund:Boolean=false // 退款的sku 提示
+    private var isRefund: Boolean = false // 退款的sku 提示
 
     init {
         initView()
@@ -70,17 +70,20 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null) : LinearLay
             // +
             R.id.tv_addNumber -> {
                 if (isAdd) {
-                    if (number < maxValue) number++
-                    else ToastUtils.reToast(if (isLimitBuyNum) R.string.str_purchaseQuantityHasExceededLimit else R.string.str_insufficientInventory)
+                    if (number < maxValue) {
+                        number++
+                        setNumber(number)
+                    } else ToastUtils.reToast(if (isLimitBuyNum) R.string.str_purchaseQuantityHasExceededLimit else R.string.str_insufficientInventory)
                 } else ToastUtils.reToast(R.string.str_propertiesAreNotFullySelected)
             }
             //-
             R.id.tv_reduction -> {
-                if (number > minValue) number--
-                else ToastUtils.showLongToast("最少购买${minValue}件")
+                if (number > minValue) {
+                    number--
+                    setNumber(number)
+                } else ToastUtils.showLongToast("最少购买${minValue}件")
             }
         }
-        setNumber(number)
     }
 
     fun setNumber(newNumber: Int, isPostValue: Boolean = true) {
@@ -94,6 +97,7 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null) : LinearLay
     }
 
     fun setMax(max: Int, isLimitBuyNum: Boolean = false) {
+        if (max == this.maxValue) return
         this.maxValue = max
         if (maxValue < number) setNumber(minValue)
         this.isLimitBuyNum = isLimitBuyNum
@@ -127,18 +131,20 @@ class AddSubtractView(context: Context, attrs: AttributeSet? = null) : LinearLay
      *  设置加的颜色
      * */
     fun setAddGrayOrBlack(canEdit: Boolean) {
-        val color = ContextCompat.getColor(context, if (canEdit) R.color.color_33 else R.color.color_cc)
+        val color =
+            ContextCompat.getColor(context, if (canEdit) R.color.color_33 else R.color.color_cc)
         tvAddNumber.setTextColor(color)
-        tvAddNumber.isEnabled=canEdit
+        tvAddNumber.isEnabled = canEdit
     }
 
     /**
      *  设置 减的颜色
      * */
     fun setReduceAddGrayOrBlack(canEdit: Boolean) {
-        val color = ContextCompat.getColor(context, if (canEdit) R.color.color_33 else R.color.color_cc)
+        val color =
+            ContextCompat.getColor(context, if (canEdit) R.color.color_33 else R.color.color_cc)
         tvReduction.setTextColor(color)
-        tvReduction.isEnabled=canEdit
+        tvReduction.isEnabled = canEdit
 
     }
 

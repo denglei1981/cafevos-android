@@ -3,8 +3,10 @@ package com.changanford.shop.adapter.goods
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -46,31 +48,27 @@ class GoodsAttributeAdapter(
                     mCheckOptionId = selectedOptionId
                     true
                 } else false
-                isEnabled = if (isExistSku(optionId)) {
+                if (isExistSku(optionId)) {//有货
                     dataBinding.checkBox.setTextAppearance(R.style.rb_goods0)
                     setOnClickListener { selectRb(this, item, true) }
-                    true
-                } else {
+                    dataBinding.tvNoStock.visibility = View.INVISIBLE
+                } else {//没货
                     dataBinding.checkBox.setTextAppearance(R.style.rb_goods1)
-                    if (isChecked) {
-                        isChecked = false
-                        selectRb(this, item, false)
-                    }
-                    false
+                    dataBinding.tvNoStock.visibility = View.VISIBLE
+//                    if (isChecked) {
+//                        isChecked = false
+//                        selectRb(this, item, false)
+//                    }
+                    setOnClickListener { selectRb(this, item, true) }
                 }
             }
-//            if (item.isVisibility) {
-//                dataBinding.content.visibility = View.GONE
-//                if (dataBinding.checkBox.isChecked) {
-//                    dataBinding.checkBox.isChecked = false
-//                    selectRb(dataBinding.checkBox, item, false)
-//                }
-//            } else {
-//                dataBinding.content.visibility = View.VISIBLE
-//                if (dataBinding.checkBox.isChecked) {
-//                    dataBinding.checkBox.isChecked = true
-//                }
-//            }
+            if (!isExistSku(optionId) && dataBinding.checkBox.isChecked) {
+                dataBinding.checkBox.background =
+                    ContextCompat.getDrawable(context, R.drawable.radiobutton_bt_goods_)
+            } else {
+                dataBinding.checkBox.background =
+                    ContextCompat.getDrawable(context, R.drawable.radiobutton_bt_goods)
+            }
             dataBinding.model = item
             dataBinding.executePendingBindings()
         }

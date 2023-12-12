@@ -44,10 +44,12 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
+import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 
 
@@ -435,19 +437,31 @@ class CarControl(
     }
 
     private fun getLocationPermissions() {
-        SoulPermission.getInstance().checkAndRequestPermission(
+        val permissions = Permissions.build(
             Manifest.permission.ACCESS_FINE_LOCATION,
-            object : CheckRequestPermissionListener {
-                override fun onPermissionOk(permission: Permission) {
-                    locationType.postValue(0)
-                    startLocation(0)
-                }
-
-                override fun onPermissionDenied(permission: Permission) {
-                    locationType.postValue(3)
-                    WCommonUtil.setSettingLocation(activity)
-                }
-            })
+        )
+        val success = {
+            locationType.postValue(0)
+            startLocation(0)
+        }
+        val fail = {
+            locationType.postValue(3)
+            WCommonUtil.setSettingLocation(activity)
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//        SoulPermission.getInstance().checkAndRequestPermission(
+//            Manifest.permission.ACCESS_FINE_LOCATION,
+//            object : CheckRequestPermissionListener {
+//                override fun onPermissionOk(permission: Permission) {
+//                    locationType.postValue(0)
+//                    startLocation(0)
+//                }
+//
+//                override fun onPermissionDenied(permission: Permission) {
+//                    locationType.postValue(3)
+//                    WCommonUtil.setSettingLocation(activity)
+//                }
+//            })
     }
 
     private fun updateLocationUi(locationTypeValue: Int? = locationType.value) {

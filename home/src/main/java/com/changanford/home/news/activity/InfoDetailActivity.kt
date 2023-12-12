@@ -41,7 +41,6 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
     private var videoFragment: NewsVideoDetailFragment? = null
 
     private val newDetailBean = MutableLiveData<NewsDetailData>()
-    private var isFistIn = true
     private var gioPreBean = GioPreBean()
 
     override fun onResume() {
@@ -72,9 +71,11 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                     1 -> {
                         trans.replace(R.id.frame_layout, NewsDetailFragment.newInstance(artId!!))
                     }
+
                     2 -> {
                         trans.replace(R.id.frame_layout, NewsPicsFragment.newInstance(artId!!))
                     }
+
                     3 -> {
                         videoFragment = NewsVideoDetailFragment.newInstance(artId!!)
                         trans.replace(
@@ -109,6 +110,10 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
             viewModel.getNewsDetail(it)
         }
 
+    }
+
+    fun getNewDetailBean(): NewsDetailData? {
+        return newDetailBean.value
     }
 
     override fun onBackPressed() {

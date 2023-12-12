@@ -15,10 +15,8 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.location.LocationUtils
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.xiaomi.push.it
+import com.changanford.common.utilext.PermissionPopUtil
+import com.qw.soul.permission.bean.Permissions
 
 /**
  *Author lcw
@@ -94,36 +92,64 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     override fun initData() {
         if (isRegion == "YES") {//是地域圈子
             binding.refreshLayout.post {
-                SoulPermission.getInstance()
-                    .checkAndRequestPermission(
-                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                        object : CheckRequestPermissionListener {
-                            override fun onPermissionOk(permission: Permission) {
-                                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
-                                    override fun onReceiveLocation(location: BDLocation) {
-                                        val latitude = location.latitude //获取纬度信息
-                                        val longitude = location.longitude //获取经度信息
-                                        viewModel.getData(
-                                            type,
-                                            longitude.toString(),
-                                            latitude.toString(),
-                                            page,
-                                            isRegion
-                                        )
-                                    }
-                                })
-                            }
-
-                            override fun onPermissionDenied(permission: Permission) {
-                                viewModel.getData(
-                                    type,
-                                    "",
-                                    "",
-                                    page,
-                                    isRegion
-                                )
-                            }
-                        })
+                val permissions = Permissions.build(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                )
+                val success = {
+                    LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+                        override fun onReceiveLocation(location: BDLocation) {
+                            val latitude = location.latitude //获取纬度信息
+                            val longitude = location.longitude //获取经度信息
+                            viewModel.getData(
+                                type,
+                                longitude.toString(),
+                                latitude.toString(),
+                                page,
+                                isRegion
+                            )
+                        }
+                    })
+                }
+                val fail = {
+                    viewModel.getData(
+                        type,
+                        "",
+                        "",
+                        page,
+                        isRegion
+                    )
+                }
+                PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+//                SoulPermission.getInstance()
+//                    .checkAndRequestPermission(
+//                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
+//                        object : CheckRequestPermissionListener {
+//                            override fun onPermissionOk(permission: Permission) {
+//                                LocationUtils.circleLocation(object : BDAbstractLocationListener() {
+//                                    override fun onReceiveLocation(location: BDLocation) {
+//                                        val latitude = location.latitude //获取纬度信息
+//                                        val longitude = location.longitude //获取经度信息
+//                                        viewModel.getData(
+//                                            type,
+//                                            longitude.toString(),
+//                                            latitude.toString(),
+//                                            page,
+//                                            isRegion
+//                                        )
+//                                    }
+//                                })
+//                            }
+//
+//                            override fun onPermissionDenied(permission: Permission) {
+//                                viewModel.getData(
+//                                    type,
+//                                    "",
+//                                    "",
+//                                    page,
+//                                    isRegion
+//                                )
+//                            }
+//                        })
             }
 
         } else {
