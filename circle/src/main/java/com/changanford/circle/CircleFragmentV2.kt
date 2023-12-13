@@ -1,6 +1,5 @@
 package com.changanford.circle
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -50,18 +49,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.utilext.MColor
 import com.changanford.common.utilext.toIntPx
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.tencent.mm.opensdk.utils.Log
-import com.xiaomi.push.it
-import kotlinx.coroutines.launch
-import com.changanford.common.widget.pop.PermissionTipsPop
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
-import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -80,6 +70,19 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
     private val tabList = listOf("广场", "圈子", "问答")
+
+    private val circleSquareFragment: CircleSquareFragment by lazy {
+        CircleSquareFragment.newInstance()
+
+    }
+    private val askRecommendFragment: AskRecommendFragment by lazy {
+        AskRecommendFragment.newInstance()
+    }
+    private val newCircleFragment: NewCircleFragment by lazy {
+        NewCircleFragment()
+
+    }
+    var fragmentList: ArrayList<Fragment> = arrayListOf()
 
 
     override fun onDestroyView() {
@@ -296,18 +299,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         }
     }
 
-    val circleSquareFragment: CircleSquareFragment by lazy {
-        CircleSquareFragment.newInstance()
-
-    }
-    val askRecommendFragment: AskRecommendFragment by lazy {
-        AskRecommendFragment.newInstance()
-    }
-    val newCircleFragment: NewCircleFragment by lazy {
-        NewCircleFragment()
-
-    }
-    var fragmentList: ArrayList<Fragment> = arrayListOf()
     private fun initTabAndViewPager() {
         binding.viewPager.apply {
             offscreenPageLimit = 1

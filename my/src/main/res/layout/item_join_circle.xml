@@ -33,6 +33,8 @@
             tools:text="大家一起嗨"
             android:textColor="@color/color_33"
             android:textSize="@dimen/sp_16"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/item_icon"
             app:layout_constraintRight_toRightOf="parent"

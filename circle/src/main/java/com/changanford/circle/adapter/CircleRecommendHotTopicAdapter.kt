@@ -23,6 +23,7 @@ class CircleRecommendHotTopicAdapter :
         binding?.let {
             binding.bean = item
             binding.label.text = EmsUtil.subStrByLen(item.name, 13)
+            binding.ivIcon.setColorFilter(Color.parseColor("#1700f4"))
             val backGround: GradientDrawable= binding.lableKey.background as GradientDrawable
             if ("YES" == item.isNew) {
                 binding.lableKey.visibility= View.VISIBLE

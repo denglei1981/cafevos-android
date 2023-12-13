@@ -223,6 +223,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
             checkNext()
         }
+        LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
+            noTopic()
+        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -325,9 +328,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 buttomTypeAdapter.setData(0, ButtomTypeBean(showCity, 1, 4))
             })
 
-
-
-
         viewModel.plateBean.observe(this, Observer {
             plateBean = it
             plateBean.plate?.forEach {
@@ -356,6 +356,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 params.remove("addrName")
                 address = ""
                 buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                noLocation()
 //                    binding.tvLocation.text = "不显示位置"
             }
 
@@ -604,6 +605,33 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }
+    }
+
+    private fun noTopic() {
+        params.remove("topicId")
+        binding.icAttribute.run {
+            tvTopicName.text = "选择话题"
+        }
+    }
+
+    private fun noCircle() {
+        params.remove("circleId")
+        binding.icAttribute.run {
+            tvCircleName.text = "选择圈子"
+        }
+    }
+
+    private fun noLocation() {
+        isunSave = false
+        params.remove("lat")
+        params.remove("lon")
+        params.remove("city")
+        params.remove("province")
+        params.remove("cityCode")
+        params.remove("address")
+        params.remove("addrName")
+        address = ""
+        binding.icAttribute.tvAddressName.text = "选择地址"
     }
 
     private fun jsonStr2obj(jonson: String) {
@@ -1328,12 +1356,16 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
 
                 REQUEST_CIRCLE -> {
-
                     if (data != null) {
-                        params["circleId"] = data.getIntExtra("circleId", 0)
+                        val mCircleId = data.getIntExtra("circleId", 0)
+                        params["circleId"] = mCircleId
+
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                         showCircle(circlename)
+                        if (mCircleId == 0) {
+                            noCircle()
+                        }
                     }
                 }
 //                REQUEST_LOCATION_SERVICE->{ //打开了定位回调。

@@ -247,6 +247,7 @@ object LiveDataBusKey {
     const val LIVE_OPEN_TWO_LEVEL = "LIVE_OPEN_TWO_LEVEL" // 二楼打开
 
     const val Conversation = "Conversation" //选择话题回调
+    const val ConversationNO = "ConversationNo" //不选择任何话题回调
 
 
     const val NEWS_DETAIL_CHANGE = "NEWS_DETAIL_CHANGE"//详情数据更改。。。

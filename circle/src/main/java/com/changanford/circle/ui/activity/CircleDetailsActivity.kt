@@ -67,6 +67,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.ShowPopUtils
+import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -173,6 +174,7 @@ class CircleDetailsActivity :
             else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
                 binding.backImg.setImageResource(R.mipmap.back_xhdpi)
 //                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+                //图片变色
                 binding.shareImg.setColorFilter(Color.parseColor("#000000"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.black))
                 isWhite = false
@@ -603,13 +605,16 @@ class CircleDetailsActivity :
         viewModel.joinBean.observe(this) {
             it.msg.toast()
             if (it.code == 0) {
-                val data = viewModel.circleDetailsBean.value
-                data?.let { circleBean ->
-                    if (circleBean.isApply == 0) {
-                        circleBean.isApply = 1
-                        setJoinType(1)
-                    }
-                }
+                it.data?.isApply?.let { it1 -> setJoinType(it1) }
+//                val data = viewModel.circleDetailsBean.value
+//                data?.let { circleBean ->
+//                    if (circleBean.isApply == 0) {
+//                        circleBean.isApply = 1
+//                        setJoinType(1)
+//                    } else {
+//                        setJoinType(circleBean.isApply)
+//                    }
+//                }
             }
         }
         viewModel.applyBean.observe(this) {
@@ -823,6 +828,14 @@ class CircleDetailsActivity :
             }
 
             2 -> {
+                val data = viewModel.circleDetailsBean.value
+                data?.let { circleBean ->
+                    if (circleBean.isViewApplyMan == 1) {//是否显示申请管理
+                        binding.topContent.tvJoin.visibility = View.VISIBLE
+                    } else {
+                        binding.topContent.tvJoin.visibility = View.GONE
+                    }
+                }
                 binding.topContent.run {
                     tvJoin.setBackgroundResource(R.drawable.circle_follow_bg)
                     tvJoinText.text = "申请圈管"

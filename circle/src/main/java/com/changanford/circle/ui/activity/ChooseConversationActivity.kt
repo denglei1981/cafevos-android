@@ -58,6 +58,8 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
             finish()
         }
         binding.tvNocy.setOnClickListener {
+            LiveDataBus.get().with(LiveDataBusKey.ConversationNO)
+                .postValue("")
             finish()
         }
         binding.title.barImgBack.setOnClickListener {

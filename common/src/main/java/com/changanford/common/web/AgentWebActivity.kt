@@ -660,6 +660,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 view: WebView?,
                 request: com.tencent.smtt.export.external.interfaces.WebResourceRequest?
             ): Boolean {
+//                val url = request?.url.toString()
                 if (url.startsWith("http:") || url.startsWith("https:")) {
                     return false
                 }

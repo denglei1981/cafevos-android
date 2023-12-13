@@ -48,13 +48,13 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
     override fun observe() {
         super.observe()
 
-        viewModel.topicBean.observe(this, {
+        viewModel.topicBean.observe(this) {
             circleSquareAdapter.run {
                 circleSquareAdapter.topicAdapter.setList(it.topics)
                 topicAdapter.notifyDataSetChanged()
             }
             binding.refreshLayout.finishRefresh()
-        })
+        }
         viewModel.circleAdBean.observe(this) {
             binding.refreshLayout.finishRefresh()
             circleSquareAdapter.run {
@@ -76,9 +76,9 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
 
             }
         }
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this, {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).observe(this) {
             binding.refreshLayout.finishRefresh()
-        })
+        }
 
     }
 

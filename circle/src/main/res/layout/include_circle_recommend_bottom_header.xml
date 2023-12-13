@@ -94,15 +94,15 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_circle_type"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/bg_re_bottom_type"
-                android:paddingStart="9dp"
+                android:paddingStart="6dp"
                 android:gravity="center"
-                android:paddingEnd="9dp"
+                android:paddingEnd="6dp"
                 android:text="圈主"
-                android:textColor="@color/white"
+                android:textColor="@color/color_1700F4"
                 android:textSize="10sp"
                 tools:ignore="HardcodedText,SmallSp" />
 

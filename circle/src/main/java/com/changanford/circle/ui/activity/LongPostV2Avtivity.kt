@@ -177,7 +177,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         headBinding.icAttribute.run {
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.VISIBLE
-            tvTopicName.text = name.replace("#","")
+            tvTopicName.text = name.replace("#", "")
         }
     }
 
@@ -200,6 +200,33 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
     }
 
+    private fun noTopic() {
+        params.remove("topicId")
+        headBinding.icAttribute.run {
+            tvTopicName.text = "选择话题"
+        }
+    }
+
+    private fun noCircle() {
+        params.remove("circleId")
+        headBinding.icAttribute.run {
+            tvCircleName.text = "选择圈子"
+        }
+    }
+
+    private fun noLocation() {
+        isunSave = false
+        params.remove("lat")
+        params.remove("lon")
+        params.remove("city")
+        params.remove("province")
+        params.remove("cityCode")
+        params.remove("address")
+        params.remove("addrName")
+        address = ""
+        headBinding.icAttribute.tvAddressName.text = "选择地址"
+    }
+
     override fun observe() {
         super.observe()
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
@@ -210,6 +237,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
+        }
+        LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
+            noTopic()
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             isunSave = false
@@ -371,6 +401,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 params.remove("addrName")
                 address = ""
                 buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                noLocation()
 //                    binding.tvLocation.text = "不显示位置"
             }
 
@@ -558,10 +589,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         binding.longpostrec.setOnTouchListener { v, event ->
             if (event.y > headBinding.etBiaoti.y) {
                 val mSelectPics = longpostadapter.data.filter { it.localMedias != null }
-                if (!mSelectPics.isNullOrEmpty() && mSelectPics.size > 2 ) {
+                if (!mSelectPics.isNullOrEmpty() && mSelectPics.size > 2) {
 
                 } else {
-                    if (postViewType.value != 1){
+                    if (postViewType.value != 1) {
                         longpostadapter.currentTxtView?.let {
                             it.requestFocus()
                             HideKeyboardUtil.showSoftInput(it)
@@ -1490,10 +1521,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             when (requestCode) {
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getIntExtra("circleId", 0)
+                        val mCircleId = data.getIntExtra("circleId", 0)
+                        params["circleId"] = mCircleId
+
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                         showCircle(circlename)
+                        if (mCircleId == 0) {
+                            noCircle()
+                        }
                     }
                 }
 
@@ -1783,12 +1819,17 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             longpostadapter.data.filter { it.content?.isNotEmpty() == true || it.localMedias != null }
         if (titleHasContent && content.isNotEmpty()) {
             binding.title.barTvOther.isEnabled = true
-            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
+            binding.title.barTvOther.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_1700F4
+                )
+            )
 //            binding.title.barTvOther.background =
 //                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
         } else {
             binding.title.barTvOther.isEnabled = false
-            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_a680))
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this, R.color.color_a680))
 //            binding.title.barTvOther.background =
 //                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         }
@@ -1797,12 +1838,17 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun checkViewTwoTypeContent() {
         if (FMMeadia == null) {
             binding.title.barTvOther.isEnabled = false
-            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_a680))
+            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this, R.color.color_a680))
 //            binding.title.barTvOther.background =
 //                ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
         } else {
             binding.title.barTvOther.isEnabled = true
-            binding.title.barTvOther.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
+            binding.title.barTvOther.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_1700F4
+                )
+            )
 //            binding.title.barTvOther.background =
 //                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
         }

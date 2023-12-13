@@ -247,6 +247,9 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 //            selectList.clear()
 //            postVideoAdapter.notifyDataSetChanged()
 //        })
+        LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
+            noTopic()
+        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -327,19 +330,20 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             }
         })
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-            .observe(this,
-                {
-                    isunSave = false
-                    params.remove("lat")
-                    params.remove("lon")
-                    params.remove("city")
-                    params.remove("province")
-                    params.remove("cityCode")
-                    params.remove("address")
-                    params.remove("addrName")
-                    address = ""
-                    buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
-                })
+            .observe(this
+            ) {
+                isunSave = false
+                params.remove("lat")
+                params.remove("lon")
+                params.remove("city")
+                params.remove("province")
+                params.remove("cityCode")
+                params.remove("address")
+                params.remove("addrName")
+                address = ""
+                buttomTypeAdapter.setData(0, ButtomTypeBean("不显示位置", 1, 4))
+                noLocation()
+            }
 
         LiveDataBus.get().with(LiveDataBusKey.CREATE_LOCATION, CreateLocation::class.java)
             .observe(this, Observer {
@@ -697,6 +701,33 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }
+    }
+
+    private fun noTopic() {
+        params.remove("topicId")
+        binding.icAttribute.run {
+            tvTopicName.text = "选择话题"
+        }
+    }
+
+    private fun noCircle() {
+        params.remove("circleId")
+        binding.icAttribute.run {
+            tvCircleName.text = "选择圈子"
+        }
+    }
+
+    private fun noLocation() {
+        isunSave = false
+        params.remove("lat")
+        params.remove("lon")
+        params.remove("city")
+        params.remove("province")
+        params.remove("cityCode")
+        params.remove("address")
+        params.remove("addrName")
+        address = ""
+        binding.icAttribute.tvAddressName.text = "选择地址"
     }
 
     private fun jsonStr2obj(jonson: String) {
@@ -1424,10 +1455,15 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
                 PostActivity.REQUEST_CIRCLE -> {
                     if (data != null) {
-                        params["circleId"] = data.getIntExtra("circleId", 0)
+                        val mCircleId = data.getIntExtra("circleId", 0)
+                        params["circleId"] = mCircleId
+
                         circlename = data.getStringExtra("name").toString()
                         buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
                         showCircle(circlename)
+                        if (mCircleId == 0) {
+                            noCircle()
+                        }
                     }
                 }
 
