@@ -71,7 +71,8 @@ class VideoChoseFMActivity : BaseActivity<VideochosefmBinding, EmptyViewModel>()
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_1700F4))
-        binding.title.barTvOther.textSize = 14f
+        binding.title.barTvOther.textSize = 15f
+        binding.title.barImgBack.setOnClickListener { finish() }
 //        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         cutpath = intent.extras?.getString("cutpath").toString()
         myHandler = MyHandler(this)

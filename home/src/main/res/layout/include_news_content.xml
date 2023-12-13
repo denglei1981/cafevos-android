@@ -14,13 +14,13 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"
+            style="@style/AppText.lineSpace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="#ff2d2d2d"
-            style="@style/AppText.lineSpace"
-            android:textSize="17sp"
+            android:textColor="@color/color_16"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,16 +40,16 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_topic"
+            style="@style/AppText.lineSpace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            style="@style/AppText.lineSpace"
+            android:textColor="@color/color_8016"
+            android:textSize="14sp"
             android:textStyle="normal"
-            android:textColor="#ff74889d"
-            android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/iv_pic"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
             android:id="@+id/iv_pic"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="15dp"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="335:190"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,17 +69,19 @@
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
             tools:src="@drawable/image_recommend_test"
             tools:visibility="visible" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_very_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:layout_marginTop="@dimen/dp_16"
             android:src="@mipmap/circle_very_post"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+            app:layout_constraintTop_toTopOf="@+id/iv_pic"
+            tools:visibility="visible" />
+
         <ImageView
             android:id="@+id/iv_play"
             android:layout_width="40dp"
@@ -87,11 +89,11 @@
             android:contentDescription="@string/app_name"
             android:src="@mipmap/home_big_shot_play_icon"
             android:visibility="gone"
-            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
             app:layout_constraintEnd_toEndOf="@+id/iv_pic"
             app:layout_constraintStart_toStartOf="@+id/iv_pic"
-            app:layout_constraintTop_toTopOf="@+id/iv_pic" />
+            app:layout_constraintTop_toTopOf="@+id/iv_pic"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_news_tag"

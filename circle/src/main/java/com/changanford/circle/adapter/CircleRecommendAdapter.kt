@@ -3,6 +3,7 @@ package com.changanford.circle.adapter
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -37,6 +38,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.google.android.material.button.MaterialButton
@@ -65,12 +67,13 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleRecommendOneBinding>(holder.itemView)
         binding?.let {
-            binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
+            binding.layoutCount.tvLikeCount.text =
+                ("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_like_image, false)
+                binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 
             } else {
-                binding.layoutCount.tvLikeCount.setThumb(R.mipmap.circle_no_like_image, false)
+                binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
             }
 
             binding.layoutCount.tvLikeCount.setOnClickListener {
@@ -94,6 +97,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     }
                 }
             }
+            binding.layoutCount.tvComments.text = item.getCommentCountNew()
+            binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
+            binding.layoutCount.tvPostTime.text = item.timeStr
             binding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
             binding.layoutCount.tvCommentCount.setOnTouchListener { v, event ->
                 GIOUtils.clickCommentPost(
@@ -243,6 +249,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         "TOJOIN" -> {//未加入
                             tvJoinType.text = "  加入"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type)
+                            ivCircleType.setColorFilter(Color.parseColor("#1700f4"))
 
                             rlCircleType.setOnClickListener {
                                 if (circleData.isJoin != "TOJOIN") {
@@ -262,8 +269,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                                             }
                                                         }
                                                         notifyDataSetChanged()
-//                                                    tvJoinType.text = "  待审核"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
                                                     }
 
                                                     2 -> {//已加入
@@ -273,12 +278,9 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                                                             }
                                                         }
                                                         notifyDataSetChanged()
-//                                                    tvJoinType.text = "  已加入"
-//                                                    ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
                                                     }
 
                                                     else -> {
-//                                item.isJoin ="TOJOIN"
                                                     }
                                                 }
                                                 GIOUtils.joinCircleClick(
@@ -296,11 +298,13 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         "PENDING" -> {//待审核
                             tvJoinType.text = "  审核中"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
+                            ivCircleType.setColorFilter(Color.parseColor("#B51700f4"))
                         }
 
                         "JOINED" -> {//已加入
                             tvJoinType.text = "  已加入"
                             ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
+                            ivCircleType.setColorFilter(Color.parseColor("#B51700f4"))
                         }
                     }
 
@@ -326,10 +330,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            binding.layoutCount.tvLikeCount.setThumb(
-                                R.mipmap.circle_like_image,
-                                true
-                            )
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
                             item.likesCount++
                             "点赞成功".toast()
                             GIOUtils.postLickClick(
@@ -345,10 +346,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.layoutCount.tvLikeCount.setThumb(
-                                R.mipmap.circle_no_like_image,
-                                false
-                            )
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic,)
                             GIOUtils.cancelPostLickClick(
                                 "社区-广场",
                                 item.topicId,
@@ -361,7 +359,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             )
                             "取消点赞".toast()
                         }
-                        binding.layoutCount.tvLikeCount.setPageTitleText("${if (item.likesCount > 0) item.likesCount else "0"}")
+                        binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {
                         it.msg.toast()
                     }

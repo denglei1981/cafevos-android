@@ -1,6 +1,7 @@
 package com.changanford.circle.ui.activity
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -35,7 +36,8 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "选择话题"
+        binding.title.barTvTitle.text = "请选择话题"
+        binding.title.viewLine.isVisible = false
 
         intent.extras?.getBoolean(needCallback)?.let {
             needBack = it
@@ -87,9 +89,10 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
 
     override fun observe() {
         super.observe()
-        LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java).observe(this,
-            Observer {
-                finish()
-            })
+        LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
+            .observe(this,
+                Observer {
+                    finish()
+                })
     }
 }

@@ -34,9 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="12dp"
-                android:src="@mipmap/c_ht"
-                android:visibility="gone" />
+                android:src="@mipmap/ic_post_topic_left" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_topic"
@@ -45,6 +43,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_topic"
                 android:text="添加话题"
+                android:layout_marginStart="8dp"
                 android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
@@ -53,21 +52,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/tv_topic"
                 android:background="@drawable/bg_081700f4_12"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingEnd="9dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_topic_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_post_topic_left"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -84,8 +81,7 @@
                     android:paddingEnd="9dp"
                     android:text="X"
                     android:textColor="@color/color_1700F4"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -94,8 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d"
-                android:visibility="gone" />
+                android:src="@mipmap/right_74889d" />
         </RelativeLayout>
 
         <View
@@ -116,14 +111,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="12dp"
-                android:src="@mipmap/c_qz"
-                android:visibility="gone" />
+                android:src="@mipmap/ic_post_circle_left" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_circle"
                 android:text="选择圈子"
@@ -135,22 +129,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/tv_circle"
                 android:background="@drawable/bg_081700f4_12"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingEnd="9dp"
-                android:visibility="visible"
-                tools:visibility="visible">
+                android:visibility="gone"
+                tools:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_circle_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_post_circle_left"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -167,8 +159,7 @@
                     android:paddingEnd="9dp"
                     android:text="X"
                     android:textColor="@color/color_1700F4"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -177,8 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d"
-                android:visibility="gone" />
+                android:src="@mipmap/right_74889d" />
         </RelativeLayout>
 
         <View
@@ -199,9 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="12dp"
-                android:src="@mipmap/circle_post_address_ic"
-                android:visibility="gone" />
+                android:src="@mipmap/ic_post_address_left" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_address"
@@ -210,6 +198,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/iv_address"
                 android:text="添加位置"
+                android:layout_marginStart="8dp"
                 android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
@@ -218,22 +207,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/tv_address"
                 android:background="@drawable/bg_081700f4_100"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:paddingEnd="9dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_address_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:drawableStart="@mipmap/ic_post_address_left"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
                     android:maxWidth="160dp"
@@ -247,12 +234,10 @@
                     android:id="@+id/tv_delete_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="5dp"
                     android:paddingEnd="9dp"
                     android:text="X"
                     android:textColor="@color/color_1700F4"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -261,8 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/right_74889d"
-                android:visibility="gone" />
+                android:src="@mipmap/right_74889d" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

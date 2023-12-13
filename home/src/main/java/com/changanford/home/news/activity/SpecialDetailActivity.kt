@@ -170,7 +170,7 @@ class SpecialDetailActivity :
 
     private fun setAppbarPercent() {
         binding.nestScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-            val topHeight = binding.layoutCollBar.collToolBar.bottom * 0.5
+            val topHeight = binding.layoutCollBar.collToolBar.bottom * 0.3
             if (scrollY > topHeight) {
                 binding.layoutBar.conTitle.visibility = View.VISIBLE
             } else {

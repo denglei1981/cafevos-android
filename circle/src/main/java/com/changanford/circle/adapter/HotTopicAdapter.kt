@@ -25,9 +25,9 @@ class HotTopicAdapter :
     override fun convert(holder: BaseViewHolder, item: HotPicItemBean) {
         val binding = DataBindingUtil.bind<ItemHotTopicBinding>(holder.itemView)
         binding?.let {
-            MUtils.setTopMargin(binding.llContent, 18, holder.layoutPosition)
+            MUtils.setTopMargin(binding.llContent, 15, holder.layoutPosition)
 
-            binding.tvContent.text = "${item.postsCount}帖子     ${item.viewsCount}浏览量"
+            binding.tvContent.text = "${item.postsCount}帖子  ${item.viewsCount}浏览"
 
             binding.bean = item
         }

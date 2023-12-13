@@ -13,45 +13,44 @@
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="14dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/circle_66_f2_20"
+            android:background="@drawable/bg_081700f4_100"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:src="@mipmap/circle_talk_hint" />
+                android:layout_marginStart="16dp"
+                android:src="@mipmap/ic_post_topic_left" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
                 android:ellipsize="end"
-                android:maxEms="10"
                 android:maxLines="1"
                 android:text="@{bean.name}"
-                tools:text="什么时候可以不带口罩"
-                android:textColor="@color/color_33"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textColor="@color/color_d916"
+                android:textSize="14sp"
+                tools:text="什么时候可以不带口罩" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="16dp"
-                tools:text="1233帖子     123热度"
-                android:textColor="@color/color_99"
-                android:textSize="@dimen/sp_10" />
+                android:textColor="@color/color_9916"
+                android:textSize="12sp"
+                tools:text="1233帖子     123热度" />
 
         </LinearLayout>
 

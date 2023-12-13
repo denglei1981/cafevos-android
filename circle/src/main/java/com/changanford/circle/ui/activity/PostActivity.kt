@@ -582,15 +582,15 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     private fun showTopic(name: String) {
         binding.icAttribute.run {
-            tvTopic.visibility = View.VISIBLE
+            tvTopic.visibility = View.GONE
             llTopic.visibility = View.VISIBLE
-            tvTopicName.text = name
+            tvTopicName.text = name.replace("#", "")
         }
     }
 
     private fun showAddress(address: String) {
         binding.icAttribute.run {
-            tvAddress.visibility = View.VISIBLE
+            tvAddress.visibility = View.GONE
             llAddress.visibility = View.VISIBLE
             tvAddressName.text = address
         }
@@ -601,7 +601,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             return
         }
         binding.icAttribute.run {
-            tvCircle.visibility = View.VISIBLE
+            tvCircle.visibility = View.GONE
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }
@@ -610,28 +610,36 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private fun noTopic() {
         params.remove("topicId")
         binding.icAttribute.run {
-            tvTopicName.text = "选择话题"
+            tvTopic.visibility = View.VISIBLE
+            llTopic.visibility = View.GONE
+            tvTopicName.text = ""
         }
     }
 
     private fun noCircle() {
         params.remove("circleId")
         binding.icAttribute.run {
-            tvCircleName.text = "选择圈子"
+            tvCircle.visibility = View.VISIBLE
+            llCircle.visibility = View.GONE
+            tvCircleName.text = ""
         }
     }
 
     private fun noLocation() {
-        isunSave = false
-        params.remove("lat")
-        params.remove("lon")
-        params.remove("city")
-        params.remove("province")
-        params.remove("cityCode")
-        params.remove("address")
-        params.remove("addrName")
-        address = ""
-        binding.icAttribute.tvAddressName.text = "选择地址"
+        binding.icAttribute.run {
+            isunSave = false
+            params.remove("lat")
+            params.remove("lon")
+            params.remove("city")
+            params.remove("province")
+            params.remove("cityCode")
+            params.remove("address")
+            params.remove("addrName")
+            address = ""
+            tvAddress.visibility = View.VISIBLE
+            llAddress.visibility = View.GONE
+            tvAddressName.text = ""
+        }
     }
 
     private fun jsonStr2obj(jonson: String) {

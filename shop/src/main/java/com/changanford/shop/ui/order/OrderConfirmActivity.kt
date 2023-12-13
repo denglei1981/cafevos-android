@@ -788,7 +788,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         //比例支付
                         if (mixPayType == 0) {
                             rbFbAndRmb.visibility = View.VISIBLE
-                            rbCustom.visibility = View.VISIBLE
+                            rbCustom.visibility = View.GONE
                             clickPayWay(0)
                         } else {//固定金额支付
                             rbRmb.visibility = View.GONE
@@ -841,7 +841,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         for ((index, it) in rbPayWayArr.withIndex()) {
             it.isChecked = type == index
         }
-//        updatePayCustom()
+        updatePayCustom()
         updateBtnUi()
     }
 

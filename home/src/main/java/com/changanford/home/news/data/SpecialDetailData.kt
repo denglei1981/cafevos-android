@@ -10,7 +10,7 @@ import com.changanford.common.util.CountUtils
 data class SpecialDetailData(
     var artCount: Any,
     var artId: Int,
-    var articles: List<InfoDataBean>?= arrayListOf(),
+    var articles: List<InfoDataBean>? = arrayListOf(),
     var authors: Any,
     var catId: Any,
     var collectCount: Int,
@@ -52,14 +52,14 @@ data class SpecialDetailData(
     var viewsCount: Int,
     var viewsCountBase: Int,
     var viewsCountMul: Int
-){
+) {
     fun getCount(): String {
-        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯            ${
+        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯，${
             CountUtils.formatNum(
                 viewsCount.toString(),
                 false
             )
-        }阅读量"
+        }浏览"
         return countStr;
     }
 

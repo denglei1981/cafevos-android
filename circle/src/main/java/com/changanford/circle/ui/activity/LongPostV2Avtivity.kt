@@ -175,7 +175,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     private fun showTopic(name: String) {
         headBinding.icAttribute.run {
-            tvTopic.visibility = View.VISIBLE
+            tvTopic.visibility = View.GONE
             llTopic.visibility = View.VISIBLE
             tvTopicName.text = name.replace("#", "")
         }
@@ -183,7 +183,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     private fun showAddress(address: String) {
         headBinding.icAttribute.run {
-            tvAddress.visibility = View.VISIBLE
+            tvAddress.visibility = View.GONE
             llAddress.visibility = View.VISIBLE
             tvAddressName.text = address
         }
@@ -194,7 +194,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             return
         }
         headBinding.icAttribute.run {
-            tvCircle.visibility = View.VISIBLE
+            tvCircle.visibility = View.GONE
             llCircle.visibility = View.VISIBLE
             tvCircleName.text = circleName
         }
@@ -203,28 +203,36 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     private fun noTopic() {
         params.remove("topicId")
         headBinding.icAttribute.run {
-            tvTopicName.text = "选择话题"
+            tvTopic.visibility = View.VISIBLE
+            llTopic.visibility = View.GONE
+            tvTopicName.text = ""
         }
     }
 
     private fun noCircle() {
         params.remove("circleId")
         headBinding.icAttribute.run {
-            tvCircleName.text = "选择圈子"
+            tvCircle.visibility = View.VISIBLE
+            llCircle.visibility = View.GONE
+            tvCircleName.text = ""
         }
     }
 
     private fun noLocation() {
-        isunSave = false
-        params.remove("lat")
-        params.remove("lon")
-        params.remove("city")
-        params.remove("province")
-        params.remove("cityCode")
-        params.remove("address")
-        params.remove("addrName")
-        address = ""
-        headBinding.icAttribute.tvAddressName.text = "选择地址"
+        headBinding.icAttribute.run {
+            isunSave = false
+            params.remove("lat")
+            params.remove("lon")
+            params.remove("city")
+            params.remove("province")
+            params.remove("cityCode")
+            params.remove("address")
+            params.remove("addrName")
+            address = ""
+            tvAddress.visibility = View.VISIBLE
+            llAddress.visibility = View.GONE
+            tvAddressName.text = ""
+        }
     }
 
     override fun observe() {

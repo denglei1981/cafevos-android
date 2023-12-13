@@ -73,17 +73,14 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
-
+    }
+    private val newCircleFragment: NewCircleFragment by lazy {
+        NewCircleFragment()
     }
     private val askRecommendFragment: AskRecommendFragment by lazy {
         AskRecommendFragment.newInstance()
     }
-    private val newCircleFragment: NewCircleFragment by lazy {
-        NewCircleFragment()
-
-    }
     var fragmentList: ArrayList<Fragment> = arrayListOf()
-
 
     override fun onDestroyView() {
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).postValue(false)
@@ -107,10 +104,10 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         easyViewPager()
         bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
-        PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this,
-            {
-                postEntity = it as ArrayList<PostEntity>
-            })
+        PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this
+        ) {
+            postEntity = it as ArrayList<PostEntity>
+        }
         binding.ivMenu.setOnClickListener {
             if (MConstant.token.isNotEmpty()) {
                 if (!MineUtils.getBindMobileJumpDataType()) {
