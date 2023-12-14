@@ -173,6 +173,10 @@ object MConstant {
      * */
     val H5_SHOP_MAINTENANCE = "${H5_BASE_URL}/order/#/maintain/maintainDetail?orderNo=%s"
 
+    //Mustang专区
+    val MUS_TANG_URL = "${H5_BASE_URL}/fuyuapp/#/pages/mustang/views/mustang-index/MustangIndex"
+
+
     /**
      * 经销商 order/#/fillInformation/selectDealer
      * */
@@ -223,7 +227,7 @@ object MConstant {
 
     var deviceWidth = 0
     var deviceHeight = 0
-    var isOnBackground=false
+    var isOnBackground = false
 
     //个人隐私协议code
     const val agreementPrivacy = "user_agreement_privacy"
@@ -241,6 +245,6 @@ object MConstant {
     const val userAgreementCancellation = "user_agreement_cancellation"
 
     //口碑url
-    val mouthUrl by lazy { if (isCanQeck) if (isDebug) "https://h5fymqa.fuyu.club/post-h5/" else "https://h5fym.fuyu.club/post-h5" else "https://h5fym.fuyu.club/post-h5"}
+    val mouthUrl by lazy { if (isCanQeck) if (isDebug) "https://h5fymqa.fuyu.club/post-h5/" else "https://h5fym.fuyu.club/post-h5" else "https://h5fym.fuyu.club/post-h5" }
 
 }

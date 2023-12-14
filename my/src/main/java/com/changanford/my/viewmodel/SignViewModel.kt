@@ -398,7 +398,7 @@ class SignViewModel : ViewModel() {
     /**
      * 查询联系电话
      */
-    fun querySettingPhone(result: (CommonResponse<SettingPhoneBean>) -> Unit) {
+    fun querySettingPhone(result: (CommonResponse<String>) -> Unit) {
 
         viewModelScope.launch {
             result(fetchRequest {

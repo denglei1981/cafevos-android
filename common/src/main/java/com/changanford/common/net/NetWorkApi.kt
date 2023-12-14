@@ -348,7 +348,7 @@ interface NetWorkApi {
     fun querySettingPhone(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<SettingPhoneBean>
+    ): CommonResponse<String>
 
     /**
      * 获取推荐购入口

@@ -315,9 +315,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
-            if (i == binding.homeTab.tabCount - 1) {
-                mTabText.setDrawableLeft(R.mipmap.icon_home_mouth, R.dimen.dp_20)
-            }
+//            if (i == binding.homeTab.tabCount - 1) {
+//                mTabText.setDrawableLeft(R.mipmap.icon_home_mouth, R.dimen.dp_20)
+//            }
             //更改选中项样式
             //设置样式
             binding.homeTab.getTabAt(i)?.customView = view

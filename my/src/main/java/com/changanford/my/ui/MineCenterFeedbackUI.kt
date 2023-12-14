@@ -8,6 +8,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
@@ -19,7 +20,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
 @Route(path = ARouterMyPath.MineCenterFeedbackUI)
 class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>() {
     private var adapter = MineCommAdapter.FeedbackAdapter(R.layout.item_feedback_list)
-    var mobile: String = "4008877766"//节假日热线
+    var mobile: String = ""//节假日热线
     override fun initView() {
         setLoadSir(binding.root)
         updateMainGio("帮助与反馈页", "帮助与反馈页")
@@ -28,6 +29,10 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
             back()
         }
         binding.kefu.setOnClickListener {
+            if (mobile.isEmpty()) {
+                "获取配置电话适配".toast()
+                return@setOnClickListener
+            }
             MineUtils.callPhone(this, mobile)
         }
         var hasFeedbacks: Int = 0
@@ -38,12 +43,17 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
                 hasFeedbacks = userInfoBean?.hasFeedbacks!!
             }
         }
+        viewModel.queryCmcStatePhone()
+        viewModel.cmcStatePhoneBean.observe(this) {
+            mobile = it.LRPhone
+        }
         binding.yijian.setOnClickListener {
             JumpUtils.instans?.jump(
                 when (hasFeedbacks) {
                     1 -> {
                         42
                     }
+
                     else -> {
                         11
                     }
@@ -71,9 +81,9 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
         super.initRefreshData(pageNo)
         viewModel.querySettingPhone {
             it.onSuccess {
-                it?.mobile?.let {
-                    this.mobile = it
-                }
+//                it?.mobile?.let {
+//                    this.mobile = it
+//                }
             }
         }
         viewModel.getFeedbackQ()

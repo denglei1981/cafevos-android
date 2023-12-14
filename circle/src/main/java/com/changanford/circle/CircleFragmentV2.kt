@@ -69,7 +69,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("广场", "圈子", "问答")
+    private val tabList = listOf("广场", "圈子", "问答", "Mustang专区")
 
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
@@ -81,6 +81,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         AskRecommendFragment.newInstance()
     }
     var fragmentList: ArrayList<Fragment> = arrayListOf()
+    private var currentPosition=0
 
     override fun onDestroyView() {
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).postValue(false)
@@ -104,7 +105,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         easyViewPager()
         bus()
         AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
-        PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(this
+        PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(
+            this
         ) {
             postEntity = it as ArrayList<PostEntity>
         }
@@ -242,8 +244,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     override fun initData() {
         AssNineGridView.setImageLoader(GlideImageLoader())
-
-
     }
 
 
@@ -303,6 +303,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         fragmentList.add(circleSquareFragment)
         fragmentList.add(newCircleFragment)
         fragmentList.add(askRecommendFragment)
+        fragmentList.add(Fragment())
         binding.viewPager.adapter = CircleMainViewPagerAdapter(this, fragmentList)
 
     }
@@ -394,12 +395,25 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                         GioPageConstant.communitySecondPageName = "社区页-问答"
                         BuriedUtil.instant?.communityMainTopMenu("问答")
                     }
+
+                    3 -> {
+                        GioPageConstant.communitySecondPageName = "社区页-Mustang专区"
+                        BuriedUtil.instant?.communityMainTopMenu("Mustang专区")
+                    }
                 }
                 if (!isFirstToGio) {
                     GIOUtils.homePageView()
                 } else {
                     isFirstToGio = false
                 }
+                if (position == 3) {//口碑跳转h5
+                    JumpUtils.instans?.jump(1,MConstant.MUS_TANG_URL)
+                    binding.viewPager.post {
+                        binding.viewPager.currentItem = currentPosition
+                    }
+                    return
+                }
+                currentPosition = position
             }
 
         })
