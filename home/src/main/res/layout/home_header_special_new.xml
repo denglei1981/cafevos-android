@@ -69,7 +69,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:drawableStart="@mipmap/ic_special_mid_left"
             android:drawablePadding="1dp"
             android:gravity="center_vertical"
             android:text="@{specialDetailData.getCount()}"

@@ -143,11 +143,11 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
                 }
             }.init()  //顶起页面底部
         binding.icAttribute.vLineOne.visibility = View.GONE
-        title = "发帖页"
+        title = "发动态"
         binding.etBiaoti.requestFocus()
         ImmersionBar.with(this).keyboardEnable(true).init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "发帖"
+        binding.title.barTvTitle.text = "发动态"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_a680))

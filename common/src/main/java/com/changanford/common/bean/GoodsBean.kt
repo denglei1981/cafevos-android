@@ -7,6 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
 import com.alibaba.fastjson.JSON
 import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
@@ -943,6 +944,17 @@ data class CreateOrderBean(
             else -1f
         } catch (e: java.lang.Exception) {
             -1f
+        }
+    }
+
+    //pay_type:支付方式 0福币支付，1现金支付  2混合支付
+    fun getPayType(): Int {
+        return try {
+            val json = JSON.parseObject(this.mallPayConfig)
+            val mPayType = json.getInteger("pay_type")
+            mPayType
+        } catch (e: java.lang.Exception) {
+            -1
         }
     }
 }

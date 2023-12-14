@@ -154,7 +154,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             .keyboardEnable(true)
             .init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.title.barTvTitle.text = "发帖"
+        binding.title.barTvTitle.text = "发文章"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "下一步"
 //        binding.title.barTvOther.background =

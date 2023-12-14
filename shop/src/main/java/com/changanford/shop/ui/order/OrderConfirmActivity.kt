@@ -482,6 +482,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         val fbBalance = infoBean.fbBalance ?: 0
         //最大可使用福币
         maxUseFb = when {
+            createOrderBean?.getPayType() == 1 -> 0
             fbBalance >= maxFb -> maxFb
             isMixPayRegular() -> {
                 fbBalance
@@ -774,14 +775,15 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         rbFbAndRmb.visibility = View.VISIBLE
                         rbCustom.visibility = View.GONE
                         rbRmb.visibility = View.GONE
-                        clickPayWay(0)
+                        clickPayWay(0, false)
                     }
                     //现金支付
                     1 -> {
                         //                        if (maxUseFb == 0) rbFbAndRmb.visibility = View.GONE
                         rbFbAndRmb.visibility = View.GONE
+                        rbCustom.visibility = View.GONE
                         rbRmb.visibility = View.VISIBLE
-                        clickPayWay(1)
+                        clickPayWay(1, false)
                     }
                     //混合支付
                     2 -> {
@@ -794,36 +796,9 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                             rbRmb.visibility = View.GONE
                             rbCustom.visibility = View.GONE
                             rbFbAndRmb.visibility = View.VISIBLE
-                            clickPayWay(0)
+                            clickPayWay(0, false)
                         }
                     }
-
-                    //纯福币支付
-                    //                    minRmbProportion == 0f -> {
-                    //                        rbFbAndRmb.visibility = View.VISIBLE
-                    //                        rbCustom.visibility = View.GONE
-                    //                        rbRmb.visibility = View.GONE
-                    //                        clickPayWay(0)
-                    //                    }
-                    //
-                    //                    maxUseFb > 0 -> {
-                    //                        rbFbAndRmb.visibility = View.VISIBLE
-                    //                        rbCustom.visibility = View.VISIBLE
-                    //                        clickPayWay(0)
-                    //                    }
-                    //
-                    //                    totalPayFb == 0 -> {
-                    //                        rbRmb.visibility = View.GONE
-                    //                        rbCustom.visibility = View.GONE
-                    //                        rbFbAndRmb.visibility = View.VISIBLE
-                    //                        clickPayWay(0)
-                    //                    }
-                    //
-                    //                    else -> {
-                    //                        if (maxUseFb == 0) rbFbAndRmb.visibility = View.GONE
-                    //                        rbRmb.visibility = View.VISIBLE
-                    //                        clickPayWay(1)
-                    //                    }
                 }
             } catch (e: java.lang.Exception) {
                 "参数错误".toast()
@@ -837,11 +812,13 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
      * 支付方式选择点击
      * [type]0 福币+人民币、1人民币、2自定义福币
      * */
-    private fun clickPayWay(type: Int) {
+    private fun clickPayWay(type: Int, isUpdatePayCus: Boolean = true) {
         for ((index, it) in rbPayWayArr.withIndex()) {
             it.isChecked = type == index
         }
-        updatePayCustom()
+        if (isUpdatePayCus) {
+            updatePayCustom()
+        }
         updateBtnUi()
     }
 
@@ -932,6 +909,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private fun bindBottomPrice() {
         binding.inBottom.tvPayPrice.apply {
+            val showPayFb = payFb?.substringBefore(".")
             var drawableStart =
                 if (!TextUtils.isEmpty(payFb) && payFb!!.toFloat() > 0f) ContextCompat.getDrawable(
                     context,
@@ -940,10 +918,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             val endStr =
                 if (!TextUtils.isEmpty(payRmb) && payRmb!!.toFloat() > 0) "￥$payRmb" else ""
             text =
-                if (drawableStart != null && !TextUtils.isEmpty(endStr)) "$payFb+$endStr" else if (TextUtils.isEmpty(
+                if (drawableStart != null && !TextUtils.isEmpty(endStr)) "$showPayFb+$endStr" else if (TextUtils.isEmpty(
                         endStr
                     )
-                ) payFb ?: "" else endStr
+                ) showPayFb ?: "" else endStr
             if (TextUtils.isEmpty(endStr)) drawableStart =
                 ContextCompat.getDrawable(context, R.mipmap.ic_shop_fb_42)
             setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, null, null, null)

@@ -120,7 +120,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
         binding.title.barTvOther.text = "下一步"
         binding.title.barTvTitle.text = "视频最长60秒"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_1700F4))
-        binding.title.barTvOther.textSize = 12f
+        binding.title.barTvOther.textSize = 15f
 //        binding.title.barTvOther.background = resources.getDrawable(R.drawable.post_btn_bg)
         path = intent?.extras?.getString("path").toString()
         if (TextUtils.isEmpty(path) || !File(path).exists()) {

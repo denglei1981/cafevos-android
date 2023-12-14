@@ -61,14 +61,14 @@ class PostVideoAdapter() : BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout
                 GlideUtils.loadRoundLocal(
                     path,
                     holder.getView(R.id.img),
-                    5F,
+                    12F,
                     R.mipmap.ic_def_square_img
                 )
             } else {
                 GlideUtils.loadRoundLocal(
                     fmPath,
                     holder.getView(R.id.img),
-                    5F,
+                    12F,
                     R.mipmap.ic_def_square_img
                 )
             }

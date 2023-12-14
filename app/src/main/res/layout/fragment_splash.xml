@@ -7,38 +7,39 @@
     tools:context=".SplashFragment">
 
     <com.changanford.common.ui.FullVideoView
-        tools:visibility="visible"
         android:id="@+id/splash_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/splashimg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:src="@drawable/splash"
         android:scaleType="centerCrop"
-         />
+        android:src="@drawable/splash" />
+
     <Chronometer
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/chronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:format="  "
-        android:id="@+id/chronometer"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_45"
         android:layout_marginRight="@dimen/dp_20"
         android:background="@drawable/half_transparent_cornor_bg"
         android:paddingLeft="@dimen/dp_10"

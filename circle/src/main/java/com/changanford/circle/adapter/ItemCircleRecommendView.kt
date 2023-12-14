@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
@@ -374,7 +375,7 @@ class ItemCircleRecommendView(
     /**
      *  设置关注状态。
      * */
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)

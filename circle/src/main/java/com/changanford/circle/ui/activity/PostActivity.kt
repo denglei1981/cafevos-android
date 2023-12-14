@@ -129,7 +129,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     override fun initView() {
-        title = "发帖页"
+        title = "发动态"
         ImmersionBar.with(this).keyboardEnable(true)
             .setOnKeyboardListener { isPopup, keyboardHeight ->
                 if (isPopup) {
@@ -143,7 +143,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }.init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
         binding.icAttribute.vLineOne.visibility = View.GONE
-        binding.title.barTvTitle.text = "发帖"
+        binding.title.barTvTitle.text = "发动态"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_a680))
