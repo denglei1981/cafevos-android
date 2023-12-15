@@ -43,6 +43,12 @@ interface HomeNetWork {
         @Body requestBody: RequestBody
     ): CommonResponse<SpecialDetailData>
 
+    @POST("con/specialTopic/getCarModelList")
+    suspend fun getCarModelList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<SpecialCarListBean>>
+
     /**
      *  发现资讯首页。。
      * */

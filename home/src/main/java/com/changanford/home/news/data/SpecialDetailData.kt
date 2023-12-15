@@ -38,6 +38,7 @@ data class SpecialDetailData(
     var specialTopicId: Any,
     var specialTopicTitle: Any,
     var status: Int,
+    var isBuyCarGuide: Int,
     var summary: String,
     var timeStr: String,
     var title: String,

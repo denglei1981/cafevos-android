@@ -95,6 +95,7 @@ class SpecialListActivity :
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
+        viewModel.pageNo++
         viewModel.getSpecialList(true)
 
     }

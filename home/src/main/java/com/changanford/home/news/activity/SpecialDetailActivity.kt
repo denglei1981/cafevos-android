@@ -1,12 +1,15 @@
 package com.changanford.home.news.activity
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.JumpConstant
@@ -23,6 +26,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
+import com.changanford.home.adapter.SpecialDetailCarAdapter
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
@@ -31,13 +35,17 @@ import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.gyf.immersionbar.ImmersionBar
+import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
 class SpecialDetailActivity :
     BaseLoadSirActivity<ActivitySpecialDetailBinding, SpecialDetailViewModel>() {
-    val newsListAdapter: NewsListAdapter by lazy {
+    private val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this, isSpecialDetail = true)
+    }
+    private val carListAdapter by lazy {
+        SpecialDetailCarAdapter()
     }
     private var selectPosition: Int = -1;// 记录选中的 条目
 
@@ -46,6 +54,7 @@ class SpecialDetailActivity :
         updateInfoDetailGio("专题详情页", "专题详情页")
         binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.layoutBar.ivIcon.setCircular(12)
+        binding.layoutCollBar.ryCar.adapter = carListAdapter
         binding.recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = newsListAdapter
@@ -69,7 +78,22 @@ class SpecialDetailActivity :
                 }
             }
         }
-
+        carListAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = carListAdapter.getItem(position)
+            bean.isCheck = !bean.isCheck
+            if (bean.isCheck) {
+                //选中
+                topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId) }
+            } else {//取消
+                topicId?.let { viewModel.getSpecialCarDetail(it, 0) }
+            }
+            carListAdapter.data.forEachIndexed { index, specialCarListBean ->
+                if (index != position) {
+                    specialCarListBean.isCheck = false
+                }
+            }
+            carListAdapter.notifyDataSetChanged()
+        }
     }
 
     var topicId: String? = null
@@ -128,7 +152,9 @@ class SpecialDetailActivity :
                 binding.layoutCollBar.ivTopBg.setColorFilter(resources.getColor(R.color.color_00_a30))
                 binding.layoutBar.tvTitle.text = it.data.title
                 if (it.data.articles != null && it.data.articles!!.isNotEmpty()) {
-                    newsListAdapter.setNewInstance(it.data.articles as? MutableList<InfoDataBean>?)
+                    newsListAdapter.setList(it.data.articles)
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.layoutEmpty.llEmpty.visibility = View.GONE
                 } else {
 //                    showEmpty()
                     binding.recyclerView.visibility = View.GONE
@@ -165,7 +191,10 @@ class SpecialDetailActivity :
             topicId?.let { ti -> viewModel.getSpecialDetail(ti) }
         })
 
-
+        viewModel.carListBean.observe(this) {
+            binding.layoutCollBar.ryCar.isVisible = true
+            carListAdapter.data = it
+        }
     }
 
     private fun setAppbarPercent() {

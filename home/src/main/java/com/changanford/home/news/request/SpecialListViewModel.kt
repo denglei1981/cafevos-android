@@ -34,7 +34,6 @@ class SpecialListViewModel : BaseViewModel() {
                 .onSuccess {
                     val updateUiState = UpdateUiState<SpecialListMainBean>(it, true, isLoadMore,"")
                     specialListLiveData.postValue(updateUiState)
-                    pageNo+=1
                 }.onWithMsgFailure {
                     val updateUiState = UpdateUiState<SpecialListMainBean>(false, "",isLoadMore)
                     specialListLiveData.postValue(updateUiState)
