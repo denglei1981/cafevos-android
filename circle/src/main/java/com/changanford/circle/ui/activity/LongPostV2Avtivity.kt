@@ -70,6 +70,8 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.util.ext.setCircular
+import com.changanford.common.utilext.load
 import com.luck.picture.lib.thread.PictureThreadUtils.runOnUiThread
 import com.xiaomi.push.it
 import kotlinx.coroutines.delay
@@ -178,7 +180,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         headBinding.icAttribute.run {
             tvTopic.visibility = View.GONE
             llTopic.visibility = View.VISIBLE
-            tvTopicName.text = name.replace("#", "")
+            tvTopicName.text = name
         }
     }
 
@@ -238,6 +240,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     override fun observe() {
         super.observe()
+        headBinding.ivFm.setCircular(12)
         ImmersionBar.with(this).setOnKeyboardListener { isPopup, keyboardHeight ->
             Log.d("ImmersionBar", keyboardHeight.toString())
             binding.bottom.emojirec.visibility = View.GONE
@@ -255,7 +258,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             FMMeadia = it as LocalMedia
             headBinding.ivFm.visibility = View.VISIBLE
             headBinding.tvFmTips.visibility = View.VISIBLE
-            GlideUtils.loadRoundFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
+            GlideUtils.loadFilePath(PictureUtil.getFinallyPath(FMMeadia!!), headBinding.ivFm)
             headBinding.ivAddfm.visibility = View.GONE
             headBinding.tvFm.visibility = View.GONE
             checkViewTwoTypeContent()

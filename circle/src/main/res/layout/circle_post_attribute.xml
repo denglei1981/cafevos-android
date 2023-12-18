@@ -41,9 +41,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/iv_topic"
                 android:text="添加话题"
-                android:layout_marginStart="8dp"
                 android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
@@ -77,9 +77,9 @@
                     android:id="@+id/tv_delete_topic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_delete_post_item"
                     android:paddingStart="5dp"
                     android:paddingEnd="9dp"
-                    android:text="X"
                     android:textColor="@color/color_1700F4"
                     android:textSize="14sp" />
 
@@ -117,8 +117,8 @@
                 android:id="@+id/tv_circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/iv_circle"
                 android:text="选择圈子"
                 android:textColor="@color/color_16"
@@ -155,9 +155,9 @@
                     android:id="@+id/tv_delete_circle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_delete_post_item"
                     android:paddingStart="5dp"
                     android:paddingEnd="9dp"
-                    android:text="X"
                     android:textColor="@color/color_1700F4"
                     android:textSize="14sp" />
 
@@ -196,9 +196,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/iv_address"
                 android:text="添加位置"
-                android:layout_marginStart="8dp"
                 android:textColor="@color/color_16"
                 android:textSize="14sp" />
 
@@ -234,8 +234,8 @@
                     android:id="@+id/tv_delete_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_delete_post_item"
                     android:paddingEnd="9dp"
-                    android:text="X"
                     android:textColor="@color/color_1700F4"
                     android:textSize="14sp" />
 

@@ -570,14 +570,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         //是最后一个要取剩余优惠
                         (goodsDetailBean.fbPrice.toFloat() * goodsDetailBean.buyNum) - (itemCoupon.discountsFb - useAddPreferential).toFloat()
                     }
-                    Log.e("asdneed","${needPayPb}===$useAddPreferential===${preferential}")
                     //优惠后一项商品一个数量的价格
                     val onePayFb = WCommonUtil.getHeatNum(
                         "${needPayPb / goodsDetailBean.buyNum}",
                         0
                     )
                     if (onePayFb.toString() != "0") {
-                        Log.e("asdasd",onePayFb.toFloat().toString())
                         minFb += getExpressionMoney(FBToRmb((onePayFb.toFloat()).toString()).toFloat()) * goodsDetailBean.buyNum
                     }
                 }

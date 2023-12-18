@@ -85,7 +85,7 @@
             android:isIndicator="true"
             android:rating="@{model.evalScore}"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_10"/>
+            android:layout_height="@dimen/dp_12"/>
         <com.changanford.shop.view.TypefaceTextView
             android:text="@{model.evalText}"
             android:layout_marginTop="@dimen/dp_12"

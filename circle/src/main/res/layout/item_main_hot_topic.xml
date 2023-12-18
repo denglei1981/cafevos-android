@@ -55,7 +55,7 @@
                 android:id="@+id/rl_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle_main_talk_20_bg">
+                android:background="@drawable/bg_f2_18">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/iv_hint_icon"
@@ -79,7 +79,7 @@
                     android:maxLines="1"
                     android:paddingEnd="8dp"
                     android:text="@{bean.name}"
-                    android:textColor="@color/circle_01025c"
+                    android:textColor="@color/color_1700F4"
                     android:textSize="12sp"
                     tools:ignore="RtlSymmetry,SmallSp"
                     tools:text="年轻人喜欢什么样的车年轻人喜欢什么样的车" />

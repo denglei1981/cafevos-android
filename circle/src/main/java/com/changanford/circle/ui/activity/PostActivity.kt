@@ -584,7 +584,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.icAttribute.run {
             tvTopic.visibility = View.GONE
             llTopic.visibility = View.VISIBLE
-            tvTopicName.text = name.replace("#", "")
+//            tvTopicName.text = name.replace("#", "")
+            tvTopicName.text = name
         }
     }
 

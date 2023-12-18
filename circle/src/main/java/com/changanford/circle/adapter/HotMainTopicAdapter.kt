@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -30,6 +31,7 @@ class HotMainTopicAdapter :
             binding.bean = item
             binding.ivPic.loadCompress(item.pic)
             binding.ivPic.setCircular(5)
+            binding.ivHintIcon.setColorFilter(ContextCompat.getColor(context,R.color.color_1700F4))
             when (val position = holder.layoutPosition + 1) {
                 1 -> {
                     binding.ivIcon.setImageResource(R.drawable.icon_huati_one)

@@ -365,9 +365,9 @@ public class PictureParameterStyle {
         // 相册列表底下预览文字色值(预览按钮可点击时的色值)
         uiStyle.picturePreviewTextColor = Color.parseColor("#FA632D");
         // 相册列表底下不可预览文字色值(预览按钮不可点击时的色值)
-        uiStyle.pictureUnPreviewTextColor = Color.parseColor("#FFFFFF");
+        uiStyle.pictureUnPreviewTextColor = Color.parseColor("#1700f4");
         // 相册列表已完成色值(已完成 可点击色值)
-        uiStyle.pictureCompleteTextColor = Color.parseColor("#FA632D");
+        uiStyle.pictureCompleteTextColor = Color.parseColor("#1700f4");
         // 相册列表未完成色值(请选择 不可点击色值)
         uiStyle.pictureUnCompleteTextColor = Color.parseColor("#FFFFFF");
         // 预览界面底部背景色

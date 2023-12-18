@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:src="@mipmap/iv_long_posd_delete"
+            android:src="@mipmap/c_delete"
             app:layout_constraintEnd_toEndOf="@+id/iv_pic"
             app:layout_constraintBottom_toTopOf="@+id/iv_pic"
             app:layout_constraintStart_toEndOf="@+id/iv_pic"
