@@ -397,7 +397,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:text="@string/mine_love_car"
-            android:textColor="@color/black"
+            android:textColor="@color/color_33"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/fubilayout"
             app:layout_constraintTop_toBottomOf="@+id/fubilayout" />
@@ -453,7 +453,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="@dimen/dp_2"
             android:text="@string/mine_love_car"
-            android:textColor="@color/color_8195C8"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@+id/v_car_bg"
             app:layout_constraintEnd_toEndOf="@+id/v_car_bg"
@@ -479,7 +479,7 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="16dp"
             android:text="换一换"
-            android:textColor="@color/color_8195C8"
+            android:textColor="@color/color_74889D"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/v_circle_bg"
             app:layout_constraintTop_toTopOf="@+id/v_circle_bg" />
@@ -565,7 +565,7 @@
             android:paddingEnd="4dp"
             android:paddingBottom="@dimen/dp_2"
             android:text="@string/in_circle"
-            android:textColor="@color/color_8195C8"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@+id/v_circle_bg"
             app:layout_constraintEnd_toEndOf="@+id/v_circle_bg" />

@@ -5,20 +5,17 @@ import android.text.TextUtils
 import android.text.method.ScrollingMovementMethod
 import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -28,7 +25,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
@@ -395,7 +391,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     /**
      *  设置关注状态。
      * */
-    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+    private fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(requireActivity())
         setFollowState.setFollowState(btnFollow, authors)
     }
@@ -448,7 +444,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
     private fun surefollow(newsData: NewsDetailData, followType: Int) {
         newsData.authors.isFollow = followType
         setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
-        setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
+//        setFollowState(binding.layoutHeader.btnFollow, newsData.authors)
         when (followType) {
             1 -> {
                 GIOUtils.followClick(newsData.authors.authorId, newsData.authors.nickname, "资讯详情页")

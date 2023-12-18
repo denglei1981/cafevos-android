@@ -112,10 +112,12 @@ public class SpecialAnimaTab extends BaseTabItem {
         if (checked) {
             ivyuanshu.setImageResource(myuanshu);
             mIcon.setImageResource(mCheckedDrawable);
+            mIcon.setColorFilter(Color.parseColor("#1700f4"));
             mTitle.setTextColor(mCheckedTextColor);
             startAnima(mIcon, ivyuanshu);
         } else {
             mIcon.setImageResource(mDefaultDrawable);
+            mIcon.setColorFilter(Color.parseColor("#9FA5B0"));
             mTitle.setTextColor(mDefaultTextColor);
             gonAnima(mIcon, ivyuanshu);
         }

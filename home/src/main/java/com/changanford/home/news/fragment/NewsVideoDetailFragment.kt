@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -33,7 +35,6 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
 import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
@@ -464,7 +465,7 @@ class NewsVideoDetailFragment :
     /**
      *  设置关注状态。
      * */
-    private fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+    private fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(requireActivity())
         setFollowState.setFollowState(btnFollow, authors)
     }

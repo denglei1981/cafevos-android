@@ -80,11 +80,10 @@
                 android:layout_height="1dp"
                 android:layout_weight="1" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/bt_follow"
-                style="@style/followBtnStyle"
                 android:layout_width="60dp"
-                android:layout_height="25dp"
+                android:layout_height="28dp"
                 android:layout_marginEnd="20dp"
                 android:elevation="0dp"
                 android:gravity="center"

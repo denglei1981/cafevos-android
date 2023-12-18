@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -542,6 +543,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 }
                 val noCouponsData =
                     dataListBean?.filterNot { it in canUseCouponsData } as ArrayList<GoodsDetailBean>?
+                noCouponsData?.sortBy { (it.fbPrice.toInt()) * (it.buyNum) }
                 var noCouponsUseFb = 0
                 noCouponsData?.forEachWithIndex { i, goodsDetailBean ->
                     minFb += getExpressionMoney(FBToRmb(goodsDetailBean.fbPrice).toFloat()) * goodsDetailBean.buyNum
@@ -549,6 +551,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 }
                 //扣除不满足的，还剩余商品价值总额
                 val haveUseFb = infoBean.totalOriginalFb - noCouponsUseFb
+                canUseCouponsData.sortBy { (it.fbPrice.toInt()) * (it.buyNum) }
                 //在计算满足优惠券的
                 canUseCouponsData.forEachWithIndex { index, goodsDetailBean ->
                     val preferential =//一个商品折扣多少钱
@@ -567,12 +570,14 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         //是最后一个要取剩余优惠
                         (goodsDetailBean.fbPrice.toFloat() * goodsDetailBean.buyNum) - (itemCoupon.discountsFb - useAddPreferential).toFloat()
                     }
+                    Log.e("asdneed","${needPayPb}===$useAddPreferential===${preferential}")
                     //优惠后一项商品一个数量的价格
                     val onePayFb = WCommonUtil.getHeatNum(
                         "${needPayPb / goodsDetailBean.buyNum}",
                         0
                     )
                     if (onePayFb.toString() != "0") {
+                        Log.e("asdasd",onePayFb.toFloat().toString())
                         minFb += getExpressionMoney(FBToRmb((onePayFb.toFloat()).toString()).toFloat()) * goodsDetailBean.buyNum
                     }
                 }

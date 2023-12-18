@@ -1,5 +1,8 @@
 package com.changanford.home.adapter
 
+import android.os.Build
+import android.text.Html
+import android.text.Html.FROM_HTML_OPTION_USE_CSS_COLORS
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -18,11 +21,18 @@ class SpecialDetailCarAdapter :
     override fun convert(holder: BaseViewHolder, item: SpecialCarListBean) {
         val binding = DataBindingUtil.bind<ItemSpecialDetailCarBinding>(holder.itemView)
         binding?.let {
-            binding.tvCarName.text = item.carModelName
-            if (!item.isCheck){
-                binding.tvCarName.background=ContextCompat.getDrawable(context,R.drawable.bg_081700f4_100)
-            }else{
-                binding.tvCarName.background=ContextCompat.getDrawable(context,R.drawable.bg_081700f4_100_st_1a1700)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                binding.tvCarName.text =
+                    Html.fromHtml(item.carModelName, FROM_HTML_OPTION_USE_CSS_COLORS)
+            } else {
+                binding.tvCarName.text = item.carModelName
+            }
+            if (!item.isCheck) {
+                binding.tvCarName.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_081700f4_100)
+            } else {
+                binding.tvCarName.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_081700f4_100_st_1a1700)
             }
         }
     }

@@ -223,8 +223,10 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         GlideUtils.loadBD(author.avatar, inflateHeader.ivAvatar)
         GlideUtils.loadBD(author.avatar, binding.layoutTitle.ivAvatar)
         binding.layoutTitle.tvAuthor.text = author.nickname
-        setFollowState(inflateHeader.btFollow, author)
-        setFollowState(binding.layoutTitle.btFollow, author)
+        com.changanford.common.util.SetFollowState(requireContext())
+            .setFollowState(inflateHeader.btFollow, author)
+        com.changanford.common.util.SetFollowState(requireContext())
+            .setFollowState(binding.layoutTitle.btFollow, author)
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
@@ -408,8 +410,10 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     newsDetailData?.let { na ->
                         val followType = na.authors.isFollow
                         na.authors.isFollow = if (followType == 1) 2 else 1
-                        setFollowState(inflateHeader.btFollow, na.authors)
-                        setFollowState(binding.layoutTitle.btFollow, na.authors)
+                        com.changanford.common.util.SetFollowState(requireContext())
+                            .setFollowState(inflateHeader.btFollow, na.authors)
+                        com.changanford.common.util.SetFollowState(requireContext())
+                            .setFollowState(binding.layoutTitle.btFollow, na.authors)
                     }
                 }
             } catch (e: Exception) {
@@ -584,8 +588,10 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     //followType(1、关注 2、取消关注)
     private fun surefollow(newsData: NewsDetailData, followType: Int) {
         newsData.authors.isFollow = followType
-        setFollowState(binding.layoutTitle.btFollow, newsData.authors)
-        setFollowState(inflateHeader.btFollow, newsData.authors)
+        com.changanford.common.util.SetFollowState(requireContext())
+            .setFollowState(binding.layoutTitle.btFollow, newsData.authors)
+        com.changanford.common.util.SetFollowState(requireContext())
+            .setFollowState(inflateHeader.btFollow, newsData.authors)
         when (followType) {
             1 -> {
                 GIOUtils.followClick(

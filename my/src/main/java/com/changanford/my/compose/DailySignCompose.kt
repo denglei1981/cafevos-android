@@ -145,7 +145,8 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 .padding(top = 10.dp)
                 .height(45.dp)
                 .clip(shape = RoundedCornerShape(5.dp))
-                .background(Color(if (canSign) 0xffE5EFFF else 0xffDDDDDD))
+//                .background(Color(if (canSign) 0xffE5EFFF else 0xffDDDDDD))
+                .background(Color(0xfff8f7ff))
                 .clickable {
                     if (canSign) {
                         JumpUtils.instans?.jump(37)
@@ -156,7 +157,8 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
             Text(
                 text = if (canSign) "立即签到" else "已签到",
                 fontSize = 15.sp,
-                color = Color(if (canSign) 0xff5F9DFC else 0xffF8FAFA)
+//                color = Color(if (canSign) 0xff1700f4 else 0xffF8FAFA)
+                color = Color( 0xff1700f4 )
             )
         }
 

@@ -108,7 +108,7 @@ class SearchActsResultAdapter :
             if (item.buttonBgEnable()) {
                 it.bt.background =
                     BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_f2f4f9_cor14)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_95b))
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_1700F4))
             } else {
                 it.bt.background =
                     BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_dd_cor14)

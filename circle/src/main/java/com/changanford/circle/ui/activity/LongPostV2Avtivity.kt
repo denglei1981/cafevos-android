@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -1292,6 +1293,29 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 }
 
             })
+        }
+        headBinding.tFl.setOnClickListener {
+            if (headBinding.ivAddfm.isVisible) {
+                isunSave = true
+                PictureUtil.openGalleryOnePic(this, object : OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        val localMedia = result?.get(0)
+                        localMedia?.let {
+                            val bundle = Bundle()
+                            bundle.putParcelableArrayList("picList", arrayListOf(localMedia))
+                            bundle.putInt("position", 0)
+                            bundle.putInt("showEditType", -1)
+                            bundle.putBoolean("longPostFM", true)
+                            startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                        }
+                    }
+
+                    override fun onCancel() {
+                        isunSave = false
+                    }
+
+                })
+            }
         }
         headBinding.ivFm.setOnClickListener {
             val array = ArrayList<String>()
