@@ -116,6 +116,9 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                     checkMap["${it.userId}"] = false
                 }
             }
+            LiveDataBus.get()
+                .with(LiveDataBusKey.MINE_REFRESH_CIRCLE_STATUS_NO_PEOPLE, Boolean::class.java)
+                .postValue(it?.dataList.isNullOrEmpty())
             completeRefresh(it?.dataList, circleAdapter)
         })
 

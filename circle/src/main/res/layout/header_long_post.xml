@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@null"
+            android:background="@color/white"
             android:maxLength="30"
             android:minEms="6"
             android:paddingLeft="20dp"
@@ -103,7 +103,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/line_default_color"
+            android:background="@color/color_1A000000"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_biaoti" />

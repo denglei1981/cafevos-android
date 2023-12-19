@@ -81,7 +81,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         AskRecommendFragment.newInstance()
     }
     var fragmentList: ArrayList<Fragment> = arrayListOf()
-    private var currentPosition=0
+    private var currentPosition = 0
 
     override fun onDestroyView() {
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).postValue(false)
@@ -221,11 +221,13 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 result?.forEach {
                     isVideo = it.mimeType.contains("video") || it.mimeType.contains("mp4")
                 }
-                if (isVideo) {
-                    startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
-                } else {
+//                if (isVideo) {
+//                    bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, true)
+//                    startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
+//                } else {
+                    bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, isVideo)
                     startARouter(ARouterCirclePath.PostActivity, bundle, true)
-                }
+//                }
             }
 
             override fun onCancel() {
@@ -407,7 +409,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                     isFirstToGio = false
                 }
                 if (position == 3) {//口碑跳转h5
-                    JumpUtils.instans?.jump(1,MConstant.MUS_TANG_URL)
+                    JumpUtils.instans?.jump(1, MConstant.MUS_TANG_URL)
                     binding.viewPager.post {
                         binding.viewPager.currentItem = currentPosition
                     }

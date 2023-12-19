@@ -226,7 +226,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_talk_web"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
+                            android:layout_height="37dp"
                             android:layout_marginTop="19dp"
                             android:background="@drawable/circle_talk_20_bg"
                             android:drawableStart="@mipmap/circle_talk_hint"
@@ -237,8 +237,8 @@
                             android:maxLines="1"
                             android:paddingStart="10dp"
                             android:paddingEnd="14dp"
-                            android:textColor="@color/circle_8195C8"
-                            android:textSize="13sp"
+                            android:textColor="@color/color_1700F4"
+                            android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="年轻人喜欢什么样的车" />

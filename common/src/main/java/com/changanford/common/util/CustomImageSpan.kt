@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
+import android.icu.math.BigDecimal.ROUND_UP
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.changanford.common.R
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayShowBean
+import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
 import com.changanford.common.wutil.WCommonUtil.getRoundedNum
 import java.math.BigDecimal
@@ -69,8 +71,8 @@ fun showTotalTag(
     text: AppCompatTextView?,
     item: PayShowBean,
     isStart: Boolean = true,
-    totalNum:Int = -1,
-    nuwNum:Int = -1,
+    totalNum: Int = -1,
+    nuwNum: Int = -1,
 ) {
     if (TextUtils.isEmpty(item.payFb)) {
         showZero(text, item, isStart, context = context)
@@ -78,7 +80,7 @@ fun showTotalTag(
     }
     item.payFb?.let { // 福币为0
         if (it.toInt() <= 0) {
-            showZero(text, item, isStart = isStart, context = context,totalNum,nuwNum)
+            showZero(text, item, isStart = isStart, context = context, totalNum, nuwNum)
             return
         }
     }
@@ -90,21 +92,30 @@ fun showTotalTag(
     var str = if (TextUtils.isEmpty(item.payRmb)) {
         "$starStr[icon] ${item.payFb}"
     } else {
-         if(item.payRmb=="0"){
-             "$starStr[icon] ${item.payFb}"
-         }else{
-             "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
-         }
+        if (item.payRmb == "0") {
+            "$starStr[icon] ${item.payFb}"
+        } else {
+            "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+        }
 
     }
-    if (totalNum != -1 && nuwNum !=-1){
+    if (totalNum != -1 && nuwNum != -1) {
         str = if (TextUtils.isEmpty(item.payRmb)) {
-            "$starStr[icon] ${(item.payFb?.toInt()?:0) * nuwNum / totalNum}"
+            "$starStr[icon] ${(item.payFb?.toInt() ?: 0) * nuwNum / totalNum}"
         } else {
-            if(item.payRmb=="0"||"${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}" == "0.00"){
-                "$starStr[icon] ${(item.payFb?.toInt()?:0) * nuwNum / totalNum}"
-            }else{
-                "$starStr[icon] ${(item.payFb?.toInt()?:0)  * nuwNum / totalNum}+￥${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}"
+            val onePayRbm =
+                if (item.payRmb.isNullOrEmpty() || item.payRmb == "0") {
+                    0f
+                } else (item.payRmb!!.toFloat() / totalNum).toFloat()
+            val onePayFb =
+                if (item.payFb.isNullOrEmpty() || item.payFb == "0" || item.payFb == "0") 0f else item.payFb!!.toFloat() / totalNum
+            if (item.payRmb == "0" || "${onePayRbm * nuwNum}" == "0.00"
+            ) {
+                "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}",2)}"
+            } else {
+                "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}",2)}+￥${
+                    getHeatNum("${onePayRbm * nuwNum}",2)
+                }"
             }
 
         }
@@ -155,7 +166,14 @@ fun showZeroFb(context: Context, text: AppCompatTextView?) {
 }
 
 @SuppressLint("SetTextI18n")
-fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, context: Context,totalNum:Int = -1, nuwNum:Int = -1,) {
+fun showZero(
+    text: AppCompatTextView?,
+    item: PayShowBean,
+    isStart: Boolean,
+    context: Context,
+    totalNum: Int = -1,
+    nuwNum: Int = -1,
+) {
     val tagName = item.payRmb
     //先设置原始文本
 //    if(isStart){
@@ -169,13 +187,22 @@ fun showZero(text: AppCompatTextView?, item: PayShowBean, isStart: Boolean, cont
         if (item.payRmb == "0") {
             showZeroFb(context, text)
         } else {
-            if(isStart){
+            if (isStart) {
                 text?.text = "合计".plus("  ￥${tagName}")
-            }else{
+            } else {
                 text?.post {
                     text.text = "￥${tagName}"
-                    if (totalNum != -1 && nuwNum !=-1){
-                        text.text = "¥${getHeatNum("${getRoundedNum(item.payRmb,2) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))}",2)}"
+                    if (totalNum != -1 && nuwNum != -1) {
+                        text.text = "¥${
+                            getHeatNum(
+                                "${
+                                    getRoundedNum(
+                                        item.payRmb,
+                                        2
+                                    ) * BigDecimal(nuwNum).divide(BigDecimal(totalNum))
+                                }", 2
+                            )
+                        }"
                     }
                 }
             }

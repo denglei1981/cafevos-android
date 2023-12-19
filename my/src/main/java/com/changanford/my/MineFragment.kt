@@ -393,7 +393,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
         })
         viewModel.updateCarAdLiveData.observe(this, Observer {
-            mineMenuAdapter.setNewInstance(it.data as MutableList<MineMenuData>?)
+            mineMenuAdapter.setList(it.data)
+//            mineMenuAdapter.setNewInstance(it.data as MutableList<MineMenuData>?)
         })
         viewModel.adListLiveData.observe(this, Observer {
             showAdView(it)
@@ -411,10 +412,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
             }
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this, {
+            .observe(this) {
                 // 收到 登录状态改变回调都要刷新页面
 //                viewModel.getAuthCarInfo()// 登录状态改变
-            })
+            }
     }
 
     fun showAdView(list: ArrayList<AdBean>?) {

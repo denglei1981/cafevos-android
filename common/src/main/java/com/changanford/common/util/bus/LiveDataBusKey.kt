@@ -156,6 +156,7 @@ object LiveDataBusKey {
     const val MINE_DELETE_CIRCLE_USER = "mine:delete_circle_user"//删除圈子成员
 
     const val MINE_REFRESH_CIRCLE_STATUS = "mine:refresh_circle_status" //审核后，刷新状态
+    const val MINE_REFRESH_CIRCLE_STATUS_NO_PEOPLE = "mine:refresh_circle_status_no_people" //审核后，刷新状态
 
     const val MINE_CAR_CARD_NUM = "mine:mine_card_num"//添加车牌成功
 

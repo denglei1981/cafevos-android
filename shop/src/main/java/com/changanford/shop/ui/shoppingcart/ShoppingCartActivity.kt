@@ -122,8 +122,11 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
     override fun initData() {
         viewModel.getShoppingCartList()
         binding.smartLayout.setOnRefreshListener(this)
-        binding.checkStatus.setOnCheckedChangeListener { buttonView, isChecked ->
-            allCheck(isCheck = isChecked)
+//        binding.checkStatus.setOnCheckedChangeListener { buttonView, isChecked ->
+//            allCheck(isCheck = isChecked)
+//        }
+        binding.checkStatus.setOnClickListener {
+            allCheck(isCheck = binding.checkStatus.isChecked)
         }
         binding.layoutEmpty.tvEmpty.setOnClickListener {
             this.finish()
@@ -273,7 +276,8 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 // 加入所有的商品
                 getOver()
             }
-
+            binding.checkStatus.isChecked =
+                shoppingCartAdapter.itemCount == shoppingCartAdapter.shopList.size
         } else {
             if (shoppingEdit) {
                 binding.tvOver.text = "删除"
@@ -284,7 +288,8 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 binding.tvOver.isSelected = false
                 binding.tvBalance.text = "合计 ￥0"
             }
-
+            binding.checkStatus.isChecked = false
+//                shoppingCartAdapter.itemCount == shoppingCartAdapter.shopList.size
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.bean.*
 import com.changanford.common.net.*
+import com.changanford.common.util.MConstant.userId
 import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
 
@@ -20,27 +21,28 @@ class CircleViewModel : ViewModel() {
      * 我管理的圈子
      */
     var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
-    fun myMangerCircle(searchKeys: String? = null) {
+    fun myMangerCircle(searchKeys: String) {
         val circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
-                searchKeys?.apply {
-                    body["searchKeys"] = searchKeys
+//                    body["searchKeys"] = searchKeys
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] = searchKeys
                 }
                 val rkey = getRandomKey()
                 apiService.queryMineMangerCircle(body.header(rkey), body.body(rkey))
             }.onSuccess {
-                if (it?.dataList != null) {
-                    var title = ""
-                    it.dataList?.forEach { circleItemBean ->
-                        if (title != circleItemBean.typeStr) {
-                            circleItemBean.isShowTitle = true
-                        }
-                        title = circleItemBean.typeStr
+//                if (it?.dataList != null) {
+                var title = ""
+                it?.dataList?.forEach { circleItemBean ->
+                    if (title != circleItemBean.typeStr) {
+                        circleItemBean.isShowTitle = true
                     }
-                    mMangerCircle.postValue(it.dataList as ArrayList<CircleItemBean>?)
+                    title = circleItemBean.typeStr
                 }
+                mMangerCircle.postValue(it?.dataList)
+//                }
             }.onWithMsgFailure {
                 it?.toast()
             }
@@ -71,13 +73,15 @@ class CircleViewModel : ViewModel() {
      */
     var mJoinCircle: MutableLiveData<CircleListBean> = MutableLiveData()
 
-    fun myJoinCircle(searchKeys: String? = null) {
+    fun myJoinCircle(searchKeys: String) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
-                searchKeys?.apply {
-                    body["searchKeys"] = searchKeys
+//                searchKeys?.apply {
+                body["queryParams"] = HashMap<String, Any>().also {
+                    it["searchKeys"] = searchKeys
                 }
+//                }
                 val rkey = getRandomKey()
                 apiService.queryMineJoinCircleList(body.header(rkey), body.body(rkey))
             }.onSuccess {
@@ -115,9 +119,9 @@ class CircleViewModel : ViewModel() {
                 apiService.circleStar(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 block.invoke()
-                if(star=="YES"){
+                if (star == "YES") {
                     "成功设置为星标圈子,将展示在我的圈子最前方".toast()
-                }else{
+                } else {
                     "已取消星标圈子".toast()
                 }
             }.onWithMsgFailure {

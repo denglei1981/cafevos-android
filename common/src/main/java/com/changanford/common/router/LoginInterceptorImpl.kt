@@ -5,6 +5,7 @@ import com.alibaba.android.arouter.facade.Postcard
 import com.alibaba.android.arouter.facade.annotation.Interceptor
 import com.alibaba.android.arouter.facade.callback.InterceptorCallback
 import com.alibaba.android.arouter.facade.template.IInterceptor
+import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.MConstant
 
@@ -33,6 +34,12 @@ class LoginInterceptorImpl : IInterceptor {
             bundle.putString(MConstant.LOGIN_INTERCEPT_PATH, postcard.path)
             callback.onInterrupt(null)//中断路由流程
             startARouter(ARouterMyPath.SignUI, bundle)//跳转登录
+            return
+        }
+        //以前的视频已经不用了，合并到postActivity
+        if (postcard.path == ARouterCirclePath.VideoPostActivity) {
+            bundle.putBoolean("circleIsPostVideo", true)
+            startARouter(ARouterCirclePath.PostActivity, bundle)
             return
         }
         // 处理完成，交还控制权

@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -56,7 +57,11 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
         binding.collectToolbar.toolbarSave.setOnClickListener {
             click()
         }
-
+        LiveDataBus.get()
+            .with(LiveDataBusKey.MINE_REFRESH_CIRCLE_STATUS_NO_PEOPLE, Boolean::class.java)
+            .observe(this) {
+                binding.collectToolbar.toolbarSave.isVisible = !it
+            }
         viewModel.circleNum.observe(this, Observer {
             initViewpager(it)
         })

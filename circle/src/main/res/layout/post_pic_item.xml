@@ -40,16 +40,9 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
                 android:src="@mipmap/longpostadd" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="上传图片"
-                android:textColor="@color/color_4d16"
-                android:textSize="14sp" />
 
         </LinearLayout>
 

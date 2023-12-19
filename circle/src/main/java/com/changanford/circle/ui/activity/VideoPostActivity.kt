@@ -152,27 +152,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         binding.title.barTvOther.text = "发布"
         binding.title.barTvOther.setTextColor(resources.getColor(R.color.color_a680))
         binding.title.barTvOther.textSize = 14f
-//        binding.title.barTvOther.background =
-//            ContextCompat.getDrawable(this, R.drawable.post_btn_no_bg)
-        "actionbarheight--${ImmersionBar.getActionBarHeight(this)}".logD()
-        "NavigationBarHeight--${ImmersionBar.getNavigationBarHeight(this)}".logD()
-        "ScreenHeight--${ScreenUtils.getScreenHeight(this)}".logD()
         val bthinttxt = "标题 (2-30个字)"
-//        val spannableString = SpannableString(bthinttxt)
-//        val intstart = bthinttxt.indexOf('(')
-//        val intend = bthinttxt.length
-//        spannableString.setSpan(
-//            AbsoluteSizeSpan(60),
-//            0,
-//            intstart,
-//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-//        )
-//        spannableString.setSpan(
-//            AbsoluteSizeSpan(40),
-//            intstart,
-//            intend,
-//            Spannable.SPAN_INCLUSIVE_INCLUSIVE
-//        )
         binding.etBiaoti.hint = bthinttxt
         locaPostEntity = intent.getSerializableExtra("postEntity") as PostEntity?
 
@@ -404,7 +384,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         })
 
 
-        viewModel._downloadLocalMedias.observe(this, {
+        viewModel._downloadLocalMedias.observe(this) {
             //选择的图片重置
             selectList.clear()
             selectList.addAll(it)
@@ -416,7 +396,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
             //展示选择的图片
             postVideoAdapter.setList(it)
             postVideoAdapter.notifyDataSetChanged()
-        })
+        }
 
 
         //赋值
@@ -1049,33 +1029,8 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
 
                                     }
                                     PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
-//                                    SoulPermission.getInstance()
-//                                        .checkAndRequestPermissions(permissions, object :
-//                                            CheckRequestPermissionsListener {
-//                                            override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-//                                                isunSave = true
-//                                                startARouterForResult(
-//                                                    this@VideoPostActivity,
-//                                                    ARouterCirclePath.PictureEditAudioActivity,
-//                                                    Bundle().apply {
-//                                                        putString(
-//                                                            "path",
-//                                                            selectList[0].realPath
-//                                                        )
-//                                                    },
-//                                                    PictureEditAudioActivity.EDIT_VIDEOPATH
-//                                                )
-//                                            }
-//
-//                                            override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-//                                            }
-//
-//                                        })
                                 }
-//                                "删除封面" -> {
-//                                    postVideoAdapter.fmPath = ""
-//                                    postVideoAdapter.notifyDataSetChanged()
-//                                }
+//
                             }
                         }
                     }).show()
@@ -1448,11 +1403,7 @@ class VideoPostActivity : BaseActivity<VideoPostBinding, PostViewModule>() {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 UCrop.REQUEST_CROP -> {
-
                     val resultUri = UCrop.getOutput(data!!)
-//                    selectList[0].isCut = true
-//                    selectList[0].cutPath = resultUri?.path
-//                    postVideoAdapter.setList(selectList)
                     postVideoAdapter.fmPath = resultUri?.path
                     postVideoAdapter.notifyDataSetChanged()
                 }

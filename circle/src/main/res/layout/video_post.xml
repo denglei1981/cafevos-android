@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="190dp"
             android:layout_marginTop="20dp"
-            android:background="@null"
+            android:background="@color/white"
             android:gravity="top"
             android:hint="请输入正文内容，字数小于500"
             android:isScrollContainer="true"
@@ -108,8 +108,10 @@
         <View
             android:id="@+id/v_line"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/color_F5"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/color_1A000000"
             app:layout_constraintTop_toBottomOf="@+id/et_content" />
 
         <include

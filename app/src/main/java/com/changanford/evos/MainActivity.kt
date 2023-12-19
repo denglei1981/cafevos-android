@@ -518,7 +518,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             mainTab.setmsgGone()
         }
         mainTab.setTextDefaultColor(resources.getColor(R.color.tab_nomarl))
-        mainTab.setTextCheckedColor(resources.getColor(R.color.black))
+        mainTab.setTextCheckedColor(resources.getColor(R.color.color_1700F4))
         mainTab.setIvyuanshu(yuanshu)
         mainTab.setYfloat(yfloat)
         mainTab.setXfloat(xfloat)

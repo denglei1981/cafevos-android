@@ -15,7 +15,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/line_00095b_222b80"
+        android:background="@color/color_00095b"
         android:orientation="vertical">
 
         <com.changanford.shop.view.TopBar

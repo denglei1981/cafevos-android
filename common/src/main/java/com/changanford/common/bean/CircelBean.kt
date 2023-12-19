@@ -11,7 +11,7 @@ import java.io.Serializable
  *  修改描述：TODO
  */
 data class CircleListBean(
-    val dataList: List<CircleItemBean>?,
+    val dataList: ArrayList<CircleItemBean>?,
     val pageNo: Int,
     val pageSize: Int,
     val total: Int,

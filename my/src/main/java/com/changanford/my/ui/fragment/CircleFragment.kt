@@ -55,21 +55,21 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         }
     }
 
-    private var searchKeys: String? = null
+    private var searchKeys: String = ""
     override fun initView() {
         arguments?.getInt(RouterManger.KEY_TO_ID)?.let {
             index = it
         }
         binding.rcyCollect.rcyCommonView.adapter = circleAdapter
 
-        viewModel.mMangerCircle.observe(this, Observer {
+        viewModel.mMangerCircle.observe(this) {
             it?.let { list ->
                 list.forEach {
                     it.itemType = index
                 }
             }
             completeRefresh(it, circleAdapter)
-        })
+        }
 
         viewModel.mJoinCircle.observe(this, Observer {
             LiveDataBus.get().with(LiveDataBusKey.BUS_SHOW_LOAD_CONTENT).postValue(true)
@@ -97,7 +97,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
     /**
      * 搜索
      * */
-    fun startSearch(searchKeys: String? = null) {
+    fun startSearch(searchKeys: String ) {
         this.searchKeys = searchKeys
         binding.rcyCollect.smartCommonLayout.autoRefresh()
     }

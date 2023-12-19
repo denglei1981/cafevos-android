@@ -132,12 +132,9 @@
                         android:id="@+id/tv_refund_money_tips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:text="退款金额"
                         android:textColor="@color/black"
                         android:textSize="14sp"
-
-
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="退款金额" />
