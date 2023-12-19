@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
@@ -82,6 +83,8 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
     private var isClickSubmit = false
     private var orderNo: String? = null
     private var isFromOrder = false
+    private var mSelectedTag = ""
+    private var mPayType = 0 //0福币 1现金
 
     //    private var orderInfoBean: OrderInfoBean?=null
     override fun initView() {
@@ -141,10 +144,11 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 when {
                     aliPay != null -> UnionPayUtils.goUnionPay(this@PayConfirmActivity, 1, aliPay)
                     wxPay != null -> UnionPayUtils.goUnionPay(
-                            this@PayConfirmActivity,
-                            2,
-                            Gson().toJson(wxPay)
+                        this@PayConfirmActivity,
+                        2,
+                        Gson().toJson(wxPay)
                     )
+
                     uacPay != null -> UnionPayUtils.goUnionPay(this@PayConfirmActivity, 3, uacPay)
                 }
             }
@@ -227,6 +231,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                             timeCountControl?.start()
                         }
                     }
+                    mPayType = 0
                 }
                 //现金支付和混合支付 使用银联支付
                 else -> {
@@ -237,6 +242,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         composeView.setContent {
                             UnionPayCompose(dataBean, this@PayConfirmActivity)
                         }
+                        mPayType = 1
                     }
                 }
             }
@@ -278,6 +284,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                             timeCountControl?.start()
                         }
                     }
+                    mPayType = 0
                 }
                 //现金支付和混合支付 使用银联支付
                 else -> {
@@ -289,6 +296,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                             UnionPayCompose(dataBean, this@PayConfirmActivity)
                         }
                     }
+                    mPayType = 1
                 }
             }
         }
@@ -341,9 +349,23 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 when (binding.btnSubmit.text) {
                     getString(R.string.str_payConfirm), getString(R.string.str_Repayment) -> {
                         if (isFromOrder) {
-                            payFb?.let { viewModel.fbPayBatch(orderNo, it) }
+                            if (mPayType == 1) {
+                                payRmb?.let {
+                                    viewModel.rmbPayBatch(
+                                        orderNo,
+                                        it,
+                                        mSelectedTag
+                                    )
+                                }
+                            } else {
+                                payFb?.let { viewModel.fbPayBatch(orderNo, it) }
+                            }
                         } else {
-                            viewModel.fbPay(orderNo)
+                            if (mPayType == 1) {
+                                viewModel.rmbPay(orderNo, mSelectedTag)
+                            } else {
+                                viewModel.fbPay(orderNo)
+                            }
                         }
                     }
 
@@ -554,6 +576,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                             } else {
                                 viewModel.rmbPay(orderNo, selectedTag.value)
                             }
+                            mSelectedTag = selectedTag.value
                         },
                         enabled = selectedTag.value != "0" && countdown.value != timeStr,
                         shape = RoundedCornerShape(20.dp),

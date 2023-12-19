@@ -19,6 +19,7 @@ import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setAppColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -270,18 +271,22 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         binding.llComment.tvSpeakSomething.setOnClickListener(this)
         binding.llComment.tvNewsToCollect.setOnClickListener(this)
         if (newsDetailData.isLike == 0) {
+            binding.llComment.tvNewsToLike.imageview.clearColorFilter()
             binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_white, false)
         } else {
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, false)
+            binding.llComment.tvNewsToLike.imageview.setAppColor()
+            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
         }
         if (newsDetailData.isCollect == 0) {
+            binding.llComment.tvNewsToCollect.imageview.clearColorFilter()
             binding.llComment.tvNewsToCollect.setThumb(
                 R.drawable.icon_home_bottom_collection_white,
                 false
             )
         } else {
+            binding.llComment.tvNewsToCollect.imageview.setAppColor()
             binding.llComment.tvNewsToCollect.setThumb(
-                R.drawable.icon_home_bottom_collection_blue,
+                R.drawable.icon_home_bottom_collection,
                 false
             )
         }
@@ -302,8 +307,9 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             0 -> {
                 newsDetailData?.isCollect = 1
                 collectCount = newsDetailData?.collectCount?.plus(1)
+                binding.llComment.tvNewsToCollect.imageview.setAppColor()
                 binding.llComment.tvNewsToCollect.setThumb(
-                    R.drawable.icon_home_bottom_collection_blue,
+                    R.drawable.icon_home_bottom_collection,
                     true
                 )
                 item?.data?.let {
@@ -318,6 +324,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             1 -> {
                 newsDetailData?.isCollect = 0
                 collectCount = newsDetailData?.collectCount?.minus(1)
+                binding.llComment.tvNewsToCollect.imageview.clearColorFilter()
                 binding.llComment.tvNewsToCollect.setThumb(
                     R.drawable.icon_home_bottom_collection_white,
                     false
@@ -350,7 +357,8 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_blue, true)
+                binding.llComment.tvNewsToLike.imageview.setAppColor()
+                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
                 item?.data?.let {
                     GIOUtils.infoLickClick(
                         "资讯详情页",
@@ -363,6 +371,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
+                binding.llComment.tvNewsToLike.imageview.clearColorFilter()
                 binding.llComment.tvNewsToLike.setThumb(
                     R.drawable.icon_home_bottom_like_white,
                     false

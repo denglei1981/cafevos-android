@@ -42,9 +42,11 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setAppColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
@@ -115,12 +117,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             } else {
                 tvFollow.visibility = View.INVISIBLE
             }
-
-            tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
-                "已关注"
-            } else {
-                "关注"
-            }
+//
+//            tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
+//                "已关注"
+//            } else {
+//                "关注"
+//            }
+            val state= SetFollowState(requireContext())
+            mData.authorBaseVo?.let { it1 -> state.setFollowState(binding.tvFollow, it1) }
             bottomView.run {
                 val commentCount = mData.commentCount
                 tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
@@ -129,15 +133,19 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
                 ivLike.setImageResource(
                     if (mData.isLike == 1) {
+                        ivLike.setAppColor()
                         R.mipmap.circle_like_image
                     } else {
+                        ivLike.clearColorFilter()
                         R.mipmap.circle_no_like_image
                     }
                 )
                 ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
+                        ivCollection.setAppColor()
                         R.mipmap.circle_collection_image
                     } else {
+                        ivCollection.clearColorFilter()
                         R.mipmap.circle_no_collection_image
                     }
                 )
@@ -482,6 +490,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             if (it.code == 0) {
                 if (mData.isLike == 0) {
                     mData.isLike = 1
+                    binding.bottomView.ivLike.setAppColor()
                     binding.bottomView.ivLike.setImageResource(R.mipmap.circle_like_image)
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.bottomView.ivLike)
@@ -498,6 +507,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     mData.isLike = 0
                     mData.likesCount--
+                    binding.bottomView.ivLike.clearColorFilter()
                     binding.bottomView.ivLike.setImageResource(R.mipmap.circle_no_like_image)
                     GIOUtils.cancelPostLickClick(
                         "帖子详情页",
@@ -550,8 +560,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 binding.bottomView.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.bottomView.ivCollection)
+                        binding.bottomView.ivCollection.setAppColor()
                         R.mipmap.circle_collection_image
                     } else {
+                        binding.bottomView.ivCollection.clearColorFilter()
                         R.mipmap.circle_no_collection_image
                     }
                 )
@@ -580,11 +592,13 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             if (it.code == 0) {
                 val isFol = mData.authorBaseVo?.isFollow
                 mData.authorBaseVo?.isFollow = if (isFol == 1) 0 else 1
-                binding.tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
-                    "已关注"
-                } else {
-                    "关注"
-                }
+                val state= SetFollowState(requireContext())
+                mData.authorBaseVo?.let { it1 -> state.setFollowState(binding.tvFollow, it1) }
+//                binding.tvFollow.text = if (mData.authorBaseVo?.isFollow == 1) {
+//                    "已关注"
+//                } else {
+//                    "关注"
+//                }
                 if (mData.authorBaseVo?.isFollow == 1) {
                     "关注成功".toast()
                     GIOUtils.followClick(

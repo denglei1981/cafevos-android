@@ -16,6 +16,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -70,6 +71,7 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.dk.DKPlayerHelper
 import com.changanford.common.util.dk.cache.DKPlayerHelperBig
+import com.changanford.common.util.ext.setAppColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -140,15 +142,19 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
             ivLike.setImageResource(
                 if (mData.isLike == 1) {
+                    ivLike.setAppColor()
                     R.mipmap.circle_like_image_v
                 } else {
+                    ivLike.clearColorFilter()
                     R.mipmap.circle_no_like_image_v
                 }
             )
             ivCollection.setImageResource(
                 if (mData.isCollection == 1) {
+                    ivCollection.setAppColor()
                     R.mipmap.circle_collection_image_v
                 } else {
+                    ivCollection.clearColorFilter()
                     R.mipmap.circle_no_collection_image_v
                 }
             )
@@ -442,6 +448,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (it.code == 0) {
                 if (mData.isLike == 0) {
                     mData.isLike = 1
+                    binding.ivLike.setAppColor()
                     binding.ivLike.setImageResource(R.mipmap.circle_like_image_v)
                     mData.likesCount++
                     AnimScaleInUtil.animScaleIn(binding.ivLike)
@@ -458,6 +465,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 } else {
                     mData.isLike = 0
                     mData.likesCount--
+                    binding.ivLike.clearColorFilter()
                     binding.ivLike.setImageResource(R.mipmap.circle_no_like_image_v)
                     GIOUtils.cancelPostLickClick(
                         "帖子详情页",
@@ -510,8 +518,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 binding.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
+                        binding.ivCollection.setAppColor()
                         R.mipmap.circle_collection_image_v
                     } else {
+                        binding.ivCollection.clearColorFilter()
                         R.mipmap.circle_no_collection_image_v
                     }
                 )
@@ -776,7 +786,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                                             .width(60.dp)
                                             .height(25.dp)
                                             .background(
-                                                color = colorResource(com.changanford.common.R.color.color_E5),
+                                                color = colorResource(com.changanford.common.R.color.transparent),
+                                                shape = RoundedCornerShape(13.dp)
+                                            )
+                                            .border(
+                                                1.dp, color = colorResource(R.color.color_1700f4),
                                                 shape = RoundedCornerShape(13.dp)
                                             )
                                             .clickable {

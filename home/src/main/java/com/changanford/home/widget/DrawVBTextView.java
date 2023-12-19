@@ -89,5 +89,8 @@ public class DrawVBTextView extends ConstraintLayout {
 
     }
 
+    public ImageView getImageview(){
+        return ivThumb;
+    }
 
 }

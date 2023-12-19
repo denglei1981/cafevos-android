@@ -26,8 +26,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp">
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_topic"
@@ -55,7 +55,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/tv_topic"
-                android:background="@drawable/bg_081700f4_12"
+                android:background="@drawable/bg_081700f4_100"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
@@ -67,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
+                    android:maxWidth="220dp"
                     android:maxLines="1"
                     android:text="选择话题"
                     android:textColor="@color/color_1700F4"
@@ -96,15 +97,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_ee" />
+            android:background="@color/color_ee"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rl_circle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp">
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_circle"
@@ -132,7 +134,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="20dp"
                 android:layout_toEndOf="@+id/tv_circle"
-                android:background="@drawable/bg_081700f4_12"
+                android:background="@drawable/bg_081700f4_100"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
@@ -145,6 +147,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
+                    android:maxWidth="220dp"
                     android:maxLines="1"
                     android:text="选择圈子"
                     android:textColor="@color/color_1700F4"
@@ -174,15 +177,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_ee" />
+            android:background="@color/color_ee"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rl_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="17dp"
-            android:paddingBottom="17dp">
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_address"
@@ -214,7 +218,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingStart="9dp"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_address_name"
@@ -223,12 +228,12 @@
                     android:layout_marginEnd="10dp"
                     android:drawablePadding="3dp"
                     android:ellipsize="end"
-                    android:maxWidth="160dp"
+                    android:maxWidth="220dp"
                     android:maxLines="1"
                     android:text="选择地址"
                     android:textColor="@color/color_1700F4"
                     android:textSize="14sp"
-                    tools:text="春日热春日热春日热春日热春日热“练”" />
+                    tools:text="春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热春日热“练”" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_delete_address"

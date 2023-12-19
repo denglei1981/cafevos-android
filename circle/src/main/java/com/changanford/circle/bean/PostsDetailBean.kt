@@ -1,5 +1,6 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.bean.HomeAuthorsBean
 
@@ -9,7 +10,7 @@ import com.changanford.common.bean.HomeAuthorsBean
  * @Des:
  */
 data class PostsDetailBean(
-    val authorBaseVo: HomeAuthorsBean? = null,
+    val authorBaseVo: AuthorBaseVo? = null,
     val circleId: Int = 0,
     var collectCount: Int = 0,
     var commentCount: Int = 0,
