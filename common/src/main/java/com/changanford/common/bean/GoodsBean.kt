@@ -941,9 +941,9 @@ data class CreateOrderBean(
                 pct.toFloat() / 100f
             }
 //            else if (TextUtils.isEmpty(pct)) -1f
-            else -1f
+            else 0f
         } catch (e: java.lang.Exception) {
-            -1f
+            0f
         }
     }
 

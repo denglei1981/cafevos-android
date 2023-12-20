@@ -8,17 +8,25 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loading"
-        android:layout_width="@dimen/dp_100"
-        android:layout_height="@dimen/dp_100"
-        app:lottie_autoPlay="true"
-        android:scaleY="0.5"
-        android:scaleX="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:lottie_fileName="loading.json"
-        app:lottie_loop="true"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="@dimen/dp_130"
+            android:layout_height="@dimen/dp_130"
+            app:lottie_autoPlay="true"
+            android:paddingStart="40dp"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true"/>
+<!--    <com.changanford.common.widget.NewGifLoadingView-->
+<!--        android:id="@+id/loading"-->
+<!--        android:layout_width="@dimen/dp_100"-->
+<!--        android:layout_height="@dimen/dp_100"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 </LinearLayout>

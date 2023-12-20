@@ -498,10 +498,14 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 fbBalance
             }
         }
+        if (createOrderBean?.getPayType() == 0) {//纯福币支付
+            minFb = 0
+        }
         binding.inPayWay.apply {
             minRmb = getRMB("$minFb")
             minRmb = if (minRmb.toFloat() > 0f) "+¥$minRmb" else ""
-            rbFbAndRmb.text = if (minRmbProportion != 0f) "$maxUseFb$minRmb" else "$totalPayFb"
+            rbFbAndRmb.text =
+                if (minRmbProportion != 0f || isMixPayRegular()) "$maxUseFb$minRmb" else "$totalPayFb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
         ("totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>>" +

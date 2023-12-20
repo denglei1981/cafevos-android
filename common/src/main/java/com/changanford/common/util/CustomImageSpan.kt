@@ -111,11 +111,19 @@ fun showTotalTag(
                 if (item.payFb.isNullOrEmpty() || item.payFb == "0" || item.payFb == "0") 0f else item.payFb!!.toFloat() / totalNum
             if (item.payRmb == "0" || "${onePayRbm * nuwNum}" == "0.00"
             ) {
-                "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}",2)}"
+                if (nuwNum == totalNum) {//全部退了
+                    "$starStr[icon] ${item.payFb}"
+                } else {
+                    "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}", 0)}"
+                }
             } else {
-                "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}",2)}+￥${
-                    getHeatNum("${onePayRbm * nuwNum}",2)
-                }"
+                if (nuwNum == totalNum) {
+                    "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+                } else {
+                    "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}", 0)}+￥${
+                        getHeatNum("${onePayRbm * nuwNum}", 2)
+                    }"
+                }
             }
 
         }

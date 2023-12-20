@@ -214,6 +214,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                 }
                                 control.toPay(item)
                             }
+                            setBackgroundResource(R.drawable.bord_00095b_15dp)
                         }
                         dataBinding.btnCancel.apply {
                             visibility=View.VISIBLE
@@ -233,7 +234,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                             btnConfirm.apply {//申请退款
                                 visibility=View.VISIBLE
                                 setText(R.string.str_applyARefund)
-                                setBackgroundResource(R.drawable.bord_99_15dp)
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
                                 setOnClickListener {
                                     control.orderBtnClick(4,item)
                                 }
@@ -326,6 +327,7 @@ class OrderAdapter(var orderSource:Int=-2,var nowTime:Long?=0,val viewModel: Ord
                                     }
                                     control.onceAgainToBuy(item)
                                 }
+                                setBackgroundResource(R.drawable.bord_00095b_15dp)
                             }
                         }else dataBinding.btnConfirm.visibility=View.INVISIBLE
                     }

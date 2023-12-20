@@ -409,15 +409,15 @@ class CircleDetailsActivity :
             onDismissListener = object : BasePopupWindow.OnDismissListener() {
                 override fun onDismiss() {
                     isOpenMenuPop = false
-//                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
-                    binding.ivPostBar.rotation = 0f
+                    binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_icon)
+//                    binding.ivPostBar.rotation = 0f
                 }
 
             }
             setOnPopupWindowShowListener {
                 isOpenMenuPop = true
-                binding.ivPostBar.rotation = 45f
-//                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
+//                binding.ivPostBar.rotation = 45f
+                binding.ivPostBar.setImageResource(R.mipmap.circle_post_bar_open_icon)
             }
         }
     }

@@ -809,22 +809,23 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
                         }
                     })
-                } else {
-                    PictureUtil.ChoseVideo(
-                        this,
-                        selectList,
-                        object : OnResultCallbackListener<LocalMedia> {
-                            override fun onResult(result: MutableList<LocalMedia>?) {
-                                resultVideo(result)
-                            }
-
-                            override fun onCancel() {
-                                isunSave = false
-
-                            }
-
-                        })
                 }
+//                else {
+//                    PictureUtil.ChoseVideo(
+//                        this,
+//                        selectList,
+//                        object : OnResultCallbackListener<LocalMedia> {
+//                            override fun onResult(result: MutableList<LocalMedia>?) {
+//                                resultVideo(result)
+//                            }
+//
+//                            override fun onCancel() {
+//                                isunSave = false
+//
+//                            }
+//
+//                        })
+//                }
             } else {
                 val videoList = postVideoAdapter.data
 

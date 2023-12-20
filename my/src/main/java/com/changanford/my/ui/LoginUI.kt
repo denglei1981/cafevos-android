@@ -165,7 +165,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 t1.isNotEmpty() && t2.isNotEmpty() && t3
             })
             .subscribe {
-                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#01025C" else "#757575"))
+                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#1700f4" else "#757575"))
                 binding.btnLogin.isEnabled = it
             }
 

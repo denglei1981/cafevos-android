@@ -61,8 +61,8 @@ class CircleMainBottomAdapter(context: Context) :
 
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
-                    R.mipmap.circle_like_image
-                } else R.mipmap.circle_no_like_image
+                    R.mipmap.item_good_count_light_ic
+                } else R.mipmap.item_good_count_ic
             )
 
             binding.llLike.setOnClickListener {
@@ -159,7 +159,7 @@ class CircleMainBottomAdapter(context: Context) :
                         LiveDataBus.get().with(LiveDataBusKey.REFRESH_POST_LIKE).postValue(1)
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            binding.ivLike.setImageResource(R.mipmap.circle_like_image)
+                            binding.ivLike.setImageResource(R.mipmap.item_good_count_light_ic)
                             item.likesCount++
                             AnimScaleInUtil.animScaleIn(binding.ivLike)
                             if (type.isNotEmpty()) {
@@ -177,7 +177,7 @@ class CircleMainBottomAdapter(context: Context) :
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.ivLike.setImageResource(R.mipmap.circle_no_like_image)
+                            binding.ivLike.setImageResource(R.mipmap.item_good_count_ic)
                             if (type.isNotEmpty()) {
                                 GIOUtils.cancelPostLickClick(
                                     type,
