@@ -137,7 +137,7 @@
                 android:drawablePadding="@dimen/dp_4"
                 android:padding="2dp"
                 android:text="去审核"
-                android:textColor="#01025C"
+                android:textColor="@color/color_1700F4"
                 android:textSize="@dimen/sp_13" />
 
         </LinearLayout>

@@ -28,8 +28,8 @@ import com.google.android.material.tabs.TabLayoutMediator
  *  文件名：MyCollectUI
  *  创建者: zcy
  *  创建日期：2021/9/26 16:54
- *  描述: TODO
- *  修改描述：TODO
+ *  描述: 圈子审核
+ *  修改描述：
  */
 @Route(path = ARouterMyPath.CircleMemberUI)
 class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {

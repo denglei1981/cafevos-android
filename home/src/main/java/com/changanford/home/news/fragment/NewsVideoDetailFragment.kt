@@ -32,6 +32,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
@@ -420,6 +421,11 @@ class NewsVideoDetailFragment :
         newsData.authors.isFollow = followType
         setFollowState(inflateHeader.btFollow, newsData.authors)
         setFollowState(inflateHeader.btFollow, newsData.authors)
+        if (followType == 1) {
+            "已关注".toast()
+        } else {
+            "取消关注".toast()
+        }
         when (followType) {
             1 -> {
                 GIOUtils.followClick(newsData.authors.authorId, newsData.authors.nickname, "资讯详情页")

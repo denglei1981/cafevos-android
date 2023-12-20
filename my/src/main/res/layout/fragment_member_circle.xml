@@ -35,7 +35,7 @@
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:text="全选"
-            android:textColor="#01025C"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="审核通过"
-            android:textColor="#01025C"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 
@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="设置身份"
-            android:textColor="#01025C"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 
@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="审核不通过"
-            android:textColor="#01025C"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 
@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="删除"
-            android:textColor="#01025C"
+            android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 

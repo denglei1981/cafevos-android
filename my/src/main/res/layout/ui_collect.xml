@@ -9,28 +9,29 @@
     <include
         android:id="@+id/collect_toolbar"
         layout="@layout/view_toolbar" />
-<include
-    android:id="@+id/layout_search"
-    layout="@layout/layout_my_search"
-    android:layout_height="@dimen/dp_44"
-    android:layout_width="match_parent"
-    android:layout_marginTop="12dp"
-    />
+
+    <include
+        android:id="@+id/layout_search"
+        layout="@layout/layout_my_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:layout_marginTop="12dp" />
+
     <com.google.android.material.tabs.TabLayout
-        android:layout_marginTop="@dimen/dp_4"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
         android:layout_gravity="center_vertical"
+        android:layout_marginTop="@dimen/dp_4"
         android:background="@color/white"
         app:tabIndicator="@null"
-        app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorColor="@color/color_1700F4"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
         app:tabRippleColor="@color/transparent"
-        app:tabSelectedTextColor="#161E37"
+        app:tabSelectedTextColor="@color/color_1700F4"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="#90161E37" />
+        app:tabTextColor="@color/color_1700F4" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"

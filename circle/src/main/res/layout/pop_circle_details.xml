@@ -28,7 +28,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发长贴"
+                android:text="发文章"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_9" />
 
@@ -39,6 +39,7 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/circle_details_pop_bg"
             android:gravity="center"
             android:orientation="vertical">
@@ -52,7 +53,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发图片"
+                android:text="发动态"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_9" />
 
@@ -66,6 +67,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/circle_details_pop_bg"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView

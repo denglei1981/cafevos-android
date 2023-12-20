@@ -226,6 +226,11 @@ class NewsListAdapter(
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    if (typeFollow == 1) {
+                        "已关注".toast()
+                    } else {
+                        "取消关注".toast()
+                    }
                     notifyAtt(followId, typeFollow)
                     if (typeFollow == 1) {
                         GIOUtils.followClick(followId, nickName, pageName)

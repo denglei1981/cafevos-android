@@ -11,7 +11,7 @@
 
             <corners android:radius="1.5dp" />
 
-            <solid android:color="@color/blue_tab" />
+            <solid android:color="@color/color_1700F4" />
 
         </shape>
     </item>

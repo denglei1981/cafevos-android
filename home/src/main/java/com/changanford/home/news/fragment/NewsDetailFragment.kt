@@ -29,6 +29,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
 import com.changanford.common.widget.webview.CustomWebHelper
@@ -601,6 +602,11 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             .setFollowState(binding.layoutTitle.btFollow, newsData.authors)
         com.changanford.common.util.SetFollowState(requireContext())
             .setFollowState(inflateHeader.btFollow, newsData.authors)
+        if (followType == 1) {
+            "已关注".toast()
+        } else {
+            "取消关注".toast()
+        }
         when (followType) {
             1 -> {
                 GIOUtils.followClick(
