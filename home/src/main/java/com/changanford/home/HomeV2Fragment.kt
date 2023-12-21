@@ -283,7 +283,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText?.textSize = 18f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
-            mTabText?.textSize = 17f
+            mTabText?.textSize = 15f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
@@ -312,7 +312,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
-                mTabText.textSize = 17f
+                mTabText.textSize = 15f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
 //            if (i == binding.homeTab.tabCount - 1) {

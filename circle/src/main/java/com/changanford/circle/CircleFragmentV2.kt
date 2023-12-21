@@ -327,7 +327,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.text = tabList[index]
 //                simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                simplePagerTitleView.setPadding(18.toIntPx(), 0, 18.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(context, R.color.color_33)
                 simplePagerTitleView.selectedColor =
