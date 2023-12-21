@@ -16,8 +16,7 @@
             android:id="@+id/iv_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:src="@mipmap/shopping_cart_checked"
+            android:src="@mipmap/shop_order_cb_1"
             app:layout_constraintEnd_toEndOf="@+id/v_line_top"
             app:layout_constraintStart_toStartOf="@+id/v_line_top"
             app:layout_constraintTop_toTopOf="parent" />

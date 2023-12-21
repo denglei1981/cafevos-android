@@ -206,7 +206,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             }
 
             "FINISH" -> {
-                tv.text = "退款完成"
+                tv.text = "退款成功"
             }
 
             "CLOSED" -> {
@@ -245,7 +245,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             }
 
             "FINISH" -> {
-                tv.text = "退款完成"
+                tv.text = "退款成功"
                 binding.tvInputOrder.visibility = View.GONE
                 binding.tvHandle.visibility = View.GONE
             }

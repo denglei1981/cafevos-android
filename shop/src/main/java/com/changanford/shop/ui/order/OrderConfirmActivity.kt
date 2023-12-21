@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
@@ -655,7 +656,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             //福币+人民币支付
             R.id.rb_fbAndRmb -> clickPayWay(0)
             //人民币支付
-            R.id.rb_rmb -> clickPayWay(1)
+            R.id.rb_rmb -> clickPayWay(1, false)
             //自定义支付
             R.id.rb_custom -> clickPayWay(2)
             //选择优惠券
@@ -810,10 +811,18 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                             rbCustom.visibility = View.GONE
                             clickPayWay(0)
                         } else {//固定金额支付
-                            rbRmb.visibility = View.GONE
-                            rbCustom.visibility = View.GONE
-                            rbFbAndRmb.visibility = View.VISIBLE
-                            clickPayWay(0, false)
+                            if (maxUseFb == 0 && minRmb.isNotEmpty()) {
+//                                rbRmb.isEnabled = false
+                                rbRmb.isVisible = true
+                                rbCustom.visibility = View.GONE
+                                rbFbAndRmb.isVisible = false
+                                clickPayWay(1, false)
+                            } else {
+                                rbRmb.isVisible = false
+                                rbCustom.visibility = View.GONE
+                                rbFbAndRmb.isVisible = true
+                                clickPayWay(0, false)
+                            }
                         }
                     }
                 }

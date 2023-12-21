@@ -797,7 +797,7 @@ data class OrderRefundItemBean(
     fun getRefundStatusTxt(): String {
         return when (refundStatus) {
             "ON_GOING" -> "退款中"
-            "SUCESS" -> "退款完成"
+            "SUCESS" -> "退款成功"
             "CLOSED" -> "退款关闭"
             "FINISH" -> "退款成功"
             else -> ""

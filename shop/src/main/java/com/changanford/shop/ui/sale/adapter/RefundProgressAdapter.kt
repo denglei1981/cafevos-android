@@ -46,7 +46,7 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
                 ivRight.setImageDrawable(
                     ContextCompat.getDrawable(
                         context,
-                        R.mipmap.shopping_cart_checked
+                        R.mipmap.shop_order_cb_1
                     )
                 )
             } else {
@@ -85,7 +85,7 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
             }
 
             "FINISH" -> {
-                tv.text = "退款完成"
+                tv.text = "退款成功"
             }
 
             "CLOSED" -> {
