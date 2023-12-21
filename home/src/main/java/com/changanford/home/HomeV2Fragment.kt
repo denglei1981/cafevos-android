@@ -280,7 +280,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
             mTabText?.paint?.isFakeBoldText = true
-            mTabText?.textSize = 20f
+            mTabText?.textSize = 18f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
             mTabText?.textSize = 17f
@@ -308,7 +308,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
                 mTabText.paint.isFakeBoldText = true
-                mTabText.textSize = 20f
+                mTabText.textSize = 18f
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))

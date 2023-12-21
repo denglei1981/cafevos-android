@@ -30,9 +30,11 @@ class SpecialDetailCarAdapter :
             if (!item.isCheck) {
                 binding.tvCarName.background =
                     ContextCompat.getDrawable(context, R.drawable.bg_081700f4_100)
+                binding.tvCarName.setTextColor(ContextCompat.getColor(context,R.color.color_1700f4))
             } else {
                 binding.tvCarName.background =
                     ContextCompat.getDrawable(context, R.drawable.bg_081700f4_100_st_1a1700)
+                binding.tvCarName.setTextColor(ContextCompat.getColor(context,R.color.white))
             }
         }
     }
