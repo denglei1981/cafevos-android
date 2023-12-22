@@ -26,6 +26,36 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/splash" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/guestLayout"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginHorizontal="@dimen/dp_40"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/login"
+            android:text="注册/登录"
+            android:textColor="@color/color_00095b"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:background="@drawable/shape_r_23_c_5c_"
+            app:layout_constraintBottom_toTopOf="@id/guest"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"/>
+        <Button
+            android:id="@+id/guest"
+            android:background="@color/transparent"
+            android:text="游客进入"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="@dimen/dp_100"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Chronometer
         android:id="@+id/chronometer"

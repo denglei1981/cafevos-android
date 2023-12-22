@@ -10,6 +10,11 @@
         android:name="com.changanford.evos.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.changanford.my.ui.LoginUI"
+        android:label="activity_login"
+        tools:layout="@layout/ui_login"/>
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.changanford.evos.SplashFragment"
@@ -19,5 +24,9 @@
             android:id="@+id/action_splashFragment_to_mainActivity"
             app:destination="@id/mainActivity"
             app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:launchSingleTop="true"/>
     </fragment>
 </navigation>

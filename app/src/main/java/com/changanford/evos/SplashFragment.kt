@@ -10,6 +10,7 @@ import android.view.SurfaceHolder
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.compose.DesignElements.map
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
@@ -114,6 +115,23 @@ class SplashFragment : BaseFragment<FragmentSplashBinding, SplashViewModel>() {
             }
         }
         viewModel.imgBean.observe(this) {
+            if (SPUtils.getParam(
+                    requireContext(),
+                    "isfirstin",
+                    true
+                ) as Boolean
+            ){
+                binding.guestLayout.isVisible = true
+                binding.login.setOnClickListener {
+                    bundle.putBoolean("fromSplash",true)
+                    navFinishActivityTo(R.id.action_splashFragment_to_loginActivity, bundle)
+                }
+                binding.guest.setOnClickListener {
+                    navFinishActivityTo(R.id.action_splashFragment_to_mainActivity, bundle)
+                }
+                firstIn()
+                return@observe
+            }
             firstIn()
             it?.adName?.let { _ ->
                 adName = it.adName

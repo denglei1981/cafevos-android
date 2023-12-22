@@ -89,7 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginTop="12dp"
-            android:background="#4A4A4A1A"
+            android:background="#1A4A4A4A"
             app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

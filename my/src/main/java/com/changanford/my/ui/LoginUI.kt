@@ -15,7 +15,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouterFinish
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.MConstant
@@ -75,6 +77,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     private lateinit var tencent: Tencent
     private lateinit var wxApi: IWXAPI
     var mPlayer = MediaPlayer()
+    var fromSplash = false
 
     var qqCallback = object : IUiListener {
         override fun onComplete(p0: Any?) {
@@ -126,6 +129,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun initView() {
 //        ProcessLifecycleOwner.get().lifecycle.addObserver(defaultLifecycleObserver)
+        fromSplash = intent.extras?.getBoolean("fromSplash",false)?:false
         updateMainGio("登陆页", "登陆页")
         GioPageConstant.topicEntrance = "登陆页"
         AppUtils.setStatusBarMarginTop(binding.back, this)
@@ -242,12 +246,12 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 when (it) {
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS,
                     UserManger.UserLoginStatus.USE_CANCEL_BIND_MOBILE -> {
-                        finish()
+                        back()
                     }
 
                     UserManger.UserLoginStatus.USE_UNBIND_MOBILE -> {
                         RouterManger.startARouter(ARouterMyPath.MineBindMobileUI)
-                        finish()
+                        back()
                     }
 
                     else -> {}
@@ -388,6 +392,21 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         return false
     }
 
+    override fun onBackPressed() {
+        if (fromSplash){
+            startARouterFinish(this, ARouterHomePath.MainActivity)
+        }else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun back() {
+        if (fromSplash){
+            startARouterFinish(this, ARouterHomePath.MainActivity)
+        }else {
+            super.back()
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
 //        ProcessLifecycleOwner.get().lifecycle.removeObserver(defaultLifecycleObserver)
