@@ -40,7 +40,7 @@ class UpdateAgreePop(
     private fun initView() {
         viewDataBinding?.let {
             it.tvTitle.text = windowMsg.msgTitle
-            MineUtils.popUpdateAgree(it.tvContent, windowMsg.overMsg, windowMsg.code)
+            MineUtils.popUpdateAgree(it.tvContent, windowMsg.overMsg.toString(), windowMsg.code)
 //            it.tvContent.text = windowMsg.overMsg
             it.tvCancel.setOnClickListener { listener.clickCancel() }
             it.tvSure.setOnClickListener {

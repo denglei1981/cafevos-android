@@ -15,5 +15,5 @@ data class BizCodeBean(
 data class WindowMsg(
     val code: String,
     val msgTitle: String,
-    val overMsg: String
+    val overMsg: String?=null
 )
