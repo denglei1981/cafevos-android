@@ -44,6 +44,7 @@ class CircleDetailsFragmentV2 :
     private var topicId = ""
     private var circleId = ""
     private var userId = ""
+    private var carModelIds: Int? = null
 
     private var checkPosition: Int? = null
 
@@ -52,7 +53,7 @@ class CircleDetailsFragmentV2 :
             type: String,
             topicId: String,
             circleId: String = "",
-            userId: String? = ""
+            userId: String? = "",
         ): CircleDetailsFragmentV2 {
             val bundle = Bundle()
             bundle.putString("type", type)
@@ -104,7 +105,7 @@ class CircleDetailsFragmentV2 :
 
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getListData(type.toInt(), topicId, circleId, page, userId)
+            viewModel.getListData(type.toInt(), topicId, circleId, page, userId,carModelIds)
         }
         binding.ryCircle.adapter = adapter
 
@@ -150,6 +151,11 @@ class CircleDetailsFragmentV2 :
 
     override fun observe() {
         super.observe()
+        LiveDataBus.get().withs<Int?>(LiveDataBusKey.CHOOSE_CAR_TOPIC_ID).observe(this) {
+            page = 1
+            carModelIds = it
+            viewModel.getListData(type.toInt(), topicId, circleId, page, userId, it)
+        }
         viewModel.listBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it.dataList)

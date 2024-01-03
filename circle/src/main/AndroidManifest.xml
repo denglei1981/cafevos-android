@@ -110,5 +110,6 @@
         <activity android:name=".ui.activity.baoming.ActivityFabuBaoming" />
         <activity android:name=".ui.activity.baoming.AvtivityFabuStep2" />
         <activity android:name=".ui.activity.toupiao.ActivityFabuToupiao" />
+        <activity android:name=".ui.activity.ChooseCarActivity" />
     </application>
 </manifest>

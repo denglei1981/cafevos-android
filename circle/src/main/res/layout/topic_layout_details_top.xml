@@ -72,12 +72,25 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_icon"
             tools:text="当代年轻人喜欢什么样的车呢？科技？实用？炫酷？那我们就来讨论一下。" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ry_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginTop="20dp"
             android:background="@color/color_f6"
-            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+            app:layout_constraintTop_toBottomOf="@+id/ry_car" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

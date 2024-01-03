@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.MutableLiveData
@@ -26,6 +27,7 @@ import com.changanford.circle.widget.pop.CircleDetailsPop
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
+import com.changanford.common.adapter.SpecialDetailCarAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.manger.RouterManger
@@ -78,8 +80,12 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     var isCheckDetails = false
     private var isCheckPost = false
     var isCheckPerson = false
+    private var carModelIds: Int? = null
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
+    private val carListAdapter by lazy {
+        SpecialDetailCarAdapter()
+    }
 
     override fun initView() {
         title = "话题详情页"
@@ -91,6 +97,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         circleName = intent.getStringExtra("circleName")
 
+        binding.topContent.ryCar.adapter = carListAdapter
         binding.run {
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@TopicDetailsActivity)
             backImg.setOnClickListener { finish() }
@@ -138,6 +145,25 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     }
 
     private fun initListener(topicName: String) {
+        carListAdapter.setOnItemClickListener { adapter, view, position ->
+            val bean = carListAdapter.getItem(position)
+            bean.isCheck = !bean.isCheck
+            if (bean.isCheck) {
+                //选中
+                carModelIds = bean.carModelId
+//                topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId) }
+            } else {//取消
+                carModelIds = null
+//                topicId?.let { viewModel.getSpecialCarDetail(it, 0) }
+            }
+            carListAdapter.data.forEachIndexed { index, specialCarListBean ->
+                if (index != position) {
+                    specialCarListBean.isCheck = false
+                }
+            }
+            carListAdapter.notifyDataSetChanged()
+            LiveDataBus.get().with(LiveDataBusKey.CHOOSE_CAR_TOPIC_ID).postValue(carModelIds)
+        }
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -152,9 +178,11 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     0 -> {
                         GioPageConstant.topicDetailTabName = "推荐"
                     }
+
                     1 -> {
                         GioPageConstant.topicDetailTabName = "最新"
                     }
+
                     2 -> {
                         GioPageConstant.topicDetailTabName = "精华"
                     }
@@ -201,6 +229,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                             startARouter(ARouterCirclePath.PostActivity)
                                         }
                                     }
+
                                     "3" -> {
                                         RouterManger.run {
                                             param("postEntity", postEntity)
@@ -216,6 +245,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                                         }
 
                                     }
+
                                     "4" -> {
                                         RouterManger.run {
                                             param("postEntity", postEntity)
@@ -349,6 +379,11 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
+        viewModel.carListBean.observe(this) {
+            binding.topContent.ryCar.isVisible = true
+//            carListAdapter.data = it
+            carListAdapter.setList(it)
+        }
         viewModel.topPicDetailsTopBean.observe(this) {
             topGioBean.value = it
             topicName.value = it.name
@@ -404,9 +439,11 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                         0 -> {
                             4
                         }
+
                         1 -> {
                             2
                         }
+
                         else -> {
                             3
                         }

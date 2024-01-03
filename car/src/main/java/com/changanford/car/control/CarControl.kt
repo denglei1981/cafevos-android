@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -51,6 +52,7 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.xiaomi.push.it
 
 
 /**
@@ -63,7 +65,8 @@ class CarControl(
     val fragment: Fragment,
     val viewModel: CarViewModel,
     private val mAdapter: CarNotAdapter,
-    private val headerBinding: HeaderCarBinding
+    private val headerBinding: HeaderCarBinding,
+    private val binding:FragmentCarBinding
 ) {
     var carModelCode: String = ""
     private var isFirstLoc = true
@@ -548,7 +551,7 @@ class CarControl(
     private fun addMarker(latLng: LatLng, dealersName: String?) {
         mLocationClient?.unRegisterLocationListener(myLocationListener)
 //        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
-        headerBinding.apply {
+        binding.apply {
             if (dealersName != null) tvLocationTitle.setText(dealersName)
             val bitmap =
                 BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(if (dealersName == null) layoutLocation0 else layoutLocation1))

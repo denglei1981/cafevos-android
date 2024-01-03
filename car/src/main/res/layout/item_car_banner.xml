@@ -1,37 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.changanford.common.ui.AutoScaleWidthImageView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageCarIntro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:adjustViewBounds="true"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp"
+            android:scaleType="centerCrop"
             tools:srcCompat="@mipmap/ic_def_square_img" />
+
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/img_bottom"
-            app:layout_constraintBottom_toBottomOf="@id/imageCarIntro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/imageCarIntro" />
+
         <com.changanford.common.ui.AutoScaleWidthImageView
             android:id="@+id/img_top"
-            app:layout_constraintTop_toTopOf="@id/imageCarIntro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/imageCarIntro" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_top_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:drawableEnd="@mipmap/car_banner_right_ic"
+            android:drawablePadding="4dp"
+            android:text="参数配置"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/v_guide_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_top_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:drawableEnd="@mipmap/car_banner_right_ic"
+            android:drawablePadding="4dp"
+            android:text="查看更多"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/v_guide_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <View
+            android:id="@+id/v_guide_line"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bottom_left"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/bg_car_l_b"
+            android:gravity="center"
+            android:text="预约试驾"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/v_guide_line"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bottom_right"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="17dp"
+            android:background="@drawable/bg_car_r_b"
+            android:gravity="center"
+            android:text="立即订阅"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/v_guide_line"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85" />
+
         <com.dueeeke.videoplayer.player.VideoView
             android:id="@+id/videoView"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="@dimen/dp_500"/>
+            android:minHeight="@dimen/dp_500"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_bottom_tips"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="19dp"
+            android:src="@mipmap/car_bottom_tips_ic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

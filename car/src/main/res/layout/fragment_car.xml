@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,17 +9,128 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/srl"
-        app:srlEnableLoadMore="false"
-        app:srlEnableRefresh="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_F4"
-        android:paddingBottom="@dimen/dp_60">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        android:paddingBottom="50dp"
+        app:srlEnableLoadMore="false"
+        app:srlEnableRefresh="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"/>
+            android:layout_height="match_parent">
+
+            <com.changanford.car.widget.NewNestedScrollView
+                android:id="@+id/nest_scroll"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/layout_location0"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <com.changanford.common.ui.view.WTextView
+                            android:background="@drawable/shape_whit15_bg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_28"
+                            android:maxWidth="@dimen/dp_120"
+                            android:gravity="center"
+                            android:textSize="@dimen/sp_13"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:textColor="@color/color_33"
+                            style="@style/w_style_txt_ellipsize"
+                            android:text="@string/str_currentPosition"/>
+                        <ImageView
+                            android:layout_marginTop="@dimen/dp_2"
+                            android:src="@mipmap/ic_car_location_green"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layout_location1"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:visibility="visible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <com.changanford.common.ui.view.WTextView
+                            android:id="@+id/tv_locationTitle"
+                            android:background="@drawable/shape_whit15_bg"
+                            android:layout_width="@dimen/dp_120"
+                            android:layout_height="@dimen/dp_28"
+                            android:gravity="center"
+                            android:textSize="@dimen/sp_13"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:textColor="@color/color_33"
+                            style="@style/w_style_txt_ellipsize"
+                            android:text="@string/str_currentPosition"/>
+                        <ImageView
+                            android:layout_marginTop="@dimen/dp_2"
+                            android:id="@+id/img_locationIc"
+                            android:src="@mipmap/ic_car_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <com.zhpan.bannerview.BannerViewPager
+                        android:id="@+id/carTopViewPager"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <com.zhpan.bannerview.indicator.DrawableIndicator
+                        android:id="@+id/dr_indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_20"
+                        android:visibility="gone"
+                        android:background="@color/transparent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@+id/carTopViewPager" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.changanford.car.widget.NewNestedScrollView>
+
+            <RelativeLayout
+                android:id="@+id/rl_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <net.lucode.hackware.magicindicator.MagicIndicator
+                    android:id="@+id/magic_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:background="@null"
+                    android:paddingBottom="5dp" />
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

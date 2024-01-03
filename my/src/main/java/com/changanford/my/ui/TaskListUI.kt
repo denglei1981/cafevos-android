@@ -70,10 +70,11 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         binding.taskRcy.rcyCommonView.scheduleLayoutAnimation()
         binding.signmonth.setOnClickListener { JumpUtils.instans?.jump(55) }
 
-        viewModel.taskBean.observe(this, Observer {
-            completeRefresh(it, taskAdapter, 0)
+        viewModel.taskBean.observe(this) {
+            val useData = it.filter { it.list != null }
+            completeRefresh(useData, taskAdapter, 0)
             showContent()
-        })
+        }
 
         binding.rcyDay.layoutManager = LinearLayoutManager(this).apply {
             orientation = RecyclerView.HORIZONTAL

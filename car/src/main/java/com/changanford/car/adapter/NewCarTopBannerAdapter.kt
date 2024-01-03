@@ -1,5 +1,7 @@
 package com.changanford.car.adapter
 
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -22,76 +24,106 @@ import com.zhpan.bannerview.BaseViewHolder
  * @Time : 2022/1/18
  * @Description : NewCarTopBannerAdapter
  */
-class NewCarTopBannerAdapter(val activity:Activity,val listener: VideoView.OnStateChangeListener) : BaseBannerAdapter<NewCarBannerBean?>() {
+class NewCarTopBannerAdapter(
+    val activity: Activity,
+    val listener: VideoView.OnStateChangeListener
+) : BaseBannerAdapter<NewCarBannerBean?>() {
     private val animationControl by lazy { AnimationControl() }
-//    var videoHashMap= HashMap<String,PlayerHelper?>()
-    var currentPosition=0//当前位置
-    var playerHelper:PlayerHelper?=null
+
+    //    var videoHashMap= HashMap<String,PlayerHelper?>()
+    var currentPosition = 0//当前位置
+    var playerHelper: PlayerHelper? = null
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_car_banner
     }
-    override fun bindData(holder: BaseViewHolder<NewCarBannerBean?>?, data: NewCarBannerBean?, position: Int, pageSize: Int) {
+
+    override fun bindData(
+        holder: BaseViewHolder<NewCarBannerBean?>?,
+        data: NewCarBannerBean?,
+        position: Int,
+        pageSize: Int
+    ) {
         holder?.let {
             DataBindingUtil.bind<ItemCarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
-                    if(mainIsVideo==0){
-                        if(mainImg!=null){
-                            imageCarIntro.visibility=View.VISIBLE
-                            GlideUtils.loadFullSize(mainImg, imageCarIntro, R.mipmap.ic_def_square_img)
-                        }else{
-                            imageCarIntro.visibility=View.GONE
+                    if (mainIsVideo == 0) {
+                        if (mainImg != null) {
+                            imageCarIntro.visibility = View.VISIBLE
+                            GlideUtils.loadFullSize(
+                                mainImg,
+                                imageCarIntro,
+                                R.mipmap.ic_def_square_img
+                            )
+                        } else {
+                            imageCarIntro.visibility = View.GONE
                         }
 
-                        if(topImg!=null){
-                            imgTop.visibility=View.VISIBLE
-                            imgTop.load(topImg,0)
-                            animationControl.startAnimation(imgTop,topAni)
-                        }else{
-                            imgTop.visibility=View.GONE
+                        if (topImg != null) {
+                            imgTop.visibility = View.VISIBLE
+                            imgTop.load(topImg, 0)
+                            animationControl.startAnimation(imgTop, topAni)
+                        } else {
+                            imgTop.visibility = View.GONE
                         }
 
-                        if(bottomImg!=null){
-                            imgBottom.visibility=View.VISIBLE
-                            imgBottom.load(bottomImg,0)
-                            animationControl.startAnimation(imgBottom,bottomAni)
-                        }else{
-                            imgBottom.visibility=View.GONE
+                        if (bottomImg != null) {
+                            imgBottom.visibility = View.VISIBLE
+                            imgBottom.load(bottomImg, 0)
+                            animationControl.startAnimation(imgBottom, bottomAni)
+                        } else {
+                            imgBottom.visibility = View.GONE
                         }
-                        videoView.visibility= View.GONE
-                    }else if(currentPosition==position){//是视频
+                        videoView.visibility = View.GONE
+                    } else if (currentPosition == position) {//是视频
                         "position:$position》》》渲染item>>>".wLogE()
                         releaseVideo()
-                        val videoUrl=mainImg
-                        imgTop.load(topImg,0)
-                        imageCarIntro.visibility=View.GONE
+                        val videoUrl = mainImg
+                        imgTop.load(topImg, 0)
+                        imageCarIntro.visibility = View.GONE
 //                        imgTop.visibility=View.INVISIBLE
-                        imgBottom.visibility=View.GONE
-                        videoView.visibility= View.VISIBLE
+                        imgBottom.visibility = View.GONE
+                        videoView.visibility = View.VISIBLE
                         playerHelper = PlayerHelper(activity, videoView, coverPath = topImg).apply {
-                            setJump(mainJumpType,mainJumpVal)
+                            setJump(mainJumpType, mainJumpVal)
                             dealWithPlay(videoUrl)
                             addOnStateChangeListener(listener)
                         }
                     }
+                    starBottomAnima(ivBottomTips)
                 }
             }
         }
     }
-    fun pauseVideo(){
+
+    @SuppressLint("Recycle")
+    private fun starBottomAnima(view: View) {
+        val objectAnimator = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f)
+        objectAnimator.apply {
+            duration = 1000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+            start()
+        }
+    }
+
+    fun pauseVideo() {
         playerHelper?.pause()
     }
-    fun resumeVideo(videoUrl:String?){
+
+    fun resumeVideo(videoUrl: String?) {
         "继续播放url:$videoUrl>>>>>find:${playerHelper}".wLogE()
         playerHelper?.dealWithPlay(videoUrl)
     }
-    fun releaseVideo(){
+
+    fun releaseVideo() {
         playerHelper?.apply {
             release()
             clearOnStateChangeListeners()
-            playerHelper=null
+            playerHelper = null
         }
     }
-    fun addVideoListener(listener: VideoView.OnStateChangeListener){
+
+    fun addVideoListener(listener: VideoView.OnStateChangeListener) {
         playerHelper?.apply {
             addOnStateChangeListener(listener)
         }

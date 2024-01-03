@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:background="@color/color_F4">
         <com.baidu.mapapi.map.MapView
             android:layout_margin="@dimen/dp_5"
@@ -23,35 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_180"
-            android:background="@color/color_F4"/>
-        <com.zhpan.bannerview.BannerViewPager
-            android:id="@+id/carTopViewPager"
-            android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent" />
-        <com.zhpan.bannerview.indicator.DrawableIndicator
-            android:id="@+id/dr_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_20"
-            android:background="@color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/carTopViewPager" />
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/caractivity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"/>
-        <View
-            android:id="@+id/view_banner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/carTopViewPager"
-            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_10"/>
-        <androidx.appcompat.widget.AppCompatButton
             android:visibility="gone"
             android:id="@+id/btn_submit"
             android:layout_marginTop="@dimen/dp_20"
@@ -59,8 +30,6 @@
             android:layout_marginEnd="@dimen/dp_28"
             app:layout_constraintTop_toBottomOf="@id/dr_indicator"
             android:background="@drawable/shape_white_24dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:text="@string/str_orderImmediately"
             android:textColor="@color/color_1700f4"
             android:gravity="center"
@@ -122,5 +91,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+
+<!--        <androidx.compose.ui.platform.ComposeView-->
+<!--            android:id="@+id/caractivity"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"/>-->
+<!--        <View-->
+<!--            android:id="@+id/view_banner"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/carTopViewPager"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="@dimen/dp_10"/>-->
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:visibility="gone"-->
+<!--            android:id="@+id/btn_submit"-->
+<!--            android:layout_marginTop="@dimen/dp_20"-->
+<!--            android:layout_marginStart="@dimen/dp_28"-->
+<!--            android:layout_marginEnd="@dimen/dp_28"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/dr_indicator"-->
+<!--            android:background="@drawable/shape_white_24dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/str_orderImmediately"-->
+<!--            android:textColor="@color/color_00095B"-->
+<!--            android:gravity="center"-->
+<!--            android:minHeight="@dimen/dp_40"/>-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

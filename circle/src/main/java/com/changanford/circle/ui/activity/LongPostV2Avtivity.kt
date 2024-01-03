@@ -203,6 +203,24 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
     }
 
+    private fun showCar(carName: String) {
+        headBinding.icAttribute.run {
+            clCar.isVisible = true
+            tvCar.visibility = View.GONE
+            llCar.visibility = View.VISIBLE
+            tvCarName.text = carName
+        }
+    }
+
+    private fun isCarHistory(isCar: Boolean) {
+        headBinding.icAttribute.run {
+            clCar.isVisible = isCar
+            if (!isCar) {
+                params.remove("carId")
+            }
+        }
+    }
+
     private fun noTopic() {
         params.remove("topicId")
         headBinding.icAttribute.run {
@@ -263,6 +281,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             headBinding.tvFm.visibility = View.GONE
             checkViewTwoTypeContent()
         })
+        LiveDataBus.get().withs<String>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this){
+//            params["city"] = it.cityName
+            showCar(it)
+        }
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
             checkViewOneTypeContent()
         }
@@ -922,8 +944,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     llTopic.visibility = View.GONE
                     tvTopicName.text = ""
                 }
+                isCarHistory(false)
             }
             rlCircle.setOnClickListener { toQuanzi() }
+            rlCar.setOnClickListener { chooseCar() }
             tvDeleteCircle.setOnClickListener {
                 params.remove("circleId")
 
@@ -931,6 +955,15 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     tvCircle.visibility = View.VISIBLE
                     llCircle.visibility = View.GONE
                     tvCircleName.text = ""
+                }
+            }
+            tvDeleteCar.setOnClickListener {
+                params.remove("carId")
+
+                headBinding.icAttribute.run {
+                    tvCar.visibility = View.VISIBLE
+                    llCar.visibility = View.GONE
+                    tvCarName.text = ""
                 }
             }
             rlAddress.setOnClickListener {
@@ -1253,6 +1286,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 viewModel.getOSS()
             }
         }
+    }
+
+    private fun chooseCar(){
+        startARouter(ARouterCirclePath.ChooseCarActivity)
     }
 
     private fun initandonclickhead() {

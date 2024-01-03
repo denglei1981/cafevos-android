@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -17,17 +18,14 @@
         <View
             android:id="@+id/v_line_one"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/color_ee" />
+            android:layout_height="14dp" />
 
         <RelativeLayout
             android:id="@+id/rl_topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_topic"
@@ -58,6 +56,7 @@
                 android:background="@drawable/bg_081700f4_100"
                 android:gravity="center"
                 android:orientation="horizontal"
+                tools:visibility="visible"
                 android:paddingStart="9dp"
                 android:visibility="gone">
 
@@ -94,19 +93,112 @@
                 android:src="@mipmap/right_74889d" />
         </RelativeLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:src="@mipmap/post_car_down_ic"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <RelativeLayout
+                android:id="@+id/rl_car"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginTop="2dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_tips">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_item_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_post_car_left" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/iv_item_car"
+                    android:text="添加车型"
+                    android:textColor="@color/color_16"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toEndOf="@+id/tv_car"
+                    android:background="@drawable/bg_081700f4_100"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="9dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_car_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="3dp"
+                        android:ellipsize="end"
+                        android:maxWidth="220dp"
+                        android:maxLines="1"
+                        android:text="选择车型"
+                        android:textColor="@color/color_1700F4"
+                        android:textSize="14sp"
+                        tools:text="春日热“练”" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_delete_car"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@mipmap/ic_delete_post_item"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="9dp"
+                        android:textColor="@color/color_1700F4"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/right_74889d" />
+            </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/color_ee"
-            android:visibility="gone" />
+            android:layout_marginTop="10dp" />
 
         <RelativeLayout
             android:id="@+id/rl_circle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_circle"
@@ -186,7 +278,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="14dp"
-            android:paddingBottom="14dp">
+            android:paddingBottom="10dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_address"

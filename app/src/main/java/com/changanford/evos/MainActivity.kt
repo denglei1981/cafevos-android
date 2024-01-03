@@ -198,6 +198,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     GioPageConstant.mainTabName = "爱车页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).postValue("")
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("爱车")
                     }

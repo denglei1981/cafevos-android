@@ -1,4 +1,4 @@
-package com.changanford.home.bean
+package com.changanford.common.bean
 
 /**
  *Author lcw

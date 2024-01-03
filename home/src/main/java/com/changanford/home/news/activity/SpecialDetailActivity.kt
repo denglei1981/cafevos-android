@@ -8,10 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.common.adapter.SpecialDetailCarAdapter
 import com.changanford.common.basic.BaseLoadSirActivity
-import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.JumpUtils
@@ -26,7 +24,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
-import com.changanford.home.adapter.SpecialDetailCarAdapter
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
@@ -48,6 +45,9 @@ class SpecialDetailActivity :
         SpecialDetailCarAdapter()
     }
     private var selectPosition: Int = -1;// 记录选中的 条目
+    private var page = 1
+    private var isSelectCar = false
+    private var carModelId: Int = 0
 
     override fun initView() {
         title = "专题详情页"
@@ -78,13 +78,26 @@ class SpecialDetailActivity :
                 }
             }
         }
+//        newsListAdapter.loadMoreModule.setOnLoadMoreListener {
+//            page++
+//            if (isSelectCar) {
+//                topicId?.let { viewModel.getSpecialCarDetail(it, carModelId, page) }
+//            }else{
+//                viewModel.getSpecialDetail(topicId!!, page)
+//            }
+//        }
         carListAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = carListAdapter.getItem(position)
             bean.isCheck = !bean.isCheck
+            page = 1
             if (bean.isCheck) {
+                isSelectCar = true
+                carModelId = bean.carModelId
                 //选中
                 topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId) }
             } else {//取消
+                isSelectCar = false
+                carModelId = 0
                 topicId?.let { viewModel.getSpecialCarDetail(it, 0) }
             }
             carListAdapter.data.forEachIndexed { index, specialCarListBean ->
@@ -188,12 +201,14 @@ class SpecialDetailActivity :
             }
         })
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
+            page = 1
             topicId?.let { ti -> viewModel.getSpecialDetail(ti) }
         })
 
         viewModel.carListBean.observe(this) {
             binding.layoutCollBar.ryCar.isVisible = true
-            carListAdapter.data = it
+//            carListAdapter.data = it
+            carListAdapter.setList(it)
         }
     }
 

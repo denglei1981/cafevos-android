@@ -1,4 +1,4 @@
-package com.changanford.home.adapter
+package com.changanford.common.adapter
 
 import android.os.Build
 import android.text.Html
@@ -7,9 +7,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.changanford.home.R
-import com.changanford.home.bean.SpecialCarListBean
-import com.changanford.home.databinding.ItemSpecialDetailCarBinding
+import com.changanford.common.R
+import com.changanford.common.bean.SpecialCarListBean
+import com.changanford.common.databinding.ItemSpecialDetailCarBinding
 
 /**
  *Author lcw

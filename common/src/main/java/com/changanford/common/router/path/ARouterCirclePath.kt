@@ -37,6 +37,7 @@ object ARouterCirclePath {
     const val PictureEditAudioActivity = "/circle/PictureEditAudioActivity"
     const val VideoChoseFMActivity = "/circle/VideoChoseFMActivity"
     const val LongPostAvtivity = "/circle/LongPostAvtivity"
+    const val ChooseCarActivity = "/circle/ChooseCarActivity"
     const val SearchCircleActivity = "/circle/SearchCircleActivity"
     const val SearchTopicActivity = "/circle/SearchTopicActivity"
     const val CreateCircleActivity = "/circle/CreateCircleActivity"

@@ -94,7 +94,7 @@ class CircleDetailsViewModel : BaseViewModel() {
         )
     }
 
-    fun checkJoinFun(circleId: String,block:()->Unit) {
+    fun checkJoinFun(circleId: String, block: () -> Unit) {
         viewModelScope.launch {
             var body = HashMap<String, Any>()
             body["circleId"] = circleId
@@ -102,11 +102,11 @@ class CircleDetailsViewModel : BaseViewModel() {
             fetchRequest {
                 apiService.onlyAuthJoinCheck(body.header(rkey), body.body(rkey))
             }.onSuccess {
-              if (it?.canJoin == true){
-                  block.invoke()
-              }else{
-                  it?.alertMes?.let { it1 -> ShowPopUtils.showJoinCircleAuPop(it1) }
-              }
+                if (it?.canJoin == true) {
+                    block.invoke()
+                } else {
+                    it?.alertMes?.let { it1 -> ShowPopUtils.showJoinCircleAuPop(it1) }
+                }
             }
         }
     }
@@ -139,7 +139,8 @@ class CircleDetailsViewModel : BaseViewModel() {
         topicId: String,
         circleId: String,
         page: Int,
-        userId: String? = null
+        userId: String? = null,
+        carModelIds: Int? = null
     ) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -153,6 +154,11 @@ class CircleDetailsViewModel : BaseViewModel() {
                 }
                 if (circleId.isNotEmpty()) {
                     it["circleId"] = circleId
+                }
+                if (carModelIds != null) {
+                    if (carModelIds > 0) {
+                        it["carModelIds"] = carModelIds
+                    }
                 }
                 if (viewType == 5) {
                     userId?.let { _ ->

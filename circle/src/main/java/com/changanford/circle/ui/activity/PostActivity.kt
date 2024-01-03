@@ -13,13 +13,14 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
 import android.text.*
-import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.core.widget.addTextChangedListener
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -44,7 +45,6 @@ import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
@@ -69,12 +69,10 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.luck.picture.lib.tools.ScreenUtils
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.PostVideoAdapter
 import com.changanford.circle.config.CircleConfig
-import com.changanford.circle.databinding.HeaderEmojiBinding
 import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.utilext.PermissionPopUtil
 import com.qw.soul.permission.bean.Permissions
@@ -95,7 +93,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     private var circlename: String = ""
     private var address: String = ""
     lateinit var postPicAdapter: PostPicAdapter
-    val postVideoAdapter by lazy {
+    private val postVideoAdapter by lazy {
         PostVideoAdapter()
     }
     private var tempList = ArrayList<LocalMedia>() //临时的
@@ -163,7 +161,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
             }.init()  //顶起页面底部
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
-        binding.icAttribute.vLineOne.visibility = View.GONE
+//        binding.icAttribute.vLineOne.visibility = View.GONE
         binding.title.barTvTitle.text = "发动态"
         binding.title.barTvOther.visibility = View.VISIBLE
         binding.title.barTvOther.text = "发布"
@@ -245,6 +243,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
             noTopic()
         }
+        LiveDataBus.get().withs<String>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this){
+//            params["city"] = it.cityName
+            showCar(it)
+        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -314,6 +316,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                 params["topicId"] = it.topicId.toString()
                 showTopic(it.name)
+                isCarHistory(true)
             }
 
 
@@ -658,6 +661,25 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
+    private fun showCar(carName: String) {
+        binding.icAttribute.run {
+            tvCar.visibility = View.GONE
+            llCar.visibility = View.VISIBLE
+            val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.setMargins(0,-4,0,0)
+            tvCarName.text = carName
+        }
+    }
+
+    private fun isCarHistory(isCar: Boolean) {
+        binding.icAttribute.run {
+            clCar.isVisible = isCar
+            if (!isCar) {
+                params.remove("carId")
+            }
+        }
+    }
+
     private fun noTopic() {
         params.remove("topicId")
         binding.icAttribute.run {
@@ -776,6 +798,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postVideoAdapter.getItem(position))
                 postVideoAdapter.remove(postVideoAdapter.getItem(position))
+                checkNext()
 //                binding.mscr.smoothScrollTo(0, 0);
             }
         }
@@ -1025,8 +1048,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     llTopic.visibility = View.GONE
                     tvTopicName.text = ""
                 }
+                isCarHistory(false)
             }
             rlCircle.setOnClickListener { toQuanzi() }
+            rlCar.setOnClickListener { chooseCar() }
             tvDeleteCircle.setOnClickListener {
                 params.remove("circleId")
 
@@ -1034,6 +1059,17 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     tvCircle.visibility = View.VISIBLE
                     llCircle.visibility = View.GONE
                     tvCircleName.text = ""
+                }
+            }
+            tvDeleteCar.setOnClickListener {
+                params.remove("carId")
+
+                binding.icAttribute.run {
+                    tvCar.visibility = View.VISIBLE
+                    llCar.visibility = View.GONE
+                    val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
+                    layoutParams.setMargins(0,0,0,0)
+                    tvCarName.text = ""
                 }
             }
             rlAddress.setOnClickListener {
@@ -1860,6 +1896,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     selectList.add(SelectlocalMedia)
                     postVideoAdapter.setList(selectList)
                     postVideoAdapter.notifyDataSetChanged()
+                    checkNext()
 
                 }
 //                REQUEST_LOCATION_SERVICE->{ //打开了定位回调。
@@ -1870,6 +1907,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 //                }
             }
         }
+    }
+
+    private fun chooseCar() {
+        startARouter(ARouterCirclePath.ChooseCarActivity)
     }
 
     fun handleEditPost() {
@@ -2120,8 +2161,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         if (isHandleFinish) {
             finish()
         }
-
-
     }
 
     fun showMoreTag() {

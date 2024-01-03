@@ -2,13 +2,12 @@ package com.changanford.home.news.request
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.net.*
-import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.bean.SpecialCarListBean
-import com.changanford.home.bean.SpecialListMainBean
 import com.changanford.home.news.data.SpecialDetailData
+import com.xiaomi.push.it
 
 /**
  *  专题详情
@@ -25,6 +24,8 @@ class SpecialDetailViewModel : BaseViewModel() {
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["specialTopicId"] = specialTopicId
+//            requestBody["specialTopicId"] = specialTopicId
+//            requestBody["pageNo"] = page
             val rkey = getRandomKey()
             ApiClient.createApi<HomeNetWork>()
                 .getSpecialTopicList(requestBody.header(rkey), requestBody.body(rkey))
@@ -46,6 +47,8 @@ class SpecialDetailViewModel : BaseViewModel() {
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["specialTopicId"] = specialTopicId
+//            requestBody["pageNo"] = page
+//            requestBody["pageSize"] = 20
             if (carModelId > 0) {
                 requestBody["carModelId"] = carModelId
             }
@@ -68,7 +71,7 @@ class SpecialDetailViewModel : BaseViewModel() {
             val requestBody = HashMap<String, Any>()
             requestBody["type"] = "1"
             val rkey = getRandomKey()
-            ApiClient.createApi<HomeNetWork>()
+            ApiClient.createApi<NetWorkApi>()
                 .getCarModelList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
                     carListBean.value = it
