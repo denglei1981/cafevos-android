@@ -92,9 +92,9 @@ class SpecialDetailActivity :
             page = 1
             if (bean.isCheck) {
                 isSelectCar = true
-                carModelId = bean.carModelId
+                carModelId = bean.carModelId.toInt()
                 //选中
-                topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId) }
+                topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId.toInt()) }
             } else {//取消
                 isSelectCar = false
                 carModelId = 0

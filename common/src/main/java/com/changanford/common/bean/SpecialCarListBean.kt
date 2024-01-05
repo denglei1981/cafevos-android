@@ -6,7 +6,7 @@ package com.changanford.common.bean
  *Purpose
  */
 data class SpecialCarListBean(
-    val carModelId: Int,
+    val carModelId: String,
     val carModelName: String,
     val carModelPic: String,
     var isCheck: Boolean = false

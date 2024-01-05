@@ -80,7 +80,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     var isCheckDetails = false
     private var isCheckPost = false
     var isCheckPerson = false
-    private var carModelIds: Int? = null
+    private var carModelIds: String? = null
     private var carModelName: String? = null
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
