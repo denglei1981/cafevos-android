@@ -16,6 +16,7 @@ data class HotPicBean(
 data class HotPicItemBean(
     val description: String = "",
     val likesCount: Int = 0,
+    val isBuyCarDiary: Int = 0,
     val name: String = "",
     val heat: String = "",
     val pic: String = "",

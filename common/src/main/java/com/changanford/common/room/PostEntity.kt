@@ -24,6 +24,8 @@ data class PostEntity(
     @ColumnInfo(name = "plateName") var plateName: String = "",//所属板块名称 1 大咖 2 社区
     @ColumnInfo(name = "title") var title: String = "",//标题
     @ColumnInfo(name = "topicId") var topicId: String = "",//话题id
+    @ColumnInfo(name = "carModelId") var carModelId: String = "",//车型id
+    @ColumnInfo(name = "carModelName") var carModelName: String = "",//车型昵称
     @ColumnInfo(name = "topicName") var topicName: String = "",//话题id
     @ColumnInfo(name = "type") var type: String = "",//帖子类型 1 图文 2 图片 3 视频 4 图文长帖，5 报名活动 ，6 投票活动
     @ColumnInfo(name = "userId") var userId: String = "",//用户id

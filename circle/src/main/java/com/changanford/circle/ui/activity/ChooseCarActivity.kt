@@ -12,6 +12,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -44,7 +45,7 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
             barImgBack.setOnClickListener { finish() }
             barTvOther.setOnClickListener {
                 LiveDataBus.get().with(LiveDataBusKey.CHOOSE_CAR_POST)
-                    .postValue(adapter.data[adapter.checkPosition].spuName)
+                    .postValue(adapter.data[adapter.checkPosition])
                 finish()
             }
         }
@@ -61,11 +62,11 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
 
     override fun initData() {
         viewModel.getMoreCar()
-        viewModel.carMoreInfoBean.observe(this) {
-            if (it?.carModels.isNullOrEmpty()) {
+        viewModel.carListBean.observe(this) {
+            if (it.isNullOrEmpty()) {
                 showFailure("没有数据")
             } else {
-                adapter.setList(it?.carModels)
+                adapter.setList(it)
                 showContent()
             }
         }

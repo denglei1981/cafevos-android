@@ -8,5 +8,6 @@ package com.changanford.common.bean
 data class SpecialCarListBean(
     val carModelId: Int,
     val carModelName: String,
+    val carModelPic: String,
     var isCheck: Boolean = false
 )

@@ -4,6 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CarMoreInfoBean
+import com.changanford.common.bean.SpecialCarListBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
 import com.changanford.common.net.getRandomKey
@@ -21,20 +24,20 @@ import kotlinx.coroutines.launch
 class ChooseCarViewModel : BaseViewModel() {
 
     //更多车型
-    val carMoreInfoBean=MutableLiveData<CarMoreInfoBean?>()
+    val carListBean = MutableLiveData<ArrayList<SpecialCarListBean>>()
 
     fun getMoreCar(){
-        viewModelScope.launch {
-            fetchRequest {
-                val hashMap = HashMap<String, Any>()
-                val randomKey = getRandomKey()
-                apiService.getMoreCareInfo(hashMap.header(randomKey),hashMap.body(randomKey))
-            }.onSuccess {
-                carMoreInfoBean.postValue(it)
-            }.onWithMsgFailure {
-                carMoreInfoBean.postValue(null)
-                it?.toast()
-            }
-        }
+        launch(false, {
+            val requestBody = HashMap<String, Any>()
+            requestBody["type"] = "2"
+            val rkey = getRandomKey()
+            ApiClient.createApi<NetWorkApi>()
+                .getCarModelList(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    carListBean.value = it
+                }.onWithMsgFailure {
+
+                }
+        })
     }
 }

@@ -16,6 +16,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -70,6 +71,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.load
 import com.luck.picture.lib.thread.PictureThreadUtils.runOnUiThread
@@ -98,6 +100,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private var postViewType = MutableLiveData(0)
+    private var specialCarListBean: SpecialCarListBean? = null
 
     private lateinit var plateBean: PlateBean
     private var platename: String = ""
@@ -205,10 +208,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     private fun showCar(carName: String) {
         headBinding.icAttribute.run {
-            clCar.isVisible = true
             tvCar.visibility = View.GONE
             llCar.visibility = View.VISIBLE
             tvCarName.text = carName
+            val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.setMargins(0, -4, 0, 0)
         }
     }
 
@@ -216,7 +220,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         headBinding.icAttribute.run {
             clCar.isVisible = isCar
             if (!isCar) {
-                params.remove("carId")
+                params.remove("carModelIds")
+                tvCarName.text = ""
+                tvCar.visibility = View.VISIBLE
+                llCar.visibility = View.GONE
             }
         }
     }
@@ -270,6 +277,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
         LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
             noTopic()
+            isCarHistory(false)
         }
         LiveDataBus.get().with(LiveDataBusKey.LONGPOSTFM).observe(this, Observer {
             isunSave = false
@@ -281,9 +289,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             headBinding.tvFm.visibility = View.GONE
             checkViewTwoTypeContent()
         })
-        LiveDataBus.get().withs<String>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this){
-//            params["city"] = it.cityName
-            showCar(it)
+        LiveDataBus.get().withs<SpecialCarListBean>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this) {
+            specialCarListBean = it
+            params["carModelIds"] = it.carModelId
+            showCar(it.carModelName)
         }
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).observe(this) {
             checkViewOneTypeContent()
@@ -366,8 +375,8 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 isunSave = false
                 buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                 params["topicId"] = it.topicId.toString()
-
                 showTopic(it.name)
+                isCarHistory(it.isBuyCarDiary == 1)
             }
 
 
@@ -604,6 +613,12 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
             showTopic(intent.extras?.getString("topName") ?: "")
         }
+        if (!intent.getStringExtra("carModelsId").isNullOrEmpty()) {
+            params["carModelIds"] = intent.getStringExtra("carModelsId").toString()
+            val carModelName = intent.getStringExtra("carModelsName").toString()
+            isCarHistory(true)
+            showCar(carModelName)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -678,6 +693,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                     ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
                 )
                 showCircle(locaPostEntity!!.circleName)
+            }
+            if (locaPostEntity?.carModelId?.isNotEmpty() == true) {
+                params["carModelIds"] = locaPostEntity!!.carModelId
+                showCar(locaPostEntity!!.carModelName)
+                isCarHistory(true)
             }
             showLocaPostCity()
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
@@ -958,12 +978,14 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 }
             }
             tvDeleteCar.setOnClickListener {
-                params.remove("carId")
+                params.remove("carModelIds")
 
                 headBinding.icAttribute.run {
                     tvCar.visibility = View.VISIBLE
                     llCar.visibility = View.GONE
                     tvCarName.text = ""
+                    val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
+                    layoutParams.setMargins(0, 0, 0, 0)
                 }
             }
             rlAddress.setOnClickListener {
@@ -1288,7 +1310,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         }
     }
 
-    private fun chooseCar(){
+    private fun chooseCar() {
         startARouter(ARouterCirclePath.ChooseCarActivity)
     }
 
@@ -1810,6 +1832,10 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         postEntity.topicId =
             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
         postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
+        postEntity.carModelId =
+            if (params["carModelIds"] == null) "" else params["carModelIds"] as String  //车型ID
+        postEntity.carModelName =
+            if (params["carModelIds"] == null) "" else headBinding.icAttribute.tvCarName.text.toString()   //车型名称
         postEntity.keywords =
             if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()

@@ -10,6 +10,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemChooseCarPostBinding
 import com.changanford.circle.ext.loadCircleImage
 import com.changanford.common.bean.NewCarTagBean
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.utilext.toIntPx
 
@@ -19,13 +20,13 @@ import com.changanford.common.utilext.toIntPx
  *Purpose
  */
 class ChooseCarAdapter :
-    BaseQuickAdapter<NewCarTagBean, BaseViewHolder>(R.layout.item_choose_car_post) {
+    BaseQuickAdapter<SpecialCarListBean, BaseViewHolder>(R.layout.item_choose_car_post) {
 
     var checkPosition = 0
 
-    override fun convert(holder: BaseViewHolder, item: NewCarTagBean) {
+    override fun convert(holder: BaseViewHolder, item: SpecialCarListBean) {
         val binding: ItemChooseCarPostBinding = DataBindingUtil.bind(holder.itemView)!!
-        binding.tvName.text = item.spuName
+        binding.tvName.text = item.carModelName
         binding.ivIcon.loadCompress2(item.carModelPic)
         if (holder.layoutPosition == checkPosition) {
             binding.llContent.background =

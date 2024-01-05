@@ -81,6 +81,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var isCheckPost = false
     var isCheckPerson = false
     private var carModelIds: Int? = null
+    private var carModelName: String? = null
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
     private val carListAdapter by lazy {
@@ -148,13 +149,13 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         carListAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = carListAdapter.getItem(position)
             bean.isCheck = !bean.isCheck
-            if (bean.isCheck) {
+            carModelIds = if (bean.isCheck) {
                 //选中
-                carModelIds = bean.carModelId
-//                topicId?.let { viewModel.getSpecialCarDetail(it, bean.carModelId) }
+                carModelName = bean.carModelName
+                bean.carModelId
             } else {//取消
-                carModelIds = null
-//                topicId?.let { viewModel.getSpecialCarDetail(it, 0) }
+                carModelName = ""
+                null
             }
             carListAdapter.data.forEachIndexed { index, specialCarListBean ->
                 if (index != position) {
@@ -289,6 +290,10 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         bundle.putString("topId", topicId)
         bundle.putBoolean("isTopPost", true)
         bundle.putString("topName", topicName)
+        if (carModelIds != null) {
+            bundle.putString("carModelsId",carModelIds.toString())
+            bundle.putString("carModelsName",carModelName.toString())
+        }
         circleId?.let {
             bundle.putString("circleId", it)
             bundle.putBoolean("isCirclePost", true)

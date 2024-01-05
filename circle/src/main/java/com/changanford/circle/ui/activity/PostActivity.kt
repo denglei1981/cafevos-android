@@ -73,6 +73,7 @@ import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.PostVideoAdapter
 import com.changanford.circle.config.CircleConfig
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.utilext.PermissionPopUtil
 import com.qw.soul.permission.bean.Permissions
@@ -140,7 +141,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     private var circlePostTagDialog: CirclePostTagDialog? = null
     private var inLocalMedia: ArrayList<LocalMedia>? = null
-    private val isVideoPost = MutableLiveData<Boolean>(false)
+    private val isVideoPost = MutableLiveData(false)
+    private var specialCarListBean: SpecialCarListBean? = null
 
     companion object {
         const val REQUEST_CIRCLE = 0x435
@@ -187,6 +189,169 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             } else {
                 typeLoadingText = "图片上传中.."
                 binding.picsrec.adapter = postPicAdapter
+            }
+        }
+    }
+
+    override fun initData() {
+        onclick()
+        viewModel.getPlate() //获取发帖类型
+        viewModel.getTags() //标签
+        initbuttom()
+        params["type"] = 2
+        val manager = FullyGridLayoutManager(
+            this,
+            3, GridLayoutManager.VERTICAL, false
+        )
+        binding.picsrec.layoutManager = manager
+        postPicAdapter.draggableModule.isDragEnabled = true
+        postPicAdapter.setList(selectList)
+        postVideoAdapter.setList(selectList)
+        initlocaData()
+        if (isH5Post) {
+            postType = intent.extras?.getInt("postType") ?: 0
+            jsonStr = intent.extras?.getString("jsonStr") ?: ""
+            if (jsonStr.isNotEmpty()) {
+                h5postbean = JSON.parseObject(jsonStr, H5PostTypeBean::class.java)
+                params["activityId"] = h5postbean?.ext ?: ""
+            }
+        }
+        if (isCirclePost) {
+            params["circleId"] = intent.extras?.getString("circleId") ?: "0"
+            circlename = intent.extras?.getString("circleName") ?: ""
+            circlename.isNotEmpty().let {
+                buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
+            }
+            showCircle(circlename)
+        }
+
+        if (isTopPost) {
+            params["topicId"] = intent.extras?.getString("topId") ?: "0"
+            params["topicName"] = intent.extras?.getString("topName") ?: ""
+            (params["topicName"] as String).isNotEmpty().let {
+                buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
+            }
+            showTopic(intent.extras?.getString("topName") ?: "")
+        }
+        if (!intent.getStringExtra("carModelsId").isNullOrEmpty()) {
+            params["carModelIds"] = intent.getStringExtra("carModelsId").toString()
+            val carModelName = intent.getStringExtra("carModelsName").toString()
+            isCarHistory(true)
+            showCar(carModelName)
+        }
+        binding.bottom.tvMore.setOnClickListener {
+            showMoreTag()
+        }
+    }
+
+    //读取草稿
+    private fun initlocaData() {
+        if (locaPostEntity != null) {
+            jsonStr2obj(locaPostEntity!!.localMeadle)
+            binding.etBiaoti.setText(locaPostEntity!!.title)
+            binding.etContent.setText(locaPostEntity!!.content)
+            params["plate"] = locaPostEntity!!.plate
+            params["topicId"] = locaPostEntity!!.topicId
+            params["type"] = locaPostEntity!!.type
+            params["keywords"] = locaPostEntity!!.keywords
+            params["circleId"] = locaPostEntity!!.circleId
+            params["content"] = locaPostEntity!!.content
+            params["actionCode"] = locaPostEntity!!.actionCode
+            params["title"] = locaPostEntity!!.title
+            params["address"] = locaPostEntity!!.address
+            params["lat"] = locaPostEntity!!.lat
+            params["lon"] = locaPostEntity!!.lon
+            params["type"] = locaPostEntity!!.type
+            params["province"] = locaPostEntity!!.province
+            params["cityCode"] = locaPostEntity!!.cityCode
+            params["city"] = locaPostEntity!!.city
+            params["addrName"] = locaPostEntity!!.addrName
+            platename = locaPostEntity!!.plateName
+            circlename = locaPostEntity!!.circleName
+            isVideoPost.value = locaPostEntity!!.type == "3"
+            if (params["plate"] != 0) {
+                buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
+                buttomTypeAdapter.setData(2, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
+            }
+            if (locaPostEntity!!.topicName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    3,
+                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
+                )
+                showTopic(locaPostEntity!!.topicName)
+            }
+            if (locaPostEntity!!.circleName.isNotEmpty()) {
+                buttomTypeAdapter.setData(
+                    4,
+                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
+                )
+                showCircle(locaPostEntity!!.circleName)
+            }
+            if (locaPostEntity?.carModelId?.isNotEmpty() == true) {
+                params["carModelIds"] = locaPostEntity!!.carModelId
+                showCar(locaPostEntity!!.carModelName)
+                isCarHistory(true)
+            }
+            showLocaPostCity()
+            if (locaPostEntity!!.fmpath.isNotEmpty() && isVideoPost.value == true) {
+                postVideoAdapter.fmPath = locaPostEntity!!.fmpath
+                postVideoAdapter.notifyDataSetChanged()
+            }
+        } else {
+            val postsId = intent?.getStringExtra("postsId")
+            if (postsId != null) {
+                return
+            }
+            isunSave = true // 不要自动保存
+            if (inLocalMedia.isNullOrEmpty()) {
+                PictureUtil.chooseImageOrVideo(this, object :
+                    OnResultCallbackListener<LocalMedia> {
+                    override fun onResult(result: MutableList<LocalMedia>?) {
+                        val bundle = Bundle()
+                        bundle.putParcelableArrayList(
+                            CircleConfig.CIRCLE_TO_POST_KEY,
+                            result as java.util.ArrayList<out Parcelable>
+                        )
+                        var isVideo = false
+                        result?.forEach {
+                            isVideo =
+                                it.mimeType.contains("video") || it.mimeType.contains("mp4")
+                        }
+                        isVideoPost.value = isVideo
+                        if (isVideo) {
+                            resultVideo(result)
+                        } else {
+                            resultPic(result)
+                        }
+                    }
+
+                    override fun onCancel() {
+
+                    }
+                })
+            } else {
+                if (isVideoPost.value == true) {
+                    isHasVideoPath = false
+                    if (inLocalMedia != null) {
+                        SelectlocalMedia = inLocalMedia!![0]
+                        startARouterForResult(
+                            this,
+                            ARouterCirclePath.PictureEditAudioActivity,
+                            Bundle().apply {
+                                putString("path", inLocalMedia!![0].realPath)
+                            },
+                            PictureEditAudioActivity.EDIT_VIDEOPATH
+                        )
+                    }
+                } else {
+                    selectList.clear()
+                    selectList.addAll(inLocalMedia!!)
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("picList", selectList)
+                    bundle.putInt("position", 0)
+                    bundle.putInt("showEditType", -1)
+                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                }
             }
         }
     }
@@ -242,10 +407,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
         LiveDataBus.get().with(LiveDataBusKey.ConversationNO).observe(this) {
             noTopic()
+            isCarHistory(false)
         }
-        LiveDataBus.get().withs<String>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this){
-//            params["city"] = it.cityName
-            showCar(it)
+        LiveDataBus.get().withs<SpecialCarListBean>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this) {
+            specialCarListBean = it
+            params["carModelIds"] = it.carModelId
+            showCar(it.carModelName)
         }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
@@ -316,7 +483,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 buttomTypeAdapter.setData(3, ButtomTypeBean(it.name, 1, 2))
                 params["topicId"] = it.topicId.toString()
                 showTopic(it.name)
-                isCarHistory(true)
+                isCarHistory(it.isBuyCarDiary == 1)
             }
 
 
@@ -402,19 +569,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             selectList[0] = it as LocalMedia
             postPicAdapter.setList(selectList)
         }
-//        viewModel.keywords.observe(this, Observer {
-//            buttomlabelAdapter.addData(it)
-//            if (locaPostEntity != null) {
-//                if (locaPostEntity!!.keywords.isNotEmpty()) {
-//                    buttomlabelAdapter.data.forEach {
-//                        it.isselect = it.tagName == locaPostEntity!!.keywords
-//                    }
-//                    buttomlabelAdapter.notifyDataSetChanged()
-//                }
-//            } else {
-//                handleEditPost()
-//            }
-//        })
 
         viewModel.tagsList.observe(this, Observer { ptList ->
             postTagDataList = ptList
@@ -447,25 +601,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-//            showErrorWarn()
         })
 
     }
-
-    fun showErrorWarn() {
-        QuickPopupBuilder.with(this)
-            .contentView(R.layout.dialog_post_error)
-            .config(
-                QuickPopupConfig()
-                    .gravity(Gravity.CENTER)
-                    .withClick(R.id.btn_comfir, View.OnClickListener {
-                        saveInsertPostent(true)
-                    }, true)
-
-            )
-            .show()
-    }
-
 
     fun initTags() {
         val buttomTagList = arrayListOf<PostKeywordBean>()
@@ -483,155 +621,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     var postTagDataList: List<PostTagData>? = null
-
-    override fun initData() {
-        onclick()
-        viewModel.getPlate() //获取发帖类型
-        viewModel.getTags() //标签
-        initbuttom()
-        params["type"] = 2
-        val manager = FullyGridLayoutManager(
-            this,
-            3, GridLayoutManager.VERTICAL, false
-        )
-        binding.picsrec.layoutManager = manager
-        postPicAdapter.draggableModule.isDragEnabled = true
-        postPicAdapter.setList(selectList)
-        postVideoAdapter.setList(selectList)
-        initlocaData()
-        if (isH5Post) {
-            postType = intent.extras?.getInt("postType") ?: 0
-            jsonStr = intent.extras?.getString("jsonStr") ?: ""
-            if (jsonStr.isNotEmpty()) {
-                h5postbean = JSON.parseObject(jsonStr, H5PostTypeBean::class.java)
-                params["activityId"] = h5postbean?.ext ?: ""
-            }
-        }
-        if (isCirclePost) {
-            params["circleId"] = intent.extras?.getString("circleId") ?: "0"
-            circlename = intent.extras?.getString("circleName") ?: ""
-            circlename.isNotEmpty().let {
-                buttomTypeAdapter.setData(4, ButtomTypeBean(circlename, 1, 3))
-            }
-            showCircle(circlename)
-        }
-
-        if (isTopPost) {
-            params["topicId"] = intent.extras?.getString("topId") ?: "0"
-            params["topicName"] = intent.extras?.getString("topName") ?: ""
-            (params["topicName"] as String).isNotEmpty().let {
-                buttomTypeAdapter.setData(3, ButtomTypeBean(params["topicName"] as String, 1, 2))
-            }
-            showTopic(intent.extras?.getString("topName") ?: "")
-        }
-        binding.bottom.tvMore.setOnClickListener {
-            showMoreTag()
-        }
-    }
-
-    private fun initlocaData() {
-        if (locaPostEntity != null) {
-            jsonStr2obj(locaPostEntity!!.localMeadle)
-            binding.etBiaoti.setText(locaPostEntity!!.title)
-            binding.etContent.setText(locaPostEntity!!.content)
-            params["plate"] = locaPostEntity!!.plate
-            params["topicId"] = locaPostEntity!!.topicId
-            params["type"] = locaPostEntity!!.type
-            params["keywords"] = locaPostEntity!!.keywords
-            params["circleId"] = locaPostEntity!!.circleId
-            params["content"] = locaPostEntity!!.content
-            params["actionCode"] = locaPostEntity!!.actionCode
-            params["title"] = locaPostEntity!!.title
-            params["address"] = locaPostEntity!!.address
-            params["lat"] = locaPostEntity!!.lat
-            params["lon"] = locaPostEntity!!.lon
-            params["province"] = locaPostEntity!!.province
-            params["cityCode"] = locaPostEntity!!.cityCode
-            params["city"] = locaPostEntity!!.city
-            params["addrName"] = locaPostEntity!!.addrName
-            platename = locaPostEntity!!.plateName
-            circlename = locaPostEntity!!.circleName
-            if (params["plate"] != 0) {
-                buttomTypeAdapter.setData(1, ButtomTypeBean("", 0, 0))
-                buttomTypeAdapter.setData(2, ButtomTypeBean(locaPostEntity!!.plateName, 1, 1))
-            }
-            if (locaPostEntity!!.topicName.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    3,
-                    ButtomTypeBean(locaPostEntity!!.topicName, 1, 2)
-                )
-                showTopic(locaPostEntity!!.topicName)
-            }
-            if (locaPostEntity!!.circleName.isNotEmpty()) {
-                buttomTypeAdapter.setData(
-                    4,
-                    ButtomTypeBean(locaPostEntity!!.circleName, 1, 3)
-                )
-                showCircle(locaPostEntity!!.circleName)
-            }
-            showLocaPostCity()
-            if (locaPostEntity!!.fmpath.isNotEmpty()) {
-                postVideoAdapter.fmPath = locaPostEntity!!.fmpath
-                postVideoAdapter.notifyDataSetChanged()
-            }
-        } else {
-            val postsId = intent?.getStringExtra("postsId")
-            if (postsId != null) {
-                return
-            }
-            isunSave = true // 不要自动保存
-            if (inLocalMedia.isNullOrEmpty()) {
-                PictureUtil.chooseImageOrVideo(this, object :
-                    OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        val bundle = Bundle()
-                        bundle.putParcelableArrayList(
-                            CircleConfig.CIRCLE_TO_POST_KEY,
-                            result as java.util.ArrayList<out Parcelable>
-                        )
-                        var isVideo = false
-                        result?.forEach {
-                            isVideo =
-                                it.mimeType.contains("video") || it.mimeType.contains("mp4")
-                        }
-                        isVideoPost.value = isVideo
-                        if (isVideo) {
-                            resultVideo(result)
-                        } else {
-                            resultPic(result)
-                        }
-                    }
-
-                    override fun onCancel() {
-
-                    }
-                })
-            } else {
-                if (isVideoPost.value == true) {
-                    isHasVideoPath = false
-                    if (inLocalMedia != null) {
-                        SelectlocalMedia = inLocalMedia!![0]
-                        startARouterForResult(
-                            this,
-                            ARouterCirclePath.PictureEditAudioActivity,
-                            Bundle().apply {
-                                putString("path", inLocalMedia!![0].realPath)
-                            },
-                            PictureEditAudioActivity.EDIT_VIDEOPATH
-                        )
-                    }
-                } else {
-                    selectList.clear()
-                    selectList.addAll(inLocalMedia!!)
-                    val bundle = Bundle()
-                    bundle.putParcelableArrayList("picList", selectList)
-                    bundle.putInt("position", 0)
-                    bundle.putInt("showEditType", -1)
-                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                }
-            }
-        }
-    }
 
     private fun showTopic(name: String) {
         binding.icAttribute.run {
@@ -666,7 +655,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             tvCar.visibility = View.GONE
             llCar.visibility = View.VISIBLE
             val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
-            layoutParams.setMargins(0,-4,0,0)
+            layoutParams.setMargins(0, -4, 0, 0)
             tvCarName.text = carName
         }
     }
@@ -675,7 +664,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.icAttribute.run {
             clCar.isVisible = isCar
             if (!isCar) {
-                params.remove("carId")
+                params.remove("carModelIds")
+                tvCarName.text = ""
+                tvCar.visibility = View.VISIBLE
+                llCar.visibility = View.GONE
             }
         }
     }
@@ -796,6 +788,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postVideoAdapter.setOnItemChildClickListener { adapter, view, position ->
             isunSave = true
             if (view.id == R.id.iv_delete) {
+                postVideoAdapter.fmPath = null
                 selectList.remove(postVideoAdapter.getItem(position))
                 postVideoAdapter.remove(postVideoAdapter.getItem(position))
                 checkNext()
@@ -1062,13 +1055,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
             }
             tvDeleteCar.setOnClickListener {
-                params.remove("carId")
+                params.remove("carModelIds")
 
                 binding.icAttribute.run {
                     tvCar.visibility = View.VISIBLE
                     llCar.visibility = View.GONE
                     val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParams.setMargins(0,0,0,0)
+                    layoutParams.setMargins(0, 0, 0, 0)
                     tvCarName.text = ""
                 }
             }
@@ -1731,86 +1724,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
-    //    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-////        return super.onKeyDown(keyCode, event);
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            var postsId = intent?.getStringExtra("postsId")
-//            if (!isSave()) {
-//                finish()
-//            } else {
-//                if (!postsId.isNullOrEmpty()) {
-//                    finish()
-//                    return true
-//                }
-//                var postEntity =
-//                    if (locaPostEntity != null) locaPostEntity!! else PostEntity()
-//                if (postEntity.postsId == 0L) {
-//                    postEntity.postsId = insertPostId
-//                }
-//                ShowSavePostPop(this, object : ShowSavePostPop.PostBackListener {
-//
-//                    override fun save() {
-//                        postEntity.content = binding.etContent.text.toString() //内容
-//                        postEntity.circleId =
-//                            if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
-//                        postEntity.circleName = circlename  //选择圈子的名称
-//                        postEntity.plate =
-//                            if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
-//                        postEntity.plateName = platename  //模块名称
-//                        postEntity.topicId =
-//                            if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-//                        postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
-//                        postEntity.keywords =
-//                            if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
-////                    postEntity.keywordValues = binding.keywordTv.text.toString()
-//                        postEntity.localMeadle = JSON.toJSONString(selectList)
-//                        postEntity.actionCode =
-//                            if (params["actionCode"] != null) params["actionCode"] as String else ""
-//                        postEntity.fmpath =
-//                            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
-//                        postEntity.type = "2"  //图片帖子类型
-//                        postEntity.title = binding.etBiaoti.text.toString()
-//                        postEntity.address =
-//                            if (params["address"] != null) params["address"] as String else ""
-//                        postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
-//                        postEntity.lon = if (params["lon"] != null) params["lon"] as Double else 0.0
-//                        postEntity.city =
-//                            if (params["city"] != null) params["city"] as String else ""
-//                        postEntity.province =
-//                            if (params["province"] != null) params["province"] as String else ""
-//                        postEntity.cityCode =
-//                            if (params["cityCode"] != null) params["cityCode"] as String else ""
-//                        postEntity.creattime = System.currentTimeMillis().toString()
-//                        postEntity.addrName =
-//                            if (params["addrName"] != null) params["addrName"] as String else ""
-//                        // 保存tags
-//                        saveCgTags(postEntity)
-//
-////                        if (locaPostEntity == null) {
-//                        viewModel.insertPostentity(postEntity)
-////                        } else {
-////                            viewModel.update(postEntity)
-////                        }
-//                        finish()
-//                    }
-//
-//                    override fun unsave() {
-////                        if (postEntity.postsId != 0) {
-////                            viewModel.deletePost(postEntity.postsId)
-////                        }
-//                        isunSave = true
-//                        finish()
-//                    }
-//
-//                }).showPopupWindow()
-//            }
-//        }
-//        return false
-//    }
     fun saveCgTags(postEntity: PostEntity) {
         // 保存tags
         val data = buttomlabelAdapter.data
@@ -2121,6 +2034,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
+    //保存草稿
     fun saveInsertPostent(isHandleFinish: Boolean) {
         val postEntity = if (locaPostEntity != null) locaPostEntity!! else PostEntity()
         if (postEntity.postsId == 0L) {
@@ -2135,6 +2049,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.topicId =
             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
         postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
+        postEntity.carModelId =
+            if (params["carModelIds"] == null) "" else params["carModelIds"] as String  //车型ID
+        postEntity.carModelName =
+            if (params["carModelIds"] == null) "" else binding.icAttribute.tvCarName.text.toString()   //车型名称
         postEntity.keywords =
             if (params["keywords"] != null) params["keywords"].toString() else ""  //关键字
 //                    postEntity.keywordValues = binding.keywordTv.text.toString()
@@ -2142,8 +2060,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.actionCode =
             if (params["actionCode"] != null) params["actionCode"] as String else ""
         postEntity.fmpath =
-            if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
-        postEntity.type = "2"  //图片帖子类型
+            if (isVideoPost.value == true) {
+                if (postVideoAdapter.fmPath != null) postVideoAdapter.fmPath!! else ""
+            } else {
+                if (selectList.size > 0) PictureUtil.getFinallyPath(selectList[0]) else ""
+            }
+        postEntity.type = if (isVideoPost.value == false) "2" else "3"  //帖子类型 2图片 3视频
         postEntity.title = binding.etBiaoti.text.toString()
         postEntity.address = if (params["address"] != null) params["address"] as String else ""
         postEntity.lat = if (params["lat"] != null) params["lat"] as Double else 0.0
