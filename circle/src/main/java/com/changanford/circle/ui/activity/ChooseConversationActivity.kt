@@ -14,6 +14,7 @@ import com.changanford.circle.ui.activity.ChooseConversationActivity.Companion.n
 import com.changanford.circle.viewmodel.HotTopicViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
@@ -55,9 +56,15 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
             viewModel.getData()
         }
         adapter.setOnItemClickListener { _, view, position ->
+            val bean = adapter.getItem(position)
+            bean.isSearch = false
             LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-                .postValue(adapter.getItem(position))
-            finish()
+                .postValue(bean)
+            if (bean.isBuyCarDiary == 1) {
+                startARouter(ARouterCirclePath.ChooseCarActivity)
+            } else {
+                finish()
+            }
         }
         binding.tvNocy.setOnClickListener {
             LiveDataBus.get().with(LiveDataBusKey.ConversationNO)
@@ -90,9 +97,15 @@ class ChooseConversationActivity : BaseActivity<ChooseconversationBinding, HotTo
     override fun observe() {
         super.observe()
         LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-            .observe(this,
-                Observer {
+            .observe(
+                this
+            ) {
+                if (it.isSearch) {
                     finish()
-                })
+                }
+            }
+        LiveDataBus.get().withs<SpecialCarListBean>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this) {
+            finish()
+        }
     }
 }

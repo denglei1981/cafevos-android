@@ -1298,6 +1298,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 return
             }
 
+            headBinding.icAttribute.clCar.isVisible && params["carModelIds"] == null -> {
+                "请选择车型".toast()
+                return
+            }
+
             platename.isEmpty() -> {
                 "请选择模块".toast()
             }
@@ -1311,7 +1316,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     private fun chooseCar() {
-        startARouter(ARouterCirclePath.ChooseCarActivity)
+        startARouter(ARouterCirclePath.ChooseCarActivity, Bundle().apply {
+            if (params["carModelIds"] != null) {
+                putString("carModelIds", params["carModelIds"].toString())
+            }
+        })
     }
 
     private fun initandonclickhead() {
@@ -1685,6 +1694,11 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                                 ButtomTypeBean(locaPostEntity.plateName, 1, 1)
                             )
                         }
+                        if (locaPostEntity.carModelIds != null) {
+                            params["carModelIds"] = locaPostEntity.carModelIds
+                            isCarHistory(true)
+                            locaPostEntity.carModelName?.let { it1 -> showCar(it1) }
+                        }
                         if (locaPostEntity.topicName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(
                                 3,
@@ -1828,7 +1842,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         postEntity.circleName = circlename  //选择圈子的名称
         postEntity.plate =
             if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
-        postEntity.plateName = platename  //模块名称
+//        postEntity.plateName = platename  //模块名称
         postEntity.topicId =
             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
         postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称

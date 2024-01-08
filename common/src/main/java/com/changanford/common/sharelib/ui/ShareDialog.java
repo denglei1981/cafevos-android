@@ -270,34 +270,34 @@ public class ShareDialog<T extends IMediaObject> extends Dialog implements View.
                         break;
                     case 2:
                         Permissions permissions = Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
-                        PermissionPopUtil.INSTANCE.checkPermissionAndPop(permissions, Objects.requireNonNull(successPer(view)), Objects.requireNonNull(failPer()));
-//                        SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), new CheckRequestPermissionsListener() {
-//                            @Override
-//                            public void onAllPermissionOk(Permission[] allPermissions) {
-//                                mPlamFormClickListener.onPlamFormClick(view, PlamForm.BJ);
-//                                dismiss();
-//                            }
-//
-//                            @Override
-//                            public void onPermissionDenied(Permission[] refusedPermissions) {
-//                                //去设置页
-//                                new AlertDialog(context).builder()
-//                                        .setTitle("提示")
-//                                        .setMsg("您禁止了存储权限,无法使用编辑功能请到设置中心打开")
-//                                        .setNegativeButton("取消", new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View v) {
-//
-//                                            }
-//                                        }).setPositiveButton("确定", new View.OnClickListener() {
-//                                            @Override
-//                                            public void onClick(View v) {
-//                                                SoulPermission.getInstance().goPermissionSettings();
-//                                            }
-//                                        }).show();
-//
-//                            }
-//                        });
+//                        PermissionPopUtil.INSTANCE.checkPermissionAndPop(permissions, successPer(view), failPer());
+                        SoulPermission.getInstance().checkAndRequestPermissions(Permissions.build(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), new CheckRequestPermissionsListener() {
+                            @Override
+                            public void onAllPermissionOk(Permission[] allPermissions) {
+                                mPlamFormClickListener.onPlamFormClick(view, PlamForm.BJ);
+                                dismiss();
+                            }
+
+                            @Override
+                            public void onPermissionDenied(Permission[] refusedPermissions) {
+                                //去设置页
+                                new AlertDialog(context).builder()
+                                        .setTitle("提示")
+                                        .setMsg("您禁止了存储权限,无法使用编辑功能请到设置中心打开")
+                                        .setNegativeButton("取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        }).setPositiveButton("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                SoulPermission.getInstance().goPermissionSettings();
+                                            }
+                                        }).show();
+
+                            }
+                        });
                         break;
 
                     case 3:

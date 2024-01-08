@@ -291,8 +291,8 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         bundle.putBoolean("isTopPost", true)
         bundle.putString("topName", topicName)
         if (carModelIds != null) {
-            bundle.putString("carModelsId",carModelIds.toString())
-            bundle.putString("carModelsName",carModelName.toString())
+            bundle.putString("carModelsId", carModelIds.toString())
+            bundle.putString("carModelsName", carModelName.toString())
         }
         circleId?.let {
             bundle.putString("circleId", it)
@@ -385,6 +385,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     override fun observe() {
         super.observe()
         viewModel.carListBean.observe(this) {
+            binding.ivPostBar.isVisible = false
             binding.topContent.ryCar.isVisible = true
 //            carListAdapter.data = it
             carListAdapter.setList(it)

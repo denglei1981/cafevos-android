@@ -140,7 +140,7 @@ class CircleDetailsViewModel : BaseViewModel() {
         circleId: String,
         page: Int,
         userId: String? = null,
-        carModelIds: Int? = null
+        carModelIds: String? = null
     ) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
@@ -156,7 +156,7 @@ class CircleDetailsViewModel : BaseViewModel() {
                     it["circleId"] = circleId
                 }
                 if (carModelIds != null) {
-                    if (carModelIds > 0) {
+                    if (carModelIds.toInt() > 0) {
                         it["carModelIds"] = carModelIds
                     }
                 }

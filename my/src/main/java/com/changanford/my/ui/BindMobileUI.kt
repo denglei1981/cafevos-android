@@ -47,7 +47,7 @@ class BindMobileUI : BaseMineUI<UiBindMobileBinding, SignViewModel>() {
                 t1.isNotEmpty() && t2.isNotEmpty()
             })
             .subscribe {
-                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#01025C" else "#757575"))
+                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#01025C" else "#6f6e6e"))
                 binding.btnLogin.isEnabled = it
             }
 

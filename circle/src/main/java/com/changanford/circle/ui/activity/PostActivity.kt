@@ -266,7 +266,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["cityCode"] = locaPostEntity!!.cityCode
             params["city"] = locaPostEntity!!.city
             params["addrName"] = locaPostEntity!!.addrName
-            platename = locaPostEntity!!.plateName
+//            platename = locaPostEntity!!.plateName
             circlename = locaPostEntity!!.circleName
             isVideoPost.value = locaPostEntity!!.type == "3"
             if (params["plate"] != 0) {
@@ -1606,6 +1606,10 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 return
             }
 
+            binding.icAttribute.clCar.isVisible && params["carModelIds"] == null -> {
+                "请选择车型".toast()
+                return
+            }
 //            content.isNullOrEmpty() -> {
 //                "请输入正文内容".toast()
 //            }
@@ -1823,7 +1827,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun chooseCar() {
-        startARouter(ARouterCirclePath.ChooseCarActivity)
+        startARouter(ARouterCirclePath.ChooseCarActivity,Bundle().apply {
+            if (params["carModelIds"] != null){
+                putString("carModelIds", params["carModelIds"].toString())
+            }
+        })
     }
 
     fun handleEditPost() {
@@ -1892,6 +1900,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                                 2,
                                 ButtomTypeBean(locaPostEntity!!.plateName, 1, 1)
                             )
+                        }
+                        if (locaPostEntity.carModelIds != null) {
+                            params["carModelIds"] = locaPostEntity.carModelIds
+                            isCarHistory(true)
+                            locaPostEntity.carModelName?.let { it1 -> showCar(it1) }
                         }
                         if (locaPostEntity!!.topicName?.isNotEmpty() == true) {
                             buttomTypeAdapter.setData(

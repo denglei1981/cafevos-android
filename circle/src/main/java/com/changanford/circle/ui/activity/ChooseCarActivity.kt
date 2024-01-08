@@ -13,6 +13,7 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.xiaomi.push.it
+import org.jetbrains.anko.sp
 
 /**
  *Author lcw
@@ -23,6 +24,7 @@ import com.xiaomi.push.it
 class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCarViewModel>() {
 
     private val adapter by lazy { ChooseCarAdapter() }
+    private var carModelIds: String? = null
 
     override fun onRetryBtnClick() {
         initData()
@@ -30,6 +32,7 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
 
     override fun initView() {
         AppUtils.setStatusBarPaddingTop(binding.title.root, this)
+        carModelIds = intent.getStringExtra("carModelIds")
         setLoadSir(binding.ryCar)
         binding.title.apply {
             barTvTitle.text = "请选择车型"
@@ -66,6 +69,13 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
             if (it.isNullOrEmpty()) {
                 showFailure("没有数据")
             } else {
+                carModelIds?.let { id ->
+                    it.forEachIndexed { index, specialCarListBean ->
+                        if (specialCarListBean.carModelId == id) {
+                            adapter.checkPosition = index
+                        }
+                    }
+                }
                 adapter.setList(it)
                 showContent()
             }

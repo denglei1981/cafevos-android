@@ -7,6 +7,63 @@
 
     </data>
 
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_title"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="17dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginEnd="17dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:textColor="@color/color_d916"-->
+<!--            android:textSize="18sp"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="购车服务" />-->
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/iv_one_bg"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            app:layout_constraintDimensionRatio="168:140"-->
+<!--            app:layout_constraintLeft_toLeftOf="@id/tv_title"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tv_title"-->
+<!--            app:layout_constraintWidth_percent="0.45"-->
+<!--            tools:background="@color/black" />-->
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/iv_two_bg"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="17dp"-->
+<!--            app:layout_constraintDimensionRatio="170:66"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_one_bg"-->
+<!--            tools:background="@color/black" />-->
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/iv_three_bg"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            android:layout_marginEnd="17dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_two_bg"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/iv_one_bg"-->
+<!--            tools:background="@color/black" />-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,4 +95,5 @@
             tools:itemCount="4"
             tools:listitem="@layout/item_car_service" />
     </LinearLayout>
+
 </layout>

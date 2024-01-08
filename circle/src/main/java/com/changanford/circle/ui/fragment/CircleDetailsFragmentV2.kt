@@ -22,6 +22,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.util.toast.ToastUtils
+import com.xiaomi.push.it
 import java.lang.reflect.Method
 import java.util.*
 
@@ -44,7 +45,7 @@ class CircleDetailsFragmentV2 :
     private var topicId = ""
     private var circleId = ""
     private var userId = ""
-    private var carModelIds: Int? = null
+    private var carModelIds: String? = null
 
     private var checkPosition: Int? = null
 
@@ -151,7 +152,7 @@ class CircleDetailsFragmentV2 :
 
     override fun observe() {
         super.observe()
-        LiveDataBus.get().withs<Int?>(LiveDataBusKey.CHOOSE_CAR_TOPIC_ID).observe(this) {
+        LiveDataBus.get().withs<String?>(LiveDataBusKey.CHOOSE_CAR_TOPIC_ID).observe(this) {
             page = 1
             carModelIds = it
             viewModel.getListData(type.toInt(), topicId, circleId, page, userId, it)

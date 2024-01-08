@@ -55,6 +55,8 @@ data class PostsDetailBean(
     val timeStr: String = "",
     val actionCode: String = "",
     val plateName: String = "",
+    val carModelIds: String? = null,
+    val carModelName: String? = null,
     val circleName: String? = "",
     val isManager: Boolean? = false,
     var address: String? =null,

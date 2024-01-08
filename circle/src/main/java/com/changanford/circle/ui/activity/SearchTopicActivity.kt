@@ -11,6 +11,7 @@ import com.changanford.circle.databinding.ActivitySearchTopicBinding
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.viewmodel.SearchTopicViewModel
 import com.changanford.common.basic.BaseActivity
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
@@ -75,9 +76,15 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
         }
         adapter.setOnItemClickListener { _, view, position ->
             if (needCallback) {
+                val bean = adapter.getItem(position)
+                bean.isSearch = true
                 LiveDataBus.get().with(LiveDataBusKey.Conversation, HotPicItemBean::class.java)
-                    .postValue(adapter.getItem(position))
-                finish()
+                    .postValue(bean)
+                if (bean.isBuyCarDiary == 1) {
+                    startARouter(ARouterCirclePath.ChooseCarActivity)
+                } else {
+                    finish()
+                }
             } else {
                 val bundle = Bundle()
                 bundle.putString("topicId", adapter.getItem(position).topicId.toString())
@@ -101,6 +108,9 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
             if (it.dataList.size != 20) {
                 adapter.loadMoreModule.loadMoreEnd()
             }
+        }
+        LiveDataBus.get().withs<SpecialCarListBean>(LiveDataBusKey.CHOOSE_CAR_POST).observe(this) {
+            finish()
         }
     }
 }

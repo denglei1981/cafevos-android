@@ -3,13 +3,9 @@ package com.changanford.my.ui
 import android.content.Intent
 import android.graphics.Color
 import android.media.MediaPlayer
-import android.util.Log
 import android.view.SurfaceHolder
 import android.view.View
-import android.widget.CompoundButton
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
@@ -26,7 +22,6 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SIGN_WX_CODE
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
-import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.request.GetRequestResult
@@ -34,6 +29,7 @@ import com.changanford.common.util.request.getBizCode
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
 import com.changanford.my.utils.signAgreement
@@ -41,13 +37,15 @@ import com.changanford.my.viewmodel.SignViewModel
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.checkedChanges
 import com.jakewharton.rxbinding4.widget.textChanges
+import com.netease.nis.captcha.Captcha
+import com.netease.nis.captcha.CaptchaConfiguration
+import com.netease.nis.captcha.CaptchaListener
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
-import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableSource
@@ -129,7 +127,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun initView() {
 //        ProcessLifecycleOwner.get().lifecycle.addObserver(defaultLifecycleObserver)
-        fromSplash = intent.extras?.getBoolean("fromSplash",false)?:false
+        fromSplash = intent.extras?.getBoolean("fromSplash", false) ?: false
         updateMainGio("登陆页", "登陆页")
         GioPageConstant.topicEntrance = "登陆页"
         AppUtils.setStatusBarMarginTop(binding.back, this)
@@ -166,17 +164,34 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
                         })
                 }
+                if (t1.toString().length == 11) {
+                    binding.btnGetSms.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.color_1700F4
+                        )
+                    )
+                    binding.btnGetSms.isEnabled=true
+                } else {
+                    binding.btnGetSms.setTextColor(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.color_c7c8ca
+                        )
+                    )
+                    binding.btnGetSms.isEnabled=false
+                }
                 t1.isNotEmpty() && t2.isNotEmpty() && t3
             })
             .subscribe {
-                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#1700f4" else "#757575"))
+                binding.btnLogin.setTextColor(Color.parseColor(if (it) "#1700f4" else "#6f6e6e"))
                 binding.btnLogin.isEnabled = it
             }
 
         binding.btnGetSms.clicks().throttleFirst(2000, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
+                outCheckVerify()
             }, {
 
             })
@@ -272,6 +287,32 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             back()
         }
 //        viewModel.downLoginBgUrl()
+    }
+
+    private var captcha: Captcha? = null
+    private fun outCheckVerify() {
+        if (binding.etLoginMobile.text.toString().isNullOrEmpty()) {
+            toastShow("请输入手机号")
+            return
+        }
+        val captchaConfiguration =
+            CaptchaConfiguration.Builder().captchaId("e4d8ba3882814acf8dbebbb0d67e40f1")
+                .listener(object : CaptchaListener {
+                    override fun onCaptchaShow() {}
+                    override fun onValidate(result: String?, validate: String?, msg: String?) {
+                        validate?.let {
+                            if (it.isNotEmpty()) {
+                                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
+                            }
+                        }
+                    }
+
+                    override fun onError(code: Int, msg: String?) {}
+                    override fun onClose(closeType: Captcha.CloseType?) {}
+                })
+                .build(this)
+        captcha = Captcha.getInstance().init(captchaConfiguration)
+        captcha?.validate()
     }
 
     /**
@@ -393,20 +434,21 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     override fun onBackPressed() {
-        if (fromSplash){
+        if (fromSplash) {
             startARouterFinish(this, ARouterHomePath.MainActivity)
-        }else {
+        } else {
             super.onBackPressed()
         }
     }
 
     override fun back() {
-        if (fromSplash){
+        if (fromSplash) {
             startARouterFinish(this, ARouterHomePath.MainActivity)
-        }else {
+        } else {
             super.back()
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
 //        ProcessLifecycleOwner.get().lifecycle.removeObserver(defaultLifecycleObserver)
@@ -426,6 +468,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                 e.printStackTrace()
             }
         }
+        captcha?.destroy()
     }
 
     var isForeground = true
