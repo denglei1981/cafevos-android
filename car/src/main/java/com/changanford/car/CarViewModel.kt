@@ -17,16 +17,22 @@ class CarViewModel : ViewModel() {
     var adsRepository: AdsRepository = AdsRepository(this)
     var _ads: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
     var _middleInfo: MutableLiveData<MiddlePageBean> = MutableLiveData<MiddlePageBean>()
+
     //首页顶部banenr
-    val topBannerBean= MutableLiveData<MutableList<NewCarBannerBean>?>()
+    val topBannerBean = MutableLiveData<MutableList<NewCarBannerBean>?>()
+
     //爱车首页
-    val carInfoBean=MutableLiveData<MutableList<NewCarInfoBean>?>()
+    val carInfoBean = MutableLiveData<MutableList<NewCarInfoBean>?>()
+
     //更多车型
-    val carMoreInfoBean=MutableLiveData<CarMoreInfoBean?>()
+    val carMoreInfoBean = MutableLiveData<CarMoreInfoBean?>()
+
     //认证信息
-    val carAuthBean=MutableLiveData<CarAuthBean?>()
+    val carAuthBean = MutableLiveData<CarAuthBean?>()
+
     //经销商信息
-    val dealersBean=MutableLiveData<NewCarInfoBean?>()
+    val dealersBean = MutableLiveData<NewCarInfoBean?>()
+
     init {
         _ads = adsRepository._ads
     }
@@ -58,12 +64,12 @@ class CarViewModel : ViewModel() {
         }).cachedIn(viewModelScope)
     }
 
-    fun getMyCar(){
+    fun getMyCar() {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val rkey = getRandomKey()
-                apiService.getMiddlePageInfo(hashMap.header(rkey),hashMap.body(rkey))
+                apiService.getMiddlePageInfo(hashMap.header(rkey), hashMap.body(rkey))
             }.onSuccess {
                 _middleInfo.postValue(it)
             }.onFailure {
@@ -71,6 +77,7 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     fun queryAuthCarAndIncallList(result: (CommonResponse<CarAuthBean>) -> Unit) {
         viewModelScope.launch {
             result(fetchRequest {
@@ -80,15 +87,16 @@ class CarViewModel : ViewModel() {
             })
         }
     }
+
     /**
      * 获取爱车首页顶部banner
-    * */
-    fun getTopBanner(){
+     * */
+    fun getTopBanner() {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val rkey = getRandomKey()
-                apiService.getCarTopBanner(hashMap.header(rkey),hashMap.body(rkey))
+                apiService.getCarTopBanner(hashMap.header(rkey), hashMap.body(rkey))
             }.onSuccess {
                 topBannerBean.postValue(it)
             }.onWithMsgFailure {
@@ -97,15 +105,16 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 获取爱车首页
      * */
-    fun getMyCarModelList(){
+    fun getMyCarModelList() {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                apiService.getMyCarModelList(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.getMyCarModelList(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 carInfoBean.postValue(it)
             }.onWithMsgFailure {
@@ -114,15 +123,16 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 开启赏车之旅-推荐车型
-    * */
-    fun getMoreCar(){
+     * */
+    fun getMoreCar() {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                apiService.getMoreCareInfo(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.getMoreCareInfo(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 carMoreInfoBean.postValue(it)
             }.onWithMsgFailure {
@@ -131,15 +141,16 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 认证信息
-    * */
+     * */
     fun getAuthCarInfo() {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                apiService.queryAuthCarList(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.queryAuthCarList(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 carAuthBean.postValue(it)
             }.onWithMsgFailure {
@@ -148,23 +159,28 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 获取最近的一家经销商
      * [lngX]经度
      * [latY]纬度
      * [carModelCode]车型编码
      * */
-    fun getRecentlyDealers(lngX:Double?=null, latY:Double?=null,carModelCode: String? =null) {
+    fun getRecentlyDealers(
+        lngX: Double? = null,
+        latY: Double? = null,
+        carModelCode: String? = null
+    ) {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
-                if(lngX!=null&&latY!=null){
-                    hashMap["lngX"]=lngX
-                    hashMap["latY"]=latY
-                }else hashMap["tryIp"]=true
-                if(null!=carModelCode)hashMap["carModelCode"]=carModelCode
+                if (lngX != null && latY != null) {
+                    hashMap["lngX"] = lngX
+                    hashMap["latY"] = latY
+                } else hashMap["tryIp"] = true
+                if (null != carModelCode) hashMap["carModelCode"] = carModelCode
                 val randomKey = getRandomKey()
-                apiService.getRecentlyDealers(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.getRecentlyDealers(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 dealersBean.postValue(it)
             }.onWithMsgFailure {
@@ -179,12 +195,12 @@ class CarViewModel : ViewModel() {
      * 爱车活动
      */
     //推荐爱车活动列表
-    fun getLoveCarRecommendList(result: (ArrayList<ActivityListBean>) -> Unit){
+    fun getLoveCarRecommendList(result: (ArrayList<ActivityListBean>) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                apiService.loveCarRecommendList(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.loveCarRecommendList(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 it?.let {
                     result(it)
@@ -192,13 +208,14 @@ class CarViewModel : ViewModel() {
             }
         }
     }
+
     //爱车活动列表
-    fun getLoveCarActivityList(result: (ArrayList<LoveCarActivityListBean>) -> Unit){
+    fun getLoveCarActivityList(result: (ArrayList<LoveCarActivityListBean>) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 val hashMap = HashMap<String, Any>()
                 val randomKey = getRandomKey()
-                apiService.loveCarActivityList(hashMap.header(randomKey),hashMap.body(randomKey))
+                apiService.loveCarActivityList(hashMap.header(randomKey), hashMap.body(randomKey))
             }.onSuccess {
                 it?.let {
                     result(it)
@@ -210,14 +227,14 @@ class CarViewModel : ViewModel() {
     /**
      * 爱车活动顶部banner
      */
-    fun getLoveCarConfig(result:(List<String>)->Unit){
+    fun getLoveCarConfig(result: (List<String>) -> Unit) {
         viewModelScope.launch {
             fetchRequest {
                 var body = java.util.HashMap<String, Any>()
                 body["configKey"] = "love_car_adsense"
                 body["obj"] = true
                 var rkey = getRandomKey()
-                apiService.getLoveCarConfig(body.header(rkey),body.body(rkey))
+                apiService.getLoveCarConfig(body.header(rkey), body.body(rkey))
             }.onSuccess {
                 it?.let {
                     var pics = (it.get("imgList") as String).split(",")

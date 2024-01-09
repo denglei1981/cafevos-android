@@ -260,4 +260,22 @@ class PostViewModule() : PostRoomViewModel() {
             }
         }
     }
+
+    val hotTopicBean = MutableLiveData<HotPicBean>()
+
+    //获取热门话题前2个
+    fun getHotTopic() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = 1
+            body["pageSize"] = 2
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getSugesstionTopics(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    hotTopicBean.value = it
+                }
+                .onFailure { }
+        })
+    }
 }

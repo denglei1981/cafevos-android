@@ -76,6 +76,7 @@ import com.changanford.circle.config.CircleConfig
 import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.utilext.toIntPx
 import com.qw.soul.permission.bean.Permissions
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
@@ -191,12 +192,20 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 binding.picsrec.adapter = postPicAdapter
             }
         }
+        binding.icAttribute.run {
+            llNoTopic.post {
+                val hasWidth = llNoTopic.width - 8.toIntPx()
+                tvNoTopicOne.maxWidth = hasWidth / 2
+                tvNoTopicTwo.maxWidth = hasWidth / 2
+            }
+        }
     }
 
     override fun initData() {
         onclick()
         viewModel.getPlate() //获取发帖类型
         viewModel.getTags() //标签
+        viewModel.getHotTopic()
         initbuttom()
         params["type"] = 2
         val manager = FullyGridLayoutManager(
@@ -414,6 +423,30 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             params["carModelIds"] = it.carModelId
             showCar(it.carModelName)
         }
+        viewModel.hotTopicBean.observe(this) {
+            if (it.dataList.isNotEmpty()) {
+                binding.icAttribute.run {
+                    val bean = it.dataList[0]
+                    tvNoTopicOne.text = bean.name
+                    tvNoTopicOne.setOnClickListener {
+                        params["topicId"] = bean.topicId
+                        params["topicName"] = bean.name
+                        showTopic(bean.name)
+                    }
+                }
+            }
+            if (it.dataList.size >= 2) {
+                binding.icAttribute.run {
+                    val bean = it.dataList[1]
+                    tvNoTopicTwo.text = bean.name
+                    tvNoTopicTwo.setOnClickListener {
+                        params["topicId"] = bean.topicId
+                        params["topicName"] = bean.name
+                        showTopic(bean.name)
+                    }
+                }
+            }
+        }
         viewModel.isEnablePost.observe(this) {
             binding.title.barTvOther.isEnabled = it
         }
@@ -628,6 +661,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             llTopic.visibility = View.VISIBLE
 //            tvTopicName.text = name.replace("#", "")
             tvTopicName.text = name
+            llNoTopic.isVisible = false
         }
     }
 
@@ -660,6 +694,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
     }
 
+    private fun noCar() {
+        params.remove("carModelIds")
+
+        binding.icAttribute.run {
+            tvCar.visibility = View.VISIBLE
+            llCar.visibility = View.GONE
+            val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.setMargins(0, 0, 0, 0)
+            tvCarName.text = ""
+        }
+    }
+
     private fun isCarHistory(isCar: Boolean) {
         binding.icAttribute.run {
             clCar.isVisible = isCar
@@ -678,6 +724,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.GONE
             tvTopicName.text = ""
+            llNoTopic.isVisible = true
         }
     }
 
@@ -1035,57 +1082,23 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         binding.icAttribute.apply {
             rlTopic.setOnClickListener { toHuati() }
             tvDeleteTopic.setOnClickListener {
-                params.remove("topicId")
-                binding.icAttribute.run {
-                    tvTopic.visibility = View.VISIBLE
-                    llTopic.visibility = View.GONE
-                    tvTopicName.text = ""
-                }
+                noTopic()
                 isCarHistory(false)
             }
             rlCircle.setOnClickListener { toQuanzi() }
             rlCar.setOnClickListener { chooseCar() }
             tvDeleteCircle.setOnClickListener {
-                params.remove("circleId")
-
-                binding.icAttribute.run {
-                    tvCircle.visibility = View.VISIBLE
-                    llCircle.visibility = View.GONE
-                    tvCircleName.text = ""
-                }
+                noCircle()
             }
             tvDeleteCar.setOnClickListener {
-                params.remove("carModelIds")
-
-                binding.icAttribute.run {
-                    tvCar.visibility = View.VISIBLE
-                    llCar.visibility = View.GONE
-                    val layoutParams = rlCar.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParams.setMargins(0, 0, 0, 0)
-                    tvCarName.text = ""
-                }
+                noCar()
             }
             rlAddress.setOnClickListener {
                 isunSave = true
                 startARouter(ARouterCirclePath.ChooseLocationActivity)
             }
             tvDeleteAddress.setOnClickListener {
-                binding.icAttribute.run {
-
-                    isunSave = false
-                    params.remove("lat")
-                    params.remove("lon")
-                    params.remove("city")
-                    params.remove("province")
-                    params.remove("cityCode")
-                    params.remove("address")
-                    params.remove("addrName")
-                    address = ""
-
-                    tvAddress.visibility = View.VISIBLE
-                    llAddress.visibility = View.GONE
-                    tvAddressName.text = ""
-                }
+                noLocation()
             }
 
         }
@@ -1095,8 +1108,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
 
         binding.bottom.ivLoc.setOnClickListener {
-
-
             isunSave = true // 不要自动保存
             startARouter(ARouterCirclePath.ChooseLocationActivity)
         }
@@ -1827,8 +1838,8 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun chooseCar() {
-        startARouter(ARouterCirclePath.ChooseCarActivity,Bundle().apply {
-            if (params["carModelIds"] != null){
+        startARouter(ARouterCirclePath.ChooseCarActivity, Bundle().apply {
+            if (params["carModelIds"] != null) {
                 putString("carModelIds", params["carModelIds"].toString())
             }
         })
@@ -2056,12 +2067,16 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.content = binding.etContent.text.toString() //内容
         postEntity.circleId =
             if (params["circleId"] == null) "" else params["circleId"].toString()  //选择圈子的id
-        postEntity.circleName = circlename  //选择圈子的名称
+        val saveCircleName = binding.icAttribute.tvCircleName.text
+        postEntity.circleName =
+            if (saveCircleName.isEmpty()) "" else saveCircleName.toString()   //选择圈子的名称
         postEntity.plate = if (params["plate"] == null) 0 else params["plate"] as Int//模块ID
         postEntity.plateName = platename  //模块名称
         postEntity.topicId =
             if (params["topicId"] == null) "" else params["topicId"] as String  //话题ID
-        postEntity.topicName = buttomTypeAdapter.getItem(3).content ?: ""  //话题名称
+        val saveTopicName = binding.icAttribute.tvTopicName.text
+        postEntity.topicName =
+            if (saveTopicName.isEmpty()) "" else saveTopicName.toString()   //话题名称
         postEntity.carModelId =
             if (params["carModelIds"] == null) "" else params["carModelIds"] as String  //车型ID
         postEntity.carModelName =

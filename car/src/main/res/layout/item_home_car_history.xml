@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_whit5_bg">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="13dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_d916"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon"
+            tools:text="安先生的爱车" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_8016"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_name"
+            tools:ignore="SmallSp"
+            tools:text="12天前" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/color_00"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+            app:layout_constraintRight_toRightOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ry_pc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintLeft_toLeftOf="@id/iv_icon"
+            app:layout_constraintRight_toRightOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

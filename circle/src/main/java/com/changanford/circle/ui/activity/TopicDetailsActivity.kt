@@ -83,7 +83,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var carModelIds: String? = null
     private var carModelName: String? = null
 
-    private var postEntity: ArrayList<PostEntity>? = null//草稿
+//    private var postEntity: ArrayList<PostEntity>? = null//草稿
     private val carListAdapter by lazy {
         SpecialDetailCarAdapter()
     }
@@ -131,11 +131,11 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         })
         initTabAndViewPager()
 
-        PostDatabase.getInstance(this).getPostDao().findAll().observe(
-            this
-        ) {
-            postEntity = it as ArrayList<PostEntity>
-        }
+//        PostDatabase.getInstance(this).getPostDao().findAll().observe(
+//            this
+//        ) {
+//            postEntity = it as ArrayList<PostEntity>
+//        }
         LiveDataBus.get().with(LiveDataBusKey.IS_CHECK_PERSONAL).observe(this) {
             isCheckPerson = true
         }
@@ -205,79 +205,73 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 BindDialog(this).show()
                 return@setOnClickListener
             }
-            if (postEntity?.size == 0) {
+//            if (postEntity?.size == 0) {
                 initPop(topicName)
-            } else {
-                this.let { it1 ->
-                    PostDialog(
-                        it1,
-                        "发现您还有草稿未发布",
-                        postButtonListener = object : PostDialog.PostButtonListener {
-                            override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
-                                var postEntity = postEntity?.last()
-                                when (postEntity?.type) {
-                                    "2" -> {
-                                        RouterManger.run {
-                                            param("postEntity", postEntity)
-                                            circleId?.let {
-                                                param("circleId", it)
-                                                param("isCirclePost", true)
-                                                circleName?.let {
-                                                    param("circleName", it)
-                                                }
-                                            }
-                                            isCheckPost = true
-                                            startARouter(ARouterCirclePath.PostActivity)
-                                        }
-                                    }
-
-                                    "3" -> {
-                                        RouterManger.run {
-                                            param("postEntity", postEntity)
-                                            circleId?.let {
-                                                param("circleId", it)
-                                                param("isCirclePost", true)
-                                                circleName?.let {
-                                                    param("circleName", it)
-                                                }
-                                            }
-                                            isCheckPost = true
-                                            startARouter(ARouterCirclePath.VideoPostActivity)
-                                        }
-
-                                    }
-
-                                    "4" -> {
-                                        RouterManger.run {
-                                            param("postEntity", postEntity)
-                                            circleId?.let {
-                                                param("circleId", it)
-                                                param("isCirclePost", true)
-                                                circleName?.let {
-                                                    param("circleName", it)
-                                                }
-                                            }
-                                            isCheckPost = true
-                                            startARouter(ARouterCirclePath.LongPostAvtivity)
-                                        }
-                                    }
-                                }
-                            }
-
-                            override fun cancle() {  //不使用草稿
-                                initPop(topicName)
-                            }
-
-
-                        }).show()
-                }
-//                AlertDialog(this).builder().setGone().setMsg("发现您有草稿还未发布")
-//                    .setNegativeButton("继续编辑") {
-//                        startARouter(ARouterMyPath.MyPostDraftUI)
-//                    }.setPositiveButton("不使用草稿") {
-//                        initPop(topicName)
-//                    }.show()
-            }
+//            } else {
+//                this.let { it1 ->
+//                    PostDialog(
+//                        it1,
+//                        "发现您还有草稿未发布",
+//                        postButtonListener = object : PostDialog.PostButtonListener {
+//                            override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+//                                var postEntity = postEntity?.last()
+//                                when (postEntity?.type) {
+//                                    "2" -> {
+//                                        RouterManger.run {
+//                                            param("postEntity", postEntity)
+//                                            circleId?.let {
+//                                                param("circleId", it)
+//                                                param("isCirclePost", true)
+//                                                circleName?.let {
+//                                                    param("circleName", it)
+//                                                }
+//                                            }
+//                                            isCheckPost = true
+//                                            startARouter(ARouterCirclePath.PostActivity)
+//                                        }
+//                                    }
+//
+//                                    "3" -> {
+//                                        RouterManger.run {
+//                                            param("postEntity", postEntity)
+//                                            circleId?.let {
+//                                                param("circleId", it)
+//                                                param("isCirclePost", true)
+//                                                circleName?.let {
+//                                                    param("circleName", it)
+//                                                }
+//                                            }
+//                                            isCheckPost = true
+//                                            startARouter(ARouterCirclePath.VideoPostActivity)
+//                                        }
+//
+//                                    }
+//
+//                                    "4" -> {
+//                                        RouterManger.run {
+//                                            param("postEntity", postEntity)
+//                                            circleId?.let {
+//                                                param("circleId", it)
+//                                                param("isCirclePost", true)
+//                                                circleName?.let {
+//                                                    param("circleName", it)
+//                                                }
+//                                            }
+//                                            isCheckPost = true
+//                                            startARouter(ARouterCirclePath.LongPostAvtivity)
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                            override fun cancle() {  //不使用草稿
+//                                initPop(topicName)
+//                            }
+//
+//
+//                        }).show()
+//                }
+//            }
         }
     }
 

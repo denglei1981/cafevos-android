@@ -42,9 +42,10 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
             barTvOther.setTextColor(
                 ContextCompat.getColor(
                     this@ChooseCarActivity,
-                    R.color.color_1700F4
+                    R.color.color_a680
                 )
             )
+            barTvOther.isEnabled = false
             barImgBack.setOnClickListener { finish() }
             barTvOther.setOnClickListener {
                 LiveDataBus.get().with(LiveDataBusKey.CHOOSE_CAR_POST)
@@ -59,8 +60,19 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
     private fun initListener() {
         adapter.setOnItemClickListener { _, _, position ->
             adapter.checkPosition = position
+            canCheckNext()
             adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun canCheckNext() {
+        binding.title.barTvOther.setTextColor(
+            ContextCompat.getColor(
+                this@ChooseCarActivity,
+                R.color.color_1700F4
+            )
+        )
+        binding.title.barTvOther.isEnabled = true
     }
 
     override fun initData() {
@@ -72,6 +84,7 @@ class ChooseCarActivity : BaseLoadSirActivity<ActivityChooseCarBinding, ChooseCa
                 carModelIds?.let { id ->
                     it.forEachIndexed { index, specialCarListBean ->
                         if (specialCarListBean.carModelId == id) {
+                            canCheckNext()
                             adapter.checkPosition = index
                         }
                     }

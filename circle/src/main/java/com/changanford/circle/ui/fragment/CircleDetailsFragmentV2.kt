@@ -147,7 +147,7 @@ class CircleDetailsFragmentV2 :
     }
 
     override fun initData() {
-        viewModel.getListData(type.toInt(), topicId, circleId, page, userId)
+        viewModel.getListData(type.toInt(), topicId, circleId, page, userId,carModelIds)
     }
 
     override fun observe() {

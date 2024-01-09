@@ -1,11 +1,13 @@
 package com.changanford.car.ui.fragment
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.text.method.Touch.scrollTo
 import android.view.LayoutInflater
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
@@ -109,8 +111,18 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     mOldScrollY: Int
                 ) {
                     oldScrollY = scrollY
+                    val bannerHeight = binding.srl.height - (60.toIntPx()) - binding.rlTitle.bottom
+                    if (scrollY - mOldScrollY > 0) {//上滑
+                        if (scrollY < bannerHeight + 50) {
+                            animY(scrollY, bannerHeight + 20.toIntPx())
+                        }
+                    } else {//下滑
+                        if (scrollY < bannerHeight) {
+                            animY(scrollY, 0)
+                        }
+                    }
                     if (!mMagicTabHasInit) return
-                    if (oldScrollY >= binding.srl.height - (60.toIntPx()) - binding.rlTitle.bottom) {
+                    if (oldScrollY >= bannerHeight) {
                         if (isScrollWhite) {
                             StatusBarUtil.setLightStatusBar(requireActivity(), true)
                             val nav = binding.magicTab.navigator as CommonNavigator
@@ -158,6 +170,41 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         initObserve()
         initBanner()
         addLiveDataBus()
+    }
+
+    private var isStarAnim = false
+
+    private fun animY(scrollY: Int, toScrollY: Int) {
+        if (isStarAnim) {
+            return
+        }
+        val animator = ValueAnimator.ofInt(scrollY, toScrollY)
+        animator.duration = 500
+        animator.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                isStarAnim = true
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                isStarAnim = false
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+
+        })
+        animator.addUpdateListener { animation ->
+            binding.nestScroll.scrollTo(
+                0,
+                animation.animatedValue as Int
+            )
+        }
+        animator.start()
     }
 
     override fun initData() {

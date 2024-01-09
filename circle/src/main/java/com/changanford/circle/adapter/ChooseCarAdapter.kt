@@ -22,7 +22,7 @@ import com.changanford.common.utilext.toIntPx
 class ChooseCarAdapter :
     BaseQuickAdapter<SpecialCarListBean, BaseViewHolder>(R.layout.item_choose_car_post) {
 
-    var checkPosition = 0
+    var checkPosition = -1
 
     override fun convert(holder: BaseViewHolder, item: SpecialCarListBean) {
         val binding: ItemChooseCarPostBinding = DataBindingUtil.bind(holder.itemView)!!
