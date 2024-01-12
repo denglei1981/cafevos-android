@@ -1472,4 +1472,34 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<JoinCircleCheckBean>
+
+    /**
+     * 爱车-提车日记
+     */
+    @POST("con/posts/getPosts")
+    suspend fun getPosts(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<PostBean>
+
+    //爱车-购车引导
+    @POST("con/specialTopic/detail")
+    suspend fun getSpecialTopicList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<SpecialDetailData>
+
+    //是否开启智能验证吗
+    @POST("base/config/getConfigValueByKey")
+    suspend fun smartCode(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<SmartCodeBean>
+
+    //二次验证智能验证吗
+    @POST("/h5/login/getSmsCode_V2")
+    suspend fun getSmsCodeV2(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

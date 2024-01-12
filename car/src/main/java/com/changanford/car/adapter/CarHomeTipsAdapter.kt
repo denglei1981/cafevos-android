@@ -7,6 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemHomeCarHistoryBinding
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.utilext.GlideUtils
 
@@ -15,29 +16,25 @@ import com.changanford.common.utilext.GlideUtils
  *Time on 2024/1/8
  *Purpose
  */
-class CarHomeHistoryAdapter :
-    BaseQuickAdapter<PostDataBean, BaseDataBindingHolder<ItemHomeCarHistoryBinding>>(R.layout.item_home_car_history) {
+class CarHomeTipsAdapter :
+    BaseQuickAdapter<InfoDataBean, BaseDataBindingHolder<ItemHomeCarHistoryBinding>>(R.layout.item_home_car_history) {
 
     override fun convert(
         holder: BaseDataBindingHolder<ItemHomeCarHistoryBinding>,
-        item: PostDataBean
+        item: InfoDataBean
     ) {
         val picAdapter = CarHomePicAdapter()
         holder.dataBinding?.let {
-            if (!item.picList.isNullOrEmpty()) {
-                if (item.picList?.size == 1) {
-                    val layoutManager = LinearLayoutManager(context)
-                    it.ryPc.layoutManager = layoutManager
-                } else {
-                    val layoutManager = GridLayoutManager(context, 2)
-                    it.ryPc.layoutManager = layoutManager
-                }
+            if (!item.pics.isNullOrEmpty()) {
+                val layoutManager = LinearLayoutManager(context)
+                it.ryPc.layoutManager = layoutManager
+
                 it.ryPc.adapter = picAdapter
-                picAdapter.setList(item.picList)
+                picAdapter.setList(listOf(item.pics))
                 it.ryPc.isVisible = true
 
-                GlideUtils.loadCircle(item.authorBaseVo?.avatar, it.ivIcon)
-                it.tvName.text = item.authorBaseVo?.nickname
+                GlideUtils.loadCircle(item.authors?.avatar, it.ivIcon)
+                it.tvName.text = item.authors?.nickname
                 it.tvTime.text = item.timeStr
                 it.tvContent.text = item.title
             } else {

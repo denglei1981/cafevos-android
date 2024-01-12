@@ -171,7 +171,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                             R.color.color_1700F4
                         )
                     )
-                    binding.btnGetSms.isEnabled=true
+                    binding.btnGetSms.isEnabled = true
                 } else {
                     binding.btnGetSms.setTextColor(
                         ContextCompat.getColor(
@@ -179,7 +179,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                             R.color.color_c7c8ca
                         )
                     )
-                    binding.btnGetSms.isEnabled=false
+                    binding.btnGetSms.isEnabled = false
                 }
                 t1.isNotEmpty() && t2.isNotEmpty() && t3
             })
@@ -191,7 +191,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         binding.btnGetSms.clicks().throttleFirst(2000, TimeUnit.MILLISECONDS)
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                outCheckVerify()
+                viewModel.smartCode()
             }, {
 
             })
@@ -255,7 +255,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             smsCountDownTimer()
             showToast("验证码获取成功")
         })
-
+        viewModel.smartCodeBean.observe(this) {
+            if (it.smart == "NO") {
+                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
+            } else {
+                outCheckVerify()
+            }
+        }
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this, androidx.lifecycle.Observer {
                 when (it) {
@@ -290,6 +296,8 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     }
 
     private var captcha: Captcha? = null
+
+    //行为验证吗
     private fun outCheckVerify() {
         if (binding.etLoginMobile.text.toString().isNullOrEmpty()) {
             toastShow("请输入手机号")
@@ -297,12 +305,14 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         }
         val captchaConfiguration =
             CaptchaConfiguration.Builder().captchaId("e4d8ba3882814acf8dbebbb0d67e40f1")
+                .languageType(CaptchaConfiguration.LangType.LANG_ZH_CN)
+                .loadingText("安全检测中")
                 .listener(object : CaptchaListener {
                     override fun onCaptchaShow() {}
                     override fun onValidate(result: String?, validate: String?, msg: String?) {
                         validate?.let {
                             if (it.isNotEmpty()) {
-                                viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
+                                viewModel.getSmsCodeV2(binding.etLoginMobile.text.toString(),it)
                             }
                         }
                     }

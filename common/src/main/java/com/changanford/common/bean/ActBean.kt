@@ -350,6 +350,9 @@ data class AuthorBaseVo(
 
 data class PostBean(
     val dataList: ArrayList<PostDataBean> = arrayListOf(),
+    val topicName: String? = null,
+    val topicDescription: String? = null,
+    val topicPic: String? = null,
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,

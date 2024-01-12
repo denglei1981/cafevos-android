@@ -16,6 +16,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
@@ -329,23 +330,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             if (it.dataList.isNotEmpty()) {
                 headBinding.icAttribute.run {
                     val bean = it.dataList[0]
-                    tvNoTopicOne.text = bean.name
-                    tvNoTopicOne.setOnClickListener {
-                        params["topicId"] = bean.topicId
-                        params["topicName"] = bean.name
-                        showTopic(bean.name)
-                    }
+                    setNoTopicView(bean, tvNoTopicOne)
                 }
             }
             if (it.dataList.size >= 2) {
                 headBinding.icAttribute.run {
                     val bean = it.dataList[1]
-                    tvNoTopicTwo.text = bean.name
-                    tvNoTopicTwo.setOnClickListener {
-                        params["topicId"] = bean.topicId
-                        params["topicName"] = bean.name
-                        showTopic(bean.name)
-                    }
+                    setNoTopicView(bean, tvNoTopicTwo)
                 }
             }
         }
@@ -578,6 +569,21 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
 
     }
 
+    private fun setNoTopicView(bean: HotPicItemBean, textView: TextView) {
+        textView.text = bean.name
+        textView.setOnClickListener {
+            params["topicId"] = bean.topicId.toString()
+            params["topicName"] = bean.name
+            showTopic(bean.name)
+            if (bean.isBuyCarDiary == 1) {
+                isCarHistory(true)
+                startARouter(ARouterCirclePath.ChooseCarActivity)
+            }else{
+                isCarHistory(false)
+            }
+        }
+    }
+
     fun showErrorWarn() {
         QuickPopupBuilder.with(this)
             .contentView(R.layout.dialog_post_error)
@@ -743,6 +749,9 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             if (locaPostEntity?.carModelId?.isNotEmpty() == true) {
                 params["carModelIds"] = locaPostEntity!!.carModelId
                 showCar(locaPostEntity!!.carModelName)
+                isCarHistory(true)
+            }
+            if (locaPostEntity?.isShowCar == true) {
                 isCarHistory(true)
             }
             showLocaPostCity()
@@ -1893,6 +1902,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         postEntity.cityCode =
             if (params["cityCode"] != null) params["cityCode"] as String else ""
         postEntity.creattime = System.currentTimeMillis().toString()
+        postEntity.isShowCar = headBinding.icAttribute.clCar.isVisible
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)
         if (isHandleSave) {

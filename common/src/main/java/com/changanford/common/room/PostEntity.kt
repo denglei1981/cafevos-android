@@ -47,6 +47,7 @@ data class PostEntity(
     @ColumnInfo(name="addrName") var addrName:String="",
     @ColumnInfo(name = "baoming") var baoming:String = "",//报名活动
     @ColumnInfo(name = "toupiao") var toupiao:String = "",//投票活动
+    @ColumnInfo(name = "isShowCar") var isShowCar:Boolean = false,//投票活动
 
 
 ) : Serializable

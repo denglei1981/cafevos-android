@@ -83,6 +83,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var carInfoBean: MutableList<NewCarInfoBean>? = null
     private var hidden: Boolean = false
     private var videoPlayState = 0//视频播放状态
+    private var carModelId: String = ""
 
     @SuppressLint("NewApi")
     override fun initView() {
@@ -214,7 +215,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun getData() {
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
-        viewModel.getMoreCar()
+//        viewModel.getMoreCar()
 //        viewModel.getLoveCarRecommendList {
 //            headerBinding.caractivity.setContent {
 //                loveCarActivityList(it)
@@ -231,6 +232,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     binding.carTopViewPager.isVisible = false
                     return@observe
                 }
+                carModelId = it[0].carModelId.toString()
                 binding.carTopViewPager.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
@@ -268,6 +270,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             bindingCompose()
             viewModel.getAuthCarInfo()
         }
+    }
+
+    private fun getBottomData(carModelId: String) {
+        viewModel.getCarHistory(carModelId)
+        viewModel.getBuyCarTips(carModelId)
     }
 
     private var mMagicTabHasInit = false
@@ -413,6 +420,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     carTopBanner.currentPosition = position
                     carTopBanner.notifyDataSetChanged()
                     topBannerList[position].apply {
+                        carControl.carModelId = carModelId.toString()
                         carControl.carModelCode = carModelCode
                         bindingCompose()
                     }
@@ -497,7 +505,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     ) {
         when (modelCode) {
             //推荐
-            "cars" -> carControl.setFooterRecommended(dataBean, sort, isUpdateSort)
+//            "cars" -> carControl.setFooterRecommended(dataBean, sort, isUpdateSort)
             //购车
             "buy_service" -> carControl.setFooterBuy(dataBean, sort, isUpdateSort)
             //车主认证
@@ -506,7 +514,20 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             "after_sales" -> carControl.setFooterOwner(dataBean, sort, isUpdateSort)
             //经销商
             "dealers" -> carControl.setFooterDealers(dataBean, sort, isUpdateSort)
+            //提车日记
+            "buy_car_diary" -> {
+                carControl.setFooterCarHistory(dataBean, sort, isUpdateSort)
+            }
+            //购车引导
+            "buy_car_guide" -> {
+                carControl.setFooterBuyCayTips(dataBean, sort, isUpdateSort)
+            }
+            //广告位
+            "car_middle_ads" -> {
+
+            }
         }
+        getBottomData(carModelId)
     }
 
     /**

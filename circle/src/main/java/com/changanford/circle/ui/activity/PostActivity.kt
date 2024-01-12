@@ -16,6 +16,7 @@ import android.text.*
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -194,7 +195,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         }
         binding.icAttribute.run {
             llNoTopic.post {
-                val hasWidth = llNoTopic.width - 8.toIntPx()
+                val hasWidth = ((227.toDouble() / 375) * MConstant.deviceWidth).toInt()
                 tvNoTopicOne.maxWidth = hasWidth / 2
                 tvNoTopicTwo.maxWidth = hasWidth / 2
             }
@@ -299,6 +300,9 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (locaPostEntity?.carModelId?.isNotEmpty() == true) {
                 params["carModelIds"] = locaPostEntity!!.carModelId
                 showCar(locaPostEntity!!.carModelName)
+                isCarHistory(true)
+            }
+            if (locaPostEntity?.isShowCar == true) {
                 isCarHistory(true)
             }
             showLocaPostCity()
@@ -427,23 +431,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             if (it.dataList.isNotEmpty()) {
                 binding.icAttribute.run {
                     val bean = it.dataList[0]
-                    tvNoTopicOne.text = bean.name
-                    tvNoTopicOne.setOnClickListener {
-                        params["topicId"] = bean.topicId
-                        params["topicName"] = bean.name
-                        showTopic(bean.name)
-                    }
+                    setNoTopicView(bean, tvNoTopicOne)
                 }
             }
             if (it.dataList.size >= 2) {
                 binding.icAttribute.run {
                     val bean = it.dataList[1]
-                    tvNoTopicTwo.text = bean.name
-                    tvNoTopicTwo.setOnClickListener {
-                        params["topicId"] = bean.topicId
-                        params["topicName"] = bean.name
-                        showTopic(bean.name)
-                    }
+                    setNoTopicView(bean, tvNoTopicTwo)
                 }
             }
         }
@@ -636,6 +630,21 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             }
         })
 
+    }
+
+    private fun setNoTopicView(bean: HotPicItemBean, textView: TextView) {
+        textView.text = bean.name
+        textView.setOnClickListener {
+            params["topicId"] = bean.topicId.toString()
+            params["topicName"] = bean.name
+            showTopic(bean.name)
+            if (bean.isBuyCarDiary == 1) {
+                isCarHistory(true)
+                startARouter(ARouterCirclePath.ChooseCarActivity)
+            } else {
+                isCarHistory(false)
+            }
+        }
     }
 
     fun initTags() {
@@ -2105,6 +2114,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         postEntity.cityCode =
             if (params["cityCode"] != null) params["cityCode"] as String else ""
         postEntity.creattime = System.currentTimeMillis().toString()
+        postEntity.isShowCar = binding.icAttribute.clCar.isVisible
         postEntity.addrName = if (params["addrName"] != null) params["addrName"] as String else ""
         saveCgTags(postEntity)
         viewModel.insertPostentity(postEntity)

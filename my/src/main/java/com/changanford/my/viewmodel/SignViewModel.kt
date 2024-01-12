@@ -17,7 +17,6 @@ import com.changanford.common.util.gio.setTrackCmcUserId
 import com.changanford.common.util.gio.trackCustomEvent
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.util.room.UserDatabase
-import com.changanford.common.util.toast.ToastUtils.showToast
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -28,7 +27,6 @@ import com.changanford.my.utils.downLoginBg
 import com.changanford.my.utils.getDiskCacheDir
 import com.changanford.my.utils.getDiskCachePath
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
@@ -65,6 +63,11 @@ class SignViewModel : ViewModel() {
      * 标记消息已读
      */
     var changeAllToRead = MutableLiveData<Boolean>()
+
+    /**
+     * 智能验证吗
+     */
+    var smartCodeBean = MutableLiveData<SmartCodeBean>()
 
     val userDatabase: UserDatabase by lazy {
         UserDatabase.getUniUserDatabase(MyApp.mContext)
@@ -496,6 +499,40 @@ class SignViewModel : ViewModel() {
         }
     }
 
+    fun getSmsCodeV2(phone: String, validate: String) {
+        viewModelScope.launch {
+            fetchRequest(showLoading = true) {
+                val body = HashMap<String, String>()
+                body["captchaId"] = "e4d8ba3882814acf8dbebbb0d67e40f1"
+                body["phone"] = phone
+                body["validate"] = validate
+                val rKey = getRandomKey()
+                apiService.getSmsCodeV2(body.headerNoSign(rKey), body.bodyNoAES())
+            }.onSuccess {
+//                smsCacSmsCode(phone)
+                smsSuccess.postValue(true)
+            }.onWithMsgFailure {
+                it?.let {
+                    toastShow(it)
+                }
+            }
+        }
+    }
+
+    fun smartCode() {
+        viewModelScope.launch {
+            fetchRequest {
+                val body = java.util.HashMap<String, Any>()
+                body["configKey"] = "smart_code"
+                body["obj"] = true
+                val rKey = getRandomKey()
+                apiService.smartCode(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                smartCodeBean.value = it
+            }
+        }
+    }
+
     fun saveUniUserInfo(body: HashMap<String, String>) {
         viewModelScope.launch {
             fetchRequest {
@@ -539,7 +576,7 @@ class SignViewModel : ViewModel() {
                 loginSuccess(it)
             }.onWithAllFailure {
                 if (it.code == StatusCode.LOGON_POP) {
-                   queryCmcStatePhone(true)
+                    queryCmcStatePhone(true)
                 } else {
                     it.msg?.let {
                         toastShow(it)
@@ -830,7 +867,7 @@ class SignViewModel : ViewModel() {
                 loginSuccess(it)
             }.onWithAllFailure {
                 if (it.code == StatusCode.LOGON_POP) {
-                   queryCmcStatePhone(true)
+                    queryCmcStatePhone(true)
                 } else {
                     it.msg?.let {
                         toastShow(it)

@@ -17,9 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -29,6 +31,9 @@ import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
+import com.changanford.car.adapter.CarHomeHistoryAdapter
+import com.changanford.car.adapter.CarHomePicAdapter
+import com.changanford.car.adapter.CarHomeTipsAdapter
 import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.CarServiceAdapter
@@ -40,10 +45,13 @@ import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.DistanceBean
 import com.changanford.common.bean.NewCarInfoBean
+import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.SpecialDetailData
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.wutil.WCommonUtil
@@ -52,6 +60,7 @@ import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
+import com.xiaomi.push.hb
 import com.xiaomi.push.it
 
 
@@ -66,9 +75,10 @@ class CarControl(
     val viewModel: CarViewModel,
     private val mAdapter: CarNotAdapter,
     private val headerBinding: HeaderCarBinding,
-    private val binding:FragmentCarBinding
+    private val binding: FragmentCarBinding
 ) {
     var carModelCode: String = ""
+    var carModelId: String = ""
     private var isFirstLoc = true
     private var latLng: LatLng? = null
     var mLocationClient: LocationClient? = null
@@ -87,6 +97,12 @@ class CarControl(
 
     //认证
     private var hCertificationBinding: LayoutComposeviewBinding? = null
+
+    //提车日记
+    private var hCarHistoryBinding: HeaderCarHistoryBinding? = null
+
+    //购车引导
+    private var hBuyCarTipsBinding: HeaderCarHistoryBinding? = null
 
     //经销商
     private var hDealersBinding: HeaderCarDealersBinding? = null
@@ -113,6 +129,16 @@ class CarControl(
         //认证信息
         viewModel.carAuthBean.observe(fragment) {
             bindCertification(it)
+        }
+
+        //提车日记
+        viewModel.carHistoryBean.observe(fragment) {
+            setCarHistoryBean(it)
+        }
+
+        //购车引导
+        viewModel.buyCarTipsBean.observe(fragment) {
+            setBuyCayTipsBean(it)
         }
     }
 
@@ -296,6 +322,82 @@ class CarControl(
             }
         }
 
+    }
+
+    private fun setCarHistoryBean(bean: PostBean) {
+        hCarHistoryBinding?.let {
+            it.ivIcon.setCircular(5)
+            it.tvTitle.text = bean.topicName
+            it.tvContent.text = bean.topicDescription
+            val adapter = CarHomeHistoryAdapter()
+            it.ryPost.adapter = adapter
+            adapter.data = bean.dataList
+        }
+    }
+
+    /**
+     * 提车日记
+     */
+    fun setFooterCarHistory(dataBean: NewCarInfoBean?, sort: Int, isUpdateSort: Boolean) {
+        if (hCarHistoryBinding == null) {
+            hCarHistoryBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(fragment.requireContext()),
+                R.layout.header_car_history,
+                null,
+                false
+            )
+        }
+        hCarHistoryBinding?.apply {
+            dataBean?.apply {
+                addFooterView(root, sort, isUpdateSort)
+                if (isVisible(carModelCode)) {
+                    root.visibility = View.VISIBLE
+                } else {
+                    root.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    /**
+     * 购车引导
+     */
+    fun setFooterBuyCayTips(dataBean: NewCarInfoBean?, sort: Int, isUpdateSort: Boolean) {
+        if (hBuyCarTipsBinding == null) {
+            hBuyCarTipsBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(fragment.requireContext()),
+                R.layout.header_car_history,
+                null,
+                false
+            )
+        }
+        hBuyCarTipsBinding?.apply {
+            dataBean?.apply {
+                addFooterView(root, sort, isUpdateSort)
+                if (isVisible(carModelCode)) {
+                    root.visibility = View.VISIBLE
+                } else {
+                    root.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun setBuyCayTipsBean(bean: SpecialDetailData?) {
+        if (bean?.articles == null) {
+            hBuyCarTipsBinding?.root?.isVisible = false
+            return
+        }
+        hBuyCarTipsBinding?.root?.isVisible = true
+        hBuyCarTipsBinding?.let {
+            it.ivIcon.setCircular(5)
+            it.tvTitle.text = bean.title
+            it.tvContent.text = bean.summary
+
+            val adapter = CarHomeTipsAdapter()
+            it.ryPost.adapter = adapter
+            adapter.setList(bean.articles)
+        }
     }
 
     /**
@@ -540,7 +642,7 @@ class CarControl(
                     setMapZoom(15f)//默认缩放15
                 }
                 addMarker(latLng!!, null)
-                viewModel.getRecentlyDealers(longitude, latitude)
+                viewModel.getRecentlyDealers(longitude, latitude, carModelId)
             }
         }
     }

@@ -71,6 +71,34 @@ fun getHeader(
     return map
 }
 
+suspend fun Map<String, Any>.headerNoSign(key: String): HashMap<String, String> {
+    return getNoSignHeader(this, key)
+}
+
+fun getNoSignHeader(
+    body: Map<String, Any>,
+    key: String,
+): HashMap<String, String> {
+    val timestamp = System.currentTimeMillis().toString()
+    val map = HashMap<String, String>()
+    map["Content-Type"] = "application/json"
+
+    map["timestamp"] = timestamp
+    map["os"] = "Android"//操作系统 （ios、Android、wp）
+    map["osVersion"] = if (MConstant.isPopAgreement) "" else DeviceUtils.getDeviceVersion()//操作系统版本号
+    map["loginChannel"] =
+        if (MConstant.isPopAgreement) "" else ManifestUtil.getChannel(MyApp.mContext)
+    map["appVersion"] = DeviceUtils.getversionName()//app版本号
+    map["model"] = if (MConstant.isPopAgreement) "" else DeviceUtils.getDeviceModel()//手机机型
+    map["brand"] = if (MConstant.isPopAgreement) "" else DeviceUtils.getManuFacture()//手机品牌
+    map["operatorName"] =
+        if (MConstant.isPopAgreement) "" else NetUtils.getOperatorName(MyApp.mContext)//运营商名称
+    map["networkState"] =
+        if (MConstant.isPopAgreement) "" else NetUtils.getNetworkState(MyApp.mContext)//网络类型
+    map["body"] = MD5Utils.encode_big(JSON.toJSON(body).toString())//body的明文，用于键值判断，在传输的时候删除
+
+    return map
+}
 
 fun getRandomKey(): String {
     return System.currentTimeMillis().toString().plus((Random.nextInt(26) + 65).toChar().toString())
@@ -82,6 +110,12 @@ fun getAESBody(body: Map<String, Any>, key: String): String {
     var hashMap = HashMap<String, String>()
     hashMap["paramEncr"] = AESUtil.encrypts(JSON.toJSON(body).toString(), key)
     return JSON.toJSON(hashMap).toString()
+}
+
+fun getAESBodyNoEncrypts(body: Map<String, Any>): String {
+//    val hashMap = HashMap<String, String>()
+//    hashMap["paramEncr"] = JSON.toJSON(body).toString()
+    return JSON.toJSON(body).toString()
 }
 
 fun handlePubKey(pubKey: String, key: String): String {
@@ -104,6 +138,11 @@ fun Map<String, Any>.body(key: String): RequestBody {
     return getAESBody(this, key).toRequestBody("application/json;charset=utf-8".toMediaType())
 }
 
+fun Map<String, Any>.bodyNoAES(): RequestBody {
+    if (MConstant.isShowLog)
+        "OkHttp--body----------${ JSON.toJSONString(this)}".logD()
+    return getAESBodyNoEncrypts(this).toRequestBody("application/json;charset=utf-8".toMediaType())
+}
 
 fun String.body(): RequestBody {
     return this.toRequestBody("application/json;charset=utf-8".toMediaType())

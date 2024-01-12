@@ -1,18 +1,15 @@
 package com.changanford.car.adapter
 
-import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.R
-import com.changanford.common.bean.ImageInfo
-import com.changanford.common.databinding.ItemDealMuchImageBinding
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
+import com.changanford.car.R
+import com.changanford.car.databinding.ItemCarHomePicBinding
 import com.changanford.common.util.ext.setCircular
-import com.changanford.common.utilext.GlideUtils.loadCompress2
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toIntPx
 
 /**
@@ -21,20 +18,20 @@ import com.changanford.common.utilext.toIntPx
  *Purpose
  */
 class CarHomePicAdapter :
-    BaseQuickAdapter<ImageInfo, BaseDataBindingHolder<ItemDealMuchImageBinding>>(
-        R.layout.item_deal_much_image
+    BaseQuickAdapter<String, BaseDataBindingHolder<ItemCarHomePicBinding>>(
+        R.layout.item_car_home_pic
     ) {
-    override fun convert(holder: BaseDataBindingHolder<ItemDealMuchImageBinding>, item: ImageInfo) {
+    override fun convert(holder: BaseDataBindingHolder<ItemCarHomePicBinding>, item: String) {
         holder.dataBinding?.let { binding ->
             binding.ivCover.setCircular(5)
             setMargin(binding.root, holder.layoutPosition)
             setLayoutWidth(binding.ivCover)
-            binding.ivCover.loadCompress2(item.thumbnailUrl)
-            binding.ivCover.setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("postsId", item.postId)
-                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
-            }
+            binding.ivCover.loadCompress(item)
+//            binding.ivCover.setOnClickListener {
+//                val bundle = Bundle()
+//                bundle.putString("postsId", item.postId)
+//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+//            }
         }
     }
 

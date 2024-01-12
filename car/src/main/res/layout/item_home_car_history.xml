@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="200dp"
         android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/shape_whit5_bg">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/color_00"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="@+id/iv_icon"

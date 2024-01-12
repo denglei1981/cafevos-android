@@ -462,13 +462,13 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
         val nameArr = arrayOf(
             stringResource(R.string.str_wxPay),
             stringResource(R.string.str_zfbPay),
-            stringResource(R.string.str_unionPayCloudFlashPayment)
+//            stringResource(R.string.str_unionPayCloudFlashPayment)
         )
         val payTypeArr = arrayOf("2", "1", "3")
         val iconArr = arrayOf(
             painterResource(R.mipmap.ic_shop_wx),
             painterResource(R.mipmap.ic_shop_zfb),
-            painterResource(R.mipmap.ic_shop_ysf)
+//            painterResource(R.mipmap.ic_shop_ysf)
         )
         for ((i, it) in nameArr.withIndex()) {
             payWayArr.add(
