@@ -1,14 +1,13 @@
 package com.changanford.car.adapter
 
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemHomeCarHistoryBinding
 import com.changanford.common.bean.InfoDataBean
-import com.changanford.common.bean.PostDataBean
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 
 /**
@@ -23,13 +22,16 @@ class CarHomeTipsAdapter :
         holder: BaseDataBindingHolder<ItemHomeCarHistoryBinding>,
         item: InfoDataBean
     ) {
-        val picAdapter = CarHomePicAdapter()
+        val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
             if (!item.pics.isNullOrEmpty()) {
                 val layoutManager = LinearLayoutManager(context)
                 it.ryPc.layoutManager = layoutManager
 
                 it.ryPc.adapter = picAdapter
+                picAdapter.setOnItemClickListener { _, _, _ ->
+                    JumpUtils.instans?.jump(2, item.artId)
+                }
                 picAdapter.setList(listOf(item.pics))
                 it.ryPc.isVisible = true
 

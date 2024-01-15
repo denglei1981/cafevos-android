@@ -11,6 +11,7 @@ import com.changanford.common.bean.*
 import com.changanford.common.net.*
 import com.changanford.common.net.response.UpdateUiState
 import com.changanford.common.repository.AdsRepository
+import com.changanford.common.util.MConstant.userId
 import com.changanford.common.util.paging.DataRepository
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -20,7 +21,9 @@ import kotlinx.coroutines.launch
 
 class CarViewModel : BaseViewModel() {
     var adsRepository: AdsRepository = AdsRepository(this)
+    var adsBottomRepository = AdsRepository(this)
     var _ads: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
+    var bottomAds: MutableLiveData<ArrayList<AdBean>> = MutableLiveData<ArrayList<AdBean>>()
     var _middleInfo: MutableLiveData<MiddlePageBean> = MutableLiveData<MiddlePageBean>()
 
     //首页顶部banenr
@@ -46,10 +49,15 @@ class CarViewModel : BaseViewModel() {
 
     init {
         _ads = adsRepository._ads
+        bottomAds = adsBottomRepository._ads
     }
 
     fun getTopAds() {
         adsRepository.getAds("uni_topbanner")
+    }
+
+    fun getBottomAds(){
+        adsBottomRepository.getAds("fordpai_buycar_center_ads")
     }
 
     fun getMyCar() {
@@ -117,8 +125,10 @@ class CarViewModel : BaseViewModel() {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = 1
             body["pageSize"] = 5
-            body["topicId"] = "0"
-            body["carModelIds"] = carModelIds
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["topicId"] = "0"
+                it["carModelIds"] = carModelIds
+            }
             val rKey = getRandomKey()
             ApiClient.createApi<NetWorkApi>().getPosts(body.header(rKey), body.body(rKey))
                 .onSuccess {
@@ -128,7 +138,6 @@ class CarViewModel : BaseViewModel() {
     }
 
     fun getBuyCarTips(carModelId: String) {
-
         launch(false, {
             val requestBody = HashMap<String, Any>()
             requestBody["specialTopicId"] = "0"

@@ -268,7 +268,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
+            getBottomData(carModelId)
             viewModel.getAuthCarInfo()
+            viewModel.getBottomAds()
         }
     }
 
@@ -422,7 +424,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     topBannerList[position].apply {
                         carControl.carModelId = carModelId.toString()
                         carControl.carModelCode = carModelCode
-                        bindingCompose()
+                        getBottomData(carModelId.toString())
+                        viewModel.getRecentlyDealers(
+                            carControl.latLng?.longitude,
+                            carControl.latLng?.latitude,
+                            carModelId.toString()
+                        )
                     }
                     videoPlayState = -1
                     updateControl()
@@ -524,10 +531,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             }
             //广告位
             "car_middle_ads" -> {
-
+                carControl.setFooterAds(dataBean, sort, isUpdateSort)
             }
         }
-        getBottomData(carModelId)
     }
 
     /**
@@ -580,7 +586,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     override fun onResume() {
         super.onResume()
         reset()
-        viewModel.getMyCarModelList()
+//        viewModel.getMyCarModelList()
     }
 
     private fun reset(isHidden: Boolean = hidden) {

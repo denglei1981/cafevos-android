@@ -123,7 +123,7 @@ class CarFragmentNoCar : BaseFragment<CarFragmentNocarBinding, CarViewModel>() {
     }
 
     override fun initData() {
-        viewModel.getTopAds()
+//        viewModel.getTopAds()
         viewModel.getMyCar()
         viewModel.queryAuthCarAndIncallList {
             it.onSuccess {

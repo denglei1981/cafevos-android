@@ -7,93 +7,145 @@
 
     </data>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:id="@+id/tv_title"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="17dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginEnd="17dp"-->
-<!--            android:ellipsize="end"-->
-<!--            android:maxLines="1"-->
-<!--            android:textColor="@color/color_d916"-->
-<!--            android:textSize="18sp"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="购车服务" />-->
-
-<!--        <com.google.android.material.imageview.ShapeableImageView-->
-<!--            android:id="@+id/iv_one_bg"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            app:layout_constraintDimensionRatio="168:140"-->
-<!--            app:layout_constraintLeft_toLeftOf="@id/tv_title"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/tv_title"-->
-<!--            app:layout_constraintWidth_percent="0.45"-->
-<!--            tools:background="@color/black" />-->
-
-<!--        <com.google.android.material.imageview.ShapeableImageView-->
-<!--            android:id="@+id/iv_two_bg"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="17dp"-->
-<!--            app:layout_constraintDimensionRatio="170:66"-->
-<!--            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/iv_one_bg"-->
-<!--            tools:background="@color/black" />-->
-
-<!--        <com.google.android.material.imageview.ShapeableImageView-->
-<!--            android:id="@+id/iv_three_bg"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="0dp"-->
-<!--            android:layout_marginStart="8dp"-->
-<!--            android:layout_marginEnd="17dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/iv_two_bg"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/iv_one_bg"-->
-<!--            tools:background="@color/black" />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content">
 
-        <com.changanford.common.ui.view.WTextView
-            android:id="@+id/tv_service"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_36"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:gravity="center_vertical"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="17dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/color_d916"
             android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/rv_car"
-            tools:text="启程 享受购车服务" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="购车服务" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_carService"
-            android:layout_width="match_parent"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_one_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="168:140"
+            app:layout_constraintLeft_toLeftOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintWidth_percent="0.45"
+            tools:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_one_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_15"
-            android:layout_marginTop="@dimen/dp_12"
-            android:layout_marginEnd="@dimen/dp_15"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_service"
-            app:spanCount="4"
-            tools:itemCount="4"
-            tools:listitem="@layout/item_car_service" />
-    </LinearLayout>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="9dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_one_bg"
+            app:layout_constraintRight_toRightOf="@+id/iv_one_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_one_bg"
+            tools:text="在线下订" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_two_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="17dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="170:66"
+            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_one_bg"
+            tools:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_two_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="9dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_two_bg"
+            app:layout_constraintRight_toRightOf="@+id/iv_two_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_two_bg"
+            tools:text="在线下订" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_three_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="17dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_one_bg"
+            app:layout_constraintLeft_toRightOf="@+id/iv_one_bg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_two_bg"
+            tools:background="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_three_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="9dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_three_bg"
+            app:layout_constraintRight_toRightOf="@+id/iv_three_bg"
+            app:layout_constraintTop_toTopOf="@+id/iv_three_bg"
+            tools:text="在线下订" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
+
+    <!--        <com.changanford.common.ui.view.WTextView-->
+    <!--            android:id="@+id/tv_service"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="@dimen/dp_20"-->
+    <!--            android:layout_marginTop="@dimen/dp_36"-->
+    <!--            android:layout_marginEnd="@dimen/dp_20"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:textColor="@color/color_d916"-->
+    <!--            android:textSize="18sp"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/rv_car"-->
+    <!--            tools:text="启程 享受购车服务" />-->
+
+    <!--        <androidx.recyclerview.widget.RecyclerView-->
+    <!--            android:id="@+id/rv_carService"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="@dimen/dp_15"-->
+    <!--            android:layout_marginTop="@dimen/dp_12"-->
+    <!--            android:layout_marginEnd="@dimen/dp_15"-->
+    <!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/tv_service"-->
+    <!--            app:spanCount="4"-->
+    <!--            tools:itemCount="4"-->
+    <!--            tools:listitem="@layout/item_car_service" />-->
+    <!--    </LinearLayout>-->
 
 </layout>

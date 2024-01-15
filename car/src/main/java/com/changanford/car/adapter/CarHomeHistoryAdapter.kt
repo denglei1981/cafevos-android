@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemHomeCarHistoryBinding
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils
 
 /**
@@ -22,7 +23,7 @@ class CarHomeHistoryAdapter :
         holder: BaseDataBindingHolder<ItemHomeCarHistoryBinding>,
         item: PostDataBean
     ) {
-        val picAdapter = CarHomePicAdapter()
+        val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
             if (!item.picList.isNullOrEmpty()) {
                 if (item.picList?.size == 1) {
@@ -33,6 +34,9 @@ class CarHomeHistoryAdapter :
                     it.ryPc.layoutManager = layoutManager
                 }
                 it.ryPc.adapter = picAdapter
+                picAdapter.setOnItemClickListener { _, _, _ ->
+                    JumpUtils.instans?.jump(4, item.postsId.toString())
+                }
                 picAdapter.setList(item.picList)
                 it.ryPc.isVisible = true
 

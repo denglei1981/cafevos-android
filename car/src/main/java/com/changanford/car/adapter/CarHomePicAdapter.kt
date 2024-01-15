@@ -1,9 +1,10 @@
 package com.changanford.car.adapter
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
@@ -17,7 +18,7 @@ import com.changanford.common.utilext.toIntPx
  *Time on 2024/1/8
  *Purpose
  */
-class CarHomePicAdapter :
+class CarHomePicAdapter(private val isVideo: Boolean) :
     BaseQuickAdapter<String, BaseDataBindingHolder<ItemCarHomePicBinding>>(
         R.layout.item_car_home_pic
     ) {
@@ -25,8 +26,9 @@ class CarHomePicAdapter :
         holder.dataBinding?.let { binding ->
             binding.ivCover.setCircular(5)
             setMargin(binding.root, holder.layoutPosition)
-            setLayoutWidth(binding.ivCover)
+            setLayoutWidth(binding.clContent)
             binding.ivCover.loadCompress(item)
+            binding.ivVideo.isVisible = isVideo
 //            binding.ivCover.setOnClickListener {
 //                val bundle = Bundle()
 //                bundle.putString("postsId", item.postId)
@@ -52,7 +54,7 @@ class CarHomePicAdapter :
         }
     }
 
-    private fun setLayoutWidth(imageView: ImageView) {
+    private fun setLayoutWidth(imageView: ConstraintLayout) {
         if (itemCount > 1) {
             val layoutParam = imageView.layoutParams
             layoutParam.width = 84.toIntPx()

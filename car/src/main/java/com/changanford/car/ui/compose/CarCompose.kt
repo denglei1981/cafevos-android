@@ -23,6 +23,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -146,6 +147,7 @@ private fun ItemService(itemData: NewCarTagBean?, position: Int) {
 fun LookingDealers(dataBean: NewCarInfoBean? = null) {
     dataBean?.apply {
         Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -163,38 +165,50 @@ fun LookingDealers(dataBean: NewCarInfoBean? = null) {
                 //标题
                 Text(
                     text = dealerName ?: "",
-                    color = colorResource(R.color.color_33),
-                    fontSize = 14.sp
+                    color = colorResource(R.color.color_d916),
+                    fontSize = 14.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                //位置信息
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(R.mipmap.car_location_small),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = address ?: "",
-                        color = colorResource(R.color.color_66),
-                        fontSize = 12.sp,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    //位置信息
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(R.mipmap.car_location_small),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "${distanct}km" ?: "",
+                            color = colorResource(R.color.color_8016),
+                            fontSize = 12.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    //电话
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(R.mipmap.car_phone),
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = phone ?: "",
+                            color = colorResource(R.color.color_8016),
+                            fontSize = 12.sp,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-                //电话
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(painter = painterResource(R.mipmap.car_phone), contentDescription = null)
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(
-                        text = phone ?: "",
-                        color = colorResource(R.color.color_66),
-                        fontSize = 12.sp,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
-                }
+
             }
             Spacer(modifier = Modifier.width(37.dp))
             //位置距离 导航
@@ -202,18 +216,17 @@ fun LookingDealers(dataBean: NewCarInfoBean? = null) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.clickable {
                     WBuriedUtil.clickCarAfterSalesNavigate()
-                    JumpUtils.instans?.jump(
-                        69,
-                        "{\"lngX\": \"${lngX}\",\"latY\": \"${latY}\",\"name\": \"$dealerName\"}"
-                    )
+//                    JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
+//                    JumpUtils.instans?.jump(
+//                        69,
+//                        "{\"lngX\": \"${lngX}\",\"latY\": \"${latY}\",\"name\": \"$dealerName\"}"
+//                    )
+                    JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
                 }) {
-                Spacer(modifier = Modifier.height(10.dp))
-                Image(painter = painterResource(R.mipmap.car_location), contentDescription = null)
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = stringResource(R.string.str_awayFromYouX, distanct ?: ""),
-                    color = colorResource(R.color.color_66),
-                    fontSize = 12.sp
+                    text = "预约试驾",
+                    color = colorResource(R.color.color_1700f4),
+                    fontSize = 16.sp
                 )
             }
         }

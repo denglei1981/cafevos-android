@@ -29,6 +29,8 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarHomeHistoryAdapter
@@ -42,6 +44,7 @@ import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
+import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.DistanceBean
 import com.changanford.common.bean.NewCarInfoBean
@@ -53,9 +56,12 @@ import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
+import com.google.android.material.imageview.ShapeableImageView
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
@@ -80,7 +86,7 @@ class CarControl(
     var carModelCode: String = ""
     var carModelId: String = ""
     private var isFirstLoc = true
-    private var latLng: LatLng? = null
+     var latLng: LatLng? = null
     var mLocationClient: LocationClient? = null
     val locationType = MutableLiveData<Int>()// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权  4附近没有经销商 5已定位成功
     private val carIconAdapter by lazy { CarIconAdapter(activity) }
@@ -103,6 +109,9 @@ class CarControl(
 
     //购车引导
     private var hBuyCarTipsBinding: HeaderCarHistoryBinding? = null
+
+    //广告位
+    private var hAdsBinding: HeaderCarAdsBinding? = null
 
     //经销商
     private var hDealersBinding: HeaderCarDealersBinding? = null
@@ -139,6 +148,11 @@ class CarControl(
         //购车引导
         viewModel.buyCarTipsBean.observe(fragment) {
             setBuyCayTipsBean(it)
+        }
+
+        //底部广告位
+        viewModel.bottomAds.observe(fragment) {
+            setAdsBean(it)
         }
     }
 
@@ -326,10 +340,23 @@ class CarControl(
 
     private fun setCarHistoryBean(bean: PostBean) {
         hCarHistoryBinding?.let {
+            if (bean.dataList.isNullOrEmpty()) {
+                hCarHistoryBinding?.root?.isVisible = false
+                return
+            }
+            hCarHistoryBinding?.root?.isVisible = true
+
             it.ivIcon.setCircular(5)
-            it.tvTitle.text = bean.topicName
-            it.tvContent.text = bean.topicDescription
+            it.ivIcon.loadCompress(bean.extend?.topicPic)
+            it.tvTitle.text = bean.extend?.topicName
+            it.tvContent.text = bean.extend?.topicDescription
+            it.tvMore.setOnClickListener {
+                JumpUtils.instans?.jump(9, bean.extend?.topicId)
+            }
             val adapter = CarHomeHistoryAdapter()
+            adapter.setOnItemClickListener { _, view, position ->
+                JumpUtils.instans?.jump(4, adapter.data[position].postsId.toString())
+            }
             it.ryPost.adapter = adapter
             adapter.data = bean.dataList
         }
@@ -360,6 +387,42 @@ class CarControl(
     }
 
     /**
+     * 广告位
+     */
+    fun setFooterAds(dataBean: NewCarInfoBean?, sort: Int, isUpdateSort: Boolean) {
+        if (hAdsBinding == null) {
+            hAdsBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(fragment.requireContext()),
+                R.layout.header_car_ads,
+                null,
+                false
+            )
+        }
+        hAdsBinding?.apply {
+            dataBean?.apply {
+                addFooterView(root, sort, isUpdateSort)
+                root.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setAdsBean(bean: ArrayList<AdBean>?) {
+        if (bean.isNullOrEmpty()) {
+            hAdsBinding?.root?.isVisible = false
+            return
+        }
+        hAdsBinding?.root?.isVisible = true
+        val data = bean[0]
+        hAdsBinding?.apply {
+            ivAdv.setCircular(12)
+            GlideUtils.loadBDCenter(data.getImg(), ivAdv)
+            ivAdv.setOnClickListener {
+                JumpUtils.instans?.jump(data.jumpDataType, data.jumpDataValue)
+            }
+        }
+    }
+
+    /**
      * 购车引导
      */
     fun setFooterBuyCayTips(dataBean: NewCarInfoBean?, sort: Int, isUpdateSort: Boolean) {
@@ -374,27 +437,33 @@ class CarControl(
         hBuyCarTipsBinding?.apply {
             dataBean?.apply {
                 addFooterView(root, sort, isUpdateSort)
-                if (isVisible(carModelCode)) {
-                    root.visibility = View.VISIBLE
-                } else {
-                    root.visibility = View.GONE
-                }
+//                if (isVisible(carModelCode)) {
+//                    root.visibility = View.VISIBLE
+//                } else {
+                root.visibility = View.GONE
+//                }
             }
         }
     }
 
     private fun setBuyCayTipsBean(bean: SpecialDetailData?) {
-        if (bean?.articles == null) {
+        if (bean?.articles == null || bean.articles.isNullOrEmpty()) {
             hBuyCarTipsBinding?.root?.isVisible = false
             return
         }
         hBuyCarTipsBinding?.root?.isVisible = true
         hBuyCarTipsBinding?.let {
             it.ivIcon.setCircular(5)
+            it.ivIcon.loadCompress(bean.pics)
             it.tvTitle.text = bean.title
             it.tvContent.text = bean.summary
-
+            it.tvMore.setOnClickListener {
+                JumpUtils.instans?.jump(8, bean.artId.toString())
+            }
             val adapter = CarHomeTipsAdapter()
+            adapter.setOnItemClickListener { _, view, position ->
+                JumpUtils.instans?.jump(2, adapter.data[position].artId)
+            }
             it.ryPost.adapter = adapter
             adapter.setList(bean.articles)
         }
@@ -411,8 +480,10 @@ class CarControl(
                 null,
                 false
             ).apply {
-                rvCarService.adapter = serviceAdapter
-//                addFooterView(root,sort)
+                ivOneBg.setCircular(4)
+                ivTwoBg.setCircular(4)
+                ivThreeBg.setCircular(4)
+//                rvCarService.adapter = serviceAdapter
             }
         }
         hBuyBinding?.apply {
@@ -420,13 +491,69 @@ class CarControl(
                 addFooterView(root, sort, isUpdateSort)
                 if (isVisible(carModelCode)) {
                     root.visibility = View.VISIBLE
-                    if (icons != null) rvCarService.layoutManager =
-                        GridLayoutManager(activity, if (icons!!.size > 3) 4 else 3)
+//                    if (icons != null) rvCarService.layoutManager =
+//                        GridLayoutManager(activity, if (icons!!.size > 3) 4 else 3)
                     serviceAdapter.setList(icons)
-                    tvService.text = modelName
+                    if (icons?.isNotEmpty() == true && icons?.size == 1) {
+                        ivOneBg.loadCompress(icons!![0].iconImg)
+                        tvOneTitle.text = icons!![0].iconName
+                        ivOneBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![0].jumpDataType,
+                                icons!![0].jumpDataValue
+                            )
+                        }
+                    }
+                    if (icons?.isNotEmpty() == true && icons?.size == 2) {
+                        ivOneBg.loadCompress(icons!![0].iconImg)
+                        tvOneTitle.text = icons!![0].iconName
+                        ivOneBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![0].jumpDataType,
+                                icons!![0].jumpDataValue
+                            )
+                        }
+
+                        ivTwoBg.loadCompress(icons!![1].iconImg)
+                        tvTwoTitle.text = icons!![1].iconName
+                        ivTwoBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![1].jumpDataType,
+                                icons!![1].jumpDataValue
+                            )
+                        }
+                    }
+                    if (icons?.isNotEmpty() == true && icons?.size == 3) {
+                        ivOneBg.loadCompress(icons!![0].iconImg)
+                        tvOneTitle.text = icons!![0].iconName
+                        ivOneBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![0].jumpDataType,
+                                icons!![0].jumpDataValue
+                            )
+                        }
+
+                        ivTwoBg.loadCompress(icons!![1].iconImg)
+                        tvTwoTitle.text = icons!![1].iconName
+                        ivTwoBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![1].jumpDataType,
+                                icons!![1].jumpDataValue
+                            )
+                        }
+
+                        ivThreeBg.loadCompress(icons!![2].iconImg)
+                        tvThreeTitle.text = icons!![2].iconName
+                        ivThreeBg.setOnClickListener {
+                            JumpUtils.instans?.jump(
+                                icons!![2].jumpDataType,
+                                icons!![2].jumpDataValue
+                            )
+                        }
+                    }
+                    tvTitle.text = modelName
                 } else {
                     root.visibility = View.GONE
-//                    mAdapter.removeFooterView(root)
                 }
             }
         }
@@ -444,9 +571,9 @@ class CarControl(
                 false
             ).apply {
                 mMapView = headerBinding.mapView
-                headerBinding.layoutRoot.removeView(headerBinding.mapView)
+                headerBinding.layoutRoot.removeView(headerBinding.ivStoreIc)
                 mMapView?.visibility = View.VISIBLE
-                mapView.addView(mMapView)
+                mapView.addView(headerBinding.ivStoreIc)
                 mBaiduMap = mMapView?.map
                 initMap()
                 viewMapBg.setOnClickListener {
@@ -470,6 +597,12 @@ class CarControl(
                         JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
                     }
                 }
+                tvDealMore.setOnClickListener {
+                    WBuriedUtil.clickCarDealer(viewModel.dealersBean.value?.dealerName)
+                    dataBean?.apply {
+                        JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
+                    }
+                }
 //                addFooterView(root,sort)
             }
         }
@@ -480,6 +613,9 @@ class CarControl(
                     root.visibility = View.VISIBLE
                     tvDealers.apply {
                         text = modelName
+                        tvDealMore.setOnClickListener {
+                            JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
+                        }
                         setOnClickListener {
                             JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
                         }
@@ -508,6 +644,12 @@ class CarControl(
         else {
             hDealersBinding?.apply {
                 dataBean.apply {
+                    val topImageView = mapView.findViewById<ShapeableImageView>(R.id.iv_store_ic)
+                    topImageView.setOnClickListener {
+//                        JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
+                        JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
+                    }
+                    GlideUtils.loadBDCenter(dataBean.mainOnePic, topImageView)
                     locationType.postValue(5)
                     val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                     latLng?.apply { addPolyline(this, p1) }
@@ -573,12 +715,14 @@ class CarControl(
         "更新定位UI:>>>$locationTypeValue".wLogE()
         hDealersBinding?.apply {
             if (0 == locationTypeValue || 5 == locationTypeValue) {
-                viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
+//                viewMapBg.setBackgroundResource(R.drawable.bord_f4_5dp)
                 tvLocation.visibility = View.GONE
-                tvFromYouRecently.visibility = View.VISIBLE
+                viewMapBg.isVisible = false
+//                tvFromYouRecently.visibility = View.VISIBLE
             } else {
                 tvFromYouRecently.visibility = View.GONE
-                viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
+                viewMapBg.isVisible = true
+//                viewMapBg.setBackgroundResource(R.drawable.shape_40black_5dp)
                 tvLocation.apply {
                     visibility = View.VISIBLE
                     setText(if (locationTypeValue != 4) R.string.str_pleaseOnYourMobilePhoneFirst else R.string.str_thereIsNoDealerNearby)

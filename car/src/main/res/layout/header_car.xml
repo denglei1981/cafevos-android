@@ -12,112 +12,129 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:background="@color/color_F4">
+
         <com.baidu.mapapi.map.MapView
-            android:layout_margin="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/mapView"
+            class="com.changanford.car.ui.fragment.NewCarFragmentNoCar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_154"
-            android:id="@+id/mapView"
-            class="com.changanford.car.ui.fragment.NewCarFragmentNoCar"/>
-        <View
+            android:layout_margin="@dimen/dp_5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_store_ic"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="347:196"
             app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/shapeCircleTop" />
+
+        <View
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_180"
-            android:visibility="gone"
-            android:id="@+id/btn_submit"
-            android:layout_marginTop="@dimen/dp_20"
             android:layout_marginStart="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_28"
-            app:layout_constraintTop_toBottomOf="@id/dr_indicator"
             android:background="@drawable/shape_white_24dp"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_40"
             android:text="@string/str_orderImmediately"
             android:textColor="@color/color_1700f4"
-            android:gravity="center"
-            android:minHeight="@dimen/dp_40"/>
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/dr_indicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:id="@+id/layout_location0"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
             <com.changanford.common.ui.view.WTextView
-                android:background="@drawable/shape_whit15_bg"
+                style="@style/w_style_txt_ellipsize"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_28"
+                android:background="@drawable/shape_whit15_bg"
+                android:gravity="center"
                 android:maxWidth="@dimen/dp_120"
-                android:gravity="center"
-                android:textSize="@dimen/sp_13"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingEnd="@dimen/dp_10"
+                android:text="@string/str_currentPosition"
                 android:textColor="@color/color_33"
-                style="@style/w_style_txt_ellipsize"
-                android:text="@string/str_currentPosition"/>
+                android:textSize="@dimen/sp_13" />
+
             <ImageView
-                android:layout_marginTop="@dimen/dp_2"
-                android:src="@mipmap/ic_car_location_green"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layout_location1"
-            android:visibility="invisible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-            <com.changanford.common.ui.view.WTextView
-                android:id="@+id/tv_locationTitle"
-                android:background="@drawable/shape_whit15_bg"
-                android:layout_width="@dimen/dp_120"
-                android:layout_height="@dimen/dp_28"
-                android:gravity="center"
-                android:textSize="@dimen/sp_13"
-                android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:textColor="@color/color_33"
-                style="@style/w_style_txt_ellipsize"
-                android:text="@string/str_currentPosition"/>
-            <ImageView
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_2"
-                android:id="@+id/img_locationIc"
-                android:src="@mipmap/ic_car_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/ic_car_location_green" />
         </LinearLayout>
 
-<!--        <androidx.compose.ui.platform.ComposeView-->
-<!--            android:id="@+id/caractivity"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"/>-->
-<!--        <View-->
-<!--            android:id="@+id/view_banner"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/carTopViewPager"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="@dimen/dp_10"/>-->
-<!--        <androidx.appcompat.widget.AppCompatButton-->
-<!--            android:visibility="gone"-->
-<!--            android:id="@+id/btn_submit"-->
-<!--            android:layout_marginTop="@dimen/dp_20"-->
-<!--            android:layout_marginStart="@dimen/dp_28"-->
-<!--            android:layout_marginEnd="@dimen/dp_28"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/dr_indicator"-->
-<!--            android:background="@drawable/shape_white_24dp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/str_orderImmediately"-->
-<!--            android:textColor="@color/color_00095B"-->
-<!--            android:gravity="center"-->
-<!--            android:minHeight="@dimen/dp_40"/>-->
+        <LinearLayout
+            android:id="@+id/layout_location1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_locationTitle"
+                style="@style/w_style_txt_ellipsize"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_28"
+                android:background="@drawable/shape_whit15_bg"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:text="@string/str_currentPosition"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_13" />
+
+            <ImageView
+                android:id="@+id/img_locationIc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:src="@mipmap/ic_car_location" />
+        </LinearLayout>
+
+        <!--        <androidx.compose.ui.platform.ComposeView-->
+        <!--            android:id="@+id/caractivity"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/carTopViewPager"/>-->
+        <!--        <View-->
+        <!--            android:id="@+id/view_banner"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/carTopViewPager"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/carTopViewPager"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/dp_10"/>-->
+        <!--        <androidx.appcompat.widget.AppCompatButton-->
+        <!--            android:visibility="gone"-->
+        <!--            android:id="@+id/btn_submit"-->
+        <!--            android:layout_marginTop="@dimen/dp_20"-->
+        <!--            android:layout_marginStart="@dimen/dp_28"-->
+        <!--            android:layout_marginEnd="@dimen/dp_28"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/dr_indicator"-->
+        <!--            android:background="@drawable/shape_white_24dp"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/str_orderImmediately"-->
+        <!--            android:textColor="@color/color_00095B"-->
+        <!--            android:gravity="center"-->
+        <!--            android:minHeight="@dimen/dp_40"/>-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
