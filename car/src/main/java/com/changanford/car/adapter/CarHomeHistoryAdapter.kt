@@ -26,7 +26,7 @@ class CarHomeHistoryAdapter :
         val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
             if (!item.picList.isNullOrEmpty()) {
-                if (item.picList?.size == 1) {
+                if (item.picList!!.size < 4) {
                     val layoutManager = LinearLayoutManager(context)
                     it.ryPc.layoutManager = layoutManager
                 } else {
@@ -37,7 +37,11 @@ class CarHomeHistoryAdapter :
                 picAdapter.setOnItemClickListener { _, _, _ ->
                     JumpUtils.instans?.jump(4, item.postsId.toString())
                 }
-                picAdapter.setList(item.picList)
+                if (item.picList!!.size < 4) {
+                    picAdapter.setList(listOf(item.picList!![0]))
+                } else {
+                    picAdapter.setList(item.picList!!.subList(0,4))
+                }
                 it.ryPc.isVisible = true
 
                 GlideUtils.loadCircle(item.authorBaseVo?.avatar, it.ivIcon)

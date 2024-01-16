@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
 import com.changanford.car.control.AnimationControl
@@ -18,6 +20,7 @@ import com.dueeeke.videoplayer.player.VideoView
 import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
+import kotlin.coroutines.coroutineContext
 
 /**
  * @Author : wenke
@@ -88,6 +91,33 @@ class NewCarTopBannerAdapter(
                             dealWithPlay(videoUrl)
                             addOnStateChangeListener(listener)
                         }
+                    }
+                    rlTopLeft.isVisible = !data.leftUpButtonWord.isNullOrEmpty()
+                    rlTopRight.isVisible = !data.rightUpButtonWord.isNullOrEmpty()
+                    rlBottomLeft.isVisible = !data.appointmentDriveWord.isNullOrEmpty()
+                    rlBottomRight.isVisible = !data.bookingCarWord.isNullOrEmpty()
+                    tvTopLeft.text = data.leftUpButtonWord
+                    tvTopRight.text = data.rightUpButtonWord
+                    tvBottomLeft.text = data.appointmentDriveWord
+                    tvBottomRight.text = data.bookingCarWord
+
+                    if (data.bookingCarWord.isNullOrEmpty() && !data.appointmentDriveWord.isNullOrEmpty()) {//底部只有一个按钮左下改为主色
+                        tvBottomLeft.setBackgroundResource(R.drawable.bg_car_r_b)
+                    } else {
+                        tvBottomLeft.setBackgroundResource(R.drawable.bg_car_l_b)
+                    }
+
+                    tvTopLeft.setOnClickListener {
+                        JumpUtils.instans?.jump(data.leftUpButtonType, data.leftUpButtonUrl)
+                    }
+                    tvTopRight.setOnClickListener {
+                        JumpUtils.instans?.jump(data.rightUpButtonType, data.rightUpButtonUrl)
+                    }
+                    tvBottomLeft.setOnClickListener {
+                        JumpUtils.instans?.jump(data.appointmentDriveType, data.appointmentDriveUrl)
+                    }
+                    tvBottomRight.setOnClickListener {
+                        JumpUtils.instans?.jump(data.bookingCarType, data.bookingCarUrl)
                     }
                     starBottomAnima(ivBottomTips)
                 }

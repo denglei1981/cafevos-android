@@ -2,6 +2,7 @@ package com.changanford.evos
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
@@ -21,6 +22,9 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
@@ -45,6 +49,7 @@ import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
@@ -55,6 +60,7 @@ import com.changanford.evos.utils.CustomNavigator
 import com.changanford.evos.utils.NetworkStateReceiver
 import com.changanford.evos.utils.pop.PopHelper
 import com.changanford.evos.view.SpecialAnimaTab
+import com.changanford.evos.view.SpecialJsonTab
 import com.changanford.evos.view.SpecialTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
@@ -88,50 +94,43 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     }
 
-    private fun initBottomNavigation() {
+    private fun initBottomNavigation(isOutSetting: Boolean) {
         val navigationController: NavigationController = binding.homeBottomNavi.custom().apply {
-            if (ChangeIconUtils.isOpenYearIcon()) {//新年icon
+            if (isOutSetting) {
+                val outNavigateBean = MConstant.bottomNavigateBean!!
                 addItem(
-                    newDefaultItem(
-                        R.mipmap.icon_year_home,
-                        R.mipmap.icon_year_home_,
+                    jsonItem(
+                        outNavigateBean.btOne,
+                        outNavigateBean.jsonFirst,
                         "发现",
-                        12f
                     )
                 )
                 addItem(
-                    newDefaultItem(
-                        R.mipmap.icon_year_circleu,
-                        R.mipmap.icon_year_circleu_,
+                    jsonItem(
+                        outNavigateBean.btTwo,
+                        outNavigateBean.jsonSecond,
                         "社区",
-                        12f
                     )
                 )
                 addItem(
-                    newDefaultItem(
-                        R.mipmap.icon_year_caru,
-                        R.mipmap.icon_year_caru_,
+                    jsonItem(
+                        outNavigateBean.btThree,
+                        outNavigateBean.jsonThird,
                         "爱车",
-                        1f
                     )
                 )
-//        R.mipmap.icon_car_b,
-//        R.mipmap.icon_car_c,
                 addItem(
-                    newDefaultItem(
-                        R.mipmap.icon_year_shopu,
-                        R.mipmap.icon_year_shopu_,
+                    jsonItem(
+                        outNavigateBean.btFour,
+                        outNavigateBean.jsonFourth,
                         "商城",
-                        13f
                     )
                 )
                 addItem(
-                    newDefaultItem(
-                        R.mipmap.icon_year_myu,
-                        R.mipmap.icon_year_myu_,
+                    jsonItem(
+                        outNavigateBean.btFive,
+                        outNavigateBean.jsonFive,
                         "我的",
-                        18f,
-                        -10f
                     )
                 )
             } else {//正常icon
@@ -301,28 +300,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         viewModel.requestDownLogin()
         PopHelper.initPopHelper(this, popViewModel)
         getNavigator()
-        initBottomNavigation()
-//        if (Hawk.get(HawkKey.GUIDE_HOME,false) == false) {
-//            HomeGuidePop(this).run {
-//                //无透明背景
-//                setBackgroundColor(Color.TRANSPARENT)
-//                //背景模糊false
-//                setBlurBackgroundEnable(false)
-//                showPopupWindow(binding.homeBottomNavi)
-//                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-//                    override fun onDismiss() {
-//                        Hawk.put(HawkKey.GUIDE_HOME, true)
-//                    }
-//
-//                }
-//
-//            }
-//        }
-
-//        LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).observe(this, {
-//            if (it as Boolean) {
-//            }
-//        })
+        initBottomNavigation(MConstant.bottomNavigateBean != null)
         LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_MAIN_GIO).observe(this) {
             gioPreBean = it
         }
@@ -345,6 +323,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
         })
+        navController.navigate(R.id.homeFragment)
     }
 
     private var gioPreBean = GioPreBean()
@@ -546,6 +525,21 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         return mainTab
     }
 
+    private fun jsonItem(
+        drawable: Bitmap,
+        checkedDrawable: String,
+        text: String,
+    ): BaseTabItem {
+        val mainTab = SpecialJsonTab(this)
+        if (text != "我的") {
+            mainTab.setmsgGone()
+        }
+        mainTab.setTextDefaultColor(resources.getColor(R.color.tab_nomarl))
+        mainTab.setTextCheckedColor(resources.getColor(R.color.color_1700F4))
+        mainTab.initialize(drawable, checkedDrawable, text)
+        return mainTab
+    }
+
     private var PAGE_IDS = intArrayOf(
         R.id.homeFragment,
         R.id.circleFragment,
@@ -611,16 +605,16 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             })
         LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this, Observer {
             if (it as Boolean) {//true 显示
-                if (ChangeIconUtils.isOpenYearIcon()) {
+                if (MConstant.bottomNavigateBean == null) {
                     ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgVisible()
                 } else {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgVisible()
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialJsonTab).setmsgVisible()
                 }
             } else {
-                if (ChangeIconUtils.isOpenYearIcon()) {
+                if (MConstant.bottomNavigateBean == null) {
                     ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgGone()
                 } else {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialAnimaTab).setmsgGone()
+                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialJsonTab).setmsgGone()
                 }
             }
         })

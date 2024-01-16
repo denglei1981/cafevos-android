@@ -22,6 +22,7 @@ data class NewCarInfoBean(
     val isAuth: Any? = null,
     val phone: String? = null,
     val mainOnePic: String? = null,
+    val cposter: String? = null,
     val dealerName: String? = null,
     val address: String? = null,
     val dealerId: String? = null,
@@ -67,6 +68,32 @@ data class NewCarBannerBean(
     val id: Int = 0,
     val mainImg: String? = null,
     val mainIsVideo: Int = 0,
+    //预约试驾跳转类型
+    val appointmentDriveType: Int = 0,
+    //预约试驾跳转路径
+    val appointmentDriveUrl: String? = null,
+    //立即订车跳转类型
+    val bookingCarType: Int? = 0,
+    //立即订车跳转路径
+    val bookingCarUrl: String? = null,
+    //是否支持预约试驾按钮文字
+    val appointmentDriveWord: String? = null,
+    //立即订阅跳转路径按钮文字
+    val bookingCarWord: String? = null,
+    //是否3D看车
+    val is3d: Int? = 0,
+    //左上按钮跳转类型
+    val leftUpButtonType: Int? = 0,
+    //左上按钮跳转路径
+    val leftUpButtonUrl: String? = null,
+    //左上按钮文字
+    val leftUpButtonWord: String? = null,
+    //右上按钮跳转类型
+    val rightUpButtonType: Int? = 0,
+    //右上按钮跳转路径
+    val rightUpButtonUrl: String? = null,
+    //右上按钮文字
+    val rightUpButtonWord: String? = null,
     val mainJumpType: Int? = null,
     val mainJumpVal: String? = null,
     val name: String = "",

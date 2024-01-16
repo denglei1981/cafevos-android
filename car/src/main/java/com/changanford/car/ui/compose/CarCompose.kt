@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.changanford.car.R
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.*
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.manger.RouterManger
@@ -38,6 +39,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil
@@ -71,8 +73,8 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?) {
     ) {
         Text(
             text = carInfoBean.modelName,
-            color = colorResource(R.color.color_33),
-            fontSize = 17.sp
+            color = colorResource(R.color.color_d916),
+            fontSize = 18.sp
         )
         Spacer(modifier = Modifier.height(18.dp))
         Column(
@@ -144,7 +146,7 @@ private fun ItemService(itemData: NewCarTagBean?, position: Int) {
  * 寻找经销商
  * */
 @Composable
-fun LookingDealers(dataBean: NewCarInfoBean? = null) {
+fun LookingDealers(dataBean: NewCarInfoBean? = null,carModelId:String) {
     dataBean?.apply {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -177,12 +179,19 @@ fun LookingDealers(dataBean: NewCarInfoBean? = null) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     //位置信息
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.clickable {
+                            JumpUtils.instans?.jump(
+                                69,
+                                "{\"lngX\": \"${lngX}\",\"latY\": \"${latY}\",\"name\": \"$dealerName\"}"
+                            )
+                        }) {
                         Image(
                             painter = painterResource(R.mipmap.car_location_small),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(3.dp))
                         Text(
                             text = "${distanct}km" ?: "",
                             color = colorResource(R.color.color_8016),
@@ -193,12 +202,14 @@ fun LookingDealers(dataBean: NewCarInfoBean? = null) {
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     //电话
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+                        MineUtils.callPhone(BaseApplication.curActivity, phone)
+                    }) {
                         Image(
                             painter = painterResource(R.mipmap.car_phone),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(3.dp))
                         Text(
                             text = phone ?: "",
                             color = colorResource(R.color.color_8016),
@@ -221,7 +232,7 @@ fun LookingDealers(dataBean: NewCarInfoBean? = null) {
 //                        69,
 //                        "{\"lngX\": \"${lngX}\",\"latY\": \"${latY}\",\"name\": \"$dealerName\"}"
 //                    )
-                    JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
+                    JumpUtils.instans?.jump(1, "${MConstant.H5_BOOKING_TEST_DRIVE}${MConstant.carBannerCarModelId}")
                 }) {
                 Text(
                     text = "预约试驾",
@@ -633,26 +644,26 @@ fun OwnerCertification(
 /**
  * 预览
  * */
-@Preview
-@Composable
-private fun PreviewUI() {
-    val dataList = arrayListOf<NewCarTagBean>()
-    for (i in 0..10) {
-        dataList.add(NewCarTagBean(iconName = "Tag$i"))
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(colorResource(R.color.color_F4))
-    ) {
-        //售后服务
-        AfterSalesService(NewCarInfoBean(icons = dataList))
-        //寻找经销商
-        LookingDealers()
-        //车主认证
-        OwnerCertification()
-    }
-}
+//@Preview
+//@Composable
+//private fun PreviewUI() {
+//    val dataList = arrayListOf<NewCarTagBean>()
+//    for (i in 0..10) {
+//        dataList.add(NewCarTagBean(iconName = "Tag$i"))
+//    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .background(colorResource(R.color.color_F4))
+//    ) {
+//        //售后服务
+//        AfterSalesService(NewCarInfoBean(icons = dataList))
+//        //寻找经销商
+//        LookingDealers()
+//        //车主认证
+//        OwnerCertification()
+//    }
+//}
 
 @Composable
 fun loveCarActivityList(arrayList: ArrayList<ActivityListBean>) {

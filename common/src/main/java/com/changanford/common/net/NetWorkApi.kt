@@ -1502,4 +1502,11 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    //查询app底部导航icon配置列表
+    @POST("/base/appNavigateIcon/getConfig")
+    suspend fun appNavigateIcon(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AppNavigateBean>
 }

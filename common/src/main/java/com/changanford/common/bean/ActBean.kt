@@ -297,7 +297,12 @@ data class InfoDataBean(
         }
         return ""
     }
-
+    fun getPics(): List<String>? { // 获取封面。
+        if (!TextUtils.isEmpty(pics)) {
+            return pics.split(",")
+        }
+        return null
+    }
     fun getSubTitleStr(): String {
         return if (!TextUtils.isEmpty(specialTopicTitle)) {
             "#".plus(specialTopicTitle).plus("#")

@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="启程 开启赏车之旅"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_17"/>
+            android:textColor="@color/color_d916"
+            android:textSize="18sp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_car"
             android:layout_marginTop="@dimen/dp_20"

@@ -1,0 +1,65 @@
+<!--注意：此文件只能使用在首页底部导航栏，因为修改了底部布局，适用于,若有影响，还原svn版本1410-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+    <!--android:foreground="?attr/selectableItemBackground"-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rlt"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="11sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="圈子" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_loop="false"
+            app:layout_constraintBottom_toTopOf="@id/title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:src="@mipmap/icon_home_b" />
+
+        <ImageView
+            android:id="@+id/icon_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/message_have_bg"
+            android:visibility="gone"
+            app:layout_constraintRight_toRightOf="@id/icon"
+            app:layout_constraintLeft_toRightOf="@id/icon"
+            app:layout_constraintTop_toTopOf="@id/icon" />
+        <me.majiajie.pagerbottomtabstrip.internal.RoundMessageView
+            android:id="@+id/messages"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@id/icon_msg"
+            app:layout_constraintTop_toTopOf="@id/icon_msg" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
+
+
+
+
+

@@ -7,13 +7,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
+import com.bumptech.glide.Glide
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AdBean
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.IMGURLTAG
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.room.Db
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.google.gson.Gson
@@ -50,7 +58,7 @@ class SplashViewModel : ViewModel() {
                 MConstant.pubKey = this
             }
             Db.myDb.getData("imgCdn")?.storeValue?.apply {
-                MConstant.imgcdn = if(TextUtils.isEmpty(this))MConstant.defaultImgCdn else this
+                MConstant.imgcdn = if (TextUtils.isEmpty(this)) MConstant.defaultImgCdn else this
             }
             if (MConstant.pubKey.isNotEmpty()) {
 //                key.postValue(MConstant.pubKey)
@@ -66,7 +74,7 @@ class SplashViewModel : ViewModel() {
                 if (it != null) {
                     MConstant.pubKey = it
                     getConfig()
-                    viewModelScope.launch{
+                    viewModelScope.launch {
                         Db.myDb.saveData("pubKey", it)
                     }
                 } else {
@@ -78,11 +86,52 @@ class SplashViewModel : ViewModel() {
                 it?.toast()
                 launch(Dispatchers.IO) {
                     delay(1000)
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         getKey()
                     }
                 }
             }
+        }
+    }
+
+    private fun getBottomNavigate() {
+        viewModelScope.launch {
+            val request = fetchRequest {
+                val body = HashMap<String, Any>()
+                val rKey = getRandomKey()
+                apiService.appNavigateIcon(body.header(rKey), body.body(rKey))
+            }
+            if (request.code == 0) {//处理成功和失败
+                val bitmapOne = withContext(Dispatchers.IO) {
+                    Glide.with(BaseApplication.curActivity).asBitmap()
+                        .load(GlideUtils.handleImgUrl(request.data?.iconFirst)).into(74, 74).get()
+                }
+                val bitmapTwo = withContext(Dispatchers.IO) {
+                    Glide.with(BaseApplication.curActivity).asBitmap()
+                        .load(GlideUtils.handleImgUrl(request.data?.iconSecond)).into(74, 74).get()
+                }
+                val bitmapThree = withContext(Dispatchers.IO) {
+                    Glide.with(BaseApplication.curActivity).asBitmap()
+                        .load(GlideUtils.handleImgUrl(request.data?.iconThird)).into(74, 74).get()
+                }
+                val bitmapFour = withContext(Dispatchers.IO) {
+                    Glide.with(BaseApplication.curActivity).asBitmap()
+                        .load(GlideUtils.handleImgUrl(request.data?.iconFourth)).into(74, 74).get()
+                }
+                val bitmapFive = withContext(Dispatchers.IO) {
+                    Glide.with(BaseApplication.curActivity).asBitmap()
+                        .load(GlideUtils.handleImgUrl(request.data?.iconFive)).into(74, 74).get()
+                }
+                val bean = request.data
+                bean?.btOne = bitmapOne
+                bean?.btTwo = bitmapTwo
+                bean?.btThree = bitmapThree
+                bean?.btFour = bitmapFour
+                bean?.btFive = bitmapFive
+                MConstant.bottomNavigateBean = bean
+//                val config = request.data ?: 0
+            }
+            key.postValue(MConstant.pubKey)
         }
     }
 
@@ -100,10 +149,10 @@ class SplashViewModel : ViewModel() {
             }
             if (request.code == 0) {//处理成功和失败
                 val config = request.data
-                MConstant.configBean=config
+                MConstant.configBean = config
                 if (config != null && !config.imgCdn.isNullOrEmpty()) {
                     Db.myDb.saveData("imgCdn", config.imgCdn)
-                    key.postValue(MConstant.pubKey)
+                    getBottomNavigate()
                 }
             } else {
                 request.msg ?: "tag".logE()

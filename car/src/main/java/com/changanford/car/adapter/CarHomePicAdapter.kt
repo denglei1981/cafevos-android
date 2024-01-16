@@ -24,7 +24,7 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
     ) {
     override fun convert(holder: BaseDataBindingHolder<ItemCarHomePicBinding>, item: String) {
         holder.dataBinding?.let { binding ->
-            binding.ivCover.setCircular(5)
+            binding.ivCover.setCircular(12)
             setMargin(binding.root, holder.layoutPosition)
             setLayoutWidth(binding.clContent)
             binding.ivCover.loadCompress(item)
@@ -43,12 +43,14 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
                 if (position == 0 || position == 2) {
                     params.rightMargin =
-                        5.toIntPx()
+                        10.toIntPx()
+                    params.bottomMargin = 10
                 } else params.rightMargin = 0
             }
         } else {
             view?.let {
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
+                params.bottomMargin = 10
                 params.rightMargin = 0
             }
         }
@@ -57,12 +59,12 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
     private fun setLayoutWidth(imageView: ConstraintLayout) {
         if (itemCount > 1) {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 84.toIntPx()
-            layoutParam.height = 71.toIntPx()
+            layoutParam.width = 85.toIntPx()
+            layoutParam.height = layoutParam.width
         } else {
             val layoutParam = imageView.layoutParams
-//           layoutParam.width =
-            layoutParam.height = 148.toIntPx()
+            layoutParam.width = 176.toIntPx()
+            layoutParam.height = layoutParam.width
         }
 
     }

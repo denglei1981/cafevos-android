@@ -31,6 +31,7 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
@@ -183,10 +184,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         animator.duration = 500
         animator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
+                binding.nestScroll.setIsBannerScroll(true)
                 isStarAnim = true
             }
 
             override fun onAnimationEnd(animation: Animator) {
+                binding.nestScroll.setIsBannerScroll(false)
                 isStarAnim = false
             }
 
@@ -215,7 +218,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private fun getData() {
         viewModel.getTopBanner()
         viewModel.getMyCarModelList()
-//        viewModel.getMoreCar()
+        viewModel.getMoreCar()
 //        viewModel.getLoveCarRecommendList {
 //            headerBinding.caractivity.setContent {
 //                loveCarActivityList(it)
@@ -233,6 +236,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     return@observe
                 }
                 carModelId = it[0].carModelId.toString()
+                carControl.carModelId = carModelId
+                MConstant.carBannerCarModelId = carModelId
                 binding.carTopViewPager.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
@@ -345,9 +350,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             simplePagerTitleView.textSize = 16f
             simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
             simplePagerTitleView.normalColor =
-                ContextCompat.getColor(context, R.color.black66)
+                ContextCompat.getColor(context, R.color.color_9916)
             simplePagerTitleView.selectedColor =
-                ContextCompat.getColor(context, R.color.black)
+                ContextCompat.getColor(context, R.color.color_1700f4)
             simplePagerTitleView.setOnClickListener {
                 binding.carTopViewPager.currentItem = index
             }
@@ -368,7 +373,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             indicator.setColors(
                 ContextCompat.getColor(
                     context,
-                    R.color.black
+                    R.color.color_1700f4
                 )
             )
             return indicator
@@ -424,6 +429,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     topBannerList[position].apply {
                         carControl.carModelId = carModelId.toString()
                         carControl.carModelCode = carModelCode
+                        MConstant.carBannerCarModelId=carModelId.toString()
                         getBottomData(carModelId.toString())
                         viewModel.getRecentlyDealers(
                             carControl.latLng?.longitude,
@@ -512,7 +518,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     ) {
         when (modelCode) {
             //推荐
-//            "cars" -> carControl.setFooterRecommended(dataBean, sort, isUpdateSort)
+            "cars" -> carControl.setFooterRecommended(dataBean, sort, isUpdateSort)
             //购车
             "buy_service" -> carControl.setFooterBuy(dataBean, sort, isUpdateSort)
             //车主认证

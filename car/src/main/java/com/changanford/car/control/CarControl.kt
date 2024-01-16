@@ -649,14 +649,14 @@ class CarControl(
 //                        JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
                         JumpUtils.instans?.jump(1, MConstant.H5_CAR_DEALER)
                     }
-                    GlideUtils.loadBDCenter(dataBean.mainOnePic, topImageView)
+                    GlideUtils.loadBDCenter(dataBean.cposter, topImageView)
                     locationType.postValue(5)
                     val p1 = LatLng(latY?.toDouble()!!, lngX?.toDouble()!!)
                     latLng?.apply { addPolyline(this, p1) }
                     addMarker(p1, dealerName)
                     composeViewDealers.setContent {
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            LookingDealers(this@apply)
+                            LookingDealers(this@apply,carModelId)
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package com.changanford.common.util
 
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.AppNavigateBean
 import com.changanford.common.bean.ConfigBean
 import com.changanford.common.constant.HawkKey
 import com.orhanobut.hawk.Hawk
@@ -75,6 +76,8 @@ object MConstant {
         rootPath + File.separator + "android" + File.separator + "ftfilesdir" + File.separator + System.currentTimeMillis() + ".jpg"
     }
 
+    var carBannerCarModelId:String=""
+
     /**
      * 刷新用户消息  true刷新
      */
@@ -117,6 +120,7 @@ object MConstant {
 
     var H5_privacy = "${H5_BASE_URL_CSCIR}/privacy"//隐私协议
     var H5_regTerms = "${H5_BASE_URL_CSCIR}/regTerms" //注册协议
+    var bottomNavigateBean: AppNavigateBean? = null//动态获取底部导航栏
 
     /**
      * 任务说明
@@ -181,6 +185,10 @@ object MConstant {
      * 经销商 order/#/fillInformation/selectDealer
      * */
     val H5_CAR_DEALER = "${H5_BASE_URL}/order/#/fillInformation/selectDealer"
+
+    //预约试驾
+    val H5_BOOKING_TEST_DRIVE =
+        "${H5_BASE_URL}/fuyuapp/#/pages/services/views/testDrive/views/appointment?carModelId="
 
     /**
      * 爱车活动详情

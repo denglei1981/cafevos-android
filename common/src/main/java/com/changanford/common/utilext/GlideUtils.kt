@@ -249,7 +249,7 @@ object GlideUtils {
      * 加载圆形
      */
     @JvmOverloads
-    fun loadCircle(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int? = null) {
+    fun loadCircle(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int = R.mipmap.head_default_circle) {
         loadTransform(url, CircleGlideTransform(), imageView, errorDefaultRes)
     }
 
