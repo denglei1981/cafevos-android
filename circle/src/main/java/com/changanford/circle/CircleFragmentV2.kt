@@ -245,7 +245,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
     override fun initData() {
-        AssNineGridView.setImageLoader(GlideImageLoader())
+
     }
 
 

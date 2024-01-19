@@ -10,10 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_25"
         android:orientation="vertical">
         <com.changanford.common.ui.view.WTextView
             android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_29"
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:drawableEnd="@mipmap/right_black"

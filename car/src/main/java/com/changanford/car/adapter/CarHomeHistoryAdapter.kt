@@ -1,5 +1,6 @@
 package com.changanford.car.adapter
 
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +10,10 @@ import com.changanford.car.R
 import com.changanford.car.databinding.ItemHomeCarHistoryBinding
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntPx
+import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -25,6 +29,7 @@ class CarHomeHistoryAdapter :
     ) {
         val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
+            setLayoutWidth(it.clContent)
             if (!item.picList.isNullOrEmpty()) {
                 if (item.picList!!.size < 4) {
                     val layoutManager = LinearLayoutManager(context)
@@ -54,4 +59,11 @@ class CarHomeHistoryAdapter :
         }
     }
 
+    private fun setLayoutWidth(imageView: ConstraintLayout) {
+            val layoutParam = imageView.layoutParams
+            layoutParam.width = 220.toIntPx()
+//            layoutParam.height = layoutParam.width
+
+
+    }
 }

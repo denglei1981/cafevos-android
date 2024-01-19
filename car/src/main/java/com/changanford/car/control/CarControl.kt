@@ -2,6 +2,7 @@ package com.changanford.car.control
 
 import android.Manifest
 import android.app.Activity
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -17,11 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -29,12 +27,9 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarHomeHistoryAdapter
-import com.changanford.car.adapter.CarHomePicAdapter
 import com.changanford.car.adapter.CarHomeTipsAdapter
 import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
@@ -51,6 +46,10 @@ import com.changanford.common.bean.NewCarInfoBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.SpecialDetailData
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.constant.JumpConstant
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.util.MConstant
@@ -62,12 +61,7 @@ import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.google.android.material.imageview.ShapeableImageView
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import com.xiaomi.push.hb
-import com.xiaomi.push.it
 
 
 /**
@@ -86,7 +80,7 @@ class CarControl(
     var carModelCode: String = ""
     var carModelId: String = ""
     private var isFirstLoc = true
-     var latLng: LatLng? = null
+    var latLng: LatLng? = null
     var mLocationClient: LocationClient? = null
     val locationType = MutableLiveData<Int>()// 0 已开启定位和已授权定位权限、1未开启定位、2未授权、3拒绝授权  4附近没有经销商 5已定位成功
     private val carIconAdapter by lazy { CarIconAdapter(activity) }
@@ -264,7 +258,6 @@ class CarControl(
                     //authStatus >> 审核状态 1:待审核 2：换绑审核中 3:认证成功(审核通过) 4:审核失败(审核未通过) 5:已解绑
                     composeView.setContent {
                         Column {
-                            Spacer(modifier = Modifier.height(27.dp))
                             if (authItemData?.authStatus == 3) CarAuthLayout(
                                 authItemData,
                                 auditItemData
@@ -275,6 +268,7 @@ class CarControl(
                                 dataBean,
                                 auditItemData
                             )//未认证或者审核中
+                            Spacer(modifier = Modifier.height(24.dp))
                         }
                     }
                 } else {
@@ -351,7 +345,10 @@ class CarControl(
             it.tvTitle.text = bean.extend?.topicName
             it.tvContent.text = bean.extend?.topicDescription
             it.tvMore.setOnClickListener {
-                JumpUtils.instans?.jump(9, bean.extend?.topicId)
+                val bundle = Bundle()
+                bundle.putString("topicId", bean.extend?.topicId)
+                bundle.putString("carModelId", carModelId)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             val adapter = CarHomeHistoryAdapter()
             adapter.setOnItemClickListener { _, view, position ->
@@ -458,7 +455,10 @@ class CarControl(
             it.tvTitle.text = bean.title
             it.tvContent.text = bean.summary
             it.tvMore.setOnClickListener {
-                JumpUtils.instans?.jump(8, bean.artId.toString())
+                val bundle = Bundle()
+                bundle.putString(JumpConstant.SPECIAL_TOPIC_ID, bean.artId.toString())
+                bundle.putString("carModelId", carModelId)
+                startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
             }
             val adapter = CarHomeTipsAdapter()
             adapter.setOnItemClickListener { _, view, position ->
@@ -656,7 +656,7 @@ class CarControl(
                     addMarker(p1, dealerName)
                     composeViewDealers.setContent {
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            LookingDealers(this@apply,carModelId)
+                            LookingDealers(this@apply, carModelId)
                         }
                     }
                 }

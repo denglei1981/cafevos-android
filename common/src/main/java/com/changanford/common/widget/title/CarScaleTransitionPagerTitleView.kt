@@ -16,14 +16,14 @@ class CarScaleTransitionPagerTitleView(context: Context?) : ColorTransitionPager
         super.onEnter(index, totalCount, enterPercent, leftToRight) // 实现颜色渐变
         scaleX = mMinScale + (1.0f - mMinScale) * enterPercent
         scaleY = mMinScale + (1.0f - mMinScale) * enterPercent
-        typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+//        typeface = Typeface.defaultFromStyle(Typeface.BOLD)
     }
 
     override fun onLeave(index: Int, totalCount: Int, leavePercent: Float, leftToRight: Boolean) {
         super.onLeave(index, totalCount, leavePercent, leftToRight) // 实现颜色渐变
         scaleX = 1.0f + (mMinScale - 1.0f) * leavePercent
         scaleY = 1.0f + (mMinScale - 1.0f) * leavePercent
-        typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+//        typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
     }
 
 

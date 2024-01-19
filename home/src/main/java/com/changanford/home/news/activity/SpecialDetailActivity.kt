@@ -52,6 +52,10 @@ class SpecialDetailActivity :
     override fun initView() {
         title = "专题详情页"
         updateInfoDetailGio("专题详情页", "专题详情页")
+        val outCarModelId = intent.getStringExtra("carModelId")
+        outCarModelId?.let {
+            carModelId = it.toInt()
+        }
         binding.layoutEmpty.llEmpty.visibility = View.GONE
         binding.layoutBar.ivIcon.setCircular(12)
         binding.layoutCollBar.ryCar.adapter = carListAdapter
@@ -173,6 +177,9 @@ class SpecialDetailActivity :
                     binding.recyclerView.visibility = View.GONE
                     binding.layoutEmpty.llEmpty.visibility = View.VISIBLE
                 }
+                if (carModelId > 0) {
+                    viewModel.getSpecialCarDetail(topicId!!, carModelId)
+                }
             } else {
                 showFailure(it.message)
             }
@@ -207,8 +214,15 @@ class SpecialDetailActivity :
 
         viewModel.carListBean.observe(this) {
             binding.layoutCollBar.ryCar.isVisible = true
+            if (!it.isNullOrEmpty()) {
+                it.forEach { bean ->
+                    if (carModelId.toString() == bean.carModelId) {
+                        bean.isCheck = true
+                    }
+                }
+                carListAdapter.setList(it)
+            }
 //            carListAdapter.data = it
-            carListAdapter.setList(it)
         }
     }
 

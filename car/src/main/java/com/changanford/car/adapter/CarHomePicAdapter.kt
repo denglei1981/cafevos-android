@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
 import com.changanford.car.databinding.ItemCarHomePicBinding
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toIntPx
@@ -59,11 +60,11 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
     private fun setLayoutWidth(imageView: ConstraintLayout) {
         if (itemCount > 1) {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 85.toIntPx()
+            layoutParam.width = 94.toIntPx()
             layoutParam.height = layoutParam.width
         } else {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 176.toIntPx()
+            layoutParam.width = 193.toIntPx()
             layoutParam.height = layoutParam.width
         }
 

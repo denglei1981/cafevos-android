@@ -11,15 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="17dp"
-        android:paddingTop="18dp"
-        android:paddingEnd="17dp">
+        android:paddingEnd="17dp"
+        android:paddingBottom="20dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_bg"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="410dp"
             android:background="@mipmap/ic_car_home_history_bg"
-            app:layout_constraintDimensionRatio="343:410"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -43,7 +45,6 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/iv_icon"
             app:layout_constraintRight_toLeftOf="@+id/tv_more"
             app:layout_constraintTop_toTopOf="@+id/iv_icon"
@@ -57,9 +58,9 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
             app:layout_constraintRight_toRightOf="@+id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
             tools:text="记录美好时" />
 
         <androidx.appcompat.widget.AppCompatTextView

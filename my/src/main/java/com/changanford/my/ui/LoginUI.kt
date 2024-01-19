@@ -307,6 +307,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             CaptchaConfiguration.Builder().captchaId("e4d8ba3882814acf8dbebbb0d67e40f1")
                 .languageType(CaptchaConfiguration.LangType.LANG_ZH_CN)
                 .loadingText("安全检测中")
+                .isCloseButtonBottom(true)
                 .listener(object : CaptchaListener {
                     override fun onCaptchaShow() {}
                     override fun onValidate(result: String?, validate: String?, msg: String?) {

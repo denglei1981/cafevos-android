@@ -81,9 +81,10 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var isCheckPost = false
     var isCheckPerson = false
     private var carModelIds: String? = null
+    private var carOutModelId: String? = null
     private var carModelName: String? = null
 
-//    private var postEntity: ArrayList<PostEntity>? = null//草稿
+    //    private var postEntity: ArrayList<PostEntity>? = null//草稿
     private val carListAdapter by lazy {
         SpecialDetailCarAdapter()
     }
@@ -97,6 +98,10 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         topicId = intent.getStringExtra("topicId").toString()
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         circleName = intent.getStringExtra("circleName")
+        carOutModelId = intent.getStringExtra("carModelId")
+        carOutModelId?.let {
+            carModelIds = it
+        }
 
         binding.topContent.ryCar.adapter = carListAdapter
         binding.run {
@@ -206,7 +211,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 return@setOnClickListener
             }
 //            if (postEntity?.size == 0) {
-                initPop(topicName)
+            initPop(topicName)
 //            } else {
 //                this.let { it1 ->
 //                    PostDialog(
@@ -382,6 +387,15 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             binding.ivPostBar.isVisible = false
             binding.topContent.ryCar.isVisible = true
 //            carListAdapter.data = it
+            if (!it.isNullOrEmpty()) {
+                it.forEach { bean ->
+                    carOutModelId?.let {
+                        if (it == bean.carModelId) {
+                            bean.isCheck = true
+                        }
+                    }
+                }
+            }
             carListAdapter.setList(it)
         }
         viewModel.topPicDetailsTopBean.observe(this) {
@@ -448,11 +462,14 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                             3
                         }
                     }
-                    return CircleDetailsFragmentV2.newInstance(type.toString(), topicId)
+                    return CircleDetailsFragmentV2.newInstance(
+                        type.toString(),
+                        topicId,
+                        carModelId = carOutModelId
+                    )
                 }
 
             }
-
             offscreenPageLimit = 3
         }
 

@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.CircleFragmentV2
+import com.changanford.circle.utils.GlideImageLoader
+import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.GioPreBean
@@ -323,7 +325,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
 
         })
-        navController.navigate(R.id.homeFragment)
+        AssNineGridView.setImageLoader(GlideImageLoader())
     }
 
     private var gioPreBean = GioPreBean()
@@ -604,23 +606,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
             })
         LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT).observe(this, Observer {
+            val tabView = (binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4)
             if (it as Boolean) {//true 显示
-                if (MConstant.bottomNavigateBean == null) {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgVisible()
-                } else {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialJsonTab).setmsgVisible()
+                if (tabView is SpecialTab) {
+                    tabView.setmsgVisible()
+                }
+                if (tabView is SpecialJsonTab) {
+                    tabView.setmsgVisible()
                 }
             } else {
-                if (MConstant.bottomNavigateBean == null) {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialTab).setmsgGone()
-                } else {
-                    ((binding.homeBottomNavi.getChildAt(0) as ViewGroup).getChildAt(4) as SpecialJsonTab).setmsgGone()
+                if (tabView is SpecialTab) {
+                    tabView.setmsgGone()
+                }
+                if (tabView is SpecialJsonTab) {
+                    tabView.setmsgGone()
                 }
             }
         })
         viewModel.userInfo.observe(this) {
             initGioUserId()
-//            GIOUtils.setLoginUserAttributes(it)
         }
     }
 

@@ -102,33 +102,35 @@ class SplashViewModel : ViewModel() {
                 apiService.appNavigateIcon(body.header(rKey), body.body(rKey))
             }
             if (request.code == 0) {//处理成功和失败
-                val bitmapOne = withContext(Dispatchers.IO) {
-                    Glide.with(BaseApplication.curActivity).asBitmap()
-                        .load(GlideUtils.handleImgUrl(request.data?.iconFirst)).into(74, 74).get()
+                if (request.data!=null){
+                    val bitmapOne = withContext(Dispatchers.IO) {
+                        Glide.with(BaseApplication.curActivity).asBitmap()
+                            .load(GlideUtils.handleImgUrl(request.data?.iconFirst)).into(74, 74).get()
+                    }
+                    val bitmapTwo = withContext(Dispatchers.IO) {
+                        Glide.with(BaseApplication.curActivity).asBitmap()
+                            .load(GlideUtils.handleImgUrl(request.data?.iconSecond)).into(74, 74).get()
+                    }
+                    val bitmapThree = withContext(Dispatchers.IO) {
+                        Glide.with(BaseApplication.curActivity).asBitmap()
+                            .load(GlideUtils.handleImgUrl(request.data?.iconThird)).into(74, 74).get()
+                    }
+                    val bitmapFour = withContext(Dispatchers.IO) {
+                        Glide.with(BaseApplication.curActivity).asBitmap()
+                            .load(GlideUtils.handleImgUrl(request.data?.iconFourth)).into(74, 74).get()
+                    }
+                    val bitmapFive = withContext(Dispatchers.IO) {
+                        Glide.with(BaseApplication.curActivity).asBitmap()
+                            .load(GlideUtils.handleImgUrl(request.data?.iconFive)).into(74, 74).get()
+                    }
+                    val bean = request.data
+                    bean?.btOne = bitmapOne
+                    bean?.btTwo = bitmapTwo
+                    bean?.btThree = bitmapThree
+                    bean?.btFour = bitmapFour
+                    bean?.btFive = bitmapFive
+                    MConstant.bottomNavigateBean = bean
                 }
-                val bitmapTwo = withContext(Dispatchers.IO) {
-                    Glide.with(BaseApplication.curActivity).asBitmap()
-                        .load(GlideUtils.handleImgUrl(request.data?.iconSecond)).into(74, 74).get()
-                }
-                val bitmapThree = withContext(Dispatchers.IO) {
-                    Glide.with(BaseApplication.curActivity).asBitmap()
-                        .load(GlideUtils.handleImgUrl(request.data?.iconThird)).into(74, 74).get()
-                }
-                val bitmapFour = withContext(Dispatchers.IO) {
-                    Glide.with(BaseApplication.curActivity).asBitmap()
-                        .load(GlideUtils.handleImgUrl(request.data?.iconFourth)).into(74, 74).get()
-                }
-                val bitmapFive = withContext(Dispatchers.IO) {
-                    Glide.with(BaseApplication.curActivity).asBitmap()
-                        .load(GlideUtils.handleImgUrl(request.data?.iconFive)).into(74, 74).get()
-                }
-                val bean = request.data
-                bean?.btOne = bitmapOne
-                bean?.btTwo = bitmapTwo
-                bean?.btThree = bitmapThree
-                bean?.btFour = bitmapFour
-                bean?.btFive = bitmapFive
-                MConstant.bottomNavigateBean = bean
 //                val config = request.data ?: 0
             }
             key.postValue(MConstant.pubKey)

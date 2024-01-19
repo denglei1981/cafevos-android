@@ -620,6 +620,7 @@ data class OrderItemBean(
     val dataState: String = "",
     val discount: String = "0",
     val discountScale: Int = 0,
+    val refundTimeOut: Int = 0,
     var evalStatus: String? = "",
     var fbCost: String? = "0",
     val fbOfOrderPrice: String = "0",

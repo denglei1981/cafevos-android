@@ -3,6 +3,7 @@ package com.changanford.car.widget;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -221,7 +222,7 @@ public class NewNestedScrollView extends NestedScrollView implements NestedScrol
     @Override
     public void fling(int velocityY) {
         if (isBannerScroll) {
-            super.fling(velocityY / 1000);
+            super.fling(velocityY / 10000);
         } else {
             super.fling(velocityY);
         }

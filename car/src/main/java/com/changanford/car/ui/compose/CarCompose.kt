@@ -60,12 +60,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun AfterSalesService(carInfoBean: NewCarInfoBean?) {
     val dataList = carInfoBean?.icons
-    if (dataList == null || dataList.isEmpty()) return
+    if (dataList.isNullOrEmpty()) return
     //一排几列
     val columnSize = 3
     //总共几排
     val rowTotal = WCommonUtil.getHeatNumUP("${dataList.size / columnSize.toFloat()}", 0).toInt()
-    Spacer(modifier = Modifier.height(18.dp))
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,6 +107,7 @@ fun AfterSalesService(carInfoBean: NewCarInfoBean?) {
             }
         }
     }
+    Spacer(modifier = Modifier.height(15.dp))
 }
 
 /**

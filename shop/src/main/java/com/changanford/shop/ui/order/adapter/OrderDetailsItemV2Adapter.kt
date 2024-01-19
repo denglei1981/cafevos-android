@@ -125,11 +125,18 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
                 }
             }
 
-            if (!TextUtils.isEmpty(receiveTime) && !TextUtils.isEmpty(timestamp)) { // 到货时间不为空
-                val next7 = TimeUtils.next7(receiveTime.toLong())
-                if (timestamp.toLong() > next7 || timestamp.toLong() == next7) { // 当前时间戳 比7天后的大。 // 售后按钮隐藏。
-                    tvSaleHandler.visibility = View.GONE
-                    tvSaleHandler.text = ""
+            if (tvSaleHandler.text == "申请售后" || tvSaleHandler.text.isEmpty()) {
+                if (!TextUtils.isEmpty(receiveTime) && !TextUtils.isEmpty(timestamp)) { // 到货时间不为空
+                    val next7 = TimeUtils.next7(receiveTime.toLong())
+                    if (timestamp.toLong() > next7 || timestamp.toLong() == next7) { // 当前时间戳 比7天后的大。 // 售后按钮隐藏。
+                        if (item.refundTimeOut == 1) {//超时显示申请售后
+                            tvSaleHandler.visibility = View.VISIBLE
+                            tvSaleHandler.text = "申请售后"
+                        } else {
+                            tvSaleHandler.visibility = View.GONE
+                            tvSaleHandler.text = ""
+                        }
+                    }
                 }
             }
 

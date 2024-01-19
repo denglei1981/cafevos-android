@@ -7,13 +7,13 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import android.text.method.Touch.scrollTo
 import android.view.LayoutInflater
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -42,6 +42,8 @@ import com.changanford.common.widget.title.CarScaleTransitionPagerTitleView
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -85,15 +87,16 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var hidden: Boolean = false
     private var videoPlayState = 0//视频播放状态
     private var carModelId: String = ""
+    private var isTop = true
 
     @SuppressLint("NewApi")
     override fun initView() {
-        val paddingTop = ImmersionBar.getStatusBarHeight(requireActivity()) + 10
+        val paddingTop = ImmersionBar.getStatusBarHeight(requireActivity())
 //        val layoutParams = binding.magicTab.layoutParams as ViewGroup.MarginLayoutParams
 //        layoutParams.topMargin = paddingTop
 //        binding.magicTab.layoutParams = layoutParams
 
-        binding.rlTitle.setPadding(0, paddingTop, 0, 0)
+        binding.rlTitle.setPadding(0, paddingTop-10, 0, 0)
         LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).observe(this) {
             StatusBarUtil.setLightStatusBar(requireActivity(), !isScrollWhite)
         }
@@ -117,10 +120,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if (scrollY - mOldScrollY > 0) {//上滑
                         if (scrollY < bannerHeight + 50) {
                             animY(scrollY, bannerHeight + 20.toIntPx())
+                            isTop = false
                         }
                     } else {//下滑
                         if (scrollY < bannerHeight) {
                             animY(scrollY, 0)
+                            isTop = true
                         }
                     }
                     if (!mMagicTabHasInit) return
@@ -427,15 +432,21 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     carTopBanner.currentPosition = position
                     carTopBanner.notifyDataSetChanged()
                     topBannerList[position].apply {
-                        carControl.carModelId = carModelId.toString()
-                        carControl.carModelCode = carModelCode
-                        MConstant.carBannerCarModelId=carModelId.toString()
-                        getBottomData(carModelId.toString())
-                        viewModel.getRecentlyDealers(
-                            carControl.latLng?.longitude,
-                            carControl.latLng?.latitude,
-                            carModelId.toString()
-                        )
+                        lifecycleScope.launch {
+                            if (isTop) {
+                                delay(600)
+                            }
+                            carControl.carModelId = carModelId.toString()
+                            carControl.carModelCode = carModelCode
+                            MConstant.carBannerCarModelId = carModelId.toString()
+                            getBottomData(carModelId.toString())
+                            viewModel.getRecentlyDealers(
+                                carControl.latLng?.longitude,
+                                carControl.latLng?.latitude,
+                                carModelId.toString()
+                            )
+                        }
+
                     }
                     videoPlayState = -1
                     updateControl()

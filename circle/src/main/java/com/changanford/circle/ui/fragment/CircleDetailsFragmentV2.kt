@@ -55,12 +55,14 @@ class CircleDetailsFragmentV2 :
             topicId: String,
             circleId: String = "",
             userId: String? = "",
+            carModelId: String? = null
         ): CircleDetailsFragmentV2 {
             val bundle = Bundle()
             bundle.putString("type", type)
             bundle.putString("topicId", topicId)
             bundle.putString("circleId", circleId)
             bundle.putString("userId", userId)
+            bundle.putString("carModelId", carModelId)
             val fragment = CircleDetailsFragmentV2()
             fragment.arguments = bundle
             return fragment
@@ -82,6 +84,7 @@ class CircleDetailsFragmentV2 :
         topicId = arguments?.getString("topicId", "").toString()
         circleId = arguments?.getString("circleId", "").toString()
         userId = arguments?.getString("userId", "").toString()
+        carModelIds = arguments?.getString("carModelId")
 
         adapter.isTopic = !topicId.isNullOrEmpty()
 //        staggeredGridLayoutManager = StaggeredGridLayoutManager(
@@ -106,7 +109,7 @@ class CircleDetailsFragmentV2 :
 
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getListData(type.toInt(), topicId, circleId, page, userId,carModelIds)
+            viewModel.getListData(type.toInt(), topicId, circleId, page, userId, carModelIds)
         }
         binding.ryCircle.adapter = adapter
 
@@ -147,7 +150,7 @@ class CircleDetailsFragmentV2 :
     }
 
     override fun initData() {
-        viewModel.getListData(type.toInt(), topicId, circleId, page, userId,carModelIds)
+        viewModel.getListData(type.toInt(), topicId, circleId, page, userId, carModelIds)
     }
 
     override fun observe() {
