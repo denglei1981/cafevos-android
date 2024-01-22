@@ -17,7 +17,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_bg"
             android:layout_width="0dp"
-            android:layout_height="410dp"
+            android:layout_height="390dp"
             android:background="@mipmap/ic_car_home_history_bg"
             android:scaleType="centerCrop"
             app:layout_constraintLeft_toLeftOf="parent"

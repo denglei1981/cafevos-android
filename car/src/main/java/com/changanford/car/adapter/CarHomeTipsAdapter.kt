@@ -56,10 +56,7 @@ class CarHomeTipsAdapter :
 
     private fun setLayoutWidth(imageView: ConstraintLayout) {
         val layoutParam = imageView.layoutParams
-//        layoutParam.width = ((200.toDouble()/375)* MConstant.deviceWidth).toInt()
-        layoutParam.width = 220.toIntPx()
-//            layoutParam.height = layoutParam.width
-
-
+        layoutParam.width = 200.toIntPx()
     }
+
 }

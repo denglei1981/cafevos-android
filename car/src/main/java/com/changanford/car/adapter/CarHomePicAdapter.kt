@@ -44,7 +44,7 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
                 if (position == 0 || position == 2) {
                     params.rightMargin =
-                        10.toIntPx()
+                        12.toIntPx()
                     params.bottomMargin = 10
                 } else params.rightMargin = 0
             }
@@ -60,11 +60,11 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
     private fun setLayoutWidth(imageView: ConstraintLayout) {
         if (itemCount > 1) {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 94.toIntPx()
+            layoutParam.width = 83.toIntPx()
             layoutParam.height = layoutParam.width
         } else {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 193.toIntPx()
+            layoutParam.width = 176.toIntPx()
             layoutParam.height = layoutParam.width
         }
 

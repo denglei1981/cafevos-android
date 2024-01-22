@@ -82,7 +82,6 @@ class CarControl(
     private val carBottomFragment: CarBottomFragment
 ) {
     var carModelCode: String = ""
-    var carModelId: String = ""
     private var isFirstLoc = true
     var latLng: LatLng? = null
     var mLocationClient: LocationClient? = null
@@ -351,7 +350,7 @@ class CarControl(
             it.tvMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("topicId", bean.extend?.topicId)
-                bundle.putString("carModelId", carModelId)
+                bundle.putString("carModelId", MConstant.carBannerCarModelId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             val adapter = CarHomeHistoryAdapter()
@@ -461,7 +460,7 @@ class CarControl(
             it.tvMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString(JumpConstant.SPECIAL_TOPIC_ID, bean.artId.toString())
-                bundle.putString("carModelId", carModelId)
+                bundle.putString("carModelId", MConstant.carBannerCarModelId)
                 startARouter(ARouterHomePath.SpecialDetailActivity, bundle)
             }
             val adapter = CarHomeTipsAdapter()
@@ -660,7 +659,7 @@ class CarControl(
                     addMarker(p1, dealerName)
                     composeViewDealers.setContent {
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            LookingDealers(this@apply, carModelId)
+                            LookingDealers(this@apply, MConstant.carBannerCarModelId)
                         }
                     }
                 }
@@ -790,7 +789,7 @@ class CarControl(
                     setMapZoom(15f)//默认缩放15
                 }
                 addMarker(latLng!!, null)
-                viewModel.getRecentlyDealers(longitude, latitude, carModelId)
+                viewModel.getRecentlyDealers(longitude, latitude, MConstant.carBannerCarModelId)
             }
         }
     }

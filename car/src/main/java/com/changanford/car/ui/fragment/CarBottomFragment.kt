@@ -19,10 +19,10 @@ class CarBottomFragment : BaseFragment<CarFragmentBottomBinding, CarViewModel>()
         LiveDataBus.get().with("carBottom").postValue(binding)
     }
 
-    fun setPadding(padding:Int){
-       val layoutParams= binding.vLine.layoutParams
-        layoutParams.height=padding
-        binding.vLine.layoutParams=layoutParams
+    fun setPadding(padding: Int) {
+        val layoutParams = binding.vLine.layoutParams
+        layoutParams.height = padding
+        binding.vLine.layoutParams = layoutParams
     }
 
     override fun initData() {

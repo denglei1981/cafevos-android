@@ -67,10 +67,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             ), R.layout.header_car, null, false
         )
     }
-    private var oldScrollY = 0
-    private var isScrollWhite = true
-    var itemPunchWhat: Int = 0
-    private var maxSlideY = 800//最大滚动距离
     private val carTopFragment by lazy { CarTopFragment() }
     private val carBottomFragment by lazy { CarBottomFragment() }
     private var fragments = ArrayList<Fragment>()
@@ -88,24 +84,23 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var carInfoBean: MutableList<NewCarInfoBean>? = null
     private var hidden: Boolean = false
     private var videoPlayState = 0//视频播放状态
-    private var carModelId: String = ""
     private var isTop = true
-    private var isFirstPageSelete = true
+    private var isFirstPageSelect = true
 
     @SuppressLint("NewApi")
     override fun initView() {
         val paddingTop = ImmersionBar.getStatusBarHeight(requireActivity())
 
-        binding.rlTitle.setPadding(0, paddingTop - 10, 0, 0)
+        binding.rlTitle.setPadding(0,paddingTop+10.toIntPx(), 0, 0)
         LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).observe(this) {
-            StatusBarUtil.setLightStatusBar(requireActivity(), !isScrollWhite)
+            StatusBarUtil.setLightStatusBar(requireActivity(), !isTop)
         }
         fragments.add(carTopFragment)
         fragments.add(carBottomFragment)
         initViewPager()
         LiveDataBus.get().withs<CarFragmentBottomBinding>("carBottom").observe(this) {
             getData()
-            carBottomFragment.setPadding(paddingTop + 50.toIntPx())
+            carBottomFragment.setPadding(paddingTop + 70.toIntPx())
             carBottomFragment.carBottomBinding?.apply {
                 recyclerView.adapter = mAdapter
             }
@@ -120,7 +115,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
 
     private fun setTabState(isWhite: Boolean) {
-        StatusBarUtil.setLightStatusBar(requireActivity(), true)
         val nav = binding.magicTab.navigator as CommonNavigator
         if (isWhite) {
             nav.adapter = blackAdapter
@@ -159,15 +153,33 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 isTop = position == 0
-                if (!isFirstPageSelete) {
+                StatusBarUtil.setLightStatusBar(requireActivity(), !isTop)
+                if (!isFirstPageSelect) {
                     hidden = position == 1
                     setTabState(position == 1)
                     updateControl()
+
+                    if (!isTop) {
+                        lifecycleScope.launch {
+                            delay(300)
+                            refreshBottomData()
+                        }
+                    }
+
                 }
-                isFirstPageSelete = false
+                isFirstPageSelect = false
             }
         })
         binding.viewPager.offscreenPageLimit = 2
+    }
+
+    private fun refreshBottomData() {
+        getBottomData(MConstant.carBannerCarModelId)
+        viewModel.getRecentlyDealers(
+            carControl.latLng?.longitude,
+            carControl.latLng?.latitude,
+            MConstant.carBannerCarModelId
+        )
     }
 
     override fun initData() {
@@ -186,15 +198,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     private fun initObserve() {
         viewModel.topBannerBean.observe(this) {
-            oldScrollY = 0
             it?.apply {
                 if (size == 0) {
                     carTopFragment.carTopBinding?.carTopViewPager?.isVisible = false
                     return@observe
                 }
-                carModelId = it[0].carModelId.toString()
-                carControl.carModelId = carModelId
-                MConstant.carBannerCarModelId = carModelId
+                MConstant.carBannerCarModelId = it[0].carModelId.toString()
                 carTopFragment.carTopBinding?.carTopViewPager?.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
@@ -211,7 +220,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     Handler(Looper.myLooper()!!).postDelayed({
                         "banner>>>>高度：${carTopFragment.carTopBinding?.carTopViewPager?.height}".wLogE()
                         val bannerHeight = carTopFragment.carTopBinding?.carTopViewPager?.height
-                        maxSlideY = bannerHeight?.div(2) ?: 100
                     }, 500)
                 }
                 get(0).apply {
@@ -229,7 +237,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
         viewModel.carInfoBean.observe(this) {
             bindingCompose()
-            getBottomData(carModelId)
+            getBottomData(MConstant.carBannerCarModelId)
             viewModel.getAuthCarInfo()
             viewModel.getBottomAds()
         }
@@ -261,8 +269,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             val simplePagerTitleView =
                 CarScaleTransitionPagerTitleView(context)
             simplePagerTitleView.text = topBannerList[index].name
-            simplePagerTitleView.textSize = 16f
-            simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+            simplePagerTitleView.textSize = 19f
+            simplePagerTitleView.setPadding(14.toIntPx(), 0, 14.toIntPx(), 0)
             simplePagerTitleView.normalColor =
                 ContextCompat.getColor(context, R.color.white66)
             simplePagerTitleView.selectedColor =
@@ -303,8 +311,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             val simplePagerTitleView =
                 CarScaleTransitionPagerTitleView(context)
             simplePagerTitleView.text = topBannerList[index].name
-            simplePagerTitleView.textSize = 16f
-            simplePagerTitleView.setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+            simplePagerTitleView.textSize = 19f
+            simplePagerTitleView.setPadding(14.toIntPx(), 0, 14.toIntPx(), 0)
             simplePagerTitleView.normalColor =
                 ContextCompat.getColor(context, R.color.color_9916)
             simplePagerTitleView.selectedColor =
@@ -383,21 +391,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     carTopBanner.currentPosition = position
                     carTopBanner.notifyDataSetChanged()
                     topBannerList[position].apply {
-                        lifecycleScope.launch {
-                            if (isTop) {
-                                delay(600)
-                            }
-                            carControl.carModelId = carModelId.toString()
-                            carControl.carModelCode = carModelCode
-                            MConstant.carBannerCarModelId = carModelId.toString()
-                            getBottomData(carModelId.toString())
-                            viewModel.getRecentlyDealers(
-                                carControl.latLng?.longitude,
-                                carControl.latLng?.latitude,
-                                carModelId.toString()
-                            )
+                        MConstant.carBannerCarModelId = carModelId.toString()
+                        carControl.carModelCode = carModelCode
+                        MConstant.carBannerCarModelId = carModelId.toString()
+                        if (!isTop) {//在底部点击tab才触发
+                            refreshBottomData()
                         }
-
                     }
                     videoPlayState = -1
                     updateControl()

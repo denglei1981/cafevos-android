@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.changanford.car.R
@@ -13,14 +12,13 @@ import com.changanford.car.control.PlayerHelper
 import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.wutil.wLogE
 import com.dueeeke.videoplayer.player.VideoView
-import com.xiaomi.push.it
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
-import kotlin.coroutines.coroutineContext
 
 /**
  * @Author : wenke
@@ -157,5 +155,12 @@ class NewCarTopBannerAdapter(
         playerHelper?.apply {
             addOnStateChangeListener(listener)
         }
+    }
+
+    private fun setTopButtonMargin(){
+        Math.ceil(
+            (MConstant.deviceWidth.toFloat() * MConstant.deviceHeight.toFloat() / MConstant.deviceWidth
+                .toFloat()).toDouble()
+        ).toInt()
     }
 }

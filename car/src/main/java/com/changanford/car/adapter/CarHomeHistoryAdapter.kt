@@ -61,9 +61,7 @@ class CarHomeHistoryAdapter :
 
     private fun setLayoutWidth(imageView: ConstraintLayout) {
             val layoutParam = imageView.layoutParams
-            layoutParam.width = 220.toIntPx()
-//            layoutParam.height = layoutParam.width
-
-
+            layoutParam.width = 200.toIntPx()
     }
+
 }

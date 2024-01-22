@@ -37,6 +37,7 @@
                     android:id="@+id/magic_tab"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:paddingStart="2dp"
                     android:background="@null"
                     android:paddingBottom="2dp" />
             </RelativeLayout>
