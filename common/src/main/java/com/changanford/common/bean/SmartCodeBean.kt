@@ -6,5 +6,6 @@ package com.changanford.common.bean
  *Purpose
  */
 data class SmartCodeBean(
-    val smart: String
+    val isOpen: Boolean,
+    val captchaId:String?
 )

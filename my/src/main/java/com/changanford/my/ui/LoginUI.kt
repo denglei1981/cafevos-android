@@ -256,10 +256,10 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
             showToast("验证码获取成功")
         })
         viewModel.smartCodeBean.observe(this) {
-            if (it.smart == "NO") {
+            if (!it.isOpen ) {
                 viewModel.smsCacSmsCode(binding.etLoginMobile.text.toString())
             } else {
-                outCheckVerify()
+                it.captchaId?.let { it1 -> outCheckVerify(it1) }
             }
         }
         LiveDataBus.get().with(USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
@@ -298,13 +298,13 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
     private var captcha: Captcha? = null
 
     //行为验证吗
-    private fun outCheckVerify() {
+    private fun outCheckVerify(captchaId:String) {
         if (binding.etLoginMobile.text.toString().isNullOrEmpty()) {
             toastShow("请输入手机号")
             return
         }
         val captchaConfiguration =
-            CaptchaConfiguration.Builder().captchaId("e4d8ba3882814acf8dbebbb0d67e40f1")
+            CaptchaConfiguration.Builder().captchaId(captchaId)
                 .languageType(CaptchaConfiguration.LangType.LANG_ZH_CN)
                 .loadingText("安全检测中")
                 .isCloseButtonBottom(true)
@@ -313,7 +313,7 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
                     override fun onValidate(result: String?, validate: String?, msg: String?) {
                         validate?.let {
                             if (it.isNotEmpty()) {
-                                viewModel.getSmsCodeV2(binding.etLoginMobile.text.toString(),it)
+                                viewModel.getSmsCodeV2(binding.etLoginMobile.text.toString(),it,captchaId)
                             }
                         }
                     }

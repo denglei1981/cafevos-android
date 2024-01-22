@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layout_location0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <com.changanford.common.ui.view.WTextView
+                style="@style/w_style_txt_ellipsize"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_28"
+                android:background="@drawable/shape_whit15_bg"
+                android:gravity="center"
+                android:maxWidth="@dimen/dp_120"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:text="@string/str_currentPosition"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_13" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:src="@mipmap/ic_car_location_green" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_location1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
+
+            <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_locationTitle"
+                style="@style/w_style_txt_ellipsize"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_28"
+                android:background="@drawable/shape_whit15_bg"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:text="@string/str_currentPosition"
+                android:textColor="@color/color_33"
+                android:textSize="@dimen/sp_13" />
+
+            <ImageView
+                android:id="@+id/img_locationIc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:src="@mipmap/ic_car_location" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.changanford.common.widget.NestedScrollableHost
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_line">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/v_line" />
+        </com.changanford.common.widget.NestedScrollableHost>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -499,11 +499,11 @@ class SignViewModel : ViewModel() {
         }
     }
 
-    fun getSmsCodeV2(phone: String, validate: String) {
+    fun getSmsCodeV2(phone: String, validate: String,captchaId:String) {
         viewModelScope.launch {
             fetchRequest(showLoading = true) {
                 val body = HashMap<String, String>()
-                body["captchaId"] = "e4d8ba3882814acf8dbebbb0d67e40f1"
+                body["captchaId"] = captchaId
                 body["phone"] = phone
                 body["validate"] = validate
                 val rKey = getRandomKey()
@@ -523,7 +523,7 @@ class SignViewModel : ViewModel() {
         viewModelScope.launch {
             fetchRequest {
                 val body = java.util.HashMap<String, Any>()
-                body["configKey"] = "smart_code"
+                body["configKey"] = "isopen.graphics"
                 body["obj"] = true
                 val rKey = getRandomKey()
                 apiService.smartCode(body.header(rKey), body.body(rKey))

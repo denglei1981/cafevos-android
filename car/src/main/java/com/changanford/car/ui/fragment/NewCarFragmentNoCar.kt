@@ -1,7 +1,5 @@
 package com.changanford.car.ui.fragment
 
-import android.animation.Animator
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -13,18 +11,19 @@ import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
 import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.NewCarTopBannerAdapter
 import com.changanford.car.control.CarControl
+import com.changanford.car.databinding.CarFragmentBottomBinding
+import com.changanford.car.databinding.CarFragmentTopBinding
 import com.changanford.car.databinding.FragmentCarBinding
 import com.changanford.car.databinding.HeaderCarBinding
-import com.changanford.car.widget.NewNestedScrollView
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.NewCarBannerBean
 import com.changanford.common.bean.NewCarInfoBean
@@ -50,7 +49,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import kotlin.math.abs
 
 
 class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
@@ -73,6 +71,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var isScrollWhite = true
     var itemPunchWhat: Int = 0
     private var maxSlideY = 800//最大滚动距离
+    private val carTopFragment by lazy { CarTopFragment() }
+    private val carBottomFragment by lazy { CarBottomFragment() }
+    private var fragments = ArrayList<Fragment>()
     private val carControl by lazy {
         CarControl(
             requireActivity(),
@@ -80,7 +81,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             viewModel,
             mAdapter,
             headerBinding,
-            binding
+            carTopFragment,
+            carBottomFragment
         )
     }
     private var carInfoBean: MutableList<NewCarInfoBean>? = null
@@ -88,140 +90,91 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var videoPlayState = 0//视频播放状态
     private var carModelId: String = ""
     private var isTop = true
+    private var isFirstPageSelete = true
 
     @SuppressLint("NewApi")
     override fun initView() {
         val paddingTop = ImmersionBar.getStatusBarHeight(requireActivity())
-//        val layoutParams = binding.magicTab.layoutParams as ViewGroup.MarginLayoutParams
-//        layoutParams.topMargin = paddingTop
-//        binding.magicTab.layoutParams = layoutParams
 
-        binding.rlTitle.setPadding(0, paddingTop-10, 0, 0)
+        binding.rlTitle.setPadding(0, paddingTop - 10, 0, 0)
         LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).observe(this) {
             StatusBarUtil.setLightStatusBar(requireActivity(), !isScrollWhite)
         }
-        binding.apply {
-//            srl.setOnRefreshListener {
-//                getData()
-//                it.finishRefresh()
-//            }
-            recyclerView.adapter = mAdapter
-            recyclerView.addOnScrollListener(onScrollListener)
-            nestScroll.addScrollChangeListener(object :
-                NewNestedScrollView.AddScrollChangeListener {
-                override fun onScrollChange(
-                    scrollX: Int,
-                    scrollY: Int,
-                    oldScrollX: Int,
-                    mOldScrollY: Int
-                ) {
-                    oldScrollY = scrollY
-                    val bannerHeight = binding.srl.height - (60.toIntPx()) - binding.rlTitle.bottom
-                    if (scrollY - mOldScrollY > 0) {//上滑
-                        if (scrollY < bannerHeight + 50) {
-                            animY(scrollY, bannerHeight + 20.toIntPx())
-                            isTop = false
-                        }
-                    } else {//下滑
-                        if (scrollY < bannerHeight) {
-                            animY(scrollY, 0)
-                            isTop = true
-                        }
-                    }
-                    if (!mMagicTabHasInit) return
-                    if (oldScrollY >= bannerHeight) {
-                        if (isScrollWhite) {
-                            StatusBarUtil.setLightStatusBar(requireActivity(), true)
-                            val nav = binding.magicTab.navigator as CommonNavigator
-                            nav.adapter = blackAdapter
-                            binding.rlTitle.setBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.white
-                                )
-                            )
-                            binding.magicTab.navigator = nav
-                            isScrollWhite = false
-                        }
-                    } else {
-                        if (!isScrollWhite) {
-                            StatusBarUtil.setLightStatusBar(requireActivity(), false)
-                            val nav = binding.magicTab.navigator as CommonNavigator
-                            nav.adapter = whiteAdapter
-                            binding.rlTitle.setBackgroundColor(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.transparent
-                                )
-                            )
-                            binding.magicTab.navigator = nav
-                            isScrollWhite = true
-                        }
-
-                    }
-                }
-
-                override fun onScrollState(state: NewNestedScrollView.ScrollState?) {
-                    if (state == NewNestedScrollView.ScrollState.IDLE) {
-                        updateControl()
-                    }
-                }
-            })
-//            mAdapter.addHeaderView(headerBinding.root)
-//            headerBinding.apply {
-//                btnSubmit.setOnClickListener { //立即订购
-//                    WBuriedUtil.clickCarOrder(topBannerList[carTopViewPager.currentItem].carModelName)
-//                }
-//            }
+        fragments.add(carTopFragment)
+        fragments.add(carBottomFragment)
+        initViewPager()
+        LiveDataBus.get().withs<CarFragmentBottomBinding>("carBottom").observe(this) {
+            getData()
+            carBottomFragment.setPadding(paddingTop + 50.toIntPx())
+            carBottomFragment.carBottomBinding?.apply {
+                recyclerView.adapter = mAdapter
+            }
         }
-        initObserve()
-        initBanner()
-        addLiveDataBus()
+        LiveDataBus.get().withs<CarFragmentTopBinding>("carTop").observe(this) {
+            viewModel.getTopBanner()
+            initObserve()
+            initBanner()
+            addLiveDataBus()
+        }
     }
 
-    private var isStarAnim = false
 
-    private fun animY(scrollY: Int, toScrollY: Int) {
-        if (isStarAnim) {
-            return
-        }
-        val animator = ValueAnimator.ofInt(scrollY, toScrollY)
-        animator.duration = 500
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {
-                binding.nestScroll.setIsBannerScroll(true)
-                isStarAnim = true
-            }
-
-            override fun onAnimationEnd(animation: Animator) {
-                binding.nestScroll.setIsBannerScroll(false)
-                isStarAnim = false
-            }
-
-            override fun onAnimationCancel(animation: Animator) {
-
-            }
-
-            override fun onAnimationRepeat(animation: Animator) {
-
-            }
-
-        })
-        animator.addUpdateListener { animation ->
-            binding.nestScroll.scrollTo(
-                0,
-                animation.animatedValue as Int
+    private fun setTabState(isWhite: Boolean) {
+        StatusBarUtil.setLightStatusBar(requireActivity(), true)
+        val nav = binding.magicTab.navigator as CommonNavigator
+        if (isWhite) {
+            nav.adapter = blackAdapter
+            binding.rlTitle.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+        } else {
+            nav.adapter = whiteAdapter
+            binding.rlTitle.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.transparent
+                )
             )
         }
-        animator.start()
+
+        binding.magicTab.navigator = nav
+
+    }
+
+    private fun initViewPager() {
+        val viewPagerAdapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int {
+                return fragments.size
+            }
+
+            override fun createFragment(position: Int): Fragment {
+                return fragments[position]
+            }
+        }
+        binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                isTop = position == 0
+                if (!isFirstPageSelete) {
+                    hidden = position == 1
+                    setTabState(position == 1)
+                    updateControl()
+                }
+                isFirstPageSelete = false
+            }
+        })
+        binding.viewPager.offscreenPageLimit = 2
     }
 
     override fun initData() {
-        getData()
+
     }
 
     private fun getData() {
-        viewModel.getTopBanner()
         viewModel.getMyCarModelList()
         viewModel.getMoreCar()
 //        viewModel.getLoveCarRecommendList {
@@ -233,34 +186,32 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
     private fun initObserve() {
         viewModel.topBannerBean.observe(this) {
-            binding.recyclerView.scrollToPosition(0)
             oldScrollY = 0
             it?.apply {
                 if (size == 0) {
-                    binding.carTopViewPager.isVisible = false
+                    carTopFragment.carTopBinding?.carTopViewPager?.isVisible = false
                     return@observe
                 }
                 carModelId = it[0].carModelId.toString()
                 carControl.carModelId = carModelId
                 MConstant.carBannerCarModelId = carModelId
-                binding.carTopViewPager.isVisible = true
+                carTopFragment.carTopBinding?.carTopViewPager?.isVisible = true
                 topBannerList.clear()
                 topBannerList.addAll(this)
-                binding.carTopViewPager.apply {
+                carTopFragment.carTopBinding?.carTopViewPager?.apply {
                     post {
                         val params = layoutParams
                         params.height = binding.srl.height - (50.toIntPx())
                         layoutParams = params
                     }
-
                     carTopBanner.playerHelper = null
                     carTopBanner.currentPosition = 0
                     create(topBannerList)
                     updateControl()
                     Handler(Looper.myLooper()!!).postDelayed({
-                        "banner>>>>高度：${binding.carTopViewPager.height}".wLogE()
-                        val bannerHeight = binding.carTopViewPager.height
-                        maxSlideY = bannerHeight / 2
+                        "banner>>>>高度：${carTopFragment.carTopBinding?.carTopViewPager?.height}".wLogE()
+                        val bannerHeight = carTopFragment.carTopBinding?.carTopViewPager?.height
+                        maxSlideY = bannerHeight?.div(2) ?: 100
                     }, 500)
                 }
                 get(0).apply {
@@ -317,7 +268,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             simplePagerTitleView.selectedColor =
                 ContextCompat.getColor(context, R.color.white)
             simplePagerTitleView.setOnClickListener {
-                binding.carTopViewPager.currentItem = index
+                carTopFragment.carTopBinding?.carTopViewPager?.currentItem = index
             }
             return simplePagerTitleView
         }
@@ -359,7 +310,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             simplePagerTitleView.selectedColor =
                 ContextCompat.getColor(context, R.color.color_1700f4)
             simplePagerTitleView.setOnClickListener {
-                binding.carTopViewPager.currentItem = index
+                carTopFragment.carTopBinding?.carTopViewPager?.currentItem = index
             }
             return simplePagerTitleView
         }
@@ -386,7 +337,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
 
     private fun initBanner() {
-        binding.carTopViewPager.apply {
+        carTopFragment.carTopBinding?.carTopViewPager?.apply {
             setAutoPlay(false)
 //            setScrollDuration(500)
             setCanLoop(true)
@@ -452,11 +403,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     updateControl()
                 }
             })
-            setIndicatorView(binding.drIndicator)
+            setIndicatorView(carTopFragment.carTopBinding?.drIndicator)
         }
 //        headerBinding.drIndicator.setIndicatorGap(20)
 //            .setIndicatorDrawable(R.drawable.indicator_unchecked, R.drawable.indicator_checked)
-        binding.carTopViewPager.isSaveEnabled = false
+        carTopFragment.carTopBinding?.carTopViewPager?.isSaveEnabled = false
     }
 
     /**
@@ -464,11 +415,11 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
      * */
     @SuppressLint("NotifyDataSetChanged")
     private fun updateControl(isHidden: Boolean = hidden) {
-        "更新控制>>>isHidden:$isHidden>>>oldScrollY:$oldScrollY>>>maxSlideY:$maxSlideY>>>videoPlayState:$videoPlayState".wLogE()
-        binding.carTopViewPager.apply {
+        "更新控制>>>isHidden:$isHidden>>>oldScrollY:>>>maxSlideY:>>>videoPlayState:$videoPlayState".wLogE()
+        carTopFragment.carTopBinding?.carTopViewPager?.apply {
             val item = if (topBannerList.size > 0) topBannerList[currentItem] else null
             //可见 并且 滚动距离小于最大控制距离
-            if (!isHidden && oldScrollY < maxSlideY) {
+            if (!isHidden) {
                 if (item?.mainIsVideo == 1) {//是视频
                     if (videoPlayState == VideoView.STATE_PLAYBACK_COMPLETED) {//视频播放完成
                         "视频播放完成".wLogE()
@@ -553,40 +504,6 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         }
     }
 
-    /**
-     * RecyclerView 滚动监听 主要用于控制banner是否自动播放
-     * */
-    private val onScrollListener = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                getPositionAndOffset()
-                updateControl()
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-        }
-    }
-
-    /**
-     * 记录RecyclerView当前位置
-     */
-    private fun getPositionAndOffset() {
-        val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
-        //获取可视的第一个view
-//        val topView = layoutManager.getChildAt(0)
-        layoutManager.getChildAt(0)?.apply {
-            //获取与该view的顶部的偏移量
-            val lastOffset = top
-            //得到该View的数组位置
-            val lastPosition = layoutManager.getPosition(this)
-            "记录RecyclerView当前位置>>lastOffset:$lastOffset>>>oldScrollY:$oldScrollY>>>lastPosition:$lastPosition".wLogE()
-            if (lastOffset == 0) oldScrollY = 0
-            else if (lastPosition == 0 && abs(lastOffset) != oldScrollY) oldScrollY = lastOffset
-        }
-    }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)

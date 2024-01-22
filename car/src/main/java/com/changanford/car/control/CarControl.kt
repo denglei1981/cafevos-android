@@ -39,6 +39,8 @@ import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
+import com.changanford.car.ui.fragment.CarBottomFragment
+import com.changanford.car.ui.fragment.CarTopFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.DistanceBean
@@ -47,6 +49,7 @@ import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.SpecialDetailData
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.databinding.ItemPagingHeadBinding
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
@@ -75,7 +78,8 @@ class CarControl(
     val viewModel: CarViewModel,
     private val mAdapter: CarNotAdapter,
     private val headerBinding: HeaderCarBinding,
-    private val binding: FragmentCarBinding
+    private val carTopFragment: CarTopFragment,
+    private val carBottomFragment: CarBottomFragment
 ) {
     var carModelCode: String = ""
     var carModelId: String = ""
@@ -797,7 +801,7 @@ class CarControl(
     private fun addMarker(latLng: LatLng, dealersName: String?) {
         mLocationClient?.unRegisterLocationListener(myLocationListener)
 //        val bitmap = BitmapDescriptorFactory.fromResource(iconId?:R.mipmap.ic_car_current_lacation)
-        binding.apply {
+        carBottomFragment.carBottomBinding?.apply {
             if (dealersName != null) tvLocationTitle.setText(dealersName)
             val bitmap =
                 BitmapDescriptorFactory.fromBitmap(WCommonUtil.createBitmapFromView(if (dealersName == null) layoutLocation0 else layoutLocation1))
