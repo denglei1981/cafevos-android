@@ -269,10 +269,10 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             val simplePagerTitleView =
                 CarScaleTransitionPagerTitleView(context)
             simplePagerTitleView.text = topBannerList[index].name
-            simplePagerTitleView.textSize = 19f
+            simplePagerTitleView.textSize = 18f
             simplePagerTitleView.setPadding(14.toIntPx(), 0, 14.toIntPx(), 0)
             simplePagerTitleView.normalColor =
-                ContextCompat.getColor(context, R.color.white66)
+                ContextCompat.getColor(context, R.color.white_b2)
             simplePagerTitleView.selectedColor =
                 ContextCompat.getColor(context, R.color.white)
             simplePagerTitleView.setOnClickListener {
@@ -311,7 +311,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             val simplePagerTitleView =
                 CarScaleTransitionPagerTitleView(context)
             simplePagerTitleView.text = topBannerList[index].name
-            simplePagerTitleView.textSize = 19f
+            simplePagerTitleView.textSize = 18f
             simplePagerTitleView.setPadding(14.toIntPx(), 0, 14.toIntPx(), 0)
             simplePagerTitleView.normalColor =
                 ContextCompat.getColor(context, R.color.color_9916)

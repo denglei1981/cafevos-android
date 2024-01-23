@@ -11,6 +11,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white66">#66FFFFFF</color>
+    <color name="white_b2">#b2FFFFFF</color>
     <color name="black66">#66000000</color>
     <color name="red">#FFFF0000</color>
     <color name="green">#FF0000FF</color>
