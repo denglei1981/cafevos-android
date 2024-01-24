@@ -11,6 +11,7 @@ import com.changanford.car.control.AnimationControl
 import com.changanford.car.control.PlayerHelper
 import com.changanford.car.databinding.ItemCarBannerBinding
 import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
@@ -94,6 +95,7 @@ class NewCarTopBannerAdapter(
                     rlTopRight.isVisible = !data.rightUpButtonWord.isNullOrEmpty()
                     rlBottomLeft.isVisible = !data.appointmentDriveWord.isNullOrEmpty()
                     rlBottomRight.isVisible = !data.bookingCarWord.isNullOrEmpty()
+                    llLinear.setPadding(0,(DisplayUtil.getScreenWidth(llLinear.context)*0.767).toInt(),0,0)
                     tvTopLeft.text = data.leftUpButtonWord
                     tvTopRight.text = data.rightUpButtonWord
                     tvBottomLeft.text = data.appointmentDriveWord

@@ -377,11 +377,11 @@ class CarControl(
         hCarHistoryBinding?.apply {
             dataBean?.apply {
                 addFooterView(root, sort, isUpdateSort)
-                if (isVisible(carModelCode)) {
-                    root.visibility = View.VISIBLE
-                } else {
+//                if (isVisible(carModelCode)) {
+//                    root.visibility = View.VISIBLE
+//                } else {
                     root.visibility = View.GONE
-                }
+//                }
             }
         }
     }
