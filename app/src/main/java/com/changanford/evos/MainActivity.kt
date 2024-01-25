@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -56,6 +57,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.common.wutil.ForegroundCallbacks
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
@@ -66,9 +68,11 @@ import com.changanford.evos.view.SpecialJsonTab
 import com.changanford.evos.view.SpecialTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
+import com.dueeeke.videoplayer.util.PlayerUtils
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
+import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -775,5 +779,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             ChangeIconUtils.setDefaultAlias(this)
         }
     }
+
 }
 

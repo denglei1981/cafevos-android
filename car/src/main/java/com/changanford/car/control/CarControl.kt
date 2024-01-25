@@ -24,7 +24,14 @@ import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
-import com.baidu.mapapi.map.*
+import com.baidu.mapapi.map.BaiduMap
+import com.baidu.mapapi.map.BitmapDescriptorFactory
+import com.baidu.mapapi.map.MapStatus
+import com.baidu.mapapi.map.MapStatusUpdateFactory
+import com.baidu.mapapi.map.MapView
+import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.OverlayOptions
+import com.baidu.mapapi.map.PolylineOptions
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
 import com.changanford.car.CarViewModel
@@ -34,7 +41,13 @@ import com.changanford.car.adapter.CarHomeTipsAdapter
 import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
 import com.changanford.car.adapter.CarServiceAdapter
-import com.changanford.car.databinding.*
+import com.changanford.car.databinding.HeaderCarAdsBinding
+import com.changanford.car.databinding.HeaderCarBinding
+import com.changanford.car.databinding.HeaderCarBuyBinding
+import com.changanford.car.databinding.HeaderCarDealersBinding
+import com.changanford.car.databinding.HeaderCarHistoryBinding
+import com.changanford.car.databinding.HeaderCarRecommendedBinding
+import com.changanford.car.databinding.LayoutComposeviewBinding
 import com.changanford.car.ui.compose.AfterSalesService
 import com.changanford.car.ui.compose.CarAuthLayout
 import com.changanford.car.ui.compose.LookingDealers
@@ -49,7 +62,6 @@ import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.SpecialDetailData
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
-import com.changanford.common.databinding.ItemPagingHeadBinding
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
@@ -342,7 +354,6 @@ class CarControl(
                 return
             }
             hCarHistoryBinding?.root?.isVisible = true
-
             it.ivIcon.setCircular(5)
             it.ivIcon.loadCompress(bean.extend?.topicPic)
             it.tvTitle.text = bean.extend?.topicName
@@ -380,7 +391,7 @@ class CarControl(
 //                if (isVisible(carModelCode)) {
 //                    root.visibility = View.VISIBLE
 //                } else {
-                    root.visibility = View.GONE
+                root.visibility = View.GONE
 //                }
             }
         }
@@ -452,6 +463,7 @@ class CarControl(
             return
         }
         hBuyCarTipsBinding?.root?.isVisible = true
+
         hBuyCarTipsBinding?.let {
             it.ivIcon.setCircular(5)
             it.ivIcon.loadCompress(bean.pics)

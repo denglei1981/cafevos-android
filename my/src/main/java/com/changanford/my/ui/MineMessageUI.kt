@@ -31,9 +31,7 @@ import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.launchWithCatch
-import com.changanford.common.util.setCustomDensity
 import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
@@ -43,7 +41,6 @@ import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import me.leolin.shortcutbadger.ShortcutBadger
-import java.util.zip.Inflater
 
 /**
  *  文件名：MineMessageUI

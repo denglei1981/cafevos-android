@@ -76,7 +76,7 @@ object MConstant {
         rootPath + File.separator + "android" + File.separator + "ftfilesdir" + File.separator + System.currentTimeMillis() + ".jpg"
     }
 
-    var carBannerCarModelId:String=""
+    var carBannerCarModelId: String = ""
 
     /**
      * 刷新用户消息  true刷新

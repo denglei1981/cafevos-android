@@ -42,22 +42,22 @@ class CarHomePicAdapter(private val isVideo: Boolean) :
         if (itemCount > 1) {
             view?.let {
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
+                params.bottomMargin = 9.toIntPx()
                 if (position == 0 || position == 2) {
-                    params.rightMargin =
-                        12.toIntPx()
-                    params.bottomMargin = 10
+                    params.rightMargin = 9.toIntPx()
                 } else params.rightMargin = 0
             }
         } else {
             view?.let {
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
-                params.bottomMargin = 10
+                params.bottomMargin = 9.toIntPx()
                 params.rightMargin = 0
             }
         }
     }
 
     private fun setLayoutWidth(imageView: ConstraintLayout) {
+//        val onePicWidth = (((200.toDouble() / 375) * MConstant.deviceWidth) - 24.toIntPx()).toInt()
         if (itemCount > 1) {
             val layoutParam = imageView.layoutParams
             layoutParam.width = 83.toIntPx()

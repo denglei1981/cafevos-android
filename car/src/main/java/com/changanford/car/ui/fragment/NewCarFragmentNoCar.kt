@@ -86,12 +86,13 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var videoPlayState = 0//视频播放状态
     private var isTop = true
     private var isFirstPageSelect = true
+    private var selectPosition = -1
 
     @SuppressLint("NewApi")
     override fun initView() {
         val paddingTop = ImmersionBar.getStatusBarHeight(requireActivity())
 
-        binding.rlTitle.setPadding(0,paddingTop+10.toIntPx(), 0, 0)
+        binding.rlTitle.setPadding(0, paddingTop + 10.toIntPx(), 0, 0)
         LiveDataBus.get().with(LiveDataBusKey.CLICK_CAR).observe(this) {
             StatusBarUtil.setLightStatusBar(requireActivity(), !isTop)
         }
@@ -100,8 +101,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
         initViewPager()
         LiveDataBus.get().withs<CarFragmentBottomBinding>("carBottom").observe(this) {
             getData()
-            carBottomFragment.setPadding(paddingTop + 70.toIntPx())
+//            carBottomFragment.setPadding(paddingTop + 60.toIntPx())
             carBottomFragment.carBottomBinding?.apply {
+                mAdapter.setList(listOf(""))
                 recyclerView.adapter = mAdapter
             }
         }
@@ -153,6 +155,7 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 isTop = position == 0
+
                 StatusBarUtil.setLightStatusBar(requireActivity(), !isTop)
                 if (!isFirstPageSelect) {
                     hidden = position == 1
@@ -161,13 +164,17 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
 
                     if (!isTop) {
                         lifecycleScope.launch {
-                            delay(300)
-                            refreshBottomData()
+                            if (selectPosition != position) {
+                                delay(100)
+                                refreshBottomData()
+                            }
+
                         }
                     }
 
                 }
                 isFirstPageSelect = false
+                selectPosition = position
             }
         })
         binding.viewPager.offscreenPageLimit = 2
@@ -394,8 +401,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         MConstant.carBannerCarModelId = carModelId.toString()
                         carControl.carModelCode = carModelCode
                         MConstant.carBannerCarModelId = carModelId.toString()
+                        if (binding.viewPager.currentItem == 1) {
+                            binding.viewPager.currentItem = 0
+                        }
                         if (!isTop) {//在底部点击tab才触发
-                            refreshBottomData()
+                            lifecycleScope.launch {
+                                delay(100)
+                                refreshBottomData()
+                            }
                         }
                     }
                     videoPlayState = -1

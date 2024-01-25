@@ -27,7 +27,7 @@ class CarHomeTipsAdapter :
     ) {
         val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
-            setLayoutWidth(it.clContent)
+//            setLayoutWidth(it.clContent)
             if (!item.pics.isNullOrEmpty()) {
                 val layoutManager = LinearLayoutManager(context)
                 it.ryPc.layoutManager = layoutManager

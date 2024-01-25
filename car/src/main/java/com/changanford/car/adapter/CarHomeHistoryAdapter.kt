@@ -29,7 +29,7 @@ class CarHomeHistoryAdapter :
     ) {
         val picAdapter = CarHomePicAdapter(item.type == 3)
         holder.dataBinding?.let {
-            setLayoutWidth(it.clContent)
+//            setLayoutWidth(it.clContent)
             if (!item.picList.isNullOrEmpty()) {
                 if (item.picList!!.size < 4) {
                     val layoutManager = LinearLayoutManager(context)

@@ -2,6 +2,7 @@ package com.changanford.common.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -47,7 +48,8 @@ class NestedScrollableHost : FrameLayout {
     private fun canChildScroll(orientation: Int, delta: Float): Boolean {
         val direction = -delta.sign.toInt()
         return when (orientation) {
-            0 -> child?.canScrollHorizontally(direction) ?: false
+//            0 -> child?.canScrollHorizontally(direction) ?: false
+            0 -> false
             1 -> child?.canScrollVertically(direction) ?: false
             else -> throw IllegalArgumentException()
         }
@@ -81,7 +83,7 @@ class NestedScrollableHost : FrameLayout {
 
                 if (isVpHorizontal == (scaledDy > scaledDx)) {
                     // Gesture is perpendicular, allow all parents to intercept
-                    parent.requestDisallowInterceptTouchEvent(false)
+                    parent.requestDisallowInterceptTouchEvent(true)
                 } else {
                     // Gesture is parallel, query child if movement in that direction is possible
                     if (canChildScroll(orientation, if (isVpHorizontal) dx else dy)) {

@@ -48,13 +48,17 @@
                     android:id="@+id/tv_top_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
                     android:layout_alignParentEnd="true"
                     android:drawableEnd="@mipmap/car_banner_right_ic"
                     android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="5dp"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    tools:text="参数配置" />
+                    tools:text="参数配置"
+                    tools:textColor="@color/black" />
 
             </RelativeLayout>
 
@@ -68,12 +72,16 @@
                     android:id="@+id/tv_top_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:drawableEnd="@mipmap/car_banner_right_ic"
                     android:drawablePadding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="5dp"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    tools:text="查看更多" />
+                    tools:text="查看更多"
+                    tools:textColor="@color/black" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -91,8 +99,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="18dp"
-            android:orientation="horizontal"
             android:layout_marginBottom="46dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/v_guide_line">
