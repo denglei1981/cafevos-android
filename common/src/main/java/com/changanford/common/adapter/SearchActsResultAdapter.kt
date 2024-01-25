@@ -1,5 +1,7 @@
 package com.changanford.common.adapter
 
+import android.graphics.drawable.GradientDrawable
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -56,6 +58,31 @@ class SearchActsResultAdapter :
 
             it.btnState.isVisible = !item.activityTag.isNullOrEmpty()
             it.btnState.text = item.showTag()
+            val stateBg = it.btnState.background as GradientDrawable
+            when (item.activityTag) {
+                "NOT_BEGIN" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_E67400
+                    )
+                )
+
+                "ON_GOING" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_1700f4
+                    )
+                )
+
+                "SIGN_ING" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_009987
+                    )
+                )
+
+                else -> stateBg.setColor(ContextCompat.getColor(context, R.color.color_a5adb1))
+            }
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
             it.tvSignpeople.isVisible = item.showJoinNum()
@@ -67,12 +94,12 @@ class SearchActsResultAdapter :
             }
             if (item.buttonBgEnable()) {
                 it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_f2f4f9_cor14)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_1700F4))
+                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_1700f4_18)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.white))
             } else {
                 it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_dd_cor14)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.white))
+                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_80a6_18)
+                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_4d16))
             }
             it.bt.setOnClickListener {
                 if (item.isFinish()) {

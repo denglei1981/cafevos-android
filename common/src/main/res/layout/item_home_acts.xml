@@ -45,8 +45,7 @@
             android:id="@+id/tv_tips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="长安福特 未来活动体验日，于2021年9月11日正式上市"
@@ -74,21 +73,16 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
 
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_state"
-            style="@style/materialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="14dp"
-            android:backgroundTint="@color/color_F4"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:gravity="center"
             android:text="进行中"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:background="@drawable/acts_state_bg"
             android:textSize="13sp"
-            android:textStyle="bold"
-            app:cornerRadius="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_acts"
+            app:layout_constraintTop_toTopOf="@+id/iv_acts"
             app:layout_constraintStart_toStartOf="@+id/iv_acts" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -176,15 +170,14 @@
 
         <TextView
             android:id="@+id/bt"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_28"
+            android:layout_width="88dp"
+            android:layout_height="30dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/dp_15"
             android:background="@drawable/bg_f2f4f9_cor14"
             android:gravity="center"
-            android:paddingHorizontal="@dimen/dp_28"
-            android:textColor="@color/color_95b"
-            android:textSize="@dimen/sp_12"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_home_act_address"
             tools:text="结束" />

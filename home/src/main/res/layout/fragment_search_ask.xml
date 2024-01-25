@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_F4">
+    android:background="@color/white">
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/smart_layout"
@@ -15,11 +15,10 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_whit5_bg"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

@@ -1,20 +1,25 @@
 package com.changanford.home.search.adapter
 
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultUserBinding
 import com.changanford.home.util.LoginUtil
-import com.google.android.material.button.MaterialButton
 
 class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<AuthorBaseVo, BaseDataBindingHolder<ItemSearchResultUserBinding>>(
@@ -30,10 +35,10 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
             GlideUtils.loadBD(item.avatar, it.ivHeader)
             it.tvAuthorName.text = item.nickname
             setFollowState(it.btnFollow, item)
-            it.btnFollow.setOnClickListener {
+            it.btnFollow.setOnClickListener {_->
                 // 判断是否登录。
                 if (LoginUtil.isLongAndBindPhone()) {
-                    followAction(it as MaterialButton, item, holder.adapterPosition)
+                    followAction(it.btnFollow , item, holder.adapterPosition)
                 }
             }
             if (item.userId != MConstant.userId) {
@@ -47,7 +52,7 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
     }
 
     // 关注或者取消
-    private fun followAction(btnFollow: MaterialButton, authorBaseVo: AuthorBaseVo, position: Int) {
+    private fun followAction(btnFollow: TextView, authorBaseVo: AuthorBaseVo, position: Int) {
         var followType = authorBaseVo.isFollow
         when (followType) {
             1 -> {
@@ -63,7 +68,7 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
     }
 
     // 关注。
-    fun getFollow(followId: String, type: Int) {
+    private fun getFollow(followId: String, type: Int) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -80,7 +85,7 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
     /**
      *  设置关注状态。
      * */
-    fun setFollowState(btnFollow: MaterialButton, authors: AuthorBaseVo) {
+    fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
