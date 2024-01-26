@@ -15,24 +15,27 @@
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/myFragment" />
     </custom_fragment>
+
     <custom_fragment
-        android:id="@+id/circleFragment"
-        android:name="com.changanford.circle.CircleFragmentV2"
+        android:id="@+id/serviceFragment"
+        android:name="com.changanford.car.ui.fragment.CarServiceFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/homeFragment" />
     </custom_fragment>
-<!--   android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"         android:name="com.changanford.car.CarFragmentNoCar"-->
+
     <custom_fragment
         android:id="@+id/carFragment"
         android:name="com.changanford.car.ui.fragment.NewCarFragmentNoCar"
         android:label="CarFragment" />
+
     <custom_fragment
         android:id="@+id/shopFragment"
         android:name="com.changanford.shop.ShopFragment"
         android:label="fragment_circle_list" />
+
     <custom_fragment
         android:id="@+id/myFragment"
         android:name="com.changanford.my.MineFragment"

@@ -6,8 +6,6 @@ import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -18,15 +16,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.changanford.circle.CircleFragmentV2
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.common.basic.BaseActivity
@@ -52,12 +45,10 @@ import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.room.Db
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.common.wutil.ForegroundCallbacks
-import com.changanford.common.wutil.ScreenUtils
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
@@ -68,11 +59,9 @@ import com.changanford.evos.view.SpecialJsonTab
 import com.changanford.evos.view.SpecialTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
-import com.dueeeke.videoplayer.util.PlayerUtils
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,6 +79,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private lateinit var popViewModel: PopViewModel
 
     var jumpIndex: String = ""
+
+    private var PAGE_IDS = intArrayOf(
+        R.id.homeFragment,
+        R.id.shopFragment,
+        R.id.carFragment,
+        R.id.serviceFragment,
+        R.id.myFragment
+    )
 
     companion object {
         var activityAlive = false
@@ -113,9 +110,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 )
                 addItem(
                     jsonItem(
-                        outNavigateBean.btTwo,
-                        outNavigateBean.jsonSecond,
-                        "社区",
+                        outNavigateBean.btFour,
+                        outNavigateBean.jsonFourth,
+                        "商城",
                     )
                 )
                 addItem(
@@ -127,9 +124,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 )
                 addItem(
                     jsonItem(
-                        outNavigateBean.btFour,
-                        outNavigateBean.jsonFourth,
-                        "商城",
+                        outNavigateBean.btTwo,
+                        outNavigateBean.jsonSecond,
+                        "服务",
                     )
                 )
                 addItem(
@@ -151,11 +148,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 )
                 addItem(
                     newItem(
-                        R.mipmap.icon_circleu,
-                        R.mipmap.icon_circle_b,
-                        R.mipmap.icon_circle_c,
-                        "社区",
-                        12f
+                        R.mipmap.icon_shopu,
+                        R.mipmap.icon_shop_b,
+                        R.mipmap.icon_shop_c,
+                        "商城",
+                        13f
                     )
                 )
                 addItem(
@@ -167,15 +164,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                         1f
                     )
                 )
-//        R.mipmap.icon_car_b,
-//        R.mipmap.icon_car_c,
                 addItem(
                     newItem(
-                        R.mipmap.icon_shopu,
-                        R.mipmap.icon_shop_b,
-                        R.mipmap.icon_shop_c,
-                        "商城",
-                        13f
+                        R.mipmap.icon_bottom_service,
+                        R.mipmap.icon_bottom_service_b,
+                        R.mipmap.icon_bottom_service_w,
+                        "服务",
+                        12f
                     )
                 )
                 addItem(
@@ -220,22 +215,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     isJumpMenu = false
                 }
 
-                R.id.circleFragment -> {// 社区
-                    GioPageConstant.mainTabName = "社区页"
+                R.id.serviceFragment -> {// 服务
+                    GioPageConstant.mainTabName = "服务页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.white)
                     if (!isJumpMenu) {
-                        BuriedUtil.instant?.mainButtomMenu("社区")
+                        BuriedUtil.instant?.mainButtomMenu("服务")
                     }
                     isJumpMenu = false
-                    val circleFragmentV2 = getFragment(CircleFragmentV2::class.java)
-                    circleFragmentV2?.let { it ->
-                        val circleFragment = it as CircleFragmentV2
-                        if (!TextUtils.isEmpty(jumpIndex)) {
-                            circleFragment.setCurrentItem(jumpIndex)
-                            jumpIndex = ""
-                        }
-                    }
+//                    val circleFragmentV2 = getFragment(CircleFragmentV2::class.java)
+//                    circleFragmentV2?.let { it ->
+//                        val circleFragment = it as CircleFragmentV2
+//                        if (!TextUtils.isEmpty(jumpIndex)) {
+//                            circleFragment.setCurrentItem(jumpIndex)
+//                            jumpIndex = ""
+//                        }
+//                    }
                 }
 
                 R.id.shopFragment -> {
@@ -546,14 +541,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         return mainTab
     }
 
-    private var PAGE_IDS = intArrayOf(
-        R.id.homeFragment,
-        R.id.circleFragment,
-        R.id.carFragment,
-        R.id.shopFragment,
-        R.id.myFragment
-    )
-
     // 设置底部导航显示或者隐藏
     private fun setHomBottomNavi(visibleState: Int) {
         binding.homeBottomNavi.visibility = visibleState
@@ -672,7 +659,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                         2 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.white)
-                            navController.navigate(R.id.circleFragment)
+                            navController.navigate(R.id.shopFragment)
                         }
 
                         3 -> {
@@ -685,7 +672,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                         4 -> {
                             setHomBottomNavi(View.VISIBLE)
                             StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                            navController.navigate(R.id.shopFragment)
+                            navController.navigate(R.id.serviceFragment)
                         }
 
                         5 -> {

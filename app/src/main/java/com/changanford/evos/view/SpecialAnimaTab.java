@@ -202,7 +202,8 @@ public class SpecialAnimaTab extends BaseTabItem {
                 ObjectAnimator animator1 = ObjectAnimator.ofFloat(view, "translationY", 0f, -10f, 0f);
                 Log.d("juli", jl + "");
                 ObjectAnimator animator3 = ObjectAnimator.ofFloat(ivyuanshu, "translationY", 0f, Yfloat);
-                ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivyuanshu, "translationX", 0f, jl+Xfloat);
+//                ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivyuanshu, "translationX", 0f, jl+Xfloat);
+                ObjectAnimator animator2 = ObjectAnimator.ofFloat(ivyuanshu, "translationX", 0f, jl);
                 ObjectAnimator animator4 = ObjectAnimator.ofFloat(ivyuanshu, "rotation", 0f, -60f, 0f);
                 set = new AnimatorSet();
                 set.playTogether(animator1, animator3, animator2, animator4);
