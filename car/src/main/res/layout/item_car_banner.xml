@@ -155,8 +155,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_bottom_tips"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="20dp"
+            android:layout_height="14dp"
             android:layout_marginBottom="16dp"
             android:src="@mipmap/car_bottom_tips_ic"
             app:layout_constraintBottom_toBottomOf="parent"

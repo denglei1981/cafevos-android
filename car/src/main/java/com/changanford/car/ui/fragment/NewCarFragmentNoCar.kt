@@ -165,10 +165,9 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                     if (!isTop) {
                         lifecycleScope.launch {
                             if (selectPosition != position) {
-                                delay(100)
+                                delay(300)
                                 refreshBottomData()
                             }
-
                         }
                     }
 
@@ -403,13 +402,14 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
                         MConstant.carBannerCarModelId = carModelId.toString()
                         if (binding.viewPager.currentItem == 1) {
                             binding.viewPager.currentItem = 0
+                            carBottomFragment.carBottomBinding?.recyclerView?.scrollToPosition(0)
                         }
-                        if (!isTop) {//在底部点击tab才触发
-                            lifecycleScope.launch {
-                                delay(100)
-                                refreshBottomData()
-                            }
-                        }
+//                        if (!isTop) {//在底部点击tab才触发
+//                            lifecycleScope.launch {
+//                                delay(100)
+//                                refreshBottomData()
+//                            }
+//                        }
                     }
                     videoPlayState = -1
                     updateControl()

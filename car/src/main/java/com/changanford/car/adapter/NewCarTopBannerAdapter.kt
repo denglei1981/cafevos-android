@@ -119,7 +119,7 @@ class NewCarTopBannerAdapter(
                     tvBottomRight.setOnClickListener {
                         JumpUtils.instans?.jump(data.bookingCarType, data.bookingCarUrl)
                     }
-                    starBottomAnima(ivBottomTips)
+//                    starBottomAnima(ivBottomTips)
                 }
             }
         }
