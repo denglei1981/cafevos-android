@@ -1,18 +1,23 @@
 package com.changanford.home.search.activity
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.JumpConstant.SEARCH_CONTENT
@@ -26,19 +31,19 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.SearchRecordDatabase
 import com.changanford.common.util.room.SearchRecordEntity
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
-import com.changanford.home.bean.SearchKeyBean
+import com.changanford.home.adapter.PolySearchTopicAdapter
 import com.changanford.home.databinding.ActivityPolySearchBinding
 import com.changanford.home.search.adapter.SearchHistoryAdapter
 import com.changanford.home.search.adapter.SearchHotAdapter
 import com.changanford.home.search.request.PolySearchViewModel
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.gyf.immersionbar.ImmersionBar
-import java.util.*
+import java.util.Collections
+
 
 /**
  *  聚合搜索页面
@@ -47,14 +52,17 @@ import java.util.*
  *  * */
 @Route(path = ARouterHomePath.PolySearchActivity)
 class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchViewModel>() {
-    var flexboxLayoutManagerHistory: FlexboxLayoutManager? = null
 
-    val searchHotAdapter: SearchHotAdapter by lazy {
-        SearchHotAdapter(arrayListOf())
+    private val searchHotAdapter: SearchHotAdapter by lazy {
+        SearchHotAdapter()
     }
-    val historyAdapter: SearchHistoryAdapter by lazy {
-        SearchHistoryAdapter(mutableListOf())
+    private val historyAdapter by lazy {
+        SearchHistoryAdapter()
     }
+    private val topicAdapter by lazy {
+        PolySearchTopicAdapter()
+    }
+    private val mViewList = ArrayList<View>()
 
     //搜索列表
     private val sAdapter by lazy {
@@ -63,7 +71,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     var searchType = -1
 
-    var historyList: MutableList<SearchRecordEntity>? = null
+    var mDatas: MutableList<SearchRecordEntity>? = null
 
     override fun onResume() {
         super.onResume()
@@ -80,20 +88,23 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         }
         ImmersionBar.with(this)
             .fitsSystemWindows(true)
-            .statusBarColor(R.color.color_F4)
+            .statusBarColor(R.color.white)
 
-        flexboxLayoutManagerHistory = FlexboxLayoutManager(this)
-        flexboxLayoutManagerHistory!!.flexDirection = FlexDirection.ROW
-        flexboxLayoutManagerHistory!!.justifyContent = JustifyContent.FLEX_START
+//        val flowLayoutManager1 = FlowLayoutManager(this, true)
+        val flowLayoutManager0 = FlowLayoutManager(this, 2) {
+
+        }
+//        historyAdapter.isExpand.observe(this) {
+//            binding.recyclerViewHistory.layoutManager =
+//                if (it) flowLayoutManager1 else flowLayoutManager0
+//        }
+//        binding.recyclerViewHistory.layoutManager = flowLayoutManager0
+//
+//        binding.recyclerViewHistory.adapter = historyAdapter
 
 
-        binding.recyclerViewHistory.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        binding.recyclerViewHistory.adapter = historyAdapter
-
-
-        binding.recyclerViewFind.layoutManager = flexboxLayoutManagerHistory
+        binding.recyclerViewFind.layoutManager = flowLayoutManager0
+        binding.ryTopic.adapter = topicAdapter
 
         binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setEnableOverScrollDrag(true)
@@ -108,6 +119,34 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
+        val divider: Int = 30.toIntPx()
+        val gridItemDecoration = object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                val layoutManager = parent.layoutManager as GridLayoutManager?
+                val lp = view.layoutParams as GridLayoutManager.LayoutParams
+                val spanCount = layoutManager!!.spanCount
+                val layoutPosition =
+                    (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
+                if (lp.spanSize != spanCount) {
+                    //左边间距
+                    if (layoutPosition % 2 == 1) {
+                        outRect.left = divider/2
+                        outRect.right = 0
+                    } else {
+                        outRect.left = 0
+                        outRect.right = divider/2
+                    }
+                }
+            }
+
+        }
+        binding.ryTopic.addItemDecoration(gridItemDecoration)
+
         binding.tvClear.setOnClickListener {
             // 清空历史记录。
             viewModel.clearRecord(this)
@@ -124,22 +163,24 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 //
 //            }
         }
-        sAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val bean = sAdapter.getItem(position)
-                if (bean.jumpDataType != 0) {//jump跳转
-                    JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
-                } else {
-                    search(bean.keyword, true)
-                }
-            }
-        })
-        searchHotAdapter.setOnItemClickListener { adapter, view, position ->
-            val bean = searchHotAdapter.getItem(position)
+        sAdapter.setOnItemClickListener { _, _, position ->
+            val bean = sAdapter.getItem(position)
             if (bean.jumpDataType != 0) {//jump跳转
                 JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
             } else {
                 search(bean.keyword, true)
+            }
+        }
+        searchHotAdapter.setOnItemClickListener { _, _, position ->
+            val bean = searchHotAdapter.getItem(position)
+            if (bean.jumpDataType != null) {//jump跳转
+                JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
+            } else {
+//                search(bean.keyword, true)
+                val bundle = Bundle()
+                bundle.putInt(SEARCH_TYPE, searchType)
+                bundle.putString(SEARCH_CONTENT, bean.keyword)
+                startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
             }
         }
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
@@ -169,6 +210,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                     if (s.isNullOrEmpty()) {
                         binding.rvAuto.visibility = View.GONE
                     } else {
+                        sAdapter.searchContent = s.toString()
                         binding.rvAuto.visibility = View.VISIBLE
                         viewModel.getSearchAc(s.toString())
                     }
@@ -179,23 +221,19 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
         //获取本地搜索历史
         SearchRecordDatabase.getInstance(this).getSearchRecordDao().findAll()
-            .observe(this, Observer {
+            .observe(this) {
                 if (!it.isNullOrEmpty()) {//有数据
                     Collections.reverse(it)//倒叙
                     binding.gHis.visibility = View.VISIBLE
                 } else {
                     binding.gHis.visibility = View.GONE
                 }
-                historyList = it as? MutableList<SearchRecordEntity>
+                mDatas = it as? MutableList<SearchRecordEntity>
+                mDatas?.let {
+                    initZFlowLayout()
+                }
                 historyAdapter.setList(it)
-//                if (it.size > 8 && !historyAdapter.isExpand) {
-//                    val subList = it.subList(0, 8) as MutableList
-//                    historyAdapter.setList(subList)
-//                } else {
-//
-//                }
-
-            })
+            }
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()
         }
@@ -218,7 +256,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     }
 
-    fun jumpNomarl() {
+    private fun jumpNomarl() {
         val bundle = Bundle()
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
@@ -227,11 +265,127 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             SEARCH_POST -> { //搜索帖子。 埋点。
                 BuriedUtil.instant?.communityMainTopSearsh(searchContent)
             }
+
             SEARCH_ASK -> {
                 BuriedUtil.instant?.communityQuestionSerach(searchContent)
             }
         }
 
+    }
+
+    private fun initZFlowLayout() {
+        if (mDatas == null) return
+        mViewList.clear()
+        for (i in 0 until mDatas!!.size) {
+            val textView = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.item_history_search_new,
+                    binding.recyclerViewHistory,
+                    false
+                ) as TextView
+            textView.text = (mDatas!![i].keyword)
+            mViewList.add(textView)
+        }
+        binding.recyclerViewHistory.setChildren(mViewList)
+        binding.recyclerViewHistory.viewTreeObserver
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.recyclerViewHistory.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    val lineCount: Int = binding.recyclerViewHistory.lineCount //行数
+                    val twoLineViewCount: Int =
+                        binding.recyclerViewHistory.twoLineViewCount //前两行里面view的个数
+                    val expandLineViewCount: Int =
+                        binding.recyclerViewHistory.expandLineViewCount ///展开时显示view的个数
+                    if (lineCount > 2) {  //默认展示2行，其余折叠收起，最多展示5行
+                        initIvClose(twoLineViewCount, expandLineViewCount)
+                    }
+                }
+            })
+        binding.recyclerViewHistory.setOnTagClickListener { _, position ->
+            val bean = mDatas?.get(position)
+//            bean?.keyword?.let { search(it, true) }
+            val bundle = Bundle()
+            bundle.putInt(SEARCH_TYPE, searchType)
+            bundle.putString(SEARCH_CONTENT, bean?.keyword)
+            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+        }
+    }
+
+    private fun initIvClose(twoLineViewCount: Int, expandLineViewCount: Int) {
+        mViewList.clear()
+        for (i in 0 until twoLineViewCount) {
+            val textView = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.item_history_search_new,
+                    binding.recyclerViewHistory,
+                    false
+                ) as TextView
+            textView.text = mDatas?.get(i)?.keyword
+            mViewList.add(textView)
+        }
+
+        //展开按钮
+        val imageView = LayoutInflater.from(this)
+            .inflate(
+                R.layout.item_search_history_img,
+                binding.recyclerViewHistory,
+                false
+            ) as ImageView
+        imageView.setImageResource(R.mipmap.ic_his_down_end)
+        imageView.setOnClickListener { v: View? ->
+            initIvOpen(
+                twoLineViewCount,
+                expandLineViewCount
+            )
+        }
+        mViewList.add(imageView)
+        binding.recyclerViewHistory.setChildren(mViewList)
+        binding.recyclerViewHistory.viewTreeObserver
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    binding.recyclerViewHistory.viewTreeObserver
+                        .removeOnGlobalLayoutListener(this)
+                    val lineCount: Int = binding.recyclerViewHistory.lineCount
+                    val twoLineViewCount = binding.recyclerViewHistory.twoLineViewCount
+                    if (lineCount > 2) {
+                        initIvClose(
+                            twoLineViewCount - 1,
+                            binding.recyclerViewHistory.expandLineViewCount
+                        )
+                    }
+                }
+            })
+    }
+
+    private fun initIvOpen(twoLineViewCount: Int, expandLineViewCount: Int) {
+        mViewList.clear()
+        for (i in 0 until expandLineViewCount) {
+            val textView = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.item_history_search_new,
+                    binding.recyclerViewHistory,
+                    false
+                ) as TextView
+            textView.text = mDatas?.get(i)?.keyword
+            mViewList.add(textView)
+        }
+
+        //收起按钮
+        val imageView = LayoutInflater.from(this)
+            .inflate(
+                R.layout.item_search_history_img,
+                binding.recyclerViewHistory,
+                false
+            ) as ImageView
+        imageView.setImageResource(R.mipmap.ic_his_up_end)
+        imageView.setOnClickListener { v: View? ->
+            initIvClose(
+                twoLineViewCount,
+                expandLineViewCount
+            )
+        }
+        mViewList.add(imageView) //不需要的话可以不添加
+        binding.recyclerViewHistory.setChildren(mViewList)
     }
 
     fun isPs() {
@@ -240,19 +394,20 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     }
 
     override fun initData() {
-        viewModel.getSearchHistoryList()
+//        viewModel.getSearchHistoryList()
         viewModel.getSearchKeyList()
+        viewModel.getTopic()
     }
 
     override fun observe() {
         super.observe()
-        viewModel.searchKeyLiveData.observe(this, Observer {
+        viewModel.searchKeyLiveData.observe(this) {
             if (it.isSuccess) {
-                searchHotAdapter.setNewInstance(it.data as? MutableList<SearchKeyBean>)
-            } else {
-
+//                searchHotAdapter.setNewInstance(it.data as? MutableList<SearchKeyBean>)
+                searchHotAdapter.setList(it.data)
+                binding.gHotSearch.isVisible = !it.data.isNullOrEmpty()
             }
-        })
+        }
         viewModel.searchAutoLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 sAdapter.setList(it.data)
@@ -272,7 +427,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             }
         })
 
-
+        viewModel.hotTopicBean.observe(this) {
+            binding.gTopic.isVisible = !it.dataList.isNullOrEmpty()
+            topicAdapter.setList(it.dataList)
+        }
     }
 
 

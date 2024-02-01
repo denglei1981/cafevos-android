@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_oval_his_end"
+        android:scaleType="center"
+        android:src="@mipmap/ic_his_down_end" />
+</layout>

@@ -9,7 +9,7 @@ data class SearchKeyBean(
     var hint: Int,
     var hot: Int,
     var id: Int,
-    val jumpDataType: Int,
+    val jumpDataType: Int?=null,
     val jumpDataValue: String,
     var keyword: String,
     var sort: Int,

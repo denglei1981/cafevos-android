@@ -165,6 +165,11 @@
         <attr name="w_text_flags" format="integer" />
     </declare-styleable>
 
-
+    <declare-styleable name="EllipsizeEndTextView">
+        <attr name="maxLines" format="integer" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+        <attr name="lineSpacing" format="dimension" />
+    </declare-styleable>
 
 </resources>

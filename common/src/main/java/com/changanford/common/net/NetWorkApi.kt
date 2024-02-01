@@ -1509,4 +1509,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<AppNavigateBean>
+
+    /**
+     * 获取话题列表
+     */
+    @POST("con/topic/getSugesstionTopics")
+    suspend fun getSugesstionTopics(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HotPicBean>
 }

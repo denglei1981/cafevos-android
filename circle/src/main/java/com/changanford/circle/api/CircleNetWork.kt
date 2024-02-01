@@ -3,6 +3,8 @@ package com.changanford.circle.api
 import com.changanford.circle.bean.*
 import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.HotPicBean
+import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.MechanicData
 import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.common.bean.*

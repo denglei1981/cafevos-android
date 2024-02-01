@@ -212,6 +212,9 @@
     <color name="color_16">#161616</color>
     <color name="color_8016">#80161616</color>
     <color name="color_0d16">#0d161616</color>
+    <color name="color_0d00">#0d000000</color>
+    <color name="color_d900">#d9000000</color>
+    <color name="color_7300">#73000000</color>
     <color name="color_4d16">#4d161616</color>
     <color name="color_9916">#99161616</color>
     <color name="color_d916">#d9161616</color>
