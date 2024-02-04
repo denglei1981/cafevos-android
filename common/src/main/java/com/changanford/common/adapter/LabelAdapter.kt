@@ -1,13 +1,13 @@
-package com.changanford.home.adapter
+package com.changanford.common.adapter
 
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.R
 import com.changanford.common.bean.Imag
 import com.changanford.common.util.DisplayUtil
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.GlideUtils.loadBD
-import com.changanford.home.R
 
 
 /**

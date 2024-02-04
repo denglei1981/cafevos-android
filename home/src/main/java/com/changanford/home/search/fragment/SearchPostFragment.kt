@@ -1,25 +1,19 @@
 package com.changanford.home.search.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.constant.JumpConstant
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.noAnima
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
 import com.changanford.home.search.adapter.SearchPostsResultAdapter
-import com.changanford.home.search.request.PolySearchNewsResultViewModel
 import com.changanford.home.search.request.PolySearchPostResultViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -53,6 +47,7 @@ class SearchPostFragment :
 
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
         tagId = arguments?.getString(JumpConstant.SEARCH_TAG_ID).toString()
+        binding.recyclerView.noAnima()
         binding.recyclerView.adapter = searchPostsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
@@ -69,9 +64,6 @@ class SearchPostFragment :
             GioPageConstant.postEntrance = "搜索结果页"
             val item = searchPostsResultAdapter.getItem(position)
             selectPosition = position
-            // todo 跳转到帖子
-            //                bundle.putString("postsId", value)
-            //                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             JumpUtils.instans!!.jump(4, item.postsId.toString())
         }
     }
@@ -106,20 +98,35 @@ class SearchPostFragment :
             }
         })
 
-        LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
-            .observe(this, Observer {
-                // 主要是改，点赞，评论， 浏览记录。。。
-                if (selectPosition == -1) {
-                    return@Observer
-                }
-                val item = searchPostsResultAdapter.getItem(selectPosition)
-                item.likesCount = it.likeCount
-                item.isLike = it.isLike
-                item.authorBaseVo?.isFollow = it.isFollow
-                item.commentCount = it.msgCount
-                searchPostsResultAdapter.notifyItemChanged(selectPosition)// 有t
-
-            })
+//        LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
+//            .observe(this, Observer {
+//                // 主要是改，点赞，评论， 浏览记录。。。
+//                if (selectPosition == -1) {
+//                    return@Observer
+//                }
+//                val item = searchPostsResultAdapter.getItem(selectPosition)
+//                item.likesCount = it.likeCount
+//                item.isLike = it.isLike
+//                item.authorBaseVo?.isFollow = it.isFollow
+//                item.commentCount = it.msgCount
+//                searchPostsResultAdapter.notifyItemChanged(selectPosition)// 有t
+//
+//            })
+        LiveDataBus.get().withs<Int>(LiveDataBusKey.REFRESH_POST_LIKE).observe(this) {
+            val item = searchPostsResultAdapter.getItem(selectPosition)
+            item.isLike = it
+            if (it == 0) {
+                item.likesCount--
+            } else {
+                item.likesCount++
+            }
+            searchPostsResultAdapter.notifyItemChanged(selectPosition)
+        }
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this) {
+            val item = searchPostsResultAdapter.getItem(selectPosition)
+            item.authorBaseVo?.isFollow = it
+            searchPostsResultAdapter.notifyItemChanged(selectPosition)
+        }
     }
 
     override fun onRetryBtnClick() {

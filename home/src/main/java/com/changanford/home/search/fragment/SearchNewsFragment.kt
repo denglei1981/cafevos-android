@@ -10,6 +10,7 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.noAnima
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.R
@@ -46,6 +47,7 @@ class SearchNewsFragment :
     override fun initView() {
 
         searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        binding.recyclerView.noAnima()
         binding.recyclerView.adapter = searchNewsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)

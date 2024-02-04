@@ -2,6 +2,7 @@ package com.changanford.common.util.ext
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.bumptech.glide.Glide
 import com.changanford.common.adapter.DealMuchImageAdapter
 import com.changanford.common.bean.ImageInfo
@@ -9,6 +10,7 @@ import com.changanford.common.utilext.toPx
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
+import java.util.Objects
 
 /**
  *Author lcw
@@ -34,6 +36,13 @@ fun RecyclerView.scrollStopLoadImage() {
     })
 }
 
+fun RecyclerView.noAnima() {
+    // 解决调用 notifyItemChanged 闪烁问题,取消默认动画
+    (Objects.requireNonNull<RecyclerView.ItemAnimator>(this.itemAnimator) as SimpleItemAnimator).supportsChangeAnimations =
+        false
+    this.itemAnimator = null
+}
+
 fun ShapeableImageView.setCircular(circular: Int) {
     this.shapeAppearanceModel =
         ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, circular.toPx())
@@ -51,9 +60,11 @@ fun RecyclerView.dealMuchImage(list: ArrayList<ImageInfo>?) {
             2 and 4 -> {
                 this.layoutManager = GridLayoutManager(this.context, 2)
             }
+
             3 -> {
                 this.layoutManager = GridLayoutManager(this.context, 3)
             }
+
             else -> {
                 this.layoutManager = GridLayoutManager(this.context, 2)
             }

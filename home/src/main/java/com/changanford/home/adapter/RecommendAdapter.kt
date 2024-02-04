@@ -2,14 +2,11 @@ package com.changanford.home.adapter
 
 import android.text.TextUtils
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -17,16 +14,26 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
+import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.databinding.ItemHomeActsBinding
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.CountUtils
+import com.changanford.common.util.DisplayUtil
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
@@ -35,13 +42,10 @@ import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.widget.DrawCenterTextView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
-import com.xiaomi.push.it
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(), LoadMoreModule {

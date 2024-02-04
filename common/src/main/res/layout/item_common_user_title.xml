@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_header"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageStyle"
+            tools:src="@mipmap/ic_launcher" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_vip"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+            app:layout_constraintCircle="@id/iv_header"
+            app:layout_constraintCircleAngle="140"
+            app:layout_constraintCircleRadius="15dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_header"
+            tools:src="@mipmap/icon_auth_car_master" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:maxLines="1"
+            android:textColor="@color/color_16"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sub_title"
+            app:layout_constraintStart_toEndOf="@+id/iv_header"
+            app:layout_constraintTop_toTopOf="@+id/iv_header"
+            tools:text="这里是兔子说" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_user_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center_vertical"
+            android:maxHeight="@dimen/dp_32"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_author_name"
+            app:layout_constraintEnd_toStartOf="@+id/btn_follow"
+            app:layout_constraintStart_toEndOf="@+id/tv_author_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_author_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_sub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_10"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_header"
+            app:layout_constraintStart_toStartOf="@+id/tv_author_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_author_name"
+            tools:text="车迷级公民"
+            tools:visibility="visible" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_follow"
+            android:layout_width="60dp"
+            android:layout_height="28dp"
+            android:gravity="center"
+            android:textColor="@color/color_01025C"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="+关注" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -10,11 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.preLoadNumber
-import com.changanford.common.net.*
-import com.changanford.common.util.CountUtils
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -25,12 +30,8 @@ import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
-import com.changanford.home.SetFollowState
-import com.changanford.home.adapter.LabelAdapter
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.widget.DrawCenterTextView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 
 

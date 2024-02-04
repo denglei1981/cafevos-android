@@ -1449,6 +1449,15 @@ interface NetWorkApi {
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
 
+    /**
+     * 帖子点赞
+     */
+    @POST("con/posts/actionLike")
+    suspend fun actionLikePost(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
     @POST("/con/agreementHub/bizCode")
     suspend fun getBiz(
         @HeaderMap headMap: Map<String, String>,

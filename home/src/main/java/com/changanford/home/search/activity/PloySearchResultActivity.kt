@@ -20,7 +20,12 @@ import com.changanford.home.R
 import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.databinding.ActivityPloySearchResultBinding
 import com.changanford.home.search.adapter.SearchResultViewpagerAdapter
-import com.changanford.home.search.fragment.*
+import com.changanford.home.search.fragment.SearchActsFragment
+import com.changanford.home.search.fragment.SearchAskFragment
+import com.changanford.home.search.fragment.SearchNewsFragment
+import com.changanford.home.search.fragment.SearchPostFragment
+import com.changanford.home.search.fragment.SearchShopFragment
+import com.changanford.home.search.fragment.SearchUserFragment
 import com.changanford.home.search.request.PolySearchViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -31,34 +36,32 @@ import com.gyf.immersionbar.ImmersionBar
 class PloySearchResultActivity :
     BaseActivity<ActivityPloySearchResultBinding, PolySearchViewModel>() {
 
-    var pagerAdapter: SearchResultViewpagerAdapter? = null
+    private var pagerAdapter: SearchResultViewpagerAdapter? = null
 
-    var fragmentList: ArrayList<Fragment> = arrayListOf()
+    private var fragmentList: ArrayList<Fragment> = arrayListOf()
 
-    var titleList = mutableListOf<String>()
+    private var titleList = mutableListOf<String>()
 
-    var searchContent: String = ""
+    var searchContent = ""
 
-    var tagId:String=""
+    private var tagId: String = ""
 
-    val searchActsFragment: SearchActsFragment by lazy {
+    private val searchActsFragment: SearchActsFragment by lazy {
         SearchActsFragment.newInstance(searchContent)
     }
-    val searchNewsFragment: SearchNewsFragment by lazy {
+    private val searchNewsFragment: SearchNewsFragment by lazy {
         SearchNewsFragment.newInstance(searchContent)
     }
-    val searchPostFragment: SearchPostFragment by lazy {
-        SearchPostFragment.newInstance(searchContent,tagId = tagId)
+    private val searchPostFragment: SearchPostFragment by lazy {
+        SearchPostFragment.newInstance(searchContent, tagId = tagId)
     }
-
-    val searchShopFragment: SearchShopFragment by lazy {
+    private val searchShopFragment: SearchShopFragment by lazy {
         SearchShopFragment.newInstance(searchContent)
     }
-
-    val searchUserFragment: SearchUserFragment by lazy {
+    private val searchUserFragment: SearchUserFragment by lazy {
         SearchUserFragment.newInstance(searchContent)
     }
-    val searchAskFragment: SearchAskFragment by lazy {
+    private val searchAskFragment: SearchAskFragment by lazy {
         SearchAskFragment.newInstance(searchContent)
     }
 
@@ -72,31 +75,32 @@ class PloySearchResultActivity :
         GioPageConstant.infoEntrance = "搜索结果页"
         ImmersionBar.with(this)
             .fitsSystemWindows(true)
-            .statusBarColor(R.color.color_ee)
+            .statusBarColor(R.color.white)
 
         val searchType = intent.getIntExtra(JumpConstant.SEARCH_TYPE, -1) // 用于决定滑动到那个条目。
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
-        tagId= intent.getStringExtra(JumpConstant.SEARCH_TAG_ID).toString()
+        tagId = intent.getStringExtra(JumpConstant.SEARCH_TAG_ID).toString()
 
-        binding.rvAuto.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvAuto.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvAuto.adapter = sAdapter
-        binding.layoutSearch.searchContent.text = searchContent
-        fragmentList.add(searchActsFragment)
+        binding.layoutSearch.searchContent.setText(searchContent)
         fragmentList.add(searchNewsFragment)
         fragmentList.add(searchPostFragment)
         fragmentList.add(searchShopFragment)
-        fragmentList.add(searchUserFragment)
+        fragmentList.add(searchActsFragment)
         fragmentList.add(searchAskFragment)
-        titleList.add(getString(R.string.home_acts))
+        fragmentList.add(searchUserFragment)
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_search_post))
         titleList.add(getString(R.string.home_search_shop))
-        titleList.add(getString(R.string.home_search_user))
+        titleList.add(getString(R.string.home_acts))
         titleList.add("问答")
+        titleList.add(getString(R.string.home_search_user))
         pagerAdapter = SearchResultViewpagerAdapter(this, fragmentList)
         binding.viewpager.adapter = pagerAdapter
-        if(searchType!=-1){
-            binding.viewpager.currentItem=searchType
+        if (searchType != -1) {
+            binding.viewpager.currentItem = searchType
         }
         binding.viewpager.isSaveEnabled = false
         binding.searchTab.setSelectedTabIndicatorColor(
@@ -128,10 +132,10 @@ class PloySearchResultActivity :
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
-        binding.layoutSearch.searchContent.setOnClickListener {
-
-             backWithTag()
-        }
+//        binding.layoutSearch.searchContent.setOnClickListener {
+//
+//             backWithTag()
+//        }
 
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()
@@ -140,15 +144,15 @@ class PloySearchResultActivity :
     }
 
     // 从帖子tag 点击跳转过来
-    fun backWithTag(){
-        if(!TextUtils.isEmpty(tagId)&&"null"!=tagId){
+    fun backWithTag() {
+        if (!TextUtils.isEmpty(tagId) && "null" != tagId) {
 
-            val intent = Intent(this,PolySearchActivity::class.java)
+            val intent = Intent(this, PolySearchActivity::class.java)
             intent.putExtra(JumpConstant.SEARCH_TYPE, SearchTypeConstant.SEARCH_POST.toString())
             startActivity(intent)
             overridePendingTransition(0, 0);
 
-        }else{
+        } else {
             onBackPressed()
         }
 
@@ -181,12 +185,12 @@ class PloySearchResultActivity :
         var mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
         if (isSelect) {
             mTabText?.isSelected = true
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.paint?.isFakeBoldText = true
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
+            mTabText?.paint?.isFakeBoldText = false
             mTabText?.textSize = 18f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.textSize = 15f
+            mTabText?.textSize = 18f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
 
         }
@@ -204,13 +208,13 @@ class PloySearchResultActivity :
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.paint.isFakeBoldText = true
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
+                mTabText.paint.isFakeBoldText = false
                 mTabText.textSize = 18f
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.textSize = 15f
+                mTabText.textSize = 18f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
             //更改选中项样式

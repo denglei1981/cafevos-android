@@ -97,7 +97,10 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/dp_5</item>
     </style>
-
+    <style name="rounded12ImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dp_12</item>
+    </style>
     <style name="rounded5TopImageStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">@dimen/dp_5</item>

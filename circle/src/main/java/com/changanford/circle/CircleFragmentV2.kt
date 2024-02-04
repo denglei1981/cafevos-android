@@ -20,9 +20,7 @@ import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
-import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.viewmodel.CircleViewModel
-import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseFragment
@@ -408,7 +406,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 } else {
                     isFirstToGio = false
                 }
-                if (position == 3) {//口碑跳转h5
+                if (position == 3) {//master跳转h5
                     JumpUtils.instans?.jump(1, MConstant.MUS_TANG_URL)
                     binding.viewPager.post {
                         binding.viewPager.currentItem = currentPosition

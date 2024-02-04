@@ -45,8 +45,8 @@ class ActBean {
     }
 
     fun getActTimeS(): String {
-        return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" - ")
-            .plus(TimeUtils.formateActTime(endTime))
+        return "活动时间: ".plus(TimeUtils.MillisTo_YMDHM2(beginTime)).plus(" - ")
+            .plus(TimeUtils.MillisTo_YMDHM2(endTime))
     }
 
     var activityAddr: String? = ""//活动详细地址(报名活动)

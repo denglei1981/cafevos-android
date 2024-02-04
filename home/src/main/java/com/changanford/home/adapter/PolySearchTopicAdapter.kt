@@ -21,8 +21,9 @@ class PolySearchTopicAdapter :
         item: HotPicItemBean
     ) {
         holder.dataBinding?.apply {
-            setTitleMaxWidth(this)
+//            setTitleMaxWidth(this)
             tvTitle.text = item.name
+
             tvContent.text = item.description
         }
     }
@@ -30,7 +31,7 @@ class PolySearchTopicAdapter :
     private fun setTitleMaxWidth(binding: ItemSearchTopicBinding) {
         binding.clContent.post {
             val useWidth =
-                binding.clContent.width - binding.tvIcon.width - binding.ivRight.width - 15.toIntPx()
+                binding.clContent.width - binding.tvIcon.width  - 32.toIntPx()
             binding.tvTitle.maxWidth = useWidth
         }
     }

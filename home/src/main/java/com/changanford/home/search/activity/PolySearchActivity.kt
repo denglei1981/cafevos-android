@@ -135,11 +135,11 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 if (lp.spanSize != spanCount) {
                     //左边间距
                     if (layoutPosition % 2 == 1) {
-                        outRect.left = divider/2
+                        outRect.left = divider / 2
                         outRect.right = 0
                     } else {
                         outRect.left = 0
-                        outRect.right = divider/2
+                        outRect.right = (divider / 2) + 15.toIntPx()
                     }
                 }
             }
@@ -150,6 +150,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.tvClear.setOnClickListener {
             // 清空历史记录。
             viewModel.clearRecord(this)
+        }
+        binding.ivTopicRight.setOnClickListener {
+            JumpUtils.instans?.jump(113)
         }
         historyAdapter.setOnItemClickListener { adapter, view, position ->
             val bean = historyAdapter.getItem(position)
@@ -170,6 +173,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             } else {
                 search(bean.keyword, true)
             }
+        }
+        topicAdapter.setOnItemClickListener { _, _, position ->
+            val bean = topicAdapter.data[position]
+            JumpUtils.instans?.jump(9, bean.topicId.toString())
         }
         searchHotAdapter.setOnItemClickListener { _, _, position ->
             val bean = searchHotAdapter.getItem(position)
