@@ -1,12 +1,7 @@
 package com.changanford.home.search.fragment
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.GioPreBean
 import com.changanford.common.constant.JumpConstant
@@ -18,11 +13,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
+import com.changanford.home.search.activity.PloySearchResultActivity
 import com.changanford.home.search.adapter.SearchShopResultAdapter
-import com.changanford.home.search.data.SearchData
-import com.changanford.home.search.request.PolySearchNewsResultViewModel
 import com.changanford.home.search.request.PolySearchShopResultViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
@@ -51,7 +44,8 @@ class SearchShopFragment :
     override fun initView() {
 //        binding.recyclerView.layoutManager =
 //            LinearLayoutManager(, LinearLayoutManager.VERTICAL, false)
-        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        //        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        searchContent = (activity as PloySearchResultActivity).searchContent
         binding.recyclerView.adapter = searchShopResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
         binding.smartLayout.setOnLoadMoreListener(this)
@@ -72,15 +66,10 @@ class SearchShopFragment :
             bundle.putString("spuId", item.mallMallSpuId)
             bundle.putParcelable(GioPageConstant.shopPreBean, GioPreBean("搜索结果页", "搜索结果页"))
             startARouter(ARouterShopPath.ShopGoodsActivity, bundle)
-            //                JumpUtils.instans!!.jump(3,item.mallMallSpuId)
-            //                if(item.jumpDataType==null||item.jumpDataType == "0"){
-            //                    JumpUtils.instans!!.jump(3,item.mallMallSpuId)
-            //                }else{
-            //                    JumpUtils.instans!!.jump(
-            //                        item.jumpDataType.toInt(),
-            //                        item.jumpDataValue
-            //                    )
-            //                }
+        }
+
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this){
+            outRefresh(it)
         }
     }
 
@@ -101,7 +90,7 @@ class SearchShopFragment :
                     binding.smartLayout.finishRefresh()
                     searchShopResultAdapter.setNewInstance(it.data.dataList)
                     if (it.data.dataList.size == 0) {
-                        showEmpty()
+                        showResultEmpty()
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
@@ -120,6 +109,10 @@ class SearchShopFragment :
 
     }
 
+   private fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+        searchContent = keyWord
+        onRefresh(binding.smartLayout)
+    }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {

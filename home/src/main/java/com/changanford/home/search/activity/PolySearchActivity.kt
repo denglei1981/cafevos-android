@@ -168,7 +168,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         }
         sAdapter.setOnItemClickListener { _, _, position ->
             val bean = sAdapter.getItem(position)
-            if (bean.jumpDataType != 0) {//jump跳转
+            if (bean.jumpDataType != 0 && bean.jumpDataType != null) {//jump跳转
                 JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
             } else {
                 search(bean.keyword, true)

@@ -13,6 +13,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
+import com.changanford.home.search.activity.PloySearchResultActivity
 import com.changanford.home.search.adapter.SearchPostsResultAdapter
 import com.changanford.home.search.request.PolySearchPostResultViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -45,7 +46,8 @@ class SearchPostFragment :
     var tagId: String = ""
     override fun initView() {
 
-        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        //        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        searchContent = (activity as PloySearchResultActivity).searchContent
         tagId = arguments?.getString(JumpConstant.SEARCH_TAG_ID).toString()
         binding.recyclerView.noAnima()
         binding.recyclerView.adapter = searchPostsResultAdapter
@@ -66,6 +68,10 @@ class SearchPostFragment :
             selectPosition = position
             JumpUtils.instans!!.jump(4, item.postsId.toString())
         }
+
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this){
+            outRefresh(it)
+        }
     }
 
     override fun initData() {
@@ -85,7 +91,7 @@ class SearchPostFragment :
                     binding.smartLayout.finishRefresh()
                     searchPostsResultAdapter.setNewInstance(it.data.dataList)
                     if (it.data.dataList.size == 0) {
-                        showEmpty()
+                        showResultEmpty()
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
@@ -133,7 +139,7 @@ class SearchPostFragment :
 
     }
 
-    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+  private  fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
     }

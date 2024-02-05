@@ -16,6 +16,7 @@ import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
+import com.changanford.home.search.activity.PloySearchResultActivity
 import com.changanford.home.search.adapter.SearchNewsResultAdapter
 import com.changanford.home.search.request.PolySearchNewsResultViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -46,7 +47,8 @@ class SearchNewsFragment :
     var searchContent: String? = null
     override fun initView() {
 
-        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+//        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        searchContent = (activity as PloySearchResultActivity).searchContent
         binding.recyclerView.noAnima()
         binding.recyclerView.adapter = searchNewsResultAdapter
         binding.smartLayout.setOnRefreshListener(this)
@@ -75,6 +77,10 @@ class SearchNewsFragment :
             }
 
         })
+
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this){
+            outRefresh(it)
+        }
     }
 
     override fun initData() {
@@ -94,7 +100,7 @@ class SearchNewsFragment :
                     binding.smartLayout.finishRefresh()
                     searchNewsResultAdapter.setNewInstance(it.data.dataList)
                     if (it.data.dataList.size == 0) {
-                        showEmpty()
+                        showResultEmpty()
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
@@ -125,7 +131,7 @@ class SearchNewsFragment :
 
     }
 
-    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+  private  fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.R
 import com.changanford.common.loadsir.EmptyCallback
+import com.changanford.common.loadsir.EmptySearchCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
 import com.changanford.common.loadsir.TimeoutCallback
@@ -44,6 +45,13 @@ abstract class BaseLoadSirFragment<VB : ViewBinding, VM : ViewModel> : BaseFragm
             mLoadService!!.showCallback(EmptyCallback::class.java)
         }
     }
+
+    open fun showResultEmpty(){
+        if (null != mLoadService) {
+            mLoadService!!.showCallback(EmptySearchCallback::class.java)
+        }
+    }
+
     open fun showTimeOut() {
         if (null != mLoadService) {
             mLoadService!!.showCallback(TimeoutCallback::class.java)

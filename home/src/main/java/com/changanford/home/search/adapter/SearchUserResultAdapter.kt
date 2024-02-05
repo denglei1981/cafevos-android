@@ -1,6 +1,7 @@
 package com.changanford.home.search.adapter
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,6 +17,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.toIntPx
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultUserBinding
@@ -35,10 +37,10 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
             GlideUtils.loadBD(item.avatar, it.ivHeader)
             it.tvAuthorName.text = item.nickname
             setFollowState(it.btnFollow, item)
-            it.btnFollow.setOnClickListener {_->
+            it.btnFollow.setOnClickListener { _ ->
                 // 判断是否登录。
                 if (LoginUtil.isLongAndBindPhone()) {
-                    followAction(it.btnFollow , item, holder.adapterPosition)
+                    followAction(it.btnFollow, item, holder.adapterPosition)
                 }
             }
             if (item.userId != MConstant.userId) {
@@ -46,7 +48,18 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
             } else {
                 it.btnFollow.visibility = View.GONE
             }
+            setTopMargin(it.root, 15, holder.layoutPosition)
+        }
 
+    }
+
+    private fun setTopMargin(view: View?, margin: Int, position: Int) {
+        view?.let {
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            if (position == 0) {
+                params.topMargin =
+                    margin.toIntPx()
+            } else params.topMargin = 0
         }
 
     }
@@ -58,6 +71,7 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
             1 -> {
                 followType = 2
             }
+
             else -> {
                 followType = 1
             }

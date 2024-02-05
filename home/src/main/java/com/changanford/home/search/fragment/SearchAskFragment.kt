@@ -6,13 +6,13 @@ import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.home.PageConstant
 import com.changanford.home.databinding.FragmentSearchAskBinding
-import com.changanford.home.databinding.HomeBaseRecyclerViewBinding
+import com.changanford.home.search.activity.PloySearchResultActivity
 import com.changanford.home.search.adapter.SearchAskResultAdapter
-import com.changanford.home.search.adapter.SearchUserResultAdapter
 import com.changanford.home.search.request.PolySearchAskViewModel
-import com.changanford.home.search.request.PolySearchUserViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -37,12 +37,15 @@ class SearchAskFragment :
 
     override fun initView() {
         binding.recyclerView.adapter = searchAskResultAdapter
-        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        //        searchContent = arguments?.getString(JumpConstant.SEARCH_CONTENT)
+        searchContent = (activity as PloySearchResultActivity).searchContent
         searchAskResultAdapter.setOnItemClickListener { adapter, view, position ->
             val item = searchAskResultAdapter.getItem(position)
-            JumpUtils.instans!!.jump(item.jumpType.toIntOrNull(),item.jumpValue)
+            JumpUtils.instans!!.jump(item.jumpType.toIntOrNull(), item.jumpValue)
         }
-
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this) {
+            outRefresh(it)
+        }
     }
 
     override fun initData() {
@@ -62,7 +65,7 @@ class SearchAskFragment :
                     binding.smartLayout.finishRefresh()
                     searchAskResultAdapter.setNewInstance(it.data.dataList)
                     if (it.data.dataList.size == 0) {
-                        showEmpty()
+                        showResultEmpty()
                     }
                 }
                 if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
@@ -81,10 +84,12 @@ class SearchAskFragment :
             viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_ASK, it, true)
         }
     }
-    fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+
+    private fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(SearchTypeConstant.SEARCH_ACTION_ASK, it, false)

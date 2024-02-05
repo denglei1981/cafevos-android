@@ -8,6 +8,7 @@ import androidx.camera.core.CameraXConfig
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.constant.HawkKey
 import com.changanford.common.loadsir.EmptyCallback
+import com.changanford.common.loadsir.EmptySearchCallback
 import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
 import com.changanford.common.loadsir.TimeoutCallback
@@ -100,6 +101,7 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
         LoadSir.beginBuilder()
             .addCallback(ErrorCallback()) //添加各种状态页
             .addCallback(EmptyCallback())
+            .addCallback(EmptySearchCallback())
             .addCallback(LoadingCallback())
             .addCallback(TimeoutCallback())
             .setDefaultCallback(LoadingCallback::class.java) //设置默认状态页
