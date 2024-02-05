@@ -87,6 +87,8 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     private var isTop = true
     private var isFirstPageSelect = true
     private var selectPosition = -1
+    private var isOpenCarHistory = false
+    private var isOpenCarGuide = false
 
     @SuppressLint("NewApi")
     override fun initView() {
@@ -250,8 +252,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
     }
 
     private fun getBottomData(carModelId: String) {
-        viewModel.getCarHistory(carModelId)
-        viewModel.getBuyCarTips(carModelId)
+        if (isOpenCarHistory) {
+            viewModel.getCarHistory(carModelId)
+        }
+        if (isOpenCarGuide) {
+            viewModel.getBuyCarTips(carModelId)
+        }
     }
 
     private var mMagicTabHasInit = false
@@ -503,10 +509,12 @@ class NewCarFragmentNoCar : BaseFragment<FragmentCarBinding, CarViewModel>() {
             "dealers" -> carControl.setFooterDealers(dataBean, sort, isUpdateSort)
             //提车日记
             "buy_car_diary" -> {
+                isOpenCarHistory = true
                 carControl.setFooterCarHistory(dataBean, sort, isUpdateSort)
             }
             //购车引导
             "buy_car_guide" -> {
+                isOpenCarGuide = true
                 carControl.setFooterBuyCayTips(dataBean, sort, isUpdateSort)
             }
             //广告位
