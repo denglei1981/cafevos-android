@@ -6,8 +6,6 @@ import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.TextUtils
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -23,9 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import com.changanford.circle.CircleFragmentV2
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.widget.assninegridview.AssNineGridView
@@ -52,12 +47,10 @@ import com.changanford.common.util.bus.LiveDataBusKey.LIVE_OPEN_TWO_LEVEL
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.room.Db
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.viewmodel.UpdateViewModel
 import com.changanford.common.wutil.ForegroundCallbacks
-import com.changanford.common.wutil.ScreenUtils
 import com.changanford.evos.databinding.ActivityMainBinding
 import com.changanford.evos.utils.BottomNavigationUtils
 import com.changanford.evos.utils.CustomNavigator
@@ -68,11 +61,9 @@ import com.changanford.evos.view.SpecialJsonTab
 import com.changanford.evos.view.SpecialTab
 import com.changanford.home.HomeV2Fragment
 import com.changanford.shop.ShopFragment
-import com.dueeeke.videoplayer.util.PlayerUtils
 import com.growingio.android.sdk.autotrack.GrowingAutotracker
 import com.luck.picture.lib.tools.ToastUtils
 import com.orhanobut.hawk.Hawk
-import com.xiaomi.push.it
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -772,12 +763,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun onBackground() {
-        MConstant.isOnBackground = true
         if (ChangeIconUtils.isOpenYearIcon()) {
             ChangeIconUtils.setAlias1(this)
         } else {
             ChangeIconUtils.setDefaultAlias(this)
         }
+        MConstant.isOnBackground = true
     }
 
 }

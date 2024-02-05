@@ -1,14 +1,9 @@
 package com.changanford.common.utilext
 
 import android.Manifest
-import android.content.pm.PackageManager
-import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.util.MConstant
 import com.changanford.common.widget.pop.PermissionTipsPop
-import com.orhanobut.hawk.Hawk
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
