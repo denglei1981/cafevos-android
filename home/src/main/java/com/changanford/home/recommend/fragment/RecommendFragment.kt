@@ -18,7 +18,6 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.ext.scrollStopLoadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
@@ -48,6 +47,13 @@ import com.zhpan.bannerview.constants.PageStyle
 open class RecommendFragment :
     BaseLoadSirFragment<FragmentRecommendListBinding, RecommendViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
+
+    private var headNewBinding: RecommendHeaderBinding? = null
+
+    private var fastInBinding: LayoutRecommendFastInBinding? = null
+
+    private var isSecondHeader: Boolean = false
+
     private val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
     }
@@ -96,11 +102,6 @@ open class RecommendFragment :
 
     }
 
-    var headNewBinding: RecommendHeaderBinding? = null
-
-    var fastInBinding: LayoutRecommendFastInBinding? = null
-
-    var isSecondHeader: Boolean = false
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(
