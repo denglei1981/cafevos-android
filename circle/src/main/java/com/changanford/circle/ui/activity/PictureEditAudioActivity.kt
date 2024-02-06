@@ -5,7 +5,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
@@ -44,7 +43,6 @@ import java.lang.ref.WeakReference
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.concurrent.schedule
 import kotlin.concurrent.thread
 import kotlin.math.abs
 
@@ -185,10 +183,11 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                             progressDialog.dismiss()
                             finalPath = cutpath
                             Callback()
-                        } else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100) {
+//                        } else if (FileSizeUtil.getFileOrFilesSize(cutpath, 3) < 100) {
+                        } else  {
                             //                                    String compressPath = SiliCompressor.with(EsayVideoEditActivity.this).compressVideo(cutPath, Environment.getExternalStorageDirectory().getPath() + "/Uni/video",1080,1920,1200000);
                             val task: VideoCompress.VideoCompressTask =
-                                VideoCompress.compressVideoLow(
+                                VideoCompress.compressVideoMedium(
                                     cutpath,
                                     OutPutFileDirPath + OutMoviePath,
                                     object : VideoCompress.CompressListener {
@@ -200,6 +199,7 @@ class PictureEditAudioActivity : BaseActivity<AudioeditBinding, EmptyViewModel>(
                                             //Finish successfully
                                             runOnUiThread {
                                                 progressDialog.dismiss()
+//                                                finalPath = OutPutFileDirPath + OutMoviePath
                                                 finalPath = cutpath
                                                 Callback()
 //                                            val intent = Intent()

@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.circle.CircleFragmentV2
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.common.basic.BaseActivity
@@ -763,12 +764,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     override fun onBackground() {
-        MConstant.isOnBackground = true
         if (ChangeIconUtils.isOpenYearIcon()) {
             ChangeIconUtils.setAlias1(this)
         } else {
             ChangeIconUtils.setDefaultAlias(this)
         }
+        MConstant.isOnBackground = true
     }
 
 }

@@ -1,10 +1,13 @@
 package com.changanford.common.util
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.CountDownTimer
@@ -26,7 +29,6 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.bean.WeekBean
-import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.util.MConstant.H5_CANCEL_ACCOUNT
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
 import com.changanford.common.util.MConstant.H5_USER_AGREEMENT
@@ -38,10 +40,8 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.web.AgentWebActivity
 import com.changanford.common.widget.CallPhoneDialog
 import com.luck.picture.lib.entity.LocalMedia
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Calendar
 import java.util.regex.Pattern
 
 
@@ -516,7 +516,8 @@ object MineUtils {
                 textView.movementMethod = LinkMovementMethod.getInstance()
             }
         } else {
-            val agree = if (code == MConstant.agreementPrivacy) "《福域APP/小程序个人信息保护政策》" else "《福域APP会员服务协议》"
+            val agree =
+                if (code == MConstant.agreementPrivacy) "《福域APP/小程序个人信息保护政策》" else "《福域APP会员服务协议》"
             val lookAll = "\n\n查看完整版"
 
             val spannable = SpannableString(content + lookAll + agree)
@@ -970,35 +971,17 @@ object MineUtils {
 
 
     fun callPhone(activity: Activity, phone: String?) {
-        SoulPermission.getInstance()
-            .checkAndRequestPermission(
-                Manifest.permission.CALL_PHONE,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-                object : CheckRequestPermissionListener {
-                    override fun onPermissionOk(permission: com.qw.soul.permission.bean.Permission?) {
-                        phone?.let {
-                            // 拨号：激活系统的拨号组件
-                            CallPhoneDialog(activity, "您确定拨打:${phone}").setOnClickItemListener(
-                                object : CallPhoneDialog.OnClickItemListener {
-                                    override fun onClickItem(position: Int, str: String) {
-                                        val intent = Intent() // 意图对象：动作 + 数据
-                                        intent.action = Intent.ACTION_CALL // 设置动作
-                                        val data = Uri.parse("tel:${phone}") // 设置数据
-                                        intent.data = data
-                                        activity.startActivity(intent) // 激活Activity组件
-                                    }
-                                }).show()
-                        }
+        phone?.let {
+            // 拨号：激活系统的拨号组件
+            CallPhoneDialog(activity, "您确定拨打:${phone}").setOnClickItemListener(
+                object : CallPhoneDialog.OnClickItemListener {
+                    override fun onClickItem(position: Int, str: String) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${phone}"))
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        activity.startActivity(intent)
                     }
-
-                    override fun onPermissionDenied(permission: com.qw.soul.permission.bean.Permission?) {
-                        var pop: ConfirmPop = ConfirmPop(activity)
-                        pop.contentText.text = "您已禁止了通话权限，请到设置中心去打开"
-                        pop.submitBtn.setOnClickListener {
-                            SoulPermission.getInstance().goPermissionSettings();
-                        }
-                        pop.showPopupWindow()
-                    }
-                })
+                }).show()
+        }
     }
 
 
