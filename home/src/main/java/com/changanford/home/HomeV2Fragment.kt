@@ -1,13 +1,11 @@
 package com.changanford.home
 
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.Constraints
@@ -33,7 +31,6 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
-import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
 import com.changanford.home.callback.ICallback
@@ -49,14 +46,9 @@ import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.scwang.smart.refresh.layout.api.RefreshHeader
-import com.scwang.smart.refresh.layout.api.RefreshLayout
-import com.scwang.smart.refresh.layout.constant.RefreshState
-import com.scwang.smart.refresh.layout.simple.SimpleMultiListener
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -97,11 +89,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     override fun initView() {
         //Tab+Fragment
         addLiveDataBus()
-        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
-        ImmersionBar.with(this).statusBarColor(R.color.white)
-        StatusBarUtil.setStatusBarPaddingTop(binding.llTabContent, requireActivity())
+//        lifecycleScope.launch {
+//            delay(1000)
+//            StatusBarUtil.setLightStatusBar(requireActivity(), false)
+//        }
+        StatusBarUtil.setStatusBarPaddingTop(binding.layoutTopBar.root, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
-//        StatusBarUtil.setStatusBarMarginTop(binding.homeTab, requireActivity())
         easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
@@ -120,7 +113,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.llBack.setOnClickListener {
             binding.header.finishTwoLevel()
         }
-//        viewModel.getIndexPerms()
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
@@ -131,22 +123,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
         TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
             tab.text = titleList[i]
-
         }.attach().apply {
             initTab()
         }
-//        binding.refreshLayout.setOnRefreshListener(this)
         binding.homeViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) { // 不禁用刷新
-//                when (position) {
-//                    0 -> {
-//                        binding.refreshLayout.setEnableRefresh(true)
-//                    }
-//                    else -> {
-//                        binding.refreshLayout.setEnableRefresh(false)
-//                    }
-//                }
             }
         })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -162,7 +144,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     else -> "发现页-推荐"
                 }
                 if (tab.position == 3) {//口碑跳转h5
-                    JumpUtils.instans?.jump(1,MConstant.mouthUrl)
+                    JumpUtils.instans?.jump(1, MConstant.mouthUrl)
                     binding.homeViewpager.post {
                         binding.homeViewpager.currentItem = currentPosition
                     }
@@ -190,55 +172,55 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.etSearchContent.setOnClickListener {
             toSearch()
         }
-        binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
-            override fun onHeaderMoving(
-                header: RefreshHeader?,
-                isDragging: Boolean,
-                percent: Float,
-                offset: Int,
-                headerHeight: Int,
-                maxDragHeight: Int
-            ) {
-                val alphaTest = 1 - percent.coerceAtMost(1f)
-                if (alphaTest > 0.8f) { // 提前显示下方导航
-                    LiveDataBus.get()
-                        .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
-                        .postValue(false)
-                }
-                when (alphaTest) {
-                    0f -> {
-                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
-                        LiveDataBus.get()
-                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
-                            .postValue(true)
-                    }
-
-                    1f -> { // 关闭，
-                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
-                    }
-                }
-            }
-
-            override fun onStateChanged(
-                refreshLayout: RefreshLayout,
-                oldState: RefreshState,
-                newState: RefreshState
-            ) {
-                super.onStateChanged(refreshLayout, oldState, newState)
-                if (oldState == RefreshState.TwoLevel) {
-                    binding.classics.animate().alpha(1f).duration = 2000L
-                }
-            }
-
-            override fun onRefresh(refreshLayout: RefreshLayout) {
-                refreshLayout.finishRefresh()
-            }
-
-            override fun onLoadMore(refreshLayout: RefreshLayout) {
-                refreshLayout.finishLoadMore()
-
-            }
-        })
+//        binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
+//            override fun onHeaderMoving(
+//                header: RefreshHeader?,
+//                isDragging: Boolean,
+//                percent: Float,
+//                offset: Int,
+//                headerHeight: Int,
+//                maxDragHeight: Int
+//            ) {
+//                val alphaTest = 1 - percent.coerceAtMost(1f)
+//                if (alphaTest > 0.8f) { // 提前显示下方导航
+//                    LiveDataBus.get()
+//                        .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
+//                        .postValue(false)
+//                }
+//                when (alphaTest) {
+//                    0f -> {
+//                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
+//                        LiveDataBus.get()
+//                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
+//                            .postValue(true)
+//                    }
+//
+//                    1f -> { // 关闭，
+//                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
+//                    }
+//                }
+//            }
+//
+//            override fun onStateChanged(
+//                refreshLayout: RefreshLayout,
+//                oldState: RefreshState,
+//                newState: RefreshState
+//            ) {
+//                super.onStateChanged(refreshLayout, oldState, newState)
+//                if (oldState == RefreshState.TwoLevel) {
+//                    binding.classics.animate().alpha(1f).duration = 2000L
+//                }
+//            }
+//
+//            override fun onRefresh(refreshLayout: RefreshLayout) {
+//                refreshLayout.finishRefresh()
+//            }
+//
+//            override fun onLoadMore(refreshLayout: RefreshLayout) {
+//                refreshLayout.finishLoadMore()
+//
+//            }
+//        })
         binding.layoutTopBar.searchContent.setOnClickListener {
             toSearch()
         }
@@ -290,10 +272,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     var itemPunchWhat: Int = 0
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     fun isCurrentIndex(index: Int) = binding.homeViewpager.currentItem == index
 
     //初始化tab
@@ -306,7 +284,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
+                mTabText.setTextColor(
+                    ContextCompat.getColor(
+                        MyApp.mContext,
+                        R.color.color_app_color
+                    )
+                )
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 18f
 
@@ -502,78 +485,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     else -> {}
                 }
             }
-//        viewModel.twoBannerLiveData.observe(this,object : Observer<UpdateUiState<TwoAdData>>{
-//            override fun onChanged(t: UpdateUiState<TwoAdData>) { // 不要去掉黄色警告， 这种方式可以规避。 Livedata建立observe时，抛Cannot add the same observer with different lifecycles的问题
-//                if (t.isSuccess) {
-//                    appIndexBackground = t.data.app_index_background  // 背景广告
-//                    appIndexBackground?.get(0)?.let { adBean -> backImageViewTouch(adBean) }
-//
-////                binding.recommendContent.ivHome.setOnClickListener {
-////                    if (appIndexBackground != null && appIndexBackground?.size!! > 0) {
-////                        val adBean = appIndexBackground!![0]
-////                        JumpUtils.instans!!.jump(adBean.jumpDataType, adBean.jumpDataValue)
-////                    }
-////                }
-//                    appIndexBackground?.forEach { b -> // 背景。
-//                        val endsWithGif = b.adImg.endsWith(".gif")
-//                        if (endsWithGif) {
-//                            GlideUtils.loadGif(b.getImg(), binding.recommendContent.ivHome)
-//                        } else {
-//                            GlideUtils.loadBD(b.adImg, binding.recommendContent.ivHome)
-//                        }
-//                    }
-//
-//                    val appIndexTopic = t.data.app_index_topic
-//                    appIndexTopic.forEach { t -> // 话题
-//                        binding.recommendContent.tvTopicTitle.text = t.adSubName
-//                        binding.recommendContent.tvBigTopic.text = t.adName
-//                        binding.recommendContent.tvBigTopic.setOnClickListener {
-//                            JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
-//                        }
-//                        binding.recommendContent.tvTopicTitle.setOnClickListener {
-//                            JumpUtils.instans?.jump(t.jumpDataType, t.jumpDataValue)
-//                        }
-//                    }
-//                    val appIndexBanner = t.data.app_index_banner
-//                    appIndexBanner.forEach { b -> // banner
-//                        GlideUtils.loadBD(b.adImg, binding.recommendContent.ivBanner)
-//                        binding.recommendContent.ivBanner.setOnClickListener {
-//                            JumpUtils.instans?.jump(b.jumpDataType, b.jumpDataValue)
-//                        }
-//                    }
-//                    val appIndexAds = t.data.app_index_ads
-//                    twoAdRvListAdapter.setNewInstance(appIndexAds)
-//                }
-//            }
-//
-//        })
 
     }
 
-
-//    private fun bus() {
-//        LiveDataBus.get().withs<String>("Gone").observe(this, Observer{
-//            binding.appbarLayout.setExpanded(false)
-//        })
-//        LiveDataBus.get().withs<String>("Visi").observe(this, Observer{
-//            binding.appbarLayout.setExpanded(true)
-//        })
-//    }
 
     fun stopRefresh() {
         binding.refreshLayout.finishRefresh()
-    }
-
-    fun openTwoLevel() { // 主动打开二楼。。。
-//        if (MConstant.isFirstOpenTwoLevel) {
-//            binding.header.openTwoLevel(true)
-//            MConstant.isFirstOpenTwoLevel = false
-//        }
-    }
-
-    open fun closeTwoLevel() {
-
-//        binding.header.finishTwoLevel()
     }
 
     open fun setCurrentItem(valueItem: String?) {
@@ -587,56 +504,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     }
 
-//    override fun onRefresh(refreshLayout: RefreshLayout) {
-//        when (currentPosition) {
-//            0 -> {
-//                recommendFragment.homeRefersh()
-//            }
-//            1 -> {
-//                actsParentsFragment.homeRefersh()
-//            }
-//            2 -> {
-//                newsListFragment.homeRefersh()
-//            }
-//            3 -> {
-//                bigShotFragment.homeRefersh()
-//            }
-//        }
-//
-//    }
-
-    private var animator: ObjectAnimator? = null // 手指移动动画。
-    fun move() {
-        val seek = binding.recommendContent.llBack.height.toFloat()
-        animator = ObjectAnimator.ofFloat(
-            binding.recommendContent.ivGoHome,
-            "translationY",
-            0.0f,
-            -seek,
-            30f,
-            20f
-        )
-        animator?.duration = 5000 //动画时间
-        animator?.interpolator = BounceInterpolator() //实现反复移动的效果
-        animator?.repeatCount = -1 //设置动画重复次数
-        animator?.startDelay = 1000 //设置动画延时执行
-        animator?.start() //启动动画
-
-    }
-
-    fun moveCancel() {
-        animator?.cancel()
-    }
-
     private fun addLiveDataBus() {
-        //登录回调
-//        LiveDataBus.get()
-//            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-//            .observe(this) {
-//                if (UserManger.UserLoginStatus.USER_LOGIN_SUCCESS == it) {
-//                    viewModel.isGetIntegral()
-//                }
-//            }
         LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE, String::class.java).observe(this) {
             if (it == "发现页") {
 

@@ -97,6 +97,180 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     }
 
+    override fun initView() {
+        //添加app前后台监听
+        ForegroundCallbacks.get(this).addListener(this)
+        StatusBarUtil.setStatusBarColor(this, R.color.white)
+        MConstant.mainActivityIsOpen = true
+        title = "主页"
+        activityAlive = true
+        if (MConstant.app_mourning_mode == 1) {
+            BlackWhiteMode(window = window)
+        }
+        getDeviceWidth()
+        updateViewModel = createViewModel(UpdateViewModel::class.java)
+        popViewModel = createViewModel(PopViewModel::class.java)
+        popViewModel.getPopData()
+        viewModel.requestDownLogin()
+        PopHelper.initPopHelper(this, popViewModel)
+        getNavigator()
+        initBottomNavigation(MConstant.bottomNavigateBean != null)
+        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_MAIN_GIO).observe(this) {
+            gioPreBean = it
+        }
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onStop(owner: LifecycleOwner) {
+                super.onStop(owner)
+                //后台
+                isBackstage = true
+            }
+
+
+            override fun onStart(owner: LifecycleOwner) {
+                super.onStart(owner)
+                //前台
+                if (isBackstage) {
+                    updateViewModel.getUpdateInfo()
+                }
+                isBackstage = false
+            }
+
+        })
+        AssNineGridView.setImageLoader(GlideImageLoader())
+    }
+
+    private var gioPreBean = GioPreBean()
+
+    override fun onResume() {
+        super.onResume()
+        if (MConstant.token.isNotEmpty()) {
+            val cmcOpenId = Hawk.get<String>(HawkKey.CMC_OPEN_ID)
+            if (cmcOpenId.isNullOrEmpty()) {
+                viewModel.getUserInfo()
+            } else {
+                GrowingAutotracker.get().setLoginUserId(cmcOpenId)
+            }
+        }
+        GIOUtils.homePageView(gioPreBean.prePageName, gioPreBean.prePageType)
+        gioPreBean.run {
+            prePageName = ""
+            prePageType = ""
+        }
+    }
+
+    private fun getNavigator() {
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
+        val navigator = CustomNavigator(
+            this,
+            navHostFragment.childFragmentManager,
+            R.id.nav_host_fragment_content_main
+        )// 生成自定义Navigator对象
+        navController.navigatorProvider.addNavigator("custom_fragment", navigator) // 添加 key, value
+        navController.setGraph(R.navigation.nav_graph)  // 要在 CustomNavigator 类被加载之后添加graph，不然找不到 custom_fragment节点
+
+    }
+
+    override fun initData() {
+        handleViewIntent(intent)
+        viewModel.getUserData()
+        viewModel.user.observe(this, Observer {
+            lifecycleScope.launch {
+                Db.myDb.saveData("name", it[0].name)
+            }
+        })
+//        var count = 0
+        updateViewModel._updateInfo?.observe(this, Observer { info ->
+            if (info == null) {
+//                "${count++}".toast()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    delay(3000)
+                    updateViewModel.getUpdateInfo()
+                }
+                return@Observer
+            }
+            if (PopHelper.updateDialog != null) {
+                return@Observer
+            }
+            info?.let {
+                if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
+                    return@Observer
+                }
+                LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).postValue("")
+                PopHelper.isInsertUpdate()
+                var dialog = UpdateAlertDialog(this)
+                dialog.builder().setPositiveButton("立即更新") {
+                    toastShow("正在下载")
+                    if (!MConstant.isDownloading) {
+                        val updatingAlertDialog = UpdatingAlertDialog(this)
+                        val apkDownload = APKDownload()
+                        updatingAlertDialog.builder().setPositiveButton("取消下载") {
+                            apkDownload.cancel()
+                            if (info.isForceUpdate == 1) {
+                                finish()
+                            } else {
+                                updatingAlertDialog.dismiss()
+                                PopHelper.updateDialog = null
+                                PopHelper.resumeRule()
+                            }
+                        }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1)
+                            .show()
+                        apkDownload.download(info.downloadUrl ?: "", object : DownloadProgress {
+                            override fun sendProgress(progress: Int) {
+                                updatingAlertDialog.updateProgress(progress)
+                                if (progress == 100) {
+                                    updatingAlertDialog.setPositiveButton("下载完成") {
+                                        apkDownload.installAPK()
+                                        if (info.isForceUpdate == 1) {
+                                        } else {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//解决因为去点击权限后返回弹框消失的问题
+                                                if (BaseApplication.INSTANT.packageManager.canRequestPackageInstalls()) {
+                                                    updatingAlertDialog.dismiss()
+                                                }
+                                            } else {
+                                                updatingAlertDialog.dismiss()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        })
+                    }
+                    if (info.isForceUpdate == 0) {
+                        dialog.dismiss()
+                    }
+                }.setNegativeButton("暂不更新") {
+                    if (info.isForceUpdate == 1) {
+                        finish()
+                    }
+                    dialog.dismiss()
+                    PopHelper.updateDialog = null
+                    PopHelper.resumeRule()
+                }.setTitle(info.versionName ?: "更新")
+                    .run {
+                        PopHelper.updateDialog = this.dialog
+                        setMsg(info.versionContent ?: "体验全新功能")
+                        setCancelable(false).show()
+                    }
+                info.downloadUrl?.let {
+                    MConstant.newApk = true
+                    MConstant.newApkUrl = it
+                }
+            }
+        })
+        LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this) {
+//            updateViewModel.getUpdateInfo()
+        }
+        registerConnChange()
+        viewModel.getQuestionTagInfo()
+        popViewModel.popBean.observe(this) {
+            PopHelper.initPopJob()
+        }
+    }
+
     private fun initBottomNavigation(isOutSetting: Boolean) {
         val navigationController: NavigationController = binding.homeBottomNavi.custom().apply {
             if (isOutSetting) {
@@ -274,187 +448,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
             LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE)
                 .postValue(GioPageConstant.mainTabName)
-            StatusBarUtil.setLightStatusBar(this, destination.id != R.id.carFragment)
+            StatusBarUtil.setLightStatusBar(
+                this,
+                destination.id != R.id.carFragment || destination.id != R.id.homeFragment
+            )
 
             if (!isFirstToTab) {
                 GIOUtils.homePageView()
             }
             isFirstToTab = false
-        }
-    }
-
-    override fun initView() {
-        //添加app前后台监听
-        ForegroundCallbacks.get(this).addListener(this)
-        MConstant.mainActivityIsOpen = true
-        title = "主页"
-        activityAlive = true
-        if (MConstant.app_mourning_mode == 1) {
-            BlackWhiteMode(window = window)
-        }
-        getDeviceWidth()
-//        StatusBarUtil.setTranslucentForImageViewInFragment(this@MainActivity, null)
-        updateViewModel = createViewModel(UpdateViewModel::class.java)
-        popViewModel = createViewModel(PopViewModel::class.java)
-//        updateViewModel.getUpdateInfo()
-        popViewModel.getPopData()
-        viewModel.requestDownLogin()
-        PopHelper.initPopHelper(this, popViewModel)
-        getNavigator()
-        initBottomNavigation(MConstant.bottomNavigateBean != null)
-        LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_MAIN_GIO).observe(this) {
-            gioPreBean = it
-        }
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStop(owner: LifecycleOwner) {
-                super.onStop(owner)
-                //后台
-                isBackstage = true
-            }
-
-
-            override fun onStart(owner: LifecycleOwner) {
-                super.onStart(owner)
-                //前台
-                if (isBackstage) {
-                    updateViewModel.getUpdateInfo()
-                }
-                isBackstage = false
-            }
-
-        })
-        AssNineGridView.setImageLoader(GlideImageLoader())
-    }
-
-    private var gioPreBean = GioPreBean()
-
-    override fun onResume() {
-        super.onResume()
-        if (MConstant.token.isNotEmpty()) {
-            val cmcOpenId = Hawk.get<String>(HawkKey.CMC_OPEN_ID)
-            if (cmcOpenId.isNullOrEmpty()) {
-                viewModel.getUserInfo()
-            } else {
-                GrowingAutotracker.get().setLoginUserId(cmcOpenId)
-            }
-        }
-        GIOUtils.homePageView(gioPreBean.prePageName, gioPreBean.prePageType)
-        gioPreBean.run {
-            prePageName = ""
-            prePageType = ""
-        }
-    }
-
-    private fun getNavigator() {
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)!!
-        val navigator = CustomNavigator(
-            this,
-            navHostFragment.childFragmentManager,
-            R.id.nav_host_fragment_content_main
-        )// 生成自定义Navigator对象
-        navController.navigatorProvider.addNavigator("custom_fragment", navigator) // 添加 key, value
-        navController.setGraph(R.navigation.nav_graph)  // 要在 CustomNavigator 类被加载之后添加graph，不然找不到 custom_fragment节点
-
-    }
-
-    override fun initData() {
-        handleViewIntent(intent)
-        viewModel.getUserData()
-        viewModel.user.observe(this, Observer {
-            lifecycleScope.launch {
-                Db.myDb.saveData("name", it[0].name)
-            }
-        })
-//        var count = 0
-        updateViewModel._updateInfo?.observe(this, Observer { info ->
-            if (info == null) {
-//                "${count++}".toast()
-                lifecycleScope.launch(Dispatchers.IO) {
-                    delay(3000)
-                    updateViewModel.getUpdateInfo()
-                }
-                return@Observer
-            }
-            if (PopHelper.updateDialog != null) {
-                return@Observer
-            }
-            info?.let {
-                if (info.versionNumber?.toInt() ?: 0 <= DeviceUtils.getVersionCode(this)) {
-                    return@Observer
-                }
-                LiveDataBus.get().with(LiveDataBusKey.UPDATE_MAIN_CHANGE).postValue("")
-                PopHelper.isInsertUpdate()
-                var dialog = UpdateAlertDialog(this)
-                dialog.builder().setPositiveButton("立即更新") {
-                    toastShow("正在下载")
-                    if (!MConstant.isDownloading) {
-                        val updatingAlertDialog = UpdatingAlertDialog(this)
-                        val apkDownload = APKDownload()
-                        updatingAlertDialog.builder().setPositiveButton("取消下载") {
-                            apkDownload.cancel()
-                            if (info.isForceUpdate == 1) {
-                                finish()
-                            } else {
-                                updatingAlertDialog.dismiss()
-                                PopHelper.updateDialog = null
-                                PopHelper.resumeRule()
-                            }
-                        }.setTitle("新版本正在更新，请稍等").setCancelable(info.isForceUpdate != 1)
-                            .show()
-                        apkDownload.download(info.downloadUrl ?: "", object : DownloadProgress {
-                            override fun sendProgress(progress: Int) {
-                                updatingAlertDialog.updateProgress(progress)
-                                if (progress == 100) {
-                                    updatingAlertDialog.setPositiveButton("下载完成") {
-                                        apkDownload.installAPK()
-                                        if (info.isForceUpdate == 1) {
-                                        } else {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//解决因为去点击权限后返回弹框消失的问题
-                                                if (BaseApplication.INSTANT.packageManager.canRequestPackageInstalls()) {
-                                                    updatingAlertDialog.dismiss()
-                                                }
-                                            } else {
-                                                updatingAlertDialog.dismiss()
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                        })
-                    }
-                    if (info.isForceUpdate == 0) {
-                        dialog.dismiss()
-                    }
-                }.setNegativeButton("暂不更新") {
-                    if (info.isForceUpdate == 1) {
-                        finish()
-                    }
-                    dialog.dismiss()
-                    PopHelper.updateDialog = null
-                    PopHelper.resumeRule()
-                }.setTitle(info.versionName ?: "更新")
-                    .run {
-                        PopHelper.updateDialog = this.dialog
-                        setMsg(info.versionContent ?: "体验全新功能")
-                        setCancelable(false).show()
-                    }
-                info.downloadUrl?.let {
-                    MConstant.newApk = true
-                    MConstant.newApkUrl = it
-                }
-            }
-        })
-        LiveDataBus.get().with(LiveDataBusKey.HOME_UPDATE).observe(this) {
-//            updateViewModel.getUpdateInfo()
-        }
-        registerConnChange()
-        viewModel.getQuestionTagInfo()
-        popViewModel.popBean.observe(this) {
-            PopHelper.initPopJob()
         }
     }
 

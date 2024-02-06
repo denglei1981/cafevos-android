@@ -18,8 +18,8 @@
             app:srlAccentColor="@android:color/white"
             app:srlDragRate="0.6"
             app:srlEnableLoadMore="false"
-            app:srlEnableRefresh="false"
-            app:srlEnableOverScrollBounce="false">
+            app:srlEnableOverScrollBounce="false"
+            app:srlEnableRefresh="false">
 
             <com.scwang.smart.refresh.header.TwoLevelHeader
                 android:id="@+id/header"
@@ -38,73 +38,55 @@
                     android:layout_height="wrap_content" />
             </com.scwang.smart.refresh.header.TwoLevelHeader>
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never">
+                android:layout_height="match_parent">
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/appbar_layout"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_bg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    app:elevation="0dp"
-                    app:layout_behavior="@string/fix_behavior">
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_find_bg"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.changanford.home.widget.CollapsibleToolbar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:contentScrim="@color/white"
-                        app:scrimAnimationDuration="300">
+                <include
+                    android:id="@+id/layout_top_bar"
+                    layout="@layout/include_top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                        <LinearLayout
-                            android:id="@+id/ll_tab_content"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:background="@color/white"
-                            android:orientation="vertical"
-                            app:layout_collapseMode="parallax">
-
-                            <include
-                                android:id="@+id/layout_top_bar"
-                                layout="@layout/include_top_bar"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
-                    </com.changanford.home.widget.CollapsibleToolbar>
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/home_tab"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_44"
-                        android:background="@color/white"
-                        app:tabBackground="@color/white"
-                        app:tabIndicator="@drawable/shape_home_tab_indicator"
-                        app:tabIndicatorHeight="8dp"
-                        app:tabMode="scrollable"
-                        app:tabPadding="0dp"
-                        app:tabPaddingBottom="0dp"
-                        app:tabPaddingEnd="0dp"
-                        app:tabPaddingStart="0dp"
-                        app:tabPaddingTop="0dp"
-                        app:tabRippleColor="@color/transparent"
-                        app:tabSelectedTextColor="@color/blue_tab"
-                        app:tabTextColor="@color/black" />
-
-                </com.google.android.material.appbar.AppBarLayout>
-
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/home_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:background="@color/transparent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_top_bar"
+                    app:tabBackground="@color/transparent"
+                    app:tabIndicator="@drawable/shape_home_tab_indicator"
+                    app:tabIndicatorHeight="8dp"
+                    app:tabMode="scrollable"
+                    app:tabPadding="0dp"
+                    app:tabPaddingBottom="0dp"
+                    app:tabPaddingEnd="0dp"
+                    app:tabPaddingStart="0dp"
+                    app:tabPaddingTop="0dp"
+                    app:tabRippleColor="@color/transparent"
+                    app:tabSelectedTextColor="@color/blue_tab"
+                    app:tabTextColor="@color/black" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/home_viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/home_tab"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="@dimen/dp_44"
-                    android:overScrollMode="never"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:overScrollMode="never" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
