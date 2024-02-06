@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.MyApp
@@ -46,6 +47,8 @@ import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
 import java.util.*
@@ -89,10 +92,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     override fun initView() {
         //Tab+Fragment
         addLiveDataBus()
-//        lifecycleScope.launch {
-//            delay(1000)
-//            StatusBarUtil.setLightStatusBar(requireActivity(), false)
-//        }
+        lifecycleScope.launch {
+            delay(500)
+            StatusBarUtil.setLightStatusBar(requireActivity(), false)
+        }
         StatusBarUtil.setStatusBarPaddingTop(binding.layoutTopBar.root, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
         easyViewPager()

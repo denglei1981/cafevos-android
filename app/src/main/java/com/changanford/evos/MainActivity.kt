@@ -427,6 +427,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
                 R.id.homeFragment -> {
                     GioPageConstant.mainTabName = "发现页"
+                    StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    StatusBarUtil.setLightStatusBar(this, false)
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let { it ->
@@ -448,10 +450,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
             LiveDataBus.get().with(LiveDataBusKey.MAIN_TAB_CHANGE)
                 .postValue(GioPageConstant.mainTabName)
-            StatusBarUtil.setLightStatusBar(
-                this,
-                destination.id != R.id.carFragment || destination.id != R.id.homeFragment
-            )
+//            StatusBarUtil.setLightStatusBar(
+//                this,
+//                destination.id != R.id.carFragment || destination.id != R.id.homeFragment
+//            )
 
             if (!isFirstToTab) {
                 GIOUtils.homePageView()
