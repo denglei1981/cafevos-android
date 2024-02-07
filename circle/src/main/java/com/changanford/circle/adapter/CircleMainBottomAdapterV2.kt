@@ -18,7 +18,6 @@ import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
-import com.changanford.circle.ext.loadCircleImage
 
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.viewmodel.CircleShareModel
@@ -40,6 +39,7 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.loadCircleImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.*

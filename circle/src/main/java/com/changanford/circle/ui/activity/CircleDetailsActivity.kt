@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -27,16 +26,13 @@ import com.changanford.circle.adapter.circle.TagAdapter
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.databinding.ActivityCircleDetailsBinding
-import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.utils.FlexboxLayoutManagerCustom
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.widget.dialog.ApplicationCircleManagementDialog
 import com.changanford.circle.widget.pop.CircleDetailsMenuNewPop
-import com.changanford.circle.widget.pop.CircleDetailsMenuPop
 import com.changanford.circle.widget.pop.CircleDetailsPop
-import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.pop.CircleManagementPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseLoadSirActivity
@@ -56,6 +52,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
@@ -65,9 +62,9 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
+import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.ShowPopUtils
-import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator

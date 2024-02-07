@@ -3,9 +3,9 @@ package com.changanford.home.recommend.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
@@ -13,20 +13,21 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.UserManger
-import com.changanford.common.ui.GridSpacingItemDecoration
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
-import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
+import com.changanford.home.bean.HomeTopFastBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
 import com.changanford.home.databinding.LayoutRecommendFastInBinding
@@ -34,7 +35,6 @@ import com.changanford.home.databinding.RecommendHeaderBinding
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
 import com.changanford.home.recommend.adapter.RecommendFastInListAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
-import com.changanford.home.widget.SpacesItemDecoration
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -53,6 +53,8 @@ open class RecommendFragment :
     private var fastInBinding: LayoutRecommendFastInBinding? = null
 
     private var isSecondHeader: Boolean = false
+
+    private var topFastViews = ArrayList<HomeTopFastBean>()
 
     private val recommendAdapter: RecommendAdapter by lazy {
         RecommendAdapter(this)
@@ -89,6 +91,7 @@ open class RecommendFragment :
                 3 -> { // 跳转到活动
                     toActs(item)
                 }
+
                 else -> {
                     toPostOrNews(item)
                 }
@@ -157,52 +160,37 @@ open class RecommendFragment :
         }
         val fastInAdapter = RecommendFastInListAdapter()
         fastInBinding?.let { fi ->
-            fi.rvFastIn.adapter = fastInAdapter
+            topFastViews.clear()
+            topFastViews.add(HomeTopFastBean(fi.tvOne, fi.ivOne))
+            topFastViews.add(HomeTopFastBean(fi.tvTwo, fi.ivTwo))
+            topFastViews.add(HomeTopFastBean(fi.tvThree, fi.ivThree))
+            topFastViews.add(HomeTopFastBean(fi.tvFour, fi.ivFour))
+            topFastViews.add(HomeTopFastBean(fi.tvFive, fi.ivFive))
             var index = 1
             if (!isSecondHeader) {
                 index = 0
             }
             if (dataList.isEmpty()) {
-                fi.tvFastIn.visibility = View.GONE
+                fi.llFast.visibility = View.GONE
             } else {
-                fi.tvFastIn.visibility = View.VISIBLE
+                fi.llFast.visibility = View.VISIBLE
             }
+            if (dataList.size > 5) {
+                dataList.subList(0, 5)
+            }
+            dataList.forEachIndexed { index, adBean ->
+                val bean = topFastViews[index]
+                bean.shapeAbleImageView.setCircular(8)
+                bean.shapeAbleImageView.setOnClickListener {
+                    JumpUtils.instans?.jump(adBean.jumpDataType, adBean.jumpDataValue)
+                }
+                GlideUtils.loadBD(adBean.adImg, bean.shapeAbleImageView)
+                bean.textView.text = adBean.adSubName
+            }
+            fi.llTwo.isVisible = dataList.size != 2
             if (!isAddFaster) {
                 recommendAdapter.addHeaderView(fi.root, index)
                 isAddFaster = true
-            }
-            fastInAdapter.setList(dataList)
-            if (isGrid) {
-                fastInAdapter.isWith = false
-                fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
-                if (!isAddGridSpace) {
-                    fi.rvFastIn.addItemDecoration(
-                        GridSpacingItemDecoration(
-                            ScreenUtils.dp2px(
-                                requireContext(),
-                                10f
-                            ), 3
-                        )
-                    )
-                    isAddGridSpace = true
-                }
-
-            } else {
-                fastInAdapter.isWith = true
-                val linearLayoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                fi.rvFastIn.layoutManager = linearLayoutManager
-                if (!isAddLinearSpace) {
-                    fi.rvFastIn.addItemDecoration(
-                        SpacesItemDecoration(
-                            ScreenUtils.dp2px(
-                                requireContext(),
-                                10f
-                            )
-                        )
-                    )
-                    isAddLinearSpace = true
-                }
             }
         }
 
@@ -255,9 +243,11 @@ open class RecommendFragment :
                     "SINGLE" -> {
                         addHeadFaster(false, it.data.ads)
                     }
+
                     "MULTI" -> {
                         addHeadFaster(true, it.data.ads)
                     }
+
                     else -> {
                         addHeadFaster(true, it.data.ads)
                     }
@@ -281,6 +271,7 @@ open class RecommendFragment :
                     toastShow("没有作者")
                 }
             }
+
             2 -> {
                 // todo 跳转到帖子
 //                bundle.putString("postsId", value)
@@ -402,6 +393,7 @@ open class RecommendFragment :
                     getString(R.string.net_error) -> {
                         showTimeOut()
                     }
+
                     else -> {
                         showFailure(it.message)
                     }

@@ -5,8 +5,8 @@ import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.AllCircle
 import com.changanford.circle.databinding.ItemCircleMainCircleBinding
-import com.changanford.circle.ext.loadImage
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 
 /**

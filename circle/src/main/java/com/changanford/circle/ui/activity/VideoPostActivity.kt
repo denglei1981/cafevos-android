@@ -8,7 +8,6 @@ import android.media.MediaMetadataRetriever
 import android.os.Bundle
 import android.provider.Settings
 import android.text.*
-import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -58,14 +57,10 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.luck.picture.lib.tools.ScreenUtils
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
-import com.changanford.circle.config.CircleConfig
+import com.changanford.common.constant.CircleConfig
 import com.changanford.common.utilext.PermissionPopUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig

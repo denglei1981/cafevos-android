@@ -8,7 +8,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleInfo
 import com.changanford.circle.databinding.ItemCircleAddressBinding
-import com.changanford.circle.ext.loadImage
+import com.changanford.common.util.ext.loadImage
+
 import com.changanford.common.util.ext.setCircular
 
 import com.changanford.common.utilext.toIntPx

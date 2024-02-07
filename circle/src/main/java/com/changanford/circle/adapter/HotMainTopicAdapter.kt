@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.databinding.ItemMainHotTopicBinding
-import com.changanford.circle.utils.MUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 

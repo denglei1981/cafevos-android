@@ -1,14 +1,15 @@
 package com.changanford.home
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.os.Bundle
 import android.os.Looper
+import android.os.Parcelable
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.Constraints
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,26 +19,34 @@ import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.CircleConfig
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.room.PostDatabase
+import com.changanford.common.room.PostEntity
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.common.ui.WaitReceiveBindingPop
-import com.changanford.common.util.DisplayUtil
+import com.changanford.common.ui.dialog.BindDialog
+import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
-import com.changanford.home.callback.ICallback
 import com.changanford.home.data.AdBean
-import com.changanford.home.data.PublishData
-import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
 import com.changanford.home.recommend.fragment.RecommendFragment
@@ -46,7 +55,8 @@ import com.changanford.home.shot.fragment.BigShotFragment
 import com.changanford.home.widget.pop.GetFbPop
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.gyf.immersionbar.ImmersionBar
+import com.luck.picture.lib.entity.LocalMedia
+import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import razerdp.basepopup.BasePopupWindow
@@ -58,16 +68,14 @@ import java.util.*
  */
 class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>() {
 
-    var pagerAdapter: HomeViewPagerAdapter? = null
+    private var pagerAdapter: HomeViewPagerAdapter? = null
 
-    var fragmentList: ArrayList<Fragment> = arrayListOf()
+    private var fragmentList: ArrayList<Fragment> = arrayListOf()
 
-    var titleList = mutableListOf<String>()
+    private var titleList = mutableListOf<String>()
 
+    private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    val immersionBar: ImmersionBar by lazy {
-        ImmersionBar.with(this)
-    }
     private val recommendFragment: RecommendFragment by lazy {
         RecommendFragment.newInstance()
     }
@@ -98,6 +106,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         StatusBarUtil.setStatusBarPaddingTop(binding.layoutTopBar.root, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
+        PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(
+            this
+        ) {
+            postEntity = it as ArrayList<PostEntity>
+        }
         easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
@@ -119,7 +132,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
-                R.color.blue_tab
+                R.color.white
             )
         )
         binding.homeTab.tabRippleColor = null
@@ -167,10 +180,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         })
 
         binding.recommendContent.ivMore.setOnClickListener {
-            showPublish(binding.recommendContent.ivMore)
+            showPublish(binding.homeTab)
         }
         binding.layoutTopBar.ivScan.setOnClickListener {
-            showPublish(binding.layoutTopBar.ivScan)
+            showPublish(binding.homeTab)
         }
         binding.recommendContent.etSearchContent.setOnClickListener {
             toSearch()
@@ -263,12 +276,12 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             // 埋点
             BuriedUtil.instant?.discoverTopMenu(tab.text.toString())
             mTabText?.isSelected = true
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_app_color))
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
         } else {
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
-            mTabText?.textSize = 15f
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white_b2))
+            mTabText?.textSize = 16f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
@@ -290,15 +303,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.setTextColor(
                     ContextCompat.getColor(
                         MyApp.mContext,
-                        R.color.color_app_color
+                        R.color.white
                     )
                 )
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 18f
 
             } else {
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_33))
-                mTabText.textSize = 15f
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white_b2))
+                mTabText.textSize = 16f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
 //            if (i == binding.homeTab.tabCount - 1) {
@@ -324,43 +337,127 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
     }
 
-    var publishPopup: PublishPopup? = null
-    private fun showPublish(publishLocationView: ImageView) {
-        val location = IntArray(2)
-        var height = DisplayUtil.getDpi(requireContext())
-        publishLocationView.getLocationOnScreen(location)
-        height -= location[1]
-        val publishView = layoutInflater.inflate(R.layout.popup_home_publish, null)
-        publishPopup = PublishPopup(
-            requireContext(),
-            this,
-            publishView,
-            Constraints.LayoutParams.WRAP_CONTENT,
-            Constraints.LayoutParams.WRAP_CONTENT,
-            object : ICallback {
-                override fun onResult(result: ResultData) {
-                    when ((result.data as PublishData).code) {
-                        1 -> {//发布活动
-                            JumpUtils.instans?.jump(13)
-                        }
-
-                        2 -> {//问卷调查
-                            JumpUtils.instans?.jump(12)
-                        }
-
-                        3 -> {//扫一扫
-                            JumpUtils.instans?.jump(61)
-                        }
+    private fun checkPostState(block: () -> Unit, state: String) {
+        if (MConstant.token.isNotEmpty()) {
+            if (!MineUtils.getBindMobileJumpDataType()) {
+                if (postEntity?.size == 0) {
+                    block.invoke()
+                } else {
+                    val postEntity = postEntity?.last()
+                    if (postEntity == null) {
+                        block.invoke()
+                        return
+                    }
+                    if (state == CircleConfig.CHECK_LONG_POST && postEntity.type == "4") {
+                        showSavePop("4", postEntity, block)
+                    } else if (state == CircleConfig.CHECK_TRENDS_POST && postEntity.type == "2") {
+                        showSavePop("2", postEntity, block)
+                    }else if (state == CircleConfig.CHECK_TRENDS_POST && postEntity.type == "3") {
+                        showSavePop("3", postEntity, block)
+                    } else {
+                        block.invoke()
                     }
                 }
+            } else {
+                BindDialog(requireContext()).show()
             }
-        )
-        publishPopup?.contentView?.measure(
-            View.MeasureSpec.UNSPECIFIED,
-            View.MeasureSpec.UNSPECIFIED
-        )
+        } else {
+            startARouter(ARouterMyPath.SignUI)
+        }
+    }
 
-        publishPopup?.showAsDropDown(publishLocationView)
+    private fun showSavePop(state: String, postEntity: PostEntity, block: () -> Unit) {
+        activity?.let { it1 ->
+            PostDialog(
+                it1,
+                "发现您还有草稿未发布",
+                postButtonListener = object : PostDialog.PostButtonListener {
+                    override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+
+                        when (state) {
+                            "2" -> {
+                                RouterManger.param("postEntity", postEntity)
+                                    .startARouter(ARouterCirclePath.PostActivity)
+                            }
+
+                            "3" -> {
+                                RouterManger.param("postEntity", postEntity)
+                                    .startARouter(ARouterCirclePath.PostActivity)
+                            }
+
+                            "4" -> {
+                                RouterManger.param("postEntity", postEntity)
+                                    .startARouter(ARouterCirclePath.LongPostAvtivity)
+                            }
+                        }
+                    }
+
+                    override fun cancle() {  //不使用草稿
+                        block.invoke()
+                    }
+
+
+                }).show()
+        }
+    }
+
+    private fun showPublish(publishLocationView: View) {
+        CircleMainMenuPop(
+            requireContext(),
+            object : CircleMainMenuPop.CheckPostType {
+                override fun checkLongBar() {
+                    val block = { startARouter(ARouterCirclePath.LongPostAvtivity, true) }
+                    checkPostState(block, CircleConfig.CHECK_LONG_POST)
+
+                }
+
+                override fun checkPic() {
+                    val block = { openChoose() }
+                    checkPostState(block, CircleConfig.CHECK_TRENDS_POST)
+                }
+
+                override fun checkVideo() {
+                    startARouter(ARouterCirclePath.VideoPostActivity, true)
+                }
+
+                override fun checkQuestion() {
+                    GioPageConstant.askSourceEntrance = "右上角+号"
+                    JumpUtils.instans?.jump(116)
+                }
+
+            }).run {
+            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(publishLocationView)
+            initData()
+        }
+    }
+
+    private fun openChoose() {
+        PictureUtil.chooseImageOrVideo(requireActivity(), object :
+            OnResultCallbackListener<LocalMedia> {
+            override fun onResult(result: MutableList<LocalMedia>?) {
+                val bundle = Bundle()
+                bundle.putParcelableArrayList(
+                    CircleConfig.CIRCLE_TO_POST_KEY,
+                    result as java.util.ArrayList<out Parcelable>
+                )
+                var isVideo = false
+                result?.forEach {
+                    isVideo = it.mimeType.contains("video") || it.mimeType.contains("mp4")
+                }
+//                if (isVideo) {
+//                    bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, true)
+//                    startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
+//                } else {
+                bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, isVideo)
+                startARouter(ARouterCirclePath.PostActivity, bundle, true)
+//                }
+            }
+
+            override fun onCancel() {
+
+            }
+        })
     }
 
     override fun initData() {

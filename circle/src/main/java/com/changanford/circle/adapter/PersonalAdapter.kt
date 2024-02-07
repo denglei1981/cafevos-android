@@ -8,10 +8,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.databinding.ItemPersonalBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadImage
 
 /**
  *Author lcw

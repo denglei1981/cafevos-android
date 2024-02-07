@@ -2,24 +2,20 @@ package com.changanford.circle.widget.pop
 
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleMainMenuAdapter
-import com.changanford.circle.bean.CircleMainMenuBean
 import com.changanford.circle.bean.CirclePermissionsData
 import com.changanford.circle.databinding.PopCircleDetailsMenuBinding
-import com.changanford.circle.databinding.PopCircleMainMenuBinding
+import com.changanford.common.adapter.CircleMainMenuAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
+import com.changanford.common.bean.CircleMainMenuBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.SPUtils
 import com.changanford.common.utilext.toIntPx
-import com.luck.picture.lib.config.PictureSelectionConfig.listener
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction

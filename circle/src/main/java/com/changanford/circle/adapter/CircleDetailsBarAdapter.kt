@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
-import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.ItemCircleDetailsBottomBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
 
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.constant.CircleConfig
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.toIntPx
 

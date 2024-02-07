@@ -19,8 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:visibility="gone"
-            android:layout_marginEnd="15dp"
-            android:src="@mipmap/circle_pop_top" />
+            android:layout_marginEnd="15dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_management"

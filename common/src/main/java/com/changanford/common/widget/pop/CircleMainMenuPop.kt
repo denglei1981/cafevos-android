@@ -1,20 +1,16 @@
-package com.changanford.circle.widget.pop
+package com.changanford.common.widget.pop
 
 import android.content.Context
-import android.os.Bundle
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
-import com.changanford.circle.R
-import com.changanford.circle.adapter.CircleMainMenuAdapter
-import com.changanford.circle.bean.CircleMainMenuBean
-import com.changanford.circle.databinding.PopCircleMainMenuBinding
+import com.changanford.common.R
+import com.changanford.common.adapter.CircleMainMenuAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
-import com.changanford.common.constant.IntentKey
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
+import com.changanford.common.bean.CircleMainMenuBean
+import com.changanford.common.databinding.PopCircleMainMenuBinding
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.gio.updateMainGio
 import razerdp.basepopup.BasePopupWindow
@@ -63,7 +59,8 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             CircleMainMenuBean(R.mipmap.circle_post_long_bar, "发文章"),
             CircleMainMenuBean(R.mipmap.circle_post_pic, "发动态"),
 //            CircleMainMenuBean(R.mipmap.circle_post_video, "视频"),
-            CircleMainMenuBean(R.mipmap.circle_post_question,"提问"),
+            CircleMainMenuBean(R.mipmap.circle_post_question, "提问"),
+            CircleMainMenuBean(R.mipmap.ic_home_scan_menu, "扫一扫"),
 //            CircleMainMenuBean(R.mipmap.circle_post_question,"发活动"),
 //            CircleMainMenuBean(R.mipmap.circle_post_question,"发投票")
         )
@@ -81,23 +78,24 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                         listener.checkLongBar()
                         updateMainGio("发文章页", "发文章页")
                     }
+
                     1 -> {
                         listener.checkPic()
                         updateMainGio("发动态页", "发动态页")
                     }
+
                     2 -> {
 //                        listener.checkVideo()
                         listener.checkQuestion()
                         updateMainGio("提问页", "提问页")
                     }
-                    3->{
+
+                    3 -> {
 //                        listener.checkQuestion()
-                        updateMainGio("提问页", "提问页")
+                        updateMainGio("扫一扫页", "扫一扫页")
+                        JumpUtils.instans?.jump(61)
                     }
 //                    4 -> {
-//                        val bundle = Bundle()
-//                        bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, "1045")
-//                        startARouter(ARouterCirclePath.ActivityFabuBaoming,bundle)
 //                    }
 //                    5->{
 //                        val bundle = Bundle()

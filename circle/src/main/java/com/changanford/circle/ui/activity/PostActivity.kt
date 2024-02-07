@@ -20,7 +20,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -73,11 +72,10 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.yalantis.ucrop.UCrop
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.PostVideoAdapter
-import com.changanford.circle.config.CircleConfig
 import com.changanford.common.bean.SpecialCarListBean
+import com.changanford.common.constant.CircleConfig
 import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.utilext.PermissionPopUtil
-import com.changanford.common.utilext.toIntPx
 import com.qw.soul.permission.bean.Permissions
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig

@@ -15,8 +15,6 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.databinding.DialogApplicationCircleManagementBinding
-import com.changanford.circle.ext.loadImage
-import com.changanford.circle.ext.loadImageNoOther
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.utils.setDialogParams
@@ -27,6 +25,8 @@ import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.*
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.ext.loadImage
+import com.changanford.common.util.ext.loadImageNoOther
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast

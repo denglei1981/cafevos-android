@@ -6,10 +6,9 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleNoticeItem
 import com.changanford.circle.databinding.ItemCircleNoticeBinding
-import com.changanford.circle.ext.loadCircleImage
-
-import com.changanford.circle.utils.MUtils.expandText
-import com.changanford.circle.utils.MUtils.setTopMargin
+import com.changanford.common.util.MUtils.expandText
+import com.changanford.common.util.MUtils.setTopMargin
+import com.changanford.common.util.ext.loadCircleImage
 
 
 /**

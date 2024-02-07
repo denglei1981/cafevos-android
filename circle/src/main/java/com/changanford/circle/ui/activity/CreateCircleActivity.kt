@@ -8,8 +8,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleTagAdapter
 import com.changanford.circle.databinding.ActivityCreateCircleBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
 import com.changanford.circle.viewmodel.CreateCircleViewModel
 import com.changanford.circle.widget.pop.CircleSelectTypePop
 import com.changanford.circle.widget.pop.OnSelectedBackListener
@@ -25,6 +23,8 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager

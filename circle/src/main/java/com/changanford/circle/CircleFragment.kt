@@ -1,7 +1,9 @@
 package com.changanford.circle
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
+import com.alibaba.android.arouter.launcher.ARouter
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.changanford.circle.adapter.CircleMainAdapter
@@ -9,12 +11,15 @@ import com.changanford.circle.databinding.FragmentCircleBinding
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath.SplashActivity
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
+import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -23,17 +28,8 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.location.LocationUtils
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import android.content.Intent
-import com.alibaba.android.arouter.launcher.ARouter
-import com.changanford.circle.widget.pop.CircleMainMenuPop
-import com.changanford.common.manger.RouterManger
-import com.changanford.common.router.path.ARouterHomePath.SplashActivity
-import com.changanford.common.ui.dialog.PostDialog
 import com.changanford.common.utilext.PermissionPopUtil
-import com.changanford.common.wutil.WCommonUtil
+import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.qw.soul.permission.bean.Permissions
 
 

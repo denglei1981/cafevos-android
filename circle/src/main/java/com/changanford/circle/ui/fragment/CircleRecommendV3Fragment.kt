@@ -19,7 +19,6 @@ import com.changanford.circle.databinding.FragmentCircleRecommendBinding
 import com.changanford.circle.databinding.FragmentCircleRecommendV2Binding
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
-import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener

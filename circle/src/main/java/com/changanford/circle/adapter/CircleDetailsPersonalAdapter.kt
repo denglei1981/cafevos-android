@@ -7,10 +7,10 @@ import com.changanford.circle.R
 import com.changanford.circle.bean.User
 
 import com.changanford.circle.databinding.ItemCircleDetailsPersonalBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
 
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.utilext.toIntPx
 
 /**

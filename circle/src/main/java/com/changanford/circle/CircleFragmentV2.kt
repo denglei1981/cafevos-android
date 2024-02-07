@@ -15,16 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.circle.adapter.CircleMainViewPagerAdapter
-import com.changanford.circle.config.CircleConfig
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
 import com.changanford.circle.ui.fragment.circle.NewCircleFragment
 import com.changanford.circle.viewmodel.CircleViewModel
-import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.CircleConfig
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
@@ -48,6 +47,7 @@ import com.changanford.common.util.bus.LiveDataBusKey.BUS_HIDE_BOTTOM_TAB
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toIntPx
+import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import net.lucode.hackware.magicindicator.buildins.UIUtil

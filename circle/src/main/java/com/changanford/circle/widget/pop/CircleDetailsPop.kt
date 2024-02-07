@@ -6,6 +6,7 @@ import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.PopCircleDetailsBinding
+import com.changanford.common.widget.pop.CircleMainMenuPop
 
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper

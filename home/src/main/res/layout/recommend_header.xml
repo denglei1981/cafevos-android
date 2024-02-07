@@ -10,20 +10,19 @@
         android:id="@+id/con_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="@dimen/dp_20"
-        android:layout_marginTop="8dp">
-
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="16dp">
 
         <com.zhpan.bannerview.BannerViewPager
             android:id="@+id/b_viewpager"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="32:25"
+            app:layout_constraintDimensionRatio="343:268"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.zhpan.bannerview.indicator.DrawableIndicator
             android:id="@+id/dr_indicator"
@@ -31,9 +30,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@color/transparent"
+            android:layout_marginBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/b_viewpager" />
+            app:layout_constraintBottom_toBottomOf="@+id/b_viewpager" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

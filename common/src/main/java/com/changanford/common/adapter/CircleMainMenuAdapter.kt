@@ -1,14 +1,14 @@
-package com.changanford.circle.adapter
+package com.changanford.common.adapter
 
 import android.content.Context
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import com.changanford.circle.R
-import com.changanford.circle.bean.CircleMainMenuBean
-import com.changanford.circle.databinding.ItemCircleMainMenuBinding
-import com.changanford.circle.ext.loadImage
-import com.changanford.circle.utils.MUtils
+import com.changanford.common.R
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.bean.CircleMainMenuBean
+import com.changanford.common.databinding.ItemCircleMainMenuBinding
+import com.changanford.common.util.MUtils
+import com.changanford.common.util.ext.loadImage
 
 /**
  *Author lcw

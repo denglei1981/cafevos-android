@@ -5,8 +5,8 @@ import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleStarRoleDto
 import com.changanford.circle.databinding.ItemPopManagementBinding
-import com.changanford.circle.utils.MUtils
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.MUtils
 
 /**
  *Author lcw

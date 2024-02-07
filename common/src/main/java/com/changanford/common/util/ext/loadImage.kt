@@ -1,4 +1,4 @@
-package com.changanford.circle.ext
+package com.changanford.common.util.ext
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -11,13 +11,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.bumptech.glide.request.transition.Transition
-import com.changanford.circle.R
-import com.changanford.common.constant.TestImageUrl
+import com.changanford.common.R
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.toPx
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.ShapeAppearanceModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import java.io.File
 

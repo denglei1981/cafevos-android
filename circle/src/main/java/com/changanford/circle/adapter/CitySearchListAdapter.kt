@@ -6,13 +6,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.bean.CityEntity
-import com.changanford.circle.databinding.CityListItemLayoutBinding
 import com.changanford.circle.databinding.CityListItemSearchBinding
-import com.changanford.circle.databinding.ItemCircleListBinding
-import com.changanford.circle.ext.*
-import com.changanford.circle.utils.MUtils
 
 /**
  *Author lcw

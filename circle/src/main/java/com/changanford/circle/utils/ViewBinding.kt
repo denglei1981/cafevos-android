@@ -1,18 +1,15 @@
 package com.changanford.circle.utils
 
-import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.changanford.circle.R
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadBigImage
-import com.changanford.circle.ext.loadImage
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadBigImage
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
 

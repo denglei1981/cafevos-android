@@ -9,11 +9,10 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.CircleNoticeItem
 import com.changanford.circle.databinding.ItemMyCircleNoticeBinding
-import com.changanford.circle.utils.MUtils
-import com.changanford.common.bean.TestBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.MUtils
 
 /**
  *Author lcw

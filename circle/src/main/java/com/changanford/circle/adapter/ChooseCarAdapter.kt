@@ -8,8 +8,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemChooseCarPostBinding
-import com.changanford.circle.ext.loadCircleImage
-import com.changanford.common.bean.NewCarTagBean
 import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.utilext.toIntPx

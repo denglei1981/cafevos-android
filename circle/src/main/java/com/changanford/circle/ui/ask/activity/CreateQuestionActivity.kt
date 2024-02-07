@@ -11,8 +11,6 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -21,17 +19,12 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.adapter.PostPicAdapter
-import com.changanford.circle.bean.ButtomTypeBean
 import com.changanford.circle.databinding.ActivityCreateQuestionBinding
 
-import com.changanford.circle.ui.activity.PostActivity
 import com.changanford.circle.ui.ask.adapter.AskPicAdapter
 import com.changanford.circle.ui.ask.pop.QuestionTipsPop
 import com.changanford.circle.ui.ask.request.QuestionViewModel
-import com.changanford.circle.widget.pop.CircleMainMenuPop
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.CancelReasonBeanItem
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.STSBean

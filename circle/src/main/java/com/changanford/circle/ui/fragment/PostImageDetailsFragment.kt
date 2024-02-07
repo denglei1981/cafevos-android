@@ -20,11 +20,8 @@ import com.changanford.circle.bean.ImageList
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ActivityPostGraphicBinding
-import com.changanford.circle.ext.ImageOptions
-import com.changanford.circle.ext.loadImage
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.utils.AnimScaleInUtil
-import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.viewmodel.shareBackUpHttp
@@ -41,11 +38,14 @@ import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.ImageOptions
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setAppColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant

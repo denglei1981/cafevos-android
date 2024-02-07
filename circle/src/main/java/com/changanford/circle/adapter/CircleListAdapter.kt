@@ -12,10 +12,10 @@ import com.changanford.circle.adapter.circle.TagAdapter
 import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.databinding.ItemCircleListBinding
 
-import com.changanford.circle.utils.MUtils
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toast
