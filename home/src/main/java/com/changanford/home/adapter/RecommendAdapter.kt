@@ -49,7 +49,7 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(), LoadMoreModule {
-    init {
+    init {5
         addItemType(0, R.layout.item_home_recommend_items_one)
         addItemType(1, R.layout.item_home_recommend_items_one)
         addItemType(2, R.layout.item_home_recommend_items_three)

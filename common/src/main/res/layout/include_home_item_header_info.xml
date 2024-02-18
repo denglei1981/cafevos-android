@@ -33,7 +33,7 @@
             app:layout_constraintCircleAngle="120"
             app:layout_constraintCircleRadius="15dp"
             app:layout_constraintEnd_toEndOf="@+id/iv_header"
-            tools:src="@drawable/icon_home_auth_vip" />
+            tools:src="@mipmap/icon_home_auth_vip" />
 
         <TextView
             android:id="@+id/tv_author_name"
