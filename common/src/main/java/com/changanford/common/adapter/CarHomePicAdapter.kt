@@ -1,15 +1,13 @@
-package com.changanford.car.adapter
+package com.changanford.common.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.car.R
-import com.changanford.car.databinding.ItemCarHomePicBinding
-import com.changanford.common.util.MConstant
+import com.changanford.common.R
+import com.changanford.common.databinding.ItemCarHomePicBinding
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toIntPx

@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.car.R
-import com.changanford.car.databinding.ItemHomeCarHistoryBinding
+import com.changanford.common.adapter.CarHomePicAdapter
 import com.changanford.common.bean.InfoDataBean
+import com.changanford.common.databinding.ItemHomeCarHistoryBinding
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 
@@ -30,21 +30,21 @@ class CarHomeTipsAdapter :
 //            setLayoutWidth(it.clContent)
             if (!item.pics.isNullOrEmpty()) {
                 val layoutManager = LinearLayoutManager(context)
-                it.ryPc.layoutManager = layoutManager
+               it.ryPc.layoutManager = layoutManager
 
-                it.ryPc.adapter = picAdapter
+               it.ryPc.adapter = picAdapter
                 picAdapter.setOnItemClickListener { _, _, _ ->
                     JumpUtils.instans?.jump(2, item.artId)
                 }
                 picAdapter.setList(listOf(item.pics))
-                it.ryPc.isVisible = true
+               it.ryPc.isVisible = true
 
-                GlideUtils.loadCircle(item.authors?.avatar, it.ivIcon)
-                it.tvName.text = item.authors?.nickname
-                it.tvTime.text = item.timeStr
-                it.tvContent.text = item.title
+                GlideUtils.loadCircle(item.authors?.avatar,it.ivIcon)
+               it.tvName.text = item.authors?.nickname
+               it.tvTime.text = item.timeStr
+               it.tvContent.text = item.title
             } else {
-                it.ryPc.isVisible = false
+               it.ryPc.isVisible = false
             }
         }
     }

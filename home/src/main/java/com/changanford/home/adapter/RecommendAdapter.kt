@@ -1,25 +1,34 @@
 package com.changanford.home.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.MyApp
+import com.changanford.common.adapter.CarHomeHistoryAdapter
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.constant.preLoadNumber
+import com.changanford.common.databinding.HeaderCarHistoryBinding
 import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -27,6 +36,8 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.DisplayUtil
@@ -34,10 +45,10 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.setDrawableLeft
@@ -45,10 +56,12 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
+import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemHomeRecommendItemsOneBinding
+import com.changanford.home.databinding.ItemRecommendHomeSpecialBinding
 import com.changanford.home.util.LoginUtil
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.imageview.ShapeableImageView
+import kotlin.math.ceil
+
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     BaseMultiItemQuickAdapter<RecommendData, BaseViewHolder>(), LoadMoreModule {
@@ -58,6 +71,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(2, R.layout.item_home_recommend_items_one)
 //        addItemType(3, R.layout.item_home_recommend_acts)
         addItemType(3, com.changanford.common.R.layout.item_home_acts)
+        //提车日记
+        addItemType(4, R.layout.header_car_history)
+        //专题
+        addItemType(5, R.layout.item_recommend_home_special)
         loadMoreModule.preLoadNumber = preLoadNumber
     }
 
@@ -65,52 +82,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: RecommendData) {
         val picLists = item.getPicLists()
         when (item.itemType) {
-            1 -> {//1张图
+            1, 2 -> {//1张图
                 showPics(holder, item)
                 val binding =
                     DataBindingUtil.bind<ItemHomeRecommendItemsOneBinding>(holder.itemView)
                 binding?.let {
-                    it.layoutContent.ivPic.loadCompress(picLists?.get(0))
-                    it.layoutContent.ivPic.setCircular(12)
+                    ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, picLists)
                 }
 
-            }
-
-            2 -> { //3张图
-                showPics(holder, item)
-                val veryPostIv = holder.getView<ImageView>(R.id.ic_mult_very_post)
-                item.postsIsGood?.let { g ->
-                    if (g == 1) {
-                        veryPostIv.visibility = View.VISIBLE
-                    } else {
-                        veryPostIv.visibility = View.GONE
-                    }
-                }
-//                val tvPicSizes = holder.getView<AppCompatTextView>(R.id.tv_pic_size)
-//                item.getPicLists()?.let {
-//                    tvPicSizes.text = it.size.toString()
-//                }
-//                val onePic = holder.getView<ShapeableImageView>(R.id.iv_one)
-//                val twoPic = holder.getView<ShapeableImageView>(R.id.iv_two)
-//                val threePic = holder.getView<ShapeableImageView>(R.id.iv_three)
-//                if (picLists != null) {
-//                    for (s in picLists) {
-//                        val index = picLists.indexOf(s)
-//                        when (index) {
-//                            0 -> {
-//                                onePic.loadCompress(s)
-//                            }
-//
-//                            1 -> {
-//                                twoPic.loadCompress(s)
-//                            }
-//
-//                            2 -> {
-//                                threePic.loadCompress(s)
-//                            }
-//                        }
-//                    }
-//                }
             }
 
             3 -> { // 活动
@@ -122,9 +101,19 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
             }
 
+            4 -> {//提车日记
+                val binding = DataBindingUtil.bind<HeaderCarHistoryBinding>(holder.itemView)
+                binding?.let { showCarHistory(it, item.postBean) }
+            }
+
+            5 -> {//专题
+                val binding = DataBindingUtil.bind<ItemRecommendHomeSpecialBinding>(holder.itemView)
+                binding?.let { setSpecial(it) }
+            }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showActsNew(holder: BaseViewHolder, recdate: RecommendData) { //活动
         val item = recdate.wonderful
         val binding = DataBindingUtil.bind<ItemHomeActsBinding>(holder.itemView)
@@ -147,20 +136,68 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
             it.tvSignpeople.isVisible = !item.activityTotalCount.isNullOrEmpty()
-            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
+//            it.tvSignpeopleImg.isVisible = !item.activityTotalCount.isNullOrEmpty()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(it.clContent)
+            constraintSet.setDimensionRatio(com.changanford.home.R.id.iv_acts, "w,343:193")
+            constraintSet.applyTo(it.clContent)
+
             it.bt.isVisible = item.showButton()
             if (item.showButton()) {
                 it.bt.text = item.showButtonText()
             }
+            val stateBg = it.btnState.background as GradientDrawable
+            when (item.activityTag) {
+                "NOT_BEGIN" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.color_E67400
+                    )
+                )
+
+                "ON_GOING" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.color_1700f4
+                    )
+                )
+
+                "SIGN_ING" -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.color_009987
+                    )
+                )
+
+                else -> stateBg.setColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.color_a5adb1
+                    )
+                )
+            }
             if (item.buttonBgEnable()) {
-                it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_f2f4f9_cor14)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.color_95b))
+                it.bt.background = ContextCompat.getDrawable(
+                    context,
+                    com.changanford.common.R.drawable.bg_1700f4_18
+                )
+                it.bt.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.white
+                    )
+                )
             } else {
                 it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(com.changanford.common.R.drawable.bg_dd_cor14)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(com.changanford.common.R.color.white))
+                    ContextCompat.getDrawable(context, com.changanford.common.R.drawable.bg_80a6_18)
+                it.bt.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.common.R.color.color_4d16
+                    )
+                )
             }
             it.bt.setOnClickListener {
                 if (item.isFinish()) {
@@ -187,78 +224,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
     }
 
-    fun showActs(holder: BaseViewHolder, item: RecommendData) { //活动
-        val ivActs = holder.getView<ShapeableImageView>(R.id.iv_acts)
-        val tvTips = holder.getView<AppCompatTextView>(R.id.tv_tips)
-        val tvHomeActAddress = holder.getView<AppCompatTextView>(R.id.tv_home_act_address)
-        val tvHomeActTimes = holder.getView<AppCompatTextView>(R.id.tv_home_act_times)
-        val btnState = holder.getView<MaterialButton>(R.id.btn_state)
-        val tvTagOne = holder.getView<AppCompatTextView>(R.id.tv_tag_one)
-        val tvTagTwo = holder.getView<AppCompatTextView>(R.id.tv_tag_two)
-        val tvHomeSignUpTime = holder.getView<AppCompatTextView>(R.id.tv_home_sign_up_time)
-        GlideUtils.loadBD(item.wonderfulPic, ivActs)
-        tvTips.text = item.title
-        tvHomeActTimes.text = item.getActTimeS()
-
-        btnState.text = item.getTimeStateStr()
-        if (item.wonderfulType != 2) {// 不是问卷活动
-            if (item.jumpType.toInt() == 3) { // 是常规活动 及报名活动
-                tvHomeSignUpTime.visibility = View.VISIBLE
-                tvHomeSignUpTime.text = item.getSignTimes()
-            } else {
-                tvHomeSignUpTime.visibility = View.GONE
-            }
-        }
-        when (item.wonderfulType) {
-            0 -> {
-                tvTagTwo.text = "线上活动"
-                tvHomeActAddress.visibility = View.GONE
-            }
-
-            1 -> {
-                tvTagTwo.text = "线下活动"
-                if (TextUtils.isEmpty(item.city)) {
-                    tvHomeActAddress.visibility = View.GONE
-                } else {
-                    tvHomeActAddress.visibility = View.VISIBLE
-                    tvHomeActAddress.text = item.city
-                }
-
-
-            }
-
-            2 -> {
-                tvTagTwo.text = "调查问卷"
-                tvHomeActTimes.text = item.getEndTimeTips()
-                tvHomeActAddress.visibility = View.GONE
-            }
-
-            3 -> {
-                tvTagTwo.text = "福域活动"
-                tvHomeActAddress.visibility = View.GONE
-            }
-        }
-        when (item.official) {
-            0 -> {
-                tvTagOne.text = context.getString(R.string.platform_acts)
-                tvTagOne.visibility = View.VISIBLE
-            }
-
-            2 -> {
-                tvTagOne.text = "经销商"
-                tvTagOne.visibility = View.VISIBLE
-            }
-
-            else -> {
-                tvTagOne.visibility = View.VISIBLE
-                tvTagOne.text = "个人"
-            }
-        }
-
-
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     private fun showPics(holder: BaseViewHolder, item: RecommendData) { // 图片
         val binding = DataBindingUtil.bind<ItemHomeRecommendItemsOneBinding>(holder.itemView)
         binding?.let {
@@ -298,7 +264,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     tvContent.visibility = View.GONE
                 } else {
                     tvContent.visibility = View.VISIBLE
-                    tvContent.imageAndTextView(item.getTopic(), R.mipmap.ic_home_refined_item)
+                    tvContent.imageAndTextView(
+                        item.getTopic(),
+                        com.changanford.home.R.mipmap.ic_home_refined_item
+                    )
 //                        tvContent.text = item.getTopic()
                 }
                 if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
@@ -307,7 +276,10 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 } else {
                     tvTopic.visibility = View.VISIBLE
                     if (TextUtils.isEmpty(item.getTopic())) {
-                        tvTopic.imageAndTextView(item.getContent(), R.mipmap.ic_home_refined_item)
+                        tvTopic.imageAndTextView(
+                            item.getContent(),
+                            com.changanford.home.R.mipmap.ic_home_refined_item
+                        )
                     } else {
                         tvTopic.text = item.getContent()
                     }
@@ -413,12 +385,25 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
                 2 -> {// 帖子
 //                    tvNewsTag.visibility = View.GONE
-                    if (!TextUtils.isEmpty(item.postsVideoTime)) {
-                        tvVideoTime.text = item.postsVideoTime
-                    }
-                    tvVideoTime.visibility = View.VISIBLE
+//                    if (!TextUtils.isEmpty(item.postsVideoTime)) {
+//                        tvVideoTime.text = item.postsVideoTime
+//                    }
+//                    tvVideoTime.visibility = View.VISIBLE
                     ivPlay.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
-                    tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
+//                    tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
+                    if (item.postsType == 3) {
+                        tvVideoTime.isVisible = true
+                        tvVideoTime.text = item.postsVideoTime
+                    } else if (item.pisList != null) {
+                        if (item.pisList!!.size > 4) {
+                            tvVideoTime.isVisible = true
+                            tvVideoTime.text = "+${item.pisList!!.size - 4}"
+                        } else {
+                            tvVideoTime.isVisible = false
+                        }
+                    } else {
+                        tvVideoTime.isVisible = false
+                    }
                 }
 
                 else -> {
@@ -468,6 +453,133 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //        GlideUtils.loadBD(item.authors?.avatar, ivHeader)
 //        val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
 //        tvTimeAndViewCount.text = item.getTimeAdnViewCount()
+    }
+
+    private fun showCarHistory(hCarHistoryBinding: HeaderCarHistoryBinding, bean: PostBean?) {
+        if (bean == null) return
+        hCarHistoryBinding.let {
+//            if (bean.dataList.isNullOrEmpty()) {
+//                hCarHistoryBinding.root.isVisible = false
+//                return
+//            }
+            it.ivIcon.setCircular(5)
+            it.ivIcon.loadCompress(bean.extend?.topicPic)
+            it.tvTitle.text = bean.extend?.topicName
+            it.tvContent.text = bean.extend?.topicDescription
+            it.tvMore.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("topicId", bean.extend?.topicId)
+                bundle.putString("carModelId", MConstant.carBannerCarModelId)
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+            val adapter = CarHomeHistoryAdapter()
+            adapter.setOnItemClickListener { _, view, position ->
+                JumpUtils.instans?.jump(4, adapter.data[position].postsId.toString())
+            }
+            it.ryPost.adapter = adapter
+            adapter.setList(bean.dataList)
+        }
+    }
+
+    private fun setSpecial(binding: ItemRecommendHomeSpecialBinding) {
+        val list = ArrayList<SpecialListBean>()
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "车主故事集",
+                summary = "你的故事我来听"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "福探长·荣耀营",
+                summary = "巅峰加冕 敬启新境敬启新境"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "有话好好说",
+                summary = "娱乐问答系列节目"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "购车宝典",
+                summary = "贴心的售前引导"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "车主故事集",
+                summary = "你的故事我来听"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "福探长·荣耀营",
+                summary = "巅峰加冕 敬启新境敬启新境"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "有话好好说",
+                summary = "娱乐问答系列节目"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "购车宝典",
+                summary = "贴心的售前引导"
+            )
+        )
+        list.add(
+            SpecialListBean(
+                pics = TestImageUrl,
+                title = "购车宝典",
+                summary = "贴心的售前引导"
+            )
+        )
+        val specialAdapter = RecommendSpecialAdapter()
+        specialAdapter.setList(list)
+//        val pageSize = ceil(list.size.toDouble() / 4).toInt()
+        val pageSize = list.size / 4
+        binding.rySpecial.adapter = specialAdapter
+        binding.drIndicator.setPageSize(pageSize)
+        binding.drIndicator.isVisible = pageSize > 1
+
+        binding.rySpecial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                val fistVisibilityPosition = layoutManager.findFirstVisibleItemPosition()
+                val current = fistVisibilityPosition / 4
+                binding.drIndicator.post {
+                    binding.drIndicator.onPageSelected(current)
+                }
+            }
+        })
+        setIndicator(binding)
+    }
+
+    private fun setIndicator(binding: ItemRecommendHomeSpecialBinding) {
+        val dp6 = context.resources.getDimensionPixelOffset(R.dimen.dp_6)
+        binding.drIndicator.setIndicatorDrawable(
+            R.drawable.shape_home_banner_normal,
+            R.drawable.shape_home_banner_focus
+        ).setIndicatorSize(
+            dp6,
+            dp6,
+            context.resources.getDimensionPixelOffset(R.dimen.dp_20),
+            dp6
+        )
+            .setIndicatorGap(context.resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
     private fun toUserHomePage(item: RecommendData) {
@@ -535,9 +647,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     private fun setLikeState(tvLikeView: TextView, isLike: Int, isAnim: Boolean) {
         if (isLike == 0) {
-            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
+            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_ic)
         } else {
-            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
+            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_light_ic)
         }
     }
 
@@ -565,7 +677,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             )
                             "点赞成功".toast()
                             item.isLike = 1
-                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
+                            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_light_ic)
                             item.postsLikesCount++
                         } else {
                             GIOUtils.cancelPostLickClick(
@@ -581,7 +693,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--
-                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
+                            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_ic)
                         }
                         tvLikeView.text = item.getLikeCount()
                     } else {

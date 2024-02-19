@@ -1,4 +1,4 @@
-package com.changanford.car.adapter
+package com.changanford.common.adapter
 
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -6,14 +6,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.car.R
-import com.changanford.car.databinding.ItemHomeCarHistoryBinding
+import com.changanford.common.R
 import com.changanford.common.bean.PostDataBean
+import com.changanford.common.databinding.ItemHomeCarHistoryBinding
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
-import com.xiaomi.push.it
 
 /**
  *Author lcw

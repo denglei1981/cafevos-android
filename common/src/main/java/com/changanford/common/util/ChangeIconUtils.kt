@@ -21,7 +21,7 @@ object ChangeIconUtils {
         val sdf = SimpleDateFormat("yyyyMMdd")
         val time = sdf.format(Date()).toInt()
 //        return time in 20240208..20240229
-        return time in 20240208..20240229
+        return time in 20240208..20240209
     }
 
     /**

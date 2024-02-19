@@ -105,6 +105,7 @@ data class RecommendData(
     val jumpType: String = "",
     val jumpValue: String = "",
     val wonderful:ActBean,
+    val postBean:PostBean?=null
     ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
@@ -125,7 +126,7 @@ data class RecommendData(
         if (pisList != null && pisList!!.size > 1) {
             return 2
         }
-        return 1
+        return 5
     }
 
     fun getContent(): String { // 获取内容

@@ -435,8 +435,8 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         })
 
         viewModel.hotTopicBean.observe(this) {
-            binding.gTopic.isVisible = !it.dataList.isNullOrEmpty()
-            topicAdapter.setList(it.dataList)
+            binding.gTopic.isVisible = it.topics.isNotEmpty()
+            topicAdapter.setList(it.topics)
         }
     }
 

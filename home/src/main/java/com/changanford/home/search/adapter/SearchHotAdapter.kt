@@ -17,11 +17,11 @@ class SearchHotAdapter :
         item: SearchKeyBean
     ) {
         holder.dataBinding?.let {
-            if (holder.layoutPosition==0){
-                it.label.setTextColor(ContextCompat.getColor(context,R.color.color_E67400))
+            if (item.hotTag == 1) {
+                it.label.setTextColor(ContextCompat.getColor(context, R.color.color_E67400))
                 it.label.setDrawableLeft(R.mipmap.ic_search_hot_tips)
-            }else{
-                it.label.setTextColor(ContextCompat.getColor(context,R.color.color_d916))
+            } else {
+                it.label.setTextColor(ContextCompat.getColor(context, R.color.color_d916))
                 it.label.setDrawableNull()
             }
             it.label.text = item.keyword

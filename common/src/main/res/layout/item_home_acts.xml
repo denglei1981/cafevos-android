@@ -8,6 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="wrap_content"
@@ -164,6 +165,7 @@
             android:layout_width="@dimen/dp_11"
             android:layout_height="@dimen/dp_11"
             android:layout_marginStart="@dimen/dp_5"
+            android:visibility="gone"
             android:src="@mipmap/right_arrow_common"
             app:layout_constraintBottom_toBottomOf="@id/tv_signpeople"
             app:layout_constraintStart_toEndOf="@id/tv_signpeople"

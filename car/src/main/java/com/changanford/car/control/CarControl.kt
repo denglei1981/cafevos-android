@@ -36,7 +36,6 @@ import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.utils.DistanceUtil
 import com.changanford.car.CarViewModel
 import com.changanford.car.R
-import com.changanford.car.adapter.CarHomeHistoryAdapter
 import com.changanford.car.adapter.CarHomeTipsAdapter
 import com.changanford.car.adapter.CarIconAdapter
 import com.changanford.car.adapter.CarNotAdapter
@@ -45,7 +44,6 @@ import com.changanford.car.databinding.HeaderCarAdsBinding
 import com.changanford.car.databinding.HeaderCarBinding
 import com.changanford.car.databinding.HeaderCarBuyBinding
 import com.changanford.car.databinding.HeaderCarDealersBinding
-import com.changanford.car.databinding.HeaderCarHistoryBinding
 import com.changanford.car.databinding.HeaderCarRecommendedBinding
 import com.changanford.car.databinding.LayoutComposeviewBinding
 import com.changanford.car.ui.compose.AfterSalesService
@@ -54,6 +52,7 @@ import com.changanford.car.ui.compose.LookingDealers
 import com.changanford.car.ui.compose.OwnerCertificationUnauthorized
 import com.changanford.car.ui.fragment.CarBottomFragment
 import com.changanford.car.ui.fragment.CarTopFragment
+import com.changanford.common.adapter.CarHomeHistoryAdapter
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.DistanceBean
@@ -62,6 +61,7 @@ import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.SpecialDetailData
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.databinding.HeaderCarHistoryBinding
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
@@ -369,7 +369,8 @@ class CarControl(
                 JumpUtils.instans?.jump(4, adapter.data[position].postsId.toString())
             }
             it.ryPost.adapter = adapter
-            adapter.data = bean.dataList
+            adapter.setList(bean.dataList)
+//            adapter.data = bean.dataList
         }
     }
 

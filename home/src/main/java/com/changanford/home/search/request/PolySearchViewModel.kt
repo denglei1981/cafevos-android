@@ -5,18 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.HotPicBean
+import com.changanford.common.bean.CircleMainBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.NetWorkApi
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.util.bus.CircleLiveBusKey
+import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.room.SearchRecordDatabase
 import com.changanford.common.util.room.SearchRecordEntity
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.toast
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -38,7 +40,7 @@ class PolySearchViewModel : BaseViewModel() {
 
     val searchKolingLiveData = MutableLiveData<UpdateUiState<ListMainBean<SearchShopBean>>>()
 
-    val hotTopicBean = MutableLiveData<HotPicBean>()
+    val hotTopicBean = MutableLiveData<CircleMainBean>()
 
     /**
      *  获取搜索关键字
@@ -125,16 +127,15 @@ class PolySearchViewModel : BaseViewModel() {
     fun getTopic() {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
-            body["pageNo"] = 1
-            body["pageSize"] = 6
-
             val rKey = getRandomKey()
             ApiClient.createApi<NetWorkApi>()
-                .getSugesstionTopics(body.header(rKey), body.body(rKey))
-                .onSuccess {
+                .communityTopic(body.header(rKey), body.body(rKey)).onSuccess {
                     hotTopicBean.value = it
                 }
-                .onFailure { }
+
+        }, error = {
+            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CIRCLE_MAIN).postValue(false)
+            it.message?.toast()
         })
     }
 

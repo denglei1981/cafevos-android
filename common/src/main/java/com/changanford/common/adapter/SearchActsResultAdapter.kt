@@ -86,20 +86,18 @@ class SearchActsResultAdapter :
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
             it.tvSignpeople.isVisible = item.showJoinNum()
-            it.tvSignpeopleImg.isVisible = item.showJoinNum()
+//            it.tvSignpeopleImg.isVisible = item.showJoinNum()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
             it.bt.isVisible = item.showButton()
             if (item.showButton()) {
                 it.bt.text = item.showButtonText()
             }
             if (item.buttonBgEnable()) {
-                it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_1700f4_18)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.white))
+                it.bt.background =ContextCompat.getDrawable(context,R.drawable.bg_1700f4_18)
+                it.bt.setTextColor(ContextCompat.getColor(context,R.color.white))
             } else {
-                it.bt.background =
-                    BaseApplication.curActivity.resources.getDrawable(R.drawable.bg_80a6_18)
-                it.bt.setTextColor(BaseApplication.curActivity.resources.getColor(R.color.color_4d16))
+                it.bt.background =ContextCompat.getDrawable(context,R.drawable.bg_80a6_18)
+                it.bt.setTextColor(ContextCompat.getColor(context,R.color.color_4d16))
             }
             it.bt.setOnClickListener {
                 if (item.isFinish()) {

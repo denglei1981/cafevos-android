@@ -27,16 +27,17 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:maxEms="6"
             android:layout_marginStart="4dp"
+            android:drawablePadding="2dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxEms="6"
+            android:maxLines="1"
             android:textColor="@color/color_d900"
             android:textSize="14sp"
-            android:gravity="center_vertical"
-            android:drawableEnd="@mipmap/ic_se_topic_hot"
             app:layout_constraintLeft_toRightOf="@+id/tv_icon"
             app:layout_constraintTop_toTopOf="parent"
+            tools:drawableEnd="@mipmap/ic_se_topic_hot"
             tools:text="周末出游去哪周末出游末" />
 
         <androidx.appcompat.widget.AppCompatTextView

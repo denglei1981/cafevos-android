@@ -1527,4 +1527,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HotPicBean>
+
+    /**
+     * 热门话题
+     */
+    @POST("/con/community/recommend")
+    suspend fun communityTopic(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleMainBean>
 }

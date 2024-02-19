@@ -14,5 +14,6 @@ data class SearchKeyBean(
     var keyword: String,
     var sort: Int,
     var source: Int,
-    var status: Int
+    var status: Int,
+    val hotTag:Int
 )

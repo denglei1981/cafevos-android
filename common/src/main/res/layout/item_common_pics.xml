@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/layout_one"
+            layout="@layout/item_common_one_pics"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_two"
+            layout="@layout/item_common_two_pics"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_three"
+            layout="@layout/item_common_three_pics"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_four"
+            layout="@layout/item_common_four_pics"
+            android:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
