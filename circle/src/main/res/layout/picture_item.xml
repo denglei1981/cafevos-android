@@ -58,7 +58,7 @@
                 android:layout_height="120dp"
                 android:gravity="top|left"
                 android:padding="25dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@color/transparent"
                 android:hint="添加图片描述" />
         </LinearLayout>

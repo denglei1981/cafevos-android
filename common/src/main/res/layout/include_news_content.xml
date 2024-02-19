@@ -21,6 +21,7 @@
             android:maxLines="2"
             android:textColor="@color/color_16"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,49 +44,66 @@
             style="@style/AppText.lineSpace"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="9dp"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/color_8016"
             android:textSize="14sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@+id/iv_pic"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content"
             tools:text="#驭见美好之旅d收视率福建省福建省垃圾分类放暑假了房间里司法拘留是积分两件事法律纠纷 sjflj#" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_post_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_1700f4"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+            android:text="#以心护海 探启新程" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_081700f4_100"
+            android:drawableStart="@mipmap/ic_post_circle_left"
+            android:drawablePadding="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:textColor="@color/color_1700f4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_post_topic"
+            android:text="探险者EXPLORER" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_pic"
+            style="@style/rounded12ImageStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="335:190"
+            app:layout_constraintDimensionRatio="343:193"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_topic"
-            tools:background="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-            tools:visibility="visible" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_very_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_16"
-            android:src="@mipmap/circle_very_post"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_pic"
+            tools:background="@color/black"
             tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/iv_play"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:contentDescription="@string/app_name"
             android:src="@mipmap/ic_play_item_post"
             android:visibility="gone"
@@ -95,42 +113,38 @@
             app:layout_constraintTop_toTopOf="@+id/iv_pic"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_news_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:background="@drawable/shape_black_trans"
-            android:paddingStart="4dp"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingEnd="4dp"
-            android:paddingBottom="@dimen/dp_2"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_10"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_pic"
-            tools:text="资讯" />
-
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/tv_news_tag"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="8dp"-->
+        <!--            android:layout_marginEnd="@dimen/dp_8"-->
+        <!--            android:background="@drawable/shape_black_trans"-->
+        <!--            android:paddingStart="4dp"-->
+        <!--            android:paddingTop="@dimen/dp_2"-->
+        <!--            android:paddingEnd="4dp"-->
+        <!--            android:paddingBottom="@dimen/dp_2"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="@dimen/sp_10"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/iv_pic"-->
+        <!--            tools:text="资讯" />-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_video_times"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="26dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_4"
-            android:paddingStart="4dp"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingEnd="4dp"
-            android:paddingBottom="@dimen/dp_2"
+            android:background="@drawable/bg_home_item_video_time"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_10"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_pic"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="10:12" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

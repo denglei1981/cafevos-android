@@ -3,17 +3,11 @@ package com.changanford.circle.adapter
 import android.app.Activity
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.PictureItemBinding
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.load
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.tools.DoubleUtils
 import com.yalantis.ucrop.UCrop
@@ -45,7 +39,7 @@ class PictureAdapter(val activity: Activity, private val showedittype: Int, var 
         holder?.let {
             DataBindingUtil.bind<PictureItemBinding>(it.itemView)?.apply {
                 data?.apply {
-                    if (showedittype==-1||showedittype == 312)etPicmiaoshu.visibility = View.GONE else etPicmiaoshu.visibility = View.VISIBLE
+//                    if (showedittype==-1||showedittype == 312)etPicmiaoshu.visibility = View.GONE else etPicmiaoshu.visibility = View.VISIBLE
                     GlideUtils.loadFilePath(PictureUtil.getFinallyPath(data),pic)
                     etPicmiaoshu.setText(content)
                     if (showedittype == 1){

@@ -64,7 +64,7 @@ class NewsListAdapter(
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
         val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
-        val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
+//        val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
 //        GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         ivHeader.loadCompress(item.authors?.avatar)
         ivPicBig.loadCompress(item.pics)
@@ -84,8 +84,8 @@ class NewsListAdapter(
             btnFollow.visibility = View.GONE
         }
 //        btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
-        tag.visibility = if (isShowTag) View.VISIBLE else View.GONE
-        tag.text = "资讯"
+//        tag.visibility = if (isShowTag) View.VISIBLE else View.GONE
+//        tag.text = "资讯"
         item.authors?.let {
             setFollowState(btnFollow, it)
         }

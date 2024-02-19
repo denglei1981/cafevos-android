@@ -4,21 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Paint.FontMetricsInt
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.icu.math.BigDecimal.ROUND_UP
+import android.text.Spannable
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ImageSpan
+import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import com.changanford.common.R
-import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayShowBean
-import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
 import com.changanford.common.wutil.WCommonUtil.getRoundedNum
 import java.math.BigDecimal
+
 
 class CustomImageSpan(drawable: Drawable?) : ImageSpan(drawable!!) {
     override fun draw(
@@ -135,7 +138,8 @@ fun showTotalTag(
         val stringBuilder: StringBuilder = StringBuilder(str)
         //SpannableString的构建
         val spannableString = SpannableString("$stringBuilder ")
-        val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
+        val drawable =
+            ContextCompat.getDrawable(context, com.changanford.common.R.mipmap.question_fb)
         drawable?.apply {
             val imageSpan = CustomImageSpanV2(this)
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
@@ -160,7 +164,8 @@ fun showZeroFb(context: Context, text: AppCompatTextView?) {
         val stringBuilder: StringBuilder = StringBuilder(str)
         //SpannableString的构建
         val spannableString = SpannableString("$stringBuilder ")
-        val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
+        val drawable =
+            ContextCompat.getDrawable(context, com.changanford.common.R.mipmap.question_fb)
         drawable?.apply {
             val imageSpan = CustomImageSpanV2(this)
             setBounds(0, 0, intrinsicWidth, intrinsicHeight)
@@ -219,4 +224,80 @@ fun showZero(
     }
 
 
+}
+
+/**
+ * 处理图文混排
+ *
+ * @param tvRemark:textView
+ * @param remark:文本信息
+ */
+fun TextView.imageAndTextView(remark: String, @DrawableRes image: Int) {
+    val useRemark=" $remark"
+    val builder = SpannableStringBuilder(useRemark)
+    val substring = useRemark.substring(0, 1)
+    val drawable = ContextCompat.getDrawable(this.context, image)
+    drawable?.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
+    val span = MyImageSpan(drawable, ImageSpan.ALIGN_BASELINE)
+    builder.setSpan(span, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    builder.insert(1, substring)
+    text = builder
+}
+
+class MyImageSpan(d: Drawable?, verticalAlignment: Int) :
+    ImageSpan(d!!, verticalAlignment) {
+    override fun draw(
+        canvas: Canvas,
+        text: CharSequence,
+        start: Int,
+        end: Int,
+        x: Float,
+        top: Int,
+        y: Int,
+        bottom: Int,
+        paint: Paint
+    ) {
+        val b = drawable
+        canvas.save()
+        val fm = paint.fontMetricsInt
+
+        //系统默认为ALIGN_BOTTOM
+        var transY = bottom - b.bounds.bottom
+        if (mVerticalAlignment == ALIGN_CENTER) {
+            transY -= fm.descent
+        } else {
+            transY = ((y + fm.descent + y + fm.ascent) / 2
+                    - b.bounds.bottom / 2)
+        }
+        canvas.translate(x, transY.toFloat())
+        b.draw(canvas)
+        canvas.restore()
+    }
+
+    override fun getSize(
+        paint: Paint,
+        text: CharSequence,
+        start: Int,
+        end: Int,
+        fm: FontMetricsInt?
+    ): Int {
+        val b = drawable
+        val rect: Rect = b.bounds
+        if (fm != null) {
+            val painFm = paint.fontMetricsInt
+            val fontHeight = painFm.bottom - painFm.top
+            val drHeight: Int = rect.bottom - rect.top
+            val top = drHeight / 2 - fontHeight / 4
+            val bottom = drHeight / 2 + fontHeight / 4
+            fm.ascent = -bottom
+            fm.top = -bottom
+            fm.bottom = top
+            fm.descent = top
+        }
+        return rect.right
+    }
+
+    companion object {
+        const val ALIGN_CENTER = 2
+    }
 }

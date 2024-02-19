@@ -18,7 +18,7 @@
 
     <custom_fragment
         android:id="@+id/serviceFragment"
-        android:name="com.changanford.car.ui.fragment.CarServiceFragment"
+        android:name="com.changanford.circle.CircleFragmentV2"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
         <action

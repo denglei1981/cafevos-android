@@ -86,7 +86,7 @@ object PermissionPopUtil {
             }
             Thread{
                 kotlin.run {
-                    Thread.sleep(600)
+                    Thread.sleep(800)
                     if (MConstant.isOnBackground) {
                         if (!pop.isShowing) {
                             pop.setTitle(useTitle)

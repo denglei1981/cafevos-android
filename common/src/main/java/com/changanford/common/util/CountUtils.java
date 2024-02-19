@@ -23,6 +23,7 @@ public class CountUtils {
             return String.valueOf(count);
         }
     }
+    //万单位
     public static StringBuffer formatNum(String num, Boolean b) {
         StringBuffer sb = new StringBuffer();
         BigDecimal b0 = new BigDecimal("100");

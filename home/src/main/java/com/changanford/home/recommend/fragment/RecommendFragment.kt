@@ -187,7 +187,7 @@ open class RecommendFragment :
                 GlideUtils.loadBD(adBean.adImg, bean.shapeAbleImageView)
                 bean.textView.text = adBean.adSubName
             }
-            fi.llTwo.isVisible = dataList.size != 2
+            fi.llTwo.isVisible = dataList.size > 2
             if (!isAddFaster) {
                 recommendAdapter.addHeaderView(fi.root, index)
                 isAddFaster = true

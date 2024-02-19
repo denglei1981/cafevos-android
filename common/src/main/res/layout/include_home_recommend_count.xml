@@ -17,72 +17,142 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
 
-<!--        <com.changanford.home.widget.DrawCenterTextView-->
-<!--            android:id="@+id/tv_like_count"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:drawablePadding="4dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:minWidth="75dp"-->
-<!--            android:visibility="gone"-->
-<!--            android:textSize="@dimen/sp_12"-->
-<!--            app:image="@drawable/icon_big_shot_unlike"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="1.2k" />-->
+        <!--        <com.changanford.home.widget.DrawCenterTextView-->
+        <!--            android:id="@+id/tv_like_count"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:drawablePadding="4dp"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:minWidth="75dp"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:textSize="@dimen/sp_12"-->
+        <!--            app:image="@drawable/icon_big_shot_unlike"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:text="1.2k" />-->
 
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:id="@+id/tv_comment_count"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:visibility="gone"-->
-<!--            android:layout_gravity="center_vertical"-->
-<!--            android:drawableStart="@drawable/icon_big_unmsg"-->
-<!--            android:drawablePadding="4dp"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:textColor="@color/color_99"-->
-<!--            android:textSize="@dimen/sp_12"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/tv_like_count"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="1.2k" />-->
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/tv_comment_count"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:drawableStart="@drawable/icon_big_unmsg"-->
+        <!--            android:drawablePadding="4dp"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:textColor="@color/color_99"-->
+        <!--            android:textSize="@dimen/sp_12"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/tv_like_count"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:text="1.2k" />-->
 
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:id="@+id/tv_time_look_count"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="end|center_vertical"-->
-<!--            android:textColor="@color/color_gray_9fabb7"-->
-<!--            android:visibility="gone"-->
-<!--            android:textSize="@dimen/sp_12"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="12313 3万浏览" />-->
+        <!--        <androidx.appcompat.widget.AppCompatTextView-->
+        <!--            android:id="@+id/tv_time_look_count"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:gravity="end|center_vertical"-->
+        <!--            android:textColor="@color/color_gray_9fabb7"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:textSize="@dimen/sp_12"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:text="12313 3万浏览" />-->
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@mipmap/icon_circle_location"
+            android:drawablePadding="@dimen/dp_4"
+            android:maxLines="1"
+            android:textColor="@color/color_8016"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="重庆市"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_post_time"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/color_8016"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_view_count"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
             tools:ignore="SmallSp"
-            tools:text="5分钟前" />
+            tools:text="5分钟前5分钟前5分钟前5分钟前5分钟前5分钟前" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <!--        <com.changanford.common.widget.DrawCenterTextView-->
+        <!--            android:id="@+id/tv_like_count"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center_vertical"-->
+        <!--            android:layout_marginTop="@dimen/dp_7"-->
+        <!--            android:drawablePadding="4dp"-->
+        <!--            android:gravity="center_vertical"-->
+        <!--            android:minWidth="75dp"-->
+        <!--            android:textSize="@dimen/sp_12"-->
+        <!--            app:image="@mipmap/circle_no_like_image"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_location"-->
+        <!--            tools:text="1.2k" />-->
+
+        <com.changanford.common.widget.DrawCenterTextView
             android:id="@+id/tv_comment_count"
             android:layout_width="wrap_content"
+            android:layout_height="19dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_7"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_99"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:image="@mipmap/ic_circle_bottom_share"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_like_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:src="@mipmap/ic_circle_bottom_share"
+            tools:text="1.2k" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time_look_count"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_7"
+            android:gravity="end|center_vertical"
+            android:textColor="#74889D"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_comment_count"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
+            tools:text="12313 3万浏览" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:drawableStart="@mipmap/item_comment_count_ic"
             android:drawablePadding="3dp"
             android:gravity="center_vertical"
@@ -90,37 +160,39 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
             tools:text="123" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="18dp"
-            android:textColor="@color/color_8016"
-            android:gravity="center_vertical"
-            android:drawablePadding="3dp"
-            android:textSize="12sp"
             android:drawableStart="@mipmap/item_good_count_ic"
+            android:drawablePadding="3dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_8016"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/tv_comment_count"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_comments"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
             tools:text="123" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_view_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="18dp"
+            android:drawableStart="@mipmap/item_views_count_ic"
             android:drawablePadding="3dp"
             android:gravity="center_vertical"
             android:textColor="@color/color_8016"
             android:textSize="12sp"
-            android:drawableStart="@mipmap/item_views_count_ic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/tv_like_count"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_location"
             tools:text="123" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
