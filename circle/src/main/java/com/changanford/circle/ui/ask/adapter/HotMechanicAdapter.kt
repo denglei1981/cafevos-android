@@ -17,7 +17,7 @@ import com.changanford.common.utilext.GlideUtils.loadCompress
 /**
  *Author lcw
  *Time on 2021/9/22
- *Purpose
+ *Purpose 问答红人
  */
 class HotMechanicAdapter :
     BaseQuickAdapter<TecnicianVo, BaseViewHolder>(R.layout.item_hot_mechanic), LoadMoreModule {
@@ -34,7 +34,8 @@ class HotMechanicAdapter :
             when (item.anserRankNum) {
                 1 -> {
                     it.ivHot.visibility = View.VISIBLE
-                    it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_one)
+                    it.ivHot.setImageResource(R.mipmap.circle_hr_one)
+                    it.imgBg.setImageResource(R.mipmap.circle_hr_bg1)
                     it.ivHeader.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,
@@ -44,7 +45,8 @@ class HotMechanicAdapter :
                 }
                 2 -> {
                     it.ivHot.visibility = View.VISIBLE
-                    it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_two)
+                    it.ivHot.setImageResource(R.mipmap.circle_hr_two)
+                    it.imgBg.setImageResource(R.mipmap.circle_hr_bg2)
                     it.ivHeader.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,
@@ -54,7 +56,8 @@ class HotMechanicAdapter :
                 }
                 3 -> {
                     it.ivHot.visibility = View.VISIBLE
-                    it.ivHot.setImageResource(R.drawable.icon_home_mechanic_hot_three)
+                    it.ivHot.setImageResource(R.mipmap.circle_hr_three)
+                    it.imgBg.setImageResource(R.mipmap.circle_hr_bg3)
                     it.ivHeader.strokeColor = ColorStateList.valueOf(
                         ContextCompat.getColor(
                             context,

@@ -151,6 +151,11 @@ class AskRecommendFragment :
                         JumpUtils.instans?.jump(114, param.toString())
                     }
                 }
+                it.tvGoQuestion.setOnClickListener {
+                    if (isLogin()) {
+                        JumpUtils.instans?.jump(116)
+                    }
+                }
 //                it.cdMyAsk.setOnClickListener {
 //                    //  跳转到我的问答
 //                    if (isLogin()) {

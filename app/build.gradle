@@ -165,7 +165,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":home"))
-    implementation(project(":circle"))
+
     implementation(project(":car"))
     implementation(project(":shop"))
     implementation(project(":my"))

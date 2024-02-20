@@ -67,7 +67,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("广场", "圈子", "问答", "Mustang专区")
+    private val tabList = listOf("广场", "圈子", "问答", /*"Mustang专区"*/)
 
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
@@ -102,7 +102,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         }
         easyViewPager()
         bus()
-        AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
+//        AppUtils.setStatusBarMarginTop(binding.rlTitle, requireActivity())
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(
             this
         ) {
@@ -312,7 +312,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private fun initMagicIndicator() {
         val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundColor(Color.WHITE)
+        magicIndicator.setBackgroundColor(Color.TRANSPARENT)
         val commonNavigator = CommonNavigator(context)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
@@ -327,9 +327,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 //                simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(18.toIntPx(), 0, 18.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(context, R.color.color_33)
+                    ContextCompat.getColor(context, R.color.color_99ff)
                 simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(context, R.color.circle_app_color)
+                    ContextCompat.getColor(context, R.color.white)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return simplePagerTitleView
             }
@@ -348,7 +348,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                 indicator.setColors(
                     ContextCompat.getColor(
                         context,
-                        R.color.circle_app_color
+                        R.color.transparent
                     )
                 )
                 return indicator

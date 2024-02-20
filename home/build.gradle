@@ -60,6 +60,7 @@ kapt {
 dependencies {
 
     implementation(project(":common"))
+    api(project(":circle"))
     kapt "com.alibaba:arouter-compiler:$versions_router_compiler"
     api "androidx.room:room-runtime:2.3.0"
     api "androidx.room:room-ktx:2.3.0"

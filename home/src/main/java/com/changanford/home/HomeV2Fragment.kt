@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.changanford.circle.CircleFragmentV2
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
@@ -80,6 +81,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         RecommendFragment.newInstance()
     }
 
+    private val circleFragment: CircleFragmentV2 by lazy {
+        CircleFragmentV2()
+    }
+
     private val actsParentsFragment: ActsParentsFragment by lazy {
         ActsParentsFragment.newInstance()
     }
@@ -114,14 +119,18 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
         fragmentList.add(recommendFragment)
+        fragmentList.add(circleFragment)
         fragmentList.add(actsParentsFragment)
         fragmentList.add(newsListFragment)
         fragmentList.add(Fragment())
+        fragmentList.add(Fragment())
 //        fragmentList.add(bigShotFragment)
         titleList.add(getString(R.string.home_recommend))
+        titleList.add(getString(R.string.home_circle))
         titleList.add(getString(R.string.home_acts))
         titleList.add(getString(R.string.home_news))
         titleList.add(getString(R.string.home_mouth))
+        titleList.add(getString(R.string.home_mustang))
 //        titleList.add(getString(R.string.home_big_shot))
         pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
         binding.homeViewpager.adapter = pagerAdapter
@@ -159,7 +168,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     3 -> "发现页-口碑"
                     else -> "发现页-推荐"
                 }
-                if (tab.position == 3) {//口碑跳转h5
+                if (tab.position == 5) {//口碑跳转h5
                     JumpUtils.instans?.jump(1, MConstant.mouthUrl)
                     binding.homeViewpager.post {
                         binding.homeViewpager.currentItem = currentPosition

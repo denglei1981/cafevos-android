@@ -8,48 +8,102 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="72dp"
+        android:layout_width="119dp"
         android:layout_height="wrap_content"
         >
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_hot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_home_mechanic_hot_one"
+            android:id="@+id/img_bg"
+            android:layout_width="109dp"
+            android:layout_height="136dp"
+            android:src="@mipmap/circle_hr_bg1"
+            android:layout_marginTop="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_header"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_marginTop="@dimen/dp_3"
             android:background="@drawable/image_recommed_default"
             android:padding="3dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_hot"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageStyle"
             app:strokeColor="#F9D24B"
             app:strokeWidth="2.5dp" />
 
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_hot"
+            android:layout_width="46dp"
+            android:layout_height="32dp"
+            android:src="@mipmap/circle_hr_one"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_header" />
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:ellipsize="end"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_header"
+            tools:text="发顺丰呀啦…" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_zan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
             android:ellipsize="end"
             android:maxLength="6"
             android:maxLines="1"
-            android:textColor="#ff333333"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_user_zannum"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+            android:text="互动数" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_zannum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_user_zan"
+            app:layout_constraintTop_toTopOf="@+id/tv_user_zan"
+            app:layout_constraintBottom_toBottomOf="@id/tv_user_zan"
+            android:text="335" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_user_focus"
+            android:layout_width="56dp"
+            android:layout_height="24dp"
+            android:ellipsize="end"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/circle_white_17_bg"
+            android:textColor="@color/color_1700F4"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_header"
-            tools:text="发顺丰呀啦…" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_zannum"
+            android:text="关注" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
