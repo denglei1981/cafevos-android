@@ -27,6 +27,16 @@ import java.util.List;
 public class ProvinceEntity extends AddressEntity {
     private List<CityEntity> cityList;
 
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public ProvinceEntity(){
 
     }

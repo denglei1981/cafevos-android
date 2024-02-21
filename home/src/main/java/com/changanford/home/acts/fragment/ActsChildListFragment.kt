@@ -179,7 +179,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         }
         xianshangEnum?.let { it1 -> homeActsDialog?.setActsTypeDatta(it1) }
         officialEnum?.let { it1 -> homeActsDialog?.setOfficalData(it1) }
-        homeActsDialog?.show()
+        homeActsDialog?.showPopupWindow()
     }
 
     override fun onRetryBtnClick() {

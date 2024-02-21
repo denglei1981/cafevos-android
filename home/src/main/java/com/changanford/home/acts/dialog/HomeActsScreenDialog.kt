@@ -2,10 +2,12 @@ package com.changanford.home.acts.dialog
 
 import android.app.Activity
 import android.content.Context
+import android.view.Gravity
 
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +21,8 @@ import com.changanford.common.widget.picker.contract.OnAddressPickedListener
 import com.changanford.common.widget.picker.entity.CityEntity
 import com.changanford.common.widget.picker.entity.CountyEntity
 import com.changanford.common.widget.picker.entity.ProvinceEntity
+import com.changanford.common.widget.pop.AddressPop
+import com.changanford.common.widget.pop.onAddressListener
 import com.changanford.home.R
 import com.changanford.home.acts.adapter.HomeActsScreenItemAdapter
 import com.changanford.home.acts.adapter.HomeActsTypeItemAdapter
@@ -28,11 +32,14 @@ import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
 import com.changanford.home.data.ResultData
 import com.changanford.home.databinding.DialogHomeActsScreenBinding
+import razerdp.basepopup.BasePopupWindow
+import razerdp.util.animation.AnimationHelper
+import razerdp.util.animation.TranslationConfig
 
 
-class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner) :
-    BaseAppCompatDialog(acts) {
-    lateinit var mDatabind: DialogHomeActsScreenBinding
+class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: LifecycleOwner,callback: ICallback) :
+    BasePopupWindow(acts) {
+     var mDatabind: DialogHomeActsScreenBinding =DataBindingUtil.bind(createPopupById(R.layout.dialog_home_acts_screen))!!
     lateinit var callback: ICallback
     var cityName: String = ""
     var cityId: String = ""
@@ -47,22 +54,31 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             arrayListOf()
         )
     }
-
-    constructor(acts: Context, lifecycleOwner: LifecycleOwner, callback: ICallback) : this(
-        acts,
-        lifecycleOwner
-    ) {
+    init {
+        contentView = mDatabind.root
+        popupGravity = Gravity.BOTTOM
         this.callback = callback
-        mDatabind = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_home_acts_screen,
-            null,
-            false
-        )
-        setContentView(mDatabind.root)
         initView()
         initData()
     }
+
+
+//    constructor(acts: Context, lifecycleOwner: LifecycleOwner, callback: ICallback) : this(
+//        acts,
+//        lifecycleOwner
+//    ) {
+//        this.callback = callback
+//        mDatabind = DataBindingUtil.inflate(
+//            LayoutInflater.from(context),
+//            R.layout.dialog_home_acts_screen,
+//            null,
+//            false
+//        )
+//        setContentView(mDatabind.root)
+//        initView()
+//        initData()
+//    }
+
 
     fun setOfficalData(officalList: List<EnumBean>) {
         homeActsScreenItemAdapter.setNewInstance(officalList as? MutableList<EnumBean>)
@@ -73,9 +89,6 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
         homeActsTypeItemAdapter.setNewInstance(actsList as? MutableList<EnumBean>)
     }
 
-    override fun initAd() {
-
-    }
 
     fun initView() {
         // 发布方
@@ -119,6 +132,18 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
             screenData()
             dismiss()
         }
+    }
+
+    override fun onCreateShowAnimation(): Animation? {
+        return AnimationHelper.asAnimation()
+            .withTranslation(TranslationConfig.FROM_BOTTOM)
+            .toShow()
+    }
+
+    override fun onCreateDismissAnimation(): Animation? {
+        return AnimationHelper.asAnimation()
+            .withTranslation(TranslationConfig.TO_BOTTOM)
+            .toDismiss()
     }
 
     /**
@@ -171,43 +196,54 @@ class HomeActsScreenDialog(var acts: Context, private val lifecycleOwner: Lifecy
 
     var cityPicker: CityPicker? = null
     fun chooseCity() { // 选择城市。。
-        cityPicker = CityPicker(acts as Activity).apply {
-            setAddressMode(provinces, PROVINCE_CITY)
-            //
-            setDefaultValue("重庆市", "重庆市", "渝中区")
-        }
-        cityPicker?.setOnAddressPickedListener(object : OnAddressPickedListener {
-            override fun onAddressPicked(
-                province: ProvinceEntity?,
-                city: CityEntity?,
-                county: CountyEntity?
-            ) {
-                var cityA: String = ""
-                //选择城市的回调。
-                province?.let {
-//                    body["province"] = it.code
-//                    body["provinceName"] = "${it.name}"
-                    cityA = it.name
-                }
-                city?.let {
-//                    body["city"] = it.code
-//                    body["cityName"] = "${it.name}"
-                    cityA += it.name
-                    cityName = it.name
-                    cityId = it.code
-                }
-//                county?.let {
-////                    body["district"] = it.code
-////                    body["districtName"] = "${it.name}"
-//                    cityA += it.name
+//        cityPicker = CityPicker(acts as Activity).apply {
+//            setAddressMode(provinces, PROVINCE_CITY)
+//            //
+//            setDefaultValue("重庆市", "重庆市", "渝中区")
+//        }
+//        cityPicker?.setOnAddressPickedListener(object : OnAddressPickedListener {
+//            override fun onAddressPicked(
+//                province: ProvinceEntity?,
+//                city: CityEntity?,
+//                county: CountyEntity?
+//            ) {
+//                var cityA: String = ""
+//                //选择城市的回调。
+//                province?.let {
+////                    body["province"] = it.code
+////                    body["provinceName"] = "${it.name}"
+//                    cityA = it.name
 //                }
-                mDatabind.tvCityAny.text = cityA
+//                city?.let {
+////                    body["city"] = it.code
+////                    body["cityName"] = "${it.name}"
+//                    cityA += it.name
+//                    cityName = it.name
+//                    cityId = it.code
+//                }
+////                county?.let {
+//////                    body["district"] = it.code
+//////                    body["districtName"] = "${it.name}"
+////                    cityA += it.name
+////                }
+//                mDatabind.tvCityAny.text = cityA
+//
+//            }
+//
+//        })
+//        cityPicker?.show()
+        provinces?.let {
 
-            }
+            AddressPop(acts,it,object :onAddressListener{
 
-        })
-        cityPicker?.show()
+                override fun onAddress(item: ProvinceEntity, city: CityEntity, str: String) {
+                    cityName = city.name
+                    cityId = city.code
+                    mDatabind.tvCityAny.text = str
+                }
 
+            }).showPopupWindow()
+        }
 
     }
 
