@@ -160,8 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="问答红人"
                 android:textColor="@color/color_33"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_more"
@@ -200,8 +199,7 @@
                 android:layout_height="wrap_content"
                 android:text="热门问答"
                 android:textColor="@color/color_33"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_screen"
