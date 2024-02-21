@@ -1,6 +1,7 @@
 package com.changanford.home.acts.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -35,6 +36,8 @@ import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
 import com.xiaomi.push.it
 import com.zhpan.bannerview.constants.PageStyle
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import razerdp.basepopup.BasePopupWindow
 
 class ActsMainAdapter(
@@ -287,6 +290,7 @@ class ActsMainAdapter(
                             orderType = allUnitCode,
                             activityTimeStatus = allActsCode
                         )
+                        unitPop?.setSelectedPosition(unitPop?.getitemPosition(allEnum!!) ?: 0)
                     }
                 })
         }
@@ -295,13 +299,14 @@ class ActsMainAdapter(
         unitPop?.setAlignBackground(true)
         unitPop?.setOnDismissListener(object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
+                binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.setImageResource(R.mipmap.icon_act_shearch)
                 binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation =
                     0f
+
             }
         })
         unitPop?.setOnPopupWindowShowListener {
-            binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.rotation = 180f
-
+            binding.tabs.getTabAt(0)?.customView?.findViewById<ImageView>(R.id.img)?.setImageResource(R.mipmap.icon_act_shearch_blue)
         }
         unitPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
@@ -322,6 +327,7 @@ class ActsMainAdapter(
                                 orderType = allUnitCode,
                                 activityTimeStatus = allActsCode
                             )
+                            allActsPop?.setSelectedPosition(allActsPop?.getitemPosition(allEnum!!) ?: 0)
                         }
                     }
                 })
@@ -331,14 +337,13 @@ class ActsMainAdapter(
         allActsPop?.setAlignBackground(true)
         allActsPop?.onDismissListener = object : BasePopupWindow.OnDismissListener() {
             override fun onDismiss() {
-//                binding.layoutHomeScreen.ivDown.rotation = 0f
+                binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.setImageResource(R.mipmap.icon_act_shearch)
                 binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.rotation =
                     0f
             }
         }
         allActsPop?.setOnPopupWindowShowListener {
-//            binding.layoutHomeScreen.ivDown.rotation = 180f
-            binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.rotation = 180f
+            binding.tabs.getTabAt(1)?.customView?.findViewById<ImageView>(R.id.img)?.setImageResource(R.mipmap.icon_act_shearch_blue)
         }
         allActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }

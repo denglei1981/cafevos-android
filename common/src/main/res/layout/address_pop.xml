@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/shape_white_top_5dp"
+        android:layout_width="match_parent"
+
+        android:layout_height="450dp">
+
+        <ImageView
+            android:id="@+id/img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/some_id"
+            android:layout_marginLeft="20dp"
+            app:layout_constraintBottom_toBottomOf="@id/some_id"
+            android:background="@drawable/leftarrow" />
+
+        <TextView
+            android:id="@+id/some_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择所属城市"
+            android:lineSpacingExtra="1sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/color_16" />
+
+        <TextView
+            android:id="@+id/commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确定"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/some_id"
+            app:layout_constraintBottom_toBottomOf="@id/some_id"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/picture_1700F4" />
+
+        <TextView
+            android:id="@+id/tv_p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="请选择"
+            android:textSize="18sp"
+            android:textColor="@color/picture_1700F4"
+            app:layout_constraintLeft_toLeftOf="@id/img_left"
+            app:layout_constraintTop_toBottomOf="@id/some_id" />
+        <View
+            android:id="@+id/vlinep"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_p"
+            app:layout_constraintRight_toRightOf="@id/tv_p"
+            app:layout_constraintTop_toBottomOf="@id/tv_p"
+            android:layout_marginTop="5dp"
+            android:background="@color/picture_1700F4" />
+        <TextView
+            android:id="@+id/tv_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/picture_1700F4"
+            android:layout_marginLeft="15dp"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toRightOf="@id/tv_p"
+            app:layout_constraintTop_toTopOf="@id/tv_p"
+            app:layout_constraintBottom_toBottomOf="@id/tv_p"
+            android:text="请选择" />
+
+        <View
+            android:id="@+id/vline"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            app:layout_constraintLeft_toLeftOf="@id/tv_c"
+            app:layout_constraintRight_toRightOf="@id/tv_c"
+            app:layout_constraintTop_toBottomOf="@id/tv_c"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:background="@color/picture_1700F4" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/city_rec"
+            app:layout_constraintTop_toBottomOf="@id/tv_p"
+            app:layout_constraintLeft_toLeftOf="@id/tv_p"
+            app:layout_constraintRight_toRightOf="parent"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/address_rec"
+            app:layout_constraintTop_toBottomOf="@id/tv_p"
+            app:layout_constraintLeft_toLeftOf="@id/tv_p"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="10dp"
+            android:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

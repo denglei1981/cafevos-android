@@ -50,6 +50,11 @@ class UnitActsPop(
             actsAdapter.notifyDataSetChanged()
         }
     }
+
+    fun getitemPosition(item:EnumBean):Int{
+        return actsAdapter.getItemPosition(item)
+    }
+
     fun updateData( list: MutableList<EnumBean>){
         actsAdapter.setNewInstance(list)
     }

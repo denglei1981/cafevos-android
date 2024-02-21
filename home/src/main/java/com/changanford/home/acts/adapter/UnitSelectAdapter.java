@@ -24,7 +24,7 @@ public class UnitSelectAdapter extends BaseQuickAdapter<EnumBean, BaseViewHolder
     protected void convert(BaseViewHolder helper, EnumBean item) {
         TextView tvLabel = helper.getView(R.id.tv_sex);
         tvLabel.setText(item.getMessage());
-        if (clickPosition == helper.getLayoutPosition()) {
+        if (clickPosition == getItemPosition(item)) {
             tvLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.blue_tab));
         } else {
             tvLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.black));

@@ -15,6 +15,6 @@
         android:textColor="@color/color_blue_ff00695b"
         app:cornerRadius="@dimen/dp_20"
         app:strokeColor="@color/color_ee"
-        app:strokeWidth="1px" />
+        app:strokeWidth="1dp" />
 
 </LinearLayout>
