@@ -67,7 +67,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("广场", "圈子", "问答", /*"Mustang专区"*/)
+    private val tabList = listOf("动态", "圈子", "问答", /*"Mustang专区"*/)
 
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
