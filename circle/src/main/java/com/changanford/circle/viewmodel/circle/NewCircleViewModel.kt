@@ -2,13 +2,19 @@ package com.changanford.circle.viewmodel.circle
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.ChoseCircleBean
+import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.bean.CirceHomeBean
 import com.changanford.common.bean.NewCircleBean
-import com.changanford.common.bean.NewCircleDataBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -24,7 +30,7 @@ class NewCircleViewModel:BaseViewModel() {
     //热门榜单分类
     val hotTypesData=MutableLiveData<MutableList<CirCleHotList>?>()
     //圈子列表
-    val circleListData=MutableLiveData<NewCircleDataBean?>()
+    val circleListData=MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
     /**
      * 圈子首页
     * */

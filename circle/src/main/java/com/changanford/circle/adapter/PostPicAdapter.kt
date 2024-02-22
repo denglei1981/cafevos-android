@@ -13,7 +13,7 @@ import com.luck.picture.lib.entity.LocalMedia
 
 
 class PostPicAdapter(private val type: Int) :
-    BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item),
+    BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item2),
     DraggableModule {
 
     init {

@@ -154,9 +154,6 @@ interface CircleNetWork {
     ): CommonResponse<ArrayList<PostKeywordBean>>
 
 
-
-
-
     @POST("con/community/keyWords")
     suspend fun getTags(
         @HeaderMap headMap: Map<String, String>,
@@ -300,13 +297,19 @@ interface CircleNetWork {
      * 创建圈子
      */
     @POST("con/community/circleCreate")
-    suspend fun createCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
+    suspend fun createCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
     /**
      * 编辑圈子
      */
     @POST("con/community/circleEdit")
-    suspend fun editCircle(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<Any>
+    suspend fun editCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 
     /**
      * 退出圈子
@@ -441,39 +444,57 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<CircleTypesBean>>
+
     /**
      * 圈子首页
-    * */
+     * */
     @POST("con/community/circle")
-    suspend fun circleHome(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<CirceHomeBean>
+    suspend fun circleHome(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CirceHomeBean>
+
     /**
      * 猜你喜欢
      */
     @POST("con/community/circleLike")
-    suspend fun youLike(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    suspend fun youLike(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<NewCircleDataBean>
+
     /**
      * 热门榜单分类
      */
     @POST("con/community/circleTop")
-    suspend fun circleHotTypes(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<ArrayList<CirCleHotList>>
+    suspend fun circleHotTypes(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<CirCleHotList>>
+
     /**
      * 热门榜单列表
      */
     @POST("con/community/circleTopList")
-    suspend fun circleHotList(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<NewCircleDataBean>
+    suspend fun circleHotList(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<HomeDataListBean<ChoseCircleBean>>
+
     /**
      * 创建圈子 获取tag标签
      */
     @POST("con/community/circleCreateInfo")
-    suspend fun circleCreateInfo(@HeaderMap headMap: Map<String, String>, @Body requestBody: RequestBody): CommonResponse<TagInfoBean>
+    suspend fun circleCreateInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<TagInfoBean>
 
     @POST("con/ads/list")
     suspend fun getRecommendTopic(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<List<AdBean>>
-
-
 
 
     @POST("con/community/postsAddressList")
@@ -488,7 +509,6 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<ArrayList<QuestionData>>
-
 
 
     /**
@@ -508,40 +528,59 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<MechanicData>
+
     @POST("qa/qustions")
     suspend fun getRecommendQuestionList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<HomeDataListBean<AskListMainData>>
+
     /**
      * 我/TA的问答
-    * */
+     * */
     @POST("/qa/personalQA")
-    suspend fun personalQA(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    suspend fun personalQA(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<QuestionInfoBean>
+
     /**
      * 我/TA 的 提问/回答/被采纳
      * */
     @POST("/qa/qustionOfpersonal")
-    suspend fun questionOfPersonal(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    suspend fun questionOfPersonal(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<QuestionInfoBean>
+
     /**
      * 技师邀请回答列表
      * */
     @POST("/qa/qustionOfInvite")
-    suspend fun questionOfInvite(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<QuestionInfoBean>
+    suspend fun questionOfInvite(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<QuestionInfoBean>
 
 
     /**
      * 编辑技术详情
      * */
     @POST("/qa/techniciaPersonalInfo")
-    suspend fun techniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<TechnicianData>
+    suspend fun techniciaPersonalInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<TechnicianData>
 
-   /**
-    * 更换技师个人资料
-    * */
+    /**
+     * 更换技师个人资料
+     * */
 
-   @POST("/qa/updateTechniciaPersonalInfo")
-   suspend fun updateTechniciaPersonalInfo(@HeaderMap headMap: Map<String, String>,@Body requestBody: RequestBody): CommonResponse<String>
+    @POST("/qa/updateTechniciaPersonalInfo")
+    suspend fun updateTechniciaPersonalInfo(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<String>
 
     //分享成功回调
     @POST("/con/share/callback")

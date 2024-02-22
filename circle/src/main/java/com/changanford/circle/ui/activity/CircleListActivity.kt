@@ -44,15 +44,16 @@ import kotlin.math.abs
  */
 @Route(path = ARouterCirclePath.CircleListActivity)
 class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListViewModel>() {
-    companion object{
-        fun start(typeId:String?="0"){
+    companion object {
+        fun start(typeId: String? = "0") {
             val bundle = Bundle()
-            bundle.putString("typeId", typeId?:"0")
-            startARouter(ARouterCirclePath.CircleListActivity,bundle)
+            bundle.putString("typeId", typeId ?: "0")
+            startARouter(ARouterCirclePath.CircleListActivity, bundle)
         }
     }
-    private var typeId:String="0"//圈子分类ID 默认全部
-    private var typeName:String=""
+
+    private var typeId: String = "0"//圈子分类ID 默认全部
+    private var typeName: String = ""
     override fun initView() {
         title = "全部圈子页"
         binding.run {
@@ -62,8 +63,8 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 startARouter(ARouterMyPath.MineCircleUI, true)
             }
         }
-        typeId=intent.getStringExtra("typeId")?:"0"
-        typeName=intent.getStringExtra("value")?:""
+        typeId = intent.getStringExtra("typeId") ?: "0"
+        typeName = intent.getStringExtra("value") ?: ""
         initListener()
     }
 
@@ -127,8 +128,14 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 runOnUiThread {
                     initMagicIndicator(it)
                     initTabAndViewPager(it)
-                    val index =if(TextUtils.isEmpty(typeName)) it.indexOfFirst { item -> item.id.toString() == typeId }
-                    else it.indexOfFirst { item -> item.name == URLDecoder.decode(typeName, "UTF-8") }
+                    val index =
+                        if (TextUtils.isEmpty(typeName)) it.indexOfFirst { item -> item.id.toString() == typeId }
+                        else it.indexOfFirst { item ->
+                            item.name == URLDecoder.decode(
+                                typeName,
+                                "UTF-8"
+                            )
+                        }
                     if (index > 0) binding.viewPager.currentItem = index
 
                 }
@@ -149,13 +156,13 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
 //            layoutParam.gravity = Gravity.CENTER_HORIZONTAL
 //            binding.magicTab.layoutParams = layoutParam
 //        } else {
-            val layoutParam = AppBarLayout.LayoutParams(
-                AppBarLayout.LayoutParams.MATCH_PARENT,
-                AppBarLayout.LayoutParams.WRAP_CONTENT
-            )
-            binding.magicTab.layoutParams = layoutParam
+//        val layoutParam = AppBarLayout.LayoutParams(
+//            AppBarLayout.LayoutParams.MATCH_PARENT,
+//            AppBarLayout.LayoutParams.WRAP_CONTENT
+//        )
+//        binding.magicTab.layoutParams = layoutParam
 //        }
-        binding.magicTab.setPadding(0, 0, 0, 2.toIntPx())
+//        binding.magicTab.setPadding(0, 0, 0, 2.toIntPx())
 
         val magicIndicator = binding.magicTab
         magicIndicator.setBackgroundColor(Color.WHITE)
@@ -167,13 +174,15 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView: SimplePagerTitleView = ScaleTransitionPagerTitleView(context)
+                val simplePagerTitleView: SimplePagerTitleView =
+                    ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.apply {
                     text = types[index].name
                     textSize = 18f
-                    setPadding(20.toIntPx(), 10.toIntPx(), 20.toIntPx(), 9.toIntPx())
-                    normalColor = ContextCompat.getColor(this@CircleListActivity, R.color.color_33)
-                    selectedColor = ContextCompat.getColor(this@CircleListActivity, R.color.circle_app_color)
+                    setPadding(16.toIntPx(), 10.toIntPx(), 16.toIntPx(), 9.toIntPx())
+                    normalColor = ContextCompat.getColor(this@CircleListActivity, R.color.color_9916)
+                    selectedColor =
+                        ContextCompat.getColor(this@CircleListActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
                     return this
                 }
@@ -183,11 +192,11 @@ class CircleListActivity : BaseActivity<ActivityCircleListBinding, CircleListVie
                 val indicator = LinePagerIndicator(context)
                 indicator.mode = LinePagerIndicator.MODE_EXACTLY
                 indicator.lineHeight =
-                    UIUtil.dip2px(context, 3.0).toFloat()
+                    UIUtil.dip2px(context, 2.0).toFloat()
                 indicator.lineWidth =
-                    UIUtil.dip2px(context, 22.0).toFloat()
+                    UIUtil.dip2px(context, 32.0).toFloat()
                 indicator.roundRadius =
-                    UIUtil.dip2px(context, 1.5).toFloat()
+                    UIUtil.dip2px(context, 0.0).toFloat()
                 indicator.startInterpolator = AccelerateInterpolator()
                 indicator.endInterpolator = DecelerateInterpolator(2.0f)
                 indicator.setColors(

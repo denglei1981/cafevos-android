@@ -354,6 +354,7 @@ class CarControl(
                 return
             }
             hCarHistoryBinding?.root?.isVisible = true
+            hCarHistoryBinding?.ivBg?.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
             it.ivIcon.setCircular(5)
             it.ivIcon.loadCompress(bean.extend?.topicPic)
             it.tvTitle.text = bean.extend?.topicName

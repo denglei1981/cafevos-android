@@ -6,11 +6,8 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -18,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.adapter.HomeSearchAcAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.JumpConstant.SEARCH_CONTENT
@@ -35,7 +33,6 @@ import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.home.R
-import com.changanford.home.adapter.HomeSearchAcAdapter
 import com.changanford.home.adapter.PolySearchTopicAdapter
 import com.changanford.home.databinding.ActivityPolySearchBinding
 import com.changanford.home.search.adapter.SearchHistoryAdapter
@@ -90,20 +87,31 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             .fitsSystemWindows(true)
             .statusBarColor(R.color.white)
 
-//        val flowLayoutManager1 = FlowLayoutManager(this, true)
-        val flowLayoutManager0 = FlowLayoutManager(this, 2) {
+        val flowLayoutManager = FlowLayoutManager(this, 2) {
 
         }
-//        historyAdapter.isExpand.observe(this) {
-//            binding.recyclerViewHistory.layoutManager =
-//                if (it) flowLayoutManager1 else flowLayoutManager0
-//        }
-//        binding.recyclerViewHistory.layoutManager = flowLayoutManager0
-//
-//        binding.recyclerViewHistory.adapter = historyAdapter
+        val flowLayoutManager1 = FlowLayoutManager(this, true)
+        val flowLayoutManager0 = FlowLayoutManager(this, 2) {
+            binding.ivExpand.visibility = if (it > 2) View.VISIBLE else View.GONE
+        }
+        historyAdapter.isExpand.observe(this) {
+            binding.recyclerViewHistory.layoutManager =
+                if (it) flowLayoutManager1 else flowLayoutManager0
+        }
+        binding.ivExpand.setOnClickListener {
+            historyAdapter.isExpand.value = historyAdapter.isExpand.value == false
+            if (historyAdapter.isExpand.value == true) {
+                binding.ivExpand.setImageResource(R.mipmap.ic_his_up_end)
+            } else {
+                binding.ivExpand.setImageResource(R.mipmap.ic_his_down_end)
+            }
+        }
+        binding.recyclerViewHistory.layoutManager = flowLayoutManager0
+
+        binding.recyclerViewHistory.adapter = historyAdapter
 
 
-        binding.recyclerViewFind.layoutManager = flowLayoutManager0
+        binding.recyclerViewFind.layoutManager = flowLayoutManager
         binding.ryTopic.adapter = topicAdapter
 
         binding.smartLayout.setEnableLoadMore(false)
@@ -235,10 +243,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 } else {
                     binding.gHis.visibility = View.GONE
                 }
-                mDatas = it as? MutableList<SearchRecordEntity>
-                mDatas?.let {
-                    initZFlowLayout()
-                }
+//                mDatas = it as? MutableList<SearchRecordEntity>
+//                mDatas?.let {
+//                    initZFlowLayout()
+//                }
                 historyAdapter.setList(it)
             }
         binding.layoutSearch.cancel.setOnClickListener {
@@ -280,120 +288,120 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 
     }
 
-    private fun initZFlowLayout() {
-        if (mDatas == null) return
-        mViewList.clear()
-        for (i in 0 until mDatas!!.size) {
-            val textView = LayoutInflater.from(this)
-                .inflate(
-                    R.layout.item_history_search_new,
-                    binding.recyclerViewHistory,
-                    false
-                ) as TextView
-            textView.text = (mDatas!![i].keyword)
-            mViewList.add(textView)
-        }
-        binding.recyclerViewHistory.setChildren(mViewList)
-        binding.recyclerViewHistory.viewTreeObserver
-            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    binding.recyclerViewHistory.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    val lineCount: Int = binding.recyclerViewHistory.lineCount //行数
-                    val twoLineViewCount: Int =
-                        binding.recyclerViewHistory.twoLineViewCount //前两行里面view的个数
-                    val expandLineViewCount: Int =
-                        binding.recyclerViewHistory.expandLineViewCount ///展开时显示view的个数
-                    if (lineCount > 2) {  //默认展示2行，其余折叠收起，最多展示5行
-                        initIvClose(twoLineViewCount, expandLineViewCount)
-                    }
-                }
-            })
-        binding.recyclerViewHistory.setOnTagClickListener { _, position ->
-            val bean = mDatas?.get(position)
-//            bean?.keyword?.let { search(it, true) }
-            val bundle = Bundle()
-            bundle.putInt(SEARCH_TYPE, searchType)
-            bundle.putString(SEARCH_CONTENT, bean?.keyword)
-            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
-        }
-    }
+//    private fun initZFlowLayout() {
+//        if (mDatas == null) return
+//        mViewList.clear()
+//        for (i in 0 until mDatas!!.size) {
+//            val textView = LayoutInflater.from(this)
+//                .inflate(
+//                    R.layout.item_history_search_new,
+//                    binding.recyclerViewHistory,
+//                    false
+//                ) as TextView
+//            textView.text = (mDatas!![i].keyword)
+//            mViewList.add(textView)
+//        }
+//        binding.recyclerViewHistory.setChildren(mViewList)
+//        binding.recyclerViewHistory.viewTreeObserver
+//            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+//                override fun onGlobalLayout() {
+//                    binding.recyclerViewHistory.viewTreeObserver.removeOnGlobalLayoutListener(this)
+//                    val lineCount: Int = binding.recyclerViewHistory.lineCount //行数
+//                    val twoLineViewCount: Int =
+//                        binding.recyclerViewHistory.twoLineViewCount //前两行里面view的个数
+//                    val expandLineViewCount: Int =
+//                        binding.recyclerViewHistory.expandLineViewCount ///展开时显示view的个数
+//                    if (lineCount > 2) {  //默认展示2行，其余折叠收起，最多展示5行
+//                        initIvClose(twoLineViewCount, expandLineViewCount)
+//                    }
+//                }
+//            })
+//        binding.recyclerViewHistory.setOnTagClickListener { _, position ->
+//            val bean = mDatas?.get(position)
+////            bean?.keyword?.let { search(it, true) }
+//            val bundle = Bundle()
+//            bundle.putInt(SEARCH_TYPE, searchType)
+//            bundle.putString(SEARCH_CONTENT, bean?.keyword)
+//            startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+//        }
+//    }
 
-    private fun initIvClose(twoLineViewCount: Int, expandLineViewCount: Int) {
-        mViewList.clear()
-        for (i in 0 until twoLineViewCount) {
-            val textView = LayoutInflater.from(this)
-                .inflate(
-                    R.layout.item_history_search_new,
-                    binding.recyclerViewHistory,
-                    false
-                ) as TextView
-            textView.text = mDatas?.get(i)?.keyword
-            mViewList.add(textView)
-        }
+//    private fun initIvClose(twoLineViewCount: Int, expandLineViewCount: Int) {
+//        mViewList.clear()
+//        for (i in 0 until twoLineViewCount) {
+//            val textView = LayoutInflater.from(this)
+//                .inflate(
+//                    R.layout.item_history_search_new,
+//                    binding.recyclerViewHistory,
+//                    false
+//                ) as TextView
+//            textView.text = mDatas?.get(i)?.keyword
+//            mViewList.add(textView)
+//        }
+//
+//        //展开按钮
+//        val imageView = LayoutInflater.from(this)
+//            .inflate(
+//                R.layout.item_search_history_img,
+//                binding.recyclerViewHistory,
+//                false
+//            ) as ImageView
+//        imageView.setImageResource(R.mipmap.ic_his_down_end)
+//        imageView.setOnClickListener { v: View? ->
+//            initIvOpen(
+//                twoLineViewCount,
+//                expandLineViewCount
+//            )
+//        }
+//        mViewList.add(imageView)
+//        binding.recyclerViewHistory.setChildren(mViewList)
+//        binding.recyclerViewHistory.viewTreeObserver
+//            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+//                override fun onGlobalLayout() {
+//                    binding.recyclerViewHistory.viewTreeObserver
+//                        .removeOnGlobalLayoutListener(this)
+//                    val lineCount: Int = binding.recyclerViewHistory.lineCount
+//                    val twoLineViewCount = binding.recyclerViewHistory.twoLineViewCount
+//                    if (lineCount > 2) {
+//                        initIvClose(
+//                            twoLineViewCount - 1,
+//                            binding.recyclerViewHistory.expandLineViewCount
+//                        )
+//                    }
+//                }
+//            })
+//    }
 
-        //展开按钮
-        val imageView = LayoutInflater.from(this)
-            .inflate(
-                R.layout.item_search_history_img,
-                binding.recyclerViewHistory,
-                false
-            ) as ImageView
-        imageView.setImageResource(R.mipmap.ic_his_down_end)
-        imageView.setOnClickListener { v: View? ->
-            initIvOpen(
-                twoLineViewCount,
-                expandLineViewCount
-            )
-        }
-        mViewList.add(imageView)
-        binding.recyclerViewHistory.setChildren(mViewList)
-        binding.recyclerViewHistory.viewTreeObserver
-            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    binding.recyclerViewHistory.viewTreeObserver
-                        .removeOnGlobalLayoutListener(this)
-                    val lineCount: Int = binding.recyclerViewHistory.lineCount
-                    val twoLineViewCount = binding.recyclerViewHistory.twoLineViewCount
-                    if (lineCount > 2) {
-                        initIvClose(
-                            twoLineViewCount - 1,
-                            binding.recyclerViewHistory.expandLineViewCount
-                        )
-                    }
-                }
-            })
-    }
-
-    private fun initIvOpen(twoLineViewCount: Int, expandLineViewCount: Int) {
-        mViewList.clear()
-        for (i in 0 until expandLineViewCount) {
-            val textView = LayoutInflater.from(this)
-                .inflate(
-                    R.layout.item_history_search_new,
-                    binding.recyclerViewHistory,
-                    false
-                ) as TextView
-            textView.text = mDatas?.get(i)?.keyword
-            mViewList.add(textView)
-        }
-
-        //收起按钮
-        val imageView = LayoutInflater.from(this)
-            .inflate(
-                R.layout.item_search_history_img,
-                binding.recyclerViewHistory,
-                false
-            ) as ImageView
-        imageView.setImageResource(R.mipmap.ic_his_up_end)
-        imageView.setOnClickListener { v: View? ->
-            initIvClose(
-                twoLineViewCount,
-                expandLineViewCount
-            )
-        }
-        mViewList.add(imageView) //不需要的话可以不添加
-        binding.recyclerViewHistory.setChildren(mViewList)
-    }
+//    private fun initIvOpen(twoLineViewCount: Int, expandLineViewCount: Int) {
+//        mViewList.clear()
+//        for (i in 0 until expandLineViewCount) {
+//            val textView = LayoutInflater.from(this)
+//                .inflate(
+//                    R.layout.item_history_search_new,
+//                    binding.recyclerViewHistory,
+//                    false
+//                ) as TextView
+//            textView.text = mDatas?.get(i)?.keyword
+//            mViewList.add(textView)
+//        }
+//
+//        //收起按钮
+//        val imageView = LayoutInflater.from(this)
+//            .inflate(
+//                R.layout.item_search_history_img,
+//                binding.recyclerViewHistory,
+//                false
+//            ) as ImageView
+//        imageView.setImageResource(R.mipmap.ic_his_up_end)
+//        imageView.setOnClickListener { v: View? ->
+//            initIvClose(
+//                twoLineViewCount,
+//                expandLineViewCount
+//            )
+//        }
+//        mViewList.add(imageView) //不需要的话可以不添加
+//        binding.recyclerViewHistory.setChildren(mViewList)
+//    }
 
     fun isPs() {
         viewModel.getSearchContent(searchContent)

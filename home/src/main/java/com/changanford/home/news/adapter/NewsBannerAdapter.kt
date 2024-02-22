@@ -3,6 +3,7 @@ package com.changanford.home.news.adapter
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.ext.loadImage85
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 import com.changanford.home.R
@@ -22,7 +23,7 @@ class NewsPicDetailsBannerAdapter : BaseBannerAdapter<ImageTexts?>() {
         holder?.let {
             DataBindingUtil.bind<ItemNewsPicDetailsBannerBinding>(it.itemView)?.apply {
                 data?.apply {
-                   ivBanner.load(data.img)
+                   ivBanner.loadImage85(data.img)
                 }
             }
         }

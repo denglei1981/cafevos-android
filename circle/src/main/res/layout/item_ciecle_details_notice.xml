@@ -35,7 +35,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/color_d916"
-            android:textSize="12sp"
+            android:textSize="13sp"
             tools:text="福域探险者有活动啦，赶快参加吧！" />
     </LinearLayout>
 </layout>

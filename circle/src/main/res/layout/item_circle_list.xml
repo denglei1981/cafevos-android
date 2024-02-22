@@ -16,87 +16,124 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
 
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/wtv_ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textColor="@color/color_D1D2D7"
+            android:textSize="@dimen/sp_17"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/img_ranking"
+            app:layout_constraintStart_toStartOf="@id/img_ranking"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_ranking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/icon_huati_one"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon"
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_100"
             bindingUrl="@{bean.pic}"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="9dp"
+            app:layout_goneMarginStart="16dp"
             android:scaleType="center"
-            android:layout_marginStart="20dp"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/img_ranking"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@color/color_1700f4" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
+            style="@style/w_style_txt_ellipsize"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="20dp"
-            style="@style/w_style_txt_ellipsize"
-            tools:text="美食街区"
+            android:layout_marginEnd="16dp"
             android:text="@{bean.name}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_15"
+            android:textColor="@color/color_16"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/iv_icon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon" />
+            app:layout_constraintStart_toEndOf="@id/iv_icon"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon"
+            tools:text="美食街区" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@{bean.description}"
-            tools:text="每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事"
-            android:textColor="@color/circle_74889D"
-            android:textSize="@dimen/sp_12"
+            android:textColor="@color/color_8016"
+            android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
             app:layout_constraintRight_toRightOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-        <androidx.appcompat.widget.AppCompatButton
-            tools:visibility="visible"
-            android:visibility="gone"
-            android:layout_marginEnd="@dimen/dp_20"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            tools:text="每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_join"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/iv_icon"
-            android:minHeight="@dimen/dp_25"
-            android:minWidth="@dimen/dp_60"
-            android:text="@string/str_join"
-            android:textSize="@dimen/sp_12"
-            android:textColor="@color/white"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/shadow_00095b_12dp"
             android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:minHeight="@dimen/dp_25"
+            android:text="@string/str_join"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iv_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintBottom_toTopOf="@id/tv_num"
-            app:layout_constraintEnd_toStartOf="@id/btn_join"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
             android:orientation="horizontal"
-            tools:listitem="@layout/item_circle_tag"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_title"
+            app:layout_constraintRight_toRightOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            tools:listitem="@layout/item_circle_tag" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="123 成员     12232 帖子"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12"
             android:layout_marginEnd="@dimen/dp_10"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
+            android:textColor="@color/color_8016"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
-            app:layout_constraintEnd_toStartOf="@id/btn_join" />
+            app:layout_constraintEnd_toStartOf="@id/btn_join"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            tools:text="123 成员     12232 帖子" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/color_1a4a"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

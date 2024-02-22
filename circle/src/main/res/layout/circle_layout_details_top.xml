@@ -92,7 +92,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/color_withe_a50"
+                    android:textColor="@color/color_80ff"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toTopOf="@id/recyclerView"
                     app:layout_constraintEnd_toEndOf="@id/tv_join"
@@ -121,7 +121,7 @@
                     android:drawableStart="@mipmap/circle_left_post_tag"
                     android:drawablePadding="2dp"
                     android:textColor="@color/white"
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@id/tv_title"
                     app:layout_constraintTop_toBottomOf="@id/recyclerView"
                     tools:text="1233 帖子" />
@@ -132,6 +132,7 @@
                 android:id="@+id/ll_personal"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/circle_people_top_bg"
                 app:layout_constraintEnd_toEndOf="@id/cl_top_one"
                 app:layout_constraintStart_toStartOf="@id/cl_top_one"
@@ -338,6 +339,15 @@
                     app:layout_constraintRight_toRightOf="@+id/tv_topic_more"
                     app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
 
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/color_1a4a"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_topic"
+                    app:layout_constraintRight_toRightOf="@+id/tv_topic_more"
+                    app:layout_constraintTop_toBottomOf="@+id/ry_topic" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

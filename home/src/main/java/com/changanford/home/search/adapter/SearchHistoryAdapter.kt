@@ -21,4 +21,9 @@ class SearchHistoryAdapter :
             it.tvSearchTag.text = item.keyword
         }
     }
+
+    override fun getItemCount(): Int {
+        if (data.size > 20) return 20
+        return super.getItemCount()
+    }
 }

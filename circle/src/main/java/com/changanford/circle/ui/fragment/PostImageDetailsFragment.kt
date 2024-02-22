@@ -53,15 +53,11 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.zhpan.bannerview.constants.IndicatorGravity
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 /**
@@ -275,9 +271,13 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                             ivCover.setOnClickListener {
                                 val pics = arrayListOf<MediaListBean>()
                                 pics.add(MediaListBean(mData.pics))
+                                val useList = mData.imageList?.filter { !it.imgUrl.isNullOrEmpty() }
+                                useList?.forEach {
+                                    pics.add(MediaListBean("${it.imgUrl}"))
+                                }
                                 val bundle = Bundle()
                                 bundle.putSerializable("imgList", pics)
-                                bundle.putInt("count", 1)
+                                bundle.putInt("count", 0)
                                 startARouter(ARouterCirclePath.PhotoViewActivity, bundle)
                             }
 //                            tvTwoTitle.text = mData.title
@@ -312,7 +312,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                                 tvOneContent.visibility = View.GONE
                             }
 
-                            val adapter = PostDetailsLongAdapter(requireContext())
+                            val adapter = PostDetailsLongAdapter(requireContext(),mData.pics)
                             adapter.setItems(mData.imageList as ArrayList<ImageList>?)
                             tvContent.adapter = adapter
 

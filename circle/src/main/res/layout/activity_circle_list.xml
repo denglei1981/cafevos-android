@@ -26,16 +26,15 @@
                 android:layout_centerVertical="true"
                 android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="10dp"
-                android:src="@mipmap/back_xhdpi" />
+                android:src="@mipmap/ic_left_back_gray" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="圈子"
-                android:textColor="@color/color_0817"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:text="探索圈子"
+                android:textColor="@color/color_16"
+                android:textSize="18sp"
                 tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -47,8 +46,8 @@
                 android:layout_marginEnd="22dp"
                 android:gravity="center"
                 android:text="我的圈子"
-                android:textColor="@color/color_0817"
-                android:textSize="15sp"
+                android:textColor="@color/color_1700f4"
+                android:textSize="16sp"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
 
@@ -57,7 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:alpha="0.5"
-            android:background="@color/color_ee" />
+            android:background="@color/color_ee"
+            android:visibility="invisible" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -85,19 +85,19 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_search"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
+                            android:layout_height="32dp"
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:background="@drawable/circle_f2_15_bg"
+                            android:background="@drawable/bg_081700f4_8"
                             android:drawableStart="@mipmap/circle_search_circle_hint"
                             android:drawablePadding="5dp"
                             android:gravity="center_vertical"
                             android:paddingStart="11dp"
-                            android:text="请搜索关键词"
-                            android:textColor="@color/color_cc"
-                            android:textSize="13sp"
-                            tools:ignore="RtlSymmetry" />
+                            android:text="请输入圈子关键字搜索"
+                            android:textColor="@color/color_4d16"
+                            android:textSize="14sp"
+                            tools:ignore="HardcodedText,RtlSymmetry" />
 
                         <View
                             android:layout_width="match_parent"
@@ -109,10 +109,20 @@
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-                <net.lucode.hackware.magicindicator.MagicIndicator
-                    android:id="@+id/magic_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_40" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <net.lucode.hackware.magicindicator.MagicIndicator
+                        android:id="@+id/magic_tab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_40"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager

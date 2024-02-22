@@ -155,7 +155,7 @@
             android:drawablePadding="4dp"
             android:gravity="center"
             android:textColor="@color/color_8016"
-            android:textSize="11sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/tv_home_act_times"
             app:layout_constraintTop_toBottomOf="@id/tv_home_act_address"
             tools:text="0人参加" />
@@ -222,6 +222,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
+            android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:background="@color/color_ED"
             app:layout_constraintTop_toBottomOf="@+id/butongguo"

@@ -104,9 +104,6 @@ class PloySearchResultActivity :
         pagerAdapter = SearchResultViewpagerAdapter(this, fragmentList)
         binding.viewpager.adapter = pagerAdapter
         binding.viewpager.offscreenPageLimit = 6
-        if (searchType != -1) {
-            binding.viewpager.currentItem = searchType
-        }
         binding.viewpager.isSaveEnabled = false
         binding.searchTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
@@ -157,8 +154,10 @@ class PloySearchResultActivity :
                 }
                 return false;
             }
-        });
-
+        })
+        if (searchType != -1) {
+            binding.viewpager.currentItem = searchType
+        }
     }
 
     // 从帖子tag 点击跳转过来

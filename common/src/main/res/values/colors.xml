@@ -213,6 +213,8 @@
     <color name="color_a680">#80A6A6A6</color>
     <color name="color_16">#161616</color>
     <color name="color_8016">#80161616</color>
+    <color name="color_80ff">#80ffffff</color>
+    <color name="color_8000">#80000000</color>
     <color name="color_80a6">#80a6a6a6</color>
     <color name="color_0d16">#0d161616</color>
     <color name="color_0d00">#0d000000</color>

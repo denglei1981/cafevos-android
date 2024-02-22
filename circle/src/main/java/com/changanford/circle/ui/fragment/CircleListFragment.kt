@@ -41,7 +41,7 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
     private var page = 1
 
     private val adapter by lazy {
-        CircleListAdapter()
+        CircleListAdapter(false)
     }
 
     override fun initView() {
@@ -169,7 +169,7 @@ class CircleListFragment : BaseFragment<FragmentCircleListBinding, CircleListVie
         viewModel.circleListBean.observe(this) {
             if (page == 1) {
                 if (it.dataList.size == 0) {
-                    adapter.setEmptyView(R.layout.circle_empty_layout)
+                    adapter.setEmptyView(R.layout.base_layout_empty_search)
                 }
                 adapter.setList(it.dataList)
             } else {

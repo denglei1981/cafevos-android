@@ -2,7 +2,7 @@ package com.changanford.circle.ui.fragment.circle
 
 import android.os.Bundle
 import com.changanford.circle.R
-import com.changanford.circle.adapter.circle.CircleTopAdapter
+import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.FragmentHotlistBinding
 import com.changanford.circle.ui.activity.CircleDetailsActivity
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
@@ -16,7 +16,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
  * @Time : 2022/1/5 0005
  * @Description : HotListFragment
  */
-class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>(),
+class HotListFragment : BaseFragment<FragmentHotlistBinding, NewCircleViewModel>(),
     OnRefreshLoadMoreListener {
     companion object {
         fun newInstance(topId: Int): HotListFragment {
@@ -27,16 +27,17 @@ class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>()
             return fragment
         }
     }
-    private var topId=0
-    private var pageNo=1
-    private val mAdapter by lazy { CircleTopAdapter() }
+
+    private var topId = 0
+    private var pageNo = 1
+    private val mAdapter by lazy { CircleListAdapter(true) }
     override fun initView() {
         binding.srl.setOnRefreshLoadMoreListener(this)
-        binding.recyclerView.adapter=mAdapter
+        binding.recyclerView.adapter = mAdapter
         mAdapter.setEmptyView(R.layout.view_empty)
         updatePersonalData("圈子详情页", "圈子详情页")
         mAdapter.setOnItemClickListener { _, _, position ->
-            CircleDetailsActivity.start( mAdapter.data[position].circleId)
+            CircleDetailsActivity.start(mAdapter.data[position].circleId)
         }
     }
 
@@ -44,8 +45,14 @@ class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>()
         viewModel.circleListData.observe(this) {
             it?.apply {
                 val dataList = this.dataList
-                if (1 == pageNo) mAdapter.setList(dataList)
-                else dataList?.let { itemData -> mAdapter.addData(itemData) }
+                if (1 == pageNo) {
+                    if (it.dataList.size == 0) {
+                        mAdapter.setEmptyView(R.layout.base_layout_empty_search)
+                    }
+                    mAdapter.setList(dataList)
+                } else {
+                    dataList?.let { itemData -> mAdapter.addData(itemData) }
+                }
             }
             if (it == null || mAdapter.data.size >= it.total) binding.srl.setEnableLoadMore(false)
             else binding.srl.setEnableLoadMore(true)
@@ -54,19 +61,19 @@ class HotListFragment:BaseFragment<FragmentHotlistBinding, NewCircleViewModel>()
                 finishRefresh()
             }
         }
-        arguments?.getInt("topId",0)?.apply {
-            topId=this
-            viewModel.getHotList(topId,pageNo)
+        arguments?.getInt("topId", 0)?.apply {
+            topId = this
+            viewModel.getHotList(topId, pageNo)
         }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        pageNo=1
-        viewModel.getHotList(topId,pageNo)
+        pageNo = 1
+        viewModel.getHotList(topId, pageNo)
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageNo++
-        viewModel.getHotList(topId,pageNo)
+        viewModel.getHotList(topId, pageNo)
     }
 }

@@ -2,21 +2,23 @@ package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
 import android.view.View
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.adapter.circle.TagAdapter
+import com.changanford.circle.adapter.circle.CircleListTagAdapter
 import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.databinding.ItemCircleListBinding
-
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.setCircular
+import com.changanford.common.util.ext.setDrawableColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
@@ -26,39 +28,69 @@ import com.changanford.common.wutil.FlowLayoutManager
  *Time on 2021/9/18
  *Purpose
  */
-class CircleListAdapter :
+class CircleListAdapter(private val isShowLeft: Boolean) :
     BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.layout.item_circle_list), LoadMoreModule {
     private val viewModel by lazy { CircleDetailsViewModel() }
+    private val rankingIcons = arrayListOf(
+        R.drawable.icon_huati_one,
+        R.drawable.icon_huati_two,
+        R.drawable.icon_huati_three
+    )
 
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: ChoseCircleBean) {
+        val position = holder.layoutPosition
         val binding = DataBindingUtil.bind<ItemCircleListBinding>(holder.itemView)
         binding?.apply {
-            MUtils.setTopMargin(binding.clItem, 17, holder.layoutPosition)
-            ivIcon.setCircular(5)
+            MUtils.setTopMargin(binding.clItem, 30, holder.layoutPosition)
+            ivIcon.setCircular(12)
             tvNum.text = "${item.userCount} 成员     ${item.postsCount} 帖子"
             bean = item
             isJoin(btnJoin, item)
             item.tags?.apply {
                 recyclerView.layoutManager = FlowLayoutManager(context, true, true)
-                recyclerView.adapter = TagAdapter().apply {
+                recyclerView.adapter = CircleListTagAdapter().apply {
                     setList(item.tags)
                 }
             }
+            wtvRanking.apply {
+                if (!isShowLeft) {
+                    imgRanking.isVisible = false
+                    wtvRanking.isVisible = false
+                } else if (position < 3) {
+                    visibility = View.GONE
+                    imgRanking.setImageResource(rankingIcons[position])
+                    imgRanking.visibility = View.VISIBLE
+                } else {
+                    text = "${position + 1}"
+                    visibility = View.VISIBLE
+                    imgRanking.visibility = View.INVISIBLE
+                }
+                setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (position < 3) R.color.color_FC5E42 else R.color.color_D1D2D7
+                    )
+                )
+            }
+            binding.recyclerView.isVisible = !item.tags.isNullOrEmpty()
+            binding.tvContent.isVisible = item.tags.isNullOrEmpty()
         }
     }
 
     /**
      * 是否加入圈子
      * */
-    private fun isJoin(btnJoin: AppCompatButton, item: ChoseCircleBean) {
+    private fun isJoin(btnJoin: AppCompatTextView, item: ChoseCircleBean) {
         btnJoin.apply {
             visibility = View.VISIBLE
             when (item.isJoin) {
                 //未加入
                 "TOJOIN" -> {
                     setText(R.string.str_join)
-                    setBackgroundResource(R.drawable.shadow_00095b_12dp)
+                    btnJoin.setDrawableColor(R.color.color_1700F4)
+                    btnJoin.setTextColor(ContextCompat.getColor(context, R.color.white))
+//                    setBackgroundResource(R.drawable.shadow_00095b_12dp)
                     isEnabled = true
                     setOnClickListener {
                         WBuriedUtil.clickCircleJoin(item.name)
@@ -99,13 +131,17 @@ class CircleListAdapter :
                 "PENDING" -> {
                     isEnabled = false
                     setText(R.string.str_underReview)
-                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+//                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+                    btnJoin.setDrawableColor(R.color.color_E67400)
+                    btnJoin.setTextColor(ContextCompat.getColor(context, R.color.white))
                 }
                 //已加入
                 "JOINED" -> {
                     isEnabled = false
                     setText(R.string.str_hasJoined)
-                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+//                    setBackgroundResource(R.drawable.shadow_dd_12dp)
+                    btnJoin.setDrawableColor(R.color.color_80a6)
+                    btnJoin.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
                 }
 
                 else -> visibility = View.GONE

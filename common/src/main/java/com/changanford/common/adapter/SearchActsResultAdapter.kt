@@ -1,6 +1,7 @@
 package com.changanford.common.adapter
 
 import android.graphics.drawable.GradientDrawable
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -19,7 +20,7 @@ import com.changanford.common.utilext.GlideUtils.loadCompress
 /**
  * 活动列表。
  */
-class SearchActsResultAdapter :
+class SearchActsResultAdapter(private val isSearch: Boolean = false) :
     BaseQuickAdapter<ActBean, BaseDataBindingHolder<ItemHomeActsBinding>>(R.layout.item_home_acts),
     LoadMoreModule {
 
@@ -83,6 +84,17 @@ class SearchActsResultAdapter :
 
                 else -> stateBg.setColor(ContextCompat.getColor(context, R.color.color_a5adb1))
             }
+
+            //代码修改宽高比
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(it.clContent)
+            if (isSearch) {
+                constraintSet.setDimensionRatio(R.id.iv_acts, "h,343:215")
+            } else {
+                constraintSet.setDimensionRatio(R.id.iv_acts, "h,343:193")
+            }
+            constraintSet.applyTo(it.clContent)
+
             it.tvHomeActAddress.isVisible = !item.activityAddr.isNullOrEmpty()
             it.tvHomeActAddress.text = item.getAddress()
             it.tvSignpeople.isVisible = item.showJoinNum()
@@ -93,11 +105,11 @@ class SearchActsResultAdapter :
                 it.bt.text = item.showButtonText()
             }
             if (item.buttonBgEnable()) {
-                it.bt.background =ContextCompat.getDrawable(context,R.drawable.bg_1700f4_18)
-                it.bt.setTextColor(ContextCompat.getColor(context,R.color.white))
+                it.bt.background = ContextCompat.getDrawable(context, R.drawable.bg_1700f4_18)
+                it.bt.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
-                it.bt.background =ContextCompat.getDrawable(context,R.drawable.bg_80a6_18)
-                it.bt.setTextColor(ContextCompat.getColor(context,R.color.color_4d16))
+                it.bt.background = ContextCompat.getDrawable(context, R.drawable.bg_80a6_18)
+                it.bt.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             }
             it.bt.setOnClickListener {
                 if (item.isFinish()) {

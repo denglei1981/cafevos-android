@@ -38,7 +38,8 @@ object PictureUtil {
      */
     fun getFinallyPath(media: LocalMedia): String {
         val path = ""
-        return if (media.isCut && !media.isCompressed) {
+//        return if (media.isCut && !media.isCompressed) {
+        return if (media.isCut ) {
             media.cutPath
         } else if (media.isCompressed || media.isCut && media.isCompressed) {
             media.compressPath

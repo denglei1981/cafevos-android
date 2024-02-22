@@ -22,9 +22,8 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.util.toast.ToastUtils
-import com.xiaomi.push.it
 import java.lang.reflect.Method
-import java.util.*
+import java.util.Objects
 
 /**
  *Author lcw
@@ -138,15 +137,15 @@ class CircleDetailsFragmentV2 :
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
             checkPosition = position
         }
-        adapter.setOnItemChildClickListener { _, view, position ->
-            if (view.id == R.id.tv_all_comment) {
-                val bundle = Bundle()
-                bundle.putString("postsId", adapter.getItem(position).postsId.toString())
-                bundle.putBoolean("isScroll", true)
-                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
-                checkPosition = position
-            }
-        }
+//        adapter.setOnItemChildClickListener { _, view, position ->
+//            if (view.id == R.id.tv_all_comment) {
+//                val bundle = Bundle()
+//                bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+//                bundle.putBoolean("isScroll", true)
+//                startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+//                checkPosition = position
+//            }
+//        }
     }
 
     override fun initData() {

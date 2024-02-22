@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
+            android:visibility="gone"
             android:maxLines="1"
             android:text="#以心护海 探启新程"
             android:textColor="@color/color_1700f4"
@@ -71,6 +72,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_circle"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="22dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_081700f4_100"

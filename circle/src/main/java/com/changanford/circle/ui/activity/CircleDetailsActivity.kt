@@ -566,7 +566,7 @@ class CircleDetailsActivity :
                     )
 //                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
                     .into(ivBg)
-                ivIcon.setCircular(5)
+                ivIcon.setCircular(12)
                 ivIcon.loadImage(it.pic)
                 tvTitle.text = it.name
                 tvContent.text = it.description
@@ -748,7 +748,7 @@ class CircleDetailsActivity :
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.text = viewModel.tabList[index]
                 simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
+                simplePagerTitleView.setPadding(16.toIntPx(), 0, 16.toIntPx(), 10)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(this@CircleDetailsActivity, R.color.color_9916)
                 simplePagerTitleView.selectedColor =
@@ -761,11 +761,11 @@ class CircleDetailsActivity :
                 val indicator = LinePagerIndicator(context)
                 indicator.mode = LinePagerIndicator.MODE_EXACTLY
                 indicator.lineHeight =
-                    UIUtil.dip2px(context, 3.0).toFloat()
+                    UIUtil.dip2px(context, 2.0).toFloat()
                 indicator.lineWidth =
-                    UIUtil.dip2px(context, 22.0).toFloat()
+                    UIUtil.dip2px(context, 32.0).toFloat()
                 indicator.roundRadius =
-                    UIUtil.dip2px(context, 1.5).toFloat()
+                    UIUtil.dip2px(context, 0.0).toFloat()
                 indicator.startInterpolator = AccelerateInterpolator()
                 indicator.endInterpolator = DecelerateInterpolator(2.0f)
                 indicator.setColors(

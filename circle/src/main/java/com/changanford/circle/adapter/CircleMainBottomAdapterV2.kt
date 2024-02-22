@@ -4,11 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -18,39 +20,26 @@ import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.ReportDislikeBody
 import com.changanford.circle.databinding.ItemCircleMainBottomV2Binding
-
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
-import com.changanford.circle.widget.assninegridview.AssNineGridViewClickAdapter
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.bean.ImageInfo
 import com.changanford.common.bean.PostDataBean
-import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.net.*
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.ext.loadCircleImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.utilext.*
-import com.changanford.common.utilext.GlideUtils.loadCompress
-import com.changanford.common.wutil.WCommonUtil
-import com.google.android.material.button.MaterialButton
-import com.google.gson.Gson
 import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -68,7 +57,6 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     var isTopic = false
 
     init {
-        addChildClickViewIds(R.id.tv_all_comment)
         loadMoreModule.preLoadNumber = preLoadNumber
     }
 
@@ -78,14 +66,14 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         val activity = BaseApplication.curActivity
         setTopMargin(binding?.root, 10, holder.layoutPosition)
         binding?.let {
-            binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
+            binding.layoutCount.tvLikeCount.text =
+                ("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 
             } else {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
             }
-
             binding.layoutCount.tvLikeCount.setOnClickListener {
                 likePost(binding, item, holder.layoutPosition)
             }
@@ -141,6 +129,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             val labelAdapter = LabelAdapter(context, 15)
             labelAdapter.setItems(item.authorBaseVo?.imags)
             binding.layoutHeader.rvUserTag.adapter = labelAdapter
+            binding.layoutHeader.apply {
+                tvAuthorName.text = item.authorBaseVo?.nickname
+            }
             binding.postBean = item
             binding.author = item.authorBaseVo
             if (item.authorBaseVo != null) {
@@ -152,133 +143,77 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                 binding.layoutCount.tvLocation.visibility = View.VISIBLE
                 binding.layoutCount.tvLocation.text = item.showCity()
             }
-            if (item.type == 3) {//视频
-                binding.layoutOne.conOne.visibility = View.VISIBLE
-                binding.layoutOne.ivPlay.visibility = View.VISIBLE
-                binding.ivNine.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
-                if (item.videoTime == null) {
-                    binding.layoutOne.tvVideoTimes.visibility = View.GONE
+            ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.picList)
+            binding.layoutContent.ivPlay.visibility =
+                if (item.type == 3) View.VISIBLE else View.GONE
+//                    tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
+            if (item.type == 3) {
+                binding.layoutContent.tvVideoTimes.isVisible = true
+                binding.layoutContent.tvVideoTimes.text = item.videoTime.toString()
+            } else if (item.picList != null) {
+                if (item.picList!!.size > 4) {
+                    binding.layoutContent.tvVideoTimes.isVisible = true
+                    binding.layoutContent.tvVideoTimes.text = "+${item.picList!!.size - 4}"
                 } else {
-                    binding.layoutOne.tvVideoTimes.visibility = View.VISIBLE
+                    binding.layoutContent.tvVideoTimes.isVisible = false
                 }
-                binding.layoutOne.tvVideoTimes.text = item.videoTime.toString()
-                binding.btnMore.visibility = View.GONE
             } else {
-                binding.layoutOne.ivPlay.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.text = ""
-
+                binding.layoutContent.tvVideoTimes.isVisible = false
             }
 
 
-            val picList = item.picList
-            if (picList?.isEmpty() == false) {
-                when {
-                    picList.size > 1 -> {
-                        val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
-                        picList.forEach {
-                            val imageInfo = ImageInfo()
-                            imageInfo.bigImageUrl = it
-                            imageInfo.thumbnailUrl = it
-                            item.postsId.let { tid ->
-                                imageInfo.postId = tid.toString()
-                            }
-
-                            imageInfoList.add(imageInfo)
-                        }
-                        val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
-                        binding.ivNine.setAdapter(assNineAdapter)
-                        binding.ivNine.visibility = View.VISIBLE
-                        binding.layoutOne.ivPlay.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
-                        if (picList.size > 4) {
-                            binding.btnMore.visibility = View.VISIBLE
-                            binding.btnMore.text = "+".plus(picList.size)
-                        } else {
-                            binding.btnMore.visibility = View.GONE
-                        }
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        if (item.isGood == 1) {
-                            binding.icMultVeryPost.visibility = View.VISIBLE
-                        } else {
-                            binding.icMultVeryPost.visibility = View.GONE
-                        }
-                    }
-
-                    picList.size == 1 -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.VISIBLE
-//                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
-                        binding.layoutOne.ivPic.loadCompress(picList[0])
-                        binding.btnMore.visibility = View.GONE
-                        if (item.isGood == 1) {
-                            binding.layoutOne.ivVeryPost.visibility = View.VISIBLE
-                        } else {
-                            binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        }
-                        binding.icMultVeryPost.visibility = View.GONE
-
-                    }
-
-                    else -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
-                        binding.btnMore.visibility = View.GONE
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        binding.icMultVeryPost.visibility = View.GONE
+//            binding.layoutContent.tvContent.isVisible = !item.title.isNullOrEmpty()
+//            binding.layoutContent.tvContent.text = item.title
+//            binding.layoutContent.tvTopic.isVisible = !item.content.isNullOrEmpty()
+//            binding.layoutContent.tvTopic.text = item.content
+            val tvContent = binding.layoutContent.tvContent
+            val tvTopic = binding.layoutContent.tvTopic
+            if (item.isGood == 1) {
+                if (TextUtils.isEmpty(item.title)) {
+                    tvContent.visibility = View.GONE
+                } else {
+                    tvContent.visibility = View.VISIBLE
+                    tvContent.imageAndTextView(
+                        item.title.toString(),
+                        R.mipmap.ic_home_refined_item
+                    )
+//                        tvContent.text = item.getTopic()
+                }
+                if (TextUtils.isEmpty(item.content) ) {
+                    tvTopic.text = ""
+                    tvTopic.visibility = View.GONE
+                } else {
+                    tvTopic.visibility = View.VISIBLE
+                    if (TextUtils.isEmpty(item.title)) {
+                        tvTopic.imageAndTextView(
+                            item.content,
+                            R.mipmap.ic_home_refined_item
+                        )
+                    } else {
+                        tvTopic.text = item.content
                     }
                 }
             } else {
-                binding.ivNine.visibility = View.GONE
-                binding.layoutOne.ivVeryPost.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
+                if (TextUtils.isEmpty(item.title)) {
+                    tvContent.visibility = View.GONE
+                } else {
+                    tvContent.visibility = View.VISIBLE
+                    tvContent.text = item.title
+                }
+                if (TextUtils.isEmpty(item.content) ) {
+                    tvTopic.text = ""
+                    tvTopic.visibility = View.GONE
+                } else {
+                    tvTopic.visibility = View.VISIBLE
+                    tvTopic.text = item.content
+                }
             }
-            if (!item.content.isNullOrEmpty()) {
-                binding.tvContent.visibility = View.VISIBLE
-                binding.tvContent.text = item.content
-            } else {
-                binding.tvContent.visibility = View.GONE
-            }
-            if (item.firstComment != null) {
-                binding.llComment.visibility = View.VISIBLE
-                binding.ivCommentHead.loadCircleImage(item.firstComment?.avatar)
-                binding.tvFirstCommentContent.text =
-                    "${item.firstComment?.nickname}:${item.firstComment?.content}"
-            } else {
-                binding.llComment.visibility = View.GONE
-            }
-            if (item.commentCount != 0L) {
-                binding.tvAllComment.visibility = View.VISIBLE
-                binding.tvAllComment.text = "查看全部${item.commentCount}条评论"
-            } else {
-                binding.tvAllComment.visibility = View.GONE
-            }
+
             if (item.circle == null || item.circle!!.starName.isNullOrEmpty()) {
                 binding.layoutHeader.tvCircleType.visibility = View.GONE
             } else {
                 binding.layoutHeader.tvCircleType.visibility = View.VISIBLE
                 binding.layoutHeader.tvCircleType.text = item.circle?.starName
-            }
-            binding.tvComment.setOnClickListener {
-                if (MConstant.token.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.SignUI)
-                    return@setOnClickListener
-                }
-                ReplyDialog(context, object : ReplyDialog.ReplyListener {
-                    override fun getContent(content: String) {
-                        commentPost(
-                            binding,
-                            item.postsId.toString(),
-                            null,
-                            "0",
-                            content,
-                            item
-                        )
-//                        viewModel.addPostsCommentOut(item.postsId.toString(), null, "0", content)
-                    }
-
-                }).show()
             }
         }
     }
@@ -302,7 +237,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     if (it.code == 0) {
                         if (item.isLike == 0) {
                             item.isLike = 1
-                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic,)
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
                             item.likesCount++
                             "点赞成功".toast()
                             GIOUtils.postLickClick(
@@ -318,7 +253,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic,)
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
                             GIOUtils.cancelPostLickClick(
                                 currentPageName,
                                 item.topicId,
@@ -331,66 +266,11 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                             )
                             "取消点赞".toast()
                         }
-                        binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
+                        binding.layoutCount.tvLikeCount.text =
+                            ("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {
                         it.msg.toast()
                     }
-                }
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun commentPost(
-        binding: ItemCircleMainBottomV2Binding,
-        bizId: String?,
-        groupId: String?,
-        pid: String?,
-        content: String,
-        item: PostDataBean
-    ) {
-        val activity = BaseApplication.curActivity
-
-        val currentPageName = if (isTopic) {
-            "话题详情-${GioPageConstant.topicDetailTabName}"
-        } else "圈子详情-${GioPageConstant.circleDetailTabName}"
-
-        activity.launchWithCatch {
-            val body = MyApp.mContext.createHashMap()
-            body["bizId"] = bizId ?: ""
-            body["pid"] = pid ?: ""
-            body["groupId"] = groupId ?: ""
-            body["content"] = content
-            body["phoneModel"] = DeviceUtils.getDeviceModel()
-
-            val rKey = getRandomKey()
-            ApiClient.createApi<CircleNetWork>()
-                .addPostsComment(body.header(rKey), body.body(rKey)).also {
-                    it.msg.toast()
-                    viewModel.userDatabase.getUniUserInfoDao().getUser()
-                        .observe(activity) { sysBean ->
-                            val userInfoBean: UserInfoBean =
-                                Gson().fromJson(sysBean.userJson, UserInfoBean::class.java)
-                            binding.llComment.visibility = View.VISIBLE
-                            binding.ivCommentHead.loadCircleImage(userInfoBean.avatar)
-                            binding.tvFirstCommentContent.text =
-                                "${userInfoBean.nickname}:${content}"
-
-                            binding.tvAllComment.visibility = View.VISIBLE
-                            item.commentCount += 1
-                            binding.tvAllComment.text = "查看全部${item.commentCount}条评论"
-
-                            GIOUtils.commentSuccessPost(
-                                currentPageName,
-                                item.topicId,
-                                item.topicName,
-                                item.authorBaseVo?.authorId,
-                                item.postsId.toString(),
-                                item.title,
-                                item.circleId,
-                                item.circle?.name
-                            )
-                        }
-
                 }
         }
     }

@@ -33,6 +33,23 @@ fun ImageView.loadImage(url: String?, imageOptions: ImageOptions? = null) {
         .into(this)
 }
 
+fun ImageView.loadImage85(url: String?, imageOptions: ImageOptions? = null) {
+    Glide.with(context)
+        .load(GlideUtils.compress85(url))
+        .error(R.mipmap.ic_def_square_img)
+        .placeholder(R.mipmap.ic_def_square_img)
+        .apply(requestOptions(imageOptions))
+        .transition(
+            DrawableTransitionOptions.with(
+                DrawableCrossFadeFactory
+                    .Builder(300)
+                    .setCrossFadeEnabled(true)
+                    .build()
+            )
+        )
+        .into(this)
+}
+
 fun ImageView.loadImageNoOther(url: String?, imageOptions: ImageOptions? = null) {
     Glide.with(context)
         .load(url)

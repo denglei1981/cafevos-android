@@ -38,7 +38,7 @@ data class NewCirceTagBean(
 )
 
 data class NewCircleDataBean(
-    val dataList: ArrayList<NewCircleBean>? = null,
+    val dataList: ArrayList<NewCircleBean>,
     val pageNo: Int = 0,
     val pageSize: Int = 0,
     val total: Int = 0,

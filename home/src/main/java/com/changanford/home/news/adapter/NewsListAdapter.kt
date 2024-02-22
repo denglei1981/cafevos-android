@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -24,6 +25,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.setDrawableLeft
@@ -31,6 +33,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
+import com.changanford.home.databinding.ItemNewsItemsBinding
 import com.changanford.home.util.LoginUtil
 import com.google.android.material.imageview.ShapeableImageView
 
@@ -60,6 +63,10 @@ class NewsListAdapter(
     }
 
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
+        val binding=DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
+        binding?.let {
+            ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getPics())
+        }
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)

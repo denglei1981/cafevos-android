@@ -26,7 +26,7 @@ class SearchActsFragment :
     OnRefreshListener, OnLoadMoreListener {
 
     val searchActsResultAdapter: SearchActsResultAdapter by lazy {
-        SearchActsResultAdapter()
+        SearchActsResultAdapter(true)
     }
 
     companion object {

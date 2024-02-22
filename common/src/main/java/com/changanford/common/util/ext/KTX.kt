@@ -1,5 +1,8 @@
 package com.changanford.common.util.ext
 
+import android.graphics.drawable.GradientDrawable
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -73,4 +76,11 @@ fun RecyclerView.dealMuchImage(list: ArrayList<ImageInfo>?) {
         setHasFixedSize(true)
         this.adapter = DealMuchImageAdapter().apply { setList(mList) }
     }
+}
+
+fun View.setDrawableColor(color: Int) {
+    val stateBg = background as GradientDrawable
+    stateBg.setColor(
+        ContextCompat.getColor(context, color)
+    )
 }

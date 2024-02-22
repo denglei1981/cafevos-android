@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCircleHotlistBinding
-
 import com.changanford.circle.ui.fragment.circle.HotListFragment
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -27,11 +26,8 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
-import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
-import com.changanford.common.wutil.ScreenUtils
-import com.xiaomi.push.it
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -167,9 +163,9 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
                     gravity = Gravity.CENTER_HORIZONTAL
                     text = tabs[index].topName
                     textSize = 18f
-                    setPadding(20.toIntPx(), 0, 20.toIntPx(), 0)
+                    setPadding(16.toIntPx(), 0, 16.toIntPx(), 0)
 //                    width=ScreenUtils.getScreenWidth(this@HotListActivity)/3
-                    normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_33)
+                    normalColor = ContextCompat.getColor(this@HotListActivity, R.color.color_9916)
                     selectedColor =
                         ContextCompat.getColor(this@HotListActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
@@ -180,9 +176,9 @@ class HotListActivity : BaseActivity<ActivityCircleHotlistBinding, NewCircleView
             override fun getIndicator(context: Context): IPagerIndicator {
                 LinePagerIndicator(context).apply {
                     mode = LinePagerIndicator.MODE_EXACTLY
-                    lineHeight = UIUtil.dip2px(context, 3.0).toFloat()
-                    lineWidth = UIUtil.dip2px(context, 22.0).toFloat()
-                    roundRadius = UIUtil.dip2px(context, 1.5).toFloat()
+                    lineHeight = UIUtil.dip2px(context, 2.0).toFloat()
+                    lineWidth = UIUtil.dip2px(context, 32.0).toFloat()
+                    roundRadius = UIUtil.dip2px(context, 0.0).toFloat()
                     startInterpolator = AccelerateInterpolator()
                     endInterpolator = DecelerateInterpolator(2.0f)
                     setColors(

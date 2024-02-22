@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
-import com.changanford.circle.databinding.ItemCircleTagBinding
+import com.changanford.circle.databinding.ItemCircleListTagBinding
 import com.changanford.common.bean.NewCirceTagBean
 
-class TagAdapter :
-    BaseQuickAdapter<NewCirceTagBean, BaseDataBindingHolder<ItemCircleTagBinding>>(R.layout.item_circle_tag) {
+class CircleListTagAdapter :
+    BaseQuickAdapter<NewCirceTagBean, BaseDataBindingHolder<ItemCircleListTagBinding>>(R.layout.item_circle_list__tag) {
     @SuppressLint("SetTextI18n")
     override fun convert(
-        holder: BaseDataBindingHolder<ItemCircleTagBinding>,
+        holder: BaseDataBindingHolder<ItemCircleListTagBinding>,
         item: NewCirceTagBean
     ) {
         holder.dataBinding?.apply {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
 
     <data>
 
@@ -19,16 +20,16 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="18dp"
-            android:gravity="center_vertical"
             android:drawablePadding="8dp"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
             android:textColor="@color/color_00"
-            tools:text="asdasd"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="asdasd" />
 
         <View
             android:layout_width="match_parent"

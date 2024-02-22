@@ -3,10 +3,10 @@ package com.changanford.home.search.adapter
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.SearchKeyBean
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableNull
 import com.changanford.home.R
-import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.databinding.ItemCommonSearchHotBinding
 
 class SearchHotAdapter :

@@ -38,7 +38,9 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
+import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.PostPicAdapter
+import com.changanford.circle.adapter.PostVideoAdapter
 import com.changanford.circle.bean.*
 import com.changanford.circle.databinding.PostActivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
@@ -48,17 +50,21 @@ import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.buried.BuriedUtil
+import com.changanford.common.constant.CircleConfig
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
 import com.changanford.common.util.*
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.image.ImageCompress
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -69,24 +75,16 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.yalantis.ucrop.UCrop
-import com.changanford.circle.adapter.EmojiAdapter
-import com.changanford.circle.adapter.PostVideoAdapter
-import com.changanford.common.bean.SpecialCarListBean
-import com.changanford.common.constant.CircleConfig
-import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
-import com.changanford.common.utilext.PermissionPopUtil
 import com.qw.soul.permission.bean.Permissions
+import com.yalantis.ucrop.UCrop
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.lang.Exception
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 /**
- * 发图片帖子
+ * 发图片/视频帖子
  */
 @Route(path = ARouterCirclePath.PostActivity)
 class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {

@@ -9,24 +9,30 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import com.alibaba.fastjson.JSON
-import com.changanford.common.MyApp
 import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
-import com.changanford.common.bean.*
+import com.changanford.common.bean.CarItemBean
+import com.changanford.common.bean.JumpDataBean
+import com.changanford.common.bean.RefundBean
+import com.changanford.common.bean.RefundOrderItemBean
+import com.changanford.common.bean.ShareBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.GetCoupopBindingPop
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.SelectMapDialog
 import com.changanford.common.ui.dialog.SignMaintainDialog
@@ -39,10 +45,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
 import com.google.gson.Gson
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -241,8 +244,8 @@ class JumpUtils {
                     }
 
                     else -> {
-//                        startARouter(ARouterMyPath.UniCarAuthUI)
-                        toCarAuth()
+                        startARouter(ARouterMyPath.UniCarAuthUI)
+//                        toCarAuth()
                     }
                 }
             }

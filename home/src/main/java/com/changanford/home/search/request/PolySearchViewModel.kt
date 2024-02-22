@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.CircleMainBean
+import com.changanford.common.bean.SearchKeyBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.NetWorkApi
 import com.changanford.common.net.body
@@ -23,7 +24,6 @@ import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.ListMainBean
-import com.changanford.home.bean.SearchKeyBean
 import com.changanford.home.bean.SearchShopBean
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

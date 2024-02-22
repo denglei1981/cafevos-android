@@ -11,21 +11,18 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:background="@color/black">
+        android:layout_height="wrap_content">
 
         <com.changanford.common.ui.view.WTextView
             style="@style/w_style_txt_ellipsize"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="18dp"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/shadow_f2f4f9_8dp"
+            android:background="@drawable/bg_081700f4_100"
             android:drawablePadding="3dp"
             android:gravity="center"
-            android:maxWidth="@dimen/dp_90"
-            android:minHeight="20dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingStart="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_12"
             android:text="@{model.tagName}"
             android:textColor="@color/circle_1700F4"
             android:textSize="@dimen/sp_10"

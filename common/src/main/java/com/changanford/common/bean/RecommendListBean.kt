@@ -126,7 +126,7 @@ data class RecommendData(
         if (pisList != null && pisList!!.size > 1) {
             return 2
         }
-        return 5
+        return 1
     }
 
     fun getContent(): String { // 获取内容

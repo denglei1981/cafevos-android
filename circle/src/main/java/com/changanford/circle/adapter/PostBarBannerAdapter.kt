@@ -9,8 +9,8 @@ import com.changanford.circle.databinding.ItemPostBarBannerBinding
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.ext.loadImage85
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.load
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -22,7 +22,7 @@ class PostBarBannerAdapter(val isGood: Int ) : BaseBannerAdapter<ImageList?>() {
         holder!!.bindData(data, position, pageSize)
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
 
-        binding?.ivBanner?.load(GlideUtils.defaultHandleImageUrl(data?.imgUrl))
+        binding?.ivBanner?.loadImage85(GlideUtils.defaultHandleImageUrl(data?.imgUrl))
         if(isGood==1){
             binding?.ivVeryPost?.visibility=View.VISIBLE
         }else{

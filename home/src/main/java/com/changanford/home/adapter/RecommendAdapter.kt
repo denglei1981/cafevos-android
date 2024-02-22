@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -60,7 +59,6 @@ import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemHomeRecommendItemsOneBinding
 import com.changanford.home.databinding.ItemRecommendHomeSpecialBinding
 import com.changanford.home.util.LoginUtil
-import kotlin.math.ceil
 
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
@@ -103,6 +101,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
             4 -> {//提车日记
                 val binding = DataBindingUtil.bind<HeaderCarHistoryBinding>(holder.itemView)
+                binding?.ivBg?.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
                 binding?.let { showCarHistory(it, item.postBean) }
             }
 
@@ -141,7 +140,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
             val constraintSet = ConstraintSet()
             constraintSet.clone(it.clContent)
-            constraintSet.setDimensionRatio(com.changanford.home.R.id.iv_acts, "w,343:193")
+            constraintSet.setDimensionRatio(R.id.iv_acts, "h,343:193")
             constraintSet.applyTo(it.clContent)
 
             it.bt.isVisible = item.showButton()
@@ -266,7 +265,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     tvContent.visibility = View.VISIBLE
                     tvContent.imageAndTextView(
                         item.getTopic(),
-                        com.changanford.home.R.mipmap.ic_home_refined_item
+                        R.mipmap.ic_home_refined_item
                     )
 //                        tvContent.text = item.getTopic()
                 }
@@ -278,7 +277,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     if (TextUtils.isEmpty(item.getTopic())) {
                         tvTopic.imageAndTextView(
                             item.getContent(),
-                            com.changanford.home.R.mipmap.ic_home_refined_item
+                            R.mipmap.ic_home_refined_item
                         )
                     } else {
                         tvTopic.text = item.getContent()

@@ -39,7 +39,8 @@ import com.zhpan.bannerview.constants.PageStyle
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
-    val newsListAdapter: NewsListAdapter by lazy {
+    private var headNewBinding: HeaderNewsListBinding? = null
+    private val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
 
@@ -91,8 +92,6 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
             viewModel.getNewsList(true)
         }
     }
-
-    var headNewBinding: HeaderNewsListBinding? = null
 
     private fun addHeadView() {
         if (headNewBinding == null) {

@@ -1,11 +1,10 @@
 package com.changanford.common.util.toolbar
 
-import com.changanford.common.R
-
 
 import android.app.Activity
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import com.changanford.common.R
 import com.gyf.immersionbar.ImmersionBar
 
 fun Toolbar.config(activity: Activity, builder: Builder) {
@@ -23,7 +22,7 @@ fun Toolbar.config(activity: Activity, builder: Builder) {
      * 设置返回按钮
      */
     if (builder.isShowLeftButton) {
-        setNavigationIcon(if (builder.leftButtonRes == 0) R.mipmap.back_xhdpi else builder.leftButtonRes)
+        setNavigationIcon(if (builder.leftButtonRes == 0) R.mipmap.ic_left_back_gray else builder.leftButtonRes)
         setNavigationOnClickListener { view ->
             if (builder.leftButtonClickListener != null) {
                 builder.leftButtonClickListener!!.onClick(view)

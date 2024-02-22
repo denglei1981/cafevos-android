@@ -13,18 +13,14 @@ import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.changanford.common.BuildConfig
 import com.changanford.common.R
 import com.changanford.common.util.CircleGlideTransform
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.RoundGlideTransform
-import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.SimpleTargetUtils
 
@@ -105,6 +101,11 @@ object GlideUtils {
         } else {
             handleImgUrl(url).toString()
         }
+    }
+
+    fun compress85(url: String?): String {
+        return "${handleImgUrl(url)}?x-oss-process=image/quality,q_85"
+
     }
 
     fun handleNullableUrl(preUrl: String?): String? =
@@ -249,7 +250,11 @@ object GlideUtils {
      * 加载圆形
      */
     @JvmOverloads
-    fun loadCircle(url: String?, imageView: ImageView, @DrawableRes errorDefaultRes: Int = R.mipmap.head_default_circle) {
+    fun loadCircle(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.head_default_circle
+    ) {
         loadTransform(url, CircleGlideTransform(), imageView, errorDefaultRes)
     }
 
