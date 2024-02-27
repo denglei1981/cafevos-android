@@ -1,165 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
     </data>
 
-    <LinearLayout
-        android:id="@+id/ll_fast"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical"
         android:paddingStart="16dp"
-        android:paddingBottom="32dp"
-        android:paddingEnd="16dp"
-        tools:ignore="RtlSymmetry">
+        android:paddingBottom="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_fast_in"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="@string/home_fast_in"
+            android:textColor="@color/color_33"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_one"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:background="@color/blue_press" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_one"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="在线下订"
-                    tools:textColor="@color/black" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_marginStart="9dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_two"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:background="@color/blue_press" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_two"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="在线下订"
-                    tools:textColor="@color/black" />
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_two"
-            android:layout_width="match_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_fast_in"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/dp_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_fast_in" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_three"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:background="@color/blue_press" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_three"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="在线下订"
-                    tools:textColor="@color/black" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_four"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:background="@color/blue_press" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_four"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="在线下订"
-                    tools:textColor="@color/black" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_five"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:background="@color/blue_press" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_five"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="在线下订"
-                    tools:textColor="@color/black" />
-            </RelativeLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

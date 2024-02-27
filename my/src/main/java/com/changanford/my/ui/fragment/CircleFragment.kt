@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.manger.RouterManger
@@ -20,7 +18,6 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
-import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
 import com.changanford.my.databinding.FragmentCollectBinding
@@ -97,7 +94,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
     /**
      * 搜索
      * */
-    fun startSearch(searchKeys: String ) {
+    fun startSearch(searchKeys: String) {
         this.searchKeys = searchKeys
         binding.rcyCollect.smartCommonLayout.autoRefresh()
     }
@@ -108,6 +105,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
             0 -> {
                 viewModel.myJoinCircle(searchKeys)
             }
+
             1 -> {
                 viewModel.myMangerCircle(searchKeys)
             }
@@ -141,7 +139,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
-                    holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
+                    holder.setText(
+                        R.id.item_user,
+                        "${item.userCount}  成员  ${item.postsCount}  帖子"
+                    )
                     //状态 状态 1待审核  2审核通过
                     val statusTv: TextView = holder.getView(R.id.status_text)
                     val status = item.status
@@ -150,6 +151,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             statusTv.visibility = View.VISIBLE
                             statusTv.text = "审核中"
                         }
+
                         else -> {
                             statusTv.visibility = View.GONE
                         }
@@ -164,6 +166,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         JumpUtils.instans?.jump(6, item.circleId)
                     }
                 }
+
                 1 -> {
                     val title: AppCompatTextView = holder.getView(R.id.circle_user)
                     title.text = item.typeStr
@@ -173,7 +176,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
-                    holder.setText(R.id.item_user, "${item.userCount}  成员  ${item.postsCount}  帖子")
+                    holder.setText(
+                        R.id.item_user,
+                        "${item.userCount}  成员  ${item.postsCount}  帖子"
+                    )
                     holder.getView<ImageView>(R.id.img_star).visibility =
                         if (item.star == "YES") View.VISIBLE else View.GONE
                     val statusTV: TextView = holder.getView(R.id.status_text)
@@ -207,6 +213,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .startARouter(ARouterCirclePath.CreateCircleActivity)
                             }
                         }
+
                         "3" -> {
                             statusTV.visibility = View.VISIBLE
                             statusTV.text = "通过"
@@ -227,6 +234,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                 JumpUtils.instans?.jump(6, item.circleId)
                             }
                         }
+
                         else -> {
                             statusTV.visibility = View.GONE
                         }

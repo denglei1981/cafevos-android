@@ -19,11 +19,11 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import com.changanford.common.R
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toIntPx
+
 
 object MUtils {
 
@@ -45,7 +45,10 @@ object MUtils {
 
                 override fun updateDrawState(ds: TextPaint) {
                     super.updateDrawState(ds)
-                    ds.color = ContextCompat.getColor(textView.context, R.color.circle_1B3B89)
+                    ds.color = ContextCompat.getColor(
+                        textView.context,
+                        com.changanford.common.R.color.circle_1B3B89
+                    )
                     ds.isUnderlineText = false //去除超链接的下划线
                 }
             }, content1.length,
@@ -74,7 +77,10 @@ object MUtils {
 
                 override fun updateDrawState(ds: TextPaint) {
                     super.updateDrawState(ds)
-                    ds.color = ContextCompat.getColor(textView.context, R.color.circle_9eaed8)
+                    ds.color = ContextCompat.getColor(
+                        textView.context,
+                        com.changanford.common.R.color.circle_9eaed8
+                    )
                     ds.isUnderlineText = false //去除超链接的下划线
                 }
             }, content1.length,
@@ -162,8 +168,8 @@ object MUtils {
         } else params.topMargin = 0
     }
 
-    private var expand = "展开 ∨"
-    private var collapse = "收起 ∧"
+    private var expand = "展开  "
+    private var collapse = "收起  "
 
     fun expandText(contentTextView: TextView, msg: String) {
         val text: CharSequence = contentTextView.text
@@ -203,10 +209,20 @@ object MUtils {
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE
             )
             ssb.setSpan(
-                ForegroundColorSpan(contentTextView.resources.getColor(R.color.color_8195C8)),
+                ForegroundColorSpan(contentTextView.resources.getColor(com.changanford.common.R.color.color_1700f4)),
                 ssb.length - expand.length, ssb.length,
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE
             )
+            val drawable = ContextCompat.getDrawable(
+                contentTextView.context,
+                com.changanford.common.R.mipmap.ic_expand_text_end
+            )
+
+            drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+            val imageSpan = drawable?.let { CenterImageSpan(it) }
+
+            ssb.setSpan(imageSpan, ssb.length - 2, ssb.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
             contentTextView.movementMethod = LinkMovementMethod.getInstance()
             contentTextView.text = ssb
         }
@@ -234,10 +250,19 @@ object MUtils {
             Spanned.SPAN_INCLUSIVE_EXCLUSIVE
         )
         ssb.setSpan(
-            ForegroundColorSpan(contentTextView.resources.getColor(R.color.color_8195C8)),
+            ForegroundColorSpan(contentTextView.resources.getColor(com.changanford.common.R.color.color_1700f4)),
             ssb.length - collapse.length, ssb.length,
             Spanned.SPAN_INCLUSIVE_EXCLUSIVE
         )
+        val drawable = ContextCompat.getDrawable(
+            contentTextView.context,
+            com.changanford.common.R.mipmap.ic_collapse_text_end
+        )
+
+        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        val imageSpan = drawable?.let { CenterImageSpan(it) }
+
+        ssb.setSpan(imageSpan, ssb.length - 2, ssb.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         contentTextView.text = ssb
     }
 

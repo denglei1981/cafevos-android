@@ -1,8 +1,11 @@
 package com.changanford.home.adapter
 
+import android.view.View
+import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Topic
+import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.setDrawableRight
 import com.changanford.common.utilext.toIntPx
@@ -23,6 +26,11 @@ class PolySearchTopicAdapter :
         item: Topic
     ) {
         holder.dataBinding?.apply {
+            setMargin(
+                root,
+                ((55.toDouble() / 375) * MConstant.deviceWidth).toInt(),
+                holder.layoutPosition
+            )
 //            setTitleMaxWidth(this)
             tvTitle.text = item.name
 
@@ -36,6 +44,20 @@ class PolySearchTopicAdapter :
                 tvTitle.setDrawableNull()
             }
         }
+    }
+
+    private fun setMargin(view: View?, margin: Int, position: Int) {
+        view?.let {
+            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+            if (isOdd(position)) {
+                params.leftMargin = 30.toIntPx()
+            } else params.leftMargin = 0
+        }
+
+    }
+
+    private fun isOdd(number: Int): Boolean {
+        return number % 2 != 0 // 如果余数不等于零则表示该数字为奇数
     }
 
     private fun setTitleMaxWidth(binding: ItemSearchTopicBinding) {

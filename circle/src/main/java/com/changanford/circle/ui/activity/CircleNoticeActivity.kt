@@ -12,13 +12,12 @@ import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
-import com.changanford.common.util.toolbar.initTitleBar
 import com.gyf.immersionbar.ImmersionBar
 
 /**
  *Author lcw
  *Time on 2022/8/17
- *Purpose 圈子公告
+ *Purpose 公告栏
  */
 @Route(path = ARouterCirclePath.CircleNoticeActivity)
 class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNoticeViewMode>() {
@@ -72,7 +71,7 @@ class CircleNoticeActivity : BaseActivity<ActivityCircleNoticeBinding, CircleNot
             if (page == 1) {
                 binding.refreshLayout.finishRefresh()
                 if (it?.dataList.isNullOrEmpty()) {
-                    noticeAdapter.setEmptyView(R.layout.base_layout_empty)
+                    noticeAdapter.setEmptyView(R.layout.base_layout_empty_search)
                 }
                 noticeAdapter.setList(it?.dataList)
             } else {

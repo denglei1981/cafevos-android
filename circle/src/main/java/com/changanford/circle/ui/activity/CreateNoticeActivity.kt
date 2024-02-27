@@ -2,6 +2,8 @@ package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
@@ -14,7 +16,6 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
-import com.qw.soul.permission.SoulPermission
 
 /**
  *Author lcw
@@ -35,6 +36,7 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
                 this@CreateNoticeActivity,
                 Builder().apply {
                     title = "发布公告"
+                    rightMenuRes
                     leftButtonClickListener = object : Builder.LeftButtonClickListener {
                         override fun onClick(view: View?) {
                             backCheck()
@@ -42,6 +44,15 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
 
                     }
                 })
+            title.tvRight.isVisible = true
+            title.tvRight.text = "立即发布"
+            title.tvRight.isEnabled = false
+            title.tvRight.setTextColor(
+                ContextCompat.getColor(
+                    this@CreateNoticeActivity,
+                    R.color.color_80a6
+                )
+            )
         }
         initMyListener()
 
@@ -55,14 +66,13 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
     private fun initMyListener() {
         binding.run {
             etTitle.addTextChangedListener {
-                tvTitleNum.text = "${it?.length}/20"
                 inspectContent()
             }
             etContent.addTextChangedListener {
                 tvContentNum.text = "${it?.length}/500"
                 inspectContent()
             }
-            tvPost.setOnClickListener {
+            binding.title.tvRight.setOnClickListener {
                 val title = etTitle.text.toString()
                 val content = etContent.text.toString()
                 if (changeNoticeBean != null) {
@@ -109,11 +119,25 @@ class CreateNoticeActivity : BaseActivity<ActivityCreateNoticeBinding, CircleNot
         val hasContentTitle = binding.etTitle.text.toString().isNotEmpty()
         val hasContentContent = binding.etContent.text.toString().isNotEmpty()
         if (hasContentTitle && hasContentContent) {
-            binding.tvPost.setBackgroundResource(R.drawable.bg_00095b_20)
-            binding.tvPost.isEnabled = true
+//            binding.tvPost.setBackgroundResource(R.drawable.bg_00095b_20)
+//            binding.tvPost.isEnabled = true
+            binding.title.tvRight.isEnabled = true
+            binding.title.tvRight.setTextColor(
+                ContextCompat.getColor(
+                    this@CreateNoticeActivity,
+                    R.color.color_1700F4
+                )
+            )
         } else {
-            binding.tvPost.setBackgroundResource(R.drawable.bg_dd_20)
-            binding.tvPost.isEnabled = false
+//            binding.tvPost.setBackgroundResource(R.drawable.bg_dd_20)
+//            binding.tvPost.isEnabled = false
+            binding.title.tvRight.isEnabled = false
+            binding.title.tvRight.setTextColor(
+                ContextCompat.getColor(
+                    this@CreateNoticeActivity,
+                    R.color.color_80a6
+                )
+            )
         }
     }
 }

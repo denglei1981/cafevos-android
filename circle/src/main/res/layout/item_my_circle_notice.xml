@@ -10,66 +10,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_ebecf2_5"
-        android:orientation="vertical">
+        android:background="@drawable/bg_081700f4_12"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_whit5_bg"
-            android:paddingBottom="16dp">
+            android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/color_33"
-                android:textSize="15sp"
+                android:layout_marginEnd="16dp"
+                android:lineSpacingMultiplier="1.3"
+                android:textColor="@color/color_16"
+                android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="公告标题全部展示" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_type"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_1700f4_4"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="通过" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="13dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/color_66"
-                android:textSize="13sp"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/color_8016"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title"
                 tools:text="公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；" />
-
-            <View
-                android:id="@+id/v_line"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/line_default_color"
-                app:layout_constraintTop_toBottomOf="@+id/tv_content" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_type"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/bg_819_2"
-                android:gravity="center"
-                android:paddingStart="5.5dp"
-                android:paddingEnd="5.5dp"
-                android:textColor="@color/white"
-                android:textSize="11sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_content"
-                app:layout_constraintTop_toBottomOf="@+id/v_line"
-                tools:text="通过" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_time"
@@ -80,10 +71,10 @@
                 android:maxLength="10"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/color_66"
-                android:textSize="12sp"
-                app:layout_constraintRight_toRightOf="@+id/v_line"
-                app:layout_constraintTop_toBottomOf="@+id/v_line"
+                android:textColor="@color/color_8016"
+                android:textSize="10sp"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content"
                 tools:text="5分钟前" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -92,32 +83,43 @@
             android:id="@+id/ll_reason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/color_1a4a" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="13dp"
                 android:text="原因:审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过审核不过"
-                android:textColor="@color/color_1700f4"
-                android:textSize="11sp"
+                android:textColor="@color/color_cc3333"
+                android:textSize="12sp"
                 tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_re_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="13dp"
-                android:text="重新编辑 ›"
-                android:textColor="@color/color_8195C8"
-                android:textSize="11sp"
+                android:drawableEnd="@mipmap/ic_right_app_color"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:text="重新编辑"
+                android:textColor="@color/color_1700f4"
+                android:textSize="12sp"
                 tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 

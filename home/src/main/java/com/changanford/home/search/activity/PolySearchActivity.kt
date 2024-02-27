@@ -1,6 +1,5 @@
 package com.changanford.home.search.activity
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -11,9 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.adapter.HomeSearchAcAdapter
 import com.changanford.common.basic.BaseActivity
@@ -29,7 +26,6 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.SearchRecordDatabase
 import com.changanford.common.util.room.SearchRecordEntity
-import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.home.R
@@ -127,33 +123,33 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
-        val divider: Int = 30.toIntPx()
-        val gridItemDecoration = object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
-                val layoutManager = parent.layoutManager as GridLayoutManager?
-                val lp = view.layoutParams as GridLayoutManager.LayoutParams
-                val spanCount = layoutManager!!.spanCount
-                val layoutPosition =
-                    (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
-                if (lp.spanSize != spanCount) {
-                    //左边间距
-                    if (layoutPosition % 2 == 1) {
-                        outRect.left = divider / 2
-                        outRect.right = 0
-                    } else {
-                        outRect.left = 0
-                        outRect.right = (divider / 2) + 15.toIntPx()
-                    }
-                }
-            }
-
-        }
-        binding.ryTopic.addItemDecoration(gridItemDecoration)
+//        val divider: Int = 30.toIntPx()
+//        val gridItemDecoration = object : RecyclerView.ItemDecoration() {
+//            override fun getItemOffsets(
+//                outRect: Rect,
+//                view: View,
+//                parent: RecyclerView,
+//                state: RecyclerView.State
+//            ) {
+//                val layoutManager = parent.layoutManager as GridLayoutManager?
+//                val lp = view.layoutParams as GridLayoutManager.LayoutParams
+//                val spanCount = layoutManager!!.spanCount
+//                val layoutPosition =
+//                    (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
+//                if (lp.spanSize != spanCount) {
+//                    //左边间距
+//                    if (layoutPosition % 2 == 1) {
+//                        outRect.left = divider / 2
+//                        outRect.right = 0
+//                    } else {
+//                        outRect.left = 0
+//                        outRect.right = (divider / 2) + 15.toIntPx()
+//                    }
+//                }
+//            }
+//
+//        }
+//        binding.ryTopic.addItemDecoration(gridItemDecoration)
 
         binding.tvClear.setOnClickListener {
             // 清空历史记录。

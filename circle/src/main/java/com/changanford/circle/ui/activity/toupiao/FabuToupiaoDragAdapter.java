@@ -47,7 +47,7 @@ public class FabuToupiaoDragAdapter extends BaseQuickAdapter<VoteOptionBean, Bas
                 GlideUtils.INSTANCE.loadRoundLocal(optionBean.getOptionImg(), binding.ivImg, 5);
             } else {
                 binding.ivDel.setVisibility(View.INVISIBLE);
-                binding.ivImg.setImageResource(R.mipmap.add_image);
+                binding.ivImg.setImageResource(R.mipmap.icon_toupiao_add);
             }
 
         }

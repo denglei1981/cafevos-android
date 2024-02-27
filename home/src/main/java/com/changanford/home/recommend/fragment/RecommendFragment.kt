@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
@@ -13,6 +14,7 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.UserManger
+import com.changanford.common.ui.GridSpacingItemDecoration
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -23,6 +25,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
@@ -30,11 +33,13 @@ import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.bean.HomeTopFastBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentRecommendListBinding
+import com.changanford.home.databinding.LayoutKingkongInBinding
 import com.changanford.home.databinding.LayoutRecommendFastInBinding
 import com.changanford.home.databinding.RecommendHeaderBinding
 import com.changanford.home.recommend.adapter.RecommendBannerAdapter
 import com.changanford.home.recommend.adapter.RecommendFastInListAdapter
 import com.changanford.home.recommend.request.RecommendViewModel
+import com.changanford.home.widget.SpacesItemDecoration
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -51,8 +56,10 @@ open class RecommendFragment :
     private var headNewBinding: RecommendHeaderBinding? = null
 
     private var fastInBinding: LayoutRecommendFastInBinding? = null
+    private var kingKongBinding: LayoutKingkongInBinding? = null
 
     private var isSecondHeader: Boolean = false
+    private var headIndex = 0
 
     private var topFastViews = ArrayList<HomeTopFastBean>()
 
@@ -101,6 +108,7 @@ open class RecommendFragment :
         addHeadView()
         viewModel.getRecommendBanner()
         viewModel.getFastEnter()
+        viewModel.getKingKong()
         viewModel.getRecommend(false)
 
     }
@@ -117,6 +125,7 @@ open class RecommendFragment :
             headNewBinding?.let {
                 isSecondHeader = true
                 recommendAdapter.addHeaderView(it.root, 0)
+                headIndex++
                 it.bViewpager.setAdapter(recommendBannerAdapter)
                 it.bViewpager.setCanLoop(true)
                 it.bViewpager.registerLifecycleObserver(lifecycle)
@@ -146,9 +155,11 @@ open class RecommendFragment :
         }
     }
 
-    var isAddFaster: Boolean = false
-    var isAddGridSpace: Boolean = false
-    var isAddLinearSpace: Boolean = false
+    private var isAddFaster: Boolean = false
+    private var isAddKingKong: Boolean = false
+    private var isAddGridSpace: Boolean = false
+    private var isAddLinearSpace: Boolean = false
+
     private fun addHeadFaster(isGrid: Boolean, dataList: List<AdBean>) {
         if (fastInBinding == null) {
             fastInBinding = DataBindingUtil.inflate(
@@ -160,6 +171,67 @@ open class RecommendFragment :
         }
         val fastInAdapter = RecommendFastInListAdapter()
         fastInBinding?.let { fi ->
+            fi.rvFastIn.adapter = fastInAdapter
+            var index = 1
+            if (!isSecondHeader) {
+                index = 0
+            }
+            if (dataList.isEmpty()) {
+                fi.tvFastIn.visibility = View.GONE
+            } else {
+                fi.tvFastIn.visibility = View.VISIBLE
+            }
+            if (!isAddFaster) {
+                recommendAdapter.addHeaderView(fi.root, headIndex)
+                isAddFaster = true
+            }
+            fastInAdapter.setList(dataList)
+            if (isGrid) {
+                fastInAdapter.isWith = false
+                fi.rvFastIn.layoutManager = GridLayoutManager(requireContext(), 3)
+                if (!isAddGridSpace) {
+                    fi.rvFastIn.addItemDecoration(
+                        GridSpacingItemDecoration(
+                            ScreenUtils.dp2px(
+                                requireContext(),
+                                10f
+                            ), 3
+                        )
+                    )
+                    isAddGridSpace = true
+                }
+
+            } else {
+                fastInAdapter.isWith = true
+                val linearLayoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                fi.rvFastIn.layoutManager = linearLayoutManager
+                if (!isAddLinearSpace) {
+                    fi.rvFastIn.addItemDecoration(
+                        SpacesItemDecoration(
+                            ScreenUtils.dp2px(
+                                requireContext(),
+                                10f
+                            )
+                        )
+                    )
+                    isAddLinearSpace = true
+                }
+            }
+        }
+
+    }
+
+    private fun addKingKong(dataList: List<AdBean>) {
+        if (kingKongBinding == null) {
+            kingKongBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.layout_kingkong_in,
+                binding.recyclerView,
+                false
+            )
+        }
+        kingKongBinding?.let { fi ->
             topFastViews.clear()
             topFastViews.add(HomeTopFastBean(fi.tvOne, fi.ivOne))
             topFastViews.add(HomeTopFastBean(fi.tvTwo, fi.ivTwo))
@@ -188,9 +260,10 @@ open class RecommendFragment :
                 bean.textView.text = adBean.adSubName
             }
             fi.llTwo.isVisible = dataList.size > 2
-            if (!isAddFaster) {
+            if (!isAddKingKong) {
                 recommendAdapter.addHeaderView(fi.root, index)
-                isAddFaster = true
+                headIndex++
+                isAddKingKong = true
             }
         }
 
@@ -237,7 +310,7 @@ open class RecommendFragment :
                 headNewBinding?.drIndicator?.visibility = View.GONE
             }
         })
-        viewModel.fastEnterLiveData.safeObserve(this, Observer {
+        viewModel.fastEnterLiveData.safeObserve(this) {
             if (it.isSuccess) {
                 when (it.data.showType) {
                     "SINGLE" -> {
@@ -253,8 +326,24 @@ open class RecommendFragment :
                     }
                 }
             }
+        }
+        viewModel.kingKongLiveData.safeObserve(this) {
+            if (it.isSuccess) {
+                when (it.data.showType) {
+                    "SINGLE" -> {
+                        addKingKong(it.data.ads)
+                    }
 
-        })
+                    "MULTI" -> {
+                        addKingKong(it.data.ads)
+                    }
+
+                    else -> {
+                        addKingKong(it.data.ads)
+                    }
+                }
+            }
+        }
     }
 
     private fun toPostOrNews(item: RecommendData) { // 跳转到资讯，或者 帖子
@@ -420,8 +509,10 @@ open class RecommendFragment :
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        headIndex = 0
         viewModel.getRecommend(false)
         viewModel.getFastEnter()
+        viewModel.getKingKong()
     }
 
     override fun onPause() {

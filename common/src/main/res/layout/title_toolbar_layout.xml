@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="49dp"
     android:minHeight="?attr/actionBarSize"
+    android:paddingStart="5dp"
     android:theme="@style/Theme.ToolBar.Common"
     app:layout_collapseMode="pin"
     app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -23,4 +24,15 @@
         android:textSize="18sp"
         tools:text="标题" />
 
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="right"
+        android:layout_marginEnd="24dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="测试" />
 </androidx.appcompat.widget.Toolbar>

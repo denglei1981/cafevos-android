@@ -131,7 +131,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
-                        app:constraint_referenced_ids="tv_search_hot,recycler_view_find"
+                        app:constraint_referenced_ids="tv_search_hot,recycler_view_find,iv_expand"
                         tools:visibility="visible" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -180,7 +180,8 @@
                         android:id="@+id/iv_topic_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
+                        android:layout_marginEnd="10dp"
+                        android:scaleType="centerCrop"
                         android:src="@mipmap/ic_search_all_topic_end"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_topic_left"
                         app:layout_constraintRight_toRightOf="parent"

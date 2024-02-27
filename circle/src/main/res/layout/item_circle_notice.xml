@@ -10,21 +10,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/shape_whit5_bg"
+        android:background="@drawable/shape_whit12_bg"
         android:paddingBottom="16dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/color_33"
-            android:textSize="15sp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/color_16"
+            android:textSize="16sp"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="公告标题全部展示" />
 
@@ -32,11 +32,11 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="13dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/color_66"
-            android:textSize="13sp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/color_8016"
+            android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:text="公告详情最多4排，超过点击【展开】下拉展开；公告详情最多4排，超过点击【展开】下拉展开；" />
 
@@ -44,10 +44,10 @@
             android:id="@+id/v_line"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/line_default_color"
+            android:layout_marginEnd="16dp"
+            android:background="@color/color_1a4a"
             app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="@color/color_66"
+            android:textColor="@color/color_8016"
             android:textSize="12sp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_content"
             app:layout_constraintTop_toBottomOf="@+id/v_line"
@@ -70,7 +70,7 @@
             android:maxLength="10"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/color_66"
+            android:textColor="@color/color_8016"
             android:textSize="12sp"
             app:layout_constraintRight_toRightOf="@+id/v_line"
             app:layout_constraintTop_toBottomOf="@+id/v_line"

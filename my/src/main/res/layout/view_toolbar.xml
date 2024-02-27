@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
-            app:navigationIcon="@mipmap/back_xhdpi">
+            android:paddingStart="10dp"
+            app:navigationIcon="@mipmap/ic_left_back_gray">
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -28,10 +29,10 @@
                 android:id="@+id/toolbar_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="end|center_vertical"
                 android:layout_marginRight="14dp"
                 android:textColor="@color/color_1700F4"
-                android:textSize="@dimen/text_size_big" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/toolbar_icon"
@@ -46,6 +47,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
+            android:visibility="gone"
             android:background="#EEEEEE" />
     </LinearLayout>
 

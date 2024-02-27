@@ -2,6 +2,7 @@ package com.changanford.circle.ui.activity
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
@@ -20,10 +21,8 @@ import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
-import com.changanford.common.utilext.toast
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
 
 /**
  *Author lcw
@@ -100,7 +99,6 @@ class CreateCircleTopicActivity :
     private fun initMyListener() {
         binding.run {
             etTitle.addTextChangedListener {
-                tvTitleNum.text = "${it?.length}/20"
                 inspectContent()
             }
             etContent.addTextChangedListener {
@@ -187,10 +185,12 @@ class CreateCircleTopicActivity :
         val hasContentTitle = binding.etTitle.text.toString().isNotEmpty()
         val hasContentContent = binding.etContent.text.toString().isNotEmpty()
         if (hasContentTitle && hasContentContent && picUrl.isNotEmpty()) {
-            binding.tvPost.setBackgroundResource(R.drawable.bg_00095b_20)
+            binding.tvPost.setBackgroundResource(R.drawable.bg_1700f4_100)
+            binding.tvPost.setTextColor(ContextCompat.getColor(this,R.color.white))
             binding.tvPost.isEnabled = true
         } else {
-            binding.tvPost.setBackgroundResource(R.drawable.bg_dd_20)
+            binding.tvPost.setBackgroundResource(R.drawable.bg_80a6_100)
+            binding.tvPost.setTextColor(ContextCompat.getColor(this,R.color.color_4d16))
             binding.tvPost.isEnabled = false
         }
     }

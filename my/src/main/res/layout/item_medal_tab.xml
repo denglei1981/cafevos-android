@@ -21,9 +21,9 @@
 
         <TextView
             android:id="@+id/tab_in"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_4"
-            android:layout_marginTop="@dimen/dp_6"
+            android:layout_width="32dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/tab_item_bg" />
 
     </LinearLayout>

@@ -1,6 +1,5 @@
 package com.changanford.my.ui
 
-import android.graphics.Typeface
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -108,14 +107,14 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                     val oldIn =
                         binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (oldTitle != null) {
-                        oldTitle.textSize = 14F
+                        oldTitle.textSize = 16F
                         oldTitle.setTextColor(
                             ContextCompat.getColor(
                                 context,
-                                R.color.color_0817
+                                R.color.color_9916
                             )
                         )
-                        oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+//                        oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
                         oldIn?.isSelected = false
                     }
 
@@ -124,7 +123,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                     val newIn =
                         binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (title != null) {
-                        title.textSize = 15F
+                        title.textSize = 18F
                         title.setTextColor(
                             ContextCompat.getColor(
                                 context,
@@ -132,7 +131,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                             )
                         )
                         //加粗
-                        title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+//                        title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                         newIn?.isSelected = true
                     }
 
@@ -146,7 +145,7 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                 //解决第一次进来item显示不完的bug
                 itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
                 if (tabPosition == 0) {
-                    itemHelpTabBinding.tvTab.textSize = 15F
+                    itemHelpTabBinding.tvTab.textSize = 18F
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
@@ -154,15 +153,15 @@ class MyCircleUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
                         )
                     )
                     //加粗
-                    itemHelpTabBinding.tvTab.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+//                    itemHelpTabBinding.tvTab.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 } else {
-                    itemHelpTabBinding.tvTab.textSize = 14F
-                    itemHelpTabBinding.tvTab.typeface =
-                        Typeface.defaultFromStyle(Typeface.NORMAL)
+                    itemHelpTabBinding.tvTab.textSize = 16F
+//                    itemHelpTabBinding.tvTab.typeface =
+//                        Typeface.defaultFromStyle(Typeface.NORMAL)
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.color_0817
+                            R.color.color_9916
                         )
                     )
                 }

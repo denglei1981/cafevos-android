@@ -5,7 +5,14 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.FastBeanData
 import com.changanford.common.bean.RecommendListBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
@@ -21,6 +28,7 @@ class RecommendViewModel : BaseViewModel() {
     val recommendBannerLiveData : SafeMutableLiveData<UpdateUiState<List<AdBean>>> = SafeMutableLiveData()
 
     val fastEnterLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
+    val kingKongLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
     var pageNo: Int = 1
     fun getRecommend(isLoadMore: Boolean) {
         HomeTimer.refreshTask(this)
@@ -77,6 +85,23 @@ class RecommendViewModel : BaseViewModel() {
                 }.onFailure {
                     val updateUiState = UpdateUiState<FastBeanData>(it, false, "")
                     fastEnterLiveData.postValue(updateUiState)
+                }
+        })
+    }
+
+    fun getKingKong() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
+            body["posCode"] = "king_kong_area"
+            ApiClient.createApi<HomeNetWork>()
+                .getFastEnter(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    val updateUiState = UpdateUiState<FastBeanData>(it, true, "")
+                    kingKongLiveData.postValue(updateUiState)
+                }.onFailure {
+                    val updateUiState = UpdateUiState<FastBeanData>(it, false, "")
+                    kingKongLiveData.postValue(updateUiState)
                 }
         })
     }
