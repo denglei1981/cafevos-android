@@ -43,60 +43,71 @@
                     <ImageView
                         android:id="@+id/iv_fengmian"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_160"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/default_release_fm" />
+                        android:layout_height="193dp"
+                        android:background="@drawable/bg_081700f4_12"
+                        android:scaleType="centerCrop" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/longpostadd" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_fm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/dp_4"
-                        android:layout_gravity="right|bottom"
-                        android:background="@drawable/circle_shape_blacksolid"
-                        android:paddingLeft="3dp"
-                        android:paddingRight="3dp"
+                        android:layout_width="40dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|top"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_post_pic_fm"
+                        android:gravity="center"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="@dimen/dp_4"
                         android:text="封面"
                         android:textColor="@color/white"
-                        android:textSize="9sp"
-                        android:visibility="gone" />
+                        android:textSize="@dimen/sp_12"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tv_fm_hint"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/dp_4"
+                        android:layout_margin="@dimen/dp_6"
                         android:gravity="center"
                         android:paddingLeft="3dp"
                         android:paddingTop="@dimen/dp_60"
                         android:paddingRight="3dp"
-                        android:text="请上传封面"
-                        android:textColor="@color/color_cc"
-                        android:textSize="@dimen/sp_13"
+                        android:text="上传封面"
+                        android:textColor="@color/color_4d16"
+                        android:textSize="14sp"
                         android:visibility="visible" />
                 </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center_vertical"
                         android:text="* "
                         android:textColor="@color/red"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         style="@style/commonTextView.Normal"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="25dp"
                         android:text="标题"
-                        android:textColor="@color/textblack"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_16"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -115,9 +126,9 @@
                         android:hint="请输入投票标题"
                         android:maxLength="20"
                         android:minEms="4"
-                        android:textColor="@color/textblack"
-                        android:textColorHint="@color/color_cc"
-                        android:textSize="14sp" />
+                        android:textColor="@color/color_d916"
+                        android:textColorHint="@color/color_4d16"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_num"
@@ -126,43 +137,43 @@
                         android:gravity="bottom"
                         android:text="0/20"
                         android:textColor="#AFB3B6"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/alertdialog_line" />
+                    android:layout_marginTop="16dp"
+                    android:background="@color/color_1a4a" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="2dp"
                         android:text="* "
                         android:textColor="@color/red"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         style="@style/commonTextView.Normal"
-                        android:layout_marginTop="30dp"
                         android:layout_marginRight="25dp"
                         android:text="活动时间"
-                        android:textColor="@color/textblack"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_16"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/rl_acttime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="12dp">
 
                     <TextView
                         android:id="@+id/tv_time"
@@ -170,8 +181,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:background="@color/transparent"
-                        android:text="请选择活动时间"
-                        android:textColor="@color/color_cc" />
+                        android:hint="请选择活动时间"
+                        android:textColor="@color/color_d916"
+                        android:textColorHint="@color/color_4d16"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_acttime"
@@ -181,7 +194,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/tv_time"
-                        android:drawableRight="@mipmap/rightarrow"
+                        android:drawableRight="@mipmap/right_74889d"
                         android:drawablePadding="5dp"
                         android:gravity="right"
                         android:singleLine="true"
@@ -195,8 +208,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/alertdialog_line" />
+                    android:layout_marginTop="16dp"
+                    android:background="@color/color_1a4a" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -215,55 +228,53 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="6dp"
                         android:text="* "
                         android:textColor="@color/red"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         style="@style/commonTextView.Normal"
-                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:text="选项设置"
-                        android:textColor="@color/textblack"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_16"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/bg_f6_cor14"
+                        android:background="@drawable/bg_1aa6_100"
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/dp_2"
                         android:paddingVertical="@dimen/dp_2">
 
                         <TextView
                             android:id="@+id/togwenzi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/dp_10"
-                            android:background="@drawable/bg_white_12"
-                            android:paddingVertical="@dimen/dp_2"
+                            android:layout_width="47dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/bg_white_100"
+                            android:gravity="center"
                             android:text="文字"
-                            android:textColor="@color/color_33"
-                            android:textSize="@dimen/sp_12" />
+                            android:textColor="@color/color_16"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/togtuwen"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="@dimen/dp_10"
-                            android:paddingVertical="@dimen/dp_2"
+                            android:layout_width="47dp"
+                            android:layout_height="30dp"
+                            android:gravity="center"
                             android:text="图文"
-                            android:textColor="@color/color_cc"
-                            android:textSize="@dimen/sp_12" />
+                            android:textColor="@color/color_4d16"
+                            android:textSize="14sp" />
 
                     </LinearLayout>
 
@@ -274,28 +285,29 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="18dp"
                     android:layout_marginBottom="@dimen/dp_20" />
 
                 <RelativeLayout
-
                     android:id="@+id/ll_add"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_f2f4_5">
+                    android:background="@drawable/bg_081700f4_12">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/text"
-                        style="@style/commonTextView.Normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center_horizontal"
                         android:gravity="center"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:text="添加选项 (最多20个）"
-                        android:textSize="15sp" />
+                        android:textColor="@color/color_1700f4"
+                        android:textSize="14sp" />
 
                     <TextView
                         style="@style/commonTextView"
@@ -303,12 +315,12 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_toLeftOf="@id/text"
                         android:gravity="center"
-                        android:paddingTop="10dp"
+                        android:paddingTop="8dp"
                         android:paddingRight="5dp"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="8dp"
                         android:text="+"
                         android:textColor="@color/color_1700f4"
-                        android:textSize="30sp" />
+                        android:textSize="25sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -326,22 +338,21 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="25dp"
                     android:text="投票说明"
-                    android:textColor="@color/textblack"
-                    android:textSize="15sp" />
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_f8_5"
+                    android:background="@drawable/bg_081700f4_12"
                     android:gravity="center_vertical"
                     android:padding="@dimen/dp_5">
 
                     <EditText
                         android:id="@+id/et_shuoming"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_height="120dp"
                         android:background="@color/transparent"
                         android:gravity="top"
                         android:hint="请输入投票说明"
@@ -349,9 +360,9 @@
                         android:minEms="4"
                         android:minLines="5"
                         android:padding="@dimen/dp_5"
-                        android:textColor="@color/textblack"
-                        android:textColorHint="@color/color_cc"
-                        android:textSize="14sp"
+                        android:textColor="@color/color_d916"
+                        android:textColorHint="@color/color_4d16"
+                        android:textSize="16sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -362,32 +373,33 @@
                         android:layout_marginBottom="@dimen/dp_5"
                         android:gravity="bottom"
                         android:text="0/500"
-                        android:textColor="#AFB3B6"
-                        android:textSize="13sp"
+                        android:textColor="@color/color_8016"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
-                    style="@style/commonTextView.Normal"
-                    android:layout_marginTop="20dp"
-                    android:text="高级设置"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:text="选项设置"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="24dp">
 
                     <TextView
                         android:id="@+id/multeorsignletxt"
-                        style="@style/commonTextView.Normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="允许多选"
-                        android:textColor="@color/color_66"
-                        android:textSize="14sp" />
+                        android:textColor="@color/color_d916"
+                        android:textSize="15sp" />
 
                     <CheckBox
                         android:id="@+id/multeorsignle"
@@ -403,28 +415,28 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/alertdialog_line" />
+                    android:layout_marginTop="10dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/ssss"
-                        style="@style/commonTextView.Normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="查看投票明细"
-                        android:textColor="@color/color_66"
-                        android:textSize="14sp" />
+                        android:textColor="@color/color_d916"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:id="@+id/question"
                         android:layout_width="@dimen/dp_20"
                         android:layout_height="@dimen/dp_20"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginLeft="@dimen/dp_4"
                         android:layout_toRightOf="@id/ssss"
                         android:src="@mipmap/icon_toupiao_question" />
 
@@ -442,8 +454,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/alertdialog_line" />
+                    android:layout_marginTop="10dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/nick_save"
@@ -452,12 +463,12 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="40dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/next_btn_bg"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:background="@drawable/bg_80a6_100"
                     android:enabled="true"
                     android:gravity="center"
                     android:text="发布投票"
-                    android:layout_marginBottom="@dimen/dp_20"
-                    android:textColor="@color/white"
+                    android:textColor="@color/color_4d16"
                     android:textSize="@dimen/text_size_mid"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"

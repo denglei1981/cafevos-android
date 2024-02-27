@@ -255,6 +255,7 @@ object LiveDataBusKey {
     const val NEWS_DETAIL_CHANGE = "NEWS_DETAIL_CHANGE"//详情数据更改。。。
 
     const val LIST_FOLLOW_CHANGE = "LIST_FOLLOW_CHANGE"//专题列表关注改变
+    const val FOLLOW_USER_CHANGE = "followUserChange"
 
     const val SHOP_CREATE_ORDER_BACK = "shop_create_order_back"//商品创建订单回调
 
@@ -300,6 +301,8 @@ object LiveDataBusKey {
     const val GET_USER_APPROVE_CAR = "getUserApproveCar"
 
     const val FORD_ALBUM_RESULT = "fordAlbumResult"
+    const val FABUTOUPIAOITEM = "fabuTouPItem"
+    const val DISMISS_FORD_PAI_DIALOG = "disMissFordDialog"
 
     const val MAIN_TAB_CHANGE = "mainTabChange"
     const val IS_CHECK_PERSONAL = "isCheckPersonal"

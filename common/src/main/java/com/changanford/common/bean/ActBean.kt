@@ -250,12 +250,30 @@ data class InfoDataBean(
     val jumpType: Int = 0
 ) : MultiItemEntity {
 
-    fun getCommentCountResult(): String {
+    fun getCommentResult(): String {
         var commentCountResult: String = ""
         if (commentCount == 0L) {
             return "评论"
         }
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getViewsResult(): String {
+        var commentCountResult: String = ""
+        if (viewsCount == 0L) {
+            return "浏览"
+        }
+        commentCountResult = CountUtils.formatNum(viewsCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getGoodsResult(): String {
+        var commentCountResult: String = ""
+        if (likesCount == 0L) {
+            return "点赞"
+        }
+        commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
         return commentCountResult
     }
 
@@ -429,6 +447,34 @@ data class PostDataBean(
     var tags: MutableList<PostKeywordBean>? = null,
     var addrName: String? = ""
 ) {
+
+    fun getCommentResult(): String {
+        var commentCountResult: String = ""
+        if (commentCount == 0L) {
+            return "评论"
+        }
+        commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getViewsResult(): String {
+        var commentCountResult: String = ""
+        if (viewsCount == 0L) {
+            return "浏览"
+        }
+        commentCountResult = CountUtils.formatNum(viewsCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getGoodsResult(): String {
+        var commentCountResult: String = ""
+        if (likesCount == 0L) {
+            return "点赞"
+        }
+        commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
+        return commentCountResult
+    }
+
     fun getCommentCountAnViewCount(): String {
         val commentStr =
             CountUtils.formatNum(commentCount.toString(), false).toString().plus("评论  ")

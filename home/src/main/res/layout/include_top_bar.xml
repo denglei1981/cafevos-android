@@ -48,7 +48,7 @@
             android:drawableStart="@mipmap/ic_home_top_search"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
-            android:hint="搜索内容"
+            android:hint="请输入关键字搜索"
             android:imeOptions="actionSearch"
             android:maxLines="1"
             android:paddingLeft="10dp"

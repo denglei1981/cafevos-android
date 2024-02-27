@@ -4,8 +4,6 @@ import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AppNavigateBean
 import com.changanford.common.bean.ConfigBean
-import com.changanford.common.constant.HawkKey
-import com.orhanobut.hawk.Hawk
 import java.io.File
 
 /**********************************************************************************
@@ -255,4 +253,5 @@ object MConstant {
     //口碑url
     val mouthUrl by lazy { if (isCanQeck) if (isDebug) "https://h5fymqa.fuyu.club/post-h5/" else "https://h5fym.fuyu.club/post-h5" else "https://h5fym.fuyu.club/post-h5" }
 
+    var circleCheckPosition = 1
 }

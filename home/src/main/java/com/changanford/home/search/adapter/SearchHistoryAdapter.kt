@@ -3,7 +3,9 @@ package com.changanford.home.search.adapter
 import androidx.lifecycle.MutableLiveData
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.SearchRecordEntity
+import com.changanford.common.utilext.toIntPx
 import com.changanford.home.R
 import com.changanford.home.databinding.ItemCommonSearchTagBinding
 
@@ -18,6 +20,7 @@ class SearchHistoryAdapter :
         item: SearchRecordEntity
     ) {
         holder.dataBinding?.let {
+            it.tvSearchTag.maxWidth = MConstant.deviceWidth - 24.toIntPx()
             it.tvSearchTag.text = item.keyword
         }
     }

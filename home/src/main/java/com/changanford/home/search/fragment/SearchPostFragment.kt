@@ -3,6 +3,7 @@ package com.changanford.home.search.fragment
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.FollowUserChangeBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
@@ -69,9 +70,13 @@ class SearchPostFragment :
             JumpUtils.instans!!.jump(4, item.postsId.toString())
         }
 
-        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this){
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this) {
             outRefresh(it)
         }
+        LiveDataBus.get().withs<FollowUserChangeBean>(LiveDataBusKey.FOLLOW_USER_CHANGE)
+            .observe(this) {
+                refreshUserFollow(it.userId, it.followType)
+            }
     }
 
     override fun initData() {
@@ -104,6 +109,7 @@ class SearchPostFragment :
             }
         })
 
+
 //        LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
 //            .observe(this, Observer {
 //                // 主要是改，点赞，评论， 浏览记录。。。
@@ -130,16 +136,29 @@ class SearchPostFragment :
         }
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_FOLLOW_USER).observe(this) {
             val item = searchPostsResultAdapter.getItem(selectPosition)
+            if (item.authorBaseVo?.isFollow != it) {
+                item.authorBaseVo?.authorId?.let { it1 -> refreshUserFollow(it1, it) }
+            }
             item.authorBaseVo?.isFollow = it
             searchPostsResultAdapter.notifyItemChanged(selectPosition)
         }
+    }
+
+    private fun refreshUserFollow(userId: String, type: Int) {
+        val list = searchPostsResultAdapter.data
+        list.forEach { bean ->
+            if (bean.authorBaseVo?.authorId == userId) {
+                bean.authorBaseVo?.isFollow = type
+            }
+        }
+        searchPostsResultAdapter.notifyDataSetChanged()
     }
 
     override fun onRetryBtnClick() {
 
     }
 
-  private  fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+    private fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
     }

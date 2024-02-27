@@ -19,12 +19,12 @@ class FordAlbumPicAdapter :
     BaseQuickAdapter<String, BaseDataBindingHolder<ItemFordAlbumPicBinding>>(R.layout.item_ford_album_pic) {
 
     private val imgWidth by lazy {
-        (ScreenUtils.getScreenWidth(context)) / 4
+        (ScreenUtils.getScreenWidth(context) - 16.toIntPx()) / 4
     }
 
     override fun convert(holder: BaseDataBindingHolder<ItemFordAlbumPicBinding>, item: String) {
         holder.dataBinding?.run {
-            setMargin(this.root, holder.layoutPosition+1)
+            setMargin(this.root, holder.layoutPosition + 1)
             ivPic.layoutParams?.height = imgWidth
             GlideUtils.loadBD(item, ivPic)
         }
@@ -37,7 +37,7 @@ class FordAlbumPicAdapter :
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
         if (position % 4 != 0) {
             params.rightMargin =
-                1.toIntPx()
+                4.toIntPx()
         } else params.rightMargin = 0
     }
 }

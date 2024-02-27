@@ -35,7 +35,6 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.ui.dialog.PostDialog
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -67,7 +66,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
-    private val tabList = listOf("动态", "圈子", "问答", /*"Mustang专区"*/)
+    private val tabList = listOf("动态", "圈子", "问答" /*"Mustang专区"*/)
 
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
@@ -223,8 +222,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 //                    bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, true)
 //                    startARouter(ARouterCirclePath.VideoPostActivity, bundle, true)
 //                } else {
-                    bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, isVideo)
-                    startARouter(ARouterCirclePath.PostActivity, bundle, true)
+                bundle.putBoolean(CircleConfig.CIRCLE_IS_POST_VIDEO, isVideo)
+                startARouter(ARouterCirclePath.PostActivity, bundle, true)
 //                }
             }
 
@@ -384,16 +383,19 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                     0 -> {
                         GioPageConstant.communitySecondPageName = "社区页-广场"
                         BuriedUtil.instant?.communityMainTopMenu("广场")
+                        MConstant.circleCheckPosition = 1
                     }
 
                     1 -> {
                         GioPageConstant.communitySecondPageName = "社区页-圈子"
                         BuriedUtil.instant?.communityMainTopMenu("圈子")
+                        MConstant.circleCheckPosition = 0
                     }
 
                     2 -> {
                         GioPageConstant.communitySecondPageName = "社区页-问答"
                         BuriedUtil.instant?.communityMainTopMenu("问答")
+                        MConstant.circleCheckPosition = 4
                     }
 
                     3 -> {

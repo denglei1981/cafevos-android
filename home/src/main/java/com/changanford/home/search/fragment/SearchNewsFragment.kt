@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.FollowUserChangeBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -78,9 +79,23 @@ class SearchNewsFragment :
 
         })
 
-        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this){
+        LiveDataBus.get().withs<String>(LiveDataBusKey.UPDATE_SEARCH_RESULT).observe(this) {
             outRefresh(it)
         }
+        LiveDataBus.get().withs<FollowUserChangeBean>(LiveDataBusKey.FOLLOW_USER_CHANGE)
+            .observe(this) {
+                refreshUserFollow(it.userId, it.followType)
+            }
+    }
+
+    private fun refreshUserFollow(userId: String, type: Int) {
+        val list = searchNewsResultAdapter.data
+        list.forEach { bean ->
+            if (bean.authors?.authorId == userId) {
+                bean.authors?.isFollow = type
+            }
+        }
+        searchNewsResultAdapter.notifyDataSetChanged()
     }
 
     override fun initData() {
@@ -118,6 +133,9 @@ class SearchNewsFragment :
                 // 主要是改，点赞，评论， 浏览记录。。。
 
                 val item = searchNewsResultAdapter.getItem(selectPosition)
+                if (item.authors?.isFollow != it.isFollow) {
+                    item.authors?.authorId?.let { it1 -> refreshUserFollow(it1, it.isFollow) }
+                }
                 item.likesCount = it.likeCount
                 item.isLike = it.isLike
                 item.authors?.isFollow = it.isFollow
@@ -131,10 +149,11 @@ class SearchNewsFragment :
 
     }
 
-  private  fun outRefresh(keyWord: String) { // 暴露给外部的耍新
+    private fun outRefresh(keyWord: String) { // 暴露给外部的耍新
         searchContent = keyWord
         onRefresh(binding.smartLayout)
     }
+
     override fun onRefresh(refreshLayout: RefreshLayout) {
         searchContent?.let {
             viewModel.getSearchContent(it, false)

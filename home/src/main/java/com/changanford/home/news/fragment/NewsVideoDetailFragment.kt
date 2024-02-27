@@ -350,10 +350,7 @@ class NewsVideoDetailFragment :
             }
         }
         binding.llComment.tvNewsToLike.setPageTitleText(
-            CountUtils.formatNum(
-                newsDetailData.getLikeCount(),
-                false
-            ).toString()
+                newsDetailData.getLikeCount()
         )
         binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
         binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())

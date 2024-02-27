@@ -196,6 +196,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 bundle.putInt(SEARCH_TYPE, searchType)
                 bundle.putString(SEARCH_CONTENT, bean.keyword)
                 startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+                finish()
             }
         }
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
@@ -266,7 +267,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         if (needHide) {
             HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
         }
-        binding.layoutSearch.searchContent.setText(searchContent)
+//        binding.layoutSearch.searchContent.setText(searchContent)
         isPs()
 
     }
@@ -276,6 +277,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
+        finish()
         when (searchType) {
             SEARCH_POST -> { //搜索帖子。 埋点。
                 BuriedUtil.instant?.communityMainTopSearsh(searchContent)
@@ -404,8 +406,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 //    }
 
     fun isPs() {
-        viewModel.getSearchContent(searchContent)
+//        viewModel.getSearchContent(searchContent)
         viewModel.insertRecord(this, searchContent) // 异步写入本地数据库。
+        jumpNomarl()
     }
 
     override fun initData() {

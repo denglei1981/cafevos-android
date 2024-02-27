@@ -21,12 +21,14 @@ import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityToupiaoBinding
-import com.changanford.circle.ui.activity.baoming.ActivityFabuBaoming
 import com.changanford.circle.ui.activity.baoming.BaoMingViewModel
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.bean.*
+import com.changanford.common.bean.DtoBeanNew
+import com.changanford.common.bean.UpdateVoteReq
+import com.changanford.common.bean.VoteBean
+import com.changanford.common.bean.VoteOptionBean
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.helper.OSSHelper
 import com.changanford.common.net.onSuccess
@@ -37,14 +39,18 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
-import com.changanford.common.ui.dialog.BottomSelectDialog
-import com.changanford.common.ui.dialog.SelectPicDialog
-import com.changanford.common.util.*
+import com.changanford.common.ui.dialog.FordPaiBottomDialog
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShowPopUtils
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -55,7 +61,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 @Route(path = ARouterCirclePath.ActivityFabuToupiao)
 class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewModel>() {
@@ -119,28 +126,65 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                     }
                 }
             }
-            BottomSelectDialog(this, {
-                voteBean.coverImg = fengmianurl
-                var title = binding.etBiaoti.text.toString()
-                voteBean.title = title
-                voteBean.voteDesc = binding.etShuoming.text.toString()
-                voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
-                voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
-                var voteDB = PostEntity(
-                    postsId = draftBean?.postsId ?: insertPostId,
-                    type = "6",
-                    creattime = System.currentTimeMillis().toString(),
-                    toupiao = JSON.toJSONString(voteBean)
-                )
-                lifecycleScope.launch(Dispatchers.IO) {
-                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
-                        .insert(voteDB)
-                    withContext(Dispatchers.Main) {
+//            BottomSelectDialog(this, {
+//                voteBean.coverImg = fengmianurl
+//                var title = binding.etBiaoti.text.toString()
+//                voteBean.title = title
+//                voteBean.voteDesc = binding.etShuoming.text.toString()
+//                voteBean.allowMultipleChoice = if (binding.multeorsignle.isChecked) "YES" else "NO"
+//                voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
+//                var voteDB = PostEntity(
+//                    postsId = draftBean?.postsId ?: insertPostId,
+//                    type = "6",
+//                    creattime = System.currentTimeMillis().toString(),
+//                    toupiao = JSON.toJSONString(voteBean)
+//                )
+//                lifecycleScope.launch(Dispatchers.IO) {
+//                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+//                        .insert(voteDB)
+//                    withContext(Dispatchers.Main) {
+//                        finish()
+//                    }
+//                }
+//            }) {
+//                finish()
+//            }.show()
+
+            FordPaiBottomDialog(
+                this,
+                "是否保存草稿",
+                arrayListOf("保存草稿", "不保存"),
+                this,
+            ) { _, _, position ->
+                when (position) {
+                    0 -> {
+                        voteBean.coverImg = fengmianurl
+                        var title = binding.etBiaoti.text.toString()
+                        voteBean.title = title
+                        voteBean.voteDesc = binding.etShuoming.text.toString()
+                        voteBean.allowMultipleChoice =
+                            if (binding.multeorsignle.isChecked) "YES" else "NO"
+                        voteBean.allowViewResult = if (binding.mcb.isChecked) "YES" else "NO"
+                        var voteDB = PostEntity(
+                            postsId = draftBean?.postsId ?: insertPostId,
+                            type = "6",
+                            creattime = System.currentTimeMillis().toString(),
+                            toupiao = JSON.toJSONString(voteBean)
+                        )
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                                .insert(voteDB)
+                            withContext(Dispatchers.Main) {
+                                finish()
+                            }
+                        }
+                    }
+
+                    1 -> {
                         finish()
                     }
                 }
-            }) {
-                finish()
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
             }.show()
         }
     }
@@ -167,6 +211,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                 }
                 dragAdapter.remove(position)
                 voteBean.optionList.removeAt(position)
+                checkBottomState()
             } else if (view.id == R.id.iv_del) {
 //                dragAdapter.getItem(position).setBdoptionImgUrl("")
 //                dragAdapter.getItem(position).setOptionImgUrl("")
@@ -219,6 +264,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                             lifecycleScope.launch(Dispatchers.Main) {
                                 voteBean.optionList[position].optionImg = url
                                 dragAdapter.notifyItemChanged(position)
+                                checkBottomState()
                             }
                         }
                     })
@@ -338,7 +384,11 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             } else {
                 voteBean.optionList[position].optionImg = it as String
                 dragAdapter.notifyItemChanged(position)
+                checkBottomState()
             }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.FABUTOUPIAOITEM).observe(this) {
+            checkBottomState()
         }
         binding.etShuoming.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -355,55 +405,100 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
         })
         binding.etBiaoti.addTextChangedListener {
             binding.tvNum.text = "${it?.length}/20"
+            checkBottomState()
         }
     }
 
     private fun showFengMian(s: String) {
         lifecycleScope.launch(Dispatchers.Main) {
             fengmianurl = s
-            GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(fengmianurl), binding.ivFengmian, 5f);
+            GlideUtils.loadRoundLocal(GlideUtils.handleImgUrl(fengmianurl), binding.ivFengmian, 12f)
             binding.tvFm.isVisible = true
             binding.tvFmHint.isVisible = false
+            checkBottomState()
         }
     }
 
     private fun clickInit() {
+
         binding.ivFengmian.setOnClickListener {
             position = -1
-            SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
-                override fun chooseByPhone() {
-                    PictureUtils.openGarlly(
-                        this@ActivityFabuToupiao,
-                        1,
-                        object : OnResultCallbackListener<LocalMedia?> {
-                            override fun onResult(result: List<LocalMedia?>?) {
-                                val bean = result?.get(0)
-                                val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                                path?.let { it1 ->
-                                    OSSHelper.init(this@ActivityFabuToupiao)
-                                        .getOSSToImage(
-                                            this@ActivityFabuToupiao,
-                                            it1,
-                                            object : OSSHelper.OSSImageListener {
-                                                override fun getPicUrl(url: String) {
-                                                    showFengMian(url)
-                                                }
-                                            })
+            FordPaiBottomDialog(
+                this@ActivityFabuToupiao,
+                "请选择封面",
+                arrayListOf("从手机相册选择", "福域默认相册"),
+                this,
+            ) { adapter, view, position ->
+                when (position) {
+                    0 -> {
+                        PictureUtils.openGarlly(
+                            this@ActivityFabuToupiao,
+                            1,
+                            object : OnResultCallbackListener<LocalMedia?> {
+                                override fun onResult(result: List<LocalMedia?>?) {
+                                    val bean = result?.get(0)
+                                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                                    path?.let { it1 ->
+                                        OSSHelper.init(this@ActivityFabuToupiao)
+                                            .getOSSToImage(
+                                                this@ActivityFabuToupiao,
+                                                it1,
+                                                object : OSSHelper.OSSImageListener {
+                                                    override fun getPicUrl(url: String) {
+                                                        showFengMian(url)
+                                                    }
+                                                })
+                                    }
                                 }
-                            }
 
-                            override fun onCancel() {}
-                        },
-                        670,
-                        400
-                    )
+                                override fun onCancel() {}
+                            },
+                            670,
+                            400
+                        )
+
+                    }
+
+                    1 -> {
+                        startARouter(ARouterCommonPath.FordAlbumActivity)
+                    }
                 }
-
-                override fun chooseByDefault() {
-                    startARouter(ARouterCommonPath.FordAlbumActivity)
-                }
-
-            }).show()
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
+            }.show()
+//            SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
+//                override fun chooseByPhone() {
+//                    PictureUtils.openGarlly(
+//                        this@ActivityFabuToupiao,
+//                        1,
+//                        object : OnResultCallbackListener<LocalMedia?> {
+//                            override fun onResult(result: List<LocalMedia?>?) {
+//                                val bean = result?.get(0)
+//                                val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+//                                path?.let { it1 ->
+//                                    OSSHelper.init(this@ActivityFabuToupiao)
+//                                        .getOSSToImage(
+//                                            this@ActivityFabuToupiao,
+//                                            it1,
+//                                            object : OSSHelper.OSSImageListener {
+//                                                override fun getPicUrl(url: String) {
+//                                                    showFengMian(url)
+//                                                }
+//                                            })
+//                                }
+//                            }
+//
+//                            override fun onCancel() {}
+//                        },
+//                        670,
+//                        400
+//                    )
+//                }
+//
+//                override fun chooseByDefault() {
+//                    startARouter(ARouterCommonPath.FordAlbumActivity)
+//                }
+//
+//            }).show()
         }
         binding.rlActtime.setOnClickListener {
             setTimePicker()
@@ -422,15 +517,20 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             }
         }
         binding.question.setOnClickListener {
-            AlertThreeFilletDialog(BaseApplication.curActivity).builder()
-                .setTitle("查看投票明细")
-                .setMsg(
-                    "开启按钮，用户投票后可查看每一个选项具体投票的人员列表；关闭按钮，仅活动发起人可查看人员列表"
-                )
-                .setCancelable(true)
-                .setPositiveButton("我知道了", R.color.color_01025C) {
-
-                }.show()
+            ShowPopUtils.showFordPaiCirclePop(
+                "查看投票明细",
+                "开启按钮，用户投票后可查看每一个选项具体投票的人员列表；关闭按钮，仅活动发起人可查看人员列表",
+                "我知道了"
+            )
+//            AlertThreeFilletDialog(BaseApplication.curActivity).builder()
+//                .setTitle("查看投票明细")
+//                .setMsg(
+//                    "开启按钮，用户投票后可查看每一个选项具体投票的人员列表；关闭按钮，仅活动发起人可查看人员列表"
+//                )
+//                .setCancelable(true)
+//                .setPositiveButton("我知道了", R.color.color_01025C) {
+//
+//                }.show()
         }
         binding.nickSave.setOnClickListener {
             if (fengmianurl.isNullOrEmpty()) {
@@ -513,7 +613,54 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
 
     }
 
-    var list: ArrayList<VoteOptionBean> = ArrayList<VoteOptionBean>()
+    private fun checkBottomState() {
+        if (fengmianurl.isNullOrEmpty()) {
+//            "请选择封面".toast()
+            setCreateButton(false)
+            return
+        }
+        voteBean.coverImg = fengmianurl
+        val title = binding.etBiaoti.text.toString()
+        if (title.isNullOrEmpty()) {
+//            "请输入标题".toast()
+            setCreateButton(false)
+            return
+        }
+        voteBean.title = title
+
+        if (voteBean.endTime.isNullOrEmpty()) {
+//            "请选择时间".toast()
+            setCreateButton(false)
+            return
+        }
+        voteBean.voteDesc = binding.etShuoming.text.toString()
+        voteBean.optionList.forEach {
+            if (it.optionDesc.isNullOrEmpty()) {
+//                "请输入选项内容".toast()
+                setCreateButton(false)
+                return
+            }
+            if (voteBean.voteType == "IMG" && it.optionImg.isNullOrEmpty()) {
+//                "请选择选项图片".toast()
+                setCreateButton(false)
+                return
+            }
+        }
+        setCreateButton(true)
+    }
+
+    private fun setCreateButton(canPost: Boolean) {
+        binding.nickSave.isEnabled = canPost
+        if (canPost) {
+            binding.nickSave.setTextColor(ContextCompat.getColor(this, R.color.white))
+            binding.nickSave.setBackgroundResource(R.drawable.bg_1700f4_100)
+        } else {
+            binding.nickSave.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
+            binding.nickSave.setBackgroundResource(R.drawable.bg_80a6_100)
+        }
+    }
+
+    var list: ArrayList<VoteOptionBean> = ArrayList()
 
     override fun initData() {
         draftBean = intent.getSerializableExtra("postEntity") as PostEntity?
@@ -558,6 +705,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
             } else {
                 changeStyle(2)
             }
+            checkBottomState()
         }
     }
 
@@ -565,18 +713,19 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
     fun changeStyle(int: Int) {
         when (int) {
             1 -> {
-                binding.togwenzi.setTextColor(resources.getColor(R.color.color_33))
-                binding.togtuwen.setTextColor(resources.getColor(R.color.color_cc))
-                binding.togwenzi.background = resources.getDrawable(R.drawable.bg_white_12)
+                binding.togwenzi.setTextColor(resources.getColor(R.color.color_66))
+                binding.togtuwen.setTextColor(resources.getColor(R.color.color_4d16))
+                binding.togwenzi.background = resources.getDrawable(R.drawable.bg_white_100)
                 binding.togtuwen.background = resources.getDrawable(R.drawable.bg_f6_cor14)
                 dragAdapter.setStyle(false)
                 voteBean.voteType = "TEXT"
             }
+
             2 -> {
-                binding.togwenzi.setTextColor(resources.getColor(R.color.color_cc))
-                binding.togtuwen.setTextColor(resources.getColor(R.color.color_33))
+                binding.togwenzi.setTextColor(resources.getColor(R.color.color_4d16))
+                binding.togtuwen.setTextColor(resources.getColor(R.color.color_66))
                 binding.togwenzi.background = resources.getDrawable(R.drawable.bg_f6_cor14)
-                binding.togtuwen.background = resources.getDrawable(R.drawable.bg_white_12)
+                binding.togtuwen.background = resources.getDrawable(R.drawable.bg_white_100)
                 dragAdapter.setStyle(true)
                 voteBean.voteType = "IMG"
             }
@@ -658,6 +807,7 @@ class ActivityFabuToupiao : BaseActivity<ActivityToupiaoBinding, BaoMingViewMode
                     voteBean.endTimeShow = TimeUtils.MillisToStrO(date.time)
                     binding.tvTime.text =
                         "${voteBean.beginTimeShow}-${voteBean.endTimeShow}"
+                    checkBottomState()
                 }
             }
                 .setCancelText("取消") //取消按钮文字

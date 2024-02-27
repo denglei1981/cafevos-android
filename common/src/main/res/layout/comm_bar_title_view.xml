@@ -29,11 +29,12 @@
                 <ImageView
                     android:id="@+id/bar_img_back"
                     android:layout_width="30dp"
+                    android:paddingStart="24dp"
                     android:layout_height="30dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:scaleType="center"
-                    android:src="@mipmap/back_xhdpi" />
+                    android:src="@mipmap/ic_left_back_gray" />
 
                 <ImageView
                     android:id="@+id/bar_img_close"
@@ -96,7 +97,7 @@
                     android:maxLines="1"
                     android:paddingLeft="@dimen/dp_70"
                     android:paddingRight="@dimen/dp_70"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_16"
                     android:textSize="18sp" />
 
                 <ImageView
@@ -117,6 +118,7 @@
             android:id="@+id/view_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:visibility="gone"
             android:background="@color/alertdialog_line" />
     </LinearLayout>
 </layout>

@@ -8,6 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="12dp"
@@ -22,6 +23,8 @@
             android:gravity="center"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/color_d916"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"

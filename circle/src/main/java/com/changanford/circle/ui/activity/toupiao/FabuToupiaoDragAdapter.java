@@ -11,9 +11,9 @@ import com.chad.library.adapter.base.module.DraggableModule;
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder;
 import com.changanford.circle.R;
 import com.changanford.circle.databinding.ActivityFabutoupiaoItemBinding;
-import com.changanford.circle.databinding.PrefectquessionItemBinding;
-import com.changanford.common.bean.QueryInfo;
 import com.changanford.common.bean.VoteOptionBean;
+import com.changanford.common.util.bus.LiveDataBus;
+import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.common.utilext.GlideUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -69,6 +69,7 @@ public class FabuToupiaoDragAdapter extends BaseQuickAdapter<VoteOptionBean, Bas
             public void afterTextChanged(Editable s) {
                 if (binding.etAnswer.hasFocus()) {
                     optionBean.setOptionDesc(s.toString().trim());
+                    LiveDataBus.get().with(LiveDataBusKey.FABUTOUPIAOITEM).postValue("");
                 }
                 binding.txNum.setText(s.length() + "/20");
                 Log.d("---->", optionBean.getOptionDesc() + "---->" + quessionItemBindingBaseDataBindingHolder.getPosition());
@@ -84,5 +85,10 @@ public class FabuToupiaoDragAdapter extends BaseQuickAdapter<VoteOptionBean, Bas
         else
             binding.ivImg.setVisibility(View.GONE);
 
+        if (quessionItemBindingBaseDataBindingHolder.getPosition() > 1) {
+            binding.ivDelete.setImageResource(R.mipmap.quessionicon_);
+        } else {
+            binding.ivDelete.setImageResource(R.mipmap.quessionicon);
+        }
     }
 }

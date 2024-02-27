@@ -1,5 +1,6 @@
 package com.changanford.common.adapter
 
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -56,7 +57,7 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
             it.tvTips.text = item.title
 
             it.tvHomeActTimes.text = item.getActTimeS()
-
+            it.tvTips.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
             it.btnState.isVisible = !item.activityTag.isNullOrEmpty()
             it.btnState.text = item.showTag()
             val stateBg = it.btnState.background as GradientDrawable

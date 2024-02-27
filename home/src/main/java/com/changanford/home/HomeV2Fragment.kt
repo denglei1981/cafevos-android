@@ -266,15 +266,15 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             }
 
             1 -> {
-                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
+                JumpUtils.instans!!.jump(108, MConstant.circleCheckPosition.toString())
             }
 
             2 -> {
-                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
             }
 
             3 -> {
-                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_USER.toString())
+                JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
             }
         }
     }

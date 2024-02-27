@@ -390,7 +390,7 @@ object PictureUtil {
         activity: Activity,
         datas: ArrayList<LocalMedia>? = null,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
-        videoMaxSecond: Int = 10 * 60,//秒
+        videoMaxSecond: Int =  60,//秒
         videoMinSecond: Int = 3
     ) {
         val success = {
