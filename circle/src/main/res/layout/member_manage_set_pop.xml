@@ -6,96 +6,101 @@
     <data>
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
-        android:padding="@dimen/dp_20">
+        android:background="@drawable/shape_white_top_12dp"
+        android:paddingStart="16dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="20dp"
+        android:paddingEnd="16dp">
+
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_title"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_setIdentity"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_16"/>
+            android:textColor="@color/color_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dp_20"
+            android:src="@mipmap/ic_close_black_60"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:itemCount="2"
+            tools:listitem="@layout/member_dialog_item" />
+
         <com.changanford.common.ui.view.WTextView
-            app:layout_constraintStart_toEndOf="@id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@id/tv_title"
-            android:layout_marginStart="@dimen/dp_9"
             android:id="@+id/tv_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="当前选中2人"
-            android:textColor="@color/color_66"
-            android:textSize="@dimen/sp_12"/>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_close"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingStart="@dimen/dp_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_close_black_60"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/member_dialog_item"
-            tools:itemCount="2"/>
+            android:textColor="@color/color_9916"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+            tools:text="当前选中2人" />
+
         <com.changanford.common.ui.view.WTextView
-            tools:visibility="visible"
-            android:visibility="invisible"
-            android:layout_marginTop="@dimen/dp_12"
             android:id="@+id/tv_remainingPlaces"
-            android:minHeight="@dimen/dp_24"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            android:textColor="@color/color_1700f4"
+            android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerView"
             app:w_start_txt="@string/str_remainingPlaces"
-            android:textColor="@color/color_F21C44"
-            android:textSize="@dimen/sp_12"
-            android:background="@drawable/shape_fff6f8_12dp"/>
+            tools:visibility="visible" />
+
         <com.changanford.common.ui.view.WTextView
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="@dimen/dp_5"
             android:background="@drawable/border_0095b_20dp"
-            android:layout_marginTop="@dimen/dp_18"
-            app:layout_constraintTop_toBottomOf="@id/tv_remainingPlaces"
+            android:gravity="center"
+            android:text="@string/str_cancel"
+            android:textColor="@color/circle_00095"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_confirm"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/tv_cancel"
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_40"
-            android:text="@string/str_cancel"
-            android:textColor="@color/circle_00095"
-            android:textSize="@dimen/sp_15" />
+            app:layout_constraintTop_toBottomOf="@id/tv_remainingPlaces" />
+
         <com.changanford.common.ui.view.WTextView
-            tools:background="@drawable/shape_00095b_20dp"
-            android:background="@drawable/shape_dd_20dp"
-            android:gravity="center"
-            android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintTop_toTopOf="@id/tv_cancel"
-            app:layout_constraintStart_toEndOf="@id/tv_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
             android:id="@+id/tv_confirm"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/shape_dd_20dp"
+            android:gravity="center"
             android:text="@string/str_confirm"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/tv_cancel"
+            app:layout_constraintTop_toTopOf="@id/tv_cancel"
+            tools:background="@drawable/shape_00095b_20dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

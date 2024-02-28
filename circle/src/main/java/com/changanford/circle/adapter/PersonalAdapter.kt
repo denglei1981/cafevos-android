@@ -10,6 +10,7 @@ import com.changanford.circle.bean.CircleMemberBean
 import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 
@@ -57,11 +58,11 @@ class PersonalAdapter :
 //                val bundle = Bundle()
 //                bundle.putString("value", item.userId)
 //                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
-                JumpUtils.instans?.jump(35,item.userId.toString())
+                JumpUtils.instans?.jump(35, item.userId.toString())
 
 
             }
-
+            MUtils.setTopMargin(binding.root, 16, holder.layoutPosition)
             binding.bean = item
         }
     }

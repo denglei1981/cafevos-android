@@ -9,13 +9,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/title"
-            layout="@layout/circle_layout_title"/>
+            layout="@layout/circle_layout_title" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -23,17 +23,18 @@
             android:layout_weight="1"
             android:background="@color/color_FAFBFD"
             android:fillViewport="true">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:orientation="vertical"
-                    android:padding="@dimen/dp_20">
+                    android:padding="16dp">
 
                     <FrameLayout
                         android:id="@+id/rl_fmimg"
@@ -42,10 +43,10 @@
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/iv_fengmian"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="109dp"
+                            android:layout_height="109dp"
                             android:scaleType="centerCrop"
-                            android:src="@mipmap/add_image" />
+                            android:src="@mipmap/icon_toupiao_add" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -64,24 +65,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_13"
+                        android:layout_marginTop="8dp"
                         android:text="@string/str_beautifulCircleJoin"
-                        android:textColor="@color/color_cc"
-                        android:textSize="@dimen/sp_13" />
+                        android:textColor="@color/color_4d16"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_35"
+                        android:layout_marginTop="@dimen/dp_30"
                         android:text="@string/str_circleName"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_15" />
+                        android:textColor="@color/color_16"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
 
                         <EditText
                             android:id="@+id/et_biaoti"
@@ -92,9 +93,9 @@
                             android:hint="@string/str_pleaseInputCircleName"
                             android:maxLength="15"
                             android:singleLine="true"
-                            android:textColor="@color/textblack"
-                            android:textColorHint="#CCCCCC"
-                            android:textSize="@dimen/sp_14" />
+                            android:textColor="@color/color_16"
+                            android:textColorHint="@color/color_4d16"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tv_num"
@@ -102,152 +103,171 @@
                             android:layout_height="wrap_content"
                             android:gravity="bottom"
                             android:text="0/15"
-                            android:textColor="#AFB3B6"
-                            android:textSize="13sp" />
+                            android:textColor="@color/color_8016"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_0_5"
                         android:layout_marginTop="@dimen/dp_12"
-                        android:background="@color/alertdialog_line" />
+                        android:background="@color/color_1a4a" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_16"
                         android:text="@string/str_inputDescription"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_15" />
+                        android:textColor="@color/color_16"
+                        android:textSize="16sp" />
+
                     <EditText
-                        android:layout_marginTop="@dimen/dp_18"
                         android:id="@+id/et_content"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_6"
                         android:background="@color/transparent"
-                        android:gravity="top"
                         android:hint="@string/str_inputDescriptionMorePeopleWillJoin"
                         android:maxLength="50"
-                        android:textColor="@color/textblack"
-                        android:textColorHint="#ffcccccc"
-                        android:textSize="@dimen/sp_14" />
+                        android:minHeight="50dp"
+                        android:textColor="@color/color_16"
+                        android:textColorHint="@color/color_4d16"
+                        android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/tv_num1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom|end"
                         android:text="0/50"
-                        android:textColor="#AFB3B6"
-                        android:textSize="13sp" />
+                        android:textColor="@color/color_8016"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginTop="@dimen/dp_12"
+                        android:background="@color/color_1a4a" />
                 </LinearLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:paddingStart="16dp"
                     android:paddingTop="@dimen/dp_16"
-                    android:paddingStart="@dimen/dp_20"
                     android:paddingBottom="@dimen/dp_12">
+
                     <com.changanford.common.ui.view.WTextView
                         android:id="@+id/tv_circleType"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/str_circleClassification"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_13" />
+                        android:textColor="@color/color_16"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_circleTypeValue"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:focusable="false"
-                        android:background="@null"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tv_circleType"
-                        app:layout_constraintStart_toEndOf="@id/tv_circleType"
-                        android:layout_marginStart="@dimen/dp_20"
-                        android:gravity="end"
-                        android:drawableEnd="@mipmap/right_99"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_33"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@null"
+                        android:drawableEnd="@mipmap/right_99"
+                        android:focusable="false"
+                        android:gravity="end"
                         android:hint="@string/str_pleaseSelectA"
-                        android:textColorHint="@color/color_99"
-                        android:textSize="@dimen/sp_13" />
+                        android:textColor="@color/color_d916"
+                        android:textColorHint="@color/color_d916"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_circleType"
+                        app:layout_constraintTop_toTopOf="@id/tv_circleType" />
+
                     <View
                         android:id="@+id/view_divider"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_16"
-                        app:layout_constraintTop_toBottomOf="@id/tv_circleType"
-                        android:background="@color/color_ee"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"/>
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:visibility="invisible"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/color_ee"
+                        app:layout_constraintTop_toBottomOf="@id/tv_circleType" />
+
                     <com.changanford.common.ui.view.WTextView
                         android:id="@+id/tv_circleAudit"
-                        app:layout_constraintTop_toTopOf="@id/checkBox"
-                        app:layout_constraintBottom_toBottomOf="@id/checkBox"
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/str_circleAudit"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_13" />
+                        android:textColor="@color/color_16"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/checkBox"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/checkBox" />
+
                     <CheckBox
-                        android:checked="true"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginEnd="@dimen/dp_20"
                         android:id="@+id/checkBox"
-                        android:background="@null"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/view_divider"
-                        android:button="@drawable/cb_style"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="16dp"
+                        android:background="@null"
+                        android:button="@drawable/checkbox_wenti_selector"
+                        android:checked="true"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider" />
+
                     <View
                         android:id="@+id/view_divider1"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:layout_marginTop="@dimen/dp_10"
-                        app:layout_constraintTop_toBottomOf="@id/checkBox"
-                        android:background="@color/color_ee"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_0_5"/>
+                        android:layout_height="@dimen/dp_0_5"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="16dp"
+                        android:visibility="invisible"
+                        android:background="@color/color_ee"
+                        app:layout_constraintTop_toBottomOf="@id/checkBox" />
+
                     <com.changanford.common.ui.view.WTextView
                         android:id="@+id/wtv_circleTag"
-                        android:layout_marginTop="@dimen/dp_16"
-                        app:layout_constraintTop_toBottomOf="@id/view_divider1"
-                        app:layout_constraintStart_toStartOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:text="@string/str_circleTag"
-                        android:textColor="@color/color_33"
-                        android:textSize="@dimen/sp_13" />
+                        android:textColor="@color/color_16"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_divider1" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
-                        android:paddingEnd="@dimen/dp_10"
-                        android:layout_marginTop="@dimen/dp_23"
-                        app:layout_constraintTop_toBottomOf="@id/wtv_circleTag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_marginTop="@dimen/dp_23"
                         android:orientation="horizontal"
-                        tools:listitem="@layout/item_create_circle_tag"/>
+                        android:paddingEnd="@dimen/dp_10"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/wtv_circleTag"
+                        tools:listitem="@layout/item_create_circle_tag" />
+
                     <CheckBox
-                        android:layout_marginEnd="@dimen/dp_20"
                         android:id="@+id/cb_more"
-                        android:button="@drawable/cb_more_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
                         android:background="@null"
+                        android:button="@drawable/cb_more_tag"
                         android:paddingTop="@dimen/dp_30"
-                        app:layout_constraintTop_toBottomOf="@id/recyclerView"
                         android:src="@mipmap/circle_more_0"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        app:layout_constraintTop_toBottomOf="@id/recyclerView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/commit"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -259,6 +279,7 @@
             android:gravity="center"
             android:text="立即创建"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone" />
     </LinearLayout>
 </layout>

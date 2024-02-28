@@ -24,8 +24,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             app:layout_constraintTop_toBottomOf="@id/title_bar"
-            app:layout_constraintBottom_toTopOf="@id/view_divider"
-            android:layout_marginTop="15dp">
+            app:layout_constraintBottom_toTopOf="@id/view_divider">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 style="@style/VScrollbarStyle"
@@ -37,7 +36,7 @@
                 tools:listitem="@layout/item_circle_member_manage"/>
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
         <View
-            android:background="@color/color_F5"
+            android:background="@color/color_1a4a"
             app:layout_constraintBottom_toTopOf="@id/layout_bottom"
             android:id="@+id/view_divider"
             android:layout_width="match_parent"
@@ -47,12 +46,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingTop="@dimen/dp_7"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingBottom="@dimen/dp_30">
+            android:paddingBottom="18dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_check_num"
@@ -61,8 +60,8 @@
                 android:layout_weight="0.3"
                 android:gravity="center_vertical"
                 android:text="已选中0人"
-                android:textColor="@color/color_66"
-                android:textSize="@dimen/sp_13"
+                android:textColor="@color/color_9916"
+                android:textSize="14sp"
                 tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -82,7 +81,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_delete"
-                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginStart="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/dp_40"

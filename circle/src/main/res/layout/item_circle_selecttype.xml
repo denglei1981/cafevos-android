@@ -3,32 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.NewCirceTagBean" />
     </data>
+
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:paddingEnd="@dimen/dp_14"
-        android:paddingBottom="@dimen/dp_20"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16">
+
         <androidx.appcompat.widget.AppCompatRadioButton
-            tools:checked="true"
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radiobutton_bt_circle"
+            android:button="@null"
             android:checked="@{model.isCheck()}"
             android:ellipsize="end"
-            android:singleLine="true"
-            android:id="@+id/radioButton"
-            android:text="@{model.name}"
             android:gravity="center"
-            android:textSize="@dimen/sp_13"
-            android:button="@null"
-            android:background="@drawable/radiobutton_bt_circle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
-            android:minWidth="@dimen/dp_100"
-            android:minHeight="@dimen/dp_40"
-            android:textColor="@drawable/radiobutton_text_circle"/>
+            android:minHeight="30dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:singleLine="true"
+            android:text="@{model.name}"
+            android:textColor="@drawable/radiobutton_text_circle"
+            android:textSize="14sp"
+            tools:checked="true" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

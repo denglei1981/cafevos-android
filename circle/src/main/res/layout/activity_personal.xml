@@ -16,25 +16,34 @@
         <include
             android:id="@+id/title"
             layout="@layout/circle_layout_title" />
+
         <com.changanford.common.ui.view.WTextView
             android:id="@+id/tv_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_31"
+            android:layout_marginTop="16dp"
             android:gravity="center_vertical"
-            tools:text="共7位成员"
-            android:textColor="@color/color_cc"
-            android:textSize="@dimen/sp_12"
-            android:background="@color/color_F5"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"/>
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/color_8016"
+            android:textSize="14sp"
+            tools:text="共7位成员" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_1a4a"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_height="0.5dp"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_personal"
-            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_5"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_personal"/>
+            tools:listitem="@layout/item_personal" />
 
     </LinearLayout>
 </layout>

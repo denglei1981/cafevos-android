@@ -1,14 +1,32 @@
 package com.changanford.circle.ui.activity.baoming
 
 import android.content.Intent
-import android.view.View
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,18 +66,19 @@ import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.BottomSelectDialog
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.dialog.SelectPicDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toast
 import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.luck.picture.lib.manager.UCropManager
 import com.luck.picture.lib.tools.DoubleUtils
 import com.luck.picture.lib.tools.ToastUtils
 import com.scwang.smart.refresh.layout.util.SmartUtil
@@ -67,8 +86,8 @@ import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
+import java.util.Date
 
 /**
  * 发布报名活动
@@ -89,6 +108,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
             show()
         }
     }
+
     companion object {
         var dto: DtoBeanNew = DtoBeanNew()
         var wonderfulId: Int = 0
@@ -131,10 +151,10 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 downloadImg()
             }
             wonderfulId = updateActivityV2Req?.wonderfulId ?: 0
-        }else{
+        } else {
             wonderfulId = 0
         }
-        if (dto.activityTotalCount == null){
+        if (dto.activityTotalCount == null) {
             dto.activityTotalCount = -1
         }
         binding.composeLayout.setContent {
@@ -207,7 +227,7 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     } else {
                         dto.contentImgList?.get(index)?.localMedias = localMedia
                     }
-                }catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -257,12 +277,12 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                             .delete(it1)
                     }
                     withContext(Dispatchers.Main) {
-                        JumpUtils.instans?.jump(26,"1")
+                        JumpUtils.instans?.jump(26, "1")
                         exitPage()
                     }
                 }
             } else {
-                JumpUtils.instans?.jump(26,"1")
+                JumpUtils.instans?.jump(26, "1")
                 exitPage()
             }
         }
@@ -278,11 +298,11 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     viewModel.attributeBean.value!!.attributesInfo
                         .attributeCategoryVos
                 )
-                if (!dto.attributes.isNullOrEmpty() && dto.attributes.size>0){
+                if (!dto.attributes.isNullOrEmpty() && dto.attributes.size > 0) {
                     dto.attributes.forEach {
                         attributeListBeans.forEachIndexed { index1, attributeCategoryVos ->
                             attributeCategoryVos.attributeList.forEachIndexed { index2, attributeListBean ->
-                                if (it.attributeId == attributeListBean.attributeId){
+                                if (it.attributeId == attributeListBean.attributeId) {
                                     attributeListBeans[index1].attributeList[index2].checktype = 1
                                 }
                             }
@@ -510,7 +530,7 @@ fun fabubaomingCompose(
     }
     ActivityFabuBaoming.dto.apply {
         nextEnable =
-            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() ||(attributes.isNullOrEmpty() || attributes?.size?:0==0)|| signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
+            !(title.isNullOrEmpty() || coverImgUrl.isNullOrEmpty() || (attributes.isNullOrEmpty() || attributes?.size ?: 0 == 0) || signBeginTime.isNullOrEmpty() || signEndTime.isNullOrEmpty())
     }
     Column(
         modifier = Modifier
@@ -519,19 +539,19 @@ fun fabubaomingCompose(
                 color =
                 Color.White
             )
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 16.dp)
             .verticalScroll(state = rememberScrollState())
     ) {
         Box(
             Modifier
                 .fillMaxWidth(1f)
-                .height(168.dp)
+                .height(193.dp)
                 .clickable {
                     choseCover {
                         cover = it
                     }
                 }
-                .background(color = Color(0xffF4F4F4), shape = RoundedCornerShape(5)),
+                .background(color = Color(0x081700f4), shape = RoundedCornerShape(12)),
             contentAlignment = Alignment.Center
         ) {
             if (cover.isNullOrEmpty()) {
@@ -543,11 +563,11 @@ fun fabubaomingCompose(
                     Image(
                         painter = rememberImagePainter(data = R.mipmap.longpostadd),
                         contentDescription = "",
-                        Modifier.size(50.dp)
+                        Modifier.size(48.dp)
                     )
                     Text(
-                        text = "请上传封面", style = TextStyle(
-                            color = Color(0xffcccccc), fontSize = 14.sp
+                        text = "上传封面", style = TextStyle(
+                            color = Color(0x4d161616), fontSize = 14.sp
                         )
                     )
                 }
@@ -564,28 +584,32 @@ fun fabubaomingCompose(
                         contentDescription = "",
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .height(168.dp)
-                            .clip(RoundedCornerShape(5))
+                            .height(193.dp)
+                            .clip(RoundedCornerShape(12))
                             .constrainAs(img) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                             })
-                    Text(text = "封面", style = TextStyle(
-                        color = Color.White, fontSize = 9.sp, background = Color.Black
+                    Text(text = "封面", textAlign = TextAlign.Center, style = TextStyle(
+                        color = Color.White, fontSize = 12.sp
                     ), modifier = Modifier
+                        .height(20.dp)
+                        .width(40.dp)
+                        .background(
+                            Color(0xFF1700f4),
+                            shape = RoundedCornerShape(topStart = 12.dp, bottomEnd = 12.dp)
+                        )
                         .padding(horizontal = 2.dp)
                         .constrainAs(txt) {
-                            end.linkTo(
-                                parent.end, 10.dp
-                            )
-                            bottom.linkTo(parent.bottom, 10.dp)
+                            start.linkTo(parent.start, 0.dp)
+                            top.linkTo(parent.top, 0.dp)
                         })
                 }
             }
         }
 
         Column {
-            Box(modifier = Modifier.height(30.dp))
+            Box(modifier = Modifier.height(40.dp))
             FabuTitle(name = "标题", true)
             FabuInput(hint = "请输入活动标题", initText = ActivityFabuBaoming.dto.title ?: "", 20) {
                 ActivityFabuBaoming.dto.title = it
@@ -632,9 +656,11 @@ fun fabubaomingCompose(
                 }
             }
         }
-        Spacer(modifier = Modifier
-            .height(100.dp)
-            .navigationBarsHeight())
+        Spacer(
+            modifier = Modifier
+                .height(100.dp)
+                .navigationBarsHeight()
+        )
 
     }
 }
@@ -643,9 +669,9 @@ fun fabubaomingCompose(
 fun FabuTitle(name: String, isMust: Boolean = false) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         if (isMust) {
-            Text(text = "*", style = TextStyle(color = Color.Red, fontSize = 15.sp))
+            Text(text = "*", style = TextStyle(color = Color.Red, fontSize = 16.sp))
         }
-        Text(text = "$name", style = TextStyle(color = Color(0xff333333), fontSize = 15.sp))
+        Text(text = "$name", style = TextStyle(color = Color(0xff161616), fontSize = 16.sp))
     }
 }
 
@@ -776,11 +802,10 @@ fun FabuInput(
     }
     Row(
         modifier = Modifier
-            .fillMaxWidth(1f)
+            .fillMaxWidth()
             .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-
             value = txt,
             onValueChange = {
                 if (it.length <= maxNum) {
@@ -790,7 +815,7 @@ fun FabuInput(
                 }
             },
             singleLine = singleLine,
-            textStyle = TextStyle(color = Color(0xff666666), fontSize = 14.sp),
+            textStyle = TextStyle(color = Color(0xd9161616), fontSize = 14.sp),
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent, focusedIndicatorColor =
                 Color.Transparent, backgroundColor = Color.Transparent
@@ -800,10 +825,10 @@ fun FabuInput(
                 .wrapContentHeight()
                 .weight(1f),
             placeholder = {
-                Text(text = hint, style = TextStyle(color = Color(0xffcccccc), fontSize = 14.sp))
+                Text(text = hint, style = TextStyle(color = Color(0x4d161616), fontSize = 14.sp))
             }
         )
-        Text(text = "$num/$maxNum", color = Color(0xffAFB3B6), fontSize = 12.sp)
+        Text(text = "$num/$maxNum", color = Color(0x80161616), fontSize = 12.sp)
     }
 }
 

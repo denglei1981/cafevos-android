@@ -302,6 +302,7 @@ object LiveDataBusKey {
 
     const val FORD_ALBUM_RESULT = "fordAlbumResult"
     const val FABUTOUPIAOITEM = "fabuTouPItem"
+    const val CREATE_CIRCLE_ERROR = "createCircleError"
     const val DISMISS_FORD_PAI_DIALOG = "disMissFordDialog"
 
     const val MAIN_TAB_CHANGE = "mainTabChange"

@@ -28,7 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator
  *  文件名：MyCollectUI
  *  创建者: zcy
  *  创建日期：2021/9/26 16:54
- *  描述: 圈子审核
+ *  描述: 成员审核-待审核
  *  修改描述：
  */
 @Route(path = ARouterMyPath.CircleMemberUI)
@@ -45,6 +45,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
 
     override fun initView() {
         binding.tabLayout.visibility = View.GONE
+        binding.layoutSearch.root.isVisible = false
         intent.extras?.getString(RouterManger.KEY_TO_ITEM)?.let {
             title = it
         }
@@ -52,7 +53,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
             circleId = it
         }
         binding.collectToolbar.toolbarTitle.text = title
-        binding.collectToolbar.toolbarSave.text = "管理"
+        binding.collectToolbar.toolbarSave.text = "批量审核"
         binding.collectToolbar.toolbar.setNavigationOnClickListener { back() }
         binding.collectToolbar.toolbarSave.setOnClickListener {
             click()
@@ -183,7 +184,7 @@ class MyCircleMangerUI : BaseMineUI<UiCollectBinding, CircleViewModel>() {
             binding.collectToolbar.toolbarSave.text = "取消"
         } else {//取消
             isCheck = true
-            binding.collectToolbar.toolbarSave.text = "管理"
+            binding.collectToolbar.toolbarSave.text = "批量审核"
         }
         LiveDataBus.get()
             .with(LiveDataBusKey.MINE_DELETE_CIRCLE_USER, MangerCircleCheck::class.java)

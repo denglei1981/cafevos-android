@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <com.changanford.my.widget.RoundCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:background="@null"
         android:button="@null"
         android:drawableLeft="@drawable/checkbox"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
-        android:text="操作问题"
-        android:textColor="@drawable/checkbox_text_color"
+       android:textColor="@color/color_8016"
         android:textSize="@dimen/text_size_small"
-        android:theme="@style/mine_checkbox" />
-
+        android:theme="@style/mine_checkbox"
+        tools:text="操作问题" />
+<!--android:textColor="@drawable/checkbox_text_color"-->
 </layout>

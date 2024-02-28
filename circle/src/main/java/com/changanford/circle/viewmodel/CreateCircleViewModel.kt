@@ -5,7 +5,13 @@ import com.changanford.circle.api.CircleNetWork
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.TagInfoBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 
@@ -38,7 +44,8 @@ class CreateCircleViewModel : BaseViewModel() {
                     upLoadBean.value = it
                 }
         }, error = {
-            it.message.toString().toast()
+            LiveDataBus.get().with(LiveDataBusKey.CREATE_CIRCLE_ERROR).postValue(it.message)
+//            it.message.toString().toast()
         })
     }
     /**
@@ -61,7 +68,8 @@ class CreateCircleViewModel : BaseViewModel() {
                     upLoadBean.value = it
                 }
         }, error = {
-            it.message.toString().toast()
+            LiveDataBus.get().with(LiveDataBusKey.CREATE_CIRCLE_ERROR).postValue(it.message)
+//            it.message.toString().toast()
         })
     }
     /**

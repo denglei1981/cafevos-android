@@ -3,9 +3,10 @@ package com.changanford.my.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -14,9 +15,11 @@ import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setDrawableColor
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
@@ -150,6 +153,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         "1" -> {
                             statusTv.visibility = View.VISIBLE
                             statusTv.text = "审核中"
+                            statusTv.setDrawableColor(R.color.color_E67400)
                         }
 
                         else -> {
@@ -183,11 +187,15 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     holder.getView<ImageView>(R.id.img_star).visibility =
                         if (item.star == "YES") View.VISIBLE else View.GONE
                     val statusTV: TextView = holder.getView(R.id.status_text)
-                    val reasonLayout: LinearLayout = holder.getView(R.id.reason_layout)
-                    reasonLayout.visibility = View.GONE
-
+                    val tvReason = holder.getView<TextView>(R.id.item_reason)
+                    tvReason.isVisible = false
+                    val reasonLayout: ConstraintLayout = holder.getView(R.id.reason_layout)
+//                    reasonLayout.visibility = View.GONE
+                    val tvTime = holder.getView<TextView>(R.id.tv_time)
+                    tvTime.text = TimeUtils.MillisTo_YMDHM(item.createTime.toLong())
                     val operation: TextView = holder.getView(R.id.item_operation)
                     operation.setOnClickListener(null)
+                    operation.isVisible = false
                     val status = item.checkStatus
                     holder.getView<ImageView>(R.id.img_star).apply {
                         visibility = if (status == "3") {
@@ -198,35 +206,53 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     //状态 1认证失败  2待审核 3审核通过
                     when (status) {
                         "2", "1" -> {
-                            reasonLayout.visibility =
-                                if (item.checkStatus == "2") View.GONE else View.VISIBLE
+//                            reasonLayout.visibility =
+//                                if (item.checkStatus == "2") View.GONE else View.VISIBLE
                             statusTV.visibility = View.VISIBLE
                             statusTV.text = if (item.checkStatus == "2") "审核中" else "未通过"
-                            holder.setText(
-                                R.id.item_reason,
-                                if (item.checkStatus == "1") "" else "原因：${item.checkNoReason}"
-                            )
-                            operation.text = "去编辑"
-                            operation.setOnClickListener {
-                                isRefresh = true
-                                RouterManger.param(RouterManger.KEY_TO_ITEM, item)
-                                    .startARouter(ARouterCirclePath.CreateCircleActivity)
+                            if (item.checkStatus == "2") {
+                                statusTV.setDrawableColor(R.color.color_E67400)
+                                operation.isVisible = false
+                            } else {
+                                tvReason.isVisible = true
+                                tvReason.text = "原因：${item.checkNoReason}"
+                                statusTV.setDrawableColor(R.color.color_cc3333)
+
+                                operation.isVisible = true
+                                operation.text = "去编辑 >"
+                                operation.setOnClickListener {
+                                    isRefresh = true
+                                    RouterManger.param(RouterManger.KEY_TO_ITEM, item)
+                                        .startARouter(ARouterCirclePath.CreateCircleActivity)
+                                }
                             }
+//                            holder.setText(
+//                                R.id.item_reason,
+//                                if (item.checkStatus == "1") "" else "原因：${item.checkNoReason}"
+//                            )
+
                         }
 
                         "3" -> {
                             statusTV.visibility = View.VISIBLE
                             statusTV.text = "通过"
-                            reasonLayout.visibility =
-                                if (item.applyerCount > 0 && item.isAudit == 1) View.VISIBLE else View.GONE
-                            holder.setText(
-                                R.id.item_reason,
-                                "有${item.applyerCount}人申请加入圈子"
-                            )
-                            operation.text = "去审核"
+                            statusTV.setDrawableColor(R.color.color_009987)
+
+//                            reasonLayout.visibility =
+//                                if (item.applyerCount > 0 && item.isAudit == 1) View.VISIBLE else View.GONE
+                            val isShowAdd = (item.applyerCount > 0 && item.isAudit == 1)
+                            operation.isVisible = true
+                            operation.text = "有${item.applyerCount}人申请加入圈子  去审核 >"
+//                            holder.setText(
+//                                R.id.item_reason,
+//                                "有${item.applyerCount}人申请加入圈子"
+//                            )
+//                            operation.text = "去审核"
                             operation.setOnClickListener {
                                 isRefresh = true
-                                RouterManger.param(RouterManger.KEY_TO_ITEM, item.name)
+                                RouterManger
+//                                    .param(RouterManger.KEY_TO_ITEM, item.name)
+                                    .param(RouterManger.KEY_TO_ITEM, "待审核")
                                     .param(RouterManger.KEY_TO_ID, item.circleId)
                                     .startARouter(ARouterMyPath.CircleMemberUI)
                             }

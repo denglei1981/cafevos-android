@@ -17,7 +17,7 @@ import com.changanford.common.ui.view.WTextView
 /**
  * @Author: lcw
  * @Date: 2020/11/23
- * @Des:
+ * @Des: 圈子成员-设置身份
  */
 class MemberDialogAdapter(context: Context, val list: ArrayList<CircleMemberBean>) :
     BaseAdapterOneLayout<CircleDialogBeanItem>(context, R.layout.member_dialog_item) {

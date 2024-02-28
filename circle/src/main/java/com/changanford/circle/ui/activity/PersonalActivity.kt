@@ -21,7 +21,7 @@ import com.changanford.common.utilext.toast
 /**
  *Author lcw
  *Time on 2021/9/22
- *Purpose 成员列表
+ *Purpose 圈子成员列表
  */
 @Route(path = ARouterCirclePath.PersonalActivity)
 class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel>() {

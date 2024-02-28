@@ -3,6 +3,7 @@ package com.changanford.circle.ui.activity
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
@@ -23,11 +24,13 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.FlowLayoutManager
+import com.changanford.common.wutil.ShowPopUtils
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
@@ -39,19 +42,21 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 @Route(path = ARouterCirclePath.CreateCircleActivity)
 class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCircleViewModel>() {
     private var picUrl = ""
-    private val mAdapter by lazy { CircleTagAdapter(listener=listener) }
-    private var circleItemBean:CircleItemBean?=null
-    private var pop:CircleSelectTypePop?=null
-    private var circleTypeArr:List<NewCirceTagBean>?=null
-    private var typeId:String?=""
+    private val mAdapter by lazy { CircleTagAdapter(listener = listener) }
+    private var circleItemBean: CircleItemBean? = null
+    private var pop: CircleSelectTypePop? = null
+    private var circleTypeArr: List<NewCirceTagBean>? = null
+    private var typeId: String? = ""
+
     @SuppressLint("SetTextI18n")
     override fun initView() {
         binding.title.apply {
             AppUtils.setStatusBarMarginTop(rlTitle, this@CreateCircleActivity)
             ivBack.setOnClickListener { finish() }
             tvTitle.setText(R.string.str_createCircle)
-            wtvCreate.visibility= View.VISIBLE
-            wtvCreate.setOnClickListener { submit() }
+            tvRightMenu.visibility = View.VISIBLE
+            tvRightMenu.text = "创建"
+            tvRightMenu.setOnClickListener { submit() }
         }
 
         binding.run {
@@ -68,20 +73,24 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                 createPop()
             }
         }
-        val flowLayoutManager1 =FlowLayoutManager(this@CreateCircleActivity,true)
-        val flowLayoutManager0 =FlowLayoutManager(this@CreateCircleActivity,2) {
-            binding.cbMore.visibility=if(it>2)View.VISIBLE else View.GONE
+        val flowLayoutManager1 = FlowLayoutManager(this@CreateCircleActivity, true)
+        val flowLayoutManager0 = FlowLayoutManager(this@CreateCircleActivity, 2) {
+            binding.cbMore.visibility = if (it > 2) View.VISIBLE else View.GONE
         }
         binding.recyclerView.apply {
-            this.layoutManager=flowLayoutManager0
-            adapter=mAdapter
+            this.layoutManager = flowLayoutManager0
+            adapter = mAdapter
         }
         binding.cbMore.apply {
             setOnClickListener {
-                binding.recyclerView.layoutManager=if(isChecked)flowLayoutManager1 else flowLayoutManager0
+                binding.recyclerView.layoutManager =
+                    if (isChecked) flowLayoutManager1 else flowLayoutManager0
             }
         }
         initListener()
+        LiveDataBus.get().withs<String>(LiveDataBusKey.CREATE_CIRCLE_ERROR).observe(this) {
+            ShowPopUtils.showFordTipsPop(it, "我知道了", false)
+        }
     }
 
     private fun initListener() {
@@ -93,81 +102,121 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
                         val bean = result?.get(0)
                         val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
                         path?.let { it1 ->
-                            OSSHelper.init(this@CreateCircleActivity).getOSSToImage(this@CreateCircleActivity,it1, object : OSSHelper.OSSImageListener {
-                                        override fun getPicUrl(url: String) {
-                                            picUrl = url
-                                            ivFengmian.post {
-                                                ivFengmian.loadImage(picUrl, ImageOptions().apply {
-                                                    placeholder = R.mipmap.add_image
-                                                })
-                                            }
-                                            btnIsClick()
+                            OSSHelper.init(this@CreateCircleActivity).getOSSToImage(
+                                this@CreateCircleActivity,
+                                it1,
+                                object : OSSHelper.OSSImageListener {
+                                    override fun getPicUrl(url: String) {
+                                        picUrl = url
+                                        ivFengmian.post {
+                                            ivFengmian.loadImage(picUrl, ImageOptions().apply {
+                                                placeholder = R.mipmap.add_image
+                                            })
                                         }
-                                    })
+                                        btnIsClick()
+                                    }
+                                })
                         }
                     }
+
                     override fun onCancel() {}
                 })
             }
         }
     }
+
     override fun initData() {
         circleItemBean = intent.getSerializableExtra(RouterManger.KEY_TO_ITEM) as CircleItemBean?
         circleItemBean?.let {//编辑圈子
-            typeId=it.type
+            typeId = it.type
             picUrl = it.pic
             binding.apply {
                 ivFengmian.loadImage(picUrl)
                 etBiaoti.setText(it.name)
                 etContent.setText(it.description)
-                checkBox.isChecked=it.needAudit=="YES"
+                checkBox.isChecked = it.needAudit == "YES"
             }
         }
         //获取圈子标签信息
         viewModel.getTagInfo()
         btnIsClick()
     }
+
     /**
      * 创建按钮是否可以点击
      * */
-    private fun btnIsClick(){
-        binding.title.wtvCreate.apply {
-            val titleLength=binding.etBiaoti.text.length
-            if(picUrl.isEmpty()||titleLength<1||binding.etContent.text.isEmpty()||TextUtils.isEmpty(binding.edtCircleTypeValue.text)
-                || mAdapter.data.none { it.isCheck == true }){
-                isEnabled=false
-                setBackgroundResource(R.drawable.shadow_dd_12dp)
-            }else{
-                isEnabled=true
-                setBackgroundResource(R.drawable.shadow_00095b_12dp)
+    private fun btnIsClick() {
+        binding.title.tvRightMenu.apply {
+            val titleLength = binding.etBiaoti.text.length
+            if (picUrl.isEmpty() || titleLength < 1 || binding.etContent.text.isEmpty() || TextUtils.isEmpty(
+                    binding.edtCircleTypeValue.text
+                )
+                || mAdapter.data.none { it.isCheck == true }
+            ) {
+                isEnabled = false
+                setTextColor(ContextCompat.getColor(this@CreateCircleActivity, R.color.color_80a6))
+//                setBackgroundResource(R.drawable.shadow_dd_12dp)
+            } else {
+                isEnabled = true
+                setTextColor(
+                    ContextCompat.getColor(
+                        this@CreateCircleActivity,
+                        R.color.circle_1700F4
+                    )
+                )
+//                setBackgroundResource(R.drawable.shadow_00095b_12dp)
             }
         }
     }
-    private fun submit(){
+
+    private fun submit() {
         binding.apply {
             val title = etBiaoti.text.toString()
             val content = etContent.text.toString()
-            val isAudit= checkBox.isChecked
-            val typeName=edtCircleTypeValue.text.toString()
-            val tagIds= arrayListOf<Int>()
-            var tagName =""
+            val isAudit = checkBox.isChecked
+            val typeName = edtCircleTypeValue.text.toString()
+            val tagIds = arrayListOf<Int>()
+            var tagName = ""
             //被选中的标签集合
-            mAdapter.data.filter { it.isCheck==true }.apply {
+            mAdapter.data.filter { it.isCheck == true }.apply {
                 forEach {
-                    tagName+="${it.tagName}、"
+                    tagName += "${it.tagName}、"
                     it.tagId?.apply { tagIds.add(this) }
                 }
             }
-            WBuriedUtil.clickCircleCreate(title,content,tagName.substring(0,tagName.length-1),if(isAudit)"是" else "否",typeName)
-            if(null==circleItemBean) viewModel.createCircle(title,content, picUrl,tagIds,isAudit,typeId)
-            else viewModel.editCircle(circleItemBean?.circleId,title,content,picUrl,tagIds,isAudit,typeId)
+            WBuriedUtil.clickCircleCreate(
+                title,
+                content,
+                tagName.substring(0, tagName.length - 1),
+                if (isAudit) "是" else "否",
+                typeName
+            )
+            if (null == circleItemBean) viewModel.createCircle(
+                title,
+                content,
+                picUrl,
+                tagIds,
+                isAudit,
+                typeId
+            )
+            else viewModel.editCircle(
+                circleItemBean?.circleId,
+                title,
+                content,
+                picUrl,
+                tagIds,
+                isAudit,
+                typeId
+            )
         }
     }
-    private val listener=object : OnPerformListener {
+
+    private val listener = object : OnPerformListener {
         override fun onFinish(code: Int) {
             btnIsClick()
         }
     }
+
     override fun observe() {
         super.observe()
         viewModel.upLoadBean.observe(this) {
@@ -179,14 +228,14 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
         }
         viewModel.tagInfoData.observe(this) { tagInfo ->
             tagInfo?.apply {
-                val typeIndex:Int = circleTypes?.indexOfFirst { item -> typeId == item.id }?:-1
-                if(typeIndex>-1){
+                val typeIndex: Int = circleTypes?.indexOfFirst { item -> typeId == item.id } ?: -1
+                if (typeIndex > -1) {
                     circleTypes?.get(typeIndex)?.apply {
-                        isCheck =true
+                        isCheck = true
                         binding.edtCircleTypeValue.setText(name)
                     }
                 }
-                circleTypeArr=circleTypes
+                circleTypeArr = circleTypes
                 mAdapter.tagMaxCount = tagMaxCount ?: 0
                 circleItemBean?.tagIds?.forEach { tagId ->
                     tags?.let { tagItem ->
@@ -199,15 +248,16 @@ class CreateCircleActivity : BaseActivity<ActivityCreateCircleBinding, CreateCir
             }
         }
     }
+
     /**
      * 创建分类弹窗
-    * */
-    private fun createPop(){
+     * */
+    private fun createPop() {
         circleTypeArr?.let {
-            if(pop==null){
-                pop=CircleSelectTypePop(this,it,object : OnSelectedBackListener{
+            if (pop == null) {
+                pop = CircleSelectTypePop(this, it, object : OnSelectedBackListener {
                     override fun onSelectedBackListener(itemBean: NewCirceTagBean?) {
-                        typeId=itemBean?.id
+                        typeId = itemBean?.id
                         binding.edtCircleTypeValue.setText(itemBean?.name)
                         btnIsClick()
                     }

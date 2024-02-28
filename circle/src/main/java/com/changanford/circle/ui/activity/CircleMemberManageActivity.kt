@@ -20,7 +20,7 @@ import com.changanford.common.utilext.toast
 /**
  *Author lcw
  *Time on 2021/10/14
- *Purpose 成员管理
+ *Purpose 圈子成员管理
  */
 @Route(path = ARouterCirclePath.CircleMemberManageActivity)
 class CircleMemberManageActivity :

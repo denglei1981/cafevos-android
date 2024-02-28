@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include
@@ -16,12 +17,14 @@
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:visibility="gone"
-        tools:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:visibility="visible">
 
         <CheckBox
             android:id="@+id/checkbox_all"
@@ -35,55 +38,56 @@
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center_vertical"
             android:text="全选"
+            android:textColor="@color/color_9916"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btn_check_not_apply"
+            android:layout_width="109dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/border_0095b_20dp"
+            android:gravity="center"
+            android:text="审核不通过"
             android:textColor="@color/color_1700F4"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_apply"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="109dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_00095b_20dp"
             android:gravity="center"
             android:text="审核通过"
-            android:textColor="@color/color_1700F4"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_check_id"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="109dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/border_0095b_20dp"
             android:gravity="center"
             android:text="设置身份"
             android:textColor="@color/color_1700F4"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 
-        <View
-            android:layout_width="@dimen/dp_1"
-            android:layout_height="@dimen/dp_30"
-            android:background="#EEEEEE" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_check_not_apply"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="审核不通过"
-            android:textColor="@color/color_1700F4"
-            android:textSize="@dimen/sp_15"
-            android:visibility="gone" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_delete"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="109dp"
+            android:layout_height="43dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/shape_00095b_20dp"
             android:gravity="center"
             android:text="删除"
-            android:textColor="@color/color_1700F4"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             android:visibility="gone" />
 

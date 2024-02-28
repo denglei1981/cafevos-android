@@ -3,31 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.NewCirceTagBean" />
     </data>
+
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:paddingEnd="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10">
+
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:checked="@{model.isCheck()}"
-            android:ellipsize="end"
-            android:singleLine="true"
             android:id="@+id/checkBox"
-            android:gravity="center"
-            android:textSize="@dimen/sp_12"
-            android:button="@null"
-            tools:text="@string/app_name"
-            android:text="@{model.tagName}"
-            android:background="@drawable/radiobutton_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dp_8"
-            android:paddingEnd="@dimen/dp_8"
-            android:minHeight="@dimen/dp_23"
-            android:textColor="@drawable/radiobutton_text_tag"/>
+            android:background="@drawable/radiobutton_tag"
+            android:button="@null"
+            android:checked="@{model.isCheck()}"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:minHeight="34dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:singleLine="true"
+            android:text="@{model.tagName}"
+            android:textColor="@drawable/radiobutton_text_tag"
+            android:textSize="@dimen/sp_12"
+            tools:text="@string/app_name" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

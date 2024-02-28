@@ -7,6 +7,7 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleSelectTypeAdapter
 import com.changanford.circle.databinding.PopCreateCircleSelecttypeBinding
 import com.changanford.common.bean.NewCirceTagBean
+import com.changanford.common.wutil.FlowLayoutManager
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.TranslationConfig
@@ -16,16 +17,25 @@ import razerdp.util.animation.TranslationConfig
  * @Time : 2022/2/21
  * @Description : CircleSelectType
  */
-class CircleSelectTypePop(activity: Activity, private val circleTypeArr:List<NewCirceTagBean>, val listener:OnSelectedBackListener):BasePopupWindow(activity) {
-    private var viewDataBinding: PopCreateCircleSelecttypeBinding = DataBindingUtil.bind(createPopupById(R.layout.pop_create_circle_selecttype))!!
+class CircleSelectTypePop(
+    activity: Activity,
+    private val circleTypeArr: List<NewCirceTagBean>,
+    val listener: OnSelectedBackListener
+) : BasePopupWindow(activity) {
+    private var viewDataBinding: PopCreateCircleSelecttypeBinding =
+        DataBindingUtil.bind(createPopupById(R.layout.pop_create_circle_selecttype))!!
     private val mAdapter by lazy { CircleSelectTypeAdapter() }
+
     init {
-        contentView=viewDataBinding.root
+        contentView = viewDataBinding.root
         initData()
     }
-    private fun initData(){
+
+    private fun initData() {
         viewDataBinding.apply {
-            recyclerView.adapter=mAdapter
+            val layoutManager = FlowLayoutManager(btnCancel.context, true, false)
+            recyclerView.layoutManager = layoutManager
+            recyclerView.adapter = mAdapter
             btnCancel.setOnClickListener { dismiss() }
             btnDetermine.setOnClickListener {
                 listener.onSelectedBackListener(mAdapter.getSelectItemBean())
@@ -34,17 +44,20 @@ class CircleSelectTypePop(activity: Activity, private val circleTypeArr:List<New
         }
         mAdapter.setList(circleTypeArr)
     }
+
     override fun onCreateShowAnimation(): Animation? {
         return AnimationHelper.asAnimation()
             .withTranslation(TranslationConfig.FROM_BOTTOM)
             .toShow()
     }
+
     override fun onCreateDismissAnimation(): Animation? {
         return AnimationHelper.asAnimation()
             .withTranslation(TranslationConfig.TO_BOTTOM)
             .toDismiss()
     }
 }
+
 interface OnSelectedBackListener {
-    fun onSelectedBackListener(itemBean:NewCirceTagBean?)
+    fun onSelectedBackListener(itemBean: NewCirceTagBean?)
 }

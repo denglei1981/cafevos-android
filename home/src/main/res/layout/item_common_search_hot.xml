@@ -20,7 +20,6 @@
             android:drawablePadding="4dp"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLength="10"
             android:maxLines="1"
             android:minWidth="60dp"
             android:paddingStart="12dp"
