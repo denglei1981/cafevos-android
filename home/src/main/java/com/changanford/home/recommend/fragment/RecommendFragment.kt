@@ -27,7 +27,6 @@ import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
-import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.adapter.RecommendAdapter
 import com.changanford.home.bean.HomeTopFastBean
@@ -471,11 +470,11 @@ open class RecommendFragment :
 //                    (parentFragment as HomeV2Fragment).stopRefresh()
 //                    (parentFragment as HomeV2Fragment).openTwoLevel()
                 }
-                if (it.data.dataList.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
+                if (viewModel.pageNo >= it.data.totalPage) {
                     binding.smartLayout.setEnableLoadMore(false)
                     recommendAdapter.loadMoreModule.loadMoreEnd()
                 } else {
-//                    binding.smartLayout.setEnableLoadMore(true)
+                    binding.smartLayout.setEnableLoadMore(true)
                 }
             } else {
                 when (it.message) {

@@ -80,6 +80,7 @@ dependencies {
     api "com.aliyun.dpa:oss-android-sdk:2.9.6"
     //发布问卷选择器
     api 'com.contrarywind:Android-PickerView:4.1.6'
+    api 'com.contrarywind:wheelview:4.1.0'
     //兴趣爱好标签
     api "com.github.donkingliang:LabelsView:1.6.5"
     //底部导航

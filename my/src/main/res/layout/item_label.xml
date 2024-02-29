@@ -8,7 +8,7 @@
         android:layout_margin="8dp"
         android:background="@null"
         android:button="@null"
-        android:drawableLeft="@drawable/checkbox"
+        android:drawableLeft="@drawable/member_manage__dialog_bg"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
        android:textColor="@color/color_8016"

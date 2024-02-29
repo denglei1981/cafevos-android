@@ -25,12 +25,12 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp_17"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="335:168"
+            app:layout_constraintDimensionRatio="343:193"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.89"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle"
             tools:src="@mipmap/circle_test_banner" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -58,7 +58,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_pic" />
 
-
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/tv_tex"
             android:layout_width="0dp"
@@ -67,8 +66,8 @@
             android:gravity="top"
             android:lineSpacingMultiplier="1.2"
             android:paddingTop="10dp"
-            android:textColor="@color/color_16"
-            android:textColorHint="#4d161616"
+            android:textColor="@color/color_d916"
+            android:textColorHint="@color/color_4d16"
             android:textIsSelectable="true"
             android:textSize="14sp"
             android:maxLength="1000"

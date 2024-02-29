@@ -1,7 +1,9 @@
 package com.changanford.home.search.activity
 
 import android.content.Intent
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +12,16 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
+import com.changanford.common.adapter.HomeSearchAcAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
@@ -69,10 +74,10 @@ class PloySearchResultActivity :
         SearchAskFragment.newInstance(searchContent)
     }
 
-//    //搜索列表
-//    private val sAdapter by lazy {
-//        HomeSearchAcAdapter()
-//    }
+    //    //搜索列表
+    private val sAdapter by lazy {
+        HomeSearchAcAdapter()
+    }
 
     override fun initView() {
         title = "搜索结果页"
@@ -85,9 +90,9 @@ class PloySearchResultActivity :
         searchContent = intent.getStringExtra(JumpConstant.SEARCH_CONTENT).toString()
         tagId = intent.getStringExtra(JumpConstant.SEARCH_TAG_ID).toString()
 
-//        binding.rvAuto.layoutManager =
-//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//        binding.rvAuto.adapter = sAdapter
+        binding.rvAuto.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvAuto.adapter = sAdapter
         binding.layoutSearch.searchContent.setText(searchContent)
         fragmentList.add(searchNewsFragment)
         fragmentList.add(searchPostFragment)
@@ -133,11 +138,41 @@ class PloySearchResultActivity :
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }
-//        binding.layoutSearch.searchContent.setOnClickListener {
-//
-//             backWithTag()
-//        }
+        binding.layoutSearch.searchContent.setOnClickListener {
+            showAuto()
+        }
+        binding.layoutSearch.searchContent.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                showAuto()
+            }
+        }
+        binding.layoutSearch.searchContent.addTextChangedListener(
+            object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                }
 
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    showAuto()
+                }
+
+            })
+        sAdapter.setOnItemClickListener { _, _, position ->
+            val bean = sAdapter.getItem(position)
+            if (bean.jumpDataType != 0 && bean.jumpDataType != null) {//jump跳转
+                JumpUtils.instans?.jump(bean.jumpDataType, bean.jumpDataValue)
+            } else {
+                search(bean.keyword, true)
+            }
+            binding.rvAuto.visibility = View.GONE
+        }
         binding.layoutSearch.cancel.setOnClickListener {
             onBackPressed()
         }
@@ -157,6 +192,17 @@ class PloySearchResultActivity :
         })
         if (searchType != -1) {
             binding.viewpager.currentItem = searchType
+        }
+    }
+
+    private fun showAuto() {
+        val s = binding.layoutSearch.searchContent.text
+        if (s.isNullOrEmpty()) {
+            binding.rvAuto.visibility = View.GONE
+        } else {
+            sAdapter.searchContent = s.toString()
+            binding.rvAuto.visibility = View.VISIBLE
+            viewModel.getSearchAc(s.toString())
         }
     }
 
@@ -241,7 +287,7 @@ class PloySearchResultActivity :
         super.observe()
         viewModel.searchAutoLiveData.observe(this, Observer {
             if (it.isSuccess) {
-//                sAdapter.setList(it.data)
+                sAdapter.setList(it.data)
             }
         })
     }

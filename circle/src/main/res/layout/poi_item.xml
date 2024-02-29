@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
     <TextView
         android:id="@+id/tv_name"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawablePadding="10dp"
-        android:textColor="@color/black"
-        tools:text="asdfaf"
-        android:singleLine="true"
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:minLines="2"
-        android:ellipsize="end"
-        android:textSize="15sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:paddingTop="@dimen/dp_10"
+        android:singleLine="true"
+        android:textColor="@color/color_d916"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="asdfaf" />
+
     <TextView
         android:id="@+id/tv_address"
-        android:textColor="@color/text_gray_ac"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发大幅萨斯发"
-        android:paddingLeft="10dp"
-        android:layout_marginTop="5dp"
-        android:textSize="13sp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/color_8016"
+        android:textSize="12sp" />
+
     <View
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/alertdialog_line"
-        android:layout_height="1px"/>
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_1a4a" />
 </LinearLayout>

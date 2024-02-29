@@ -7,15 +7,15 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Build
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.TextUtils
-import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,14 +34,12 @@ import com.changanford.circle.bean.LongPostBean
 import com.changanford.circle.databinding.ActivityFabudeitalBinding
 import com.changanford.circle.ui.release.MMapActivity
 import com.changanford.circle.ui.release.ReleaseActivity
-import com.changanford.circle.ui.release.widget.ActivityTypeDialog
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DtoBeanNew
 import com.changanford.common.bean.MapReturnBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostEntity
@@ -49,6 +47,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.ui.dialog.FordPaiBottomDialog
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.AppUtils
@@ -68,15 +67,13 @@ import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.luck.picture.lib.tools.DoubleUtils
 import com.luck.picture.lib.tools.ToastUtils
 import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import com.scwang.smart.refresh.layout.util.SmartUtil
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
+import java.util.Date
 
 
 /**
@@ -135,10 +132,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         initEtContent()
         binding.bottom.apply {
             ActivityFabuBaoming.dto?.let {
-                time.text = if (it.endTimeShow.isNullOrEmpty())"" else "${it.beginTimeShow?:""}-${it.endTimeShow?:""}"
-                leixing.text = if(it.wonderfulType == "1") "线下活动" else "线上活动"
-                place.text = it.activityAddr?:""
-                if (it.wonderfulType.isNullOrEmpty()){
+                time.text =
+                    if (it.endTimeShow.isNullOrEmpty()) "" else "${it.beginTimeShow ?: ""}-${it.endTimeShow ?: ""}"
+                leixing.text = if (it.wonderfulType == "1") "线下活动" else "线上活动"
+                place.text = it.activityAddr ?: ""
+                if (it.wonderfulType.isNullOrEmpty()) {
                     ActivityFabuBaoming.dto.wonderfulType = "0"
                 }
             }
@@ -146,18 +144,18 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
     private fun initEtContent() {
-        if (!ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()){
-            for (i in ActivityFabuBaoming.dto.contentImgList){
-                longpostadapter.addData(LongPostBean(i.contentDesc,i.localMedias))
+        if (!ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()) {
+            for (i in ActivityFabuBaoming.dto.contentImgList) {
+                longpostadapter.addData(LongPostBean(i.contentDesc, i.localMedias))
             }
-        }else {
+        } else {
             val default = LongPostBean(hintStr = "请输入活动详情")
             longpostadapter.addData(default)
         }
-        if (ActivityFabuBaoming.dto.wonderfulType?:"0" == "0"){
+        if (ActivityFabuBaoming.dto.wonderfulType ?: "0" == "0") {
             actType = "0"
             binding.bottom.placelayout.isVisible = false
-        }else{
+        } else {
             actType = "1"
             binding.bottom.placelayout.isVisible = true
         }
@@ -166,14 +164,15 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     override fun onBackPressed() {
         caogao()
     }
-    fun caogao(){
-        if(ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()) {
+
+    fun caogao() {
+        if (ActivityFabuBaoming.dto.contentImgList.isNullOrEmpty()) {
             ActivityFabuBaoming.dto.contentImgList = ArrayList()
-        }else{
+        } else {
             ActivityFabuBaoming.dto.contentImgList.clear()
         }
         ActivityFabuBaoming.dto.contentImgList.addAll(longpostadapter.data.map {
-            DtoBeanNew.ContentImg(it.content,it.localMedias)
+            DtoBeanNew.ContentImg(it.content, it.localMedias)
         })
         finish()
     }
@@ -312,7 +311,6 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
     }
 
 
-
     private fun onclick() {
 
         binding.title.barImgBack.setOnClickListener {
@@ -323,18 +321,41 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         }
         binding.bottom.leixinglayout.setOnClickListener {
             if (!DoubleUtils.isFastDoubleClick()) {
-                ActivityTypeDialog(this) { integer: Int ->
-                    actType = integer.toString() + ""
-                    ActivityFabuBaoming.dto.wonderfulType = actType
-                    if (integer == 0) {
-                        binding.bottom.leixing.text = "线上活动"
-                        binding.bottom.placelayout.isVisible = false
-                    } else {
-                        binding.bottom.leixing.text = "线下活动"
-                        binding.bottom.placelayout.isVisible = true
+                FordPaiBottomDialog(
+                    this,
+                    "活动类型",
+                    arrayListOf("线上活动", "线下活动"),
+                    this,
+                ) { adapter, view, position ->
+                    when (position) {
+                        0 -> {
+                            actType = 0.toString() + ""
+                            ActivityFabuBaoming.dto.wonderfulType = actType
+                            binding.bottom.leixing.text = "线上活动"
+                            binding.bottom.placelayout.isVisible = false
+                        }
+                        1 -> {
+                            actType = 1.toString() + ""
+                            ActivityFabuBaoming.dto.wonderfulType = actType
+                            binding.bottom.leixing.text = "线下活动"
+                            binding.bottom.placelayout.isVisible = true
+
+                        }
                     }
-                    null
-                }.setDefault(Integer.valueOf(actType)).show()
+                    LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
+                }.apply {setDefaultColor(Integer.valueOf(actType))  }.show()
+//                ActivityTypeDialog(this) { integer: Int ->
+//                    actType = integer.toString() + ""
+//                    ActivityFabuBaoming.dto.wonderfulType = actType
+//                    if (integer == 0) {
+//                        binding.bottom.leixing.text = "线上活动"
+//                        binding.bottom.placelayout.isVisible = false
+//                    } else {
+//                        binding.bottom.leixing.text = "线下活动"
+//                        binding.bottom.placelayout.isVisible = true
+//                    }
+//                    null
+//                }.setDefault(Integer.valueOf(actType)).show()
             }
         }
         binding.bottom.placelayout.setOnClickListener {
@@ -342,19 +363,19 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
         }
         binding.bottom.nickSave.setOnClickListener {
             ActivityFabuBaoming.dto.apply {
-                if (longpostadapter.data!= null &&longpostadapter.data.size == 1 && longpostadapter.data[0].content.isNullOrEmpty()){
+                if (longpostadapter.data != null && longpostadapter.data.size == 1 && longpostadapter.data[0].content.isNullOrEmpty()) {
                     "请输入活动详情".toast()
                     return@setOnClickListener
                 }
-                if (beginTime.isNullOrEmpty() || endTime.isNullOrEmpty()){
+                if (beginTime.isNullOrEmpty() || endTime.isNullOrEmpty()) {
                     "请选择活动时间".toast()
                     return@setOnClickListener
                 }
-                if (wonderfulType.isNullOrEmpty()){
+                if (wonderfulType.isNullOrEmpty()) {
                     "请选择活动类型".toast()
                     return@setOnClickListener
                 }
-                if (binding.bottom.placelayout.isVisible && activityAddr.isNullOrEmpty()){
+                if (binding.bottom.placelayout.isVisible && activityAddr.isNullOrEmpty()) {
                     "请选择活动地点".toast()
                     return@setOnClickListener
                 }
@@ -474,6 +495,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                                             ITEM_SELECTPIC
                                         )
                                     }
+
                                     "删除图片" -> {
                                         longpostadapter.getItem(position).localMedias = null
                                         longpostadapter.notifyDataSetChanged()
@@ -548,7 +570,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
 
         if (selectList[index].localMedias != null) {  //封面必不为空 index 0必有值
             val media = selectList[index].localMedias!!
-            ytPath =  if (media.myCompressPath.isNullOrEmpty()) {
+            ytPath = if (media.myCompressPath.isNullOrEmpty()) {
                 PictureUtil.getFinallyPath(media)
             } else {
                 media.myCompressPath
@@ -674,9 +696,11 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     it?.toast()
                 }
             }
-        }else{
-            baoMingViewModel?.updateActivity(ActivityFabuBaoming.wonderfulId,ActivityFabuBaoming
-                .dto){
+        } else {
+            baoMingViewModel?.updateActivity(
+                ActivityFabuBaoming.wonderfulId, ActivityFabuBaoming
+                    .dto
+            ) {
                 it.onSuccess {
                     "发布完成".toast()
                     LiveDataBus.get().with(LiveDataBusKey.FABUBAOMINGFINISHI).postValue(true)
@@ -702,6 +726,7 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                     }
                     longpostadapter.notifyDataSetChanged()
                 }
+
                 ReleaseActivity.ADDRESSBACK -> {
                     val poiInfo =
                         data!!.getBundleExtra("mbundaddress")!!.getParcelable<MapReturnBean>("poi")
@@ -760,6 +785,18 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 ActivityFabuBaoming.dto.beginTimeShow = TimeUtils.MillisToStrO(date.time)
                 timebegin = date
                 pvActEndTime?.show()
+            }.setLayoutRes(R.layout.customer_time_picker_title) {
+                val tvSubmit = it.findViewById<TextView>(R.id.tv_finish)
+                val ivCancel = it.findViewById<ImageView>(R.id.iv_cancel)
+                val tvTitle = it.findViewById<TextView>(R.id.tv_title)
+                tvSubmit.setOnClickListener {
+                    pvActTime?.returnData()
+                    pvActTime?.dismiss()
+                }
+                ivCancel.setOnClickListener {
+                    pvActTime?.dismiss()
+                }
+                tvTitle.text = "活动开始时间"
             }
                 .setCancelText("取消") //取消按钮文字
                 .setSubmitText("确定") //确认按钮文字
@@ -767,6 +804,9 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
                 .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true) //是否循环滚动
+                .setContentTextSize(17)
+                .setTextColorCenter(ContextCompat.getColor(this, R.color.color_1700F4))
+                .setDividerColor(ContextCompat.getColor(this, R.color.transparent))
                 .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
                 .setCancelColor(resources.getColor(R.color.textgray)) //取消按钮文字颜色
                 .setTitleBgColor(resources.getColor(R.color.color_withe)) //标题背景颜色 Night mode
@@ -810,15 +850,32 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
                 } else {
                     ActivityFabuBaoming.dto.endTime = dateend
                     ActivityFabuBaoming.dto.endTimeShow = TimeUtils.MillisToStrO(date.time)
-                    binding.bottom.time.text = "${ActivityFabuBaoming.dto.beginTimeShow} - ${ActivityFabuBaoming.dto.endTimeShow}"
+                    binding.bottom.time.text =
+                        "${ActivityFabuBaoming.dto.beginTimeShow} - ${ActivityFabuBaoming.dto.endTimeShow}"
                 }
             }
+                .setLayoutRes(R.layout.customer_time_picker_title) {
+                    val tvSubmit = it.findViewById<TextView>(R.id.tv_finish)
+                    val ivCancel = it.findViewById<ImageView>(R.id.iv_cancel)
+                    val tvTitle = it.findViewById<TextView>(R.id.tv_title)
+                    tvSubmit.setOnClickListener {
+                        pvActEndTime?.returnData()
+                        pvActEndTime?.dismiss()
+                    }
+                    ivCancel.setOnClickListener {
+                        pvActEndTime?.dismiss()
+                    }
+                    tvTitle.text = "活动结束时间"
+                }
                 .setCancelText("取消") //取消按钮文字
                 .setSubmitText("确定") //确认按钮文字
                 .setTitleText("结束时间")
                 .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
                 .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true) //是否循环滚动
+                .setContentTextSize(17)
+                .setTextColorCenter(ContextCompat.getColor(this, R.color.color_1700F4))
+                .setDividerColor(ContextCompat.getColor(this, R.color.transparent))
                 .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
                 .setCancelColor(resources.getColor(R.color.textgray)) //取消按钮文字颜色
                 .setTitleBgColor(resources.getColor(R.color.color_withe)) //标题背景颜色 Night mode

@@ -3,11 +3,9 @@ package com.changanford.circle.ui.release;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -40,17 +38,16 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.changanford.circle.R;
+import com.changanford.circle.databinding.MmapActivityBinding;
 import com.changanford.common.basic.BaseActivity;
 import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.bean.LocationDataBean;
 import com.changanford.common.bean.MapReturnBean;
 import com.changanford.common.net.CommonResponse;
 import com.changanford.common.ui.dialog.LoadDialog;
-import com.changanford.common.util.AppUtils;
 import com.changanford.common.util.MConstant;
 import com.changanford.common.util.SPUtils;
-import com.changanford.circle.R;
-import com.changanford.circle.databinding.MmapActivityBinding;
 import com.luck.picture.lib.tools.ToastUtils;
 
 import java.util.ArrayList;
@@ -86,39 +83,46 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
     private boolean isquerypoi = false;
     private LoadDialog alertDialog;
 
-
     @Override
     public void initView() {
-        AppUtils.setStatusBarHeight(binding.title.barTitleView, this);
-        binding.title.barTvTitle.setText("选择地点");
-        binding.title.barImgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        initMap();
-        binding.tvAddress.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String input = binding.tvAddress.getText().toString();
-                    if (!TextUtils.isEmpty(input)) {
-                        if (!TextUtils.isEmpty(city)) {
-                            shearch(input);
-                        } else {
-                            ToastUtils.s(BaseApplication.INSTANT, "未能成功定位，无法使用搜索功能");
-                        }
-                        hideInput();
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
 
-        alertDialog
-                = new LoadDialog(this);
+//        AppUtils.setStatusBarHeight(binding.clContent, this);
+//        binding.title.barTvTitle.setText("选择地点");
+//        binding.title.barImgBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
+        initMap();
+        binding.tvAddress.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                String input = binding.tvAddress.getText().toString();
+                if (!TextUtils.isEmpty(input)) {
+                    if (!TextUtils.isEmpty(city)) {
+                        shearch(input);
+                    } else {
+                        ToastUtils.s(BaseApplication.INSTANT, "未能成功定位，无法使用搜索功能");
+                    }
+                    hideInput();
+                }
+                return true;
+            }
+            return false;
+        });
+        binding.ivBack.setOnClickListener(v -> finish());
+        binding.tvSearch.setOnClickListener(v -> {
+            String input = binding.tvAddress.getText().toString();
+            if (!TextUtils.isEmpty(input)) {
+                if (!TextUtils.isEmpty(city)) {
+                    shearch(input);
+                } else {
+                    ToastUtils.s(BaseApplication.INSTANT, "未能成功定位，无法使用搜索功能");
+                }
+                hideInput();
+            }
+        });
+        alertDialog = new LoadDialog(this);
         alertDialog.setLoadingText("定位中请稍后...");
         alertDialog.show();
         alertDialog.setCanceledOnTouchOutside(true);
@@ -174,10 +178,10 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
         // 开启定位图层
         baiduMap.setMyLocationEnabled(true);
         //声明LocationClient类
-        try{
+        try {
             LocationClient.setAgreePrivacy(true);
             mLocationClient = new LocationClient(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -186,6 +190,7 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
         initLocation();
         //开始定位
         mLocationClient.start();
+
     }
 
     @Override
@@ -399,13 +404,13 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
         LatLng point = new LatLng(latitud, longitude);
 //构建Marker图标
         BitmapDescriptor bitmap = BitmapDescriptorFactory
-                .fromResource(R.mipmap.dingweiicon);
+                .fromResource(R.mipmap.ic_current_location);
 //构建MarkerOption，用于在地图上添加Marker
         OverlayOptions option = new MarkerOptions()
                 .position(point)
                 .icon(bitmap);
 //在地图上添加Marker，并显示
-//        baiduMap.addOverlay(option);
+        baiduMap.addOverlay(option);
         //设定中心点坐标
         LatLng cenpt = new LatLng(latitud, longitude);
         //定义地图状态
@@ -508,8 +513,8 @@ public class MMapActivity extends BaseActivity<MmapActivityBinding, PerfectQuess
         viewModel.getCityDetailBylngAndlat(lat, lon, new Function1<CommonResponse<LocationDataBean>, Unit>() {
             @Override
             public Unit invoke(CommonResponse<LocationDataBean> response) {
-                if (response.getCode() == 0){
-                    LocationDataBean locationDataBean=response.getData();
+                if (response.getCode() == 0) {
+                    LocationDataBean locationDataBean = response.getData();
                     Intent intent = new Intent();
                     Bundle bundle = new Bundle();
                     mapReturnBean.setSid(locationDataBean.getProvinceCode());

@@ -1,6 +1,8 @@
 package com.changanford.circle.ui.activity.baoming
 
 import android.content.Intent
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +20,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -38,6 +42,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberImagePainter
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -63,9 +68,8 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
-import com.changanford.common.ui.dialog.BottomSelectDialog
+import com.changanford.common.ui.dialog.FordPaiBottomDialog
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.ui.dialog.SelectPicDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.PictureUtil
@@ -159,42 +163,60 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
         }
         binding.composeLayout.setContent {
             fabubaomingCompose(viewModel, dto, choseCover = {
-                SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
-                    override fun chooseByPhone() {
-                        PictureUtils.openGarlly(
-                            this@ActivityFabuBaoming,
-                            1,
-                            object : OnResultCallbackListener<LocalMedia?> {
-                                override fun onResult(result: List<LocalMedia?>?) {
-                                    val bean = result?.get(0)
-                                    val path = bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
-                                    path?.let { it1 ->
-                                        OSSHelper.init(this@ActivityFabuBaoming)
-                                            .getOSSToImage(
-                                                this@ActivityFabuBaoming,
-                                                it1,
-                                                object : OSSHelper.OSSImageListener {
-                                                    override fun getPicUrl(url: String) {
-                                                        it(url)
-                                                        dto.coverImgUrl = url
-                                                    }
-                                                })
+                FordPaiBottomDialog(
+                    this,
+                    "请选择封面",
+                    arrayListOf("从手机相册选择", "福域默认相册"),
+                    this,
+                ) { adapter, view, position ->
+                    when (position) {
+                        0 -> {
+                            PictureUtils.openGarlly(
+                                this@ActivityFabuBaoming,
+                                1,
+                                object : OnResultCallbackListener<LocalMedia?> {
+                                    override fun onResult(result: List<LocalMedia?>?) {
+                                        val bean = result?.get(0)
+                                        val path =
+                                            bean?.let { it1 -> PictureUtil.getFinallyPath(it1) }
+                                        path?.let { it1 ->
+                                            OSSHelper.init(this@ActivityFabuBaoming)
+                                                .getOSSToImage(
+                                                    this@ActivityFabuBaoming,
+                                                    it1,
+                                                    object : OSSHelper.OSSImageListener {
+                                                        override fun getPicUrl(url: String) {
+                                                            it(url)
+                                                            dto.coverImgUrl = url
+                                                        }
+                                                    })
+                                        }
                                     }
-                                }
 
-                                override fun onCancel() {}
-                            },
-                            670,
-                            400
-                        )
+                                    override fun onCancel() {}
+                                },
+                                670,
+                                400
+                            )
+                        }
+
+                        1 -> {
+                            startARouter(ARouterCommonPath.FordAlbumActivity)
+                            fordAlbum = it
+                        }
                     }
-
-                    override fun chooseByDefault() {
-                        startARouter(ARouterCommonPath.FordAlbumActivity)
-                        fordAlbum = it
-                    }
-
-                }).show()
+                    LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
+                }.show()
+//                SelectPicDialog(this, object : SelectPicDialog.ChoosePicListener {
+//                    override fun chooseByPhone() {
+//
+//                    }
+//
+//                    override fun chooseByDefault() {
+//
+//                    }
+//
+//                }).show()
             }, choseTime = {
                 setTimePicker()
                 dateReslut = it
@@ -346,23 +368,52 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                     return
                 }
             }
-            BottomSelectDialog(this, {
-                var baomingDB = PostEntity(
-                    postsId = draftBean?.postsId ?: insertPostId,
-                    type = "5",
-                    creattime = System.currentTimeMillis().toString(),
-                    baoming = JSON.toJSONString(dto)
-                )
-                lifecycleScope.launch(Dispatchers.IO) {
-                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
-                        .insert(baomingDB)
-                    withContext(Dispatchers.Main) {
+            FordPaiBottomDialog(
+                this,
+                "是否保存草稿",
+                arrayListOf("保存草稿", "不保存"),
+                this,
+            ) { adapter, view, position ->
+                when (position) {
+                    0 -> {
+                        var baomingDB = PostEntity(
+                            postsId = draftBean?.postsId ?: insertPostId,
+                            type = "5",
+                            creattime = System.currentTimeMillis().toString(),
+                            baoming = JSON.toJSONString(dto)
+                        )
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            PostDatabase.getInstance(MyApp.mContext).getPostDao()
+                                .insert(baomingDB)
+                            withContext(Dispatchers.Main) {
+                                exitPage()
+                            }
+                        }
+                    }
+
+                    1 -> {
                         exitPage()
                     }
                 }
-            }) {
-                exitPage()
+                LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
             }.show()
+//            BottomSelectDialog(this, {
+//                var baomingDB = PostEntity(
+//                    postsId = draftBean?.postsId ?: insertPostId,
+//                    type = "5",
+//                    creattime = System.currentTimeMillis().toString(),
+//                    baoming = JSON.toJSONString(dto)
+//                )
+//                lifecycleScope.launch(Dispatchers.IO) {
+//                    PostDatabase.getInstance(MyApp.mContext).getPostDao()
+//                        .insert(baomingDB)
+//                    withContext(Dispatchers.Main) {
+//                        exitPage()
+//                    }
+//                }
+//            }) {
+//                exitPage()
+//            }.show()
         }
     }
 
@@ -393,10 +444,26 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                 timebegin = date
                 pvActEndTime?.show()
             }
+                .setLayoutRes(R.layout.customer_time_picker_title) {
+                    val tvSubmit = it.findViewById<TextView>(R.id.tv_finish)
+                    val ivCancel = it.findViewById<ImageView>(R.id.iv_cancel)
+                    val tvTitle = it.findViewById<TextView>(R.id.tv_title)
+                    tvSubmit.setOnClickListener {
+                        pvActTime?.returnData()
+                        pvActTime?.dismiss()
+                    }
+                    ivCancel.setOnClickListener {
+                        pvActTime?.dismiss()
+                    }
+                    tvTitle.text = "活动开始时间"
+                }
                 .setCancelText("取消") //取消按钮文字
                 .setSubmitText("确定") //确认按钮文字
                 .setTitleText("开始时间")
                 .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
+                .setContentTextSize(17)
+                .setTextColorCenter(ContextCompat.getColor(this, R.color.color_1700F4))
+                .setDividerColor(ContextCompat.getColor(this, R.color.transparent))
                 .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true) //是否循环滚动
                 .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
@@ -430,19 +497,35 @@ class ActivityFabuBaoming : BaseActivity<ActivityFabubaomingBinding, BaoMingView
                         BaseApplication.INSTANT.applicationContext,
                         "结束时间不能小于开始时间"
                     )
-                    pvActTime!!.show()
+                    pvActEndTime!!.show()
                 } else {
                     dto.signEndTimeShow = TimeUtils.MillisToStrO(date.time)
                     dto.signEndTime = TimeUtils.MillisToStr1(date.time)
                     dateReslut("${dto.signBeginTimeShow}-${dto.signEndTimeShow}")
                 }
             }
+                .setLayoutRes(R.layout.customer_time_picker_title) {
+                    val tvSubmit = it.findViewById<TextView>(R.id.tv_finish)
+                    val ivCancel = it.findViewById<ImageView>(R.id.iv_cancel)
+                    val tvTitle = it.findViewById<TextView>(R.id.tv_title)
+                    tvSubmit.setOnClickListener {
+                        pvActEndTime?.returnData()
+                        pvActEndTime?.dismiss()
+                    }
+                    ivCancel.setOnClickListener {
+                        pvActEndTime?.dismiss()
+                    }
+                    tvTitle.text = "活动结束时间"
+                }
                 .setCancelText("取消") //取消按钮文字
                 .setSubmitText("确定") //确认按钮文字
                 .setTitleText("结束时间")
                 .setTitleSize(SmartUtil.dp2px(6f)) //标题文字大小
                 .setOutSideCancelable(true) //点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true) //是否循环滚动
+                .setContentTextSize(17)
+                .setTextColorCenter(ContextCompat.getColor(this, R.color.color_1700F4))
+                .setDividerColor(ContextCompat.getColor(this, R.color.transparent))
                 .setSubmitColor(resources.getColor(R.color.black)) //确定按钮文字颜色
                 .setCancelColor(resources.getColor(R.color.textgray)) //取消按钮文字颜色
                 .setTitleBgColor(resources.getColor(R.color.color_withe)) //标题背景颜色 Night mode
@@ -635,7 +718,7 @@ fun fabubaomingCompose(
                     date = it
                 }
             }
-            FabuLine()
+//            FabuLine()
             FabuChoseItem(
                 title = "搜集资料",
                 content = profile,
@@ -645,11 +728,11 @@ fun fabubaomingCompose(
                     profile = it
                 }
             }
-            FabuLine()
+//            FabuLine()
             FabuInputItem(title = "报名人数", content = num, hint = "不填则无限制") {
                 num = it
             }
-            FabuLine(20.dp)
+//            FabuLine(20.dp)
             FabuButton(nextEnable) {
                 if (nextEnable) {
                     startARouter(ARouterCirclePath.ActivityFabuStep2)
@@ -691,25 +774,25 @@ fun FabuChoseItem(
         if (isMust) {
             Text(
                 text = "*",
-                style = TextStyle(color = Color(0xffff0000), fontSize = 14.sp)
+                style = TextStyle(color = Color(0xffff0000), fontSize = 16.sp)
             )
         }
         Text(
             text = "$title",
-            style = TextStyle(color = Color(0xff333333), fontSize = 14.sp)
+            style = TextStyle(color = Color(0xd9161616), fontSize = 16.sp)
         )
         Text(
             text = "$content",
             style = TextStyle(
-                color = Color(0xff666666),
-                fontSize = 13.sp,
+                color = Color(0x99161616),
+                fontSize = 14.sp,
                 textAlign = TextAlign.Right
             ),
             modifier = Modifier.weight(1f)
         )
         if (right) {
             Image(
-                painter = rememberImagePainter(data = R.mipmap.right_74889d),
+                painter = rememberImagePainter(data = R.mipmap.ic_grey_right_small),
                 contentDescription = "",
                 modifier = Modifier.size(15.dp)
             )
@@ -735,12 +818,12 @@ fun FabuInputItem(
         if (isMust) {
             Text(
                 text = "*",
-                style = TextStyle(color = Color(0xffff0000), fontSize = 14.sp)
+                style = TextStyle(color = Color(0xffff0000), fontSize = 16.sp)
             )
         }
         Text(
             text = "$title",
-            style = TextStyle(color = Color(0xff333333), fontSize = 14.sp)
+            style = TextStyle(color = Color(0xd9161616), fontSize = 16.sp)
         )
         TextField(
             value = txt,
@@ -805,7 +888,7 @@ fun FabuInput(
             .fillMaxWidth()
             .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
     ) {
-        TextField(
+        BasicTextField(
             value = txt,
             onValueChange = {
                 if (it.length <= maxNum) {
@@ -816,18 +899,57 @@ fun FabuInput(
             },
             singleLine = singleLine,
             textStyle = TextStyle(color = Color(0xd9161616), fontSize = 14.sp),
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent, focusedIndicatorColor =
-                Color.Transparent, backgroundColor = Color.Transparent
-            ),
+            decorationBox = { innerTextField ->
+                Box {
+                    Surface(
+                        // border = BorderStroke(1.dp, Color.Gray),
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(top = 12.dp, bottom = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(modifier = Modifier.padding(start = 0.dp, end = 0.dp)) {
+                                if (txt.isEmpty()) Text(
+                                    text = hint,
+                                    color = Color(0x4d161616),
+                                    fontSize = 14.sp
+                                )
+                                innerTextField()
+                            }
+
+                        }
+                    }
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .wrapContentHeight()
                 .weight(1f),
-            placeholder = {
-                Text(text = hint, style = TextStyle(color = Color(0x4d161616), fontSize = 14.sp))
-            }
         )
+//        TextField(
+//            value = txt,
+//            onValueChange = {
+//                if (it.length <= maxNum) {
+//                    txt = it
+//                    onChanged(it)
+//                    num = it.length
+//                }
+//            },
+//            singleLine = singleLine,
+//            textStyle = TextStyle(color = Color(0xd9161616), fontSize = 14.sp),
+//            colors = TextFieldDefaults.textFieldColors(
+//                unfocusedIndicatorColor = Color.Transparent, focusedIndicatorColor =
+//                Color.Transparent, backgroundColor = Color.Transparent
+//            ),
+//            modifier = Modifier
+//                .fillMaxWidth(1f)
+//                .wrapContentHeight()
+//                .weight(1f),
+//            placeholder = {
+//                Text(text = hint, style = TextStyle(color = Color(0x4d161616), fontSize = 14.sp))
+//            }
+//        )
         Text(text = "$num/$maxNum", color = Color(0x80161616), fontSize = 12.sp)
     }
 }
@@ -837,17 +959,24 @@ fun FabuInput(
 fun FabuButton(enable: Boolean = true, onclick: () -> Unit) {
     Box(
         modifier = Modifier
+            .padding(start = 20.dp, end = 20.dp, top = 20.dp)
             .height(40.dp)
             .fillMaxWidth(1f)
             .clip(RoundedCornerShape(20.dp))
-            .background(color = if (enable) Color(0xff1700f4) else Color(0xffdddddd))
+            .background(color = if (enable) Color(0xff1700f4) else Color(0x80a6a6a6))
             .clickable {
                 if (enable) {
                     onclick()
                 }
             }, contentAlignment = Alignment.Center
     ) {
-        Text(text = "下一步", style = TextStyle(color = Color.White, fontSize = 14.sp))
+        Text(
+            text = "下一步",
+            style = TextStyle(
+                color = if (enable) Color(0xffffffff) else Color(0x4d161616),
+                fontSize = 14.sp
+            )
+        )
     }
 }
 

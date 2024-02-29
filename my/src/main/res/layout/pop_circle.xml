@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
-            android:text="审核是否不通过？"
+            android:text="是否审核不通过？"
             android:textColor="@color/color_16"
             android:textSize="18sp" />
 

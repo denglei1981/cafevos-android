@@ -40,9 +40,14 @@ class FordPaiBottomDialog(
         val ry = findViewById<RecyclerView>(R.id.ry)
         ry.adapter = adapter
         adapter.setOnItemClickListener(listener)
-        LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).observe(lifecycle){
+        LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).observe(lifecycle) {
             dismiss()
         }
+    }
+
+    fun setDefaultColor(index: Int) {
+        adapter.defaultColorIndex = index
+        adapter.notifyItemChanged(index)
     }
 
 }

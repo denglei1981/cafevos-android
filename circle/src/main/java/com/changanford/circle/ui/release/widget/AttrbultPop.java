@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.changanford.circle.ui.release.AttribltMidAdapter;
-import com.changanford.common.bean.AttributeBean;
 import com.changanford.circle.R;
 import com.changanford.circle.databinding.AttrubltBinding;
+import com.changanford.circle.ui.release.AttribltMidAdapter;
+import com.changanford.common.bean.AttributeBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +57,12 @@ public class AttrbultPop extends BasePopupWindow implements View.OnClickListener
         attrrec.setLayoutManager(layoutManager);
         attrrec.setAdapter(attribltAdapter);
         attribltAdapter.addData(attributeListBeans);
+        findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
 //        attribltAdapter.setOnItemClickListener(new OnItemClickListener() {
 //            @Override

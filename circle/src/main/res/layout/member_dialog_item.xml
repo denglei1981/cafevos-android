@@ -22,6 +22,6 @@
         android:maxLines="1"
         android:text="@{bean.starName}"
         android:textColor="@color/color_d916"
-        android:textSize="18sp"
+        android:textSize="17sp"
         tools:text="圈子管理员" />
 </layout>
