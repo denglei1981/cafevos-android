@@ -14,7 +14,6 @@
         android:background="@drawable/bg_081700f4_12"
         android:paddingBottom="16dp">
 
-
         <include
             android:id="@+id/layout_user_title"
             layout="@layout/item_common_user_title"
@@ -71,9 +70,9 @@
             android:id="@+id/layout_bottom"
             layout="@layout/item_search_result_sm_bottom"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/layout_user_title"
-            android:layout_height="wrap_content" />
+            app:layout_constraintLeft_toLeftOf="@+id/layout_user_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

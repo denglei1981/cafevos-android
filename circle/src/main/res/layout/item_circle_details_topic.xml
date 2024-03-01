@@ -17,7 +17,7 @@
             android:layout_height="34dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_1700f4_100"
+            android:background="@drawable/bg_081700f4_100"
             android:gravity="center"
             android:maxLength="20"
             android:ellipsize="end"

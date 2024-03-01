@@ -3,9 +3,11 @@ package com.changanford.home.search.adapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -17,7 +19,9 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
+import com.changanford.common.utilext.toast
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultUserBinding
@@ -35,7 +39,20 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
         //    val headFrameImage:String=""
         holder.dataBinding?.let { it ->
             GlideUtils.loadBD(item.avatar, it.ivHeader)
+            if (!item.memberIcon.isNullOrEmpty()) {
+                it.ivVip.load(item.memberIcon)
+            }
+            if (item.imags != null && item.imags?.size!! > 0) {// 帖子
+                val searchPostTagAdapter = LabelAdapter(22)
+                searchPostTagAdapter.setList(item.imags)
+                it.rvUserTag.adapter = searchPostTagAdapter
+                it.rvUserTag.visibility = View.VISIBLE
+            } else {
+                it.rvUserTag.visibility = View.GONE
+            }
             it.tvAuthorName.text = item.nickname
+            it.tvSubTitle.text = item.getMemberNames()
+            it.tvSubTitle.isVisible = !item.getMemberNames().isNullOrEmpty()
             setFollowState(it.btnFollow, item)
             it.btnFollow.setOnClickListener { _ ->
                 // 判断是否登录。
@@ -76,13 +93,14 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
                 followType = 1
             }
         }
-        authorBaseVo.isFollow = followType
-        setFollowState(btnFollow, authorBaseVo)
-        getFollow(authorBaseVo.userId, followType)
+        getFollow(authorBaseVo.userId, followType) {
+            authorBaseVo.isFollow = followType
+            setFollowState(btnFollow, authorBaseVo)
+        }
     }
 
     // 关注。
-    private fun getFollow(followId: String, type: Int) {
+    private fun getFollow(followId: String, type: Int, block: () -> Unit) {
         lifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -91,7 +109,9 @@ class SearchUserResultAdapter(val lifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    block.invoke()
                 }.onWithMsgFailure {
+                    it?.toast()
                 }
         }
     }

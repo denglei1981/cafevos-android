@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:ellipsize="end"
-            android:maxLength="12"
+            android:maxEms="14"
             android:maxLines="1"
             android:textColor="@color/color_16"
             android:textSize="14sp"

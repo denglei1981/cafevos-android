@@ -1,55 +1,54 @@
-package com.changanford.common.widget;
+package com.changanford.common.widget
 
-import android.content.Context;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-
-import androidx.appcompat.widget.AppCompatEditText;
-
-import com.changanford.common.R;
-
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.AttributeSet
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import androidx.appcompat.widget.AppCompatEditText
+import com.changanford.common.R
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 
 /**
-
+ *
  */
-public class ClearEditText extends AppCompatEditText implements View.OnFocusChangeListener,
-        TextWatcher {
+class ClearEditText @JvmOverloads constructor(
+    context: Context?,
+    attrs: AttributeSet? = null,
+    defStyle: Int = android.R.attr.editTextStyle
+) : AppCompatEditText(
+    context!!, attrs, defStyle
+), OnFocusChangeListener, TextWatcher {
     //EditText右侧的删除按钮
-    private Drawable mClearDrawable;
-    private boolean hasFoucs;
+    private var mClearDrawable: Drawable? = null
+    private var hasFoucs = false
 
-    public ClearEditText(Context context) {
-        this(context, null);
+    init {
+        init()
     }
 
-    public ClearEditText(Context context, AttributeSet attrs) {
-        this(context, attrs, android.R.attr.editTextStyle);
-    }
-
-    public ClearEditText(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
-
-    private void init() {
+    private fun init() {
         // 获取EditText的DrawableRight,假如没有设置我们就使用默认的图片,获取图片的顺序是左上右下（0,1,2,3,）
-        mClearDrawable = getCompoundDrawables()[2];
+        mClearDrawable = compoundDrawables[2]
         if (mClearDrawable == null) {
-            mClearDrawable = getResources().getDrawable(R.mipmap.ic_search_clear);
+            mClearDrawable = resources.getDrawable(R.mipmap.ic_search_clear)
         }
-
-        mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
+        mClearDrawable?.setBounds(
+            0,
+            0,
+            mClearDrawable!!.getIntrinsicWidth(),
+            mClearDrawable!!.getIntrinsicHeight()
+        )
         // 默认设置隐藏图标
-        setClearIconVisible(false);
+        setClearIconVisible(false)
         // 设置焦点改变的监听
-        setOnFocusChangeListener(this);
+        onFocusChangeListener = this
         // 设置输入框里面内容发生改变的监听
-        addTextChangedListener(this);
+        addTextChangedListener(this)
     }
 
     /* @说明：isInnerWidth, isInnerHeight为ture，触摸点在删除图标之内，则视为点击了删除图标
@@ -66,58 +65,54 @@ public class ClearEditText extends AppCompatEditText implements View.OnFocusChan
      * distance 删除图标顶部边缘到控件顶部边缘的距离
      * distance + height 删除图标底部边缘到控件顶部边缘的距离
      */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (getCompoundDrawables()[2] != null) {
-                int x = (int) event.getX();
-                int y = (int) event.getY();
-                Rect rect = getCompoundDrawables()[2].getBounds();
-                int height = rect.height();
-                int distance = (getHeight() - height) / 2;
-                boolean isInnerWidth = x > (getWidth() - getTotalPaddingRight()) && x < (getWidth() - getPaddingRight());
-                boolean isInnerHeight = y > distance && y < (distance + height);
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_UP) {
+            if (compoundDrawables[2] != null) {
+                val x = event.x.toInt()
+                val y = event.y.toInt()
+                val rect = compoundDrawables[2].bounds
+                val height = rect.height()
+                val distance = (getHeight() - height) / 2
+                val isInnerWidth = x > width - totalPaddingRight && x < width - paddingRight
+                val isInnerHeight = y > distance && y < distance + height
                 if (isInnerWidth && isInnerHeight) {
-                    this.setText("");
+                    this.setText("")
                 }
             }
         }
-        return super.onTouchEvent(event);
+        return super.onTouchEvent(event)
     }
 
     /**
      * 当ClearEditText焦点发生变化的时候，
      * 输入长度为零，隐藏删除图标，否则，显示删除图标
      */
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        this.hasFoucs = hasFocus;
+    override fun onFocusChange(v: View, hasFocus: Boolean) {
+        hasFoucs = hasFocus
         if (hasFocus) {
-            setClearIconVisible(getText().length() > 0);
+            setClearIconVisible(text!!.isNotEmpty())
         } else {
-            setClearIconVisible(false);
+            setClearIconVisible(false)
         }
+        LiveDataBus.get().with(LiveDataBusKey.CLEAR_EDIT_FOCUS_CHANGE).postValue(hasFocus)
     }
 
-    protected void setClearIconVisible(boolean visible) {
-        Drawable right = visible ? mClearDrawable : null;
-        setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
+    protected fun setClearIconVisible(visible: Boolean) {
+        val right = if (visible) mClearDrawable else null
+        setCompoundDrawables(
+            compoundDrawables[0],
+            compoundDrawables[1],
+            right,
+            compoundDrawables[3]
+        )
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int count, int after) {
+    override fun onTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         if (hasFoucs) {
-            setClearIconVisible(s.length() > 0);
+            setClearIconVisible(s.length > 0)
         }
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
+    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+    override fun afterTextChanged(s: Editable) {}
 }

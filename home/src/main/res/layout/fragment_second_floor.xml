@@ -69,9 +69,10 @@
                     app:tabMode="scrollable"
                     app:tabPadding="0dp"
                     app:tabPaddingBottom="0dp"
-                    app:tabPaddingEnd="0dp"
-                    app:tabPaddingStart="0dp"
+                    app:tabPaddingEnd="16dp"
+                    app:tabPaddingStart="16dp"
                     app:tabPaddingTop="0dp"
+                    app:tabMinWidth="40dp"
                     app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="@color/blue_tab"
                     app:tabTextColor="@color/black" />

@@ -77,6 +77,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             binding.layoutCount.tvLikeCount.setOnClickListener {
                 likePost(binding, item, holder.layoutPosition)
             }
+            if (!item.authorBaseVo?.memberIcon.isNullOrEmpty()) {
+                binding.layoutHeader.ivVip.load(item.authorBaseVo?.memberIcon)
+            }
             binding.layoutCount.tvComments.text = item.getCommentCountNew()
             binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
             binding.layoutCount.tvPostTime.text = item.timeStr
@@ -179,7 +182,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     )
 //                        tvContent.text = item.getTopic()
                 }
-                if (TextUtils.isEmpty(item.content) ) {
+                if (TextUtils.isEmpty(item.content)) {
                     tvTopic.text = ""
                     tvTopic.visibility = View.GONE
                 } else {
@@ -200,7 +203,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                     tvContent.visibility = View.VISIBLE
                     tvContent.text = item.title
                 }
-                if (TextUtils.isEmpty(item.content) ) {
+                if (TextUtils.isEmpty(item.content)) {
                     tvTopic.text = ""
                     tvTopic.visibility = View.GONE
                 } else {

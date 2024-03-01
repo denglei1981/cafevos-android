@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.adapter.HomeSearchAcAdapter
@@ -35,6 +36,8 @@ import com.changanford.home.search.adapter.SearchHistoryAdapter
 import com.changanford.home.search.adapter.SearchHotAdapter
 import com.changanford.home.search.request.PolySearchViewModel
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Collections
 
 
@@ -250,7 +253,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             onBackPressed()
         }
 
-        HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
+        lifecycleScope.launch {
+            delay(600)
+            HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
+        }
     }
 
     var searchContent = ""

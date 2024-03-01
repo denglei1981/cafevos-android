@@ -83,7 +83,7 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
                     )
                 )
 
-                else -> stateBg.setColor(ContextCompat.getColor(context, R.color.color_a5adb1))
+                else -> stateBg.setColor(ContextCompat.getColor(context, R.color.color_d94a))
             }
 
             //代码修改宽高比

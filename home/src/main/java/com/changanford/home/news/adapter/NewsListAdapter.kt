@@ -28,6 +28,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -63,7 +64,7 @@ class NewsListAdapter(
     }
 
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
-        val binding=DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
+        val binding = DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
         binding?.let {
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getPics())
         }
@@ -105,6 +106,10 @@ class NewsListAdapter(
         val viewCount = holder.getView<TextView>(R.id.tv_view_count)
         val comments = holder.getView<TextView>(R.id.tv_comments)
         val tvLikeCount = holder.getView<TextView>(R.id.tv_like_count)
+        val ivVip = holder.getView<ImageView>(R.id.iv_vip)
+        if (!item.authors?.memberIcon.isNullOrEmpty()) {
+            ivVip.load(item.authors?.memberIcon)
+        }
         tvLocation.visibility = View.GONE
         viewCount.text = item.viewsCount.toString()
         comments.text = item.getCommentCountNew()

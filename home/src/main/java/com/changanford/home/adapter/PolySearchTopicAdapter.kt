@@ -2,12 +2,10 @@ package com.changanford.home.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.Topic
-import com.changanford.common.util.MConstant
-import com.changanford.common.utilext.setDrawableNull
-import com.changanford.common.utilext.setDrawableRight
 import com.changanford.common.utilext.toIntPx
 import com.changanford.home.R
 import com.changanford.home.databinding.ItemSearchTopicBinding
@@ -28,7 +26,7 @@ class PolySearchTopicAdapter :
         holder.dataBinding?.apply {
             setMargin(
                 root,
-                ((55.toDouble() / 375) * MConstant.deviceWidth).toInt(),
+                2,
                 holder.layoutPosition
             )
 //            setTitleMaxWidth(this)
@@ -37,23 +35,24 @@ class PolySearchTopicAdapter :
             tvContent.text = item.description
 
             if (item.isHot == 1) {
-                tvTitle.setDrawableRight(R.mipmap.ic_se_topic_hot)
+                ivTag.isVisible = true
+                ivTag.setImageResource(R.mipmap.ic_se_topic_hot)
             } else if (item.isNew == "YES") {
-                tvTitle.setDrawableRight(R.mipmap.ic_se_topic_new)
+                ivTag.isVisible = true
+                ivTag.setImageResource(R.mipmap.ic_se_topic_new)
             } else {
-                tvTitle.setDrawableNull()
+                ivTag.isVisible = false
             }
         }
     }
 
     private fun setMargin(view: View?, margin: Int, position: Int) {
-        view?.let {
+        view?.post {
             val params = view.layoutParams as ViewGroup.MarginLayoutParams
             if (isOdd(position)) {
-                params.leftMargin = 30.toIntPx()
+                    params.leftMargin = margin
             } else params.leftMargin = 0
         }
-
     }
 
     private fun isOdd(number: Int): Boolean {

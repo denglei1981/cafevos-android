@@ -141,8 +141,8 @@ class PloySearchResultActivity :
         binding.layoutSearch.searchContent.setOnClickListener {
             showAuto()
         }
-        binding.layoutSearch.searchContent.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.CLEAR_EDIT_FOCUS_CHANGE).observe(this){
+            if (it) {
                 showAuto()
             }
         }
@@ -184,6 +184,7 @@ class PloySearchResultActivity :
                     val content = binding.layoutSearch.searchContent.text.toString()
                     if (content.isNotEmpty()) {
                         search(content, true)
+                        binding.rvAuto.visibility = View.GONE
                     }
                     return true;
                 }

@@ -161,16 +161,14 @@ class CircleDetailsActivity :
             val absOffset = abs(verticalOffset).toFloat() * 4.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.3F && !isWhite) {
-                binding.backImg.setImageResource(R.mipmap.whit_left)
-//                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
+                binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
                 binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.white))
                 isWhite = true
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
-                binding.backImg.setImageResource(R.mipmap.back_xhdpi)
-//                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+                binding.backImg.setColorFilter(Color.parseColor("#000000"))
                 //图片变色
                 binding.shareImg.setColorFilter(Color.parseColor("#000000"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.black))

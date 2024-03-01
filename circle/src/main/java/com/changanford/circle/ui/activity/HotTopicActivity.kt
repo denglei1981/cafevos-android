@@ -1,15 +1,13 @@
 package com.changanford.circle.ui.activity
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.HotMainTopicAdapter
-import com.changanford.circle.adapter.HotTopicAdapter
 import com.changanford.circle.databinding.ActivityHotTopicBinding
 import com.changanford.circle.viewmodel.HotTopicViewModel
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
@@ -18,7 +16,8 @@ import com.changanford.common.util.AppUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
-import com.xiaomi.push.it
+import com.gyf.immersionbar.ImmersionBar
+import kotlin.math.abs
 
 /**
  *Author lcw
@@ -32,6 +31,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
         HotMainTopicAdapter()
     }
 
+    private var isWhite = true//是否是白色状态
     private var type = 0
     private var section = 0
     private var circleId: String? = null
@@ -40,30 +40,35 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
     override fun onResume() {
         super.onResume()
         GIOUtils.topicListPageView()
-        if(type==0){
+        if (type == 0) {
             updateMainGio("热门话题页", "热门话题页")
         }
     }
 
     override fun initView() {
+        isDarkFont = false
         title = "话题列表页"
-        AppUtils.setStatusBarPaddingTop(binding.title.root, this)
+        AppUtils.setStatusBarPaddingTop(binding.toolbar, this)
         type = intent.getIntExtra(IntentKey.TOPIC_TYPE, 0)
         circleId = intent.getStringExtra(IntentKey.CREATE_NOTICE_CIRCLE_ID)
         circleName = intent.getStringExtra("circleName")
-        binding.title.run {
+        binding.titleTv.run {
             when (type) {
                 0 -> {
-                    tvTitle.text = "热门话题"
+                    binding.tvTopName.text = "热门话题"
+                    text = "热门话题"
                     section = 0
                 }
+
                 1 -> {
-                    tvTitle.text = "圈内话题"
+                    binding.tvTopName.text = "圈内话题"
+                    text = "圈内话题"
                     section = 1
                 }
             }
-            ivBack.setOnClickListener { finish() }
+
         }
+        binding.backImg.setOnClickListener { finish() }
         binding.ryTopic.adapter = adapter
         binding.tvSearch.setOnClickListener {
             val bundle = Bundle()
@@ -89,6 +94,7 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
                 0 -> {
                     GioPageConstant.topicEntrance = "热门话题列表页"
                 }
+
                 1 -> {
                     GioPageConstant.topicEntrance = "圈内话题列表页"
                 }
@@ -97,6 +103,32 @@ class HotTopicActivity : BaseActivity<ActivityHotTopicBinding, HotTopicViewModel
 
         }
 
+        //处理滑动顶部效果
+        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val absOffset = abs(verticalOffset).toFloat() * 4.5F
+            //滑动到高度一半不是白色状态
+            if (absOffset < appBarLayout.height * 0.9F && !isWhite) {
+                binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
+                isWhite = true
+            }
+            //超过高度一半是白色状态
+            else if (absOffset > appBarLayout.height * 0.9F && isWhite) {
+                binding.backImg.setColorFilter(Color.parseColor("#000000"))
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
+                //图片变色
+                isWhite = false
+            }
+            //改变透明度
+            if (absOffset <= appBarLayout.height) {
+                val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
+                binding.toolbar.background.mutate().alpha = mAlpha
+                binding.titleTv.alpha = mAlpha / 255.0F
+            } else {
+                binding.toolbar.background.mutate().alpha = 255
+                binding.titleTv.alpha = 1.0F
+            }
+        }
     }
 
     override fun initData() {

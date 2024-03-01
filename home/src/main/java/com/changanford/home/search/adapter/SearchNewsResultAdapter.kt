@@ -2,6 +2,7 @@ package com.changanford.home.search.adapter
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -22,7 +23,9 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.toast
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemSearchResultPostBinding
@@ -41,7 +44,11 @@ class SearchNewsResultAdapter(private val mLifecycleOwner: LifecycleOwner) :
             GlideUtils.loadBD(item.authors?.avatar, layoutUserTitle.ivHeader)
             layoutUserTitle.apply {
                 tvAuthorName.text = item.authors?.nickname
+                tvSubTitle.isVisible = !item.authors?.getMemberNames().isNullOrEmpty()
                 tvSubTitle.text = item.authors?.getMemberNames()
+                if (!item.authors?.memberIcon.isNullOrEmpty()) {
+                    ivVip.load(item.authors?.memberIcon)
+                }
                 if (item.authors?.authorId != MConstant.userId) {
                     btnFollow.visibility = View.VISIBLE
                 } else {
@@ -106,9 +113,10 @@ class SearchNewsResultAdapter(private val mLifecycleOwner: LifecycleOwner) :
                 followType = 1
             }
         }
-        authorBaseVo.isFollow = followType
-        setFollowState(btnFollow, authorBaseVo)
-        getFollow(authorBaseVo.authorId, followType)
+        getFollow(authorBaseVo.authorId, followType) {
+            authorBaseVo.isFollow = followType
+            setFollowState(btnFollow, authorBaseVo)
+        }
     }
 
     fun setFollowState(btnFollow: AppCompatTextView, authors: AuthorBaseVo) {
@@ -119,7 +127,7 @@ class SearchNewsResultAdapter(private val mLifecycleOwner: LifecycleOwner) :
     }
 
     // 关注。
-    fun getFollow(followId: String, type: Int) {
+    fun getFollow(followId: String, type: Int, block: () -> Unit) {
         mLifecycleOwner.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
@@ -128,10 +136,12 @@ class SearchNewsResultAdapter(private val mLifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    block.invoke()
                     LiveDataBus.get().with(LiveDataBusKey.FOLLOW_USER_CHANGE).postValue(
                         FollowUserChangeBean(followId, type)
                     )
                 }.onWithMsgFailure {
+                    it?.toast()
                 }
         }
     }
