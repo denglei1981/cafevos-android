@@ -71,11 +71,11 @@ class NewsListAdapter(
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
-        val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
+//        val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
 //        val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
 //        GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         ivHeader.loadCompress(item.authors?.avatar)
-        ivPicBig.loadCompress(item.pics)
+//        ivPicBig.loadCompress(item.pics)
         tvAuthorName.text = item.authors?.nickname
         if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
             tvSubtitle.visibility = View.GONE

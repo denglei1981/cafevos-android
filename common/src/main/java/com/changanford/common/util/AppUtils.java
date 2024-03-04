@@ -128,7 +128,7 @@ public class AppUtils {
 //                }
 //            }
 //        }
-        return isAppInstalled(context,"com.tencent.mm");
+        return isAppInstalled(context, "com.tencent.mm");
     }
 
     /**
@@ -339,7 +339,7 @@ public class AppUtils {
      */
     public static void setStatusBarPaddingTop(View view, Activity activity) {
         int height = ImmersionBar.getStatusBarHeight(activity);
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + height, view.getPaddingRight(), view.getPaddingBottom());
+        view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + height + 10, view.getPaddingRight(), view.getPaddingBottom());
     }
 
 

@@ -1,6 +1,5 @@
 package com.changanford.common.util
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.text.Spannable
@@ -122,7 +121,6 @@ object SpannableStringUtils {
      * @param keyword 文字中的关键字数组
      * @return
      */
-
     fun findSearch(color:Int,text:String,strlist:ArrayList<String>):SpannableString{
 
         var s = SpannableString(text)

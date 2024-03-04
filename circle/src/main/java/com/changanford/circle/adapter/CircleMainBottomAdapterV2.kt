@@ -64,7 +64,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomV2Binding>(holder.itemView)
         val activity = BaseApplication.curActivity
-        setTopMargin(binding?.root, 10, holder.layoutPosition)
+        setTopMargin(binding?.root, 15, holder.layoutPosition)
         binding?.let {
             binding.layoutCount.tvLikeCount.text =
                 ("${if (item.likesCount > 0) item.likesCount else "0"}")
@@ -215,6 +215,7 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             if (item.circle == null || item.circle!!.starName.isNullOrEmpty()) {
                 binding.layoutHeader.tvCircleType.visibility = View.GONE
             } else {
+                if (isTopic){return}
                 binding.layoutHeader.tvCircleType.visibility = View.VISIBLE
                 binding.layoutHeader.tvCircleType.text = item.circle?.starName
             }

@@ -65,6 +65,7 @@ import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.common.wutil.ShowPopUtils
+import com.gyf.immersionbar.ImmersionBar
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -133,6 +134,7 @@ class CircleDetailsActivity :
     }
 
     override fun initView() {
+        isDarkFont=false
         title = "圈子详情页"
         GioPageConstant.circleDetailTabName = "推荐"
         circleId = intent.getStringExtra("circleId").toString()
@@ -165,6 +167,7 @@ class CircleDetailsActivity :
                 binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.white))
                 isWhite = true
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
@@ -173,6 +176,7 @@ class CircleDetailsActivity :
                 binding.shareImg.setColorFilter(Color.parseColor("#000000"))
                 binding.tvPost.setTextColor(ContextCompat.getColor(this, R.color.black))
                 isWhite = false
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
             }
             //改变透明度
             if (absOffset <= appBarLayout.height) {

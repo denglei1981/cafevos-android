@@ -44,7 +44,6 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_search"
-            android:layout_marginTop="10dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

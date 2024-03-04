@@ -13,19 +13,15 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.changanford.circle.R
 import com.changanford.circle.bean.SugesstionTopicDetailBean
 import com.changanford.circle.databinding.ActivityTopicDetailsBinding
-
 import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.pop.CircleDetailsPop
-
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
-import com.changanford.common.adapter.SpecialDetailCarAdapter
+import com.changanford.common.adapter.TopicDetailCarAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.IntentKey
 import com.changanford.common.router.path.ARouterCirclePath
@@ -33,6 +29,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.BindDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.CountUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -42,11 +39,10 @@ import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.google.android.material.appbar.AppBarLayout
-import jp.wasabeef.glide.transformations.BlurTransformation
+import com.gyf.immersionbar.ImmersionBar
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -81,11 +77,12 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     //    private var postEntity: ArrayList<PostEntity>? = null//草稿
     private val carListAdapter by lazy {
-        SpecialDetailCarAdapter()
+        TopicDetailCarAdapter()
     }
 
     override fun initView() {
         title = "话题详情页"
+        isDarkFont = false
         initMagicIndicator()
         GioPageConstant.topicDetailTabName = "推荐"
         GioPageConstant.prePageType = "话题详情页"
@@ -101,6 +98,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         binding.topContent.ryCar.adapter = carListAdapter
         binding.run {
             AppUtils.setStatusBarPaddingTop(binding.toolbar, this@TopicDetailsActivity)
+            AppUtils.setStatusBarPaddingTop(binding.topContent.clOne, this@TopicDetailsActivity)
             backImg.setOnClickListener { finish() }
         }
 
@@ -109,15 +107,18 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
-                binding.backImg.setImageResource(R.mipmap.whit_left)
-                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v)
+                binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
+                binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
                 isWhite = true
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
             }
             //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
-                binding.backImg.setImageResource(R.mipmap.back_xhdpi)
-                binding.shareImg.setImageResource(R.mipmap.circle_share_image_v_b)
+                binding.backImg.setColorFilter(Color.parseColor("#000000"))
+                //图片变色
+                binding.shareImg.setColorFilter(Color.parseColor("#000000"))
                 isWhite = false
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
             }
             //改变透明度
             if (absOffset <= appBarLayout.height) {
@@ -400,19 +401,24 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             binding.barTitleTv.text = it.name
             binding.topContent.run {
                 //加暗
-                ivBg.setColorFilter(
-                    ContextCompat.getColor(
-                        this@TopicDetailsActivity,
-                        R.color.color_00_a30
-                    )
-                )
-                Glide.with(this@TopicDetailsActivity)
-                    .load(GlideUtils.handleImgUrl(it.pic))
-                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
-                    .into(ivBg)
-                ivIcon.setCircular(5)
+//                ivBg.setColorFilter(
+//                    ContextCompat.getColor(
+//                        this@TopicDetailsActivity,
+//                        R.color.color_00_a30
+//                    )
+//                )
+//                Glide.with(this@TopicDetailsActivity)
+//                    .load(GlideUtils.handleImgUrl(it.pic))
+//                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 8)))
+//                    .into(ivBg)
+                ivIcon.setCircular(12)
                 ivIcon.loadImage(it.pic)
-                tvNum.text = "${it.postsCount}帖子       ${it.viewsCount}浏览量"
+                tvNum.text = "${
+                    CountUtils.formatNum(
+                        it.postsCount.toString(),
+                        false
+                    )
+                }帖子, ${CountUtils.formatNum(it.viewsCount.toString(), false)}浏览"
                 tvType.text = it.name
                 tvContent.text = it.description
             }
@@ -487,7 +493,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(this@TopicDetailsActivity, R.color.color_33)
+                    ContextCompat.getColor(this@TopicDetailsActivity, R.color.color_9916)
                 simplePagerTitleView.selectedColor =
                     ContextCompat.getColor(this@TopicDetailsActivity, R.color.circle_app_color)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
@@ -498,11 +504,12 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 val indicator = LinePagerIndicator(context)
                 indicator.mode = LinePagerIndicator.MODE_EXACTLY
                 indicator.lineHeight =
-                    UIUtil.dip2px(context, 3.0).toFloat()
+                    UIUtil.dip2px(context, 2.0).toFloat()
                 indicator.lineWidth =
-                    UIUtil.dip2px(context, 22.0).toFloat()
+                    UIUtil.dip2px(context, 32.0).toFloat()
                 indicator.roundRadius =
-                    UIUtil.dip2px(context, 1.5).toFloat()
+                    UIUtil.dip2px(context, 0.0).toFloat()
+                indicator.top = 8
                 indicator.startInterpolator = AccelerateInterpolator()
                 indicator.endInterpolator = DecelerateInterpolator(2.0f)
                 indicator.setColors(

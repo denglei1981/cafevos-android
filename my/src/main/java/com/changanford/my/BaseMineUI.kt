@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.databinding.ViewEmptyBinding
 import com.changanford.common.utilext.StatusBarUtil
@@ -103,7 +102,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivit
      */
     open fun showEmptyView(
         emptyMessage: String = getString(R.string.empty_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
+        @DrawableRes errorLayoutId: Int = R.mipmap.ic_result_empty
     ): View? {
         return setAdapterView(emptyMessage, errorLayoutId);
     }
@@ -139,7 +138,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivit
      */
     fun showErrorView(
         msg: String = getString(R.string.error_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
+        @DrawableRes errorLayoutId: Int = R.mipmap.ic_result_empty
     ): View? {
         return setAdapterView(msg, errorLayoutId);
     }
@@ -230,7 +229,7 @@ abstract class BaseMineUI<VB : ViewBinding, VM : ViewModel> : BaseLoadSirActivit
         dataSize: Int,
         adapter: BaseQuickAdapter<T, VH>,
         emptyMessage: String = getString(R.string.empty_msg),
-        @DrawableRes errorLayoutId: Int = R.mipmap.image_common_empty
+        @DrawableRes errorLayoutId: Int = R.mipmap.ic_result_empty
     ): Boolean {
         if (dataSize == 0) {
             //禁止加载更多

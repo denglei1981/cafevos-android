@@ -9,6 +9,11 @@
         android:id="@+id/layout_title"
         layout="@layout/home_base_top_bar" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_26000000" />
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/smart_layout"
         android:layout_width="match_parent"
@@ -18,7 +23,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="@dimen/dp_8" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

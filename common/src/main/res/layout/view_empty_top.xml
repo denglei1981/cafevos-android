@@ -28,7 +28,7 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:scaleType="centerInside"
-            android:src="@mipmap/image_common_empty" />
+            android:src="@mipmap/ic_result_empty" />
 
         <TextView
             android:id="@+id/view_status_text"

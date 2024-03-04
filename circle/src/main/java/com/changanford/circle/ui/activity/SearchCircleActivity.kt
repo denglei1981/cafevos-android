@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
-import com.changanford.circle.adapter.circle.CircleSearchAdapter
+import com.changanford.circle.adapter.CircleListAdapter
 import com.changanford.circle.databinding.ActivitySearchCircleBinding
 import com.changanford.circle.utils.HideKeyboardUtil
 import com.changanford.circle.viewmodel.SearchCircleViewModel
@@ -24,7 +24,8 @@ import com.gyf.immersionbar.ImmersionBar
 class SearchCircleActivity : BaseActivity<ActivitySearchCircleBinding, SearchCircleViewModel>() {
 
     private val adapter by lazy {
-        CircleSearchAdapter()
+//        CircleSearchAdapter()
+        CircleListAdapter(false)
     }
 
     private var page = 1

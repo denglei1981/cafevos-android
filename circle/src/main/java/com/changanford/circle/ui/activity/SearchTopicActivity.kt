@@ -2,10 +2,10 @@ package com.changanford.circle.ui.activity
 
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
-import com.changanford.circle.adapter.HotMainTopicAdapter
-import com.changanford.circle.adapter.HotTopicAdapter
+import com.changanford.circle.adapter.SearchTopicAdapter
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.databinding.ActivitySearchTopicBinding
 import com.changanford.circle.utils.HideKeyboardUtil
@@ -34,7 +34,7 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
     private var section = 0
     private var needCallback: Boolean = false
     private val adapter by lazy {
-        HotTopicAdapter()
+        SearchTopicAdapter()
     }
 
     override fun initView() {
@@ -42,36 +42,38 @@ class SearchTopicActivity : BaseActivity<ActivitySearchTopicBinding, SearchTopic
         GioPageConstant.prePageType = "搜索页"
         GioPageConstant.prePageTypeName = "搜索页"
         section = intent.getIntExtra(IntentKey.TOPIC_SECTION, 0)
-        AppUtils.setStatusBarMarginTop(binding.llTitle, this)
+        AppUtils.setStatusBarMarginTop(binding.layoutSearch.root, this)
         binding.ryTopic.adapter = adapter
         intent.extras?.getBoolean(ChooseConversationActivity.needCallback)?.let {
             needCallback = it
         }
+        binding.layoutSearch.cancel.setTextColor(ContextCompat.getColor(this, R.color.color_9916))
         initListener()
     }
 
     private fun initListener() {
         binding.run {
-            tvCancel.setOnClickListener { finish() }
-            tvSearch.setOnEditorActionListener { v, actionId, event ->
+            layoutSearch.cancel.setOnClickListener { finish() }
+            layoutSearch.searchContent.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     val content = v.text.toString()
                     if (content.isEmpty()) {
                         "请输入关键字".toast()
                     } else {
                         page = 1
+                        adapter.searchContent = content
                         viewModel.getData(content, section, page)
                         // 埋点
                         BuriedUtil.instant?.circleTopicSearch(content)
                     }
-                    HideKeyboardUtil.hideKeyboard(tvSearch.windowToken)
+                    HideKeyboardUtil.hideKeyboard(binding.layoutSearch.searchContent.windowToken)
                 }
                 false
             }
         }
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            val content = binding.tvSearch.text.toString()
+            val content = binding.layoutSearch.searchContent.text.toString()
             viewModel.getData(content, section, page)
         }
         adapter.setOnItemClickListener { _, view, position ->

@@ -1,17 +1,23 @@
 package com.changanford.home.news.activity
 
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.changanford.common.adapter.SpecialDetailCarAdapter
 import com.changanford.common.basic.BaseLoadSirActivity
+import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -28,11 +34,11 @@ import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivitySpecialDetailBinding
+import com.changanford.home.databinding.HomeHeaderSpecialNewBinding
 import com.changanford.home.news.adapter.NewsListAdapter
 import com.changanford.home.news.data.Shares
 import com.changanford.home.news.request.SpecialDetailViewModel
 import com.gyf.immersionbar.ImmersionBar
-import com.xiaomi.push.it
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 @Route(path = ARouterHomePath.SpecialDetailActivity)
@@ -44,10 +50,13 @@ class SpecialDetailActivity :
     private val carListAdapter by lazy {
         SpecialDetailCarAdapter()
     }
+    private var headBinding: HomeHeaderSpecialNewBinding? = null
     private var selectPosition: Int = -1;// 记录选中的 条目
     private var page = 1
+    private var loadPage = 0
     private var isSelectCar = false
     private var carModelId: Int = 0
+    private var mRyList = listOf<InfoDataBean>()
 
     override fun initView() {
         title = "专题详情页"
@@ -56,12 +65,15 @@ class SpecialDetailActivity :
         outCarModelId?.let {
             carModelId = it.toInt()
         }
-        binding.layoutEmpty.llEmpty.visibility = View.GONE
+        setHeadView()
         binding.layoutBar.ivIcon.setCircular(12)
-        binding.layoutCollBar.ryCar.adapter = carListAdapter
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        headBinding?.ryCar?.adapter = carListAdapter
         binding.recyclerView.adapter = newsListAdapter
+        binding.smartLayout.setOnLoadMoreListener {
+            loadPage++
+            newsListAdapter.addData(paginateList())
+            binding.smartLayout.finishLoadMore()
+        }
         newsListAdapter.setOnItemChildClickListener { adapter, view, position ->
             val item = newsListAdapter.getItem(position)
             selectPosition = position
@@ -120,10 +132,11 @@ class SpecialDetailActivity :
 //        StatusBarUtil.setStatusBarMarginTop(binding.layoutBar.conTitle, this)
         setAppbarPercent()
         binding.layoutBar.ivMenu.visibility = View.VISIBLE
+        binding.layoutBar.ivMenu.setColorFilter(Color.parseColor("#000000"))
         binding.layoutBar.ivBack.setOnClickListener {
             onBackPressed()
         }
-        binding.layoutCollBar.ivBack.setOnClickListener {
+        headBinding?.ivBack?.setOnClickListener {
             onBackPressed()
         }
         if (topicId != null) {
@@ -134,24 +147,41 @@ class SpecialDetailActivity :
     }
 
 
+    private fun setHeadView() {
+        if (headBinding == null) {
+            headBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.home_header_special_new,
+                binding.recyclerView,
+                false
+            )
+
+        }
+        headBinding?.let {
+            newsListAdapter.addHeaderView(it.root)
+        }
+    }
+
     //  fun setExpandView(){
 //      val width: Int = ScreenUtils.getScreenWidth(this)+40
-//      binding.layoutCollBar.tvTopic.initWidth(width)
-//      binding.layoutCollBar.tvTopic.maxLines = 3
-//      binding.layoutCollBar.tvTopic.setHasAnimation(true)
-//      binding.layoutCollBar.tvTopic.setCloseInNewLine(true)
-//      binding.layoutCollBar.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
-//      binding.layoutCollBar.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
+//      headBinding?.tvTopic.initWidth(width)
+//      headBinding?.tvTopic.maxLines = 3
+//      headBinding?.tvTopic.setHasAnimation(true)
+//      headBinding?.tvTopic.setCloseInNewLine(true)
+//      headBinding?.tvTopic.setOpenSuffixColor(resources.getColor(R.color.blue_tab))
+//      headBinding?.tvTopic.setCloseSuffixColor(resources.getColor(R.color.blue_tab))
 //
 //  }
     var shares: Shares? = null
+
+    @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.specialDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showContent()
                 updateMainGio(it.data.title, "专题详情页")
-                binding.layoutCollBar.ivShare.setOnClickListener { s ->
+                headBinding?.ivShare?.setOnClickListener { s ->
                     HomeShareModel.shareDialog(this, 0, it.data.shares)
                 }
                 binding.layoutBar.ivMenu.setOnClickListener { i ->
@@ -159,23 +189,39 @@ class SpecialDetailActivity :
                 }
                 shares = it.data.shares
                 binding.specialDetailData = it.data
-                binding.layoutCollBar.tvTopic.text = it.data.summary
-                GlideUtils.loadBD(it.data.getPicUrl(), binding.layoutCollBar.ivIcon)
+                val bean = it.data
+                headBinding?.tvTips?.text = bean.title
+                headBinding?.tvCount?.text =
+                    "${CountUtils.formatNum(bean.totalCount.toString(), false)}资讯          ${
+                        CountUtils.formatNum(
+                            bean.viewsCount.toString(),
+                            false
+                        )
+                    }阅读"
+                headBinding?.tvTopic?.text = it.data.summary
+                headBinding?.ivIcon?.let { it1 -> GlideUtils.loadBD(it.data.getPicUrl(), it1) }
                 binding.layoutBar.ivIcon.load(it.data.getPicUrl())
-                Glide.with(this)
-                    .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
-                    .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 2)))
-                    .into(binding.layoutCollBar.ivTopBg)
-                binding.layoutCollBar.ivTopBg.setColorFilter(resources.getColor(R.color.color_00_a30))
+                headBinding?.ivTopBg?.let { it1 ->
+                    Glide.with(this)
+                        .load(GlideUtils.handleImgUrl(it.data.getPicUrl()))
+                        .apply(RequestOptions.bitmapTransform(BlurTransformation(25, 2)))
+                        .into(it1)
+                }
+                headBinding?.ivTopBg?.setColorFilter(resources.getColor(R.color.color_00_a30))
                 binding.layoutBar.tvTitle.text = it.data.title
                 if (it.data.articles != null && it.data.articles!!.isNotEmpty()) {
-                    newsListAdapter.setList(it.data.articles)
-                    binding.recyclerView.visibility = View.VISIBLE
-                    binding.layoutEmpty.llEmpty.visibility = View.GONE
+//                    newsListAdapter.setList(it.data.articles)
+                    it.data.articles?.let { list ->
+                        mRyList = list
+                    }
+                    newsListAdapter.setList(paginateList())
+                    headBinding?.clEmpty?.isVisible = false
+//                    binding.recyclerView.visibility = View.VISIBLE
                 } else {
+                    headBinding?.clEmpty?.isVisible = true
+                    binding.smartLayout.setEnableLoadMore(false)
 //                    showEmpty()
-                    binding.recyclerView.visibility = View.GONE
-                    binding.layoutEmpty.llEmpty.visibility = View.VISIBLE
+//                    binding.recyclerView.visibility = View.GONE
                 }
                 if (carModelId > 0) {
                     viewModel.getSpecialCarDetail(topicId!!, carModelId)
@@ -213,7 +259,7 @@ class SpecialDetailActivity :
         })
 
         viewModel.carListBean.observe(this) {
-            binding.layoutCollBar.ryCar.isVisible = true
+            headBinding?.ryCar?.isVisible = true
             if (!it.isNullOrEmpty()) {
                 it.forEach { bean ->
                     if (carModelId.toString() == bean.carModelId) {
@@ -226,15 +272,31 @@ class SpecialDetailActivity :
         }
     }
 
+    private var scrollHeight = 0
+
     private fun setAppbarPercent() {
-        binding.nestScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-            val topHeight = binding.layoutCollBar.collToolBar.bottom * 0.3
-            if (scrollY > topHeight) {
-                binding.layoutBar.conTitle.visibility = View.VISIBLE
-            } else {
-                binding.layoutBar.conTitle.visibility = View.GONE
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                scrollHeight += dy
+                Log.e("asdasd", scrollHeight.toString())
+                val topHeight = headBinding?.collToolBar?.bottom?.times(0.3)
+                if (scrollHeight > topHeight!!) {
+                    binding.layoutBar.conTitle.visibility = View.VISIBLE
+                } else {
+                    binding.layoutBar.conTitle.visibility = View.GONE
+                }
             }
         })
+//        binding.nestScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
+//            val topHeight = headBinding?.collToolBar.bottom * 0.3
+//            if (scrollY > topHeight) {
+//                binding.layoutBar.conTitle.visibility = View.VISIBLE
+//            } else {
+//                binding.layoutBar.conTitle.visibility = View.GONE
+//            }
+//        })
 //        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 //            "verticalOffset=$verticalOffset".logE()
 //            val percent: Float = -verticalOffset / appBarLayout.totalScrollRange.toFloat()//滑动比例
@@ -248,6 +310,17 @@ class SpecialDetailActivity :
 //            }
 //        })
 
+    }
+
+    private fun paginateList(): List<InfoDataBean> {
+        if (mRyList.isEmpty()) {
+            binding.smartLayout.finishLoadMore()
+            return listOf()
+        }
+        val startIndex = loadPage * 20
+        val endIndex = minOf(startIndex + 20, mRyList.size)
+        binding.smartLayout.setEnableLoadMore(endIndex != mRyList.size)
+        return mRyList.subList(startIndex, endIndex)
     }
 
     override fun onRetryBtnClick() {

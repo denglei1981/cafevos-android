@@ -21,62 +21,52 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/coll_tool_bar"
         android:layout_width="match_parent"
+        android:paddingBottom="16dp"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_top_bg"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="154dp"
             android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="403:151"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/image_recommend_test" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_special_detail_white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_top_bg" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
-            android:layout_marginStart="@dimen/dp_16"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/iv_top_bg"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_top_bg"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle"
             tools:src="@drawable/image_recommend_test" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_tips"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:ellipsize="end"
-            android:gravity="start"
+            android:gravity="center"
             android:maxLines="2"
-            android:text="@{specialDetailData.title}"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_icon"
-            tools:text="撒打算的" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:drawablePadding="1dp"
-            android:gravity="center_vertical"
-            android:text="@{specialDetailData.getCount()}"
             android:textColor="@color/color_16"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_tips"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tips"
-            tools:text="123123" />
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_icon"
+            tools:text="撒打算的" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_topic"
@@ -85,11 +75,12 @@
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="13dp"
             android:layout_marginEnd="@dimen/dp_16"
-            android:textColor="@color/color_16"
-            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/color_d916"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_icon"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tips"
             tools:text="提车日记提车日记提车日记提车日记提车日记提车日记提车日记提车日记提车日记提车日" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -97,12 +88,67 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
+            android:layout_marginStart="16dp"
             android:orientation="horizontal"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+            tools:visibility="visible" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_goneMarginTop="12dp"
+            android:layout_marginTop="12dp"
+            android:drawablePadding="1dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/color_8016"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ry_car"
+            tools:text="123123" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:background="@color/color_f2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_count"
+            android:layout_marginTop="12dp"
+            android:layout_height="10dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_empty"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/v_line"
+            android:layout_height="0dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                android:src="@mipmap/ic_result_empty"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:text="暂时没有数据哦～"
+                android:textColor="@color/color_8016"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_bg" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/iv_share"
@@ -110,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="18dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/icon_home_special_share"
+            android:src="@mipmap/circle_share_detail_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_back" />
 
@@ -125,18 +171,6 @@
             android:src="@mipmap/back_w"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/v_line"
-            android:layout_width="0dp"
-            android:layout_height="0.5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginEnd="16dp"
-            android:background="@color/color_1a4a"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ry_car" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

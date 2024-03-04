@@ -1,7 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -12,7 +12,10 @@ import com.changanford.circle.databinding.ItemMainHotTopicBinding
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.setCircular
+import com.changanford.common.util.ext.setDrawableColor
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.setDrawableNull
+import com.changanford.common.utilext.setDrawableRight
 
 /**
  *Author lcw
@@ -27,10 +30,19 @@ class HotMainTopicAdapter :
         val binding = DataBindingUtil.bind<ItemMainHotTopicBinding>(holder.itemView)
         binding?.let {
             MUtils.setTopMargin(binding.clContent, 8, holder.layoutPosition)
-            binding.tvNum.text = "${ CountUtils.formatNum(
-                item.postsCount.toString(),
-                false
-            )}帖子     ${
+            if (item.isHot == 1) {
+                binding.tvTalk.setDrawableRight(R.mipmap.ic_se_topic_hot)
+            } else if (item.isNew == "YES") {
+                binding.tvTalk.setDrawableRight(R.mipmap.ic_se_topic_new)
+            } else {
+                binding.tvTalk.setDrawableNull()
+            }
+            binding.tvNum.text = "${
+                CountUtils.formatNum(
+                    item.postsCount.toString(),
+                    false
+                )
+            }帖子     ${
                 CountUtils.formatNum(
                     item.viewsCount.toString(),
                     false
@@ -39,22 +51,25 @@ class HotMainTopicAdapter :
             binding.bean = item
             binding.ivPic.loadCompress(item.pic)
             binding.ivPic.setCircular(12)
-            binding.ivHintIcon.setColorFilter(ContextCompat.getColor(context, R.color.color_1700F4))
+            binding.tvPosition.isVisible = true
             when (val position = holder.layoutPosition + 1) {
                 1 -> {
-
+                    binding.tvPosition.setDrawableColor(R.color.color_E67400)
+                    binding.tvPosition.text = position.toString()
                 }
 
                 2 -> {
-
+                    binding.tvPosition.setDrawableColor(R.color.color_1700F4)
+                    binding.tvPosition.text = position.toString()
                 }
 
                 3 -> {
-
+                    binding.tvPosition.setDrawableColor(R.color.color_009987)
+                    binding.tvPosition.text = position.toString()
                 }
 
                 else -> {
-
+                    binding.tvPosition.isVisible = false
                 }
             }
 

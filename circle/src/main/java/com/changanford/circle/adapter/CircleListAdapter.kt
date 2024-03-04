@@ -17,6 +17,7 @@ import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MUtils
+import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.ext.setDrawableColor
 import com.changanford.common.util.gio.GIOUtils
@@ -36,6 +37,8 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
         R.drawable.icon_huati_two,
         R.drawable.icon_huati_three
     )
+
+    var searchContent = ""
 
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: ChoseCircleBean) {
@@ -75,6 +78,16 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
             }
             binding.recyclerView.isVisible = !item.tags.isNullOrEmpty()
             binding.tvContent.isVisible = item.tags.isNullOrEmpty()
+            binding.tvTitle.text = SpannableStringUtils.findSearch(
+                ContextCompat.getColor(context, com.changanford.common.R.color.color_1700f4),
+                item.name,
+                arrayListOf(searchContent)
+            )
+            binding.tvContent.text = SpannableStringUtils.findSearch(
+                ContextCompat.getColor(context, com.changanford.common.R.color.color_1700f4),
+                item.description,
+                arrayListOf(searchContent)
+            )
         }
     }
 

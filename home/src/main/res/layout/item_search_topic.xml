@@ -27,11 +27,11 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="101dp"
             android:layout_marginStart="4dp"
             android:drawablePadding="2dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
+            android:maxWidth="101dp"
             android:maxLines="1"
             android:textColor="@color/color_d900"
             android:textSize="14sp"
@@ -41,21 +41,21 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_tag"
-            android:layout_width="wrap_content"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:src="@mipmap/ic_se_topic_hot"
-            app:layout_constraintLeft_toRightOf="@+id/tv_title"
-            app:layout_constraintTop_toTopOf="@+id/tv_title"
             app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintLeft_toRightOf="@+id/tv_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxWidth="110dp"
             android:layout_marginTop="3dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:maxEms="10"
             android:textColor="@color/color_7300"
             android:textSize="10sp"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"

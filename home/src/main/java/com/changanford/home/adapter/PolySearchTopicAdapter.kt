@@ -1,6 +1,5 @@
 package com.changanford.home.adapter
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -25,33 +24,40 @@ class PolySearchTopicAdapter :
     ) {
         holder.dataBinding?.apply {
             setMargin(
-                root,
-                2,
+                this,
+                item,
                 holder.layoutPosition
             )
-//            setTitleMaxWidth(this)
-            tvTitle.text = item.name
 
-            tvContent.text = item.description
-
-            if (item.isHot == 1) {
-                ivTag.isVisible = true
-                ivTag.setImageResource(R.mipmap.ic_se_topic_hot)
-            } else if (item.isNew == "YES") {
-                ivTag.isVisible = true
-                ivTag.setImageResource(R.mipmap.ic_se_topic_new)
-            } else {
-                ivTag.isVisible = false
-            }
         }
     }
 
-    private fun setMargin(view: View?, margin: Int, position: Int) {
-        view?.post {
-            val params = view.layoutParams as ViewGroup.MarginLayoutParams
+    private fun setMargin(binding: ItemSearchTopicBinding, item: Topic,position: Int) {
+        binding.root.post {
+            val params = binding.tvIcon.layoutParams as ViewGroup.MarginLayoutParams
             if (isOdd(position)) {
-                    params.leftMargin = margin
-            } else params.leftMargin = 0
+                val leftMargin =
+                    binding.clContent.width - binding.tvIcon.width - binding.tvTitle.maxWidth - binding.ivTag.width - 4.toIntPx()
+                params.setMargins(leftMargin, 0, 0, 0)
+//                params.leftMargin = 28.toIntPx()
+            } else params.setMargins(0, 0, 0, 0)
+            binding.tvIcon.layoutParams = params
+
+            binding.apply {
+                tvTitle.text = item.name
+
+                tvContent.text = item.description
+
+                if (item.isHot == 1) {
+                    ivTag.isVisible = true
+                    ivTag.setImageResource(R.mipmap.ic_se_topic_hot)
+                } else if (item.isNew == "YES") {
+                    ivTag.isVisible = true
+                    ivTag.setImageResource(R.mipmap.ic_se_topic_new)
+                } else {
+                    ivTag.isVisible = false
+                }
+            }
         }
     }
 
@@ -59,11 +65,4 @@ class PolySearchTopicAdapter :
         return number % 2 != 0 // 如果余数不等于零则表示该数字为奇数
     }
 
-    private fun setTitleMaxWidth(binding: ItemSearchTopicBinding) {
-        binding.clContent.post {
-            val useWidth =
-                binding.clContent.width - binding.tvIcon.width - 32.toIntPx()
-            binding.tvTitle.maxWidth = useWidth
-        }
-    }
 }
