@@ -1,99 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:background="@color/circle_FAFBFD"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_talk"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginEnd="19dp"
-        android:layout_weight="1"
-        android:background="@drawable/circle_white_17_bg"
-        android:drawableStart="@mipmap/circle_edit_pb"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:paddingStart="12dp"
-        android:text="你可以说点什么哦"
-        android:textColor="@color/color_cc"
-        android:textSize="13sp"
-        tools:ignore="HardcodedText,RtlSymmetry" />
+    <data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_comment_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/circle_talk_image"
-        android:drawablePadding="3dp"
-        android:gravity="center"
-        android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_10"
-        tools:text="255" />
+    </data>
 
     <LinearLayout
-        android:id="@+id/ll_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/color_1a4a"
+            android:layout_height="1dp" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/circle_no_like_image" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_like_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_10"
-            tools:text="255" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_talk"
+                android:layout_width="0dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="19dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_081700f4_8"
+                android:drawableStart="@mipmap/circle_edit_pb"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:text="发表个评论"
+                android:textColor="@color/color_4d16"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlSymmetry" />
+
+            <LinearLayout
+                android:id="@+id/ll_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/circle_no_like_image" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_like_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/color_8016"
+                    android:textSize="@dimen/sp_10"
+                    tools:text="255" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_comment_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/circle_talk_image"
+                android:drawablePadding="1dp"
+                android:layout_marginStart="24dp"
+                android:gravity="center"
+                android:textColor="@color/color_8016"
+                android:textSize="@dimen/sp_10"
+                tools:text="255" />
+
+            <LinearLayout
+                android:id="@+id/ll_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_collection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/circle_no_collection_image" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_collection_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"
+                    android:textColor="@color/color_8016"
+                    android:textSize="@dimen/sp_10"
+                    tools:text="255" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_share_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="19dp"
+                android:drawableTop="@mipmap/circle_share_image"
+                android:drawablePadding="3dp"
+                android:gravity="center"
+                android:textColor="@color/color_8016"
+                android:textSize="@dimen/sp_10"
+                tools:text="255" />
+
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_collection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/circle_no_collection_image" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_collection_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_10"
-            tools:text="255" />
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_share_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="19dp"
-        android:drawableTop="@mipmap/circle_share_image"
-        android:drawablePadding="3dp"
-        android:gravity="center"
-        android:textColor="@color/color_99"
-        android:textSize="@dimen/sp_10"
-        tools:text="255" />
-
-</LinearLayout>
+</layout>

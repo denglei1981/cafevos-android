@@ -1,6 +1,5 @@
 package com.changanford.common.widget.webview
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.http.SslError
 import android.os.Build
@@ -11,8 +10,8 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
-import com.changanford.common.util.DensityUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toastShow
 import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.AgentWebUtils
@@ -29,8 +28,8 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
         if (webView != null) {
             if (isMargin && webView?.layoutParams is ViewGroup.MarginLayoutParams) {
                 val params = webView?.layoutParams as ViewGroup.MarginLayoutParams
-                params.leftMargin = DensityUtils.dip2px(15F)
-                params.rightMargin = DensityUtils.dip2px(15F)
+                params.leftMargin = 9.toIntPx()
+                params.rightMargin = 9.toIntPx()
             }
             webView?.settings?.let {
                 it.javaScriptEnabled = true

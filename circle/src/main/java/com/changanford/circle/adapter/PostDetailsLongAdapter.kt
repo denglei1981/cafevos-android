@@ -13,8 +13,8 @@ import com.changanford.common.basic.adapter.BaseAdapterOneLayout
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.ext.loadImage85
 import com.changanford.common.util.ext.setCircular
+import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toIntPx
 
 /**
@@ -52,7 +52,8 @@ class PostDetailsLongAdapter(context: Context, private val topPic: String) :
             binding.ivIcon.visibility = View.GONE
         } else {
             binding.ivIcon.visibility = View.VISIBLE
-            binding.ivIcon.loadImage85(item.imgUrl)
+//            binding.ivIcon.loadImage85(item.imgUrl)
+            binding.ivIcon.loadCompress(item.imgUrl)
         }
         if (TextUtils.isEmpty(item.imgDesc)) {
             binding.tvDesc.visibility = View.GONE

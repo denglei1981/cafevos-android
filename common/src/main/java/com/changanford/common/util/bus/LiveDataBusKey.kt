@@ -325,5 +325,6 @@ object LiveDataBusKey {
     const val CHOOSE_CAR_TOPIC_ID = "chooseCarTopicId"
     const val CLICK_CAR = "clickCar"
     const val UPDATE_SEARCH_RESULT = "updateSearchResult"
+    const val CLOSE_POLY = "closePoly"
 }
 

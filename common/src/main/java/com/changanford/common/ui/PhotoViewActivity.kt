@@ -1,32 +1,24 @@
 package com.changanford.common.ui
 
 import android.Manifest
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.MyApp
 import com.changanford.common.adapter.PhotoImageAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.bean.MediaListBean
 import com.changanford.common.databinding.PhotoviewActivityBinding
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.GifUtils
 import com.changanford.common.util.MConstant
-
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
-import java.lang.Exception
 
 @Route(path = ARouterCirclePath.PhotoViewActivity)
 class PhotoViewActivity : BaseActivity<PhotoviewActivityBinding, EmptyViewModel>() {
@@ -35,6 +27,7 @@ class PhotoViewActivity : BaseActivity<PhotoviewActivityBinding, EmptyViewModel>
     lateinit var pics: ArrayList<MediaListBean>
     lateinit var adapter: PhotoImageAdapter
     override fun initView() {
+        isDarkFont = false
         StatusBarUtil.setStatusBarPaddingTop(binding.toolbar, this)
         mbundle = intent?.extras!!
         pics = mbundle.getSerializable("imgList") as ArrayList<MediaListBean>

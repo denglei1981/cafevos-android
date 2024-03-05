@@ -199,6 +199,7 @@
                         android:layout_marginEnd="20dp"
                         android:drawableStart="@mipmap/circle_location_details"
                         android:drawablePadding="4dp"
+                        tools:visibility="visible"
                         android:textColor="@color/color_cc"
                         android:textSize="13sp"
                         android:visibility="gone"
@@ -265,6 +266,7 @@
                     android:id="@+id/cl_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    tools:visibility="visible"
                     android:visibility="gone">
 
                     <com.zhpan.bannerview.BannerViewPager
@@ -328,7 +330,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_two_from"
                         tools:text="2021.09.25  12:25" />
-
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_content"
@@ -406,6 +407,7 @@
 
                 <include
                     android:id="@+id/view_long_type"
+                    tools:visibility="visible"
                     layout="@layout/circle_details_long_type"
                     android:visibility="gone" />
 

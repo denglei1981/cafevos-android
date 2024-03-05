@@ -54,6 +54,7 @@ class PloySearchResultActivity :
     var searchContent = ""
 
     private var tagId: String = ""
+    private var isClosePoly = true
 
     private val searchActsFragment: SearchActsFragment by lazy {
         SearchActsFragment.newInstance(searchContent)
@@ -141,7 +142,7 @@ class PloySearchResultActivity :
         binding.layoutSearch.searchContent.setOnClickListener {
             showAuto()
         }
-        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.CLEAR_EDIT_FOCUS_CHANGE).observe(this){
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.CLEAR_EDIT_FOCUS_CHANGE).observe(this) {
             if (it) {
                 showAuto()
             }
@@ -160,6 +161,10 @@ class PloySearchResultActivity :
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if (s.isNullOrEmpty()) {
+                        isClosePoly = false
+                        onBackPressed()
+                    }
                     showAuto()
                 }
 
@@ -291,5 +296,13 @@ class PloySearchResultActivity :
                 sAdapter.setList(it.data)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isClosePoly) {
+            LiveDataBus.get().with(LiveDataBusKey.CLOSE_POLY).postValue("")
+        }
+        overridePendingTransition(0, 0)
     }
 }

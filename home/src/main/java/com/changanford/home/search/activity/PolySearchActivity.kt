@@ -24,6 +24,8 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.room.SearchRecordDatabase
 import com.changanford.common.util.room.SearchRecordEntity
@@ -72,6 +74,8 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
     override fun onResume() {
         super.onResume()
         updateMainGio("搜索页", "搜索页")
+        binding.layoutSearch.searchContent.setText("")
+        HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
     }
 
     override fun initView() {
@@ -195,7 +199,6 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
                 bundle.putInt(SEARCH_TYPE, searchType)
                 bundle.putString(SEARCH_CONTENT, bean.keyword)
                 startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
-                finish()
             }
         }
         binding.layoutSearch.searchContent.setOnEditorActionListener { v: TextView?, actionId: Int, event: KeyEvent? ->
@@ -257,6 +260,9 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             delay(600)
             HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
         }
+        LiveDataBus.get().withs<String>(LiveDataBusKey.CLOSE_POLY).observe(this){
+            finish()
+        }
     }
 
     var searchContent = ""
@@ -279,7 +285,6 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         bundle.putInt(SEARCH_TYPE, searchType)
         bundle.putString(SEARCH_CONTENT, searchContent)
         startARouter(ARouterHomePath.PloySearchResultActivity, bundle)
-        finish()
         when (searchType) {
             SEARCH_POST -> { //搜索帖子。 埋点。
                 BuriedUtil.instant?.communityMainTopSearsh(searchContent)
