@@ -24,8 +24,10 @@ data class CommentListBean(
     val timeStr: String,
     val userId: String,
     val bizId:String,
+    var carOwner: String = "",
     val memberIcon: String,
-    val imags: List<Imag>,
+    val imags: ArrayList<Imag> = arrayListOf(),
+    var isFollow: Int = 0, //1 是已关注
     val childVo:MutableList<CommentListBean>
 ) : Serializable {
     override fun toString(): String {

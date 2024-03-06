@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_title"
             android:layout_width="match_parent"
@@ -157,15 +157,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tv_time">
 
-            <WebView
-                android:id="@+id/web_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:visibility="gone"
-                tools:ignore="WebViewLayout"
-                tools:visibility="visible" />
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
@@ -176,20 +167,7 @@
                 android:lineSpacingMultiplier="1.5"
                 android:textColor="@color/color_d916"
                 android:textSize="14sp"
-                android:visibility="gone"
                 tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示屏，真的简约大气，炫酷的开机动画，全自动的语音控制。长安福特这一次给大家一个好大的惊喜。"
-                tools:visibility="visible" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ry_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:visibility="visible" />
         </RelativeLayout>
 
@@ -253,45 +231,9 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginStart="16dp"
-            app:layout_goneMarginTop="25dp"
             android:layout_marginTop="25dp"
+            app:layout_goneMarginTop="25dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/color_1a4a"
             app:layout_constraintTop_toBottomOf="@+id/tv_address" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_comments_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="全部评论"
-            android:textColor="@color/color_16"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/v_line" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_comment_num"
-            android:layout_width="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/color_8016"
-            tools:text="(12)"
-            android:layout_marginStart="5dp"
-            app:layout_constraintTop_toTopOf="@+id/tv_comments_title"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_comments_title"
-            app:layout_constraintLeft_toRightOf="@+id/tv_comments_title"
-            android:layout_height="wrap_content"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ry_comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_26"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/tv_comments_title"
-            tools:listitem="@layout/item_post_details_comment" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

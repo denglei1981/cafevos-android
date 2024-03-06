@@ -2,7 +2,8 @@ package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -15,6 +16,7 @@ import com.changanford.circle.databinding.ItemPostDetailsCommentBinding
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.widget.CommentLoadMoreView
 import com.changanford.common.MyApp
+import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
@@ -22,13 +24,15 @@ import com.changanford.common.net.header
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 
-class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
+class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
 
@@ -39,17 +43,52 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
-        binding?.let {
-            it.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+        binding?.apply {
+            layoutHeader.ivHeader.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            layoutHeader.tvAuthorName.text = item.nickname
+            if (!item.memberIcon.isNullOrEmpty()) {
+                layoutHeader.ivVip.load(item.memberIcon)
+            }
+            if (item.carOwner.isNullOrEmpty()) {
+                layoutHeader.tvSubTitle.isVisible = false
+            } else {
+                layoutHeader.tvSubTitle.isVisible = true
+                layoutHeader.tvSubTitle.text = item.carOwner
+            }
+            if (item.isFollow == 1) {//已关注
+                layoutHeader.btnFollow.text = "已关注"
+                layoutHeader.btnFollow.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_4d16
+                    )
+                )
+                layoutHeader.btnFollow.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_80a6_100)
+            } else {
+                layoutHeader.btnFollow.text = "关注"
+                layoutHeader.btnFollow.setTextColor(ContextCompat.getColor(context, R.color.white))
+                layoutHeader.btnFollow.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_1700f4_100)
+            }
             binding.bean = item
-            binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
+            binding.tvLikeCount.text = item.likesCount.toString()
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
+                    tvLikeCount.setTextColor(ContextCompat.getColor(context, R.color.color_1700F4))
                     R.mipmap.circle_comment_like
-                } else R.mipmap.circle_comment_no_like
+                } else {
+                    tvLikeCount.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
+                    R.mipmap.circle_comment_no_like
+                }
+
             )
+            tvContent.text = item.content
+            tvContent.post {
+                MUtils.expandText(tvContent, item.content)
+            }
             binding.llLike.setOnClickListener {
-                lifecycleOwner.launchWithCatch {
+                mLifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
                     body["type"] = 2
@@ -78,13 +117,12 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 }
             }
             if (item.childCount == 0) {
-                binding.tvChildCount.visibility = View.GONE
-                binding.rvChild.visibility=View.GONE
+                llChild.isVisible = false
             } else {
-                binding.tvChildCount.visibility = View.VISIBLE
-                val childAdapter= PostCommentChildAdapter(lifecycleOwner = lifecycleOwner)
+                llChild.isVisible = true
+                val childAdapter = PostCommentChildAdapter(lifecycleOwner = mLifecycleOwner)
                 childAdapter.setNewInstance(item.childVo)
-                binding.rvChild.adapter=childAdapter
+                binding.rvChild.adapter = childAdapter
 
                 binding.tvChildCount.text = "共${item.childCount}条回复"
                 childAdapter.setOnItemClickListener { _, _, position ->
@@ -95,10 +133,13 @@ class PostDetailsCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                     bundle.putString("bizId", commentBean.bizId)
                     startARouter(ARouterCirclePath.AllReplyActivity, bundle)
                 }
-
             }
-            binding.ivHead.setOnClickListener {
-                JumpUtils.instans?.jump(35,item.userId.toString())
+            val labelAdapter = LabelAdapter(16)
+            layoutHeader.rvUserTag.adapter = labelAdapter
+            labelAdapter.setNewInstance(item.imags)
+
+            layoutHeader.ivHeader.setOnClickListener {
+                JumpUtils.instans?.jump(35, item.userId)
             }
         }
     }

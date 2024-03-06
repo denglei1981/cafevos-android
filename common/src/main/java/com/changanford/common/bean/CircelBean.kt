@@ -48,14 +48,14 @@ data class CircleItemBean(
     val checkNoReason: String = "", //审核不通过原因
     var typeStr: String,//圈子角色名称
     var isShowTitle: Boolean = false,//是否为圈子角色
-    var tags:List<NewCirceTagBean>?=null,
-    var tagIds:ArrayList<Int>?=null,
-    val type:String,
-    val needAudit:String,
-    var star:String?=null,
-    var status:String?=null,//1审核中 2通过
+    var tags: List<NewCirceTagBean>? = null,
+    var tagIds: ArrayList<Int>? = null,
+    val type: String,
+    val needAudit: String,
+    var star: String? = null,
+    var status: String? = null,//1审核中 2通过
 
-) : MultiItemEntity,Serializable
+) : MultiItemEntity, Serializable
 
 
 data class CircleMemberBean(
@@ -124,10 +124,17 @@ data class CircleStatusItemBean(
 )
 
 
-
 /**
  *  我的推荐圈子
  * */
-data class  MineRecommendCircle(var circleId:Long,var name:String,var userCount:Long,var pic:String, var avatars:ArrayList<String>,var posts:List<PostDataBean>,var sort:Int){
+data class MineRecommendCircle(
+    var circleId: Long,
+    var name: String,
+    var userCount: Long,
+    var pic: String,
+    var avatars: ArrayList<String>,
+    var posts: List<PostDataBean>,
+    var sort: Int
+) {
 
 }

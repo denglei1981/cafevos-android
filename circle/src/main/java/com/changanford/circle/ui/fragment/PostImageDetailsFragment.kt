@@ -59,7 +59,7 @@ import com.gyf.immersionbar.ImmersionBar
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions
 import com.zhpan.bannerview.constants.IndicatorGravity
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.schedule
 
 /**
@@ -130,7 +130,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             layoutContent.tvSubTitle.visibility =
                 if (mData.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
             layoutContent.tvSubTitle.text = mData.authorBaseVo?.getMemberNames()
-
+            if (!mData.authorBaseVo?.memberIcon.isNullOrEmpty()) {
+                layoutContent.ivVip.loadImage(mData.authorBaseVo?.memberIcon)
+            }
             if (mData.authorBaseVo?.authorId != MConstant.userId) {
                 layoutContent.tvFollow.visibility = View.VISIBLE
             } else {
@@ -229,6 +231,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     layoutContent.tvTopic.visibility = View.GONE
                 }
                 layoutContent.tvTopic.text = mData.topicName
+                showTag()
                 when (mData.type) {
                     1 -> {//webView布局
                         layoutContent.webView.isVisible = true
@@ -297,7 +300,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
                     else -> {
                         layoutContent.ryContent.isVisible = true
-                        showTag(true)
 //                            ivCover.setOnClickListener {
 //                                val pics = arrayListOf<MediaListBean>()
 //                                pics.add(MediaListBean(mData.pics))
@@ -704,7 +706,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         })
     }
 
-    private fun showTag(isLong: Boolean) {
+    private fun showTag() {
 
         if (mData.tags == null || mData.tags.size == 0) {
             binding.layoutContent.postTag.visibility = View.GONE

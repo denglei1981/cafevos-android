@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_white_only_top"
+    android:background="@drawable/shape_white_top_12dp"
     android:orientation="vertical">
 
     <TextView
@@ -13,8 +13,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:text="分享到"
-        android:textColor="@color/text_color"
-        android:textSize="15sp"
+        android:textColor="@color/color_16"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="visible" />
 
@@ -35,13 +35,13 @@
                 android:id="@+id/btn_share_wechat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:layout_marginStart="10dp"
                 android:drawableTop="@mipmap/btn_share_wechat_moments"
                 android:drawablePadding="10dp"
                 android:gravity="center"
                 android:text="微信"
-                android:textColor="@color/text_color"
+                android:textColor="@color/color_9916"
                 android:textSize="12sp"
                 android:visibility="visible"
                 app:layout_constraintHorizontal_weight="1"
@@ -59,7 +59,7 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:gravity="center"
                 android:text="@string/share_wechat_moments"
-                android:textColor="@color/text_color"
+                android:textColor="@color/color_9916"
                 android:textSize="12sp"
                 android:visibility="visible" />
 
@@ -74,7 +74,7 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:gravity="center"
                 android:text="@string/share_qq"
-                android:textColor="@color/text_color"
+                android:textColor="@color/color_9916"
                 android:textSize="12sp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
                 android:drawablePadding="@dimen/dp_10"
                 android:gravity="center"
                 android:text="@string/share_qq_zoom"
-                android:textColor="@color/text_color"
+                android:textColor="@color/color_9916"
                 android:textSize="12sp"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,11 +110,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="10dp"
             android:drawableTop="@mipmap/btn_share_weibo"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center"
             android:text="@string/share_weibo"
-            android:textColor="@color/text_color"
+            android:textColor="@color/color_9916"
             android:textSize="12sp"
             android:visibility="visible"
             app:layout_constraintHorizontal_weight="1"
@@ -126,13 +127,13 @@
             android:id="@+id/btn_haibao"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:drawableTop="@mipmap/btn_share_weibo"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center"
             android:text="海报"
-            android:textColor="@color/text_color"
+            android:textColor="@color/color_9916"
             android:textSize="12sp"
             android:visibility="visible" />
 
@@ -140,13 +141,13 @@
             android:id="@+id/btn_copy"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:drawableTop="@mipmap/btn_copy"
             android:drawablePadding="@dimen/dp_10"
             android:gravity="center"
             android:text="复制链接"
-            android:textColor="@color/text_color"
+            android:textColor="@color/color_9916"
             android:textSize="12sp"
             android:visibility="visible" />
 
@@ -159,6 +160,7 @@
 
         <TextView
             android:layout_width="0dp"
+            android:layout_marginLeft="20dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
@@ -195,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="结束发布"
-                android:textColor="@color/text_color"
+                android:textColor="@color/color_9916"
                 android:textSize="12sp" />
 
             <TextView
@@ -232,7 +234,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="举报"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/color_9916"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -253,7 +256,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="不喜欢"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/color_9916"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -276,7 +280,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="下架"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/color_9916"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -296,86 +301,86 @@
             tools:listitem="@layout/item_share_edite"
             tools:visibility="visible" />
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/ll_jbs"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:visibility="gone"-->
-<!--            tools:visibility="visible">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/ll_jbs"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:paddingTop="10dp"-->
+        <!--            android:visibility="gone"-->
+        <!--            tools:visibility="visible">-->
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_jj"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical">-->
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/ll_jj"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginLeft="5dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:orientation="vertical">-->
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@mipmap/ic_jj_s" />-->
+        <!--                <ImageView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:src="@mipmap/ic_jj_s" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/jj_tv"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="申请加精"-->
-<!--                    android:textColor="@color/black" />-->
-<!--            </LinearLayout>-->
+        <!--                <TextView-->
+        <!--                    android:id="@+id/jj_tv"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="申请加精"-->
+        <!--                    android:textColor="@color/black" />-->
+        <!--            </LinearLayout>-->
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_bj"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical"-->
-<!--                android:visibility="gone"-->
-<!--                tools:visibility="visible">-->
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/ll_bj"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginLeft="5dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:orientation="vertical"-->
+        <!--                android:visibility="gone"-->
+        <!--                tools:visibility="visible">-->
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@mipmap/ic_bj_s" />-->
+        <!--                <ImageView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:src="@mipmap/ic_bj_s" />-->
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="编辑"-->
-<!--                    android:textColor="@color/black" />-->
-<!--            </LinearLayout>-->
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="编辑"-->
+        <!--                    android:textColor="@color/black" />-->
+        <!--            </LinearLayout>-->
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_sc"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical">-->
+        <!--            <LinearLayout-->
+        <!--                android:id="@+id/ll_sc"-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_marginLeft="5dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:orientation="vertical">-->
 
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@mipmap/ic_sc_s" />-->
+        <!--                <ImageView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:src="@mipmap/ic_sc_s" />-->
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="删除"-->
-<!--                    android:textColor="@color/black" />-->
-<!--            </LinearLayout>-->
+        <!--                <TextView-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:text="删除"-->
+        <!--                    android:textColor="@color/black" />-->
+        <!--            </LinearLayout>-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1" />-->
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:layout_weight="1" />-->
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
         <View
             android:layout_width="match_parent"
@@ -396,6 +401,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:text="取消"
+        android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="15sp" />
 </LinearLayout>
