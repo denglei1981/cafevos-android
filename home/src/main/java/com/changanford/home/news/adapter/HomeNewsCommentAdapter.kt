@@ -1,6 +1,5 @@
 package com.changanford.home.news.adapter
 
-import android.os.Bundle
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
@@ -15,15 +14,12 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toast
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.CommentListBean
@@ -50,7 +46,7 @@ class HomeNewsCommentAdapter(var lifecycleOwner: LifecycleOwner) :
             it.gNoComment.visibility = View.GONE
             it.conComment.visibility = View.VISIBLE
             GlideUtils.loadBD(item.avatar, it.ivHead)
-            binding.bean = item
+//            binding.bean = item
             it.tvName.text = item.nickname
             it.tvTime.text = item.timeStr
             it.tvLikeCount.visibility=if(item.likesCount==0) View.INVISIBLE else View.VISIBLE

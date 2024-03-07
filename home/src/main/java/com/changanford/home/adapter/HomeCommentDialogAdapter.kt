@@ -1,6 +1,5 @@
 package com.changanford.home.adapter
 
-import android.os.Bundle
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
@@ -15,14 +14,11 @@ import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
-import com.changanford.common.utilext.toast
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.bean.CommentListBean
@@ -31,10 +27,10 @@ import com.changanford.home.util.AnimScaleInUtil
 import com.changanford.home.widget.MyLinkMovementMethod
 
 class HomeCommentDialogAdapter(private val lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment),
+    BaseQuickAdapter<com.changanford.circle.bean.CommentListBean, BaseViewHolder>(R.layout.item_home_news_comment),
     LoadMoreModule {
 
-    override fun convert(holder: BaseViewHolder, item: CommentListBean) {
+    override fun convert(holder: BaseViewHolder, item: com.changanford.circle.bean.CommentListBean) {
         val binding = DataBindingUtil.bind<ItemHomeNewsCommentBinding>(holder.itemView)
         binding?.let {
             GlideUtils.loadBD(item.avatar,binding.ivHead)

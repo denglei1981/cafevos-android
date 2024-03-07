@@ -27,7 +27,7 @@
 
     <include
         android:id="@+id/ll_comment"
-        layout="@layout/include_common_comment_bottom"
+        layout="@layout/circle_layout_bottom_post_image"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_60"
         app:layout_constraintBottom_toBottomOf="parent"

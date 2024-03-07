@@ -44,18 +44,19 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.apply {
-            layoutHeader.ivHeader.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            layoutHeader.ivHeader.loadImage(item.authorBaseVo.avatar, ImageOptions().apply { circleCrop = true })
             layoutHeader.tvAuthorName.text = item.nickname
             if (!item.memberIcon.isNullOrEmpty()) {
-                layoutHeader.ivVip.load(item.memberIcon)
+                layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
             }
-            if (item.carOwner.isNullOrEmpty()) {
+            tvTime.text = item.getTimeAndAddress()
+            if (item.authorBaseVo.carOwner.isNullOrEmpty()) {
                 layoutHeader.tvSubTitle.isVisible = false
             } else {
                 layoutHeader.tvSubTitle.isVisible = true
-                layoutHeader.tvSubTitle.text = item.carOwner
+                layoutHeader.tvSubTitle.text = item.authorBaseVo.carOwner
             }
-            if (item.isFollow == 1) {//已关注
+            if (item.authorBaseVo.isFollow == 1) {//已关注
                 layoutHeader.btnFollow.text = "已关注"
                 layoutHeader.btnFollow.setTextColor(
                     ContextCompat.getColor(
@@ -136,7 +137,7 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
             }
             val labelAdapter = LabelAdapter(16)
             layoutHeader.rvUserTag.adapter = labelAdapter
-            labelAdapter.setNewInstance(item.imags)
+            labelAdapter.setNewInstance(item.authorBaseVo.imags)
 
             layoutHeader.ivHeader.setOnClickListener {
                 JumpUtils.instans?.jump(35, item.userId)

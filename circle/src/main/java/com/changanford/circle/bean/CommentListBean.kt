@@ -1,5 +1,6 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.Imag
 import java.io.Serializable
 
@@ -10,10 +11,13 @@ import java.io.Serializable
  */
 data class CommentListBean(
     val avatar: String,
+    val artId: String,
     var childCount: Int,
     val content: String,
     val createTime: String,
     val groupId: String,
+    val authorBaseVo: AuthorBaseVo,
+    val ipAddr: String?,
     val id: String,
     var isLike: Int,
     val headFrameImage: String,
@@ -23,14 +27,18 @@ data class CommentListBean(
     val role: String,
     val timeStr: String,
     val userId: String,
-    val bizId:String,
+    val bizId: String,
     var carOwner: String = "",
     val memberIcon: String,
     val imags: ArrayList<Imag> = arrayListOf(),
     var isFollow: Int = 0, //1 是已关注
-    val childVo:MutableList<CommentListBean>
+    val childVo: MutableList<CommentListBean>
 ) : Serializable {
     override fun toString(): String {
         return "CommentListBean(avatar='$avatar', childCount=$childCount, content='$content', createTime='$createTime', groupId='$groupId', id='$id', isLike=$isLike, likesCount=$likesCount, nickname='$nickname', phoneModel='$phoneModel', role='$role', timeStr='$timeStr', userId=$userId)"
+    }
+
+    fun getTimeAndAddress(): String {
+        return "$timeStr ${if (ipAddr.isNullOrEmpty()) "" else ipAddr}"
     }
 }

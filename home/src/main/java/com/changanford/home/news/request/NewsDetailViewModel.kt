@@ -3,14 +3,17 @@ package com.changanford.home.news.request
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.InfoDataBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.NewsExpandData
@@ -21,7 +24,7 @@ import com.changanford.home.news.data.NewsExpandData
 class NewsDetailViewModel : BaseViewModel() {
     val newsDetailLiveData = MutableLiveData<UpdateUiState<NewsDetailData>>() // 详情
 
-    val commentsLiveData = MutableLiveData<UpdateUiState<ListMainBean<CommentListBean>>>() //
+    val commentsLiveData = MutableLiveData<UpdateUiState<ListMainBean<com.changanford.circle.bean.CommentListBean>>>() //
 
     val commentSateLiveData = MutableLiveData<UpdateUiState<Any>>() // 评论状态。
 
@@ -78,11 +81,11 @@ class NewsDetailViewModel : BaseViewModel() {
                 .getCommentList(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
                     val updateUiState =
-                        UpdateUiState<ListMainBean<CommentListBean>>(it, true, isLoadMore, "")
+                        UpdateUiState<ListMainBean<com.changanford.circle.bean.CommentListBean>>(it, true, isLoadMore, "")
                     commentsLiveData.postValue(updateUiState)
                 }.onWithMsgFailure {
                     val updateUiState =
-                        UpdateUiState<ListMainBean<CommentListBean>>(false, it, isLoadMore)
+                        UpdateUiState<ListMainBean<com.changanford.circle.bean.CommentListBean>>(false, it, isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
         })

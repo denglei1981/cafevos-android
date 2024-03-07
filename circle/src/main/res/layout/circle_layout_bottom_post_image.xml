@@ -8,18 +8,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
-            android:background="@color/color_1a4a"
-            android:layout_height="1dp" />
+            android:layout_height="1dp"
+            android:background="@color/color_1a4a" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@color/white"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -66,9 +67,9 @@
                 android:id="@+id/tv_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
                 android:drawableTop="@mipmap/circle_talk_image"
                 android:drawablePadding="1dp"
-                android:layout_marginStart="24dp"
                 android:gravity="center"
                 android:textColor="@color/color_8016"
                 android:textSize="@dimen/sp_10"
@@ -103,15 +104,16 @@
                 android:id="@+id/tv_share_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="19dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="16dp"
                 android:drawableTop="@mipmap/circle_share_image"
-                android:drawablePadding="3dp"
+                android:drawablePadding="4dp"
                 android:gravity="center"
                 android:textColor="@color/color_8016"
                 android:textSize="@dimen/sp_10"
-                tools:text="255" />
+                android:visibility="gone"
+                tools:text="255"
+                tools:visibility="visible" />
 
         </LinearLayout>
     </LinearLayout>

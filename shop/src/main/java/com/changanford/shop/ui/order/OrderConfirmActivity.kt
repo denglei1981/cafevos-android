@@ -2,10 +2,14 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +27,13 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.*
+import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.ConfirmOrderBean
+import com.changanford.common.bean.ConfirmOrderInfoBean
+import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.CreateOrderBean
+import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.OrderConfirmSkuItems
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.JumpUtils
@@ -50,7 +60,6 @@ import com.changanford.shop.viewmodel.OrderViewModel
 import com.faendir.rhino_android.RhinoAndroidHelper
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.xiaomi.push.it
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -484,11 +493,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //最大可使用福币
         maxUseFb = when {
             createOrderBean?.getPayType() == 1 -> 0
-            fbBalance >= maxFb -> maxFb
             isMixPayRegular() -> {
-                fbBalance
+                maxFb
             }
-
+            fbBalance >= maxFb -> maxFb
             minRmbProportion != 0f -> {
                 minFb = totalPayFb - fbBalance
                 fbBalance

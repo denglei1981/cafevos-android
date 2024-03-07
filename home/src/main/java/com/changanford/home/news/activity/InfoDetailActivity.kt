@@ -68,15 +68,15 @@ class InfoDetailActivity : BaseActivity<ActivityInfoDetailBinding, InfoDetailVie
                     return@Observer
                 }
                 when (type) {
-                    1 -> {
+                    1 -> {//图文
                         trans.replace(R.id.frame_layout, NewsDetailFragment.newInstance(artId!!))
                     }
 
-                    2 -> {
+                    2 -> {//banner图文
                         trans.replace(R.id.frame_layout, NewsPicsFragment.newInstance(artId!!))
                     }
 
-                    3 -> {
+                    3 -> {//视频
                         videoFragment = NewsVideoDetailFragment.newInstance(artId!!)
                         trans.replace(
                             R.id.frame_layout,

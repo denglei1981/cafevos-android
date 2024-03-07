@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
+import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
@@ -38,8 +39,6 @@ import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.dialog.CommentPicsDialog
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.widget.ReplyDialog
-import com.google.android.material.button.MaterialButton
 import com.gyf.immersionbar.ImmersionBar
 import com.zhpan.bannerview.constants.IndicatorGravity
 import com.zhpan.bannerview.constants.PageStyle
@@ -100,7 +99,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 toastShow(it.message)
             }
         })
-        viewModel.commentsLiveData.observe(this, Observer {
+        viewModel.commentsLiveData.observe(this) {
             if (it.isSuccess) {
                 if (it.isLoadMore) {
 //                    homeNewsCommentAdapter.addData(it.data.dataList)
@@ -111,7 +110,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 //                ToastUtils.showShortToast(it.message, this)
                 toastShow(it.message)
             }
-        })
+        }
         viewModel.commentSateLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 isNeedNotify = true
@@ -276,7 +275,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like_white, false)
         } else {
             binding.llComment.tvNewsToLike.imageview.setAppColor()
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
+            binding.llComment.tvNewsToLike.setThumb(R.mipmap.circle_like_image, false)
         }
         if (newsDetailData.isCollect == 0) {
             binding.llComment.tvNewsToCollect.imageview.clearColorFilter()
@@ -359,7 +358,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
                 binding.llComment.tvNewsToLike.imageview.setAppColor()
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
+                binding.llComment.tvNewsToLike.setThumb(R.mipmap.circle_like_image, true)
                 item?.data?.let {
                     GIOUtils.infoLickClick(
                         "资讯详情页",

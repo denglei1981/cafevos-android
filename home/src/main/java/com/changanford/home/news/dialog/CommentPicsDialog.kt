@@ -10,8 +10,8 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.circle.adapter.PostDetailsCommentAdapter
+import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseBottomDialog
 import com.changanford.common.loadsir.EmptyCommentCallback
 import com.changanford.common.loadsir.ErrorCallback
@@ -23,17 +23,13 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.getViewModel
 import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.home.adapter.HomeCommentDialogAdapter
-import com.changanford.home.bean.CommentListBean
 import com.changanford.home.databinding.DialogShortVideoCommentBinding
 import com.changanford.home.news.request.HomeCommentViewModel
-import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadSir
-import com.scwang.smart.refresh.layout.api.RefreshLayout
 
 
 /**
@@ -59,7 +55,7 @@ open class CommentPicsDialog(
     var content: String = ""
     private val mOperatingStatus = 0
     private var mContentType = 0
-    private val commentAdapter: HomeCommentDialogAdapter by lazy { HomeCommentDialogAdapter(this) }
+    private val commentAdapter by lazy { PostDetailsCommentAdapter(this) }
 
     var commentCount = 0 // 计算评论了多少次。
     var checkPosition: Int = -1
@@ -99,9 +95,9 @@ open class CommentPicsDialog(
 //            val items = commentAdapter.getItem(position)
 //            replay(items.id)
             val commentBean = commentAdapter.getItem(position)
-            if (commentBean.typeNull == 1) {
-                return@setOnItemClickListener
-            }
+//            if (commentBean.typeNull == 1) {
+//                return@setOnItemClickListener
+//            }
             val bundle = Bundle()
             bundle.putString("groupId", commentBean.groupId)
             bundle.putInt("type", 1)// 1 资讯 2 帖子
@@ -207,12 +203,12 @@ open class CommentPicsDialog(
         })
     }
 
-    private fun showComment(data: List<CommentListBean>, isLoadMore: Boolean) {
+    private fun showComment(data: List<com.changanford.circle.bean.CommentListBean>, isLoadMore: Boolean) {
         if (isLoadMore) {
             commentAdapter.loadMoreModule.loadMoreComplete()
             commentAdapter.addData(data)
         } else {
-            commentAdapter.setNewInstance(data as? MutableList<CommentListBean>)
+            commentAdapter.setNewInstance(data as? MutableList<com.changanford.circle.bean.CommentListBean>)
         }
         if (data.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
             commentAdapter.loadMoreModule.loadMoreEnd()

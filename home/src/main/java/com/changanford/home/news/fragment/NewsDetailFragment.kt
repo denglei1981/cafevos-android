@@ -5,17 +5,19 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
+import com.changanford.circle.adapter.PostDetailsCommentAdapter
+import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
@@ -24,7 +26,6 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.ext.setAppColor
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
@@ -36,21 +37,18 @@ import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.SetFollowState
-import com.changanford.home.bean.CommentListBean
 import com.changanford.home.bean.HomeShareModel
 import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsDetailsBinding
 import com.changanford.home.databinding.LayoutHeadlinesHeaderNewsDetailBinding
 import com.changanford.home.news.activity.InfoDetailActivity
-import com.changanford.home.news.adapter.HomeNewsCommentAdapter
 import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsRecommendListAdapter
 import com.changanford.home.news.data.NewsDetailData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.request.NewsDetailViewModel
 import com.changanford.home.util.LoginUtil
-import com.changanford.home.widget.ReplyDialog
 import com.changanford.home.widget.TopSmoothScroller
 import com.changanford.home.widget.loadmore.CustomLoadMoreView
 import com.google.android.material.button.MaterialButton
@@ -71,8 +69,8 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 
     private lateinit var artId: String
     private var isShowFollow = false
-    private val homeNewsCommentAdapter: HomeNewsCommentAdapter by lazy {
-        HomeNewsCommentAdapter(this)
+    private val homeNewsCommentAdapter by lazy {
+        PostDetailsCommentAdapter(this)
     }
 
     private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
@@ -81,6 +79,17 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 
     private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
         NewsAdsListAdapter()
+    }
+
+    private val adapter by lazy { NewsAdsListAdapter() }
+
+    private val inflateHeader: LayoutHeadlinesHeaderNewsDetailBinding by lazy {
+        DataBindingUtil.inflate(
+            LayoutInflater.from(requireContext()),
+            R.layout.layout_headlines_header_news_detail,
+            binding.pbRecyclerview,
+            false
+        )
     }
 
     companion object {
@@ -106,18 +115,19 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, requireActivity())
         binding.pbRecyclerview.layoutManager = linearLayoutManager
-        binding.pbRecyclerview.adapter = homeNewsCommentAdapter
+        binding.pbRecyclerview.adapter = adapter
+        inflateHeader.ryComment.adapter = homeNewsCommentAdapter
         addHeaderView()
-        binding.llComment.tvSpeakSomething.setOnClickListener(this)
+        binding.llComment.tvCommentNum.setOnClickListener(this)
         homeNewsCommentAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getNewsCommentList(bizId = artId, true)
         }
         homeNewsCommentAdapter.loadMoreModule.loadMoreView = customLoadMoreView
         homeNewsCommentAdapter.setOnItemClickListener { _, view, position ->
             val commentBean = homeNewsCommentAdapter.getItem(position)
-            if (commentBean.typeNull == 1) {
-                return@setOnItemClickListener
-            }
+//            if (commentBean.typeNull == 1) {
+//                return@setOnItemClickListener
+//            }
             val bundle = Bundle()
             bundle.putString("groupId", commentBean.groupId)
             bundle.putInt("type", 1)// 1 资讯 2 帖子
@@ -151,17 +161,8 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
-    private val inflateHeader: LayoutHeadlinesHeaderNewsDetailBinding by lazy {
-        DataBindingUtil.inflate(
-            LayoutInflater.from(requireContext()),
-            R.layout.layout_headlines_header_news_detail,
-            binding.pbRecyclerview,
-            false
-        )
-    }
-
     private fun addHeaderView() {
-        homeNewsCommentAdapter.addHeaderView(inflateHeader.root)
+        adapter.addHeaderView(inflateHeader.root)
         inflateHeader.rvRelate.adapter = newsRecommendListAdapter
         inflateHeader.rvAds.adapter = newsAdsListAdapter
         newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
@@ -232,7 +233,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         inflateHeader.tvAuthor.text = author.nickname
         inflateHeader.tvTitle.text = newsDetailData.title
         inflateHeader.tvTime.text = newsDetailData.timeStr
-        binding.layoutTitle.tvTime.text = newsDetailData.timeStr
+//        binding.layoutTitle.tvTime.text = newsDetailData.timeStr
         if (!TextUtils.isEmpty(newsDetailData.content)) {
             webHelper.loadDataWithBaseURL(newsDetailData.content)
         }
@@ -266,31 +267,61 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
         }
 
-        binding.llComment.tvNewsToLike.setPageTitleText(newsDetailData.getLikeCount())
-        binding.llComment.tvNewsToCollect.setPageTitleText(newsDetailData.getCollectCount())
-        binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData.getShareCount())
-        binding.llComment.tvNewsToMsg.setPageTitleText(newsDetailData.getCommentCount())
-        binding.llComment.tvNewsToLike.setOnClickListener(this)
-        binding.llComment.tvNewsToShare.setOnClickListener(this)
-        binding.llComment.tvNewsToMsg.setOnClickListener(this)
-        binding.llComment.tvNewsToCollect.setOnClickListener(this)
-        if (newsDetailData.isLike == 0) {
-            binding.llComment.tvNewsToLike.imageview.clearColorFilter()
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
-        } else {
-            binding.llComment.tvNewsToLike.imageview.setAppColor()
-            binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, false)
-        }
-        if (newsDetailData.isCollect == 0) {
-            binding.llComment.tvNewsToCollect.imageview.clearColorFilter()
-            binding.llComment.tvNewsToCollect.setThumb(R.drawable.icon_home_bottom_uncollect, false)
-        } else {
-            binding.llComment.tvNewsToCollect.imageview.setAppColor()
-            binding.llComment.tvNewsToCollect.setThumb(
-                R.drawable.icon_home_bottom_collection,
-                false
+        binding.llComment.apply {
+            val commentCount = newsDetailData.commentCount
+            tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
+            tvLikeNum.text =
+                "${if (newsDetailData.likesCount > 0) newsDetailData.likesCount else "0"}"
+            tvCollectionNum.text =
+                "${if (newsDetailData.collectCount > 0) newsDetailData.collectCount else "0"}"
+            ivLike.setImageResource(
+                if (newsDetailData.isLike == 1) {
+//                    tvLikeNum.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            com.changanford.circle.R.color.color_1700F4
+//                        )
+//                    )
+                    com.changanford.circle.R.mipmap.circle_like_image
+                } else {
+//                    tvLikeNum.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            com.changanford.circle.R.color.color_8016
+//                        )
+//                    )
+                    com.changanford.circle.R.mipmap.circle_no_like_image
+                }
             )
+            ivCollection.setImageResource(
+                if (newsDetailData.isCollect == 1) {
+//                    tvCollectionNum.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            com.changanford.circle.R.color.color_1700F4
+//                        )
+//                    )
+                    com.changanford.circle.R.mipmap.circle_collection_image
+                } else {
+//                    tvCollectionNum.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            com.changanford.circle.R.color.color_8016
+//                        )
+//                    )
+                    com.changanford.circle.R.mipmap.circle_no_collection_image
+                }
+            )
+            tvShareNum.text = newsDetailData.shareCount.toString()
+            tvShareNum.isVisible = true
         }
+
+        binding.llComment.llLike.setOnClickListener(this)
+        binding.llComment.tvCommentNum.setOnClickListener(this)
+        binding.llComment.llCollection.setOnClickListener(this)
+        binding.llComment.tvShareNum.setOnClickListener(this)
+        binding.llComment.tvTalk.setOnClickListener(this)
+
         addScrollListener()
     }
 
@@ -332,15 +363,22 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     homeNewsCommentAdapter.loadMoreModule.loadMoreComplete()
                     it.data.dataList?.let { it1 -> homeNewsCommentAdapter.addData(it1) }
                 } else {
-                    if (it.data.dataList == null || it.data.dataList?.size!! <= 0) {
-                        val commentListBean = CommentListBean(typeNull = 1)
-                        val comList = arrayListOf(commentListBean)
-                        homeNewsCommentAdapter.setList(comList)
-                        tips = "暂无评论~"
+//                    if (it.data.dataList == null || it.data.dataList?.size!! <= 0) {
+//                        val commentListBean = CommentListBean(typeNull = 1)
+//                        val comList = arrayListOf(commentListBean)
+//                        homeNewsCommentAdapter.setList(comList)
+//                        tips = "暂无评论~"
+//                    } else {
+                    if (it.data.dataList.size == 0) {
+                        homeNewsCommentAdapter.setEmptyView(com.changanford.circle.R.layout.circle_comment_empty_layout)
                     } else {
-                        tips = ""
-                        homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+                        inflateHeader.tvCommentNum.isVisible = true
+                        inflateHeader.tvCommentNum.text = "(${it.data.dataList.size})"
                     }
+
+                    tips = ""
+                    homeNewsCommentAdapter.setNewInstance(it.data.dataList)
+//                    }
                 }
                 if (it.data.dataList == null || it.data.dataList?.size!! < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
                     if (tips == "暂无评论~") {
@@ -386,7 +424,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             }
 
         })
-        viewModel.recommendNewsLiveData.observe(this, Observer {
+        viewModel.recommendNewsLiveData.observe(this) {
             if (it.isSuccess) {
                 if (it.data != null) {
                     if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
@@ -394,6 +432,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                         newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
                     } else {
                         inflateHeader.flRecommend.visibility = View.GONE
+                        inflateHeader.vLin2.isVisible = false
                     }
                     if (it.data.ads != null && it.data.ads?.size!! > 0) {
                         inflateHeader.rvAds.visibility = View.VISIBLE
@@ -405,7 +444,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
                     inflateHeader.flRecommend.visibility = View.GONE
                 }
             }
-        })
+        }
         viewModel.followLiveData.observe(this, Observer {
             try {
                 if (it.isSuccess) {
@@ -448,7 +487,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
             newsDetailData?.shareCount?.plus(1)?.let {
                 newsDetailData?.shareCount = it
-                binding.llComment.tvNewsToShare.setPageTitleText(newsDetailData?.getShareCount())
+                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCount())
             }
         })
     }
@@ -456,12 +495,12 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private fun setCommentCount() {
         // 评论成功自增1
         val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvNewsToMsg.setPageTitleText(
-            CountUtils.formatNum(
-                commentCount.toString(),
-                false
-            ).toString()
-        )
+        binding.llComment.tvCommentNum.text = (
+                CountUtils.formatNum(
+                    commentCount.toString(),
+                    false
+                ).toString()
+                )
     }
 
     private fun setCollection() {
@@ -471,11 +510,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             0 -> {
                 newsDetailData?.isCollect = 1
                 collectCount = newsDetailData?.collectCount?.plus(1)
-                binding.llComment.tvNewsToCollect.imageview.setAppColor()
-                binding.llComment.tvNewsToCollect.setThumb(
-                    R.drawable.icon_home_bottom_collection,
-                    true
-                )
+                binding.llComment.ivCollection.setImageResource(R.mipmap.circle_collection_image)
                 item?.data?.let {
                     GIOUtils.collectSuccessInfo(
                         "资讯详情页",
@@ -489,11 +524,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             1 -> {
                 newsDetailData?.isCollect = 0
                 collectCount = newsDetailData?.collectCount?.minus(1)
-                binding.llComment.tvNewsToCollect.imageview.clearColorFilter()
-                binding.llComment.tvNewsToCollect.setThumb(
-                    R.drawable.icon_home_bottom_uncollect,
-                    false
-                )
+                binding.llComment.ivCollection.setImageResource(R.mipmap.circle_no_collection_image)
                 item?.data?.let {
                     GIOUtils.cancelCollectSuccessInfo(
                         "资讯详情页",
@@ -507,12 +538,12 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         if (collectCount != null) {
             newsDetailData?.collectCount = collectCount
         }
-        binding.llComment.tvNewsToCollect.setPageTitleText(
-            CountUtils.formatNum(
-                collectCount.toString(),
-                false
-            ).toString()
-        )
+        binding.llComment.tvCollectionNum.text = (
+                CountUtils.formatNum(
+                    collectCount.toString(),
+                    false
+                ).toString()
+                )
     }
 
 
@@ -523,8 +554,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             0 -> {
                 newsDetailData?.isLike = 1
                 likesCount = newsDetailData?.likesCount?.plus(1)
-                binding.llComment.tvNewsToLike.imageview.setAppColor()
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_like, true)
+                binding.llComment.ivLike.setImageResource(R.mipmap.circle_like_image)
                 item?.data?.let {
                     GIOUtils.infoLickClick(
                         "资讯详情页",
@@ -538,8 +568,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             1 -> {
                 newsDetailData?.isLike = 0
                 likesCount = newsDetailData?.likesCount?.minus(1)
-                binding.llComment.tvNewsToLike.imageview.clearColorFilter()
-                binding.llComment.tvNewsToLike.setThumb(R.drawable.icon_home_bottom_unlike, false)
+                binding.llComment.ivLike.setImageResource(R.mipmap.circle_no_like_image)
                 item?.data?.let {
                     GIOUtils.cancelInfoLickClick(
                         "资讯详情页",
@@ -553,12 +582,12 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
-        binding.llComment.tvNewsToLike.setPageTitleText(
-            CountUtils.formatNum(
-                likesCount.toString(),
-                false
-            ).toString()
-        )
+        binding.llComment.tvLikeNum.text = (
+                CountUtils.formatNum(
+                    likesCount.toString(),
+                    false
+                ).toString()
+                )
     }
 
     // 1 关注 2 取消关注
@@ -633,13 +662,13 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 //            return
 //        }
         when (v.id) {
-            R.id.tv_speak_something -> {
+            R.id.tv_talk -> {
                 if (LoginUtil.isLongAndBindPhone()) {
                     replay()
                 }
             }
 
-            R.id.tv_news_to_like -> {
+            R.id.ll_like -> {
                 // 这里要防抖？
                 // 无论成功与否，先改状态?
                 // 获取当前对象喜欢与否的状态。
@@ -649,7 +678,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 
             }
 
-            R.id.tv_news_to_collect -> {
+            R.id.ll_collection -> {
                 // 收藏
                 if (LoginUtil.isLongAndBindPhone()) {
                     viewModel.addCollect(artId)
@@ -674,7 +703,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 
             }
 
-            R.id.tv_news_to_share -> {
+            R.id.tv_share_num -> {
                 newsDetailData?.let {
                     HomeShareModel.shareDialog(
                         requireActivity(),
@@ -703,7 +732,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
     }
 
-    fun smooth() {// todo  没有评论呢？
+    private fun smooth() {
         val smoothScroller = TopSmoothScroller(requireContext())
         smoothScroller.targetPosition = 1//要滑动到的位置
         linearLayoutManager.startSmoothScroll(smoothScroller)

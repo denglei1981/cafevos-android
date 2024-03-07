@@ -10,63 +10,57 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp">
+        android:layout_marginBottom="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_home_news"
-            android:layout_width="@dimen/dp_85"
-            android:layout_height="@dimen/dp_65"
+            android:layout_width="@dimen/dp_88"
+            android:layout_height="@dimen/dp_88"
             android:scaleType="centerCrop"
-            tools:src="@drawable/image_recommend_test"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle"
+            tools:src="@drawable/image_recommend_test" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_home_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="14dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:singleLine="true"
-            android:textColor="#ff2d2d2d"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@+id/iv_home_news"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/color_16"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@+id/iv_home_news"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="人工智能发展迅猛会摆脱人类？" />
 
-        <TextView
-            android:id="@+id/tv_home_sub_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="18dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textColor="#ff8195c8"
-            android:textSize="@dimen/sp_10"
-            app:layout_constraintBottom_toTopOf="@+id/tv_home_count"
-            app:layout_constraintEnd_toStartOf="@+id/iv_home_news"
-            app:layout_constraintStart_toStartOf="@+id/tv_home_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_title"
-            tools:text="年轻人喜欢什么样的车" />
-
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_head"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginBottom="3dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_home_news"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_home_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_home_count"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:textColor="#ff74889d"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_home_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_home_sub_title"
-            tools:text="20万讨论 12亿阅读" />
+            android:layout_marginStart="6dp"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_head"
+            app:layout_constraintLeft_toRightOf="@+id/iv_head"
+            app:layout_constraintTop_toTopOf="@+id/iv_head" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_1a4a"
+            app:layout_constraintTop_toBottomOf="@+id/iv_home_news" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -13,11 +13,10 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-
         <com.dueeeke.videoplayer.player.VideoView
             android:id="@+id/homes_dk_video"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_210"
+            android:layout_height="@dimen/dp_235"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +33,7 @@
 
         <include
             android:id="@+id/ll_comment"
-            layout="@layout/include_common_comment_bottom"
+            layout="@layout/circle_layout_bottom_post_image"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_60"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +44,7 @@
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:padding="@dimen/dp_8"
             android:src="@mipmap/whit_left"
@@ -59,6 +58,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/dp_8"
             android:padding="@dimen/dp_8"
+            android:visibility="gone"
             android:src="@drawable/icon_home_white_more"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
