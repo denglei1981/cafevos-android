@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.databinding.ViewDataBinding
 import com.changanford.circle.R
-import com.changanford.circle.bean.Topic
 import com.changanford.circle.databinding.ItemCircleMainTopicBinding
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
+import com.changanford.common.bean.Topic
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 
@@ -24,6 +24,5 @@ class CircleMainTopicAdapter(context: Context) :
         binding.ivIcon.setCircular(5)
         binding.ivIcon.loadImage(item.pic)
         binding.tvNum.text = "${item.postsCount}帖子 ${item.heat}热度"
-        binding.bean = item
     }
 }

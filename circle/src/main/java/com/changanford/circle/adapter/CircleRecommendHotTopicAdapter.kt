@@ -9,8 +9,8 @@ import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.Topic
 import com.changanford.circle.databinding.ItemCircleHotTopicBinding
+import com.changanford.common.bean.Topic
 
 import com.changanford.common.util.EmsUtil
 

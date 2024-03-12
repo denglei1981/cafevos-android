@@ -1,5 +1,7 @@
 package com.changanford.circle.bean
 
+import com.changanford.common.bean.Topic
+
 /**
  *Author lcw
  *Time on 2021/10/13
@@ -59,19 +61,6 @@ data class InterestCircles(
     val histryCount: Int = 0,
     val interestCount: Int = 0,
     val regionCount: Int = 0
-)
-
-data class Topic(
-    val description: String = "",
-    val likesCount: Int = 0,
-    val name: String = "",
-    val heat: String = "",
-    val pic: String = "",
-    val postsCount: Int = 0,
-    val topicId: Int = 0,
-    val userCount: Int = 0,
-    var  isHot:Int=0,
-    var isNew:String=""
 )
 
 class Params

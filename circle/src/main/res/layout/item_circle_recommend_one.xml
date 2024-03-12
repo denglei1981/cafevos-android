@@ -18,82 +18,29 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="25dp">
 
         <include
             android:id="@+id/layout_header"
-            layout="@layout/include_circle_recommend_header_info"
+            layout="@layout/include_home_item_header_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_4"
-            binding:author="@{author}"
-            binding:postBean="@{postBean}" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!--            <com.changanford.circle.widget.assninegridview.AssNineGridView-->
-            <!--                android:id="@+id/iv_nine"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginTop="@dimen/dp_16"-->
-            <!--                android:scaleType="centerCrop"-->
-            <!--                app:angv_gridSpace="3dp"-->
-            <!--                app:angv_maxSize="4"-->
-            <!--                app:angv_singleImgRatio="1"-->
-            <!--                tools:src="@drawable/image_recommed_default" />-->
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/iv_nine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_16"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_more"
-                style="@style/materialButton"
-                android:layout_width="40dp"
-                android:layout_height="@dimen/dp_25"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:backgroundTint="#66000000"
-                android:minWidth="@dimen/dp_62"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                android:visibility="gone"
-                app:cornerRadius="@dimen/dp_20"
-                tools:text="+8"
-                tools:visibility="visible" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ic_mult_very_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|start"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="20dp"
-                android:src="@mipmap/circle_mult_pic_very_post"
-                android:visibility="gone"
-                tools:visibility="visible" />
-        </FrameLayout>
-
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/layout_one"
-            layout="@layout/include_recommend_one_pics"
-            android:layout_width="match_parent"
+            android:id="@+id/layout_content"
+            layout="@layout/include_news_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
-            android:visibility="gone"
-            tools:src="@drawable/image_recommed_default"
-            tools:visibility="visible" />
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_header" />
 
         <LinearLayout
             android:id="@+id/ll_circle"
@@ -102,15 +49,16 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_f2_18"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/layout_content">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_circle_head"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:scaleType="centerCrop"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="4dp"
+                android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -164,11 +112,12 @@
 
         <include
             android:id="@+id/layout_count"
-            layout="@layout/include_circle_recommend_bottom_count"
+            layout="@layout/include_home_recommend_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            binding:postBean="@{postBean}" />
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/ll_circle" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

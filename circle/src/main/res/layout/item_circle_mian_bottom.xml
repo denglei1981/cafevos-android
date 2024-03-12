@@ -11,21 +11,26 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="10dp"/>
+
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_tab"
-            android:layout_width="140dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="14dp"
-            android:layout_gravity="center_horizontal"
-            android:padding="2dp"
-        />
+            android:layout_width="130dp"
+            android:layout_height="25dp"
+            android:background="@color/white"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center_vertical"
+            android:padding="2dp" />
+
         <com.changanford.circle.widget.CircleViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_18"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
 
     </LinearLayout>
 </layout>

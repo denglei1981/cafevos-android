@@ -287,7 +287,9 @@ object GlideUtils {
         if (url?.endsWith(".mp4") == true) {
             Log.e("mp4===", url)
             Glide.with(imageView)
+                .asDrawable()
                 .load("$url?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast")
+                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
@@ -302,7 +304,9 @@ object GlideUtils {
                     .preload()
 
                 Glide.with(imageView)
+                    .asDrawable()
                     .load(url?.let { it1 -> dealWithMuchImage(it1) })
+                    .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(errorDefaultRes)
                     .error(errorDefaultRes)
 //                    .override(400.toIntPx(), 400.toIntPx())
@@ -431,6 +435,21 @@ object GlideUtils {
                     .error(errorDefaultRes)
             }
         }.fitCenter().into(imageView)
+    }
+
+    @JvmOverloads
+    fun loadBDCenter2(
+        url: String?,
+        imageView: ImageView,
+        @DrawableRes errorDefaultRes: Int = R.mipmap.image_h_one_default
+    ) {
+        Glide.with(imageView.context).load(defaultHandleImageUrl(url)).apply {
+            if (errorDefaultRes != null) {
+                placeholder(errorDefaultRes)
+                    .fallback(errorDefaultRes)
+                    .error(errorDefaultRes)
+            }
+        }.centerCrop().into(imageView)
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)

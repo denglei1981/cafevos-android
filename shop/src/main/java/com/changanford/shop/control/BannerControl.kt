@@ -36,11 +36,9 @@ object BannerControl {
         banner.setAutoPlayAble(isAutoPlayAbles)
         banner.setAdapter(BGABanner.Adapter<ImageView, AdBean> { _, imageView, item, _ ->
             if (item != null) {
-                GlideUtils.loadRoundLocal(
+                GlideUtils.loadBDCenter2(
                     GlideUtils.handleImgUrl(item.adImg),
                     imageView,
-                    round.toFloat(),
-                    R.mipmap.image_h_one_default
                 )
             }
         })

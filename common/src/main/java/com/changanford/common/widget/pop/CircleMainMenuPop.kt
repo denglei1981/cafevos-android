@@ -53,6 +53,41 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             .toDismiss()
     }
 
+    fun initShopData() {
+        val list = arrayListOf(
+            CircleMainMenuBean(R.mipmap.ic_shop_menu_coupon, "优惠券"),
+            CircleMainMenuBean(R.mipmap.ic_shop_menu_order, "我的订单"),
+            CircleMainMenuBean(R.mipmap.ic_shop_menu_line, "在线客服"),
+            CircleMainMenuBean(R.mipmap.ic_shop_menu_cart, "购物车")
+        )
+
+        adapter.setItems(list)
+        binding.ryManagement.adapter = adapter
+        adapter.setOnItemClickListener(object : OnRecyclerViewItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                when (position) {
+                    0 -> {
+                        JumpUtils.instans?.jump(118)
+                    }
+
+                    1 -> {
+                        JumpUtils.instans?.jump(52)
+                    }
+
+                    2 -> {
+                        JumpUtils.instans?.jump(71)
+                    }
+
+                    3 -> {
+                        JumpUtils.instans?.jump(119)
+                    }
+                }
+                dismiss()
+            }
+
+        })
+    }
+
     fun initData() {
         val param = SPUtils.getParam(context, "identityType", "").toString()
         val list = arrayListOf(

@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00142E">
+        android:background="@color/white">
 
         <include
             android:id="@+id/layout_header"
@@ -24,104 +24,183 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_home_title"
-            style="@style/AppText.lineSpace.Bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_18"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@{newsDetailData.title}"
-            android:textColor="#ffffffff"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_header"
-            app:layout_constraintWidth_percent="0.9" />
-
-        <com.zhpan.bannerview.BannerViewPager
-            android:id="@+id/b_viewpager"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="335dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="w,1:1"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_pics_num"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shape_black_trans_radius10"
-            android:gravity="center"
-            android:minWidth="50dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_20"
-            app:layout_constraintBottom_toBottomOf="@+id/b_viewpager"
-            app:layout_constraintEnd_toEndOf="@+id/b_viewpager"
-            tools:text="1/5" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/home_tv_content"
-            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="8dp"
-            android:text="@{newsDetailData.content}"
-            android:textColor="#ffffffff"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/ll_special"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
-            app:layout_constraintWidth_percent="0.9"
-            tools:text="长安福特这一次给大家一个好大的惊喜，刚看到这款车的时候，我真的好喜欢，特别那一米多的中控显示..." />
-
-
-        <LinearLayout
-            android:id="@+id/ll_special"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="18dp"
-            android:background="@drawable/shape_home_di_blue"
             app:layout_constraintBottom_toTopOf="@+id/ll_comment"
-            app:layout_constraintStart_toStartOf="@+id/home_tv_content"
-            app:layout_constraintTop_toBottomOf="@+id/home_tv_content">
+            app:layout_constraintTop_toBottomOf="@+id/layout_header">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="@dimen/dp_25"
-                android:layout_height="@dimen/dp_25"
-                android:layout_marginStart="@dimen/dp_3"
-                android:background="@drawable/shape_blue_819_bg"
-                android:gravity="center"
-                android:text="专题"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_10" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_topic_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:drawableEnd="@drawable/icon_home_next"
-                android:drawablePadding="@dimen/dp_18"
-                android:gravity="center_vertical|start"
-                android:text="@string/app_name"
-                android:textColor="#FEFEFE" />
+                <TextView
+                    android:id="@+id/tv_home_title"
+                    style="@style/AppText.lineSpace.Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="@dimen/dp_18"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@{newsDetailData.title}"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="《有话好好说》第三季第六期，美女小姐姐大驾光临" />
 
-        </LinearLayout>
+                <com.zhpan.bannerview.BannerViewPager
+                    android:id="@+id/b_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_goneMarginTop="24dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintDimensionRatio="w,1:1"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_pics_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:background="@drawable/bg_news_details_ads"
+                    android:gravity="center"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/b_viewpager"
+                    app:layout_constraintEnd_toEndOf="@+id/b_viewpager"
+                    tools:text="1/5" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/home_tv_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_goneMarginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@{newsDetailData.content}"
+                    android:textColor="@color/color_d916"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
+                    tools:text="大家好，上月我曾与大家分享了探险者TMS系-统的感受 ，受到很多网友们的私信，要求再详细讲解驾驶模式选择及实际应用。今天，我将具体分享一下在不同路况下如何选择合适的驾" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_special"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_0d00_cor100"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/home_tv_content"
+                    app:layout_goneMarginTop="16dp"
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="@dimen/dp_25"
+                        android:layout_height="@dimen/dp_25"
+                        android:layout_marginStart="4dp"
+                        android:gravity="center"
+                        android:text="专题"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_10"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_topic_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical|start"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:textColor="@color/color_d916"
+                        android:textSize="12sp"
+                        tools:text="@string/app_name" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ads"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="18dp"
+                    android:orientation="vertical"
+                    android:scaleType="centerCrop"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="669:320"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_special"
+                    tools:visibility="visible" />
+
+                <View
+                    android:id="@+id/home_gray_line"
+                    style="@style/homeGraLine"
+                    android:layout_marginTop="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_ads" />
+
+                <FrameLayout
+                    android:id="@+id/fl_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/home_gray_line"
+                    tools:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_relate_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/home_hot_recommend"
+                        android:textColor="@color/color_16"
+                        android:textSize="18sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="@dimen/dp_14"
+                        android:drawableEnd="@drawable/home_right_blue"
+                        android:drawablePadding="4dp"
+                        android:text="@string/home_more"
+                        android:textColor="#ff74889d"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </FrameLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_relate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/fl_recommend" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
         <include
             android:id="@+id/ll_comment"
-            layout="@layout/include_home_comment_bg_blue"
+            layout="@layout/circle_layout_bottom_post_image"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_60"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

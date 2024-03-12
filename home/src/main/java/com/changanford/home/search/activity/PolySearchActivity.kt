@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.adapter.HomeSearchAcAdapter
+import com.changanford.common.adapter.PolySearchTopicAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.JumpConstant.SEARCH_CONTENT
@@ -32,7 +33,6 @@ import com.changanford.common.util.room.SearchRecordEntity
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.FlowLayoutManager
 import com.changanford.home.R
-import com.changanford.home.adapter.PolySearchTopicAdapter
 import com.changanford.home.databinding.ActivityPolySearchBinding
 import com.changanford.home.search.adapter.SearchHistoryAdapter
 import com.changanford.home.search.adapter.SearchHotAdapter

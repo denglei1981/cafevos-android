@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,99 +10,123 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginEnd="@dimen/dp_20"
         android:orientation="vertical">
 
-        <View
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="18dp"
-            android:background="@color/color_f2"
-            android:visibility="invisible" />
+            android:background="@color/transparent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magic_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:paddingBottom="2dp" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_topic_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/ic_post_top_topic_bg"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_circle_more"
+                android:id="@+id/tv_days"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:drawableEnd="@mipmap/circle_right_black_small"
-                android:drawablePadding="6dp"
-                android:text="更多"
-                android:textSize="14sp" />
-
-        </RelativeLayout>
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager_top"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:visibility="gone" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="14dp"
+                android:text="7月18日"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_days_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="热门话题"
-                android:textColor="@color/color_33"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginStart="4dp"
+                android:text="已连续签到555天"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_days"
+                app:layout_constraintLeft_toRightOf="@+id/tv_days"
+                app:layout_constraintTop_toTopOf="@+id/tv_days" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_topic_more"
+                android:id="@+id/tv_sign"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:drawableEnd="@mipmap/right_74889d"
-                android:drawablePadding="6dp"
-                android:text="@string/more"
-                android:textColor="@color/circle_74889D"
-                android:textSize="14sp" />
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:background="@drawable/bg_sign_top_topic"
+                android:paddingEnd="16dp"
+                android:textColor="@color/white"
+                android:text="签到得福币"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="@+id/tv_days"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_days"
+                android:layout_height="30dp"/>
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_white_12"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_topic_bg"
+                app:layout_constraintTop_toBottomOf="@+id/tv_days">
 
-        </RelativeLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_topic_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@mipmap/ic_search_hot_topic"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ry_topic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_topic_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_search_all_topic_end"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_topic_left"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_topic_left" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ry_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_topic_left"
+                    app:spanCount="2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:background="@color/white"
+            android:paddingTop="24dp">
 
             <com.zhpan.bannerview.BannerViewPager
                 android:id="@+id/b_viewpager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="335:200"
+                app:layout_constraintDimensionRatio="335:66"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -110,9 +135,9 @@
                 android:id="@+id/dr_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="21dp"
                 android:background="@color/transparent"
-                app:layout_constraintBottom_toBottomOf="@+id/b_viewpager"
+                app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -120,5 +145,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_height="29dp"/>
     </LinearLayout>
 </layout>

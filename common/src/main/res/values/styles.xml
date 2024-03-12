@@ -243,7 +243,7 @@
         <!-- 指示点容器左右内间距 -->
         <item name="banner_pointContainerLeftRightPadding">10dp</item>
         <!-- 指示点上下外间距 -->
-        <item name="banner_pointTopBottomMargin">10dp</item>
+        <item name="banner_pointTopBottomMargin">16dp</item>
         <!-- 指示点左右外间距 -->
         <item name="banner_pointLeftRightMargin">5dp</item>
         <!-- 指示器的位置 -->
@@ -261,6 +261,6 @@
         <!-- 当只有一页数据时是否显示指示器-->
         <item name="banner_isNeedShowIndicatorOnOnlyOnePage">false</item>
         <!-- 指示点背景 -->
-        <item name="banner_pointDrawable">@drawable/indicator_style_c</item>
+        <item name="banner_pointDrawable">@drawable/indicator_style_shop</item>
     </style>
 </resources>

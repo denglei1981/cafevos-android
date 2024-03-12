@@ -315,12 +315,14 @@ data class InfoDataBean(
         }
         return ""
     }
+
     fun getPics(): List<String>? { // 获取封面。
         if (!TextUtils.isEmpty(pics)) {
             return pics.split(",")
         }
         return null
     }
+
     fun getSubTitleStr(): String {
         return if (!TextUtils.isEmpty(specialTopicTitle)) {
             "#".plus(specialTopicTitle).plus("#")
@@ -457,6 +459,14 @@ data class PostDataBean(
         return commentCountResult
     }
 
+    fun getMPicList(): List<String> {
+        return if (picList.isNullOrEmpty()) {
+            emptyList()
+        } else {
+            picList
+        }
+    }
+
     fun getViewsResult(): String {
         var commentCountResult: String = ""
         if (viewsCount == 0L) {
@@ -528,13 +538,13 @@ data class PostDataBean(
         return timeAndViewCountResult
     }
 
-    fun getPicsList(): List<String> {
-        if (!TextUtils.isEmpty(pics)) {
-            val asList = pics.split(",")
-            return asList
-        }
-        return mutableListOf()
-    }
+//    fun getPicsList(): List<String> {
+//        if (!TextUtils.isEmpty(pics)) {
+//            val asList = pics.split(",")
+//            return asList
+//        }
+//        return mutableListOf()
+//    }
 
     fun showCity(): String {
         if (addrName?.isNotEmpty() == true) {

@@ -1,9 +1,9 @@
 package com.changanford.shop
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
-import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -11,18 +11,20 @@ import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.wutil.ViewPage2AdapterFragment
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
 import com.changanford.shop.databinding.FragmentShopLayoutBinding
-import com.changanford.shop.ui.compose.HomeMyIntegralCompose
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.GoodsKillAreaActivity
 import com.changanford.shop.ui.goods.GoodsListFragment
@@ -33,7 +35,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import java.lang.reflect.Field
 import java.net.URLDecoder
 
 
@@ -51,6 +52,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
             binding.smartRl.isEnabled = i >= 0
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
+        AppUtils.setStatusBarPaddingTop(binding.inTop.clTitle, requireActivity())
         addLiveDataBus()
         addObserve()
         initKill()
@@ -58,12 +60,13 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.apply {
             smartRl.setOnRefreshListener(this@ShopFragment)
             //搜索
-            inHeader.imgSearch.setOnClickListener {
+            inTop.ivSearch.setOnClickListener {
                 JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())
             }
             //购物车
-            inHeader.imgBuyCar.setOnClickListener {
-                JumpUtils.instans?.jump(119)
+            inTop.ivMenu.setOnClickListener {
+//                JumpUtils.instans?.jump(119)
+                showPublish(inTop.clTitle)
             }
             inTop.apply {
                 recyclerViewRecommend.adapter = recommendAdapter
@@ -168,6 +171,33 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         getData(true)
     }
 
+    private fun showPublish(publishLocationView: View) {
+        CircleMainMenuPop(
+            requireContext(),
+            object : CircleMainMenuPop.CheckPostType {
+                override fun checkLongBar() {
+
+                }
+
+                override fun checkPic() {
+
+                }
+
+                override fun checkVideo() {
+
+                }
+
+                override fun checkQuestion() {
+
+                }
+
+            }).run {
+            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(publishLocationView)
+            initShopData()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.getFB()
@@ -205,8 +235,19 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
         viewModel.fbData.observe(this) {
             //我的福币
-            binding.inTop.compose.setContent {
-                HomeMyIntegralCompose(it.totalIntegral)
+//            binding.inTop.compose.setContent {
+//                HomeMyIntegralCompose(it.totalIntegral)
+//            }
+            val isLogin = !TextUtils.isEmpty(MConstant.token)
+            binding.inTop.tvRightTips.text =
+                if (isLogin) getString(R.string.str_earnMoney) else getString(R.string.str_loginToView)
+            binding.inTop.tvFbNum.text = if (isLogin) "${it.totalIntegral}" else "0"
+            binding.inTop.tvRightTips.setOnClickListener {
+                if (isLogin) {
+                    WBuriedUtil.clickShopIntegral()
+                    JumpUtils.instans?.jump(16)
+                    GIOUtils.homePageClick("我的福币", 0.toString(), "我的福币")
+                } else JumpUtils.instans?.jump(100)
             }
         }
         viewModel.shopHomeData.observe(this) {
@@ -248,12 +289,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
 
     private fun bindCarNum(num: Int) {
-        binding.inHeader.tvCarNumber.apply {
-            visibility = if (num > 0) {
-                text = "$num"
-                View.VISIBLE
-            } else View.GONE
-        }
+//        binding.inHeader.tvCarNumber.apply {
+//            visibility = if (num > 0) {
+//                text = "$num"
+//                View.VISIBLE
+//            } else View.GONE
+//        }
     }
 
     private fun addLiveDataBus() {

@@ -5,9 +5,6 @@
 
     <data>
 
-        <variable
-            name="bean"
-            type="com.changanford.circle.bean.Topic" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +59,6 @@
                     android:gravity="center"
                     android:maxLines="1"
                     android:paddingEnd="8dp"
-                    android:text="@{bean.name}"
                     android:textColor="@color/circle_01025c"
                     android:textSize="12sp"
                     tools:ignore="RtlSymmetry,SmallSp"
@@ -78,7 +74,6 @@
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{bean.description}"
             android:textColor="@color/color_2d"
             android:textSize="13sp"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -3,13 +3,8 @@ package com.changanford.circle.adapter
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginStart
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -18,22 +13,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.circle.R
-import com.changanford.circle.databinding.ItemCircleMainTopBinding
 import com.changanford.circle.databinding.ItemCircleMianBottomBinding
 import com.changanford.circle.databinding.LayoutCircleHeaderHotTopicBinding
-
-import com.changanford.circle.ui.fragment.CircleDetailsMainFragment
 import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
-import com.changanford.circle.ui.fragment.CircleRecommendV3Fragment
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
+import com.changanford.common.adapter.PolySearchTopicAdapter
 import com.changanford.common.basic.adapter.BaseAdapter
-import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.AdBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.utilext.toIntPx
+import com.youth.banner.util.BannerUtils
 import com.zhpan.bannerview.constants.PageStyle
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -42,8 +35,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ClipPagerTitleView
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 /**
  *Author lcw
@@ -72,7 +63,7 @@ class CircleSquareAdapter(
 
 
     val topicAdapter by lazy {
-        CircleRecommendHotTopicAdapter()
+      PolySearchTopicAdapter()
     }
 
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int, viewType: Int) {
@@ -80,9 +71,6 @@ class CircleSquareAdapter(
             0 -> {
                 val binding = vdBinding as LayoutCircleHeaderHotTopicBinding
                 topBinding = binding
-
-
-
                 initVpAd(binding)
 //                initTopTabAndViewPager(binding)
 
@@ -102,7 +90,7 @@ class CircleSquareAdapter(
     private fun setTopListener(binding: LayoutCircleHeaderHotTopicBinding) {
         binding.run {
 
-            tvTopicMore.setOnClickListener {
+            ivTopicRight.setOnClickListener {
                 startARouter(ARouterCirclePath.HotTopicActivity)
                 GIOUtils.homePageClick("热门话题", 0.toString(), "更多")
             }
@@ -125,13 +113,16 @@ class CircleSquareAdapter(
 
         binding.let {
 
-            it.tvTopicMore.setOnClickListener {
+            it.ivTopicRight.setOnClickListener {
                 startARouter(ARouterCirclePath.HotTopicActivity)
             }
             it.bViewpager.visibility = View.GONE
             val recommendAdAdapter = CircleAdBannerAdapter()
             it.bViewpager.setAdapter(recommendAdAdapter)
             it.bViewpager.setCanLoop(true)
+            it.bViewpager.setPageMargin(20)
+            it.bViewpager.setRevealWidth(BannerUtils.dp2px(10f))
+            it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE)
             it.bViewpager.registerLifecycleObserver(lifecycleRegistry)
             it.bViewpager.setIndicatorView(it.drIndicator)
             it.bViewpager.setAutoPlay(true)
@@ -181,7 +172,7 @@ class CircleSquareAdapter(
 
     private fun initMagicIndicator(binding: ItemCircleMianBottomBinding) {
         val magicIndicator = binding.magicTab
-        magicIndicator.setBackgroundResource(R.drawable.circle_square_indicator)
+//        magicIndicator.setBackgroundResource(R.drawable.circle_square_indicator)
         val commonNavigator = CommonNavigator(context)
         commonNavigator.isAdjustMode = true
 
@@ -192,10 +183,13 @@ class CircleSquareAdapter(
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
 
-                val clipPagerTitleView = ClipPagerTitleView(context)
+                val clipPagerTitleView = ScaleTransitionPagerTitleView(context)
                 clipPagerTitleView.text = tabList[index]
-                clipPagerTitleView.textColor = Color.parseColor("#999999")
-                clipPagerTitleView.clipColor = Color.BLACK
+                clipPagerTitleView.normalColor =
+                    ContextCompat.getColor(context, R.color.color_8016)
+                clipPagerTitleView.setPadding(0, 0, 24.toIntPx(), 0)
+                clipPagerTitleView.selectedColor =
+                    ContextCompat.getColor(context, R.color.circle_app_color)
 
                 clipPagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return clipPagerTitleView
@@ -207,7 +201,7 @@ class CircleSquareAdapter(
                     context.resources.getDimension(R.dimen.common_navigator_height)
                 val borderWidth = UIUtil.dip2px(context, 1.0).toFloat()
                 val lineHeight = navigatorHeight - 2 * borderWidth
-                indicator.lineHeight = lineHeight
+                indicator.lineHeight = 0f
                 indicator.roundRadius = lineHeight / 2
 //                indicator.yOffset = borderWidth
 

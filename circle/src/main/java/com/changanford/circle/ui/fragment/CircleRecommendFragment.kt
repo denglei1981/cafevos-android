@@ -101,7 +101,7 @@ class CircleRecommendFragment :
             )
             headerBinding?.let {
                 adapter.addHeaderView(it.root, 0)
-                it.tvTopicMore.setOnClickListener {
+                it.ivTopicRight.setOnClickListener {
                     startARouter(ARouterCirclePath.HotTopicActivity)
                 }
                 it.bViewpager.visibility = View.GONE

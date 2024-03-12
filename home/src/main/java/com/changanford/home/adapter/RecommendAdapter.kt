@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -447,6 +448,21 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     }
                 }
                 false
+            }
+            if (tvContent.isGone&&tvTopic.isVisible){
+                tvTopic.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.circle.R.color.color_d916
+                    )
+                )
+            }else{
+                tvTopic.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        com.changanford.circle.R.color.color_8016
+                    )
+                )
             }
         }
 //        GlideUtils.loadBD(item.authors?.avatar, ivHeader)

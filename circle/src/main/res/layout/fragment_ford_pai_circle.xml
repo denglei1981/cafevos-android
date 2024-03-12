@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/srl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableLoadMore="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_no_circle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="3dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_top_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="您暂未加入任何圈子"
+                        android:textColor="@color/color_E67400"
+                        android:textSize="18sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_no_circle_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="加入圈子后，可尊享对应专属内容"
+                        android:textColor="@color/color_8016"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_top_tips" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_join_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="13dp"
+                        android:background="@drawable/bg_1700f4_100"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:text="加入, 享专属内容"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_no_circle_content" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_tab_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_circle_tab_my_circle"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/v_mid_line"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+
+                <View
+                    android:id="@+id/v_left"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"
+                    app:layout_constraintRight_toLeftOf="@+id/v_mid_line"
+                    app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+
+                <View
+                    android:id="@+id/v_right"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"
+                    app:layout_constraintLeft_toRightOf="@+id/v_mid_line"
+                    app:layout_constraintRight_toRightOf="@+id/iv_tab_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_my_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="我的圈子"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"
+                    app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+
+                <include
+                    android:id="@+id/layout_left_three"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_my_circle"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_my_circle"
+                    app:layout_constraintTop_toTopOf="@+id/tv_my_circle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    layout="@layout/layout_circle_three_top" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_join_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:gravity="bottom"
+                    android:textColor="@color/color_16"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_my_circle"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_my_circle"
+                    tools:text="123213" />
+
+                <ImageView
+                    android:id="@+id/iv_icon_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:paddingBottom="4dp"
+                    android:src="@mipmap/ic_circle_jion_num_right_b"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_join_num"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_join_num" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_hot_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="43dp"
+                    android:layout_marginTop="26dp"
+                    android:text="热门圈子"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintLeft_toRightOf="@+id/v_mid_line"
+                    app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+
+                <include
+                    android:id="@+id/layout_right_three"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_hot_circle"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_hot_circle"
+                    app:layout_constraintTop_toTopOf="@+id/tv_hot_circle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    layout="@layout/layout_circle_three_top" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_hot_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_hot_circle"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_hot_circle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</layout>

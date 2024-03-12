@@ -64,8 +64,8 @@ class ReplyDialog(
     }
 
     override fun dismiss() {
-        super.dismiss()
         HideKeyboardUtil.hideKeyboard(binding.etContent.windowToken)
+        super.dismiss()
     }
 
     interface ReplyListener {

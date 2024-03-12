@@ -23,7 +23,7 @@
             android:layout_marginStart="16dp"
             android:minWidth="50dp"
             android:textColor="@color/color_d916"
-            android:textSize="14sp"
+            android:textSize="15sp"
             tools:text="发长贴" />
 
         <androidx.appcompat.widget.AppCompatImageView

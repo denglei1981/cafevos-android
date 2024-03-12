@@ -8,13 +8,14 @@
     </data>
 
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/iv_banner"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-        tools:src="@drawable/image_recommed_default" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle"
+            tools:src="@drawable/image_recommed_default" />
 
 
 </layout>

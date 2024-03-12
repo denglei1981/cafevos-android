@@ -1,16 +1,23 @@
 package com.changanford.circle.adapter
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import com.bumptech.glide.Glide
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -22,31 +29,37 @@ import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.bean.ImageInfo
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.ext.dealMuchImage
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.image.ItemCommonPics
+import com.changanford.common.util.imageAndTextView
+import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
-import com.google.android.material.button.MaterialButton
 import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -65,9 +78,10 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 
     private val viewModel by lazy { CircleDetailsViewModel() }
 
+    @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleRecommendOneBinding>(holder.itemView)
-        binding?.let {
+        binding?.apply {
             binding.layoutCount.tvLikeCount.text =
                 ("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
@@ -116,9 +130,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 false
             }
             binding.layoutHeader.ivHeader.setOnClickListener {
-//                val bundle = Bundle()
-//                bundle.putString("value", item.userId.toString())
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
                 JumpUtils.instans?.jump(35, item.userId.toString())
 
             }
@@ -126,11 +137,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 StartBaduMap(item)
             }
             binding.layoutHeader.ivHeader.loadCompress(item.authorBaseVo?.avatar)
-//            GlideUtils.loadBD(
-//                item.authorBaseVo?.avatar,
-//                binding.layoutHeader.ivHeader,
-//                R.mipmap.head_default
-//            )
             binding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
             binding.layoutHeader.tvSubTitle.visibility =
                 if (item.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
@@ -142,6 +148,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             if (item.authorBaseVo != null) {
                 setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
             }
+            ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getMPicList())
             if (item.city.isNullOrEmpty()) {
                 binding.layoutCount.tvLocation.visibility = View.GONE
             } else {
@@ -149,87 +156,68 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 binding.layoutCount.tvLocation.text = item.showCity()
             }
             if (item.type == 3) {//视频
-                binding.layoutOne.conOne.visibility = View.VISIBLE
-                binding.layoutOne.ivPlay.visibility = View.VISIBLE
-                binding.ivNine.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
-                if (item.videoTime == null) {
-                    binding.layoutOne.tvVideoTimes.visibility = View.GONE
-                } else {
-                    binding.layoutOne.tvVideoTimes.visibility = View.VISIBLE
-                }
-                binding.layoutOne.tvVideoTimes.text = item.videoTime.toString()
-                binding.btnMore.visibility = View.GONE
+                binding.layoutContent.tvVideoTimes.text = item.videoTime.toString()
+                binding.layoutContent.ivPlay.isVisible = true
+                binding.layoutContent.tvVideoTimes.isVisible = true
             } else {
-                binding.layoutOne.ivPlay.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.visibility = View.GONE
-                binding.layoutOne.tvVideoTimes.text = ""
+                binding.layoutContent.ivPlay.isVisible = false
 
+                if (item.getMPicList().size > 4) {
+                    binding.layoutContent.tvVideoTimes.isVisible = true
+                    binding.layoutContent.tvVideoTimes.text = "+${item.getMPicList().size - 4}"
+                } else {
+                    binding.layoutContent.tvVideoTimes.isVisible = false
+                }
             }
 
+            if (item.title.isNullOrEmpty() && !item.content.isNullOrEmpty()) {
+                layoutContent.tvTopic.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_d916
+                    )
+                )
+            } else {
+                layoutContent.tvTopic.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_8016
+                    )
+                )
+            }
 
-            val picList = item.picList
-            if (picList?.isEmpty() == false) {
-                when {
-                    picList.size > 1 -> {
-                        val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
-                        picList.forEach {
-                            val imageInfo = ImageInfo()
-                            imageInfo.bigImageUrl = it
-                            imageInfo.thumbnailUrl = it
-                            item.postsId.let { tid ->
-                                imageInfo.postId = tid.toString()
-                            }
-
-                            imageInfoList.add(imageInfo)
-                        }
-//                        val assNineAdapter = AssNineGridViewClickAdapter(context, imageInfoList)
-//                        binding.ivNine.setAdapter(assNineAdapter)
-                        binding.ivNine.dealMuchImage(imageInfoList)
-                        binding.ivNine.visibility = View.VISIBLE
-                        binding.layoutOne.ivPlay.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
-                        if (picList.size > 4) {
-                            binding.btnMore.visibility = View.VISIBLE
-                            binding.btnMore.text = "+".plus(picList.size)
-                        } else {
-                            binding.btnMore.visibility = View.GONE
-                        }
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        if (item.isGood == 1) {
-                            binding.icMultVeryPost.visibility = View.VISIBLE
-                        } else {
-                            binding.icMultVeryPost.visibility = View.GONE
-                        }
-                    }
-
-                    picList.size == 1 -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.VISIBLE
-//                        GlideUtils.loadBD(picList[0], binding.layoutOne.ivPic)
-                        binding.layoutOne.ivPic.loadCompress(picList[0])
-                        binding.btnMore.visibility = View.GONE
-                        if (item.isGood == 1) {
-                            binding.layoutOne.ivVeryPost.visibility = View.VISIBLE
-                        } else {
-                            binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        }
-                        binding.icMultVeryPost.visibility = View.GONE
-
-                    }
-
-                    else -> {
-                        binding.ivNine.visibility = View.GONE
-                        binding.layoutOne.conOne.visibility = View.GONE
-                        binding.btnMore.visibility = View.GONE
-                        binding.layoutOne.ivVeryPost.visibility = View.GONE
-                        binding.icMultVeryPost.visibility = View.GONE
+            if (item.isGood == 1) {
+                if (TextUtils.isEmpty(item.title)) {
+                    layoutContent.tvContent.visibility = View.GONE
+                } else {
+                    layoutContent.tvContent.visibility = View.VISIBLE
+                    layoutContent.tvContent.imageAndTextView(
+                        item.title.toString(),
+                        R.mipmap.ic_home_refined_item
+                    )
+//                        tvContent.text = item.getTopic()
+                }
+                if (TextUtils.isEmpty(item.content)) {
+                    layoutContent.tvTopic.text = ""
+                    layoutContent.tvTopic.visibility = View.GONE
+                } else {
+                    layoutContent.tvTopic.visibility = View.VISIBLE
+                    if (TextUtils.isEmpty(item.title)) {
+                        layoutContent.tvTopic.imageAndTextView(
+                            item.content,
+                            R.mipmap.ic_home_refined_item
+                        )
+                    } else {
+                        layoutContent.tvTopic.text = item.content
                     }
                 }
             } else {
-                binding.ivNine.visibility = View.GONE
-                binding.layoutOne.ivVeryPost.visibility = View.GONE
-                binding.icMultVeryPost.visibility = View.GONE
+                layoutContent.apply {
+                    tvContent.isVisible = !item.title.isNullOrEmpty()
+                    tvContent.text = item.title
+                    tvTopic.isVisible = !item.content.isNullOrEmpty()
+                    tvTopic.text = item.content
+                }
             }
             binding.run {
                 if (item.circle == null) {
@@ -347,7 +335,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                         } else {
                             item.isLike = 0
                             item.likesCount--
-                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic,)
+                            binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
                             GIOUtils.cancelPostLickClick(
                                 "社区-广场",
                                 item.topicId,
@@ -360,7 +348,8 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                             )
                             "取消点赞".toast()
                         }
-                        binding.layoutCount.tvLikeCount.text=("${if (item.likesCount > 0) item.likesCount else "0"}")
+                        binding.layoutCount.tvLikeCount.text =
+                            ("${if (item.likesCount > 0) item.likesCount else "0"}")
                     } else {
                         it.msg.toast()
                     }
@@ -494,5 +483,18 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 //                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
 //                    }
 //                })
+    }
+
+    override fun onViewRecycled(holder: BaseViewHolder) {
+        super.onViewRecycled(holder)
+        val constraintLayout = holder.getViewOrNull<ConstraintLayout>(R.id.cl_pics)
+        constraintLayout?.let {
+            for (i in 0..constraintLayout.childCount) {
+                val imageview = constraintLayout.getChildAt(i)
+                if (imageview is ImageView) {
+                    Glide.with(context).clear(imageview)
+                }
+            }
+        }
     }
 }

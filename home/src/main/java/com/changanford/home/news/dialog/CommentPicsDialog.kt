@@ -1,6 +1,7 @@
 package com.changanford.home.news.dialog
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
@@ -43,7 +44,8 @@ import com.kingja.loadsir.core.LoadSir
 
 open class CommentPicsDialog(
     var commentCountInterface: CommentCountInterface,
-    var contexts: Context
+    var contexts: Context,
+    var count:String,
 ) : BaseBottomDialog<HomeCommentViewModel, DialogShortVideoCommentBinding>() {
 
     var bizId: String = ""
@@ -82,9 +84,11 @@ open class CommentPicsDialog(
             onRetryBtnClick()
         } as Callback.OnReloadListener)
     }
+
     private val customLoadMoreView: CustomLoadMoreView by lazy {
         CustomLoadMoreView()
     }
+
     override fun initView(savedInstanceState: Bundle?) {
         setLoadSir(mDatabind.commentList)
         mDatabind.commentList.adapter = commentAdapter
@@ -203,7 +207,11 @@ open class CommentPicsDialog(
         })
     }
 
-    private fun showComment(data: List<com.changanford.circle.bean.CommentListBean>, isLoadMore: Boolean) {
+    @SuppressLint("SetTextI18n")
+    private fun showComment(
+        data: List<com.changanford.circle.bean.CommentListBean>,
+        isLoadMore: Boolean
+    ) {
         if (isLoadMore) {
             commentAdapter.loadMoreModule.loadMoreComplete()
             commentAdapter.addData(data)
@@ -213,6 +221,8 @@ open class CommentPicsDialog(
         if (data.size < PageConstant.DEFAULT_PAGE_SIZE_THIRTY) {
             commentAdapter.loadMoreModule.loadMoreEnd()
         }
+        val size = if (count.toInt() > 0) "  $count" else ""
+        mDatabind.title.text = "评论$size"
     }
 
     override fun showLoading(message: String) {

@@ -57,6 +57,7 @@ class SpecialDetailActivity :
     private var isSelectCar = false
     private var carModelId: Int = 0
     private var mRyList = listOf<InfoDataBean>()
+    private var isCarClick = false
 
     override fun initView() {
         title = "专题详情页"
@@ -106,6 +107,7 @@ class SpecialDetailActivity :
             val bean = carListAdapter.getItem(position)
             bean.isCheck = !bean.isCheck
             page = 1
+            isCarClick = true
             if (bean.isCheck) {
                 isSelectCar = true
                 carModelId = bean.carModelId.toInt()
@@ -218,14 +220,16 @@ class SpecialDetailActivity :
                     headBinding?.clEmpty?.isVisible = false
 //                    binding.recyclerView.visibility = View.VISIBLE
                 } else {
+                    newsListAdapter.setList(null)
                     headBinding?.clEmpty?.isVisible = true
                     binding.smartLayout.setEnableLoadMore(false)
 //                    showEmpty()
 //                    binding.recyclerView.visibility = View.GONE
                 }
-                if (carModelId > 0) {
+                if (carModelId > 0 && !isCarClick) {
                     viewModel.getSpecialCarDetail(topicId!!, carModelId)
                 }
+                isCarClick = false
             } else {
                 showFailure(it.message)
             }

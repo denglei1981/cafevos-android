@@ -1,13 +1,13 @@
-package com.changanford.home.adapter
+package com.changanford.common.adapter
 
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.R
 import com.changanford.common.bean.Topic
+import com.changanford.common.databinding.ItemSearchTopicBinding
 import com.changanford.common.utilext.toIntPx
-import com.changanford.home.R
-import com.changanford.home.databinding.ItemSearchTopicBinding
 
 /**
  * @author: niubobo

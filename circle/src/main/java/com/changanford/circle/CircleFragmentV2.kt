@@ -18,9 +18,9 @@ import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
 import com.changanford.circle.ui.fragment.CircleSquareFragment
-import com.changanford.circle.ui.fragment.circle.NewCircleFragment
+import com.changanford.circle.ui.fragment.circle.FordPaiCircleFragment
 import com.changanford.circle.viewmodel.CircleViewModel
-import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
+import com.changanford.circle.widget.titles.PostTransitionPagerTitleView
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.CircleConfig
@@ -55,7 +55,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNav
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
-import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 import java.lang.reflect.Field
 
 
@@ -71,8 +70,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     private val circleSquareFragment: CircleSquareFragment by lazy {
         CircleSquareFragment.newInstance()
     }
-    private val newCircleFragment: NewCircleFragment by lazy {
-        NewCircleFragment()
+    private val newCircleFragment by lazy {
+        FordPaiCircleFragment()
     }
     private val askRecommendFragment: AskRecommendFragment by lazy {
         AskRecommendFragment.newInstance()
@@ -320,8 +319,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
-                val simplePagerTitleView: SimplePagerTitleView =
-                    ScaleTransitionPagerTitleView(context)
+                val simplePagerTitleView =
+                    PostTransitionPagerTitleView(context)
                 simplePagerTitleView.text = tabList[index]
 //                simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(18.toIntPx(), 0, 18.toIntPx(), 0)
