@@ -14,9 +14,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rl_title"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="36dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -95,12 +95,17 @@
 
             </LinearLayout>
 
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/view_pager"
+            <com.changanford.common.widget.ViewPager2Container
                 android:layout_width="match_parent"
-                android:layout_marginTop="15dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp" />
+
+            </com.changanford.common.widget.ViewPager2Container>
 
         </LinearLayout>
 

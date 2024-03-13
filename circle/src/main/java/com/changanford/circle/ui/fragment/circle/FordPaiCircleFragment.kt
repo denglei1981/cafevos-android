@@ -1,22 +1,20 @@
 package com.changanford.circle.ui.fragment.circle
 
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.databinding.FragmentFordPaiCircleBinding
-import com.changanford.circle.ui.fragment.HomeHotCircleFragment
-import com.changanford.circle.ui.fragment.HomeMyCircleFragment
+import com.changanford.circle.utils.CommunityHotHelper
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
+import com.changanford.common.widget.pop.MyCirclePop
 import com.google.android.material.imageview.ShapeableImageView
 
 
@@ -28,14 +26,6 @@ import com.google.android.material.imageview.ShapeableImageView
 class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCircleViewModel>() {
 
     private var selectTab = MutableLiveData<Int>()
-    private var fragmentManager: FragmentManager? = null
-    private var fragmentTransaction: FragmentTransaction? = null
-    private val homeMyCircleFragment by lazy {
-        HomeMyCircleFragment()
-    }
-    private val homeHotCircleFragment by lazy {
-        HomeHotCircleFragment()
-    }
 
     private val testList = arrayListOf(
         "https://ask.qcloudimg.com/http-save/yehe-9812395/89d0648d46512f3f6062a7b65e237b99.png",
@@ -45,15 +35,9 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
 
 
     override fun initView() {
-        fragmentManager = getChildFragmentManager()
-        fragmentTransaction = fragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(
-            com.changanford.circle.R.id.fragment_container,
-            homeMyCircleFragment
-        )
-        fragmentTransaction?.commit()
-        binding.apply {
 
+        binding.apply {
+            CommunityHotHelper(binding.layoutHot, viewModel, this@FordPaiCircleFragment).initCommunity()
         }
         setCircleNumSize(true, 3.toString())
         setCircleNumSize(false, 81.toString())
@@ -65,6 +49,8 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
         binding.apply {
             vLeft.setOnClickListener { selectTab.value = 0 }
             vRight.setOnClickListener { selectTab.value = 1 }
+            tvJoinNum.setOnClickListener { showMyCirclePop() }
+            ivIconRight.setOnClickListener { showMyCirclePop() }
         }
     }
 
@@ -97,7 +83,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
         selectTab.observe(this) {
             binding.apply {
                 if (it == 0) {
-                    switchToFragment(homeMyCircleFragment)
+
                     ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_my_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
@@ -136,7 +122,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
                     tvHotCircle.textSize = 14f
 
                 } else {
-                    switchToFragment(homeHotCircleFragment)
+
                     ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_hot_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
@@ -181,16 +167,6 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
 
     }
 
-    private fun switchToFragment(newFragment: Fragment) {
-        // Begin a new FragmentTransaction
-        fragmentTransaction = fragmentManager?.beginTransaction()
-
-        // Replace the current Fragment with the new one
-        fragmentTransaction?.replace(com.changanford.circle.R.id.fragment_container, newFragment)
-
-        // Commit the transaction
-        fragmentTransaction?.commit()
-    }
 
     private fun setTopCircleData() {
         val leftViews = arrayListOf<ShapeableImageView>()
@@ -212,6 +188,14 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
         rightViews.forEachIndexed { index, shapeableImageView ->
             shapeableImageView.setCircular(4)
             shapeableImageView.load(testList[index])
+        }
+    }
+
+    private fun showMyCirclePop() {
+        MyCirclePop(requireContext()).run {
+            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(binding.vPop)
+            initPopData(testList, "")
         }
     }
 }

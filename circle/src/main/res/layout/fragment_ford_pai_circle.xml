@@ -133,13 +133,13 @@
 
                 <include
                     android:id="@+id/layout_left_three"
+                    layout="@layout/layout_circle_three_top"
                     android:layout_width="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_my_circle"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_my_circle"
-                    app:layout_constraintTop_toTopOf="@+id/tv_my_circle"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    layout="@layout/layout_circle_three_top" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_my_circle"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_my_circle"
+                    app:layout_constraintTop_toTopOf="@+id/tv_my_circle" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_join_num"
@@ -152,6 +152,15 @@
                     app:layout_constraintLeft_toLeftOf="@+id/tv_my_circle"
                     app:layout_constraintTop_toBottomOf="@+id/tv_my_circle"
                     tools:text="123213" />
+
+                <View
+                    android:id="@+id/v_pop"
+                    android:layout_width="0.1dp"
+                    android:layout_height="0.1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintRight_toLeftOf="@+id/iv_icon_right"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_icon_right" />
 
                 <ImageView
                     android:id="@+id/iv_icon_right"
@@ -177,13 +186,13 @@
 
                 <include
                     android:id="@+id/layout_right_three"
+                    layout="@layout/layout_circle_three_top"
                     android:layout_width="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_hot_circle"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_hot_circle"
-                    app:layout_constraintTop_toTopOf="@+id/tv_hot_circle"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    layout="@layout/layout_circle_three_top" />
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_hot_circle"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_hot_circle"
+                    app:layout_constraintTop_toTopOf="@+id/tv_hot_circle" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_hot_num"
@@ -195,11 +204,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_hot_circle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <FrameLayout
-                android:id="@+id/fragment_container"
+            <include
+                android:id="@+id/layout_hot"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="match_parent"
+                layout="@layout/layout_home_hot_cielce_header"/>
         </LinearLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

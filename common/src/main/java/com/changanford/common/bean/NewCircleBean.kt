@@ -47,7 +47,7 @@ data class NewCircleDataBean(
 
 data class NewCircleBean(
     val id: String? = null,
-    val name: String? = null,
+    val name: String = "",
     val icon: String? = null,
     val isRegion: String? = null,
     val isRecommend: String? = null,
@@ -56,12 +56,12 @@ data class NewCircleBean(
     val checkNoReason: String = "",
     val checkPassTime: Long = 0,
     val checkStatus: Int = 0,
-    val circleId: String? = "0",
+    val circleId: String = "0",
     val cityId: Any? = null,
     val cityName: String? = null,
     val createBy: Any? = null,
     val createTime: Long = 0,
-    val description: String? = null,
+    val description: String = "",
     val districtId: Any? = null,
     val districtName: Any? = null,
     val hotIcon: Any? = null,
@@ -91,6 +91,8 @@ data class NewCircleBean(
     val tags: ArrayList<NewCirceTagBean>? = null,
     var avatars: ArrayList<String>? = arrayListOf(),
     var star: String? = null,
+    var isApply: Int?=0,
+    var isJoin:String?=null,//是否加入圈子 未加入（TOJOIN）、待审核（PENDING）、已加入（JOINED）
 )
 
 data class SerachUserAddress(

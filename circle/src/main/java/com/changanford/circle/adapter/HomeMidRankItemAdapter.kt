@@ -3,6 +3,7 @@ package com.changanford.circle.adapter
 import android.annotation.SuppressLint
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -11,12 +12,11 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.circle.CircleListTagAdapter
-import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.databinding.ItemCircleListBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
+import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.MUtils
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.ext.setDrawableColor
@@ -30,8 +30,8 @@ import com.changanford.common.wutil.FlowLayoutManager
  *Time on 2021/9/18
  *Purpose
  */
-class CircleListAdapter(private val isShowLeft: Boolean) :
-    BaseQuickAdapter<ChoseCircleBean, BaseViewHolder>(R.layout.item_circle_list), LoadMoreModule {
+class HomeMidRankItemAdapter(private val isShowLeft: Boolean) :
+    BaseQuickAdapter<NewCircleBean, BaseViewHolder>(R.layout.item_circle_list), LoadMoreModule {
     private val viewModel by lazy { CircleDetailsViewModel() }
     private val rankingIcons = arrayListOf(
         R.drawable.icon_huati_one,
@@ -42,14 +42,13 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
     var searchContent = ""
 
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseViewHolder, item: ChoseCircleBean) {
+    override fun convert(holder: BaseViewHolder, item: NewCircleBean) {
         val position = holder.layoutPosition
         val binding = DataBindingUtil.bind<ItemCircleListBinding>(holder.itemView)
         binding?.apply {
-            MUtils.setTopMargin(binding.clItem, 30, holder.layoutPosition)
+            setLeftMargin(binding.ivIcon)
             ivIcon.setCircular(12)
             tvNum.text = "${item.postsCount} 帖子     ${item.userCount} 成员"
-            bean = item
             ivIcon.load(item.pic)
             isJoin(btnJoin, item)
             item.tags?.apply {
@@ -96,7 +95,7 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
     /**
      * 是否加入圈子
      * */
-    private fun isJoin(btnJoin: AppCompatTextView, item: ChoseCircleBean) {
+    private fun isJoin(btnJoin: AppCompatTextView, item: NewCircleBean) {
         btnJoin.apply {
             visibility = View.VISIBLE
             when (item.isJoin) {
@@ -163,5 +162,12 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
             }
         }
 
+    }
+
+    private fun setLeftMargin(view: View) {
+        val params = view.layoutParams as ConstraintLayout.LayoutParams
+        params.goneStartMargin = 0
+        params.marginStart = 0
+        view.layoutParams = params
     }
 }
