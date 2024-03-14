@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleRecommendAdapterV2
-import com.changanford.circle.databinding.FragmentCircleDetailsV2Binding
+import com.changanford.circle.databinding.FragmentHomeCircleDetailsBinding
 import com.changanford.circle.ui.activity.CircleDetailsActivity
 import com.changanford.circle.ui.activity.TopicDetailsActivity
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
@@ -30,8 +30,8 @@ import java.util.Objects
  *Time on 2021/9/22
  *Purpose
  */
-class CircleDetailsFragmentV2 :
-    BaseFragment<FragmentCircleDetailsV2Binding, CircleDetailsViewModel>() {
+class HomeCircleDetailsFragment :
+    BaseFragment<FragmentHomeCircleDetailsBinding, CircleDetailsViewModel>() {
 
     //    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private lateinit var mCheckForGapMethod: Method
@@ -55,14 +55,14 @@ class CircleDetailsFragmentV2 :
             circleId: String = "",
             userId: String? = "",
             carModelId: String? = null
-        ): CircleDetailsFragmentV2 {
+        ): HomeCircleDetailsFragment {
             val bundle = Bundle()
             bundle.putString("type", type)
             bundle.putString("topicId", topicId)
             bundle.putString("circleId", circleId)
             bundle.putString("userId", userId)
             bundle.putString("carModelId", carModelId)
-            val fragment = CircleDetailsFragmentV2()
+            val fragment = HomeCircleDetailsFragment()
             fragment.arguments = bundle
             return fragment
         }

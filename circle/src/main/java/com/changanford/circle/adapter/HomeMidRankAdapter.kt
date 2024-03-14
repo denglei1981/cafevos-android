@@ -1,11 +1,14 @@
 package com.changanford.circle.adapter
 
+import android.os.Bundle
 import android.widget.RelativeLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemCircleMidRankBinding
 import com.changanford.common.bean.CirCleHotList
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.toIntPx
 
@@ -27,6 +30,11 @@ class HomeMidRankAdapter :
             tvName.text = item.topName
             val itemAdapter = HomeMidRankItemAdapter(false)
             itemAdapter.setList(item.circleTops)
+            itemAdapter.setOnItemClickListener { adapter, view, position ->
+                val bundle = Bundle()
+                bundle.putString("circleId", itemAdapter.data[position].circleId)
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+            }
             ryCircle.adapter = itemAdapter
         }
     }
@@ -34,6 +42,6 @@ class HomeMidRankAdapter :
     private fun setViewWidth(view: RelativeLayout) {
         val layoutParam = view.layoutParams
         layoutParam.width = MConstant.deviceWidth - 32.toIntPx()
-        view.layoutParams=layoutParam
+        view.layoutParams = layoutParam
     }
 }

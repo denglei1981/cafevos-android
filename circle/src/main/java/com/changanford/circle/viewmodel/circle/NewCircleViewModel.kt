@@ -46,9 +46,9 @@ class NewCircleViewModel : BaseViewModel() {
                 .onSuccess {
                     cirCleHomeData.postValue(it)
                 }.onWithMsgFailure {
-                it?.toast()
-                cirCleHomeData.postValue(null)
-            }
+                    it?.toast()
+                    cirCleHomeData.postValue(null)
+                }
         })
     }
 
@@ -63,9 +63,9 @@ class NewCircleViewModel : BaseViewModel() {
                 .onSuccess {
                     it?.apply { youLikeData.postValue(this.dataList) }
                 }.onWithMsgFailure {
-                it?.toast()
-                youLikeData.postValue(null)
-            }
+                    it?.toast()
+                    youLikeData.postValue(null)
+                }
         })
     }
 
@@ -98,8 +98,8 @@ class NewCircleViewModel : BaseViewModel() {
                 .onSuccess {
                     it?.apply { circleListData.postValue(this) }
                 }.onWithMsgFailure {
-                it?.toast()
-            }
+                    it?.toast()
+                }
         })
     }
 }

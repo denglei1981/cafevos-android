@@ -6,7 +6,10 @@ import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.R
 import com.changanford.common.adapter.MyCirclePopAdapter
+import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.databinding.PopMyCircleBinding
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
@@ -44,17 +47,18 @@ class MyCirclePop(private val context: Context) : BasePopupWindow(context) {
             .toDismiss()
     }
 
-    fun initPopData(list: ArrayList<String>, circleId: String) {
+    fun initPopData(list: ArrayList<NewCircleBean>, circleId: String?) {
         binding.ryCircle.adapter = adapter
         list.forEachIndexed { index, s ->
-            if (circleId == s) {
+            if (circleId == s.circleId) {
                 adapter.selectPosition = index
             }
         }
         adapter.setList(list)
         adapter.setOnItemClickListener { _, view, position ->
             val bean = adapter.getItem(position)
-
+            LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_CHECK_ID).postValue(bean.circleId)
+            dismiss()
         }
     }
 }

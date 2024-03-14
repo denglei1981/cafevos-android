@@ -206,9 +206,17 @@
 
             <include
                 android:id="@+id/layout_hot"
+                layout="@layout/layout_home_hot_cielce_header"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/layout_circle"
+                layout="@layout/layout_circle_home_ry"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                layout="@layout/layout_home_hot_cielce_header"/>
+                android:visibility="gone" />
         </LinearLayout>
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

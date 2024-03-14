@@ -15,6 +15,7 @@
         tools:background="@color/black">
 
         <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_tag"
             style="@style/w_style_txt_ellipsize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

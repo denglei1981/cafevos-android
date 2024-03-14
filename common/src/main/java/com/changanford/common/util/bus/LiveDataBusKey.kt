@@ -326,5 +326,7 @@ object LiveDataBusKey {
     const val CLICK_CAR = "clickCar"
     const val UPDATE_SEARCH_RESULT = "updateSearchResult"
     const val CLOSE_POLY = "closePoly"
+    const val HOME_CIRCLE_CHECK_ID = "homeCircleCheckId"
+    const val HOME_CIRCLE_HOT_BEAN = "homeCircleHotBean"
 }
 

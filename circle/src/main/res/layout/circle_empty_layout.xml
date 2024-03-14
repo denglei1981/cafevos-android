@@ -4,20 +4,6 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:src="@mipmap/circle_empty_ic"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:text="暂时没有数据哦~"
-        android:textColor="@color/color_99"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="wrap_content"/>
+  <include layout="@layout/base_layout_empty_search"/>
 
 </LinearLayout>

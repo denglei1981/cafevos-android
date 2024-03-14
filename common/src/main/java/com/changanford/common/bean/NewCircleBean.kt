@@ -12,7 +12,13 @@ data class CirceHomeBean(
     val myCircles: ArrayList<NewCircleBean>? = null,
     val circlePK: ArrayList<NewCircleBean>? = null,
     val topList: ArrayList<CirCleHotList>? = null,
-    val dataList: ArrayList<NewCircleBean>? = null
+    val dataList: ArrayList<NewCircleBean>? = null,
+    //加入圈子数量
+    val joinCircleNum:Int,
+    //未加入圈子数量
+    val noJoinCircleNum:Int,
+    //未加入圈子封面,
+    val noJoinCirclePics:ArrayList<String>
 )
 
 data class CirCleHotList(

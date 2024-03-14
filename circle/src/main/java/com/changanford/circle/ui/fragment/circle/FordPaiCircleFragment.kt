@@ -6,11 +6,18 @@ import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.databinding.FragmentFordPaiCircleBinding
+import com.changanford.circle.utils.CommunityCircleHelper
 import com.changanford.circle.utils.CommunityHotHelper
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.basic.BaseFragment
+import com.changanford.common.bean.CirceHomeBean
+import com.changanford.common.manger.UserManger
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
@@ -26,23 +33,28 @@ import com.google.android.material.imageview.ShapeableImageView
 class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCircleViewModel>() {
 
     private var selectTab = MutableLiveData<Int>()
-
-    private val testList = arrayListOf(
-        "https://ask.qcloudimg.com/http-save/yehe-9812395/89d0648d46512f3f6062a7b65e237b99.png",
-        "https://ask.qcloudimg.com/http-save/yehe-9812395/89d0648d46512f3f6062a7b65e237b99.png",
-        "https://ask.qcloudimg.com/http-save/yehe-9812395/89d0648d46512f3f6062a7b65e237b99.png"
-    )
-
+    private lateinit var communityHotHelper: CommunityHotHelper
+    private lateinit var communityCircleHelper: CommunityCircleHelper
+    private val leftViews = arrayListOf<ShapeableImageView>()
+    private val rightViews = arrayListOf<ShapeableImageView>()
+    private var nowCircleId = MutableLiveData<String>()
 
     override fun initView() {
-
-        binding.apply {
-            CommunityHotHelper(binding.layoutHot, viewModel, this@FordPaiCircleFragment).initCommunity()
+        communityHotHelper = CommunityHotHelper(
+            binding.layoutHot,
+            binding,
+            viewModel,
+            this@FordPaiCircleFragment
+        )
+        communityCircleHelper =
+            CommunityCircleHelper(binding.layoutCircle, this)
+        communityHotHelper.initCommunity()
+        if (MConstant.token.isEmpty()) {
+            selectTab.value = 1
         }
-        setCircleNumSize(true, 3.toString())
-        setCircleNumSize(false, 81.toString())
         initListener()
         setTopCircleData()
+        addLiveDataBus()
     }
 
     private fun initListener() {
@@ -51,6 +63,10 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             vRight.setOnClickListener { selectTab.value = 1 }
             tvJoinNum.setOnClickListener { showMyCirclePop() }
             ivIconRight.setOnClickListener { showMyCirclePop() }
+        }
+        binding.srl.setOnRefreshListener {
+            communityHotHelper.initData()
+            it.finishRefresh()
         }
     }
 
@@ -80,10 +96,16 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
 
     override fun observe() {
         super.observe()
+        LiveDataBus.get().withs<String>(LiveDataBusKey.HOME_CIRCLE_CHECK_ID).observe(this) {
+            nowCircleId.value = it
+        }
+        nowCircleId.observe(this) {
+            communityCircleHelper.initCommunity(it)
+        }
         selectTab.observe(this) {
             binding.apply {
                 if (it == 0) {
-
+                    isShowCircle(false)
                     ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_my_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
@@ -122,7 +144,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
                     tvHotCircle.textSize = 14f
 
                 } else {
-
+                    isShowCircle(true)
                     ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_hot_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
@@ -164,13 +186,42 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
 
         }
 
+        communityHotHelper.myCircles.observe(this) {
+            if (!it.isNullOrEmpty()) {
+                communityCircleHelper.initCommunity(it[0].circleId)
 
+                nowCircleId.value = it[0].circleId
+                val useList = if (it.size > 3) {
+                    it.subList(0, 3)
+                } else it
+                useList.forEachIndexed { index, data ->
+                    leftViews[index].setCircular(4)
+                    leftViews[index].load(data.pic)
+                }
+            }
+        }
+        LiveDataBus.get().withs<CirceHomeBean?>(LiveDataBusKey.HOME_CIRCLE_HOT_BEAN).observe(this) {
+            it?.let {
+                setCircleNumSize(false, it.noJoinCircleNum.toString())
+                setCircleNumSize(true, it.joinCircleNum.toString())
+                val useList = if (it.noJoinCirclePics.size > 3) {
+                    it.noJoinCirclePics.subList(0, 3)
+                } else it.noJoinCirclePics
+                useList.forEachIndexed { index, data ->
+                    rightViews[index].setCircular(4)
+                    rightViews[index].load(data)
+                }
+            }
+        }
     }
 
+    private fun isShowCircle(isShowLeft: Boolean) {
+        binding.layoutHot.root.isVisible = isShowLeft
+        binding.layoutCircle.root.isVisible = !isShowLeft
+    }
 
     private fun setTopCircleData() {
-        val leftViews = arrayListOf<ShapeableImageView>()
-        val rightViews = arrayListOf<ShapeableImageView>()
+
         binding.layoutLeftThree.apply {
             leftViews.add(ivOne)
             leftViews.add(ivTwo)
@@ -181,21 +232,31 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             rightViews.add(ivTwo)
             rightViews.add(ivThree)
         }
-        leftViews.forEachIndexed { index, shapeableImageView ->
-            shapeableImageView.setCircular(4)
-            shapeableImageView.load(testList[index])
-        }
-        rightViews.forEachIndexed { index, shapeableImageView ->
-            shapeableImageView.setCircular(4)
-            shapeableImageView.load(testList[index])
-        }
+
     }
 
     private fun showMyCirclePop() {
         MyCirclePop(requireContext()).run {
             setBackgroundColor(Color.TRANSPARENT)
             showPopupWindow(binding.vPop)
-            initPopData(testList, "")
+            communityHotHelper.myCircles.value?.let { initPopData(it, nowCircleId.value) }
         }
+    }
+
+    private fun addLiveDataBus() {
+        //登录回调
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                        communityHotHelper.initData()
+                    }
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
+                        communityHotHelper.initData()
+                    }
+                    else -> {}
+                }
+            }
     }
 }
