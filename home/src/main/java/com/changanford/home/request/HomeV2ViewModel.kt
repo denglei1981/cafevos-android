@@ -4,8 +4,19 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.*
-import com.changanford.common.net.*
+import com.changanford.common.bean.BizCodeBean
+import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.NewEstOneBean
+import com.changanford.common.bean.WResponseBean
+import com.changanford.common.bean.WaitReceiveBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
@@ -15,6 +26,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.FBBean
+import com.changanford.home.bean.HomeTopTabBean
 import com.changanford.home.data.TwoAdData
 import kotlinx.coroutines.launch
 
@@ -22,6 +34,7 @@ class HomeV2ViewModel : BaseViewModel() {
     val twoBannerLiveData = MutableLiveData<UpdateUiState<TwoAdData>>() //
     val fBBeanLiveData = MutableLiveData<FBBean?>()
     val responseBeanLiveData = MutableLiveData<WResponseBean?>()
+    val homeTopTabBean = MutableLiveData<ArrayList<HomeTopTabBean>>()
 //    val permsLiveData= MutableLiveData<List<String>>()
 
     //app_index_background 背景长图。
@@ -238,6 +251,21 @@ class HomeV2ViewModel : BaseViewModel() {
                     if (it != null && it.size > 0) {
                         receiveListLiveData.postValue(it)
                     }
+                }
+        })
+    }
+
+    fun getHomeTab() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val randomKey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .homeTab(body.header(randomKey), body.body(randomKey))
+                .onSuccess {
+                    homeTopTabBean.value = it
+                }.onWithMsgFailure {
+                    it?.toast()
+
                 }
         })
     }

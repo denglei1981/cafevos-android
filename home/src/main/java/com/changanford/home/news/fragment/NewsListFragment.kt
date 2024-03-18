@@ -3,11 +3,13 @@ package com.changanford.home.news.fragment
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.SpecialListBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
@@ -22,7 +24,6 @@ import com.changanford.common.utilext.toastShow
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.PageConstant
 import com.changanford.home.R
-import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.FragmentNewsListBinding
 import com.changanford.home.databinding.HeaderNewsListBinding
@@ -35,7 +36,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import com.zhpan.bannerview.constants.PageStyle
 
 /**
- *  新闻列表
+ *  资讯列表
  * */
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
@@ -69,6 +70,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
                     JumpUtils.instans!!.jump(35, item.userId.toString())
                 }
+
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
                     if (item.authors != null) {
 //                        val newsValueData = NewsValueData(item.artId, item.type)
@@ -155,14 +157,16 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
 
     override fun observe() {
         super.observe()
-        viewModel.specialListLiveData.safeObserve(this, {
-            if (it.isSuccess) {
+        viewModel.specialListLiveData.safeObserve(this) {
+            if (it.isSuccess && it.data.extend.articleListShow == 1) {
+                headNewBinding?.clTopBanner?.isVisible = true
                 headNewBinding?.bViewpager?.create(it.data.dataList)
             } else {
-                ToastUtils.showShortToast(it.message, requireActivity())
+                headNewBinding?.clTopBanner?.isVisible = false
+//                ToastUtils.showShortToast(it.message, requireActivity())
             }
 
-        })
+        }
         viewModel.newsListLiveData.safeObserve(this) {
             if (it.isSuccess) {
                 val dataList = it.data.dataList
@@ -191,6 +195,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                     getString(R.string.net_error) -> {
                         showTimeOut()
                     }
+
                     else -> {
                         showFailure(it.message)
                     }

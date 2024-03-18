@@ -2,11 +2,11 @@ package com.changanford.home.adapter
 
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.SpecialListBean
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.home.R
-import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemRecommendHomeSpecialChiledBinding
 
 /**

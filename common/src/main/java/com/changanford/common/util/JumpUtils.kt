@@ -682,7 +682,7 @@ class JumpUtils {
             }
 
             102 -> {//' |=> |'社区',
-                bundle.putInt("jumpValue", 2)
+                bundle.putInt("jumpValue", 10000)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
 
@@ -692,7 +692,7 @@ class JumpUtils {
             }
 
             104 -> {//' |=> |'商城',
-                bundle.putInt("jumpValue", 4)
+                bundle.putInt("jumpValue", 2)
                 startARouter(ARouterHomePath.MainActivity, bundle)
             }
 

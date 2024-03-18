@@ -25,8 +25,8 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.PostBean
 import com.changanford.common.bean.RecommendData
+import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.buried.BuriedUtil
-import com.changanford.common.constant.TestImageUrl
 import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.databinding.HeaderCarHistoryBinding
 import com.changanford.common.databinding.ItemHomeActsBinding
@@ -37,6 +37,7 @@ import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
@@ -51,12 +52,14 @@ import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.api.HomeNetWork
-import com.changanford.home.bean.SpecialListBean
+import com.changanford.home.databinding.ItemHomeRecommendAdsBinding
 import com.changanford.home.databinding.ItemHomeRecommendItemsOneBinding
 import com.changanford.home.databinding.ItemRecommendHomeSpecialBinding
 import com.changanford.home.util.LoginUtil
@@ -74,6 +77,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(4, R.layout.header_car_history)
         //专题
         addItemType(5, R.layout.item_recommend_home_special)
+        //广告位
+        addItemType(6, R.layout.item_home_recommend_ads)
         loadMoreModule.preLoadNumber = preLoadNumber
     }
 
@@ -108,7 +113,21 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
             5 -> {//专题
                 val binding = DataBindingUtil.bind<ItemRecommendHomeSpecialBinding>(holder.itemView)
-                binding?.let { setSpecial(it) }
+                binding?.let { setSpecial(it, item.specialList) }
+            }
+
+            6 -> {//广告位
+                val binding = DataBindingUtil.bind<ItemHomeRecommendAdsBinding>(holder.itemView)
+                binding?.run {
+                    ivAds.setCircular(12)
+                    ivAds.load(item.adBean?.adImg)
+                    ivAds.setOnClickListener {
+                        JumpUtils.instans?.jump(
+                            item.adBean?.jumpDataType,
+                            item.adBean?.jumpDataValue
+                        )
+                    }
+                }
             }
         }
     }
@@ -242,6 +261,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             val tvCommentCount = it.layoutCount.tvCommentCount
             val tvViewCount = it.layoutCount.tvViewCount
             val tvPostTime = it.layoutCount.tvPostTime
+            val city = it.layoutCount.tvLocation
 
             ivHeader.loadCompress(item.authors?.avatar)
 
@@ -418,7 +438,17 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 rvUserTag.adapter = labelAdapter
                 labelAdapter.setNewInstance(item.authors?.imags)
             }
-
+            if (!item.addrName.isNullOrEmpty()) {
+                city.setDrawableLeft(R.mipmap.icon_circle_location)
+                city.text = item.addrName
+                city.isVisible = true
+            } else if (!item.city.isNullOrEmpty()) {
+                city.setDrawableNull()
+                city.text = item.city
+                city.isVisible = true
+            } else {
+                city.isVisible = false
+            }
             tvCommentCount.setPageTitleText(item.getCommentCount())
 //            tvCommentCount.text =
             tvPostTime.text = item.timeStr
@@ -449,14 +479,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 }
                 false
             }
-            if (tvContent.isGone&&tvTopic.isVisible){
+            if (tvContent.isGone && tvTopic.isVisible) {
                 tvTopic.setTextColor(
                     ContextCompat.getColor(
                         context,
                         com.changanford.circle.R.color.color_d916
                     )
                 )
-            }else{
+            } else {
                 tvTopic.setTextColor(
                     ContextCompat.getColor(
                         context,
@@ -496,91 +526,40 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
     }
 
-    private fun setSpecial(binding: ItemRecommendHomeSpecialBinding) {
-        val list = ArrayList<SpecialListBean>()
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "车主故事集",
-                summary = "你的故事我来听"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "福探长·荣耀营",
-                summary = "巅峰加冕 敬启新境敬启新境"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "有话好好说",
-                summary = "娱乐问答系列节目"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "购车宝典",
-                summary = "贴心的售前引导"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "车主故事集",
-                summary = "你的故事我来听"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "福探长·荣耀营",
-                summary = "巅峰加冕 敬启新境敬启新境"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "有话好好说",
-                summary = "娱乐问答系列节目"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "购车宝典",
-                summary = "贴心的售前引导"
-            )
-        )
-        list.add(
-            SpecialListBean(
-                pics = TestImageUrl,
-                title = "购车宝典",
-                summary = "贴心的售前引导"
-            )
-        )
-        val specialAdapter = RecommendSpecialAdapter()
-        specialAdapter.setList(list)
-//        val pageSize = ceil(list.size.toDouble() / 4).toInt()
-        val pageSize = list.size / 4
-        binding.rySpecial.adapter = specialAdapter
-        binding.drIndicator.setPageSize(pageSize)
-        binding.drIndicator.isVisible = pageSize > 1
-
-        binding.rySpecial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                val fistVisibilityPosition = layoutManager.findFirstVisibleItemPosition()
-                val current = fistVisibilityPosition / 4
-                binding.drIndicator.post {
-                    binding.drIndicator.onPageSelected(current)
-                }
+    private fun setSpecial(
+        binding: ItemRecommendHomeSpecialBinding,
+        specialList: SpecialListMainBean?
+    ) {
+        specialList?.let {
+            val specialAdapter = RecommendSpecialAdapter()
+            specialAdapter.setOnItemClickListener { adapter, view, position ->
+                val bean = specialAdapter.getItem(position)
+                JumpUtils.instans?.jump(8, bean.artId)
             }
-        })
-        setIndicator(binding)
+            specialAdapter.setList(specialList.dataList)
+            val pageSize = specialList.dataList.size / 4
+            binding.rySpecial.adapter = specialAdapter
+            binding.drIndicator.setPageSize(pageSize)
+            binding.drIndicator.isVisible = pageSize > 1
+
+            binding.rySpecial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager
+                    val fistVisibilityPosition = layoutManager.findFirstVisibleItemPosition()
+                    val current = fistVisibilityPosition / 4
+                    binding.drIndicator.post {
+                        binding.drIndicator.onPageSelected(current)
+                    }
+                }
+            })
+            setIndicator(binding)
+
+            binding.tvMore.setOnClickListener {
+                startARouter(ARouterHomePath.SpecialListActivity)
+            }
+        }
+
     }
 
     private fun setIndicator(binding: ItemRecommendHomeSpecialBinding) {

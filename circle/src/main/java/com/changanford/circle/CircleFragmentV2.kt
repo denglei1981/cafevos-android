@@ -301,7 +301,6 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         fragmentList.add(circleSquareFragment)
         fragmentList.add(newCircleFragment)
         fragmentList.add(askRecommendFragment)
-        fragmentList.add(Fragment())
         binding.viewPager.adapter = CircleMainViewPagerAdapter(this, fragmentList)
 
     }
@@ -397,23 +396,23 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
                         MConstant.circleCheckPosition = 4
                     }
 
-                    3 -> {
-                        GioPageConstant.communitySecondPageName = "社区页-Mustang专区"
-                        BuriedUtil.instant?.communityMainTopMenu("Mustang专区")
-                    }
+//                    3 -> {
+//                        GioPageConstant.communitySecondPageName = "社区页-Mustang专区"
+//                        BuriedUtil.instant?.communityMainTopMenu("Mustang专区")
+//                    }
                 }
                 if (!isFirstToGio) {
                     GIOUtils.homePageView()
                 } else {
                     isFirstToGio = false
                 }
-                if (position == 3) {//master跳转h5
-                    JumpUtils.instans?.jump(1, MConstant.MUS_TANG_URL)
-                    binding.viewPager.post {
-                        binding.viewPager.currentItem = currentPosition
-                    }
-                    return
-                }
+//                if (position == 3) {//master跳转h5
+//                    JumpUtils.instans?.jump(1, MConstant.MUS_TANG_URL)
+//                    binding.viewPager.post {
+//                        binding.viewPager.currentItem = currentPosition
+//                    }
+//                    return
+//                }
                 currentPosition = position
             }
 

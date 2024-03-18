@@ -22,6 +22,7 @@ class AdBean(
     val video: Int? = 0,//":0,
     val videoTime: String? = "",
     var androidShow: Int,
+    var showPosition: Int,
     var androidVersion: String,
     var iosShow: Int,
     var iosVersion: String,

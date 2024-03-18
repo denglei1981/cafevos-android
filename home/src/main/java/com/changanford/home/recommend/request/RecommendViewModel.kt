@@ -5,6 +5,7 @@ import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.FastBeanData
 import com.changanford.common.bean.RecommendListBean
+import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.fetchRequest
@@ -23,12 +24,16 @@ import kotlinx.coroutines.launch
 
 class RecommendViewModel : BaseViewModel() {
 
-    var recommendLiveData: SafeMutableLiveData<UpdateUiState<RecommendListBean>> = SafeMutableLiveData()
+    var recommendLiveData: SafeMutableLiveData<UpdateUiState<RecommendListBean>> =
+        SafeMutableLiveData()
 
-    val recommendBannerLiveData : SafeMutableLiveData<UpdateUiState<List<AdBean>>> = SafeMutableLiveData()
+    val recommendBannerLiveData: SafeMutableLiveData<UpdateUiState<List<AdBean>>> =
+        SafeMutableLiveData()
+    val specialListLiveData = SafeMutableLiveData<SpecialListMainBean>() // 专题列表
+    val recommendAdBean = SafeMutableLiveData<AdBean>() // 广告
 
-    val fastEnterLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
-    val kingKongLiveData : SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
+    val fastEnterLiveData: SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
+    val kingKongLiveData: SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
     var pageNo: Int = 1
     fun getRecommend(isLoadMore: Boolean) {
         HomeTimer.refreshTask(this)
@@ -39,18 +44,39 @@ class RecommendViewModel : BaseViewModel() {
                     pageNo = 1
                 }
                 paramMaps["pageNo"] = pageNo
-                paramMaps["pageSize"]= PageConstant.DEFAULT_PAGE_SIZE_THIRTY
+                paramMaps["pageSize"] = PageConstant.DEFAULT_PAGE_SIZE_THIRTY
                 val rKey = getRandomKey()
                 apiService.getRecommendList(paramMaps.header(rKey), paramMaps.body(rKey))
             }.onSuccess { // 成功
                 val updateUiState = UpdateUiState<RecommendListBean>(it, true, isLoadMore, "")
                 recommendLiveData.postValue(updateUiState)
+                if (pageNo == 1) {
+                    getRecommendAds()
+                    getSpecialList()
+                }
                 pageNo += 1
             }.onWithMsgFailure { // 失败
                 val updateUiState = UpdateUiState<RecommendListBean>(false, it, isLoadMore)
                 recommendLiveData.postValue(updateUiState)
             }
         }
+    }
+
+    //推荐列表第一条后追加一个专题
+    fun getSpecialList() {
+        launch(block = {
+            val requestBody = HashMap<String, Any>()
+            requestBody["pageNo"] = 1
+            requestBody["pageSize"] = 10
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .getSpecialList(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    specialListLiveData.postValue(it)
+                }.onWithMsgFailure {
+
+                }
+        })
     }
 
     fun getRecommendBanner() {
@@ -102,6 +128,20 @@ class RecommendViewModel : BaseViewModel() {
                 }.onFailure {
                     val updateUiState = UpdateUiState<FastBeanData>(it, false, "")
                     kingKongLiveData.postValue(updateUiState)
+                }
+        })
+    }
+
+    //在推荐列表指定位置插入一条广告
+    fun getRecommendAds() {
+        launch(false, {
+            val body = HashMap<String, Any>()
+            val rkey = getRandomKey()
+            ApiClient.createApi<HomeNetWork>()
+                .getRecommendAds(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    recommendAdBean.value = it
+                }.onFailure {
                 }
         })
     }

@@ -1,14 +1,18 @@
 package com.changanford.home.news.request
 
-import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.net.*
+import com.changanford.common.bean.SpecialListMainBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.bean.NewsListMainBean
-import com.changanford.home.bean.SpecialListMainBean
 
 
 class FindNewsListViewModel : BaseViewModel() {

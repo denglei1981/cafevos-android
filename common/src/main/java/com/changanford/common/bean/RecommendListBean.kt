@@ -23,66 +23,71 @@ data class HomeExtendBean(
     val isStarRole: String,
     val isCircler: String,//是否圈主
     val jumpDataType: Int,
-    val jumpDataValue: String
+    //是否在推荐显示
+    val indexListShow: Int,
+    //是否在资讯列表显示
+    val articleListShow: Int,
+    val jumpDataValue: String,
 )
 
 data class RecommendData(
-    val artCollectCount: Double,
-    var artCommentCount: Long,
-    val artContent: String,
-    val artCreateTime: Any,
-    val artId: String,
-    val artIsSpecialTopic: Int,
-    val artKeyword: Any,
+    val artCollectCount: Double = 0.0,
+    var artCommentCount: Long = 0,
+    val artContent: String = "",
+    val artCreateTime: Any = "",
+    val artId: String = "",
+    val artIsSpecialTopic: Int = 0,
+    val artKeyword: Any = "",
     var artLikesCount: Long = 0,
-    val artPics: String,
-    val artPublishTime: Long,
-    val artShareCount: Double,
-    val artSpecialTopicId: String,
-    val artSpecialTopicTitle: String,
-    val specialTopics: ArrayList<SpecialListBean>?,
-    val artSummary: String,
-    val artTitle: String,
-    val artType: Int,
-    val artVideoTime: String,
-    val artVideoUrl: Any,
-    val artViewsCount: Long,
-    val artViewsCountBase: Double,
-    val artViewsCount_mul: Double,
-    var isLike: Int,
-    val postsCircleId: String,
-    val postsCircleName: String,
-    val postsCollectCount: Double,
-    var postsCommentCount: Long,
-    val postsContent: String,
-    val postsCreateTime: String,
-    val postsId: String,
-    val postsIsCheck: Double,
-    val postsIsGood: Int?=0,
-    val postsIsHot: Double,
-    val postsIsPrivate: Double,
-    val postsIsPublish: Double,
-    val postsIsTop: Double,
-    val postsKeywords: String,
+    val artPics: String = "",
+    val artPublishTime: Long = 0,
+    val artShareCount: Double = 0.0,
+    val artSpecialTopicId: String = "",
+    val artSpecialTopicTitle: String = "",
+    val specialTopics: ArrayList<SpecialListBean>? = null,
+    val artSummary: String = "",
+    val artTitle: String = "",
+    val artType: Int = 0,
+    val artVideoTime: String = "",
+    val artVideoUrl: Any = "",
+    val artViewsCount: Long = 0,
+    val artViewsCountBase: Double = 0.0,
+    val artViewsCount_mul: Double = 0.0,
+    var isLike: Int = 0,
+    val postsCircleId: String = "",
+    val postsCircleName: String = "",
+    val postsCollectCount: Double = 0.0,
+    var postsCommentCount: Long = 0,
+    val postsContent: String = "",
+    val postsCreateTime: String = "",
+    val postsId: String = "",
+    val postsIsCheck: Double = 0.0,
+    val postsIsGood: Int? = 0,
+    val postsIsHot: Double = 0.0,
+    val postsIsPrivate: Double = 0.0,
+    val postsIsPublish: Double = 0.0,
+    val postsIsTop: Double = 0.0,
+    val postsKeywords: String = "",
     var postsLikesCount: Long = 0,
-    val postsPics: String,
-    val postsPlate: Double,
-    val postsPublishTime: Long,
-    val postsShareCount: Double,
-    val postsTitle: String,
-    val postsTopicId: String,
-    val postsType: Int,
-    val postsVideoTime: String,
-    val postsVideoUrl: Any,
-    val postsViewsCount: Long,
-    val rtype: Int, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
-    val authors: AuthorBaseVo?,
-    val timeStr: String,
-    val city: String,
-    val artPicCount: Int,
-    val postsTopicName: String,
-    val title: String, // 后台设置的
-    val pic: String, // 后台设置的封面。
+    val postsPics: String = "",
+    val postsPlate: Double = 0.0,
+    val postsPublishTime: Long = 0,
+    val postsShareCount: Double = 0.0,
+    val postsTitle: String = "",
+    val postsTopicId: String = "",
+    val postsType: Int = 0,
+    val postsVideoTime: String = "",
+    val postsVideoUrl: Any = "",
+    val postsViewsCount: Long = 0,
+    val rtype: Int = 0, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
+    val authors: AuthorBaseVo? = null,
+    val timeStr: String = "",
+    val city: String = "",
+    val addrName: String? = "",
+    val artPicCount: Int = 0,
+    val postsTopicName: String = "",
+    val title: String = "", // 后台设置的
+    val pic: String = "", // 后台设置的封面。
     var pisList: List<String>? = null,
     val townName: String? = null,
     val beginTime: Long = 0,
@@ -104,19 +109,21 @@ data class RecommendData(
     val openTime: String = "",
     val jumpType: String = "",
     val jumpValue: String = "",
-    val wonderful:ActBean,
-    val postBean:PostBean?=null
-    ) : MultiItemEntity {
+    val wonderful: ActBean = ActBean(),
+    val postBean: PostBean? = null,
+    val specialList: SpecialListMainBean? = null,
+    val adBean: AdBean? = null
+) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
             return 3
         }
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
-            if(postsType==3){
-                 val list=arrayListOf<String>()
+            if (postsType == 3) {
+                val list = arrayListOf<String>()
                 list.add(postsPics)
-                pisList=list
-            }else{
+                pisList = list
+            } else {
                 pisList = postsPics.split(",")
             }
 
@@ -125,6 +132,12 @@ data class RecommendData(
         }
         if (pisList != null && pisList!!.size > 1) {
             return 2
+        }
+        if (specialList != null) {
+            return 5
+        }
+        if (adBean != null) {
+            return 6
         }
         return 1
     }
@@ -135,9 +148,11 @@ data class RecommendData(
             1 -> {
                 contentString = artSummary
             }
+
             2 -> {
                 contentString = postsTopicName
             }
+
             3 -> {
                 contentString = artTitle
             }
@@ -152,9 +167,11 @@ data class RecommendData(
             1 -> {
                 likeCount = artLikesCount
             }
+
             2 -> {
                 likeCount = postsLikesCount
             }
+
             3 -> {
                 likeCount = artLikesCount
             }
@@ -173,9 +190,11 @@ data class RecommendData(
             1 -> {
                 commentCount = artCommentCount
             }
+
             2 -> {
                 commentCount = postsCommentCount
             }
+
             3 -> {
                 commentCount = artCommentCount
             }
@@ -195,10 +214,12 @@ data class RecommendData(
                 viewCount = artViewsCount
 
             }
+
             2 -> {
                 viewCount = postsViewsCount
 
             }
+
             3 -> {
                 viewCount = artViewsCount
             }
@@ -211,23 +232,25 @@ data class RecommendData(
         return timeAndViewCountResult
     }
 
-    fun getViewCount():String{
+    fun getViewCount(): String {
         var viewCount: Long = 0
         when (rtype) {
             1 -> {
                 viewCount = artViewsCount
 
             }
+
             2 -> {
                 viewCount = postsViewsCount
 
             }
+
             3 -> {
                 viewCount = artViewsCount
             }
 
         }
-        return  CountUtils.formatNum(viewCount.toString(), false).toString()
+        return CountUtils.formatNum(viewCount.toString(), false).toString()
     }
 
     fun getPicLists(): List<String>? {
@@ -244,9 +267,11 @@ data class RecommendData(
                     title
                 }
             }
+
             2 -> {
                 topicStr = postsTitle
             }
+
             3 -> {
                 topicStr = artSpecialTopicTitle
             }
@@ -262,21 +287,25 @@ data class RecommendData(
 
         return city
     }
-    fun getEndStr():Long{
-        if(deadlineTime>1000){
+
+    fun getEndStr(): Long {
+        if (deadlineTime > 1000) {
             return deadlineTime
         }
         return 0
     }
-    fun getTimeStateStr():String{
-        when(timeState){
-            "NOT_BEGIN"->{
-                return  "未开始"
+
+    fun getTimeStateStr(): String {
+        when (timeState) {
+            "NOT_BEGIN" -> {
+                return "未开始"
             }
-            "ON_GOING"->{
+
+            "ON_GOING" -> {
                 return "进行中"
             }
-            "CLOSED"->{
+
+            "CLOSED" -> {
                 return "已截止"
             }
         }
@@ -285,15 +314,16 @@ data class RecommendData(
     }
 
 
-    fun getActTimeS():String{
-        return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" 至 ").plus(TimeUtils.formateActTime(endTime))
+    fun getActTimeS(): String {
+        return "活动时间: ".plus(TimeUtils.formateActTime(beginTime)).plus(" 至 ")
+            .plus(TimeUtils.formateActTime(endTime))
     }
 
-    fun getSignTimes():String{
+    fun getSignTimes(): String {
         return "报名截止时间: ".plus(TimeUtils.formateActTime(deadlineTime))
     }
 
-    fun getEndTimeTips():String{
+    fun getEndTimeTips(): String {
         return "截止时间: ".plus(TimeUtils.formateActTime(deadlineTime))
     }
 
@@ -381,4 +411,24 @@ data class SpecialListBean(
     val viewsCount: Int = 0,
     val viewsCountBase: Int,
     val viewsCountMul: Int
-)
+) {
+    fun getPicUrl(): String {
+        if (!TextUtils.isEmpty(pics)) { // 不为空时逗号，分隔。
+            val pisList = pics.split(",")
+            return pisList[0]
+        }
+        return ""
+    }
+
+    fun getCount(): String {
+
+        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯 ${
+            CountUtils.formatNum(
+                viewsCount.toString(),
+                false
+            )
+        }阅读量"
+
+        return countStr;
+    }
+}

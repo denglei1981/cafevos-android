@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="23dp"
                 android:background="@drawable/bg_081700f4_50"
-                android:drawableStart="@mipmap/ic_post_topic_left"
+                android:drawableStart="@mipmap/ic_post_circle_left"
                 android:drawablePadding="3dp"
                 android:gravity="center"
                 android:paddingStart="4dp"

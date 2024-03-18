@@ -2,12 +2,12 @@ package com.changanford.home.news.adapter
 
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import com.changanford.common.bean.SpecialListBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.ext.loadImage85
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.load
 import com.changanford.home.R
-import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemNewsBarBannerBinding
 import com.changanford.home.databinding.ItemNewsPicDetailsBannerBinding
 import com.changanford.home.databinding.ItemRecommendBarBannerBinding

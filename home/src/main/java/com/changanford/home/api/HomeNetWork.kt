@@ -11,6 +11,7 @@ import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.NewEstOneBean
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.bean.SearchKeyBean
+import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.bean.WResponseBean
 import com.changanford.common.bean.WaitReceiveBean
 import com.changanford.common.net.CommonResponse
@@ -18,11 +19,11 @@ import com.changanford.home.bean.BigShotPostBean
 import com.changanford.home.bean.BigShotRecommendBean
 import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.FBBean
+import com.changanford.home.bean.HomeTopTabBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.bean.NewEstRuleBean
 import com.changanford.home.bean.NewsListMainBean
 import com.changanford.home.bean.SearchShopBean
-import com.changanford.home.bean.SpecialListMainBean
 import com.changanford.home.data.EnumBean
 import com.changanford.home.data.TwoAdData
 import com.changanford.home.news.data.NewsDetailData
@@ -453,4 +454,16 @@ interface HomeNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<NewEstRuleBean>
+
+    @POST("/appIndexToptab/getAppIndexToptabList")
+    suspend fun homeTab(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<HomeTopTabBean>>
+
+    @POST("/con/ads/indexInfoFlowAd")
+    suspend fun getRecommendAds(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<AdBean>
 }

@@ -2,10 +2,10 @@ package com.changanford.home.news.adapter
 
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
+import com.changanford.common.bean.SpecialListBean
 import com.changanford.common.util.MUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.home.R
-import com.changanford.home.bean.SpecialListBean
 import com.changanford.home.databinding.ItemHomeSpecialBinding
 
 class SpecialListAdapter :

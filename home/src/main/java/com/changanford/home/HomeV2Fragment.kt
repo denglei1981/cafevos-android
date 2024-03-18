@@ -5,12 +5,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
 import android.os.Parcelable
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -44,9 +46,11 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.load
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
+import com.changanford.home.bean.HomeTopTabBean
 import com.changanford.home.data.AdBean
 import com.changanford.home.databinding.FragmentSecondFloorBinding
 import com.changanford.home.news.fragment.NewsListFragment
@@ -62,7 +66,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import razerdp.basepopup.BasePopupWindow
 import java.lang.reflect.Field
-import java.util.*
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -72,8 +75,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     private var pagerAdapter: HomeViewPagerAdapter? = null
 
     private var fragmentList: ArrayList<Fragment> = arrayListOf()
-
-    private var titleList = mutableListOf<String>()
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
 
@@ -103,7 +104,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     var currentPosition = 0
 
     override fun initView() {
-        //Tab+Fragment
         addLiveDataBus()
         lifecycleScope.launch {
             delay(500)
@@ -118,23 +118,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         easyViewPager()
         binding.refreshLayout.setEnableLoadMore(false)
-        fragmentList.add(recommendFragment)
-        fragmentList.add(circleFragment)
-        fragmentList.add(actsParentsFragment)
-        fragmentList.add(newsListFragment)
-        fragmentList.add(Fragment())
-        fragmentList.add(Fragment())
-//        fragmentList.add(bigShotFragment)
-        titleList.add(getString(R.string.home_recommend))
-        titleList.add(getString(R.string.home_circle))
-        titleList.add(getString(R.string.home_acts))
-        titleList.add(getString(R.string.home_news))
-        titleList.add(getString(R.string.home_mouth))
-        titleList.add(getString(R.string.home_mustang))
-//        titleList.add(getString(R.string.home_big_shot))
-        pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
-        binding.homeViewpager.adapter = pagerAdapter
-        binding.homeViewpager.isSaveEnabled = false
+
         binding.recommendContent.llBack.setOnClickListener {
             binding.header.finishTwoLevel()
         }
@@ -146,16 +130,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         )
         binding.homeTab.tabRippleColor = null
 
-        TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
-            tab.text = titleList[i]
-        }.attach().apply {
-            initTab()
-        }
-        binding.homeViewpager.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) { // 不禁用刷新
-            }
-        })
         binding.homeTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 GioPageConstant.prePageType = GioPageConstant.mainTabName
@@ -168,8 +142,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     3 -> "发现页-口碑"
                     else -> "发现页-推荐"
                 }
-                if (tab.position == 5) {//口碑跳转h5
-                    JumpUtils.instans?.jump(1, MConstant.mouthUrl)
+                val bean = viewModel.homeTopTabBean.value?.get(tab.position)
+                if (bean?.jumpDataType != 101 && bean?.jumpDataType != 102) {
+                    JumpUtils.instans?.jump(bean?.jumpDataType, bean?.jumpDataValue)
                     binding.homeViewpager.post {
                         binding.homeViewpager.currentItem = currentPosition
                     }
@@ -197,55 +172,6 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.etSearchContent.setOnClickListener {
             toSearch()
         }
-//        binding.refreshLayout.setOnMultiListener(object : SimpleMultiListener() {
-//            override fun onHeaderMoving(
-//                header: RefreshHeader?,
-//                isDragging: Boolean,
-//                percent: Float,
-//                offset: Int,
-//                headerHeight: Int,
-//                maxDragHeight: Int
-//            ) {
-//                val alphaTest = 1 - percent.coerceAtMost(1f)
-//                if (alphaTest > 0.8f) { // 提前显示下方导航
-//                    LiveDataBus.get()
-//                        .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
-//                        .postValue(false)
-//                }
-//                when (alphaTest) {
-//                    0f -> {
-//                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.transparent)
-//                        LiveDataBus.get()
-//                            .with(LiveDataBusKey.LIVE_OPEN_TWO_LEVEL, Boolean::class.java)
-//                            .postValue(true)
-//                    }
-//
-//                    1f -> { // 关闭，
-//                        StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
-//                    }
-//                }
-//            }
-//
-//            override fun onStateChanged(
-//                refreshLayout: RefreshLayout,
-//                oldState: RefreshState,
-//                newState: RefreshState
-//            ) {
-//                super.onStateChanged(refreshLayout, oldState, newState)
-//                if (oldState == RefreshState.TwoLevel) {
-//                    binding.classics.animate().alpha(1f).duration = 2000L
-//                }
-//            }
-//
-//            override fun onRefresh(refreshLayout: RefreshLayout) {
-//                refreshLayout.finishRefresh()
-//            }
-//
-//            override fun onLoadMore(refreshLayout: RefreshLayout) {
-//                refreshLayout.finishLoadMore()
-//
-//            }
-//        })
         binding.layoutTopBar.searchContent.setOnClickListener {
             toSearch()
         }
@@ -255,7 +181,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             binding.classics.animate().alpha(0f).duration = 2000L
             true
         }
-        binding.homeViewpager.offscreenPageLimit = 1
+        binding.homeViewpager.offscreenPageLimit = 7
 
     }
 
@@ -299,14 +225,68 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     fun isCurrentIndex(index: Int) = binding.homeViewpager.currentItem == index
 
+    private fun initViewPager(tabs: ArrayList<HomeTopTabBean>) {
+        fragmentList.clear()
+        tabs.forEach {
+            when (it.jumpDataType) {
+                101 -> {
+                    when (it.jumpDataValue) {
+                        "0" -> {
+                            fragmentList.add(recommendFragment)
+                        }
+
+                        "1" -> {
+                            fragmentList.add(actsParentsFragment)
+                        }
+
+                        "2" -> {
+                            fragmentList.add(newsListFragment)
+                        }
+                    }
+                }
+
+                102 -> {
+                    fragmentList.add(circleFragment)
+                }
+
+                else -> {
+                    fragmentList.add(Fragment())
+                }
+            }
+        }
+
+        pagerAdapter = HomeViewPagerAdapter(this, fragmentList)
+        binding.homeViewpager.adapter = pagerAdapter
+        binding.homeViewpager.isSaveEnabled = false
+        TabLayoutMediator(binding.homeTab, binding.homeViewpager) { tab: TabLayout.Tab, i: Int ->
+        }.attach().apply {
+            initTab(tabs)
+        }
+    }
+
     //初始化tab
-    private fun initTab() {
-        for (i in 0 until binding.homeTab.tabCount) {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initTab(tabs: ArrayList<HomeTopTabBean>) {
+        for (i in 0 until fragmentList.size) {
             //寻找到控件
             val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_home, null)
             val mTabText = view.findViewById<TextView>(R.id.tv_title)
+            val ivIcon = view.findViewById<ImageView>(R.id.iv_icon)
+            val llTitle = view.findViewById<ConstraintLayout>(R.id.cl_title)
 
-            mTabText.text = titleList[i]
+            val bean = tabs[i]
+
+            mTabText.text = bean.tabName
+            if (!bean.icon.isNullOrEmpty()) {
+                ivIcon.isVisible = true
+                ivIcon.load(bean.icon)
+            }
+            llTitle.setOnTouchListener { v, event ->
+                if (bean.jumpDataType == 102) {
+                    circleFragment.setCurrentItem(bean.jumpDataValue)
+                }
+                false
+            }
             if (itemPunchWhat == i) {
                 mTabText.isSelected = true
                 mTabText.setTextColor(
@@ -328,6 +308,10 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 //            }
             //更改选中项样式
             //设置样式
+
+//            val tab = binding.homeTab.newTab()
+//            tab.customView = view
+//            binding.homeTab.addTab(tab)
             binding.homeTab.getTabAt(i)?.customView = view
         }
     }
@@ -361,7 +345,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                         showSavePop("4", postEntity, block)
                     } else if (state == CircleConfig.CHECK_TRENDS_POST && postEntity.type == "2") {
                         showSavePop("2", postEntity, block)
-                    }else if (state == CircleConfig.CHECK_TRENDS_POST && postEntity.type == "3") {
+                    } else if (state == CircleConfig.CHECK_TRENDS_POST && postEntity.type == "3") {
                         showSavePop("3", postEntity, block)
                     } else {
                         block.invoke()
@@ -472,6 +456,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     override fun initData() {
 //        viewModel.getTwoBanner()
         binding.recommendContent.rvBanner.adapter = twoAdRvListAdapter
+        viewModel.getHomeTab()
         twoAdRvListAdapter.setOnItemClickListener { _, _, position ->
             val item = twoAdRvListAdapter.getItem(position)
             JumpUtils.instans!!.jump(item.jumpDataType, item.jumpDataValue)
@@ -522,6 +507,9 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     override fun observe() {
         super.observe()
+        viewModel.homeTopTabBean.observe(this) {
+            initViewPager(it)
+        }
         viewModel.receiveListLiveData.observe(this, Observer { data ->
             if (data != null && data.isNotEmpty()) {
                 // 弹窗
@@ -602,15 +590,56 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.refreshLayout.finishRefresh()
     }
 
-    open fun setCurrentItem(valueItem: String?) {
+    open fun setCurrentItem(valueItem: String?, communityIndex: Int = 0) {
         try {
-            if (!TextUtils.isEmpty(valueItem)) {
-                binding.homeViewpager.currentItem = valueItem!!.toInt()
+            if (!valueItem.isNullOrEmpty()) {
+//                binding.homeViewpager.setCurrentItem(valueItem!!.toInt(), false)
+//                if (valueItem == "1") {
+//                    circleFragment.setCurrentItem(communityIndex.toString())
+//                }
+                findFragmentIndex(valueItem, communityIndex)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
+    }
+
+    private fun findFragmentIndex(valueItem: String, communityIndex: Int = 0) {
+        when (valueItem) {
+            "0" -> {//推荐
+                fragmentList.forEachIndexed { index, fragment ->
+                    if (fragment.javaClass.name == "com.changanford.home.recommend.fragment.RecommendFragment") {
+                        binding.homeViewpager.currentItem = index
+                    }
+                }
+            }
+
+            "1" -> {//社区
+                fragmentList.forEachIndexed { index, fragment ->
+                    if (fragment.javaClass.name == "com.changanford.circle.CircleFragmentV2") {
+                        binding.homeViewpager.currentItem = index
+                        circleFragment.setCurrentItem(communityIndex.toString())
+                    }
+                }
+            }
+
+            "2" -> {//活动
+                fragmentList.forEachIndexed { index, fragment ->
+                    if (fragment.javaClass.name == "com.changanford.home.acts.fragment.ActsParentsFragment") {
+                        binding.homeViewpager.currentItem = index
+                    }
+                }
+            }
+
+            "3" -> {//资讯
+                fragmentList.forEachIndexed { index, fragment ->
+                    if (fragment.javaClass.name == "com.changanford.home.news.fragment.NewsListFragment") {
+                        binding.homeViewpager.currentItem = index
+                    }
+                }
+            }
+        }
     }
 
     private fun addLiveDataBus() {

@@ -71,7 +71,6 @@
             android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@mipmap/icon_circle_location"
             android:drawablePadding="@dimen/dp_4"
             android:maxLines="1"
             android:textColor="@color/color_8016"
@@ -79,6 +78,7 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:drawableStart="@mipmap/icon_circle_location"
             tools:text="重庆市"
             tools:visibility="visible" />
 
@@ -88,8 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:maxLines="1"
             android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/color_8016"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

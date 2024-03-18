@@ -136,6 +136,11 @@ class CircleHomeMyAdapter(
                 GIOUtils.circleDetailPageResourceClick("圈内话题", "0", "")
                 updateCircleDetailsData("圈内话题页", "圈内话题页")
             }
+            clTopContent.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("circleId", mCircleId)
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+            }
             tvActivityMore.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString(IntentKey.CREATE_NOTICE_CIRCLE_ID, mCircleId)

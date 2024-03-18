@@ -168,7 +168,7 @@ object MUtils {
         } else params.topMargin = 0
     }
 
-    private var expand = "展开  "
+    private var expand = "展开   "
     private var collapse = "收起  "
 
     fun expandText(contentTextView: TextView, msg: String) {

@@ -20,7 +20,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.circle.CircleFragmentV2
 import com.changanford.circle.utils.GlideImageLoader
 import com.changanford.circle.widget.assninegridview.AssNineGridView
 import com.changanford.common.basic.BaseActivity
@@ -79,7 +78,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private var isFirstToTab = true
     private lateinit var popViewModel: PopViewModel
 
-    var jumpIndex: String = ""
+    private var jumpIndex: String = ""
+    private var communityIndex = 0
 
     private var PAGE_IDS = intArrayOf(
         R.id.homeFragment,
@@ -435,7 +435,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     currentFragment?.let { it ->
                         val homeV2Fragment = it as HomeV2Fragment
                         if (!TextUtils.isEmpty(jumpIndex)) {
-                            homeV2Fragment.setCurrentItem(jumpIndex)
+                            homeV2Fragment.setCurrentItem(jumpIndex, communityIndex)
                             jumpIndex = ""
                         }
                     }
@@ -650,14 +650,35 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             intent.extras?.let {
                 val jumpValue = it.getInt("jumpValue")
                 try {
+                    //非社区 0推荐 1活动 2资讯
                     jumpIndex = it.getString("value", "")
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+                //社区
+                if (jumpValue == 10000) {
+                    //0社区-广场 1圈子 2问答
+                    communityIndex = jumpValue
+                    jumpIndex = "1"
+                } else if (jumpValue == 1) {
+                    when (jumpIndex) {
+                        "0" -> {
+                            jumpIndex = "0"
+                        }
+
+                        "1" -> {
+                            jumpIndex = "2"
+                        }
+
+                        "2" -> {
+                            jumpIndex = "3"
+                        }
+                    }
+                }
                 isJumpMenu = true
                 if (jumpValue > 0)
                     when (jumpValue) {
-                        1 -> {
+                        1, 10000 -> {
                             navController.navigate(R.id.homeFragment)
                         }
 

@@ -111,9 +111,7 @@
                 android:gravity="center"
                 android:textColor="@color/color_8016"
                 android:textSize="@dimen/sp_10"
-                android:visibility="gone"
-                tools:text="255"
-                tools:visibility="visible" />
+                tools:text="255" />
 
         </LinearLayout>
     </LinearLayout>

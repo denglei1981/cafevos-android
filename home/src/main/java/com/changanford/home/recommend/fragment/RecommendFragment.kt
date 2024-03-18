@@ -59,6 +59,7 @@ open class RecommendFragment :
 
     private var isSecondHeader: Boolean = false
     private var headIndex = 0
+    private var isAddAdBean = false
 
     private var topFastViews = ArrayList<HomeTopFastBean>()
 
@@ -284,6 +285,17 @@ open class RecommendFragment :
     override fun observe() {
         super.observe()
         bus()
+        viewModel.specialListLiveData.safeObserve(this) {
+            val addBean = RecommendData(specialList = it)
+            recommendAdapter.addData(1, addBean)
+        }
+        viewModel.recommendAdBean.observe(this) {
+            val adBean = RecommendData(adBean = it)
+            if (it.showPosition <= recommendAdapter.itemCount) {
+                recommendAdapter.addData(it.showPosition, adBean)
+                isAddAdBean = true
+            }
+        }
         viewModel.recommendBannerLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
                 if (it.data == null || it.data.isEmpty()) {
@@ -476,6 +488,17 @@ open class RecommendFragment :
                 } else {
                     binding.smartLayout.setEnableLoadMore(true)
                 }
+                if (!isAddAdBean) {
+                    val adData = viewModel.recommendAdBean.value
+                    adData?.let {
+                        val adBean = RecommendData(adBean = adData)
+                        if (adData.showPosition <= recommendAdapter.itemCount) {
+                            recommendAdapter.addData(it.showPosition, adBean)
+                            isAddAdBean = true
+                        }
+                    }
+                }
+
             } else {
                 when (it.message) {
                     getString(R.string.net_error) -> {

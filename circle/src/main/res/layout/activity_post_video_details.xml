@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:padding="16dp"
-                android:src="@mipmap/circle_share_detail_top" />
+                android:src="@mipmap/ic_top_right_menu" />
 
         </RelativeLayout>
         <!-- android:src="@drawable/bg_start_end_circlevideobottom"-->
@@ -401,7 +401,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
-                android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -425,14 +424,13 @@
                 android:id="@+id/tv_share_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:layout_marginStart="22dp"
-                android:layout_marginEnd="19dp"
                 android:drawableTop="@mipmap/circle_share_image_v"
-                android:drawablePadding="3dp"
+                android:drawablePadding="6dp"
                 android:gravity="center"
-                android:textColor="@color/color_99"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_10"
-                android:visibility="gone"
                 tools:text="255" />
 
         </LinearLayout>
