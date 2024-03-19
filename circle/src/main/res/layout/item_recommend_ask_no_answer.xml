@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:orientation="vertical"
         android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_18"
-        android:orientation="vertical">
+        android:paddingEnd="@dimen/dp_20">
 
         <include
             android:id="@+id/layout_ask_info"
@@ -20,17 +20,18 @@
 
         <include
             android:id="@+id/layout_no_answer"
-            layout="@layout/layout_ask_no_answer"
-            />
-        <include android:id="@+id/layout_answer"
-            layout="@layout/layout_ask_head_info"
-            />
+            layout="@layout/layout_ask_no_answer" />
+
+        <include
+            android:id="@+id/layout_answer"
+            layout="@layout/layout_ask_head_info" />
 
         <View style="@style/default_line" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#1A4A4A4A"/>
+            android:background="#1A4A4A4A" />
 
 
     </LinearLayout>

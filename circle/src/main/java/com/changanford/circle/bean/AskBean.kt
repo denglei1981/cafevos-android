@@ -1,25 +1,28 @@
 package com.changanford.circle.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
-import com.changanford.common.bean.JumpDataBean
 
 data class MechanicData(
-    var identityType: String?="",
+    var identityType: String? = "",
     val qaUjId: Int,
     val tecnicianVoList: MutableList<TecnicianVo>,
-    var  moreTecnicians: moreJumpData?=null,
+    var moreTecnicians: moreJumpData? = null,
 )
+
 data class moreJumpData(
-    val jumpCode:String="",
-    val jumpVal: String=""
+    val jumpCode: String = "",
+    val jumpVal: String = ""
 )
 
 data class TecnicianVo(
     val avater: String,
     val nickName: String,
+    val userId: String,
     val qaTechnicianId: Int,
+    var isFollow: Int = 0,
+    val huDongCount: Int = 0,
     val conQaUjId: String? = null,
-    var anserRankNum:Int=0
+    var anserRankNum: Int = 0
 )
 
 
@@ -33,7 +36,7 @@ data class AskListMainData(
     var imgs: String? = "",
     var jumpType: String = "",
     var jumpValue: String = "",
-    var qaAnswer: QaAnswer?=null,
+    var qaAnswer: QaAnswer? = null,
     var questionType: String = "",
     var questionTypeName: String = "",
     var title: String = "",
@@ -68,7 +71,7 @@ data class AskListMainData(
 
 data class QaAnswer(
     val adopt: String,
-    var answerTime: Long=0,
+    var answerTime: Long = 0,
     val conQaAnswerId: Int,
     val content: String,
     val qaUserVO: QaUserVO,

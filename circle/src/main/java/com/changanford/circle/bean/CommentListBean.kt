@@ -16,6 +16,7 @@ data class CommentListBean(
     val content: String,
     val createTime: String,
     val groupId: String,
+    val parentVo: ArrayList<ParentVo>,
     val authorBaseVo: AuthorBaseVo,
     val ipAddr: String?,
     val id: String,
@@ -42,3 +43,5 @@ data class CommentListBean(
         return "$timeStr ${if (ipAddr.isNullOrEmpty()) "" else ipAddr}"
     }
 }
+
+data class ParentVo(val nickName: String, val avatar: String) {}

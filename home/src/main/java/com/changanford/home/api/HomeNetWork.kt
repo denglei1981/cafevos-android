@@ -7,6 +7,7 @@ import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.bean.FastBeanData
+import com.changanford.common.bean.IndexInfoFlowAdBean
 import com.changanford.common.bean.InfoDataBean
 import com.changanford.common.bean.NewEstOneBean
 import com.changanford.common.bean.PostDataBean
@@ -465,5 +466,5 @@ interface HomeNetWork {
     suspend fun getRecommendAds(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<AdBean>
+    ): CommonResponse<IndexInfoFlowAdBean>
 }

@@ -451,6 +451,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             bundle.putString("groupId", commentBean.groupId)
             bundle.putInt("type", 2)// 1 资讯 2 帖子
             bundle.putString("bizId", mData.postsId)
+            bundle.putString("childCount", commentBean.childCount.toString())
             startARouter(ARouterCirclePath.AllReplyActivity, bundle)
 
             checkPosition = position

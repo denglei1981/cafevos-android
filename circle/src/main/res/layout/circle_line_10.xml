@@ -8,5 +8,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/circle_a8f6" />
+        android:background="@color/color_1a4a" />
 </layout>

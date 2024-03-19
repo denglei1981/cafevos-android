@@ -19,6 +19,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.noAnima
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
@@ -85,7 +86,7 @@ open class RecommendFragment :
         recommendAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getRecommend(true)
         }
-//        binding.recyclerView.scrollStopLoadImage()
+        binding.recyclerView.noAnima()
         binding.recyclerView.layoutManager =
             LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         binding.recyclerView.adapter = recommendAdapter
@@ -290,10 +291,12 @@ open class RecommendFragment :
             recommendAdapter.addData(1, addBean)
         }
         viewModel.recommendAdBean.observe(this) {
-            val adBean = RecommendData(adBean = it)
-            if (it.showPosition <= recommendAdapter.itemCount) {
-                recommendAdapter.addData(it.showPosition, adBean)
-                isAddAdBean = true
+            if (!it.ads.isNullOrEmpty()){
+                val adBean = RecommendData(adBean = it.ads[0])
+                if (it.showPosition <= recommendAdapter.itemCount) {
+                    recommendAdapter.addData(it.showPosition, adBean)
+                    isAddAdBean = true
+                }
             }
         }
         viewModel.recommendBannerLiveData.safeObserve(this, Observer {
@@ -404,7 +407,7 @@ open class RecommendFragment :
     }
 
     private fun bus() {
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this) {
             if (selectPosition == -1) {
                 return@observe
             }
@@ -417,7 +420,7 @@ open class RecommendFragment :
             }
             // TODO 要取变量了。
             recommendAdapter.notifyItemChanged(selectPosition + 1)//有t
-        })
+        }
 
         LiveDataBus.get().withs<InfoDetailsChangeData>(LiveDataBusKey.NEWS_DETAIL_CHANGE)
             .observe(this, Observer {
@@ -491,10 +494,12 @@ open class RecommendFragment :
                 if (!isAddAdBean) {
                     val adData = viewModel.recommendAdBean.value
                     adData?.let {
-                        val adBean = RecommendData(adBean = adData)
-                        if (adData.showPosition <= recommendAdapter.itemCount) {
-                            recommendAdapter.addData(it.showPosition, adBean)
-                            isAddAdBean = true
+                        if (!adData.ads.isNullOrEmpty()){
+                            val adBean = RecommendData(adBean = adData.ads[0])
+                            if (adData.showPosition <= recommendAdapter.itemCount) {
+                                recommendAdapter.addData(it.showPosition, adBean)
+                                isAddAdBean = true
+                            }
                         }
                     }
                 }

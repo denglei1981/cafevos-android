@@ -23,7 +23,7 @@ import com.changanford.common.adapter.CarHomeHistoryAdapter
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
-import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.InfoFlowTopicVoBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.buried.BuriedUtil
@@ -55,6 +55,7 @@ import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableNull
+import com.changanford.common.utilext.setDrawableRight
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -108,7 +109,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             4 -> {//提车日记
                 val binding = DataBindingUtil.bind<HeaderCarHistoryBinding>(holder.itemView)
                 binding?.ivBg?.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
-                binding?.let { showCarHistory(it, item.postBean) }
+                binding?.let { item.infoFlowTopicVo?.let { it1 -> showCarHistory(it, it1) } }
             }
 
             5 -> {//专题
@@ -500,21 +501,24 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //        tvTimeAndViewCount.text = item.getTimeAdnViewCount()
     }
 
-    private fun showCarHistory(hCarHistoryBinding: HeaderCarHistoryBinding, bean: PostBean?) {
-        if (bean == null) return
+    private fun showCarHistory(
+        hCarHistoryBinding: HeaderCarHistoryBinding,
+        bean: InfoFlowTopicVoBean
+    ) {
         hCarHistoryBinding.let {
-//            if (bean.dataList.isNullOrEmpty()) {
-//                hCarHistoryBinding.root.isVisible = false
-//                return
-//            }
+            it.tvTitle.setTextColor(ContextCompat.getColor(context,R.color.color_16))
+            it.tvContent.setTextColor(ContextCompat.getColor(context,R.color.color_16))
+            it.tvMore.setTextColor(ContextCompat.getColor(context,R.color.color_16))
+            it.tvMore.setDrawableRight(R.mipmap.circle_right_black_small)
             it.ivIcon.setCircular(5)
-            it.ivIcon.loadCompress(bean.extend?.topicPic)
-            it.tvTitle.text = bean.extend?.topicName
-            it.tvContent.text = bean.extend?.topicDescription
+            it.ivIcon.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
+            it.ivIcon.loadCompress(bean.pic)
+            it.tvTitle.text = bean.name
+            it.tvContent.text = bean.description
             it.tvMore.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString("topicId", bean.extend?.topicId)
-                bundle.putString("carModelId", MConstant.carBannerCarModelId)
+                bundle.putString("topicId", bean.topicId)
+//                bundle.putString("carModelId", MConstant.carBannerCarModelId)
                 startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
             }
             val adapter = CarHomeHistoryAdapter()
@@ -522,7 +526,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 JumpUtils.instans?.jump(4, adapter.data[position].postsId.toString())
             }
             it.ryPost.adapter = adapter
-            adapter.setList(bean.dataList)
+            adapter.setList(bean.postsList)
         }
     }
 
@@ -537,7 +541,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 JumpUtils.instans?.jump(8, bean.artId)
             }
             specialAdapter.setList(specialList.dataList)
-            val pageSize = specialList.dataList.size / 4
+            val size = specialList.dataList.size / 4
+            val remainder = specialList.dataList.size % 4
+          val  pageSize= if (remainder==0) size else size+1
             binding.rySpecial.adapter = specialAdapter
             binding.drIndicator.setPageSize(pageSize)
             binding.drIndicator.isVisible = pageSize > 1
@@ -546,7 +552,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                    val fistVisibilityPosition = layoutManager.findFirstVisibleItemPosition()
+                    val fistVisibilityPosition = layoutManager.findLastVisibleItemPosition()
                     val current = fistVisibilityPosition / 4
                     binding.drIndicator.post {
                         binding.drIndicator.onPageSelected(current)
@@ -641,9 +647,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     private fun setLikeState(tvLikeView: TextView, isLike: Int, isAnim: Boolean) {
         if (isLike == 0) {
-            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_ic)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
         } else {
-            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_light_ic)
+            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
         }
     }
 
@@ -671,7 +677,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             )
                             "点赞成功".toast()
                             item.isLike = 1
-                            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_light_ic)
+                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_light_ic)
                             item.postsLikesCount++
                         } else {
                             GIOUtils.cancelPostLickClick(
@@ -687,7 +693,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                             "取消点赞".toast()
                             item.isLike = 0
                             item.postsLikesCount--
-                            tvLikeView.setDrawableLeft(com.changanford.home.R.mipmap.item_good_count_ic)
+                            tvLikeView.setDrawableLeft(R.mipmap.item_good_count_ic)
                         }
                         tvLikeView.text = item.getLikeCount()
                     } else {

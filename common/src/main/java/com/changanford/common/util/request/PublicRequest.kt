@@ -17,9 +17,9 @@ import com.changanford.common.utilext.toastShow
 /**
  *Author lcw
  *Time on 2023/2/16
- *Purpose
+ *Purpose 通用请求
  */
-//关注
+//通用关注
 fun followOrCancelFollow(
     lifecycleOwner: LifecycleOwner,
     followId: String,

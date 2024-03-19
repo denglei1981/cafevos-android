@@ -12,9 +12,12 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.CountDownTimer
 import android.text.InputFilter
+import android.text.Layout
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
@@ -1242,5 +1245,86 @@ object MineUtils {
         val day = calendar[Calendar.DAY_OF_MONTH]
 
         return "$year$month$day"
+    }
+
+    private var expand = "更多"
+    private var collapse = "收起"
+
+    fun expandText(contentTextView: TextView, msg: String) {
+        val text: CharSequence = contentTextView.text
+        val width: Int = contentTextView.width
+        val paint: TextPaint = contentTextView.paint
+        val layout: Layout = contentTextView.layout
+        val line: Int = layout.lineCount
+        if (line > 4) {
+            val start: Int = layout.getLineStart(3)
+            val end: Int = layout.getLineVisibleEnd(3)
+            val lastLine = text.subSequence(start, end)
+            val expandWidth = paint.measureText(expand)
+            val remain = width - expandWidth
+            val ellipsize: CharSequence = TextUtils.ellipsize(
+                lastLine,
+                paint,
+                remain,
+                TextUtils.TruncateAt.END
+            )
+            val clickableSpan: ClickableSpan = object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    collapseText(contentTextView, msg)
+                }
+
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }
+            }
+            val ssb = SpannableStringBuilder()
+            ssb.append(text.subSequence(0, start))
+            ssb.append(ellipsize)
+            ssb.append(expand)
+            ssb.setSpan(
+                clickableSpan,
+                ssb.length - expand.length, ssb.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+            ssb.setSpan(
+                ForegroundColorSpan(contentTextView.resources.getColor(com.changanford.common.R.color.color_1700f4)),
+                ssb.length - expand.length, ssb.length,
+                Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+            )
+
+            contentTextView.movementMethod = LinkMovementMethod.getInstance()
+            contentTextView.text = ssb
+        }
+    }
+
+    fun collapseText(contentTextView: TextView, msg: String) {
+
+        // 默认此时文本肯定超过行数了，直接在最后拼接文本
+        val clickableSpan: ClickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                expandText(contentTextView, msg)
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+            }
+        }
+        val ssb = SpannableStringBuilder()
+        ssb.append(msg)
+        ssb.append(collapse)
+        ssb.setSpan(
+            clickableSpan,
+            ssb.length - collapse.length, ssb.length,
+            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+        ssb.setSpan(
+            ForegroundColorSpan(contentTextView.resources.getColor(com.changanford.common.R.color.color_1700f4)),
+            ssb.length - collapse.length, ssb.length,
+            Spanned.SPAN_INCLUSIVE_EXCLUSIVE
+        )
+
+        contentTextView.text = ssb
     }
 }

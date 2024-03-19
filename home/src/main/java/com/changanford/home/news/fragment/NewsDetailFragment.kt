@@ -132,6 +132,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
             bundle.putString("groupId", commentBean.groupId)
             bundle.putInt("type", 1)// 1 资讯 2 帖子
             bundle.putString("bizId", artId)
+            bundle.putString("childCount", commentBean.childCount.toString())
             startARouter(ARouterCirclePath.AllReplyActivity, bundle)
             checkPosition = position
         }

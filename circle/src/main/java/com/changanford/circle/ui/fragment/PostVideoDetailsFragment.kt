@@ -111,6 +111,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (commentCount > 0) commentTitle.text = "评论 $commentCount"
             tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
             tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+            tvShareNum.text = "${if (mData.shareCount > 0) mData.shareCount else "0"}"
 
             if (mData.isGood == 1) {
                 tvTitle.imageAndTextView(
@@ -155,7 +156,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
                 tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
             }
-            tvShareNum.text = mData.shareCount.toString()
+            tvShareNum.text = if (mData.shareCount > 0) mData.shareCount.toString() else "0"
             binding.ivHead.loadImage(
                 mData.authorBaseVo?.avatar,
                 ImageOptions().apply {
@@ -408,7 +409,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             if (isVisible) {
                 llBottom.isVisible = false
                 bottomView.root.isVisible = true
-            }else{
+            } else {
                 bottomView.root.isVisible = isExpand
                 llBottom.isVisible = !isExpand
             }
@@ -522,6 +523,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             bundle.putString("groupId", commentBean.groupId)
             bundle.putInt("type", 2)// 1 资讯 2 帖子
             bundle.putString("bizId", mData.postsId)
+            bundle.putString("childCount", commentBean.childCount.toString())
             startARouter(ARouterCirclePath.AllReplyActivity, bundle)
             checkPosition = position
 

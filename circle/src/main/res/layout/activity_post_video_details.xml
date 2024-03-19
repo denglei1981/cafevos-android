@@ -287,10 +287,11 @@
             android:id="@+id/cl_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="58dp"
             android:animateLayoutChanges="true"
             android:background="@drawable/shape_white_top_12dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/ll_bottom">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_close_comment"
@@ -325,6 +326,11 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/iv_close_comment" />
 
+            <View
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@color/color_1a4a"
+                android:layout_height="0.5dp"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
@@ -424,8 +430,8 @@
                 android:id="@+id/tv_share_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginStart="22dp"
+                android:layout_marginEnd="16dp"
                 android:drawableTop="@mipmap/circle_share_image_v"
                 android:drawablePadding="6dp"
                 android:gravity="center"

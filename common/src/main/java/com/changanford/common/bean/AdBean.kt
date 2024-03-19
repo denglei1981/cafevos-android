@@ -30,18 +30,19 @@ class AdBean(
     var seeAuthType: String,
     var tagIds: Any,
     var tagNames: Any,
-    var code:String? = "",
-    var maPlanId:String? = "",
-    var maJourneyActCtrlId:String? = "",
-    var maJourneyId:String? = "",
+    var code: String? = "",
+    var maPlanId: String? = "",
+    var maJourneyActCtrlId: String? = "",
+    var maJourneyId: String? = "",
 ) {
 
     fun getAdImgUrl(): String {
         return GlideUtils.defaultHandleImageUrl(adImg)
     }
+
     fun getImg(): String {
         val split = adImg?.split(",")
-        return split?.get(0)?:""
+        return split?.get(0) ?: ""
     }
 }
 
@@ -68,5 +69,12 @@ data class CarAuthQYBean(
     val authDetailRightsContent: String = "",
     val authPrompt: String? = "",
     val removeCarNotice: String? = "",
-    val contactCustomerService:String?=""
+    val contactCustomerService: String? = ""
+)
+
+
+data class IndexInfoFlowAdBean(
+    val ads: List<AdBean>,
+    val showPosition: Int,
+    val showType: String?
 )

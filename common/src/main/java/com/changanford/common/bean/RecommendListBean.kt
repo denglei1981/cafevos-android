@@ -111,12 +111,16 @@ data class RecommendData(
     val jumpValue: String = "",
     val wonderful: ActBean = ActBean(),
     val postBean: PostBean? = null,
+    val infoFlowTopicVo: InfoFlowTopicVoBean? = null,
     val specialList: SpecialListMainBean? = null,
     val adBean: AdBean? = null
 ) : MultiItemEntity {
     private fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
             return 3
+        }
+        if (rtype == 21) {
+            return 4
         }
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
             if (postsType == 3) {
@@ -275,6 +279,10 @@ data class RecommendData(
             3 -> {
                 topicStr = artSpecialTopicTitle
             }
+
+            else -> {
+                topicStr = ""
+            }
         }
         return topicStr
     }
@@ -432,3 +440,12 @@ data class SpecialListBean(
         return countStr;
     }
 }
+
+data class InfoFlowTopicVoBean(
+    val description: String,
+    val name: String,
+    val pic: String,
+    val positionNum: String,
+    val topicId: String,
+    val postsList: ArrayList<PostDataBean>
+)

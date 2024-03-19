@@ -11,7 +11,6 @@
         android:id="@+id/cl_content"
         android:layout_width="204dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
         android:layout_marginBottom="16dp">
 
         <com.google.android.material.imageview.ShapeableImageView

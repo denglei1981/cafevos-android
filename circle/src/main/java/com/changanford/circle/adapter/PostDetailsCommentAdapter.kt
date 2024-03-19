@@ -32,7 +32,6 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
@@ -60,7 +59,9 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemPostDetailsCommentBinding>(holder.itemView)
         binding?.apply {
-            layoutHeader.ivHeader.loadImage(item.authorBaseVo.avatar, ImageOptions().apply { circleCrop = true })
+            layoutHeader.ivHeader.loadImage(
+                item.authorBaseVo.avatar,
+                ImageOptions().apply { circleCrop = true })
             layoutHeader.tvAuthorName.text = item.nickname
             if (!item.memberIcon.isNullOrEmpty()) {
                 layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
@@ -92,7 +93,7 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
             )
             tvContent.text = item.content
             tvContent.post {
-                MUtils.expandText(tvContent, item.content)
+                MineUtils.expandText(tvContent, item.content)
             }
             binding.llLike.setOnClickListener {
                 mLifecycleOwner.launchWithCatch {
@@ -171,7 +172,7 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
 
     // 关注。
     private fun getFollow(followId: String, type: Int) {
-      BaseApplication.curActivity.launchWithCatch {
+        BaseApplication.curActivity.launchWithCatch {
             val requestBody = HashMap<String, Any>()
             requestBody["followId"] = followId
             requestBody["type"] = type
@@ -220,7 +221,7 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
         this.notifyDataSetChanged()
     }
 
- private   fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
+    private fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
         val setFollowState = SetFollowState(context)
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)

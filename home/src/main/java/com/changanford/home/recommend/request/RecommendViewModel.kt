@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.FastBeanData
+import com.changanford.common.bean.IndexInfoFlowAdBean
 import com.changanford.common.bean.RecommendListBean
 import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.net.ApiClient
@@ -30,7 +31,7 @@ class RecommendViewModel : BaseViewModel() {
     val recommendBannerLiveData: SafeMutableLiveData<UpdateUiState<List<AdBean>>> =
         SafeMutableLiveData()
     val specialListLiveData = SafeMutableLiveData<SpecialListMainBean>() // 专题列表
-    val recommendAdBean = SafeMutableLiveData<AdBean>() // 广告
+    val recommendAdBean = SafeMutableLiveData<IndexInfoFlowAdBean>() // 广告
 
     val fastEnterLiveData: SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
     val kingKongLiveData: SafeMutableLiveData<UpdateUiState<FastBeanData>> = SafeMutableLiveData()
