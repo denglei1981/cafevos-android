@@ -8,11 +8,11 @@
 <!--        android:startColor="#60000000"-->
 <!--        android:type="linear" />-->
 
-    <solid android:color="#401700f4"/>
+    <solid android:color="@color/color_261700f4"/>
 
     <corners
-        android:bottomLeftRadius="@dimen/dp_5"
-        android:bottomRightRadius="@dimen/dp_5"
+        android:bottomLeftRadius="8dp"
+        android:bottomRightRadius="8dp"
         android:topLeftRadius="0dp"
         android:topRightRadius="0dp" />
 

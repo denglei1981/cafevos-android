@@ -74,7 +74,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(2, R.layout.item_home_recommend_items_one)
 //        addItemType(3, R.layout.item_home_recommend_acts)
         addItemType(3, com.changanford.common.R.layout.item_home_acts)
-        //提车日记
+        //话题
         addItemType(4, R.layout.header_car_history)
         //专题
         addItemType(5, R.layout.item_recommend_home_special)
@@ -506,9 +506,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         bean: InfoFlowTopicVoBean
     ) {
         hCarHistoryBinding.let {
-            it.tvTitle.setTextColor(ContextCompat.getColor(context,R.color.color_16))
-            it.tvContent.setTextColor(ContextCompat.getColor(context,R.color.color_16))
-            it.tvMore.setTextColor(ContextCompat.getColor(context,R.color.color_16))
+            it.tvTitle.setTextColor(ContextCompat.getColor(context, R.color.color_16))
+            it.tvContent.setTextColor(ContextCompat.getColor(context, R.color.color_16))
+            it.tvMore.setTextColor(ContextCompat.getColor(context, R.color.color_16))
             it.tvMore.setDrawableRight(R.mipmap.circle_right_black_small)
             it.ivIcon.setCircular(5)
             it.ivIcon.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
@@ -543,7 +543,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             specialAdapter.setList(specialList.dataList)
             val size = specialList.dataList.size / 4
             val remainder = specialList.dataList.size % 4
-          val  pageSize= if (remainder==0) size else size+1
+            val pageSize = if (remainder == 0) size else size + 1
             binding.rySpecial.adapter = specialAdapter
             binding.drIndicator.setPageSize(pageSize)
             binding.drIndicator.isVisible = pageSize > 1

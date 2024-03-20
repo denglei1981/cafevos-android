@@ -3,16 +3,14 @@ package com.changanford.circle.adapter
 import android.view.View
 import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.toast
 import com.luck.picture.lib.entity.LocalMedia
 
 
-class PostVideoAdapter() : BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item) {
+class PostVideoAdapter() : BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_video_pic_item) {
 
     init {
         addChildClickViewIds(R.id.iv_delete)
@@ -38,10 +36,10 @@ class PostVideoAdapter() : BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout
     }
 
     override fun convert(holder: BaseViewHolder, item: LocalMedia) {
-        if (holder.adapterPosition == 0) holder.setVisible(R.id.fm_tv, true) else holder.setVisible(
-            R.id.fm_tv,
-            false
-        )
+//        if (holder.adapterPosition == 0) holder.setVisible(R.id.fm_tv, true) else holder.setVisible(
+//            R.id.fm_tv,
+//            false
+//        )
 
         //当为添加按钮展示
         if (holder.itemViewType == 0x9843) {

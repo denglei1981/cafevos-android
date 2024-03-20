@@ -215,7 +215,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             BuriedUtil.instant?.communityFollow(authorBaseVo.nickname)
             getFollow(authorBaseVo.authorId, followType)
         }
-
+        authorBaseVo.isFollow = followType
+        LiveDataBus.get().with(LiveDataBusKey.FOLLOW_USER_CHANGE).postValue(authorBaseVo)
     }
 
     private fun cancelFollowDialog(followId: String, type: Int) {

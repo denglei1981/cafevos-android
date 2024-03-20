@@ -1,6 +1,5 @@
 package com.changanford.my
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.CarAuthBean
 import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
-import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
@@ -26,11 +24,8 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
-import com.changanford.common.widget.pop.HomeGuidePop
-import com.changanford.common.widget.pop.MineGuidePop
 import com.changanford.my.adapter.CircleDetailsPersonalAdapter
 import com.changanford.my.adapter.MineMenuAdapter
 import com.changanford.my.bean.MineMenuData
@@ -40,10 +35,8 @@ import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
 import com.changanford.my.viewmodel.MineViewModel
 import com.changanford.my.widget.FlyCirclePost
-import com.orhanobut.hawk.Hawk
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import razerdp.basepopup.BasePopupWindow
 
 
 class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRefreshListener {
@@ -130,7 +123,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
             }
             h.vCarBg.setOnClickListener {
-                JumpUtils.instans?.jump(17)
+                JumpUtils.instans?.jump(41)
             }
             h.tvCoupon.setOnClickListener {
                 if (MConstant.token.isNullOrEmpty()) {
@@ -427,6 +420,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                         f.gTwo.visibility = View.GONE
                         f.ivOne.visibility = View.GONE
                     }
+
                     1 -> {
                         f.gThree.visibility = View.GONE
                         f.gTwo.visibility = View.GONE
@@ -437,6 +431,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                         }
 
                     }
+
                     2 -> {
                         f.gThree.visibility = View.GONE
                         f.gTwo.visibility = View.VISIBLE
@@ -453,6 +448,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                         }
 
                     }
+
                     else -> {
                         if (l.size >= 3) {
                             f.gThree.visibility = View.VISIBLE

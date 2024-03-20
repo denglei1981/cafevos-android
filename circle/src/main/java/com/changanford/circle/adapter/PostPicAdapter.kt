@@ -38,10 +38,10 @@ class PostPicAdapter(private val type: Int) :
     }
 
     override fun convert(holder: BaseViewHolder, item: LocalMedia) {
-        if (holder.adapterPosition == 0) holder.setVisible(R.id.fm_tv, true) else holder.setVisible(
-            R.id.fm_tv,
-            false
-        )
+//        if (holder.adapterPosition == 0) holder.setVisible(R.id.fm_tv, true) else holder.setVisible(
+//            R.id.fm_tv,
+//            false
+//        )
         //当为添加按钮展示
         if (holder.itemViewType == 0x9843) {
 //            holder.setImageResource(R.id.img, R.mipmap.add_image)

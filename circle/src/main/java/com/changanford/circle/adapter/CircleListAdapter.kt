@@ -48,6 +48,8 @@ class CircleListAdapter(private val isShowLeft: Boolean) :
         binding?.apply {
             MUtils.setTopMargin(binding.clItem, 30, holder.layoutPosition)
             ivIcon.setCircular(12)
+            ivAuth.isVisible = item.manualAuth == 1
+            ivAuth.load(item.manualAuthImg)
             tvNum.text = "${item.postsCount} 帖子     ${item.userCount} 成员"
             bean = item
             ivIcon.load(item.pic)

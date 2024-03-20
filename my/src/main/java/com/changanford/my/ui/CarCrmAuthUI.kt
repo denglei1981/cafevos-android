@@ -15,6 +15,7 @@ import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
@@ -25,10 +26,9 @@ import com.changanford.my.databinding.ItemCarAuthBinding
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
 import com.changanford.my.viewmodel.CarAuthViewModel
-import com.changanford.my.widget.WaitBindingCarPop
 import com.changanford.my.widget.WaitBindingDialog
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.schedule
 
 /**
@@ -44,10 +44,10 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     var isRefresh: Boolean = false
 
     private var isCarOwner: Int = 0
-    val headView: ViewHeadCarAuthBinding by lazy {
+    private val headView: ViewHeadCarAuthBinding by lazy {
         ViewHeadCarAuthBinding.inflate(layoutInflater)
     }
-    val carAdapter: AuthCarAdapter by lazy {
+    private val carAdapter: AuthCarAdapter by lazy {
         AuthCarAdapter()
     }
 
@@ -66,6 +66,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             it?.let {
                 isCarOwner = it.isCarOwner
             }
+            carAuth()
             completeRefresh(it?.carList, carAdapter, 0)
         })
 
@@ -104,7 +105,9 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         viewModel.queryAuthCarAndIncallList(AuthCarStatus.ALL)
+    }
 
+    private fun carAuth() {
         viewModel.carAuthQY {
             it.onSuccess {
                 it?.let {
@@ -114,6 +117,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
                         1 -> {
                             it.carListRightsContentY
                         }
+
                         else -> {
                             it.carListRightsContentN
                         }
@@ -175,6 +179,7 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
             R.layout.item_car_auth
         ) {
         override fun convert(holder: BaseDataBindingHolder<ItemCarAuthBinding>, item: CarItemBean) {
+            MUtils.setTopMargin(holder.itemView, 16, holder.layoutPosition+1)
             CarAuthHolder(holder, item)
         }
     }

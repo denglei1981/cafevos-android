@@ -403,9 +403,9 @@ class JumpUtils {
             }
 
             41 -> {//我的爱车
-//                startARouter(ARouterMyPath.MineLoveCarListUI, true)
+                startARouter(ARouterMyPath.MineLoveCarListUI, true)
                 //2022-07-13测试要求有车才到爱车没有车跳认证
-                instans?.jump(17)
+//                instans?.jump(17)
             }
 
             42 -> {//意见反馈记录

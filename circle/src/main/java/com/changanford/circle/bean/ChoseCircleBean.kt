@@ -14,7 +14,11 @@ data class ChoseCircleBean(
     val createTime: Any,
     val description: String,
     val hotIcon: String,
-    var isApply: Int?=0,
+    //圈子认证 0 未认证 1已认证
+    val manualAuth: Int = 0,
+    //圈子认证V标
+    val manualAuthImg: String? = null,
+    var isApply: Int? = 0,
     val isHot: Int,
     val isRecommend: Int,
     val lastPostsTime: Any,
@@ -24,8 +28,8 @@ data class ChoseCircleBean(
     val postsCount: Int,
     val userCount: Int,
     val userId: Int,
-    var isJoin:String?=null,//是否加入圈子 未加入（TOJOIN）、待审核（PENDING）、已加入（JOINED）
-    val tags:List<NewCirceTagBean>?,//标签
+    var isJoin: String? = null,//是否加入圈子 未加入（TOJOIN）、待审核（PENDING）、已加入（JOINED）
+    val tags: List<NewCirceTagBean>?,//标签
 ) : SectionEntity {
     override val isHeader: Boolean
         get() = false

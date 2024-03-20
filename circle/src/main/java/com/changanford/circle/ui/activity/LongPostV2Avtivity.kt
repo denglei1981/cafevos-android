@@ -7,10 +7,7 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Bundle
 import android.provider.Settings
-import android.text.Spannable
-import android.text.SpannableString
 import android.text.TextUtils
-import android.text.style.AbsoluteSizeSpan
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
@@ -18,7 +15,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -37,17 +33,27 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ButtomTypeAdapter
 import com.changanford.circle.adapter.ButtomlabelAdapter
+import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.LongPostV2Adapter
-import com.changanford.circle.bean.*
-import com.changanford.circle.databinding.HeaderEmojiBinding
+import com.changanford.circle.bean.ButtomTypeBean
+import com.changanford.circle.bean.EmojiBean
+import com.changanford.circle.bean.H5PostTypeBean
+import com.changanford.circle.bean.HotPicItemBean
+import com.changanford.circle.bean.ImageList
+import com.changanford.circle.bean.LongPostBean
+import com.changanford.circle.bean.PlateBean
+import com.changanford.circle.bean.PostKeywordBean
+import com.changanford.circle.bean.PostTagData
 import com.changanford.circle.databinding.HeaderLongPostBinding
 import com.changanford.circle.databinding.LongpostactivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
 import com.changanford.circle.widget.pop.ShowSavePostPop
+import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.CreateLocation
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.SpecialCarListBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
@@ -55,9 +61,15 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.util.image.ImageCompress.compressImage
 import com.changanford.common.utilext.GlideUtils
@@ -70,22 +82,13 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.changanford.circle.adapter.EmojiAdapter
-import com.changanford.common.basic.BaseActivity
-import com.changanford.common.bean.SpecialCarListBean
-import com.changanford.common.util.ext.setCircular
-import com.changanford.common.utilext.load
-import com.changanford.common.utilext.toIntPx
-import com.luck.picture.lib.thread.PictureThreadUtils.runOnUiThread
-import com.xiaomi.push.it
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.util.*
+import java.util.Timer
 import java.util.concurrent.CopyOnWriteArrayList
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -244,7 +247,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.GONE
             tvTopicName.text = ""
-            llNoTopic.isVisible = true
+//            llNoTopic.isVisible = true
         }
     }
 

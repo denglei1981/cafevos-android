@@ -32,6 +32,7 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
@@ -53,6 +54,15 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
 
     init {
         loadMoreModule.loadMoreView = CommentLoadMoreView()
+        LiveDataBus.get().withs<AuthorBaseVo>(LiveDataBusKey.FOLLOW_USER_CHANGE)
+            .observe(mLifecycleOwner) {
+                for (data in this.data) {
+                    if (data.authorBaseVo.authorId == it.authorId) {
+                        data.authorBaseVo.isFollow = it.isFollow
+                    }
+                }
+                this.notifyDataSetChanged()
+            }
     }
 
     @SuppressLint("SetTextI18n")
@@ -66,6 +76,8 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
             if (!item.memberIcon.isNullOrEmpty()) {
                 layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
             }
+            binding.layoutHeader.btnFollow.isVisible =
+                MConstant.userId != item.authorBaseVo.authorId
             tvTime.text = item.getTimeAndAddress()
             if (item.authorBaseVo.carOwner.isNullOrEmpty()) {
                 layoutHeader.tvSubTitle.isVisible = false
@@ -139,6 +151,7 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
                     bundle.putString("groupId", commentBean.groupId)
                     bundle.putInt("type", 2)// 1 资讯 2 帖子
                     bundle.putString("bizId", commentBean.bizId)
+                    bundle.putString("childCount", commentBean.childCount.toString())
                     startARouter(ARouterCirclePath.AllReplyActivity, bundle)
                 }
             }

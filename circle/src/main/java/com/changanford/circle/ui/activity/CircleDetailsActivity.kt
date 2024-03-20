@@ -59,6 +59,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
@@ -134,7 +135,7 @@ class CircleDetailsActivity :
     }
 
     override fun initView() {
-        isDarkFont=false
+        isDarkFont = false
         title = "圈子详情页"
         GioPageConstant.circleDetailTabName = "推荐"
         circleId = intent.getStringExtra("circleId").toString()
@@ -499,6 +500,8 @@ class CircleDetailsActivity :
                 binding.topContent.clActivity.visibility = View.GONE
             }
             binding.topContent.clNotice.visibility = View.VISIBLE
+            binding.topContent.ivAuth.isVisible = it.manualAuth == 1
+            binding.topContent.ivAuth.load(it.manualAuthImg)
             if (it.circleNotices.isNullOrEmpty()) {
                 noticeAdapter.setEmptyView(R.layout.empty_notice)
             } else {

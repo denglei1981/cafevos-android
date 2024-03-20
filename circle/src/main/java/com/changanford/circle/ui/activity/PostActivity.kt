@@ -12,7 +12,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
-import android.text.*
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -41,7 +43,13 @@ import com.changanford.circle.adapter.ButtomlabelAdapter
 import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.adapter.PostPicAdapter
 import com.changanford.circle.adapter.PostVideoAdapter
-import com.changanford.circle.bean.*
+import com.changanford.circle.bean.ButtomTypeBean
+import com.changanford.circle.bean.EmojiBean
+import com.changanford.circle.bean.H5PostTypeBean
+import com.changanford.circle.bean.HotPicItemBean
+import com.changanford.circle.bean.PlateBean
+import com.changanford.circle.bean.PostKeywordBean
+import com.changanford.circle.bean.PostTagData
 import com.changanford.circle.databinding.PostActivityBinding
 import com.changanford.circle.viewmodel.PostViewModule
 import com.changanford.circle.widget.dialog.CirclePostTagDialog
@@ -60,7 +68,15 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.ui.videoedit.ExtractVideoInfoUtil
-import com.changanford.common.util.*
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.FileHelper
+import com.changanford.common.util.FullyGridLayoutManager
+import com.changanford.common.util.HideKeyboardUtil
+import com.changanford.common.util.LocationServiceUtil
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.image.ImageCompress
@@ -80,7 +96,7 @@ import com.yalantis.ucrop.UCrop
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 import java.io.File
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.schedule
 
 /**
@@ -366,13 +382,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun checkNext() {
-        val hasTitle = binding.etBiaoti.text.length >= 2
+        val hasContent = binding.etContent.text.isNotEmpty()
         val hasPath = if (isVideoPost.value == true) {
             postVideoAdapter.data.size != 0
         } else {
             postPicAdapter.data.size != 0
         }
-        if (hasTitle && hasPath) {
+        if (hasContent && hasPath) {
             binding.title.barTvOther.isEnabled = true
 //            binding.title.barTvOther.background =
 //                ContextCompat.getDrawable(this, R.drawable.post_btn_bg)
@@ -391,13 +407,13 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     }
 
     private fun initListener() {
-        binding.etBiaoti.addTextChangedListener {
+        binding.etContent.addTextChangedListener {
             checkNext()
-            it?.let { editable ->
-                if (editable.length >= 2) {
-                    binding.tvNoTips.visibility = View.GONE
-                }
-            }
+//            it?.let { editable ->
+//                if (editable.length >= 2) {
+//                    binding.tvNoTips.visibility = View.GONE
+//                }
+//            }
         }
         binding.bottom.ivDown.setOnClickListener {
             binding.bottom.emojirec.visibility = View.GONE
@@ -450,7 +466,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 viewModel.deleteLastPost()
             }
             isunSave = true
-            "发布成功".toast()
+            "已提交审核".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
@@ -729,7 +745,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.GONE
             tvTopicName.text = ""
-            llNoTopic.isVisible = true
+//            llNoTopic.isVisible = true
         }
     }
 
@@ -1617,18 +1633,18 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 return
             }
 
-            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 30 || biaoti.length < 2 -> {
-                "请输入2-30字的帖子标题".toast()
-                return
-            }
+//            biaoti.isNullOrEmpty() || biaoti.isEmpty() || biaoti.length > 30 || biaoti.length < 2 -> {
+//                "请输入2-30字的帖子标题".toast()
+//                return
+//            }
 
             binding.icAttribute.clCar.isVisible && params["carModelIds"] == null -> {
                 "请选择车型".toast()
                 return
             }
-//            content.isNullOrEmpty() -> {
-//                "请输入正文内容".toast()
-//            }
+            content.isNullOrEmpty() -> {
+                "请输入正文内容".toast()
+            }
 
 //            platename.isEmpty() -> {
 //                "请选择模块".toast()

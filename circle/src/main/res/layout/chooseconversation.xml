@@ -29,47 +29,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_no_topic_tips"
-        android:layout_width="wrap_content"
-        android:textSize="18sp"
-        android:textColor="@color/color_16"
-        android:text="自定义话题"
-        app:layout_constraintLeft_toLeftOf="@+id/tvsearch"
-        app:layout_constraintTop_toBottomOf="@+id/tvsearch"
-        android:layout_marginTop="35dp"
-        android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_nocy"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:gravity="center_vertical"
-        android:paddingEnd="16dp"
-        android:paddingStart="17dp"
-        android:background="@drawable/bg_081700f4_100"
-        android:layout_marginBottom="25dp"
-        android:drawableEnd="@mipmap/ic_search_topic_right_back"
-        android:text="不参与任何话题"
-        android:textColor="@color/color_d916"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_no_topic_tips" />
-
     <TextView
         android:id="@+id/tvrm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="热门话题"
-        android:textSize="18sp"
         android:textColor="@color/color_16"
-        app:layout_constraintTop_toBottomOf="@id/tv_nocy" />
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/tvsearch" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recconvers"
@@ -80,4 +49,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvrm"
         tools:listitem="@layout/convers_item" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_nocy"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bg_1700f4_100"
+        android:gravity="center"
+        android:paddingStart="27dp"
+        android:paddingEnd="27dp"
+        android:text="不参与任何话题"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

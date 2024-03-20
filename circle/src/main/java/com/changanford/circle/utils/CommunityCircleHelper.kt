@@ -14,6 +14,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.updateCircleDetailsData
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.wutil.ScreenUtils
@@ -66,6 +67,8 @@ class CommunityCircleHelper(
                 circleSquareAdapter.circleBinding.clActivity.visibility = View.GONE
             }
             circleSquareAdapter.circleBinding.clNotice.visibility = View.VISIBLE
+            circleSquareAdapter.circleBinding.ivAuth.isVisible = it.manualAuth == 1
+            circleSquareAdapter.circleBinding.ivAuth.load(it.manualAuthImg)
             if (it.circleNotices.isNullOrEmpty()) {
                 circleSquareAdapter.noticeAdapter.setEmptyView(R.layout.empty_notice)
             } else {

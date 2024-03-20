@@ -1,5 +1,6 @@
 package com.changanford.common.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.net.Uri
 import android.os.CountDownTimer
 import android.text.InputFilter
 import android.text.Layout
+import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -23,6 +25,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
+import android.view.MotionEvent
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
@@ -1250,6 +1253,7 @@ object MineUtils {
     private var expand = "更多"
     private var collapse = "收起"
 
+    @SuppressLint("ClickableViewAccessibility")
     fun expandText(contentTextView: TextView, msg: String) {
         val text: CharSequence = contentTextView.text
         val width: Int = contentTextView.width
@@ -1293,8 +1297,41 @@ object MineUtils {
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE
             )
 
-            contentTextView.movementMethod = LinkMovementMethod.getInstance()
+//            contentTextView.movementMethod = LinkMovementMethod.getInstance()
             contentTextView.text = ssb
+            contentTextView.setOnTouchListener { v, event ->
+                var ret = false
+                val text = (v as TextView).getText()
+                val stext = Spannable.Factory.getInstance().newSpannable(text)
+                val widget = v as TextView
+                val action = event.action
+                if (action == MotionEvent.ACTION_UP ||
+                    action == MotionEvent.ACTION_DOWN
+                ) {
+                    var x = event.x.toInt()
+                    var y = event.y.toInt()
+                    x -= widget.totalPaddingLeft
+                    y -= widget.totalPaddingTop
+                    x += widget.scrollX
+                    y += widget.scrollY
+                    val layout = widget.layout
+                    val line = layout.getLineForVertical(y)
+                    val off = layout.getOffsetForHorizontal(line, x.toFloat())
+                    val link = stext.getSpans(
+                        off, off,
+                        ClickableSpan::class.java
+                    )
+                    if (link.size != 0) {
+                        if (action == MotionEvent.ACTION_UP) {
+                            link[0].onClick(widget)
+                        }
+                        ret = true
+                    }
+                }
+                ret
+            }
+
+
         }
     }
 

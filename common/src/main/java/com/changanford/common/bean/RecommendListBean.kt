@@ -115,10 +115,11 @@ data class RecommendData(
     val specialList: SpecialListMainBean? = null,
     val adBean: AdBean? = null
 ) : MultiItemEntity {
-    private fun getItemTypeLocal(): Int {
+     fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
             return 3
         }
+        //话题
         if (rtype == 21) {
             return 4
         }
@@ -137,6 +138,7 @@ data class RecommendData(
         if (pisList != null && pisList!!.size > 1) {
             return 2
         }
+        //专题
         if (specialList != null) {
             return 5
         }

@@ -1,10 +1,11 @@
 package com.changanford.circle.adapter
 
-import android.os.Bundle
-import android.text.TextPaint
-import android.text.style.ClickableSpan
+import android.annotation.SuppressLint
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -16,23 +17,34 @@ import com.changanford.circle.bean.ChildCommentListBean
 import com.changanford.circle.databinding.ItemItemCommentBinding
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.widget.CommentLoadMoreView
-import com.changanford.circle.widget.MyLinkMovementMethod
 import com.changanford.common.MyApp
+import com.changanford.common.adapter.LabelAdapter
+import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
+import com.view.text.setSpecificTextColor
+import razerdp.basepopup.QuickPopupBuilder
+import razerdp.basepopup.QuickPopupConfig
 
 class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<ChildCommentListBean, BaseViewHolder>(R.layout.item_item_comment),
@@ -45,9 +57,37 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     override fun convert(holder: BaseViewHolder, item: ChildCommentListBean) {
         val binding = DataBindingUtil.bind<ItemItemCommentBinding>(holder.itemView)
         binding?.let {
-            binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
+            binding.layoutHeader.ivHeader.loadImage(
+                item.avatar,
+                ImageOptions().apply { circleCrop = true })
             binding.bean = item
-            binding.tvLikeCount.text = if (item.likesCount == 0) "" else item.likesCount.toString()
+            binding.run {
+                layoutHeader.tvAuthorName.text = item.nickname
+                if (!item.memberIcon.isNullOrEmpty()) {
+                    layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
+                }
+                tvTime.text = item.getTimeAndAddress()
+                if (item.authorBaseVo.carOwner.isNullOrEmpty()) {
+                    layoutHeader.tvSubTitle.isVisible = false
+                } else {
+                    layoutHeader.tvSubTitle.isVisible = true
+                    layoutHeader.tvSubTitle.text = item.authorBaseVo.carOwner
+                }
+
+                binding.layoutHeader.btnFollow.isVisible =
+                    MConstant.userId != item.authorBaseVo.authorId
+
+                binding.layoutHeader.btnFollow.setOnClickListener {
+                    if (!MineUtils.getBindMobileJumpDataType(true)) {
+                        followAction(item.authorBaseVo)
+                    }
+                }
+                setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo)
+                val labelAdapter = LabelAdapter(16)
+                layoutHeader.rvUserTag.adapter = labelAdapter
+                labelAdapter.setNewInstance(item.authorBaseVo.imags)
+            }
+            binding.tvLikeCount.text = if (item.likesCount == 0) "0" else item.likesCount.toString()
             binding.ivLike.setImageResource(
                 if (item.isLike == 1) {
                     R.mipmap.circle_comment_like
@@ -83,66 +123,110 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                         }
                 }
             }
-            binding.ivHead.setOnClickListener {
-                JumpUtils.instans?.jump(35,item.userId.toString())
+            binding.layoutHeader.ivHeader.setOnClickListener {
+                JumpUtils.instans?.jump(35, item.userId.toString())
             }
 
             contentSty(binding.tvContent, item)
         }
     }
 
+    private var nickName: String = ""
+
+    // 关注或者取消
+    private fun followAction(authorBaseVo: AuthorBaseVo) {
+        LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).postValue(true)
+        nickName = authorBaseVo.nickname
+        var followType = authorBaseVo.isFollow
+        followType = if (followType == 1) 2 else 1
+        if (followType == 2) { //取消关注
+            cancelFollowDialog(authorBaseVo.authorId, followType)
+        } else {
+            //埋点
+            BuriedUtil.instant?.communityFollow(authorBaseVo.nickname)
+            getFollow(authorBaseVo.authorId, followType)
+        }
+        authorBaseVo.isFollow = followType
+        LiveDataBus.get().with(LiveDataBusKey.FOLLOW_USER_CHANGE).postValue(authorBaseVo)
+    }
+
+    // 关注。
+    private fun getFollow(followId: String, type: Int) {
+        BaseApplication.curActivity.launchWithCatch {
+            val requestBody = HashMap<String, Any>()
+            requestBody["followId"] = followId
+            requestBody["type"] = type
+            val rkey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .userFollowOrCancelFollow(requestBody.header(rkey), requestBody.body(rkey))
+                .onSuccess {
+                    if (type == 1) {
+                        toastShow("已关注")
+                        GIOUtils.followClick(followId, nickName, "全部回复")
+                    } else {
+                        GIOUtils.cancelFollowClick(followId, nickName, "全部回复")
+                        toastShow("取消关注")
+                    }
+                    notifyAtt(followId, type)
+                }.onWithMsgFailure {
+                    if (it != null) {
+                        toastShow(it)
+                    }
+                }
+        }
+    }
+
+    fun notifyAtt(userId: String, isFollow: Int) {
+        for (data in this.data) {
+            if (data.authorBaseVo?.authorId == userId) {
+                data.authorBaseVo?.isFollow = isFollow
+            }
+        }
+        this.notifyDataSetChanged()
+    }
+
+    private fun setFollowState(btnFollow: TextView, authors: AuthorBaseVo) {
+        val setFollowState = SetFollowState(context)
+        authors.let {
+            setFollowState.setFollowState(btnFollow, it, true)
+        }
+    }
+
+    private fun cancelFollowDialog(followId: String, type: Int) {
+        QuickPopupBuilder.with(context)
+            .contentView(R.layout.dialog_cancel_follow)
+            .config(
+                QuickPopupConfig()
+                    .gravity(Gravity.CENTER)
+                    .withClick(R.id.btn_comfir, View.OnClickListener {
+                        getFollow(followId, type)
+                    }, true)
+                    .withClick(R.id.btn_cancel, View.OnClickListener {
+                    }, true)
+            )
+            .show()
+    }
+
     /**
      * 处理回复文本各种样式
      */
+    @SuppressLint("SetTextI18n")
     private fun contentSty(contentTv: TextView?, item: ChildCommentListBean) {
-        if (contentTv != null) {
-            contentTv.text = item.content
-            contentTv.movementMethod = MyLinkMovementMethod.get()//点击必用
-            if (!item.parentVo.isNullOrEmpty()) {
-                val size = item.parentVo.size
-                item.parentVo.forEachIndexed { index, pare ->
-                    if (index == size - 1) return@forEachIndexed//最后一个不需要再进行追加，接口返回的多余数据
-                    if (index > 1 && !item.isOpenParent) {//数据大于1，已经展开
-                        return@forEachIndexed
-                    }
-                    //开始对contentTv追加名字效果
-                    contentTv.append(
-                        SpannableStringUtils.getSpannable(
-                            "//@${pare.nickname}：",
-                            R.color.color_8195C8,
-                            object : ClickableSpan() {
-                                //设置点击事件
-                                override fun onClick(widget: View) {
-                                    JumpUtils.instans?.jump(35,pare.userId)
-                                }
-                                override fun updateDrawState(ds: TextPaint) {
-                                    ds.isUnderlineText = false
-                                }
-                            })
-                    )
-                    //开始对contentTv追加内容
-                    contentTv.append(pare.content)
-                }
-                if (item.parentVo.size - 1 > 2) {//只有数据大于2的时候才会有收起或追踪按钮
-                    //追加可点击的收缩效果
-                    contentTv.append(
-                        SpannableStringUtils.getSpannable(
-                            if (item.isOpenParent) " 收起" else " 展开",
-                            R.color.color_8195C8,
-                            object : ClickableSpan() {
-                                override fun onClick(widget: View) {
-                                    item.isOpenParent = !item.isOpenParent
-                                    contentSty(contentTv, item)
-                                }
-
-                                override fun updateDrawState(ds: TextPaint) {
-                                    ds.isUnderlineText = false
-                                }
-                            })
-                    )
-                }
+        if (item.parentVo.isNullOrEmpty()) {
+            contentTv?.text = item.content
+            contentTv?.post {
+                MineUtils.expandText(contentTv, item.content)
             }
-
+        } else {
+            val parentNickName = item.parentVo[0].nickname
+            contentTv?.text = "回复${parentNickName}: ${item.content}"
+            contentTv?.setSpecificTextColor(
+                ContextCompat.getColor(context, R.color.color_1700F4),
+                parentNickName
+            )
+            contentTv?.post {
+                MineUtils.expandText(contentTv, contentTv.text.toString())
+            }
         }
     }
 }

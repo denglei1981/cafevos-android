@@ -2,6 +2,7 @@ package com.changanford.circle.adapter
 
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
@@ -31,6 +32,8 @@ class CircleHomeBottomAdapter :
         item: NewCircleBean
     ) {
         holder.dataBinding?.run {
+            ivAuth.isVisible = item.manualAuth == 1
+            ivAuth.load(item.manualAuthImg)
             ivCover.setCircular(12)
             ivCover.load(item.pic)
             tvName.text = item.name

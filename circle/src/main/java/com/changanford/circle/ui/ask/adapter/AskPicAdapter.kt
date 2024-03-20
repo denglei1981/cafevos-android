@@ -10,7 +10,7 @@ import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.entity.LocalMedia
 
 
-class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_pic_item),
+class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_video_pic_item),
     DraggableModule {
 
     init {

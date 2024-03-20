@@ -291,13 +291,14 @@ open class RecommendFragment :
             recommendAdapter.addData(1, addBean)
         }
         viewModel.recommendAdBean.observe(this) {
-            if (!it.ads.isNullOrEmpty()){
-                val adBean = RecommendData(adBean = it.ads[0])
-                if (it.showPosition <= recommendAdapter.itemCount) {
-                    recommendAdapter.addData(it.showPosition, adBean)
-                    isAddAdBean = true
-                }
-            }
+//            if (!it.ads.isNullOrEmpty()){
+//                val adBean = RecommendData(adBean = it.ads[0])
+//                if (it.showPosition <= recommendAdapter.itemCount) {
+//                    recommendAdapter.addData(it.showPosition, adBean)
+//                    isAddAdBean = true
+//                }
+//            }
+            recommendAddAds()
         }
         viewModel.recommendBannerLiveData.safeObserve(this, Observer {
             if (it.isSuccess) {
@@ -491,19 +492,7 @@ open class RecommendFragment :
                 } else {
                     binding.smartLayout.setEnableLoadMore(true)
                 }
-                if (!isAddAdBean) {
-                    val adData = viewModel.recommendAdBean.value
-                    adData?.let {
-                        if (!adData.ads.isNullOrEmpty()){
-                            val adBean = RecommendData(adBean = adData.ads[0])
-                            if (adData.showPosition <= recommendAdapter.itemCount) {
-                                recommendAdapter.addData(it.showPosition, adBean)
-                                isAddAdBean = true
-                            }
-                        }
-                    }
-                }
-
+                recommendAddAds()
             } else {
                 when (it.message) {
                     getString(R.string.net_error) -> {
@@ -521,6 +510,29 @@ open class RecommendFragment :
             }
 
         })
+    }
+
+    private fun recommendAddAds() {
+        if (!isAddAdBean) {
+            val adData = viewModel.recommendAdBean.value
+            adData?.let {
+                if (!adData.ads.isNullOrEmpty()) {
+                    val adBean = RecommendData(adBean = adData.ads[0])
+                    if (adData.showPosition <= recommendAdapter.itemCount) {
+                        for (i in 0 until adData.showPosition) {
+                            val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
+                            if (itemType == 4 || itemType == 5) {
+                                it.showPosition = it.showPosition++
+                            }
+                        }
+                        if (it.showPosition <= recommendAdapter.itemCount) {
+                            recommendAdapter.addData(it.showPosition, adBean)
+                            isAddAdBean = true
+                        }
+                    }
+                }
+            }
+        }
     }
 
     open fun homeRefersh() {

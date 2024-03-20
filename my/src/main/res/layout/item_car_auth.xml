@@ -7,130 +7,200 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_23"
-        android:layout_marginTop="@dimen/dp_11"
-        android:layout_marginEnd="@dimen/dp_19"
-        android:layout_marginBottom="@dimen/dp_4"
-        android:background="@drawable/shape_r_5_c_ff"
-        android:minHeight="@dimen/dp_170">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_vin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_14"
-            android:layout_marginTop="@dimen/dp_13"
-            android:text="VIN码："
-            android:textColor="#666666"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_auth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_car_auth_status"
-            android:gravity="center"
-            android:minWidth="@dimen/dp_70"
-            android:minHeight="@dimen/dp_27"
-            android:paddingStart="@dimen/dp_14"
-            android:paddingTop="@dimen/dp_6"
-            android:paddingEnd="@dimen/dp_14"
-            android:paddingBottom="@dimen/dp_6"
-            android:text="已认证"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
         <View
-            android:id="@+id/line"
+            android:id="@+id/v_top"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_7"
-            android:background="#EEEEEE"
-            app:layout_constraintTop_toBottomOf="@+id/tv_vin" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_car_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_16"
-            android:layout_marginTop="@dimen/dp_21"
-            android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:maxLength="15"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toStartOf="@+id/car_pic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line"
-            tools:text="福特 EVOS" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/car_pic"
-            android:layout_width="@dimen/dp_182"
-            android:layout_height="@dimen/dp_106"
-            android:layout_marginEnd="@dimen/dp_4"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:src="@mipmap/ic_car_auth_ex"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_add_car_num"
-            android:layout_width="@dimen/dp_98"
-            android:layout_height="@dimen/dp_31"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@drawable/shape_car_auth_btn_bg"
-            android:gravity="center"
-            android:text="添加车牌"
-            android:textColor="#1700f4"
-            android:textSize="@dimen/sp_14"
-            tools:visibility="visible"
-            android:visibility="gone"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_car_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_car_name" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/auth_reason"
+            android:layout_height="16dp"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_auth_reson_bg"
-            android:gravity="center"
-            android:maxLines="3"
-            android:minHeight="@dimen/dp_45"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingBottom="@dimen/dp_2"
-            android:text="原因："
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="parent" />
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_default"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_car_auth_default"
-            android:gravity="center"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:minWidth="@dimen/dp_51"
-            android:minHeight="@dimen/dp_21"
-            android:paddingStart="@dimen/dp_12"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingEnd="@dimen/dp_11"
-            android:paddingBottom="@dimen/dp_2"
-            android:text="默认"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_whit10_bg"
+            android:minHeight="@dimen/dp_192">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_vin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:text="VIN码："
+                android:textColor="@color/color_9916"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="9dp"
+                android:background="@drawable/bg_33a6_46"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="默认"
+                android:textColor="@color/color_4d16"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_vin"
+                app:layout_constraintLeft_toRightOf="@+id/tv_vin"
+                app:layout_constraintTop_toTopOf="@+id/tv_vin"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_auth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_car_list_top_right"
+                android:gravity="center"
+                android:minHeight="@dimen/dp_27"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="已认证"
+                android:textColor="@color/circle_1700F4"
+                android:textSize="12sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/dp_9"
+                android:background="@color/color_0d00"
+                app:layout_constraintTop_toBottomOf="@+id/tv_vin" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_car_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:maxLength="15"
+                android:maxLines="2"
+                android:textColor="@color/color_16"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/car_pic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line"
+                tools:text="福特 EVOS" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/car_pic"
+                android:layout_width="@dimen/dp_182"
+                android:layout_height="@dimen/dp_106"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:src="@mipmap/ic_car_auth_ex"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_car_name" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_btn_add_car_num"
+                android:layout_width="0dp"
+                app:layout_constraintRight_toRightOf="@+id/btn_add_car_num"
+                app:layout_constraintTop_toTopOf="@+id/btn_add_car_num"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_add_car_num"
+                app:layout_constraintLeft_toLeftOf="@+id/btn_add_car_num"
+                android:layout_height="0dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_add_car_num"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginTop="@dimen/dp_8"
+                android:drawablePadding="4dp"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:gravity="center"
+                android:maxWidth="114dp"
+                android:minWidth="88dp"
+                android:text="添加车牌"
+                android:textColor="@color/circle_1700F4"
+                android:textSize="@dimen/sp_13"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_car_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_car_name"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/dp_9"
+                android:background="@color/color_0d00"
+                app:layout_constraintTop_toBottomOf="@+id/car_pic" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ll_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="12dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/line2">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_set_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/bg_bord_80a6_23"
+                    android:gravity="center"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:text="设为默认车辆"
+                    android:textColor="@color/color_16"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_cancel_bind"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/bg_bord_80a6_23"
+                    android:gravity="center"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    android:text="取消绑定"
+                    android:textColor="@color/color_16"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_set_default"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginRight="0dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/auth_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_auth_reson_bg"
+                android:gravity="center"
+                android:maxLines="3"
+                android:minHeight="@dimen/dp_35"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="原因："
+                android:textColor="@color/circle_1700F4"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintTop_toTopOf="@+id/line2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 </layout>

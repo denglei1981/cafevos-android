@@ -75,6 +75,6 @@ data class CarAuthQYBean(
 
 data class IndexInfoFlowAdBean(
     val ads: List<AdBean>,
-    val showPosition: Int,
+    var showPosition: Int,
     val showType: String?
 )

@@ -24,9 +24,13 @@ data class CircleDetailBean(
     val postsCount: Int = 0,
     //仅车主可加圈0是 1否
     val onlyAuthJoin: Int = 0,
+    //圈子认证 0 未认证 1已认证
+    val manualAuth: Int = 0,
+    //圈子认证V标
+    val manualAuthImg: String? = null,
     val isViewApplyMan: Int = 0,
     val shareBeanVO: CircleShareBean?,
-    val ads:ArrayList<AdBean>,
+    val ads: ArrayList<AdBean>,
     val userCount: Int = 0,
     val userId: Int = 0,
     val wonderfulControls: ArrayList<WonderfulControlsBean>?,
@@ -37,10 +41,10 @@ data class CircleDetailBean(
 )
 
 data class CircleTopicsBean(
-    val topicId:String,
-    val name:String,
-    val pic:String,
-    val description:String,
+    val topicId: String,
+    val name: String,
+    val pic: String,
+    val description: String,
 )
 
 data class WonderfulControlsBean(

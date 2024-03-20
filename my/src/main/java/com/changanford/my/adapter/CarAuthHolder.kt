@@ -1,8 +1,8 @@
 package com.changanford.my.adapter
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -12,6 +12,8 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.CommonUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.setDrawableNull
+import com.changanford.common.utilext.setDrawableRight
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemCarAuthBinding
 
@@ -36,30 +38,39 @@ fun CarAuthHolder(
         } else {
             it.carPic.load(item.modelUrl, R.mipmap.ic_car_auth_ex)
         }
-        var d = it.tvAuth.background as GradientDrawable
-//        d.setColor(Color.parseColor("#60000000"))
-//        item.authStatus = 3
+        it.vTop.isVisible = holder.layoutPosition == 1
         when {
             isCrmStatusIng(item) -> {
                 it.tvAuth.text = if (item.authStatus == 2) "审核中" else "认证中"
+                it.tvAuth.isVisible = true
                 crmHint(1, it, item)
             }
+
             isCrmFail(item) -> {
                 it.tvAuth.text = "审核未通过"
+                it.tvAuth.isVisible = true
                 crmHint(2, it, item)
             }
+
             isCrmSuccess(item) -> {
                 if (item.isDefault == 1) {
                     it.tvAuth.text = "已认证"
                     it.tvDefault.isVisible = true
-                }else{
+                    it.tvSetDefault.isVisible = false
+                } else {
                     it.tvAuth.text = "已认证"
+                    it.tvSetDefault.isVisible = true
                 }
+                it.tvAuth.isVisible = false
 //                d.setColor(Color.parseColor("#691700f4"))
                 crmHint(3, it, item)
+                it.llOwner.isVisible = true
+
             }
+
             else -> {
                 it.tvAuth.text = "未认证"
+                it.tvAuth.isVisible = true
                 crmHint(3, it, item)
             }
         }
@@ -107,6 +118,7 @@ private fun crmHint(
 ) {
     holder.btnAddCarNum.visibility = View.GONE
     holder.authReason.visibility = View.GONE
+    holder.llOwner.isVisible = false
     when (hintStats) {
         1, 2 -> {//审核中,认证失败
             holder.authReason.visibility = View.VISIBLE
@@ -114,27 +126,38 @@ private fun crmHint(
             if (hintStats == 2) {//认证失败
                 holder.authReason.text = "原因：${item.examineRemakeFront ?: ""}"
             }
+            holder.ivBtnAddCarNum.isVisible = false
         }
+
         3 -> {//CRM认证成功
+            holder.ivBtnAddCarNum.isVisible = true
             holder.btnAddCarNum.visibility = View.VISIBLE
             if (item.plateNum.isNullOrEmpty() || "无牌照" == item.plateNum) {
                 holder.btnAddCarNum.apply {
                     text = "添加车牌"
-                    setBackgroundResource(R.drawable.shape_car_auth_btn_bg)
+                    setDrawableNull()
+                    holder.ivBtnAddCarNum.setBackgroundResource(R.mipmap.ic_car_add_plate)
                     setTextColor(Color.parseColor("#1700f4"))
                 }
             } else {
                 holder.btnAddCarNum.apply {
-                    setBackgroundResource(R.drawable.shape_car_num_btn_bg)
-                    setTextColor(Color.parseColor("#1700f4"))
+                    if (isNewCar(item.plateNum)) {
+                        setDrawableRight(R.mipmap.car_list_edit_plate)
+                        setTextColor(ContextCompat.getColor(context, R.color.black))
+                        holder.ivBtnAddCarNum.setBackgroundResource(R.mipmap.ic_car_x_plate)
+                    } else {
+                        setDrawableRight(R.mipmap.car_list_edit_plate_y)
+                        setTextColor(ContextCompat.getColor(context, R.color.white))
+                        holder.ivBtnAddCarNum.setBackgroundResource(R.mipmap.ic_car_y_plate)
+                    }
                     text = "${item.plateNum}"
                 }
             }
             holder.btnAddCarNum.setOnClickListener {
                 RouterManger.param("value", item.carSalesInfoId)
                     .param("plateNum", item.plateNum ?: "")
-                    .param("authId",item.authId)
-                    .param("carSalesInfoId",item.carSalesInfoId)
+                    .param("authId", item.authId)
+                    .param("carSalesInfoId", item.carSalesInfoId)
                     .startARouter(ARouterMyPath.AddCardNumTransparentUI)
             }
         }
@@ -195,4 +218,11 @@ fun toInCallChecking(bean: CarItemBean) {
  */
 fun toInCallFail(bean: CarItemBean) {
     CommonUtils.skipInCallInfo(bean, false)
+}
+
+fun isNewCar(licensePlate: String?): Boolean {
+    if (licensePlate == null) return false
+    val regex =
+        "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-HJ-NP-Z](([0-9]{5}[ADF])|([ADF]([A-HJ-NP-Z0-9])[0-9]{4}))\$"
+    return licensePlate.matches(regex.toRegex())
 }
