@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp">
 
         <include
             android:id="@+id/title_bar"
@@ -29,4 +30,3 @@
         </com.tencent.smtt.sdk.WebView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
-

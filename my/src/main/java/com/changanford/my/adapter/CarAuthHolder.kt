@@ -59,6 +59,7 @@ fun CarAuthHolder(
                     it.tvSetDefault.isVisible = false
                 } else {
                     it.tvAuth.text = "已认证"
+                    it.tvDefault.isVisible = false
                     it.tvSetDefault.isVisible = true
                 }
                 it.tvAuth.isVisible = false

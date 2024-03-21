@@ -14,7 +14,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.common.basic.BaseBottomDialog
-import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.BindCarBean
 import com.changanford.common.utilext.toast
 import com.changanford.my.R
@@ -25,7 +24,6 @@ import com.changanford.my.databinding.DialogWaitBindBinding
 import com.changanford.my.viewmodel.WaitBindingViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.Gson
 
 
 /**
@@ -55,6 +53,7 @@ open class WaitBindingDialog(
         WaitBindingCarAdapter(object : groupInterface {
             override fun groupInt() {
                 isChecked = true
+                mDatabind.btnSubmit.setTextColor(ContextCompat.getColor(contexts, R.color.white))
                 mDatabind.btnSubmit.background =
                     ContextCompat.getDrawable(contexts, R.drawable.shape_00095b_20dp)
             }
@@ -74,19 +73,20 @@ open class WaitBindingDialog(
         mDatabind.tvTips.text = "检测到${dataBeanList.size}台车与您手机号一致"
         mDatabind.rvList.layoutManager = LinearLayoutManager(activity)
         dataBeanList.forEach {
-            it.confirm=-1
+            it.confirm = -1
         }
         waitBindingCarAdapter.setNewInstance(dataBeanList)
         mDatabind.rvList.adapter = waitBindingCarAdapter
         mDatabind.btnSubmit.background =
-            ContextCompat.getDrawable(contexts, R.drawable.shape_bg_gray_e5)
+            ContextCompat.getDrawable(contexts, R.drawable.bg_shape_80a6_23)
+        mDatabind.btnSubmit.setTextColor(ContextCompat.getColor(contexts, R.color.color_4d16))
         mDatabind.btnSubmit.setOnClickListener {
             if (isChecked) {
                 val data = waitBindingCarAdapter.data
                 val list: MutableList<BindingCar> = mutableListOf()
                 data.forEach {
                     if (it.confirm != -1) {
-                        list.add(BindingCar(it.confirm, it.vin,it.carSalesInfoId))
+                        list.add(BindingCar(it.confirm, it.vin, it.carSalesInfoId))
                     }
                 }
                 if (list.size == 0) {

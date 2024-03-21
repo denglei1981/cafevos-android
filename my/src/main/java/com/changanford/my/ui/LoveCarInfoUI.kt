@@ -1,11 +1,7 @@
 package com.changanford.my.ui
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.CarItemBean
@@ -23,8 +19,8 @@ import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiLoveCarInfoBinding
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CarAuthViewModel
-import com.changanford.my.widget.DeleteCarPop
 
 /**
  *  文件名：LoveCarInfoUI
@@ -38,7 +34,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
 
     lateinit var auth: CarItemBean
 
-    var removeCarNotice: String? = ""
+    private var removeCarNotice: String? = ""
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
 
@@ -55,7 +51,7 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
                     binding.group.visibility =
                         if (it.authDetailRightsIsShow) View.VISIBLE else View.GONE
                     binding.carContent.text = it.authDetailRightsContent
-                    binding.deleteCar.text = it.removeCarNotice
+//                    binding.deleteCar.text = it.removeCarNotice
                     removeCarNotice = it.removeCarNotice
                 }
             }
@@ -92,36 +88,57 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
         }
     }
 
-    fun deleteCar() {
-        removeCarNotice?.let { tips ->
-            val deleteCarPop = DeleteCarPop(this, object : DeleteCarPop.deleteCar {
-                override fun cancle() {
-
-                }
-
-                override fun delete() {
-                    viewModel.deleteCar(auth.vin,id=auth.authId) {
-                        it.onSuccess {
-                            try {
-                                LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)
-                                BuriedUtil.instant?.carDelete(auth.phone)
-                            }catch (e:Exception){
-                                e.printStackTrace()
-                            }
-                            finish()
-
-                        }.onWithMsgFailure {
-                            it?.toast()
-                        }
-
+    private fun deleteCar() {
+        val pop = ConfirmTwoBtnPop(this)
+        pop.contentText.text = "是否确认解绑车辆？"
+        pop.btnConfirm.setOnClickListener {
+            pop.dismiss()
+            viewModel.deleteCar(auth.vin, id = auth.authId) {
+                it.onSuccess {
+                    try {
+                        LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)
+                        BuriedUtil.instant?.carDelete(auth.phone)
+                    }catch (e:Exception){
+                        e.printStackTrace()
                     }
-
+                    finish()
+                }.onWithMsgFailure {
+                    it?.toast()
                 }
-            }, tips)
-            deleteCarPop.showPopupWindow()
+
+            }
         }
-
-
+        pop.btnCancel.setOnClickListener {
+            pop.dismiss()
+        }
+        pop.showPopupWindow()
+//        removeCarNotice?.let { tips ->
+//            val deleteCarPop = DeleteCarPop(this, object : DeleteCarPop.deleteCar {
+//                override fun cancle() {
+//
+//                }
+//
+//                override fun delete() {
+//                    viewModel.deleteCar(auth.vin,id=auth.authId) {
+//                        it.onSuccess {
+//                            try {
+//                                LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)
+//                                BuriedUtil.instant?.carDelete(auth.phone)
+//                            }catch (e:Exception){
+//                                e.printStackTrace()
+//                            }
+//                            finish()
+//
+//                        }.onWithMsgFailure {
+//                            it?.toast()
+//                        }
+//
+//                    }
+//
+//                }
+//            }, tips)
+//            deleteCarPop.showPopupWindow()
+//        }
     }
 
     override fun initData() {
@@ -167,15 +184,15 @@ class LoveCarInfoUI : BaseMineUI<UiLoveCarInfoBinding, CarAuthViewModel>() {
     }
 
     private fun setDefalut() {
-        var d = binding.tvAuth.background as GradientDrawable
-        if (auth.isDefault == 0) {
-            binding.tvAuth.text = "设为默认"
-            d.setColor(Color.parseColor("#691700f4"))
-        } else {
-            binding.tvAuth.text = "默认"
-            d.setColor(Color.parseColor("#b31700f4"))
-            binding.tvAuth.setTextColor(ContextCompat.getColor(this, R.color.white))
-        }
+//        var d = binding.tvAuth.background as GradientDrawable
+//        if (auth.isDefault == 0) {
+//            binding.tvAuth.text = "设为默认"
+//            d.setColor(Color.parseColor("#691700f4"))
+//        } else {
+//            binding.tvAuth.text = "默认"
+//            d.setColor(Color.parseColor("#b31700f4"))
+//            binding.tvAuth.setTextColor(ContextCompat.getColor(this, R.color.white))
+//        }
 
     }
 

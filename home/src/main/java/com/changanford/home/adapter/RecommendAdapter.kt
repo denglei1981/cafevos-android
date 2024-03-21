@@ -13,8 +13,6 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -541,25 +539,25 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 JumpUtils.instans?.jump(8, bean.artId)
             }
             specialAdapter.setList(specialList.dataList)
-            val size = specialList.dataList.size / 4
-            val remainder = specialList.dataList.size % 4
-            val pageSize = if (remainder == 0) size else size + 1
             binding.rySpecial.adapter = specialAdapter
-            binding.drIndicator.setPageSize(pageSize)
-            binding.drIndicator.isVisible = pageSize > 1
+//            val size = specialList.dataList.size / 4
+//            val remainder = specialList.dataList.size % 4
+//            val pageSize = if (remainder == 0) size else size + 1
+//            binding.drIndicator.setPageSize(pageSize)
+//            binding.drIndicator.isVisible = pageSize > 1
 
-            binding.rySpecial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val layoutManager = recyclerView.layoutManager as GridLayoutManager
-                    val fistVisibilityPosition = layoutManager.findLastVisibleItemPosition()
-                    val current = fistVisibilityPosition / 4
-                    binding.drIndicator.post {
-                        binding.drIndicator.onPageSelected(current)
-                    }
-                }
-            })
-            setIndicator(binding)
+//            binding.rySpecial.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                    super.onScrolled(recyclerView, dx, dy)
+//                    val layoutManager = recyclerView.layoutManager as GridLayoutManager
+//                    val fistVisibilityPosition = layoutManager.findLastVisibleItemPosition()
+//                    val current = fistVisibilityPosition / 4
+//                    binding.drIndicator.post {
+//                        binding.drIndicator.onPageSelected(current)
+//                    }
+//                }
+//            })
+//            setIndicator(binding)
 
             binding.tvMore.setOnClickListener {
                 startARouter(ARouterHomePath.SpecialListActivity)

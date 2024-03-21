@@ -9,8 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
         android:background="@color/white"
+        android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="30dp">
 
@@ -18,9 +18,9 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_ads"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

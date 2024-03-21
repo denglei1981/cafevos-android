@@ -522,11 +522,11 @@ open class RecommendFragment :
                         for (i in 0 until adData.showPosition) {
                             val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
                             if (itemType == 4 || itemType == 5) {
-                                it.showPosition = it.showPosition++
+                               adData.showPosition++
                             }
                         }
-                        if (it.showPosition <= recommendAdapter.itemCount) {
-                            recommendAdapter.addData(it.showPosition, adBean)
+                        if (adData.showPosition <= recommendAdapter.itemCount) {
+                            recommendAdapter.addData(adData.showPosition, adBean)
                             isAddAdBean = true
                         }
                     }
@@ -548,6 +548,7 @@ open class RecommendFragment :
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        isAddAdBean = false
         headIndex = 0
         viewModel.getRecommend(false)
         viewModel.getFastEnter()

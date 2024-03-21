@@ -192,6 +192,7 @@ class AskRecommendFragment :
                 headerBinding?.llMyQues?.isVisible = false
             } else {
                 headerBinding?.viewpager?.refreshData(it?.dataList)
+                headerBinding?.viewpager?.invalidate()
                 if (it?.dataList.isNullOrEmpty() || it?.dataList?.size == 1) {
                     headerBinding?.drIndicator?.isVisible = false
                 } else {
@@ -206,6 +207,14 @@ class AskRecommendFragment :
             SPUtils.setParam(requireContext(), "qaUjId", it.qaUjId)
             moreJumpData = it.moreTecnicians
             hotMechanicAdapter.setNewInstance(it.tecnicianVoList)
+
+            if (MConstant.userId.isNotEmpty()) {
+//                val param = SPUtils.getParam(requireContext(), "qaUjId", "")
+                viewModel.questionOfPersonal(it.qaUjId.toString())
+            } else {
+                headerBinding?.cardNoQues?.isVisible = true
+                headerBinding?.llMyQues?.isVisible = false
+            }
         })
         viewModel.questionListLiveData.observe(this, Observer {
             try {
@@ -259,17 +268,6 @@ class AskRecommendFragment :
                 }
             }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (isLogin()) {
-            val param = SPUtils.getParam(requireContext(), "qaUjId", "")
-            viewModel.questionOfPersonal(param.toString())
-        } else {
-            headerBinding?.cardNoQues?.isVisible = true
-            headerBinding?.llMyQues?.isVisible = false
-        }
     }
 
     private fun showScreenDialog() {

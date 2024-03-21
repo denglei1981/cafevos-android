@@ -14,10 +14,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_height="wrap_content">
+            android:paddingEnd="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_topic_bg"
@@ -32,41 +32,41 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="14dp"
-                android:text="7月18日"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="7月18日" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_days_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="已连续签到555天"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_days"
                 app:layout_constraintLeft_toRightOf="@+id/tv_days"
-                app:layout_constraintTop_toTopOf="@+id/tv_days" />
+                app:layout_constraintTop_toTopOf="@+id/tv_days"
+                tools:text="已连续签到555天" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_sign"
                 android:layout_width="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
+                android:layout_height="30dp"
                 android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_sign_top_topic"
                 android:gravity="center"
                 android:paddingStart="16dp"
-                android:background="@drawable/bg_sign_top_topic"
                 android:paddingEnd="16dp"
-                android:textColor="@color/white"
                 android:text="签到得福币"
+                android:textColor="@color/white"
                 android:textSize="12sp"
-                app:layout_constraintTop_toTopOf="@+id/tv_days"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_days"
-                android:layout_height="30dp"/>
-            
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_days" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -137,9 +137,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:background="@color/transparent"
-                app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/b_viewpager" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -147,7 +147,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:layout_height="29dp"/>
+            android:layout_height="29dp"
+            android:background="@color/white" />
     </LinearLayout>
 </layout>

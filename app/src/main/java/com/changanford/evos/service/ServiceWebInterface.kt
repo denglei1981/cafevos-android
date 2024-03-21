@@ -1,4 +1,4 @@
-package com.changanford.common.web
+package com.changanford.evos.service
 
 import android.Manifest
 import android.content.ClipboardManager
@@ -36,6 +36,7 @@ import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.web.JsCallback
 import com.changanford.common.widget.BindingPhoneDialog
 import com.changanford.common.wutil.WCommonUtil
 import com.luck.picture.lib.entity.LocalMedia
@@ -52,9 +53,9 @@ import kotlin.collections.set
 /**
  * H5调用原生方法
  */
-class AgentWebInterface(
+class ServiceWebInterface(
     val webView:WebView,
-    var activity: AgentWebActivity?,
+    var activity: ServiceFragment,
     val jsCallback: JsCallback
 ) {
 
@@ -125,7 +126,7 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun closePage() {
-        activity?.finish()
+//        activity?.finish()
     }
 
     /**
@@ -208,7 +209,7 @@ class AgentWebInterface(
     fun choseImg(callback: String) {
 //        toastShow("选择图片")
         PictureUtils.openGarlly(500,
-            activity,
+            activity.requireActivity(),
             object : OnResultCallbackListener<LocalMedia?> {
                 override fun onCancel() {}
                 override fun onResult(result: MutableList<LocalMedia?>?) {
@@ -246,7 +247,7 @@ class AgentWebInterface(
     fun copyText(content: String) {
 //        toastShow("复制内容成功: ".plus(content))
         var manager: ClipboardManager =
-            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            activity.requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         manager.text = content
     }
 
@@ -278,7 +279,7 @@ class AgentWebInterface(
         map["title"] = title
         map["style"] = style
         map["subcallback"] = subcallback
-        activity?.setNavTitle(map)
+        activity.setNavTitle(map)
 //        LiveDataBus.get().with(LiveDataBusKey.WEB_SET_NAV_TITLE).postValue(map)
     }
 
@@ -352,7 +353,7 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun getStatusBarHeight(): Float {
-        return DisplayUtil.getStatusBarHeight(activity)
+        return DisplayUtil.getStatusBarHeight(activity.requireActivity())
     }
 
     /**
@@ -372,7 +373,7 @@ class AgentWebInterface(
     fun bindPhone(toast: String, callback: String) {
         LiveDataBus.get().with(LiveDataBusKey.WEB_BIND_PHONE).postValue(callback)
         if (toast == "1") {
-            BindingPhoneDialog(activity!!).show()
+            BindingPhoneDialog(activity.requireContext()).show()
         } else {
             instans!!.jump(18, "")
         }
@@ -415,7 +416,7 @@ class AgentWebInterface(
     @JavascriptInterface
     fun showError404() {
         startARouter(ARouterCarControlPath.NothingActivity)
-        activity?.finish()
+//        activity?.finish()
     }
 
     // postType: 帖子类型 0-正常贴子  1-视频帖子
@@ -570,7 +571,7 @@ class AgentWebInterface(
             if (url.contains(".gif")) {
                 GifUtils.saveGif(
                     url,
-                    activity,
+                    activity.requireContext(),
                     MConstant.ftFilesDir + "/" + System.currentTimeMillis() + ".gif"
                 )
                 "保存成功".toast()
@@ -727,7 +728,7 @@ class AgentWebInterface(
     @JavascriptInterface
     fun setStatusBarTextColor(color: Int) {
         activity!!.lifecycleScope.launch {
-            StatusBarUtil.setLightStatusBar(activity, color != 0)
+            StatusBarUtil.setLightStatusBar(activity.requireActivity(), color != 0)
         }
     }
 
@@ -737,10 +738,10 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun setStatusBarIsTransparent(isTransparent: Boolean) {
-        activity?.lifecycleScope?.launch {
+        activity.lifecycleScope.launch {
             StatusBarUtil.setStatusBarColor(
-                activity,
-                if (isTransparent) com.changanford.common.R.color.transparent else R.color.white
+                activity.requireActivity(),
+                if (isTransparent) R.color.transparent else R.color.white
             )
         }
     }
@@ -789,13 +790,13 @@ class AgentWebInterface(
         }
         activity?.apply {
             if (!TextUtils.isEmpty(imgPath)) {
-                WCommonUtil.pathUrlToBitmap(this, imgPath!!, object : OnDownBitmapListener {
+                WCommonUtil.pathUrlToBitmap(requireContext(), imgPath!!, object : OnDownBitmapListener {
                     override fun onFinish(bitmap: Bitmap) {
                         val thumbData = WCommonUtil.bitmap2Bytes(bitmap)
                         LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE)
                             .postValue(shareCallBack)
                         WCommonUtil.shareSmallProgram(
-                            this@apply,
+                            requireContext(),
                             webpageUrl,
                             miniprogramType,
                             userName,
@@ -812,7 +813,7 @@ class AgentWebInterface(
                 LiveDataBus.get().with(LiveDataBusKey.WEB_SMALL_PROGRAM_WX_SHARE)
                     .postValue(shareCallBack)
                 WCommonUtil.shareSmallProgram(
-                    this,
+                    requireContext(),
                     webpageUrl,
                     miniprogramType,
                     userName,
@@ -867,7 +868,7 @@ class AgentWebInterface(
     @JavascriptInterface
     fun openCamera(isEnableCrop: Boolean = true, isCompress: Boolean = true, callback: String) {
         PictureUtils.opencarcme(
-            activity,
+            activity.requireActivity(),
             isEnableCrop,
             isCompress,
             object : OnResultCallbackListener<LocalMedia?> {
@@ -900,7 +901,7 @@ class AgentWebInterface(
     fun openPhoto(maxNum: Int = 1, isEnableCrop: Boolean = true, callback: String) {
         PictureUtils.openGarlly(
             500,
-            activity,
+            activity.requireActivity(),
             if (maxNum > 0) maxNum else 1,
             isEnableCrop,
             object : OnResultCallbackListener<LocalMedia?> {
@@ -952,7 +953,7 @@ class AgentWebInterface(
             if (webView.canGoBack()) {
                 webView.goBack()
             } else {
-                activity?.finish()
+//                activity?.finish()
             }
         }
     }
@@ -962,6 +963,6 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
-        activity?.getAccessCode(clientId,redirectUrl,callback)
+        activity.getAccessCode(clientId,redirectUrl,callback)
     }
 }

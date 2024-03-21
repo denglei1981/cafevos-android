@@ -9,22 +9,25 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CarItemBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.AuthCarStatus
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.MUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.CarAuthHolder
 import com.changanford.my.databinding.ItemCarAuthBinding
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
+import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.widget.WaitBindingDialog
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -54,7 +57,6 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
     override fun initView() {
         binding.carToolbar.toolbarTitle.text = "我的爱车"
         updateMainGio("我的爱车页", "我的爱车页")
-
         headView.look.setOnClickListener {
             BuriedUtil.instant?.carQy()
             JumpUtils.instans?.jump(1, MConstant.H5_CAR_QY)
@@ -87,6 +89,59 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
                 viewModel.waitReceiveList()
             }
         }
+        carAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val carItemBean = carAdapter.getItem(position)
+            when (view.id) {
+                R.id.tv_set_default -> {
+                    if (carItemBean.isDefault == 0) {
+                        viewModel.setDefalutCar(carItemBean.carSalesInfoId) {
+                            it.onSuccess {
+                                carAdapter.data.forEach {
+                                    it.isDefault = 0
+                                }
+                                carItemBean.isDefault = 1
+                                carAdapter.notifyDataSetChanged()
+//                               initRefreshData(1)
+                                "设置成功".toast()
+                            }.onFailure {
+                                it?.toast()
+                            }
+                        }
+                    } else {
+                        "已经是默认车辆".toast()
+                    }
+                }
+
+                R.id.tv_cancel_bind -> {
+                    deleteCar(carItemBean)
+                }
+            }
+        }
+    }
+
+    private fun deleteCar(auth: CarItemBean) {
+        val pop = ConfirmTwoBtnPop(this)
+        pop.contentText.text = "是否确认解绑车辆？"
+        pop.btnConfirm.setOnClickListener {
+            pop.dismiss()
+            viewModel.deleteCar(auth.vin, id = auth.authId) {
+                it.onSuccess {
+                    try {
+                        LiveDataBus.get().with(LiveDataBusKey.REMOVE_CAR).postValue(true)
+                        BuriedUtil.instant?.carDelete(auth.phone)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }.onWithMsgFailure {
+                    it?.toast()
+                }
+
+            }
+        }
+        pop.btnCancel.setOnClickListener {
+            pop.dismiss()
+        }
+        pop.showPopupWindow()
     }
 
     override fun onPause() {
@@ -178,8 +233,12 @@ class CarCrmAuthUI : BaseMineUI<UiCarCrmAuthBinding, CarAuthViewModel>() {
         BaseQuickAdapter<CarItemBean, BaseDataBindingHolder<ItemCarAuthBinding>>(
             R.layout.item_car_auth
         ) {
+
+        init {
+            addChildClickViewIds(R.id.tv_set_default, R.id.tv_cancel_bind)
+        }
+
         override fun convert(holder: BaseDataBindingHolder<ItemCarAuthBinding>, item: CarItemBean) {
-            MUtils.setTopMargin(holder.itemView, 16, holder.layoutPosition+1)
             CarAuthHolder(holder, item)
         }
     }

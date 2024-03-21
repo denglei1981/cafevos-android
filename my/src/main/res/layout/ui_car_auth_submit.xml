@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:button="@null"
-                    android:drawableLeft="@drawable/checkbox_auth_agree"
+                    android:drawableLeft="@drawable/cb_order"
                     android:drawablePadding="@dimen/dp_4"
                     android:gravity="center_vertical"
                     android:text="我已阅读并同意"

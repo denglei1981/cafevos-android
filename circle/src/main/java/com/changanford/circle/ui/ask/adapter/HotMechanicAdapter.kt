@@ -31,9 +31,11 @@ class HotMechanicAdapter :
             it.tvUserZannum.text = item.huDongCount.toString()
 
             if (item.isFollow == 1) {
+                it.tvUserFocus.text="已关注"
                 it.tvUserFocus.setBackgroundResource(R.drawable.bg_80a6_100)
                 it.tvUserFocus.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             } else {
+                it.tvUserFocus.text="关注"
                 it.tvUserFocus.setBackgroundResource(R.drawable.shape_white_24dp)
                 it.tvUserFocus.setTextColor(ContextCompat.getColor(context, R.color.color_1700F4))
             }
@@ -46,18 +48,18 @@ class HotMechanicAdapter :
                 }
             }
 
-            when (item.anserRankNum) {
-                1 -> {
+            when (holder.layoutPosition) {
+                0 -> {
                     it.ivHot.visibility = View.VISIBLE
                     it.ivHot.setImageResource(R.mipmap.circle_hr_one)
                 }
 
-                2 -> {
+                1 -> {
                     it.ivHot.visibility = View.VISIBLE
                     it.ivHot.setImageResource(R.mipmap.circle_hr_two)
                 }
 
-                3 -> {
+                2 -> {
                     it.ivHot.visibility = View.VISIBLE
                     it.ivHot.setImageResource(R.mipmap.circle_hr_three)
                 }

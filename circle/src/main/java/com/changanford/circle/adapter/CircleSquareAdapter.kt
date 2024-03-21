@@ -63,7 +63,7 @@ class CircleSquareAdapter(
 
 
     val topicAdapter by lazy {
-      PolySearchTopicAdapter()
+        PolySearchTopicAdapter()
     }
 
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int, viewType: Int) {
@@ -72,13 +72,13 @@ class CircleSquareAdapter(
                 val binding = vdBinding as LayoutCircleHeaderHotTopicBinding
                 topBinding = binding
                 initVpAd(binding)
-//                initTopTabAndViewPager(binding)
 
                 binding.ryTopic.adapter = topicAdapter
 
                 setTopListener(binding)
 
             }
+
             1 -> {
                 val binding = vdBinding as ItemCircleMianBottomBinding
                 initMagicIndicator(binding)
@@ -89,7 +89,6 @@ class CircleSquareAdapter(
 
     private fun setTopListener(binding: LayoutCircleHeaderHotTopicBinding) {
         binding.run {
-
             ivTopicRight.setOnClickListener {
                 startARouter(ARouterCirclePath.HotTopicActivity)
                 GIOUtils.homePageClick("热门话题", 0.toString(), "更多")
@@ -238,9 +237,11 @@ class CircleSquareAdapter(
                         0 -> {
                             circleRecommendV2Fragment
                         }
+
                         1 -> {
                             lastCircleRecommendV2Fragment
                         }
+
                         else -> {
                             circleRecommendV2Fragment
                         }
@@ -284,6 +285,7 @@ class CircleSquareAdapter(
                 0 -> {
                     circleRecommendV2Fragment.outRefresh()
                 }
+
                 1 -> {
                     lastCircleRecommendV2Fragment.outRefresh()
                 }

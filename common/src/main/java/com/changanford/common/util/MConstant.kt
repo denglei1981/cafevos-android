@@ -30,6 +30,7 @@ import java.io.File
 object MConstant {
     val BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosapiqa.fuyu.club" else "https://evosapi.fuyu.club" else "https://evosapi.fuyu.club" }
     val H5_BASE_URL_CSCIR by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" }
+    val H5_BASE_URL_CSCIR2 by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/" else "https://evosh5.fuyu.club/" else "https://evosh5.fuyu.club/" }
 
     //    val H5_BASE_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" else "https://evosh5.fuyu.club/common/#" }
     //这里修改默认的环境，isCanQeck字段为true时生效
@@ -226,6 +227,9 @@ object MConstant {
      * 优惠券说明
      */
     var COUPON_TASK_RULE = "${H5_BASE_URL_CSCIR}/richTextAp?key=coupon_illustration"
+
+    //服务地址
+    val TAB_SERVICE_ADDRESS = "${H5_BASE_URL_CSCIR2}fuyuapp/#/pages/main/views/service/Service"
 
     var conQaUjId = ""
 

@@ -1,14 +1,42 @@
 package com.changanford.circle.api
 
-import com.changanford.circle.bean.*
 import com.changanford.circle.bean.AskListMainData
+import com.changanford.circle.bean.ChildCommentListBean
+import com.changanford.circle.bean.ChooseCircleBean
+import com.changanford.circle.bean.ChoseCircleBean
+import com.changanford.circle.bean.CircleActivityBean
+import com.changanford.circle.bean.CircleDetailBean
+import com.changanford.circle.bean.CircleDialogBeanItem
 import com.changanford.circle.bean.CircleMainBean
 import com.changanford.circle.bean.CircleMemberBean
+import com.changanford.circle.bean.CircleNoticeBean
+import com.changanford.circle.bean.CircleRolesBean
+import com.changanford.circle.bean.CircleSelectedPostsBean
+import com.changanford.circle.bean.CircleSquareSignBean
+import com.changanford.circle.bean.CircleTypesBean
+import com.changanford.circle.bean.CommentListBean
+import com.changanford.circle.bean.GetApplyManageBean
+import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.HotPicBean
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.MechanicData
+import com.changanford.circle.bean.PlateBean
 import com.changanford.circle.bean.PostKeywordBean
-import com.changanford.common.bean.*
+import com.changanford.circle.bean.PostTagData
+import com.changanford.circle.bean.PostsDetailBean
+import com.changanford.circle.bean.QuestionCreateBean
+import com.changanford.circle.bean.SugesstionTopicDetailBean
+import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CirCleHotList
+import com.changanford.common.bean.CirceHomeBean
+import com.changanford.common.bean.LocationDataBean
+import com.changanford.common.bean.NewCircleDataBean
+import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.QuestionData
+import com.changanford.common.bean.QuestionInfoBean
+import com.changanford.common.bean.SerachUserAddress
+import com.changanford.common.bean.TagInfoBean
+import com.changanford.common.bean.TechnicianData
 import com.changanford.common.net.CommonResponse
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -646,4 +674,13 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<String>
+
+    /**
+     * 获取连续签到时间
+     * */
+    @POST("/user/getSignContinuousDays")
+    suspend fun getSignContinuousDays(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<CircleSquareSignBean>
 }
