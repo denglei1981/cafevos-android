@@ -1,7 +1,6 @@
 package com.changanford.circle.api
 
 import com.changanford.circle.bean.AskListMainData
-import com.changanford.circle.bean.ChildCommentListBean
 import com.changanford.circle.bean.ChooseCircleBean
 import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.bean.CircleActivityBean
@@ -277,7 +276,7 @@ interface CircleNetWork {
     suspend fun getChildCommentList(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<HomeDataListBean<ChildCommentListBean>>
+    ): CommonResponse<HomeDataListBean<CommentListBean>>
 
     @POST("baseDealer/getCityDetailBylngAndlat")
     suspend fun getCityDetailBylngAndlat(

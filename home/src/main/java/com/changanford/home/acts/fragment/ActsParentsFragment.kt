@@ -13,6 +13,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),
     OnRefreshListener {
 
+private var isFirst=true
 
     companion object {
         fun newInstance(): ActsParentsFragment {
@@ -28,6 +29,32 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
     }
 
     override fun initView() {
+
+    }
+
+    override fun initData() {
+
+    }
+
+    override fun onRetryBtnClick() {
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        viewModel.getBanner()
+        if (isFirst){
+            isFirst=false
+            initMyView()
+        }
+        try {
+            adapter.startViewPagerLoop()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun initMyView(){
         binding.refreshLayout.setEnableRefresh(true)
         binding.refreshLayout.setOnRefreshListener(this)
         binding.ryActs.setStickyHeight(0)
@@ -40,29 +67,12 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
                 adapter.startViewPagerLoop()
             }
         }
-    }
-
-    override fun initData() {
         viewModel.getBanner()
-    }
-
-    override fun onRetryBtnClick() {
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        viewModel.getBanner()
-        try {
-            adapter.startViewPagerLoop()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
     }
 
     override fun observe() {
         super.observe()
-        viewModel.bannerLiveData.observe(this, {
+        viewModel.bannerLiveData.observe(this) {
             if (it.isSuccess) {
 //                (parentFragment as HomeV2Fragment).stopRefresh()
                 binding.refreshLayout.finishRefresh()
@@ -70,10 +80,10 @@ class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsL
             } else {
                 toastShow(it.message)
             }
-        })
+        }
     }
 
-    fun homeRefersh() {
+    private fun homeRefersh() {
         viewModel.getBanner()
         adapter.actsChildFragment.getActList(false, adapter.allUnitCode, adapter.allActsCode)
     }

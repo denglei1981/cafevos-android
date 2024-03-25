@@ -31,7 +31,6 @@ import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.viewmodel.shareBackUpHttp
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.JumpConstant
@@ -57,6 +56,7 @@ import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.wutil.ScreenUtils
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions

@@ -9,17 +9,14 @@ import com.changanford.circle.databinding.ActivityPostDetailsBinding
 import com.changanford.circle.ui.fragment.PostImageDetailsFragment
 import com.changanford.circle.ui.fragment.PostVideoDetailsFragment
 import com.changanford.circle.viewmodel.PostGraphicViewModel
-import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseLoadSirActivity
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.gyf.immersionbar.ImmersionBar
-import com.xiaomi.push.it
 
 /**
  * 帖子详情
@@ -66,13 +63,13 @@ class PostDetailsActivity :
                     it.topicName,
                     it.authorBaseVo?.authorId,
                     it.postsId,
-                    it.title,
+                    if (it.title.isNullOrEmpty()) "无" else it.title,
                     it.circleId.toString(),
                     it.circleName,
                     prePageType,
                     if (prePageType.isEmpty()) "" else GIOUtils.postPrePostName
                 )
-                updateMainGio(it.title, "帖子详情页")
+                updateMainGio(if (it.title.isNullOrEmpty()) "无" else it.title, "帖子详情页")
             }
             isFirstIn = false
         } else {
@@ -82,13 +79,13 @@ class PostDetailsActivity :
                     it.topicName,
                     it.authorBaseVo?.authorId,
                     it.postsId,
-                    it.title,
+                    if (it.title.isNullOrEmpty()) "无" else it.title,
                     it.circleId.toString(),
                     it.circleName,
                     prePageType,
                     if (prePageType.isEmpty()) "" else GIOUtils.postPrePostName
                 )
-                updateMainGio(it.title, "帖子详情页")
+                updateMainGio(if (it.title.isNullOrEmpty()) "无" else it.title, "帖子详情页")
             }
         }
 
@@ -99,7 +96,7 @@ class PostDetailsActivity :
         viewModel.postDetailsBean.observe(this) {
             postsBean.value = it
             it?.let {
-                GioPageConstant.postDetailsName = it.title
+                GioPageConstant.postDetailsName = if (it.title.isNullOrEmpty()) "无" else it.title
             }
             val trans = supportFragmentManager.beginTransaction()
             showContent()

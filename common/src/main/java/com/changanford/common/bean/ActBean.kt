@@ -341,7 +341,7 @@ data class InfoDataBean(
 
 @Parcelize
 data class AuthorBaseVo(
-    val authorId: String,
+    val authorId: String="",
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
     var isFollow: Int = 0, //1 是已关注

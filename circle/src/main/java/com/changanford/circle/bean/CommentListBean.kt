@@ -10,30 +10,30 @@ import java.io.Serializable
  * @Des:
  */
 data class CommentListBean(
-    val avatar: String,
-    val artId: String,
-    var childCount: Int,
-    val content: String,
-    val createTime: String,
-    val groupId: String,
-    val parentVo: ArrayList<ParentVo>,
-    val authorBaseVo: AuthorBaseVo,
-    val ipAddr: String?,
-    val id: String,
-    var isLike: Int,
-    val headFrameImage: String,
-    var likesCount: Int,
-    val nickname: String,
-    val phoneModel: String,
-    val role: String,
-    val timeStr: String,
-    val userId: String,
-    val bizId: String,
+    val avatar: String = "",
+    val artId: String = "",
+    var childCount: Int = 0,
+    var content: String = "",
+    val createTime: String = "",
+    val groupId: String = "",
+    var parentVo: ArrayList<ParentVo> = arrayListOf(),
+    val authorBaseVo: AuthorBaseVo = AuthorBaseVo(),
+    val ipAddr: String? = "",
+    val id: String = "",
+    var isLike: Int = 0,
+    val headFrameImage: String = "",
+    var likesCount: Int = 0,
+    var nickname: String = "",
+    val phoneModel: String = "",
+    val role: String = "",
+    val timeStr: String = "",
+    val userId: String = "",
+    val bizId: String = "",
     var carOwner: String = "",
-    val memberIcon: String,
+    val memberIcon: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
     var isFollow: Int = 0, //1 是已关注
-    val childVo: MutableList<CommentListBean>
+    var childVo: MutableList<CommentListBean> = arrayListOf()
 ) : Serializable {
     override fun toString(): String {
         return "CommentListBean(avatar='$avatar', childCount=$childCount, content='$content', createTime='$createTime', groupId='$groupId', id='$id', isLike=$isLike, likesCount=$likesCount, nickname='$nickname', phoneModel='$phoneModel', role='$role', timeStr='$timeStr', userId=$userId)"
@@ -44,4 +44,4 @@ data class CommentListBean(
     }
 }
 
-data class ParentVo(val nickName: String, val avatar: String) {}
+data class ParentVo(val nickname: String) {}

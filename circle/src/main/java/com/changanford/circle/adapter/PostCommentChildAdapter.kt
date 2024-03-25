@@ -24,10 +24,10 @@ class PostCommentChildAdapter(private val lifecycleOwner: LifecycleOwner) :
         val binding = DataBindingUtil.bind<ItemCommentChildBinding>(holder.itemView)
         binding?.let {
             binding.apply {
-                if (item.parentVo.isNullOrEmpty()){
+                if (item.parentVo.isNullOrEmpty()) {
                     tvName.text = "${item.nickname}:"
-                }else{
-                    tvName.text = "${item.nickname}回复${item.parentVo[0].nickName}:"
+                } else {
+                    tvName.text = "${item.nickname}回复${item.parentVo[0].nickname}:"
                 }
                 tvContent.text = item.content
             }
@@ -76,4 +76,7 @@ class PostCommentChildAdapter(private val lifecycleOwner: LifecycleOwner) :
         }
     }
 
+    override fun getItemCount(): Int {
+        return if (data.size > 2) 2 else data.size
+    }
 }

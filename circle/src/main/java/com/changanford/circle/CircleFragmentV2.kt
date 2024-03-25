@@ -64,6 +64,7 @@ import java.lang.reflect.Field
 class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>() {
 
     private var postEntity: ArrayList<PostEntity>? = null//草稿
+    private var pagerCurrent = 0
 
     private val tabList = listOf("动态", "圈子", "问答" /*"Mustang专区"*/)
 
@@ -78,6 +79,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
     var fragmentList: ArrayList<Fragment> = arrayListOf()
     private var currentPosition = 0
+    private var isFirst = true
 
     override fun onDestroyView() {
         LiveDataBus.get().with(BUS_HIDE_BOTTOM_TAB).postValue(false)
@@ -94,6 +96,58 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     }
 
     override fun initView() {
+
+    }
+
+    open fun setCurrentItem(valueItem: String?) {
+        try {
+            if (!TextUtils.isEmpty(valueItem)) {
+                pagerCurrent = valueItem!!.toInt()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun showMenuPop() {
+        CircleMainMenuPop(
+            requireContext(),
+            object : CircleMainMenuPop.CheckPostType {
+                override fun checkLongBar() {
+                    startARouter(ARouterCirclePath.LongPostAvtivity, true)
+                }
+
+                override fun checkPic() {
+                    openChoose()
+//                    startARouter(ARouterCirclePath.PostActivity, true)
+                }
+
+                override fun checkVideo() {
+                    startARouter(ARouterCirclePath.VideoPostActivity, true)
+                }
+
+                override fun checkQuestion() {
+                    GioPageConstant.askSourceEntrance = "右上角+号"
+                    JumpUtils.instans?.jump(116)
+                }
+
+            }).run {
+//            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(binding.ivMenu)
+            initData()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirst) {
+            isFirst = false
+            initMyView()
+        }
+    }
+
+    private fun initMyView() {
         initTabAndViewPager()
         binding.ivMenu.post {
             initMagicIndicator()
@@ -162,46 +216,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
         }
         viewModel.getInitQuestion()
-    }
-
-    open fun setCurrentItem(valueItem: String?) {
-        try {
-            if (!TextUtils.isEmpty(valueItem)) {
-                binding.viewPager.currentItem = valueItem!!.toInt()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-
-    private fun showMenuPop() {
-        CircleMainMenuPop(
-            requireContext(),
-            object : CircleMainMenuPop.CheckPostType {
-                override fun checkLongBar() {
-                    startARouter(ARouterCirclePath.LongPostAvtivity, true)
-                }
-
-                override fun checkPic() {
-                    openChoose()
-//                    startARouter(ARouterCirclePath.PostActivity, true)
-                }
-
-                override fun checkVideo() {
-                    startARouter(ARouterCirclePath.VideoPostActivity, true)
-                }
-
-                override fun checkQuestion() {
-                    GioPageConstant.askSourceEntrance = "右上角+号"
-                    JumpUtils.instans?.jump(116)
-                }
-
-            }).run {
-//            setBackgroundColor(Color.TRANSPARENT)
-            showPopupWindow(binding.ivMenu)
-            initData()
-        }
+        binding.viewPager.currentItem = pagerCurrent
     }
 
     private fun openChoose() {

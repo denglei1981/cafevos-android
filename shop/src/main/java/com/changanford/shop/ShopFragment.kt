@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseFragment
@@ -18,6 +19,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.wutil.ViewPage2AdapterFragment
 import com.changanford.common.wutil.WCommonUtil
@@ -239,8 +242,17 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //                HomeMyIntegralCompose(it.totalIntegral)
 //            }
             val isLogin = !TextUtils.isEmpty(MConstant.token)
-            binding.inTop.tvRightTips.text =
-                if (isLogin) getString(R.string.str_earnMoney) else getString(R.string.str_loginToView)
+            binding.inTop.groupMyFb.isVisible = isLogin
+            if (isLogin) {
+                binding.inTop.tvRightTips.text = getString(R.string.str_earnMoney)
+                binding.inTop.tvTips.text = "福币在手 精品我有"
+                binding.inTop.tvTips.setDrawableNull()
+            } else {
+                binding.inTop.tvRightTips.text = getString(R.string.str_loginToView)
+                binding.inTop.tvTips.text = "我的福币"
+                binding.inTop.tvTips.setDrawableLeft(R.mipmap.ic_shop_fb)
+            }
+
             binding.inTop.tvFbNum.text = if (isLogin) "${it.totalIntegral}" else "0"
             binding.inTop.tvRightTips.setOnClickListener {
                 if (isLogin) {

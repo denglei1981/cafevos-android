@@ -105,7 +105,6 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
     }
 
     private fun checkSign() {
-        if (MConstant.userId.isNotEmpty()) {
             viewModel.getDay7Sign { daySignBean ->
                 var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
                 daySignBean?.sevenDays?.forEach {
@@ -136,16 +135,6 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
                     }
                 }
             }
-        } else {
-            circleSquareAdapter.topBinding.tvSign.run {
-                setBackgroundResource(R.drawable.bg_sign_top_topic)
-                text = "签到得福币"
-                isEnabled = true
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                setOnClickListener { startARouter(ARouterMyPath.SignUI) }
-            }
-
-        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

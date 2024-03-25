@@ -1,7 +1,6 @@
 package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -15,6 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CommentListBean
+import com.changanford.circle.bean.ParentVo
 import com.changanford.circle.databinding.ItemPostDetailsCommentBinding
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.widget.CommentLoadMoreView
@@ -22,6 +22,7 @@ import com.changanford.common.MyApp
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -29,8 +30,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
-import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.startARouter
+import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -41,10 +41,12 @@ import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.launchWithCatch
+import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.google.gson.Gson
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -52,8 +54,11 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
 
+    private val mineUser by lazy { UserDatabase.getUniUserDatabase(MyApp.mContext) }
+
     init {
         loadMoreModule.loadMoreView = CommentLoadMoreView()
+        addChildClickViewIds(R.id.tv_child_count)
         LiveDataBus.get().withs<AuthorBaseVo>(LiveDataBusKey.FOLLOW_USER_CHANGE)
             .observe(mLifecycleOwner) {
                 for (data in this.data) {
@@ -147,12 +152,28 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
                 binding.tvChildCount.text = "共${item.childCount}条回复"
                 childAdapter.setOnItemClickListener { _, _, position ->
                     val commentBean = childAdapter.getItem(position)
-                    val bundle = Bundle()
-                    bundle.putString("groupId", commentBean.groupId)
-                    bundle.putInt("type", 2)// 1 资讯 2 帖子
-                    bundle.putString("bizId", commentBean.bizId)
-                    bundle.putString("childCount", commentBean.childCount.toString())
-                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+                    CommentUtils.showReplyDialog(
+                        context,
+                        commentBean.bizId,
+                        commentBean.groupId,
+                        commentBean.id,
+                        2,
+                        commentBean.authorBaseVo.nickname
+                    ) {
+                        addChildComment(
+                            item,
+                            commentBean.authorBaseVo,
+                            CommentUtils.commentContent,
+                            holder.layoutPosition
+                        )
+//                        LiveDataBus.get().with(LiveDataBusKey.REFRESH_COMMENT_RY).postValue("")
+                    }
+//                    val bundle = Bundle()
+//                    bundle.putString("groupId", commentBean.groupId)
+//                    bundle.putInt("type", 2)// 1 资讯 2 帖子
+//                    bundle.putString("bizId", commentBean.bizId)
+//                    bundle.putString("childCount", commentBean.childCount.toString())
+//                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
                 }
             }
             val labelAdapter = LabelAdapter(16)
@@ -239,5 +260,34 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner) :
         authors.let {
             setFollowState.setFollowState(btnFollow, it, true)
         }
+    }
+
+    /**
+     * item 一级评论
+     * checkAuthor 被点击的用户信息
+     */
+    fun addChildComment(
+        item: CommentListBean,
+        checkAuthor: AuthorBaseVo,
+        content: String,
+        position: Int
+    ) {
+        var childList = item.childVo
+        if (childList.isNullOrEmpty()) {
+            childList = ArrayList()
+        }
+        val addBean = CommentListBean()
+        if (item.authorBaseVo.authorId != checkAuthor.authorId) {
+            addBean.parentVo = arrayListOf(ParentVo(checkAuthor.nickname))
+        }
+        val user = Gson().fromJson(
+            mineUser.getUniUserInfoDao().getUser().value?.userJson,
+            UserInfoBean::class.java
+        )
+        addBean.nickname = user.nickname
+        addBean.content = content
+        childList.add(0, addBean)
+        item.childVo = childList
+        notifyItemChanged(position)
     }
 }

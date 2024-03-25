@@ -29,59 +29,77 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_fb"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="66dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_081700f4_12"
-            android:paddingBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/banner">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_tips"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:text="福币在手 精品我有"
-                android:textColor="@color/color_16"
-                android:textSize="14sp"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tb_fb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="我的福币:"
-                android:textColor="@color/color_9916"
-                android:textSize="12sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_tips"
-                app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="6dp"
+                    android:text="福币在手 精品我有"
+                    android:textColor="@color/color_16"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_fb"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="10dp"
-                android:src="@mipmap/ic_shop_fb"
-                app:layout_constraintBottom_toBottomOf="@+id/tb_fb"
-                app:layout_constraintLeft_toRightOf="@+id/tb_fb"
-                app:layout_constraintTop_toTopOf="@+id/tb_fb" />
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_my_fb"
+                    android:layout_width="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="tb_fb,iv_fb,tv_fb_num"
+                    android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_fb_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                tools:text="123"
-                android:textColor="@color/color_c19f68"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_fb"
-                app:layout_constraintLeft_toRightOf="@+id/iv_fb"
-                app:layout_constraintTop_toTopOf="@+id/iv_fb" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tb_fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="我的福币:"
+                    android:textColor="@color/color_9916"
+                    android:textSize="12sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_tips"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_fb"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@mipmap/ic_shop_fb"
+                    app:layout_constraintBottom_toBottomOf="@+id/tb_fb"
+                    app:layout_constraintLeft_toRightOf="@+id/tb_fb"
+                    app:layout_constraintTop_toTopOf="@+id/tb_fb" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_fb_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    tools:text="123"
+                    android:textColor="@color/color_c19f68"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_fb"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_fb"
+                    app:layout_constraintTop_toTopOf="@+id/iv_fb" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_right_tips"
@@ -93,9 +111,9 @@
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/tb_fb"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_tips"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="做任务 赚福币" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

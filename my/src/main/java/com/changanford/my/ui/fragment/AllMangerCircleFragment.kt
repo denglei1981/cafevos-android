@@ -17,18 +17,26 @@ import com.changanford.common.bean.CircleStatusItemBean
 import com.changanford.common.bean.CircleTagBean
 import com.changanford.common.bean.Refuse
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.*
-import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logE
 import com.changanford.my.BaseMineFM
 import com.changanford.my.R
 import com.changanford.my.bean.MangerCircleCheck
-import com.changanford.my.databinding.*
+import com.changanford.my.databinding.FragmentMemberCircleBinding
+import com.changanford.my.databinding.ItemLabelBinding
+import com.changanford.my.databinding.PopCircleBinding
+import com.changanford.my.databinding.PopMemberPartBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CircleViewModel
 import com.google.android.material.imageview.ShapeableImageView
@@ -339,7 +347,8 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             var name: TextView = holder.getView(R.id.item_name)
             var date: TextView = holder.getView(R.id.item_date)
             var tag: AppCompatTextView = holder.getView(R.id.item_tag)
-            icon.load(item.avatar)
+//            icon.load(item.avatar)
+            GlideUtils.loadCircle(item.avatar,icon, R.mipmap.ic_def_square_img)
             name.text = item.nickname
             date.text = "申请时间：${TimeUtils.InputTimetamp(item.createTime)}"
             if (item.starOrderNumStr.isNullOrEmpty()) {

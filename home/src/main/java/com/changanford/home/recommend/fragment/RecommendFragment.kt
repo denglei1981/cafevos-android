@@ -287,8 +287,14 @@ open class RecommendFragment :
         super.observe()
         bus()
         viewModel.specialListLiveData.safeObserve(this) {
-            val addBean = RecommendData(specialList = it)
-            recommendAdapter.addData(1, addBean)
+            if (it.extend.topicAreaConfig.indexListShow == 1) {
+                val addBean = RecommendData(specialList = it)
+                recommendAdapter.addData(1, addBean)
+            } else {
+                if (recommendAdapter.data.size > 1 && recommendAdapter.getItem(1).itemType == 5) {
+                 recommendAdapter.removeAt(1)
+                }
+            }
         }
         viewModel.recommendAdBean.observe(this) {
 //            if (!it.ads.isNullOrEmpty()){
@@ -522,7 +528,7 @@ open class RecommendFragment :
                         for (i in 0 until adData.showPosition) {
                             val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
                             if (itemType == 4 || itemType == 5) {
-                               adData.showPosition++
+                                adData.showPosition++
                             }
                         }
                         if (adData.showPosition <= recommendAdapter.itemCount) {

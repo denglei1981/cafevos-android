@@ -58,7 +58,12 @@ class CommunityCircleHelper(
             }
             if (!it.wonderfulControls.isNullOrEmpty()) {
                 if (it.wonderfulControls.size > 3) {
-                    circleSquareAdapter.activityAdapter.setList(it.wonderfulControls.subList(0, 3))
+                    circleSquareAdapter.activityAdapter.setList(
+                        it.wonderfulControls.subList(
+                            0,
+                            3
+                        )
+                    )
                 } else {
                     circleSquareAdapter.activityAdapter.setList(it.wonderfulControls)
                 }
@@ -114,7 +119,10 @@ class CommunityCircleHelper(
                 }
                 setBannerList(it.ads)
             }
-            circleSquareAdapter.initTabAndViewPager(it.userId.toString(), it.circleId.toString())
+            circleSquareAdapter.initTabAndViewPager(
+                it.userId.toString(),
+                it.circleId.toString()
+            )
         }
     }
 

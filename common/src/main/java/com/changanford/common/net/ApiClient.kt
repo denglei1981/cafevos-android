@@ -2,11 +2,9 @@ package com.changanford.common.net
 
 
 import com.changanford.common.util.MConstant.BASE_URL
-import com.changanford.common.util.MConstant.isShowLog
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -43,11 +41,11 @@ object ApiClient {
             .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
             .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
             .apply {
-                if (isShowLog) {
-                    this.addInterceptor(HttpLoggingInterceptor().apply {
-                        this.level = HttpLoggingInterceptor.Level.BODY
-                    })
-                }
+//                if (isShowLog) {
+//                    this.addInterceptor(HttpLoggingInterceptor().apply {
+//                        this.level = HttpLoggingInterceptor.Level.BODY
+//                    })
+//                }
                 this.addInterceptor(DataEncryptInterceptor())
             }.build()
 

@@ -11,8 +11,7 @@ import com.changanford.circle.databinding.ItemPersonalBinding
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MUtils
-import com.changanford.common.util.ext.ImageOptions
-import com.changanford.common.util.ext.loadImage
+import com.changanford.common.utilext.GlideUtils
 
 /**
  *Author lcw
@@ -33,10 +32,11 @@ class PersonalAdapter :
         binding?.let {
 //            MUtils.setTopMargin(binding.clItem, 27, holder.layoutPosition)
 
-            binding.ivIcon.loadImage(item.avatar, ImageOptions().apply {
-                circleCrop = true
-                error = R.mipmap.head_default
-            })
+//            binding.ivIcon.loadImage(item.avatar, ImageOptions().apply {
+//                circleCrop = true
+//                error = R.mipmap.head_default
+//            })
+            GlideUtils.loadCircle(item.avatar, binding.ivIcon, R.mipmap.ic_def_square_img)
             binding.tvName.text = item.nickname
             if (!item.starOrderNumStr.isNullOrEmpty()) {
                 binding.tvOwner.visibility = View.VISIBLE

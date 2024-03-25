@@ -23,11 +23,11 @@ class PostBarBannerAdapter(val isGood: Int ) : BaseBannerAdapter<ImageList?>() {
         val binding = DataBindingUtil.bind<ItemPostBarBannerBinding>(holder.itemView)
 
         binding?.ivBanner?.loadImage85(GlideUtils.defaultHandleImageUrl(data?.imgUrl))
-        if(isGood==1){
-            binding?.ivVeryPost?.visibility=View.VISIBLE
-        }else{
+//        if(isGood==1){
+//            binding?.ivVeryPost?.visibility=View.VISIBLE
+//        }else{
             binding?.ivVeryPost?.visibility=View.GONE
-        }
+//        }
 
         binding?.ivBanner?.setOnClickListener {
             val pics = arrayListOf<MediaListBean>()

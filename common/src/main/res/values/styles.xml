@@ -26,7 +26,9 @@
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
-
+    <style name="StyleCommonDialog" parent="DialogThemeStyle">
+        <item name="android:windowSoftInputMode">stateVisible</item>
+    </style>
     <!-- 自定义仿IOS的AlertDialog的样式 -->
     <style name="AlertDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@color/m_pop_bg</item>

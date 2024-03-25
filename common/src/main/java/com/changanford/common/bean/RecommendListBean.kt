@@ -23,11 +23,15 @@ data class HomeExtendBean(
     val isStarRole: String,
     val isCircler: String,//是否圈主
     val jumpDataType: Int,
+    val topicAreaConfig: TopicAreaConfig,
+    val jumpDataValue: String,
+)
+
+data class TopicAreaConfig(
     //是否在推荐显示
     val indexListShow: Int,
     //是否在资讯列表显示
     val articleListShow: Int,
-    val jumpDataValue: String,
 )
 
 data class RecommendData(
@@ -115,7 +119,7 @@ data class RecommendData(
     val specialList: SpecialListMainBean? = null,
     val adBean: AdBean? = null
 ) : MultiItemEntity {
-     fun getItemTypeLocal(): Int {
+    fun getItemTypeLocal(): Int {
         if (rtype == 3) {// 活动
             return 3
         }
@@ -156,7 +160,7 @@ data class RecommendData(
             }
 
             2 -> {
-                contentString = postsTopicName
+                contentString = postsContent
             }
 
             3 -> {
@@ -183,7 +187,7 @@ data class RecommendData(
             }
         }
         if (likeCount == 0L) {
-            return "0"
+            return "赞"
         }
         likeCountResult = CountUtils.formatNum(likeCount.toString(), false).toString()
         return likeCountResult
@@ -286,7 +290,7 @@ data class RecommendData(
                 topicStr = ""
             }
         }
-        return topicStr
+        return if (topicStr.isNullOrEmpty()) "" else topicStr
     }
 
     fun isArtVideoType(): Boolean {

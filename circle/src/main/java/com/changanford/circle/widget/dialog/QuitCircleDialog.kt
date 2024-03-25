@@ -16,7 +16,7 @@ class QuitCircleDialog(context: Context, quit: () -> Unit) : BaseDialog(context)
     }
 
     init {
-        window?.setGravity(Gravity.BOTTOM)
+        window?.setGravity(Gravity.CENTER)
         setParamWidthMatch()
         findViewById<TextView>(R.id.miss_tv).setOnClickListener { dismiss() }
         findViewById<TextView>(R.id.quit_tv).setOnClickListener {

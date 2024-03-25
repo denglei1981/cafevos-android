@@ -41,6 +41,7 @@ import com.zhpan.bannerview.constants.PageStyle
 class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsListViewModel>(),
     OnLoadMoreListener, OnRefreshListener {
     private var headNewBinding: HeaderNewsListBinding? = null
+    private var isFirst = true
     private val newsListAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
@@ -57,42 +58,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     private var selectPosition: Int = -1;// 记录选中的 条目
 
     override fun initView() {
-        binding.recyclerView.layoutManager =
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
-        addHeadView()
-        binding.recyclerView.adapter = newsListAdapter
-
-        newsListAdapter.setOnItemChildClickListener { adapter, view, position ->
-            val item = newsListAdapter.getItem(position)
-            selectPosition = position
-            when (view.id) {
-                R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
-                    JumpUtils.instans!!.jump(35, item.userId.toString())
-                }
-
-                R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
-                    if (item.authors != null) {
-//                        val newsValueData = NewsValueData(item.artId, item.type)
-//                        val values = Gson().toJson(newsValueData)
-                        GioPageConstant.infoEntrance = "发现-资讯-信息流"
-                        JumpUtils.instans?.jump(2, item.artId)
-                        GIOUtils.homePageClick("资讯信息流", (position + 1).toString(), item.title)
-                    } else {
-                        toastShow("没有作者")
-                    }
-                }
-            }
-        }
-        binding.smartLayout.setEnableRefresh(true)
-        binding.smartLayout.setEnableLoadMore(false)
-        binding.smartLayout.setOnRefreshListener(this)
-        binding.smartLayout.setOnLoadMoreListener(this)
-        homeRefersh()
-        setLoadSir(binding.smartLayout)
-        newsListAdapter.loadMoreModule.setOnLoadMoreListener {
-            viewModel.getNewsList(true)
-        }
     }
 
     private fun addHeadView() {
@@ -158,7 +124,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     override fun observe() {
         super.observe()
         viewModel.specialListLiveData.safeObserve(this) {
-            if (it.isSuccess && it.data.extend.articleListShow == 1) {
+            if (it.isSuccess && it.data.extend.topicAreaConfig.articleListShow == 1) {
                 headNewBinding?.clTopBanner?.isVisible = true
                 headNewBinding?.bViewpager?.create(it.data.dataList)
             } else {
@@ -224,10 +190,10 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
         //登录回调
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
-            .observe(this, {
+            .observe(this) {
                 // 收到 登录状态改变回调都要刷新页面
                 homeRefersh()
-            })
+            }
 
         LiveDataBus.get().with(LiveDataBusKey.LIST_FOLLOW_CHANGE).observe(this, Observer {
             homeRefersh()
@@ -257,17 +223,60 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
     }
 
 
-    fun homeRefersh() {
+    private fun homeRefersh() {
         viewModel.getSpecialList()
         viewModel.getNewsList(false)
     }
 
     override fun onResume() {
         super.onResume()
+        if (isFirst) {
+            isFirst = false
+            initMyView()
+        }
         try {
             headNewBinding?.bViewpager?.startLoop()
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun initMyView() {
+        binding.recyclerView.layoutManager =
+            LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
+        addHeadView()
+        binding.recyclerView.adapter = newsListAdapter
+
+        newsListAdapter.setOnItemChildClickListener { adapter, view, position ->
+            val item = newsListAdapter.getItem(position)
+            selectPosition = position
+            when (view.id) {
+                R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
+                    JumpUtils.instans!!.jump(35, item.userId.toString())
+                }
+
+                R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
+                    if (item.authors != null) {
+//                        val newsValueData = NewsValueData(item.artId, item.type)
+//                        val values = Gson().toJson(newsValueData)
+                        GioPageConstant.infoEntrance = "发现-资讯-信息流"
+                        JumpUtils.instans?.jump(2, item.artId)
+                        GIOUtils.homePageClick("资讯信息流", (position + 1).toString(), item.title)
+                    } else {
+                        toastShow("没有作者")
+                    }
+                }
+            }
+        }
+        binding.smartLayout.setEnableRefresh(true)
+        binding.smartLayout.setEnableLoadMore(false)
+        binding.smartLayout.setOnRefreshListener(this)
+        binding.smartLayout.setOnLoadMoreListener(this)
+        homeRefersh()
+        setLoadSir(binding.smartLayout)
+        newsListAdapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.getNewsList(true)
         }
     }
 

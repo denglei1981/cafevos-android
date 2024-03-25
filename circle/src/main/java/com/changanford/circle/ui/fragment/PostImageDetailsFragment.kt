@@ -29,7 +29,6 @@ import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.PostGraphicViewModel
 import com.changanford.circle.viewmodel.shareBackUpHttp
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.constant.JumpConstant
@@ -39,6 +38,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -54,6 +54,7 @@ import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toast
+import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.gyf.immersionbar.ImmersionBar
 import com.qw.soul.permission.SoulPermission
@@ -447,14 +448,36 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
         commentAdapter.setOnItemClickListener { _, view, position ->
             val commentBean = commentAdapter.getItem(position)
-            val bundle = Bundle()
-            bundle.putString("groupId", commentBean.groupId)
-            bundle.putInt("type", 2)// 1 资讯 2 帖子
-            bundle.putString("bizId", mData.postsId)
-            bundle.putString("childCount", commentBean.childCount.toString())
-            startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+            CommentUtils.showReplyDialog(
+                requireContext(),
+                commentBean.bizId,
+                commentBean.groupId,
+                commentBean.id,
+                2,
+                commentBean.authorBaseVo.nickname
+            ) {
+                commentAdapter.addChildComment(
+                    commentBean,
+                    commentBean.authorBaseVo,
+                    CommentUtils.commentContent,
+                    position
+                )
+            }
+        }
+        commentAdapter.setOnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                R.id.tv_child_count -> {
+                    val commentBean = commentAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("groupId", commentBean.groupId)
+                    bundle.putInt("type", 2)// 1 资讯 2 帖子
+                    bundle.putString("bizId", mData.postsId)
+                    bundle.putString("childCount", commentBean.childCount.toString())
+                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
 
-            checkPosition = position
+                    checkPosition = position
+                }
+            }
         }
     }
 

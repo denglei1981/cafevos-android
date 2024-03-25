@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.ChildCommentListBean
+import com.changanford.circle.bean.CommentListBean
 import com.changanford.circle.databinding.ItemItemCommentBinding
 import com.changanford.circle.utils.AnimScaleInUtil
 import com.changanford.circle.widget.CommentLoadMoreView
@@ -47,20 +47,20 @@ import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
 class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
-    BaseQuickAdapter<ChildCommentListBean, BaseViewHolder>(R.layout.item_item_comment),
+    BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_item_comment),
     LoadMoreModule {
 
     init {
         loadMoreModule.loadMoreView = CommentLoadMoreView()
     }
 
-    override fun convert(holder: BaseViewHolder, item: ChildCommentListBean) {
+    override fun convert(holder: BaseViewHolder, item: CommentListBean) {
         val binding = DataBindingUtil.bind<ItemItemCommentBinding>(holder.itemView)
         binding?.let {
             binding.layoutHeader.ivHeader.loadImage(
                 item.avatar,
                 ImageOptions().apply { circleCrop = true })
-            binding.bean = item
+//            binding.bean = item
             binding.run {
                 layoutHeader.tvAuthorName.text = item.nickname
                 if (!item.memberIcon.isNullOrEmpty()) {
@@ -211,7 +211,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
      * 处理回复文本各种样式
      */
     @SuppressLint("SetTextI18n")
-    private fun contentSty(contentTv: TextView?, item: ChildCommentListBean) {
+    private fun contentSty(contentTv: TextView?, item: CommentListBean) {
         if (item.parentVo.isNullOrEmpty()) {
             contentTv?.text = item.content
             contentTv?.post {

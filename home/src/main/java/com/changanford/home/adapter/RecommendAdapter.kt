@@ -13,6 +13,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
@@ -247,6 +248,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         val binding = DataBindingUtil.bind<ItemHomeRecommendItemsOneBinding>(holder.itemView)
         binding?.let {
             val ivHeader = it.layoutHeader.ivHeader
+            val ivVip = it.layoutHeader.ivVip
             val tvAuthorName = it.layoutHeader.tvAuthorName
             val tvSubtitle = it.layoutHeader.tvSubTitle
             val tvContent = it.layoutContent.tvContent
@@ -257,12 +259,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             val ivPlay = it.layoutContent.ivPlay
             val tvLikeCount = it.layoutCount.tvLikeCount
             val rvUserTag = it.layoutHeader.rvUserTag
-            val tvCommentCount = it.layoutCount.tvCommentCount
+            val tvCommentCount = it.layoutCount.tvComments
             val tvViewCount = it.layoutCount.tvViewCount
             val tvPostTime = it.layoutCount.tvPostTime
             val city = it.layoutCount.tvLocation
 
             ivHeader.loadCompress(item.authors?.avatar)
+            ivVip.isVisible = !item.authors?.memberIcon.isNullOrEmpty()
+            ivVip.load(item.authors?.memberIcon)
 
             tvAuthorName.text = item.authors?.nickname
             if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
@@ -287,9 +291,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         item.getTopic(),
                         R.mipmap.ic_home_refined_item
                     )
-//                        tvContent.text = item.getTopic()
+                    tvContent.text = item.getTopic()
                 }
-                if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
+                if (TextUtils.isEmpty(item.getContent()) ) {
                     tvTopic.text = ""
                     tvTopic.visibility = View.GONE
                 } else {
@@ -310,7 +314,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     tvContent.visibility = View.VISIBLE
                     tvContent.text = item.getTopic()
                 }
-                if (TextUtils.isEmpty(item.getContent()) || item.rtype == 2) {
+                if (TextUtils.isEmpty(item.getContent())) {
                     tvTopic.text = ""
                     tvTopic.visibility = View.GONE
                 } else {
@@ -448,7 +452,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             } else {
                 city.isVisible = false
             }
-            tvCommentCount.setPageTitleText(item.getCommentCount())
+            tvCommentCount.text = (item.getCommentCount())
 //            tvCommentCount.text =
             tvPostTime.text = item.timeStr
             tvViewCount.text = item.getViewCount()
@@ -534,12 +538,15 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     ) {
         specialList?.let {
             val specialAdapter = RecommendSpecialAdapter()
+            binding.rySpecial.layoutManager =
+                GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+            binding.rySpecial.adapter = specialAdapter
             specialAdapter.setOnItemClickListener { adapter, view, position ->
                 val bean = specialAdapter.getItem(position)
                 JumpUtils.instans?.jump(8, bean.artId)
             }
-            specialAdapter.setList(specialList.dataList)
-            binding.rySpecial.adapter = specialAdapter
+            specialAdapter.data.clear()
+            specialAdapter.setNewInstance(specialList.dataList)
 //            val size = specialList.dataList.size / 4
 //            val remainder = specialList.dataList.size % 4
 //            val pageSize = if (remainder == 0) size else size + 1

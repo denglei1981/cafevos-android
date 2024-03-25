@@ -60,14 +60,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:ellipsize="end"
-            android:maxLength="6"
+            android:maxEms="5"
             android:maxLines="1"
             android:textColor="@color/color_16"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_header"
-            tools:text="发顺丰呀啦…" />
+            tools:text="发顺丰呀啦a是的" />
 
         <LinearLayout
             android:id="@+id/ll_hd"

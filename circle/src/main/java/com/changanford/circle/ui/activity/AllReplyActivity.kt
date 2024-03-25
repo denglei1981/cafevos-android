@@ -8,10 +8,9 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.circle.R
 import com.changanford.circle.adapter.ItemCommentAdapter
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.ChildCommentListBean
+import com.changanford.circle.bean.CommentListBean
 import com.changanford.circle.databinding.ActivityAllReplyBinding
 import com.changanford.circle.viewmodel.AllReplyViewModel
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.BaseApplication
@@ -36,6 +35,7 @@ import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.ReplyDialog
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
@@ -54,7 +54,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
 
     private var page = 1
 
-    var childCommentListBean: ChildCommentListBean? = null
+    var childCommentListBean: CommentListBean? = null
 
     private val commentAdapter by lazy {
         ItemCommentAdapter(this)

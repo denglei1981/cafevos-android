@@ -1536,4 +1536,22 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleMainBean>
+
+    /**
+     *   资讯评论
+     * */
+    @POST("/con/article/addComment")
+    suspend fun addCommentNews(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *  帖子评论
+     */
+    @POST("con/posts/addComment")
+    suspend fun addPostsComment(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

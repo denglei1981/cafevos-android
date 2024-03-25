@@ -2,10 +2,14 @@ package com.changanford.circle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.ChildCommentListBean
+import com.changanford.circle.bean.CommentListBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.util.DeviceUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
@@ -17,9 +21,9 @@ import com.changanford.common.utilext.toast
  */
 class AllReplyViewModel : BaseViewModel() {
 
-    var commentBean = MutableLiveData<ChildCommentListBean>()
+    var commentBean = MutableLiveData<CommentListBean>()
     val addCommendBean = MutableLiveData<CommonResponse<Any>>()
-    val commentListBean = MutableLiveData<ArrayList<ChildCommentListBean>>()
+    val commentListBean = MutableLiveData<ArrayList<CommentListBean>>()
 
     fun getListData(bizId: String, groupId: String, type: String, page: Int) {
         launch(block = {

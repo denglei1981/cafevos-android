@@ -68,12 +68,12 @@ class CommunityHotHelper(
             myCircles.value = it?.myCircles
             if (MConstant.token.isEmpty() || it?.myCircles.isNullOrEmpty()) {
                 binding.clTab.isVisible = false
-                binding.cardNoCircle.isVisible = true
+                headBinding.cardNoCircle.isVisible = true
                 binding.layoutHot.root.isVisible = true
                 binding.layoutCircle.root.isVisible = false
             } else {
                 binding.clTab.isVisible = true
-                binding.cardNoCircle.isVisible = false
+                headBinding.cardNoCircle.isVisible = false
                 binding.layoutHot.root.isVisible = false
                 binding.layoutCircle.root.isVisible = true
             }
@@ -88,6 +88,9 @@ class CommunityHotHelper(
 
     private fun initListener() {
         headBinding?.run {
+            tvJoinTips.setOnClickListener {
+                startARouter(ARouterCirclePath.CircleListActivity)
+            }
             ryRank.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)

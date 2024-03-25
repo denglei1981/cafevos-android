@@ -37,7 +37,8 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     private lateinit var communityCircleHelper: CommunityCircleHelper
     private val leftViews = arrayListOf<ShapeableImageView>()
     private val rightViews = arrayListOf<ShapeableImageView>()
-    private var nowCircleId = MutableLiveData<String>()
+    private var nowCircleId: String = ""
+    private var isLoginChange = false
 
     override fun initView() {
         communityHotHelper = CommunityHotHelper(
@@ -97,9 +98,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     override fun observe() {
         super.observe()
         LiveDataBus.get().withs<String>(LiveDataBusKey.HOME_CIRCLE_CHECK_ID).observe(this) {
-            nowCircleId.value = it
-        }
-        nowCircleId.observe(this) {
+            nowCircleId = it
             communityCircleHelper.initCommunity(it)
         }
         selectTab.observe(this) {
@@ -190,7 +189,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             if (!it.isNullOrEmpty()) {
                 communityCircleHelper.initCommunity(it[0].circleId)
 
-                nowCircleId.value = it[0].circleId
+                nowCircleId = it[0].circleId
                 val useList = if (it.size > 3) {
                     it.subList(0, 3)
                 } else it
@@ -239,7 +238,16 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
         MyCirclePop(requireContext()).run {
             setBackgroundColor(Color.TRANSPARENT)
             showPopupWindow(binding.vPop)
-            communityHotHelper.myCircles.value?.let { initPopData(it, nowCircleId.value) }
+            communityHotHelper.myCircles.value?.let { initPopData(it, nowCircleId) }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isLoginChange) {
+            isLoginChange = false
+            selectTab.value = 0
+            communityHotHelper.initData()
         }
     }
 
@@ -250,11 +258,13 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             .observe(this) {
                 when (it) {
                     UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
-                        communityHotHelper.initData()
+                        isLoginChange = true
                     }
+
                     UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
-                        communityHotHelper.initData()
+                        isLoginChange = true
                     }
+
                     else -> {}
                 }
             }

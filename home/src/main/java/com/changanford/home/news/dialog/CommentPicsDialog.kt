@@ -12,7 +12,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseBottomDialog
 import com.changanford.common.loadsir.EmptyCommentCallback
 import com.changanford.common.loadsir.ErrorCallback
@@ -22,6 +21,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.getViewModel
+import com.changanford.common.widget.ReplyDialog
 import com.changanford.home.PageConstant
 import com.changanford.home.R
 import com.changanford.home.databinding.DialogShortVideoCommentBinding

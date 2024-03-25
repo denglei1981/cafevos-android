@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.adapter.PostDetailsCommentAdapter
-import com.changanford.circle.widget.dialog.ReplyDialog
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
@@ -33,6 +32,7 @@ import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.web.ShareViewModule
+import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.home.PageConstant
 import com.changanford.home.R

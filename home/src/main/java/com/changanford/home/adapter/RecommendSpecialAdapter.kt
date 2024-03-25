@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.SpecialListBean
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.toIntPx
@@ -27,7 +26,7 @@ class RecommendSpecialAdapter :
     ) {
         holder.dataBinding?.apply {
             setMargin(clContent,28,holder.layoutPosition)
-            clContent.maxWidth = ((204.toDouble() / 375) * MConstant.deviceWidth).toInt()
+//            clContent.maxWidth = ((204.toDouble() / 375) * MConstant.deviceWidth).toInt()
             ivIcon.setCircular(12)
             ivIcon.loadCompress(item.getPicUrl())
             tvTitle.text = item.title

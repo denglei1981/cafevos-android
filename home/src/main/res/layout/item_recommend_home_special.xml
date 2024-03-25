@@ -46,11 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintLeft_toLeftOf="@+id/tv_tips"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_tips"
-            app:spanCount="2" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
 
         <com.zhpan.bannerview.indicator.DrawableIndicator
             android:id="@+id/dr_indicator"

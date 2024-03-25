@@ -1,4 +1,4 @@
-package com.changanford.circle.widget.dialog
+package com.changanford.common.widget
 
 import android.app.Dialog
 import android.content.Context
@@ -6,11 +6,11 @@ import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
-import com.changanford.circle.R
-import com.changanford.circle.databinding.DialogCircleReplyBinding
-import com.changanford.circle.utils.HideKeyboardUtil
-import com.changanford.circle.utils.setDialogParams
+import com.changanford.common.R
+import com.changanford.common.databinding.DialogCircleReplyBinding
+import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.MineUtils
+import com.changanford.common.util.setDialogParams
 import com.changanford.common.utilext.toast
 
 /**

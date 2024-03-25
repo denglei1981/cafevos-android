@@ -38,7 +38,7 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
         binding.ryPersonal.adapter = adapter
         binding.title.run {
             AppUtils.setStatusBarMarginTop(binding.title.root, this@PersonalActivity)
-            tvTitle.text = "成员"
+            tvTitle.text = "全部成员"
             ivBack.setOnClickListener { finish() }
         }
         initListener()
@@ -46,7 +46,8 @@ class PersonalActivity : BaseActivity<ActivityPersonalBinding, PersonalViewModel
 
     private fun initListener() {
         if (isApply == "2") {
-            binding.title.tvRightMenu.text = "退出"
+            binding.title.tvRightMenu.text = "退出圈子"
+            binding.title.tvRightMenu.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
             binding.title.tvRightMenu.setOnClickListener {
                 QuitCircleDialog(this) { viewModel.quitCircle(circleId) }.show()
             }
