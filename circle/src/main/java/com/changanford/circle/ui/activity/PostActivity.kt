@@ -167,15 +167,16 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         title = "发动态"
         ImmersionBar.with(this).keyboardEnable(true)
             .setOnKeyboardListener { isPopup, keyboardHeight ->
-                if (isPopup) {
-                    binding.bottom.llContent.visibility = View.VISIBLE
-                    binding.bottom.emojirec.visibility = View.GONE
-                    binding.bottom.clEmojiHead.visibility = View.GONE
-                    binding.bottom.ivPic.visibility = View.GONE
-                } else {
-                    binding.bottom.llContent.visibility = View.GONE
-                }
+//                if (isPopup) {
+//                    binding.bottom.llContent.visibility = View.VISIBLE
+//                    binding.bottom.emojirec.visibility = View.GONE
+//                    binding.bottom.clEmojiHead.visibility = View.GONE
+//                    binding.bottom.ivPic.visibility = View.GONE
+//                } else {
+//                    binding.bottom.llContent.visibility = View.GONE
+//                }
             }.init()  //顶起页面底部
+        binding.bottom.ivPic.visibility = View.GONE
         AppUtils.setStatusBarPaddingTop(binding.title.commTitleBar, this)
 //        binding.icAttribute.vLineOne.visibility = View.GONE
         binding.title.barTvTitle.text = "发动态"
@@ -191,7 +192,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
         isCirclePost = intent.extras?.getBoolean("isCirclePost") ?: false
         isTopPost = intent.extras?.getBoolean("isTopPost") ?: false
         binding.etBiaoti.requestFocus()
-        binding.bottom.llContent.visibility = View.GONE
+//        binding.bottom.llContent.visibility = View.GONE
         initListener()
         inLocalMedia = intent.getParcelableArrayListExtra(CircleConfig.CIRCLE_TO_POST_KEY)
         binding.picsrec.adapter = postPicAdapter
@@ -745,7 +746,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.GONE
             tvTopicName.text = ""
-//            llNoTopic.isVisible = true
+            llNoTopic.isVisible = true
         }
     }
 

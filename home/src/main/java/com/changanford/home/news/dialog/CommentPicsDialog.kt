@@ -18,6 +18,7 @@ import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.getViewModel
@@ -32,15 +33,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.kingja.loadsir.callback.Callback
 import com.kingja.loadsir.core.LoadSir
 
-
-/**
- * @Description: java类作用描述
- * @Author: newway
- * @CreateDate: 2020-11-17 10:19
- * @UpdateUser:
- * @UpdateDate: 2020-11-17 10:19
- * @UpdateRemark: 更新说明
- */
 
 open class CommentPicsDialog(
     var commentCountInterface: CommentCountInterface,
@@ -57,7 +49,7 @@ open class CommentPicsDialog(
     var content: String = ""
     private val mOperatingStatus = 0
     private var mContentType = 0
-    private val commentAdapter by lazy { PostDetailsCommentAdapter(this) }
+    private val commentAdapter by lazy { PostDetailsCommentAdapter(this,1) }
 
     var commentCount = 0 // 计算评论了多少次。
     var checkPosition: Int = -1
@@ -94,22 +86,37 @@ open class CommentPicsDialog(
         mDatabind.commentList.adapter = commentAdapter
         mDatabind.commentList.layoutManager = LinearLayoutManager(activity)
         getCommentList()
-
-        commentAdapter.setOnItemClickListener { adapter, view, position -> // 弹出评论窗口。。。
-//            val items = commentAdapter.getItem(position)
-//            replay(items.id)
+        commentAdapter.setOnItemClickListener { _, view, position ->
             val commentBean = commentAdapter.getItem(position)
-//            if (commentBean.typeNull == 1) {
-//                return@setOnItemClickListener
-//            }
-            val bundle = Bundle()
-            bundle.putString("groupId", commentBean.groupId)
-            bundle.putInt("type", 1)// 1 资讯 2 帖子
-            bundle.putString("bizId", bizId)
-            bundle.putString("childCount", commentBean.childCount.toString())
-            startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-            checkPosition = position
-
+            commentAdapter.checkPosition = position
+            CommentUtils.showReplyDialog(
+                requireContext(),
+                bizId,
+                commentBean.groupId,
+                commentBean.id,
+                1,
+                commentBean.authorBaseVo.nickname
+            ) {
+                requestShortVideoCommentViewMode.getChildCommentData(commentBean.bizId, commentBean.groupId, "1")
+            }
+        }
+        LiveDataBus.get().withs<String>(CircleLiveBusKey.ADD_COMMENT_REPLY).observe(this) {
+            val commentBean = commentAdapter.getItem(commentAdapter.checkPosition)
+            requestShortVideoCommentViewMode.getChildCommentData(bizId, commentBean.groupId, "1")
+        }
+        commentAdapter.setOnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                com.changanford.circle.R.id.tv_child_count -> {
+                    val commentBean = commentAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("groupId", commentBean.groupId)
+                    bundle.putInt("type", 1)// 1 资讯 2 帖子
+                    bundle.putString("bizId", bizId)
+                    bundle.putString("childCount", commentBean.childCount.toString())
+                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+                    commentAdapter.checkPosition = position
+                }
+            }
         }
 
         mDatabind.out.setOnClickListener {
@@ -121,7 +128,7 @@ open class CommentPicsDialog(
             requestShortVideoCommentViewMode.getNewsCommentList(bizId, true)
         }
 
-        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this, {
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this) {
             if (checkPosition == -1) {
                 return@observe
             }
@@ -134,7 +141,7 @@ open class CommentPicsDialog(
             }
             // 有头布局。
             commentAdapter.notifyItemChanged(checkPosition + 1)
-        })
+        }
 
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this, {
             val bean = commentAdapter.getItem(checkPosition)
@@ -206,6 +213,9 @@ open class CommentPicsDialog(
                 showEmpty()
             }
         })
+        mViewModel.childCommentListBean.observe(this) {
+            commentAdapter.addChildComment(it, commentAdapter.checkPosition)
+        }
     }
 
     @SuppressLint("SetTextI18n")

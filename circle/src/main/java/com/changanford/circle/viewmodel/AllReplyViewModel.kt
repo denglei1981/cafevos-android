@@ -59,7 +59,7 @@ class AllReplyViewModel : BaseViewModel() {
         pid: String?,
         content: String
     ) {
-        launch(block = {
+        launch(true,block = {
             val body = MyApp.mContext.createHashMap()
             body["bizId"] = bizId ?: ""
             body["pid"] = pid ?: ""
@@ -84,7 +84,7 @@ class AllReplyViewModel : BaseViewModel() {
         pid: String?,
         content: String
     ) {
-        launch(block = {
+        launch(true,block = {
             val body = MyApp.mContext.createHashMap()
             body["bizId"] = bizId ?: ""
             body["pid"] = pid ?: ""

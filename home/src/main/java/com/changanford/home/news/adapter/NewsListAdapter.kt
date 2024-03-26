@@ -81,6 +81,7 @@ class NewsListAdapter(
             tvSubtitle.visibility = View.GONE
         } else {
             tvSubtitle.visibility = View.VISIBLE
+            tvSubtitle.text = item.authors?.carOwner
         }
 //        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
@@ -111,14 +112,14 @@ class NewsListAdapter(
             ivVip.load(item.authors?.memberIcon)
         }
         tvLocation.visibility = View.GONE
-        viewCount.text = item.viewsCount.toString()
+        viewCount.text = item.getViewsResult()
         comments.text = item.getCommentCountNew()
         tvTime.text = item.timeStr
         val ivPlay = holder.getView<ImageView>(R.id.iv_play)
 
         val tvVideoTime = holder.getView<AppCompatTextView>(R.id.tv_video_times)
 
-        tvLikeCount.text = ("${if (item.likesCount > 0) item.likesCount else "0"}")
+        tvLikeCount.text = item.getGoodsResult()
         if (item.isLike == 1) {
             tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 

@@ -1,6 +1,8 @@
 package com.changanford.home.adapter
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -17,12 +19,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.common.MyApp
 import com.changanford.common.adapter.CarHomeHistoryAdapter
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoFlowTopicVoBean
+import com.changanford.common.bean.PostDataBean
 import com.changanford.common.bean.RecommendData
 import com.changanford.common.bean.SpecialListMainBean
 import com.changanford.common.buried.BuriedUtil
@@ -38,6 +42,7 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.DisplayUtil
@@ -45,11 +50,14 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
@@ -63,6 +71,8 @@ import com.changanford.home.databinding.ItemHomeRecommendAdsBinding
 import com.changanford.home.databinding.ItemHomeRecommendItemsOneBinding
 import com.changanford.home.databinding.ItemRecommendHomeSpecialBinding
 import com.changanford.home.util.LoginUtil
+import com.qw.soul.permission.SoulPermission
+import com.qw.soul.permission.bean.Permissions
 
 
 class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
@@ -263,6 +273,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             val tvViewCount = it.layoutCount.tvViewCount
             val tvPostTime = it.layoutCount.tvPostTime
             val city = it.layoutCount.tvLocation
+            val tvPostTopic = it.layoutContent.tvPostTopic
+            val tvCircle = it.layoutContent.tvCircle
 
             ivHeader.loadCompress(item.authors?.avatar)
             ivVip.isVisible = !item.authors?.memberIcon.isNullOrEmpty()
@@ -293,7 +305,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     )
                     tvContent.text = item.getTopic()
                 }
-                if (TextUtils.isEmpty(item.getContent()) ) {
+                if (TextUtils.isEmpty(item.getContent())) {
                     tvTopic.text = ""
                     tvTopic.visibility = View.GONE
                 } else {
@@ -404,16 +416,36 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //                    tvNewsTag.text = "资讯"
                     ivPlay.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
                     tvVideoTime.visibility = if (item.isArtVideoType()) View.VISIBLE else View.GONE
+                    tvPostTopic.isVisible = false
+                    tvCircle.isVisible = false
                 }
 
                 2 -> {// 帖子
-//                    tvNewsTag.visibility = View.GONE
-//                    if (!TextUtils.isEmpty(item.postsVideoTime)) {
-//                        tvVideoTime.text = item.postsVideoTime
-//                    }
-//                    tvVideoTime.visibility = View.VISIBLE
+                    if (item.postsTopicName.isNullOrEmpty()) {
+                        tvPostTopic.isVisible = false
+                    } else {
+                        tvPostTopic.isVisible = true
+                        tvPostTopic.text = item.postsTopicName
+                        tvPostTopic.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("topicId", item.postsTopicId)
+                            GioPageConstant.topicEntrance = "推荐"
+                            updatePersonalData("推荐", "推荐页")
+                            startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+                        }
+                    }
+                    if (item.postsCircleName.isNullOrEmpty()) {
+                        tvCircle.isVisible = false
+                    } else {
+                        tvCircle.isVisible = true
+                        tvCircle.text = item.postsCircleName
+                        tvCircle.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putString("circleId", item.postsCircleId)
+                            startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                        }
+                    }
                     ivPlay.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
-//                    tvVideoTime.visibility = if (item.postsType == 3) View.VISIBLE else View.GONE
                     if (item.postsType == 3) {
                         tvVideoTime.isVisible = true
                         tvVideoTime.text = item.postsVideoTime
@@ -453,7 +485,6 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                 city.isVisible = false
             }
             tvCommentCount.text = (item.getCommentCount())
-//            tvCommentCount.text =
             tvPostTime.text = item.timeStr
             tvViewCount.text = item.getViewCount()
             tvCommentCount.setOnTouchListener { v, event ->
@@ -501,6 +532,31 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 //        GlideUtils.loadBD(item.authors?.avatar, ivHeader)
 //        val tvTimeAndViewCount = holder.getView<TextView>(R.id.tv_time_look_count)
 //        tvTimeAndViewCount.text = item.getTimeAdnViewCount()
+    }
+
+    private fun startBaduMap(mData: PostDataBean) {
+
+        val permissions = Permissions.build(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+        val success = {
+            val intent = Intent()
+            intent.putExtra("lat", mData.lat)
+            intent.putExtra("lon", mData.lon)
+            intent.putExtra("address", mData.address)
+            intent.putExtra("addrName", mData.showCity())
+            intent.setClass(MyApp.mContext, LocationMMapActivity::class.java)
+            context.startActivity(intent)
+        }
+        val fail = {
+            AlertDialog(MyApp.mContext).builder()
+                .setTitle("提示")
+                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+                .setNegativeButton("取消") { }.setPositiveButton(
+                    "确定"
+                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
     }
 
     private fun showCarHistory(

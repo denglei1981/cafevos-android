@@ -50,6 +50,8 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_item_comment),
     LoadMoreModule {
 
+    var commentType = 2
+
     init {
         loadMoreModule.loadMoreView = CommentLoadMoreView()
     }
@@ -97,7 +99,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
                 lifecycleOwner.launchWithCatch {
                     val body = MyApp.mContext.createHashMap()
                     body["commentId"] = item.id
-                    body["type"] = 2
+                    body["type"] = commentType
                     val rKey = getRandomKey()
                     ApiClient.createApi<CircleNetWork>()
                         .commentLike(body.header(rKey), body.body(rKey)).also {

@@ -74,12 +74,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     constructor() : this(PostsDetailBean())
 
     private var page = 1
-    private var checkPosition = 0
     private var isFirst = true
     private var isWhite = true//是否是白色状态
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(this)
+        PostDetailsCommentAdapter(this,2)
     }
 
     private val labelAdapter by lazy {
@@ -448,6 +447,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
         commentAdapter.setOnItemClickListener { _, view, position ->
             val commentBean = commentAdapter.getItem(position)
+            commentAdapter.checkPosition = position
             CommentUtils.showReplyDialog(
                 requireContext(),
                 commentBean.bizId,
@@ -456,13 +456,12 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 2,
                 commentBean.authorBaseVo.nickname
             ) {
-                commentAdapter.addChildComment(
-                    commentBean,
-                    commentBean.authorBaseVo,
-                    CommentUtils.commentContent,
-                    position
-                )
+                viewModel.getChildCommentData(commentBean.bizId, commentBean.groupId, "2")
             }
+        }
+        LiveDataBus.get().withs<String>(CircleLiveBusKey.ADD_COMMENT_REPLY).observe(this) {
+            val commentBean = commentAdapter.getItem(commentAdapter.checkPosition)
+            viewModel.getChildCommentData(mData.postsId, commentBean.groupId, "2")
         }
         commentAdapter.setOnItemChildClickListener { _, view, position ->
             when (view.id) {
@@ -474,8 +473,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     bundle.putString("bizId", mData.postsId)
                     bundle.putString("childCount", commentBean.childCount.toString())
                     startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-
-                    checkPosition = position
+                    commentAdapter.checkPosition = position
                 }
             }
         }
@@ -487,6 +485,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     override fun observe() {
         super.observe()
+        viewModel.childCommentListBean.observe(this) {
+            commentAdapter.addChildComment(it, commentAdapter.checkPosition)
+        }
         viewModel.commendBean.observe(this) {
             if (page == 1) {
                 commentAdapter.setList(it.dataList)
@@ -700,25 +701,25 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
     private fun bus() {
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_COMMENT_ITEM).observe(this) {
-            val bean = commentAdapter.getItem(checkPosition)
+            val bean = commentAdapter.getItem(commentAdapter.checkPosition)
             bean.isLike = it
             if (bean.isLike == 1) {
                 bean.likesCount++
             } else {
                 bean.likesCount--
             }
-            commentAdapter.notifyItemChanged(checkPosition)
+            commentAdapter.notifyItemChanged(commentAdapter.checkPosition)
         }
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             mData.shareCount++
             binding.bottomView.tvShareNum.text = mData.shareCount.toString()
         }
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this) {
-            val bean = commentAdapter.getItem(checkPosition)
+            val bean = commentAdapter.getItem(commentAdapter.checkPosition)
             bean.let { _ ->
                 bean.childCount = it
             }
-            commentAdapter.notifyItemChanged(checkPosition)
+            commentAdapter.notifyItemChanged(commentAdapter.checkPosition)
         }
         LiveDataBus.get().with(LiveDataBusKey.CHILD_COMMENT_STAR).observe(this, Observer {
             try {

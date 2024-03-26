@@ -393,7 +393,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 R.id.serviceFragment -> {// 服务
                     GioPageConstant.mainTabName = "服务页"
                     // 埋点
-                    StatusBarUtil.setStatusBarColor(this, R.color.white)
+                    StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("服务")
                     }

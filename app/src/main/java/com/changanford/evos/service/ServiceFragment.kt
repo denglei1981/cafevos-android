@@ -63,7 +63,7 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
 
     //    private lateinit var mineSignViewModel: MineSignViewModel //获取个人信息，获取U享卡列表
     lateinit var headerView: View
-    var url: String = ""
+    private var url: String = ""
     private var subcallback = "subcallback"//右上角图标文字点击时给h5的回调
     private var uploadImgCallback = ""//上传图片回调
     private var payCallback = ""//支付回调
@@ -124,6 +124,7 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
         }
         registerLiveBus()
         initObserver()
+        addLiveDataBus()
     }
 
     private fun initObserver() {
@@ -826,5 +827,24 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
                 }
             }
         }
+    }
+
+    private fun addLiveDataBus() {
+        //登录回调
+        LiveDataBus.get()
+            .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
+            .observe(this) {
+                when (it) {
+                    UserManger.UserLoginStatus.USER_LOGIN_SUCCESS -> {
+                        binding.webView.loadUrl(url)
+                    }
+
+                    UserManger.UserLoginStatus.USER_LOGIN_OUT -> {
+                        binding.webView.loadUrl(url)
+                    }
+
+                    else -> {}
+                }
+            }
     }
 }

@@ -1,14 +1,20 @@
 package com.changanford.circle.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.baidu.mapapi.search.core.BusInfo
 import com.changanford.circle.api.CircleNetWork
 import com.changanford.circle.bean.CommentListBean
 import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -69,6 +75,30 @@ class PostGraphicViewModel : BaseViewModel() {
         })
     }
 
+    val childCommentListBean = MutableLiveData<ArrayList<CommentListBean>>()
+
+    fun getChildCommentData(bizId: String, groupId: String, type: String) {
+        launch(true,block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = "1"
+            body["pageSize"] = "3"
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["bizId"] = bizId
+                it["groupId"] = groupId
+                it["type"] = type
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getChildCommentList(body.header(rKey), body.body(rKey)).also {
+                        if (it.data?.dataList?.size!! > 0) {
+                            it.data?.dataList?.removeAt(0)
+                            childCommentListBean.value = it.data?.dataList
+                        }
+
+                }
+
+        })
+    }
     fun likePosts(postsId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()

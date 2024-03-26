@@ -29,15 +29,32 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.PostDataBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.preLoadNumber
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.ui.dialog.AlertDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.image.ItemCommonPics
-import com.changanford.common.utilext.*
+import com.changanford.common.util.imageAndTextView
+import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
+import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.toIntPx
+import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions
 import razerdp.basepopup.QuickPopupBuilder
@@ -66,8 +83,6 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
         val activity = BaseApplication.curActivity
         setTopMargin(binding?.root, 15, holder.layoutPosition)
         binding?.let {
-            binding.layoutCount.tvLikeCount.text =
-                ("${if (item.likesCount > 0) item.likesCount else "0"}")
             if (item.isLike == 1) {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 
@@ -80,8 +95,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             if (!item.authorBaseVo?.memberIcon.isNullOrEmpty()) {
                 binding.layoutHeader.ivVip.load(item.authorBaseVo?.memberIcon)
             }
-            binding.layoutCount.tvComments.text = item.getCommentCountNew()
-            binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
+            binding.layoutCount.tvComments.text = item.getCommentCountResult()
+            binding.layoutCount.tvViewCount.text = item.getViewsCountResult()
+            binding.layoutCount.tvLikeCount.text = item.getLikesCountResult()
             binding.layoutCount.tvPostTime.text = item.timeStr
             binding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {
@@ -215,7 +231,9 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             if (item.circle == null || item.circle!!.starName.isNullOrEmpty()) {
                 binding.layoutHeader.tvCircleType.visibility = View.GONE
             } else {
-                if (isTopic){return}
+                if (isTopic) {
+                    return
+                }
                 binding.layoutHeader.tvCircleType.visibility = View.VISIBLE
                 binding.layoutHeader.tvCircleType.text = item.circle?.starName
             }

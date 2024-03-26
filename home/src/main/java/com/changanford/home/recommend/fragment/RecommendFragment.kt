@@ -251,8 +251,14 @@ open class RecommendFragment :
             if (dataList.size > 5) {
                 dataList.subList(0, 5)
             }
+            topFastViews.forEach {
+                it.shapeAbleImageView.isVisible = false
+                it.textView.isVisible = false
+            }
             dataList.forEachIndexed { index, adBean ->
                 val bean = topFastViews[index]
+                bean.shapeAbleImageView.isVisible = true
+                bean.textView.isVisible = true
                 bean.shapeAbleImageView.setCircular(8)
                 bean.shapeAbleImageView.setOnClickListener {
                     JumpUtils.instans?.jump(adBean.jumpDataType, adBean.jumpDataValue)
@@ -292,7 +298,7 @@ open class RecommendFragment :
                 recommendAdapter.addData(1, addBean)
             } else {
                 if (recommendAdapter.data.size > 1 && recommendAdapter.getItem(1).itemType == 5) {
-                 recommendAdapter.removeAt(1)
+                    recommendAdapter.removeAt(1)
                 }
             }
         }
@@ -556,6 +562,7 @@ open class RecommendFragment :
     override fun onRefresh(refreshLayout: RefreshLayout) {
         isAddAdBean = false
         headIndex = 0
+        viewModel.getRecommendBanner()
         viewModel.getRecommend(false)
         viewModel.getFastEnter()
         viewModel.getKingKong()

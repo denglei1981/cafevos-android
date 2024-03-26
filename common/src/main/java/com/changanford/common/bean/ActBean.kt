@@ -271,7 +271,7 @@ data class InfoDataBean(
     fun getGoodsResult(): String {
         var commentCountResult: String = ""
         if (likesCount == 0L) {
-            return "点赞"
+            return "赞"
         }
         commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
         return commentCountResult
@@ -279,9 +279,9 @@ data class InfoDataBean(
 
     fun getCommentCountNew(): String {
         if (commentCount == 0L) {
-            return "0"
+            return "评论"
         }
-        return commentCount.toString()
+        return CountUtils.formatNum(commentCount.toString(), false).toString()
     }
 
     fun getCommentCountAnViewCount(): String {
@@ -494,7 +494,7 @@ data class PostDataBean(
 
     fun getCommentCountNew(): String {
         if (commentCount == 0L) {
-            return "0"
+            return ""
         }
         return commentCount.toString()
     }
@@ -505,6 +505,24 @@ data class PostDataBean(
             return "评论"
         }
         commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getViewsCountResult(): String {
+        var commentCountResult: String = ""
+        if (viewsCount == 0L) {
+            return "浏览"
+        }
+        commentCountResult = CountUtils.formatNum(viewsCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getLikesCountResult(): String {
+        var commentCountResult: String = ""
+        if (likesCount == 0L) {
+            return "赞"
+        }
+        commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
         return commentCountResult
     }
 

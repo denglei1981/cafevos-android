@@ -2,6 +2,9 @@ package com.changanford.home.news.request
 
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
+import com.changanford.circle.api.CircleNetWork
+import com.changanford.circle.bean.CommentListBean
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -9,6 +12,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.utilext.createHashMap
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
@@ -86,6 +90,31 @@ class HomeCommentViewModel : BaseViewModel() {
                         UpdateUiState<ListMainBean<com.changanford.circle.bean.CommentListBean>>(false, it, isLoadMore)
                     commentsLiveData.postValue(updateUiState)
                 }
+        })
+    }
+
+    val childCommentListBean = MutableLiveData<ArrayList<CommentListBean>>()
+
+    fun getChildCommentData(bizId: String, groupId: String, type: String) {
+        launch(true,block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = "1"
+            body["pageSize"] = "3"
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["bizId"] = bizId
+                it["groupId"] = groupId
+                it["type"] = type
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getChildCommentList(body.header(rKey), body.body(rKey)).also {
+                    if (it.data?.dataList?.size!! > 0) {
+                        it.data?.dataList?.removeAt(0)
+                        childCommentListBean.value = it.data?.dataList
+                    }
+
+                }
+
         })
     }
 

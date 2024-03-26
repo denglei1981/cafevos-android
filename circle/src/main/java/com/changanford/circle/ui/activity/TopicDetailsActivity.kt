@@ -20,7 +20,9 @@ import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.pop.CircleDetailsPop
+import com.changanford.circle.widget.titles.PostTransitionPagerTitleView
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
+import com.changanford.circle.widget.titles.TopicTransitionPagerTitleView
 import com.changanford.common.adapter.TopicDetailCarAdapter
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.constant.IntentKey
@@ -488,9 +490,9 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val simplePagerTitleView: SimplePagerTitleView =
-                    ScaleTransitionPagerTitleView(context)
+                    TopicTransitionPagerTitleView(context)
                 simplePagerTitleView.text = viewModel.tabList[index]
-                simplePagerTitleView.textSize = 18f
+//                simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(this@TopicDetailsActivity, R.color.color_9916)

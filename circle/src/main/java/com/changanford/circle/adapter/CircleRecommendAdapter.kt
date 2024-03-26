@@ -49,13 +49,17 @@ import com.changanford.common.util.SetFollowState
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.qw.soul.permission.SoulPermission
@@ -83,14 +87,13 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         val binding = DataBindingUtil.bind<ItemCircleRecommendOneBinding>(holder.itemView)
         binding?.apply {
             binding.layoutCount.tvLikeCount.text =
-                ("${if (item.likesCount > 0) item.likesCount else "0"}")
+                ("${if (item.likesCount > 0) item.likesCount else "赞"}")
             if (item.isLike == 1) {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
 
             } else {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
             }
-
             binding.layoutCount.tvLikeCount.setOnClickListener {
                 likePost(binding, item, holder.layoutPosition)
             }
@@ -112,8 +115,17 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                     }
                 }
             }
-            binding.layoutCount.tvComments.text = item.getCommentCountNew()
-            binding.layoutCount.tvViewCount.text = item.viewsCount.toString()
+            binding.layoutContent.tvPostTopic.isVisible = !item.topicName.isNullOrEmpty()
+            binding.layoutContent.tvPostTopic.text = item.topicName
+            binding.layoutContent.tvPostTopic.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString("topicId", item.topicId.toString())
+                GioPageConstant.topicEntrance = "社区"
+                updatePersonalData("社区", "话题详情页")
+                startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
+            }
+            binding.layoutCount.tvComments.text = item.getCommentCountResult()
+            binding.layoutCount.tvViewCount.text = item.getViewsCountResult()
             binding.layoutCount.tvPostTime.text = item.timeStr
             binding.layoutCount.tvCommentCount.setPageTitleText(item.getCommentCountResult())
             binding.layoutCount.tvCommentCount.setOnTouchListener { v, event ->
@@ -131,12 +143,11 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             }
             binding.layoutHeader.ivHeader.setOnClickListener {
                 JumpUtils.instans?.jump(35, item.userId.toString())
-
             }
-            binding.layoutCount.tvLocation.setOnClickListener {
-                StartBaduMap(item)
-            }
+            binding.layoutHeader.tvAuthorName.text = item.authorBaseVo?.nickname
             binding.layoutHeader.ivHeader.loadCompress(item.authorBaseVo?.avatar)
+            binding.layoutHeader.ivVip.isVisible = !item.authorBaseVo?.memberIcon.isNullOrEmpty()
+            binding.layoutHeader.ivVip.load(item.authorBaseVo?.memberIcon)
             binding.layoutHeader.tvSubTitle.text = item.authorBaseVo?.getMemberNames()
             binding.layoutHeader.tvSubTitle.visibility =
                 if (item.authorBaseVo?.showSubtitle() == true) View.VISIBLE else View.GONE
@@ -149,11 +160,19 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
             }
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getMPicList())
-            if (item.city.isNullOrEmpty()) {
-                binding.layoutCount.tvLocation.visibility = View.GONE
+            if (!item.addrName.isNullOrEmpty()) {
+                binding.layoutCount.tvLocation.setDrawableLeft(R.mipmap.icon_circle_location)
+                binding.layoutCount.tvLocation.text = item.addrName
+                binding.layoutCount.tvLocation.setOnClickListener {
+                    startBaduMap(item)
+                }
+                binding.layoutCount.tvLocation.isVisible = true
+            } else if (!item.city.isNullOrEmpty()) {
+                binding.layoutCount.tvLocation.setDrawableNull()
+                binding.layoutCount.tvLocation.text = item.city
+                binding.layoutCount.tvLocation.isVisible = true
             } else {
-                binding.layoutCount.tvLocation.visibility = View.VISIBLE
-                binding.layoutCount.tvLocation.text = item.showCity()
+                binding.layoutCount.tvLocation.isVisible = false
             }
             if (item.type == 3) {//视频
                 binding.layoutContent.tvVideoTimes.text = item.videoTime.toString()
@@ -286,14 +305,14 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
 
                         "PENDING" -> {//待审核
                             tvJoinType.text = "  审核中"
-                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                            ivCircleType.setColorFilter(Color.parseColor("#B51700f4"))
+                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type)
+                            ivCircleType.setColorFilter(Color.parseColor("#E67400"))
                         }
 
                         "JOINED" -> {//已加入
                             tvJoinType.text = "  已加入"
-                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type2)
-                            ivCircleType.setColorFilter(Color.parseColor("#B51700f4"))
+                            ivCircleType.setImageResource(R.mipmap.ic_circle_ry_type)
+                            ivCircleType.setColorFilter(Color.parseColor("#cfced2"))
                         }
                     }
 
@@ -436,7 +455,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
         this.notifyDataSetChanged()
     }
 
-    private fun StartBaduMap(mData: PostDataBean) {
+    private fun startBaduMap(mData: PostDataBean) {
 
         val permissions = Permissions.build(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -459,30 +478,6 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
                 ) { SoulPermission.getInstance().goPermissionSettings() }.show()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
-//        SoulPermission.getInstance()
-//            .checkAndRequestPermission(
-//                Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead
-//                object : CheckRequestPermissionListener {
-//                    override fun onPermissionOk(permission: Permission) {
-//
-//                        val intent = Intent()
-//                        intent.putExtra("lat", mData.lat)
-//                        intent.putExtra("lon", mData.lon)
-//                        intent.putExtra("address", mData.address)
-//                        intent.putExtra("addrName", mData.showCity())
-//                        intent.setClass(context, LocationMMapActivity::class.java)
-//                        context.startActivity(intent)
-//                    }
-//
-//                    override fun onPermissionDenied(permission: Permission) {
-//                        AlertDialog(context).builder()
-//                            .setTitle("提示")
-//                            .setMsg("您已禁止了定位权限，请到设置中心去打开")
-//                            .setNegativeButton("取消") { }.setPositiveButton(
-//                                "确定"
-//                            ) { SoulPermission.getInstance().goPermissionSettings() }.show()
-//                    }
-//                })
     }
 
     override fun onViewRecycled(holder: BaseViewHolder) {

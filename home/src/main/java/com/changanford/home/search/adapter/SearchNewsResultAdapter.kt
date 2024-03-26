@@ -136,6 +136,11 @@ class SearchNewsResultAdapter(private val mLifecycleOwner: LifecycleOwner) :
             ApiClient.createApi<HomeNetWork>()
                 .followOrCancelUser(requestBody.header(rkey), requestBody.body(rkey))
                 .onSuccess {
+                    if (type == 1) {
+                        "已关注".toast()
+                    } else {
+                        "取消关注".toast()
+                    }
                     block.invoke()
                     LiveDataBus.get().with(LiveDataBusKey.FOLLOW_USER_CHANGE).postValue(
                         FollowUserChangeBean(followId, type)

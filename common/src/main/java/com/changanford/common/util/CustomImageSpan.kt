@@ -232,8 +232,8 @@ fun showZero(
  * @param tvRemark:textView
  * @param remark:文本信息
  */
-fun TextView.imageAndTextView(remark: String, @DrawableRes image: Int) {
-    val useRemark=" $remark"
+fun TextView.imageAndTextView(remark: String?, @DrawableRes image: Int) {
+    val useRemark=" ${if (remark.isNullOrEmpty())"" else remark}"
     val builder = SpannableStringBuilder(useRemark)
     val substring = useRemark.substring(0, 1)
     val drawable = ContextCompat.getDrawable(this.context, image)

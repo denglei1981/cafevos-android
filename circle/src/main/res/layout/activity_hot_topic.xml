@@ -9,6 +9,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -23,7 +24,6 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentScrim="@color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,7 +117,7 @@
                     android:drawablePadding="12dp"
                     android:gravity="center_vertical"
                     android:paddingStart="11dp"
-                    android:text="请输入关键字搜索"
+                    android:text="请输入关键字"
                     android:textColor="@color/color_4d16"
                     android:textSize="14sp"
                     tools:ignore="RtlSymmetry" />
@@ -130,8 +130,9 @@
             android:id="@+id/ry_topic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_main_hot_topic" />

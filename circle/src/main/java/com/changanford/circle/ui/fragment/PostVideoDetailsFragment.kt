@@ -40,6 +40,7 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -83,7 +84,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(this)
+        PostDetailsCommentAdapter(this,2)
     }
 
     @SuppressLint("SetTextI18n")
@@ -519,14 +520,35 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
         commentAdapter.setOnItemClickListener { _, view, position ->
             val commentBean = commentAdapter.getItem(position)
-            val bundle = Bundle()
-            bundle.putString("groupId", commentBean.groupId)
-            bundle.putInt("type", 2)// 1 资讯 2 帖子
-            bundle.putString("bizId", mData.postsId)
-            bundle.putString("childCount", commentBean.childCount.toString())
-            startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-            checkPosition = position
-
+            commentAdapter.checkPosition = position
+            CommentUtils.showReplyDialog(
+                requireContext(),
+                commentBean.bizId,
+                commentBean.groupId,
+                commentBean.id,
+                2,
+                commentBean.authorBaseVo.nickname
+            ) {
+                viewModel.getChildCommentData(commentBean.bizId, commentBean.groupId, "2")
+            }
+        }
+        LiveDataBus.get().withs<String>(CircleLiveBusKey.ADD_COMMENT_REPLY).observe(this) {
+            val commentBean = commentAdapter.getItem(commentAdapter.checkPosition)
+            viewModel.getChildCommentData(mData.postsId, commentBean.groupId, "2")
+        }
+        commentAdapter.setOnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                R.id.tv_child_count -> {
+                    val commentBean = commentAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("groupId", commentBean.groupId)
+                    bundle.putInt("type", 2)// 1 资讯 2 帖子
+                    bundle.putString("bizId", mData.postsId)
+                    bundle.putString("childCount", commentBean.childCount.toString())
+                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+                    commentAdapter.checkPosition = position
+                }
+            }
         }
 
         //点击评论区域外进行关闭评论
@@ -563,6 +585,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
+        viewModel.childCommentListBean.observe(this) {
+            commentAdapter.addChildComment(it, commentAdapter.checkPosition)
+        }
         viewModel.commendBean.observe(this) {
             if (page == 1) {
                 commentAdapter.setList(it.dataList)

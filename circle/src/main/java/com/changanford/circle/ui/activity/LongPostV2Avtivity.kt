@@ -247,7 +247,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             tvTopic.visibility = View.VISIBLE
             llTopic.visibility = View.GONE
             tvTopicName.text = ""
-//            llNoTopic.isVisible = true
+            llNoTopic.isVisible = true
         }
     }
 
@@ -625,7 +625,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
     }
 
     fun initEtContent() {
-        val default = LongPostBean(hintStr = "请输入正文，字数小于1000")
+        val default = LongPostBean(hintStr = "请输入正文，字数小于2000")
         longpostadapter.addData(default)
     }
 

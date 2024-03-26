@@ -55,6 +55,9 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
     private var page = 1
 
     var childCommentListBean: CommentListBean? = null
+    var commentBean: CommentListBean? = null
+    var commentContent = ""
+    private var chileCount = ""
 
     private val commentAdapter by lazy {
         ItemCommentAdapter(this)
@@ -65,7 +68,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         type = intent.getIntExtra("type", 2)
         groupId = intent.getStringExtra("groupId").toString()
         bizId = intent.getStringExtra("bizId").toString()
-        val chileCount = intent.getStringExtra("childCount").toString()
+        chileCount = intent.getStringExtra("childCount").toString()
         binding.run {
             ryComment.adapter = commentAdapter
             AppUtils.setStatusBarMarginTop(title.root, this@AllReplyActivity)
@@ -75,12 +78,14 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             }
 
         }
-
+        commentAdapter.commentType = type
         initListener()
         binding.tvTalk.setOnClickListener {
             ReplyDialog(this, object : ReplyDialog.ReplyListener {
                 override fun getContent(content: String) {
                     childCommentListBean?.let {
+                        commentBean = it
+                        commentContent = content
                         when (type) {
                             1 -> {
                                 viewModel.addNewsComment(bizId, it.groupId, it.id, content)
@@ -111,6 +116,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             ReplyDialog(this, object : ReplyDialog.ReplyListener {
                 override fun getContent(content: String) {
                     val bean = commentAdapter.getItem(position)
+                    commentBean = bean
+                    commentContent = content
                     when (type) {
                         1 -> {// 资讯
                             viewModel.addNewsComment(bizId, bean.groupId, bean.id, content)
@@ -126,6 +133,7 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun observe() {
         super.observe()
         viewModel.commentBean.observe(this) {
@@ -162,6 +170,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
             binding.clTopContent.setOnClickListener { _ ->
                 ReplyDialog(this, object : ReplyDialog.ReplyListener {
                     override fun getContent(content: String) {
+                        commentBean = childCommentListBean
+                        commentContent = content
                         when (type) {
                             1 -> {
                                 viewModel.addNewsComment(bizId, it.groupId, it.id, content)
@@ -197,10 +207,12 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
         }
 
         viewModel.addCommendBean.observe(this) {
+            binding.title.tvTitle.text = "${chileCount.toInt().plus(1)}条回复"
             page = 1
             initData()
-            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CHILD_COUNT)
-                .postValue(commentAdapter.itemCount)
+            LiveDataBus.get().with(CircleLiveBusKey.ADD_COMMENT_REPLY).postValue("")
+//            LiveDataBus.get().with(CircleLiveBusKey.REFRESH_CHILD_COUNT)
+//                .postValue(commentAdapter.itemCount)
         }
     }
 

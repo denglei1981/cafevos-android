@@ -35,4 +35,11 @@ class CircleDetailsPersonalAdapter(context: Context) :
                 error = R.mipmap.head_default
             })
     }
+
+    override fun getItemCount(): Int {
+        getItems()?.let {
+            if (it.size > 10) return 10
+        }
+        return super.getItemCount()
+    }
 }

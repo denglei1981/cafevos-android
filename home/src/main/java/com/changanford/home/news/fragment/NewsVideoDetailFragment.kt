@@ -19,6 +19,7 @@ import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -68,7 +69,7 @@ class NewsVideoDetailFragment :
         NewsRecommendListAdapter()
     }
     private val homeNewsCommentAdapter by lazy {
-        PostDetailsCommentAdapter(this)
+        PostDetailsCommentAdapter(this,1)
     }
 
     private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
@@ -127,22 +128,38 @@ class NewsVideoDetailFragment :
         addHeaderView()
         binding.llComment.tvCommentNum.setOnClickListener(this)
         binding.ivMore.setOnClickListener(this)
-        homeNewsCommentAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val commentBean = homeNewsCommentAdapter.getItem(position)
-//                if (commentBean.typeNull == 1) {
-//                    return
-//                }
-                val bundle = Bundle()
-                bundle.putString("groupId", commentBean.groupId)
-                bundle.putInt("type", 1)// 1 资讯 2 帖子
-                bundle.putString("bizId", artId)
-                bundle.putString("childCount", commentBean.childCount.toString())
-                startARouter(ARouterCirclePath.AllReplyActivity, bundle)
-                checkPosition = position
-
+        homeNewsCommentAdapter.setOnItemClickListener { _, view, position ->
+            val commentBean = homeNewsCommentAdapter.getItem(position)
+            homeNewsCommentAdapter.checkPosition = position
+            CommentUtils.showReplyDialog(
+                requireContext(),
+                artId,
+                commentBean.groupId,
+                commentBean.id,
+                1,
+                commentBean.authorBaseVo.nickname
+            ) {
+                viewModel.getChildCommentData(artId, commentBean.groupId, "1")
             }
-        })
+        }
+        LiveDataBus.get().withs<String>(CircleLiveBusKey.ADD_COMMENT_REPLY).observe(this) {
+            val commentBean = homeNewsCommentAdapter.getItem(homeNewsCommentAdapter.checkPosition)
+            viewModel.getChildCommentData(artId, commentBean.groupId, "1")
+        }
+        homeNewsCommentAdapter.setOnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                com.changanford.circle.R.id.tv_child_count -> {
+                    val commentBean = homeNewsCommentAdapter.getItem(position)
+                    val bundle = Bundle()
+                    bundle.putString("groupId", commentBean.groupId)
+                    bundle.putInt("type", 1)// 1 资讯 2 帖子
+                    bundle.putString("bizId", artId)
+                    bundle.putString("childCount", commentBean.childCount.toString())
+                    startARouter(ARouterCirclePath.AllReplyActivity, bundle)
+                    homeNewsCommentAdapter.checkPosition = position
+                }
+            }
+        }
     }
 
     override fun initData() {
@@ -186,6 +203,9 @@ class NewsVideoDetailFragment :
     var tips = ""
     override fun observe() {
         super.observe()
+        viewModel.childCommentListBean.observe(this) {
+            homeNewsCommentAdapter.addChildComment(it, homeNewsCommentAdapter.checkPosition)
+        }
         viewModel.newsDetailLiveData.observe(this, Observer {
             if (it.isSuccess) {
                 showHeadInfo(it.data)

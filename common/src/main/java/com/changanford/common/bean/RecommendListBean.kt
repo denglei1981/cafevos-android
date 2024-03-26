@@ -436,12 +436,12 @@ data class SpecialListBean(
 
     fun getCount(): String {
 
-        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯 ${
+        var countStr = "${CountUtils.formatNum(totalCount.toString(), false)}资讯    ${
             CountUtils.formatNum(
                 viewsCount.toString(),
                 false
             )
-        }阅读量"
+        }阅读"
 
         return countStr;
     }

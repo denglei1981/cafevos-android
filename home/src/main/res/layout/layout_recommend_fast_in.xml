@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"
             android:text="@string/home_fast_in"
-            android:textColor="@color/color_33"
-            android:textSize="16sp"
+            android:textColor="@color/color_16"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
