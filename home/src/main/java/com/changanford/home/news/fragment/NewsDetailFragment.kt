@@ -19,7 +19,6 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CommentUtils
-import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -71,7 +70,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
     private lateinit var artId: String
     private var isShowFollow = false
     private val homeNewsCommentAdapter by lazy {
-        PostDetailsCommentAdapter(this,1)
+        PostDetailsCommentAdapter(this, 1)
     }
 
     private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
@@ -289,51 +288,24 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         }
 
         binding.llComment.apply {
-            val commentCount = newsDetailData.commentCount
-            tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
-            tvLikeNum.text =
-                "${if (newsDetailData.likesCount > 0) newsDetailData.likesCount else "0"}"
-            tvCollectionNum.text =
-                "${if (newsDetailData.collectCount > 0) newsDetailData.collectCount else "0"}"
+            tvCommentNum.text = newsDetailData.getCommentCountResult()
+            tvLikeNum.text = newsDetailData.getLikesCountResult()
+            tvCollectionNum.text = newsDetailData.getCollectCountResult()
+            tvShareNum.text = newsDetailData.getShareCountResult()
             ivLike.setImageResource(
                 if (newsDetailData.isLike == 1) {
-//                    tvLikeNum.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            com.changanford.circle.R.color.color_1700F4
-//                        )
-//                    )
                     com.changanford.circle.R.mipmap.circle_like_image
                 } else {
-//                    tvLikeNum.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            com.changanford.circle.R.color.color_8016
-//                        )
-//                    )
                     com.changanford.circle.R.mipmap.circle_no_like_image
                 }
             )
             ivCollection.setImageResource(
                 if (newsDetailData.isCollect == 1) {
-//                    tvCollectionNum.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            com.changanford.circle.R.color.color_1700F4
-//                        )
-//                    )
                     com.changanford.circle.R.mipmap.circle_collection_image
                 } else {
-//                    tvCollectionNum.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            com.changanford.circle.R.color.color_8016
-//                        )
-//                    )
                     com.changanford.circle.R.mipmap.circle_no_collection_image
                 }
             )
-            tvShareNum.text = newsDetailData.shareCount.toString()
             tvShareNum.isVisible = true
         }
 
@@ -508,23 +480,18 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
 //                shareViewModule.shareBack(newsDetailData?.shares)
             }
         })
-        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this, {
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             newsDetailData?.shareCount?.plus(1)?.let {
                 newsDetailData?.shareCount = it
-                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCount())
+                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCountResult())
             }
-        })
+        }
     }
 
     private fun setCommentCount() {
         // 评论成功自增1
-        val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvCommentNum.text = (
-                CountUtils.formatNum(
-                    commentCount.toString(),
-                    false
-                ).toString()
-                )
+        newsDetailData?.commentCount?.plus(1)
+        binding.llComment.tvCommentNum.text = newsDetailData?.getCommentCountResult()
     }
 
     private fun setCollection() {
@@ -562,12 +529,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         if (collectCount != null) {
             newsDetailData?.collectCount = collectCount
         }
-        binding.llComment.tvCollectionNum.text = (
-                CountUtils.formatNum(
-                    collectCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvCollectionNum.text = newsDetailData?.getCollectCountResult()
     }
 
 
@@ -606,12 +568,7 @@ class NewsDetailFragment : BaseFragment<ActivityNewsDetailsBinding, NewsDetailVi
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
-        binding.llComment.tvLikeNum.text = (
-                CountUtils.formatNum(
-                    likesCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvLikeNum.text = newsDetailData?.getLikesCountResult()
     }
 
     // 1 关注 2 取消关注

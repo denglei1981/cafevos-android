@@ -14,7 +14,6 @@ import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
-import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -227,7 +226,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             newsDetailData?.shareCount?.plus(1)?.let {
                 newsDetailData?.shareCount = it
-                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCount())
+                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCountResult())
             }
         }
     }
@@ -306,11 +305,11 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             JumpUtils.instans?.jump(35, newsDetailData.userId)
         }
         binding.llComment.tvShareNum.isVisible = true
-        binding.llComment.tvLikeNum.text = (newsDetailData.getLikeCount())
+        binding.llComment.tvLikeNum.text = (newsDetailData.getLikesCountResult())
 
-        binding.llComment.tvShareNum.text = (newsDetailData.getShareCount())
-        binding.llComment.tvCommentNum.text = newsDetailData.getCommentCount()
-        binding.llComment.tvCollectionNum.text = (newsDetailData.getCollectCount())
+        binding.llComment.tvShareNum.text = (newsDetailData.getShareCountResult())
+        binding.llComment.tvCommentNum.text = newsDetailData.getCommentCountResult()
+        binding.llComment.tvCollectionNum.text = (newsDetailData.getCollectCountResult())
         binding.llComment.tvTalk.setOnClickListener(this)
         binding.llComment.llLike.setOnClickListener(this)
         binding.llComment.tvCommentNum.setOnClickListener(this)
@@ -330,9 +329,8 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
 
     private fun setCommentCount() {
         // 评论成功自增1
-        val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvCommentNum.text =
-            CountUtils.formatNum(commentCount.toString(), false).toString()
+        newsDetailData?.commentCount?.plus(1)
+        binding.llComment.tvCommentNum.text = newsDetailData?.getCommentCountResult()
     }
 
     private fun setCollection() {
@@ -370,12 +368,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         if (collectCount != null) {
             newsDetailData?.collectCount = collectCount
         }
-        binding.llComment.tvCollectionNum.text = (
-                CountUtils.formatNum(
-                    collectCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvCollectionNum.text =newsDetailData?.getCollectCountResult()
     }
 
     private fun setLikeState() { //设置是否喜欢文章。
@@ -413,12 +406,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
-        binding.llComment.tvLikeNum.text = (
-                CountUtils.formatNum(
-                    likesCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvLikeNum.text = newsDetailData?.getLikesCountResult()
     }
 
     /**

@@ -20,7 +20,6 @@ import com.changanford.common.constant.JumpConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.CommentUtils
-import com.changanford.common.util.CountUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -69,7 +68,7 @@ class NewsVideoDetailFragment :
         NewsRecommendListAdapter()
     }
     private val homeNewsCommentAdapter by lazy {
-        PostDetailsCommentAdapter(this,1)
+        PostDetailsCommentAdapter(this, 1)
     }
 
     private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
@@ -326,7 +325,7 @@ class NewsVideoDetailFragment :
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             newsDetailData?.shareCount?.plus(1)?.let {
                 newsDetailData?.shareCount = it
-                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCount())
+                binding.llComment.tvShareNum.text = (newsDetailData?.getShareCountResult())
             }
         }
     }
@@ -372,13 +371,11 @@ class NewsVideoDetailFragment :
                 followAction()
             }
         }
-        binding.llComment.tvLikeNum.text = (
-                newsDetailData.getLikeCount()
-                )
+        binding.llComment.tvLikeNum.text = newsDetailData.getLikesCountResult()
         binding.llComment.tvShareNum.isVisible = true
-        binding.llComment.tvShareNum.text = (newsDetailData.getShareCount())
-        binding.llComment.tvCommentNum.text = (newsDetailData.getCommentCount())
-        binding.llComment.tvCollectionNum.text = (newsDetailData.getCollectCount())
+        binding.llComment.tvShareNum.text = (newsDetailData.getShareCountResult())
+        binding.llComment.tvCommentNum.text = (newsDetailData.getCommentCountResult())
+        binding.llComment.tvCollectionNum.text = (newsDetailData.getCollectCountResult())
         binding.llComment.llLike.setOnClickListener(this)
         binding.llComment.tvShareNum.setOnClickListener(this)
         binding.llComment.tvCommentNum.setOnClickListener(this)
@@ -662,12 +659,7 @@ class NewsVideoDetailFragment :
         if (likesCount != null) {
             newsDetailData?.likesCount = likesCount
         }
-        binding.llComment.tvLikeNum.text = (
-                CountUtils.formatNum(
-                    likesCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvLikeNum.text = newsDetailData?.getLikesCountResult()
     }
 
     private fun setCollection() {
@@ -705,23 +697,12 @@ class NewsVideoDetailFragment :
         if (collectCount != null) {
             newsDetailData?.collectCount = collectCount
         }
-        binding.llComment.tvCollectionNum.text = (
-                CountUtils.formatNum(
-                    collectCount.toString(),
-                    false
-                ).toString()
-                )
+        binding.llComment.tvCollectionNum.text = newsDetailData?.getCollectCountResult()
     }
 
     private fun setCommentCount() {
-        // 评论成功自增1
-        val commentCount = newsDetailData?.commentCount?.plus(1)
-        binding.llComment.tvCommentNum.text = (
-                CountUtils.formatNum(
-                    commentCount.toString(),
-                    false
-                ).toString()
-                )
+        // 评论成功自增1 newsDetailData?.commentCount?.plus(1)
+        binding.llComment.tvCommentNum.text = newsDetailData?.getCommentCountResult()
 
     }
 

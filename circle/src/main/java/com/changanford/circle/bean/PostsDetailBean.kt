@@ -2,7 +2,7 @@ package com.changanford.circle.bean
 
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.CircleShareBean
-import com.changanford.common.bean.HomeAuthorsBean
+import com.changanford.common.util.CountUtils
 
 /**
  * @Author: lcw
@@ -75,8 +75,41 @@ data class PostsDetailBean(
         return city
     }
 
+    fun getCommentCountResult(): String {
+        var commentCountResult: String = ""
+        if (commentCount == 0) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
+    }
 
+    fun getLikesCountResult(): String {
+        var commentCountResult: String = ""
+        if (likesCount == 0) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
+        return commentCountResult
+    }
 
+    fun getCollectCountResult(): String {
+        var commentCountResult: String = ""
+        if (collectCount == 0) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(collectCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getShareCountResult(): String {
+        var commentCountResult: String = ""
+        if (shareCount == 0) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(shareCount.toString(), false).toString()
+        return commentCountResult
+    }
 }
 
 data class ImageList(

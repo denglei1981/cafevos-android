@@ -3,7 +3,6 @@ package com.changanford.circle.adapter
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
@@ -101,7 +100,16 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
   private  fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
         binding.tvTex.visibility = View.VISIBLE
         binding.gPic.visibility = View.GONE
-        binding.tvTex.isEnabled = true
+//        binding.tvTex.isEnabled = true
+      val edtImgDesc=binding.tvTex
+//      edtImgDesc.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+//          override fun onViewAttachedToWindow(v: View) {
+//              edtImgDesc.setCursorVisible(false)
+//              edtImgDesc.setCursorVisible(true)
+//          }
+//
+//          override fun onViewDetachedFromWindow(v: View) {}
+//      })
 
         if (binding.tvTex.tag is TextWatcher) {
             binding.tvTex.removeTextChangedListener(binding.tvTex.tag as TextWatcher)
@@ -136,6 +144,8 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         }
         binding.tvTex.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
+                edtImgDesc.setCursorVisible(false)
+                edtImgDesc.setCursorVisible(true)
                 LiveDataBus.get().with(LiveDataBusKey.LONG_POST_JIAO).postValue("")
             }
         }

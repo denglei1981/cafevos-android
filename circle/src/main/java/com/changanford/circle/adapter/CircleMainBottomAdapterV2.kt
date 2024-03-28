@@ -52,6 +52,7 @@ import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
@@ -133,9 +134,6 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
                 JumpUtils.instans?.jump(35, item.userId.toString())
 
             }
-            binding.layoutCount.tvLocation.setOnClickListener {
-                StartBaduMap(item)
-            }
 
             GlideUtils.loadBD(
                 item.authorBaseVo?.avatar,
@@ -156,11 +154,20 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             if (item.authorBaseVo != null) {
                 setFollowState(binding.layoutHeader.btnFollow, item.authorBaseVo!!)
             }
-            if (item.city.isNullOrEmpty()) {
-                binding.layoutCount.tvLocation.visibility = View.GONE
+            val city = binding.layoutCount.tvLocation
+            if (!item.addrName.isNullOrEmpty()) {
+                city.setDrawableLeft(R.mipmap.icon_circle_location)
+                city.text = item.addrName
+                city.isVisible = true
+                city.setOnClickListener {
+                    StartBaduMap(item)
+                }
+            } else if (!item.city.isNullOrEmpty()) {
+                city.setDrawableNull()
+                city.text = item.city
+                city.isVisible = true
             } else {
-                binding.layoutCount.tvLocation.visibility = View.VISIBLE
-                binding.layoutCount.tvLocation.text = item.showCity()
+                city.isVisible = false
             }
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.picList)
             binding.layoutContent.ivPlay.visibility =

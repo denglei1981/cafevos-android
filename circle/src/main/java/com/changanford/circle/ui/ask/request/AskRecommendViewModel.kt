@@ -92,7 +92,7 @@ class AskRecommendViewModel : BaseViewModel() {
         launch(block = {
             body.clear()
             body["pageNo"] = 1
-            body["pageSize"] = 5
+            body["pageSize"] = 3
             body["queryParams"] = HashMap<String, Any>().also {
                 it["conQaUjId"] = conQaUjId
                 it["personalPageType"] = "QUESTION"

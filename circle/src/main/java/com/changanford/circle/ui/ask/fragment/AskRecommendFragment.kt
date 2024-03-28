@@ -20,6 +20,7 @@ import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.AskRecommendViewModel
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.QuestionData
+import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.bean.ResultData
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.listener.AskCallback
@@ -70,7 +71,6 @@ class AskRecommendFragment :
 
     override fun initView() {
         addHeadView()
-        initAskBanner()
     }
 
     override fun initData() {
@@ -191,8 +191,7 @@ class AskRecommendFragment :
                 headerBinding?.cardNoQues?.isVisible = true
                 headerBinding?.llMyQues?.isVisible = false
             } else {
-                headerBinding?.viewpager?.refreshData(it?.dataList)
-                headerBinding?.viewpager?.invalidate()
+                it?.dataList?.let { it1 -> initAskBanner(it1) }
                 if (it?.dataList.isNullOrEmpty() || it?.dataList?.size == 1) {
                     headerBinding?.drIndicator?.isVisible = false
                 } else {
@@ -300,7 +299,7 @@ class AskRecommendFragment :
         viewModel.getQuestionList(true, questionTypes)
     }
 
-    private fun initAskBanner() {
+    private fun initAskBanner(dataList: ArrayList<QuestionItemBean>) {
         val bannerAdapter = BannerAskTopAdapter()
         headerBinding?.run {
             viewpager.apply {
@@ -317,6 +316,7 @@ class AskRecommendFragment :
             }
             setIndicator()
         }
+        headerBinding?.viewpager?.refreshData(dataList)
     }
 
     private fun setIndicator() {

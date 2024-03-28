@@ -3,7 +3,6 @@ package com.changanford.home.news.data
 import android.text.TextUtils
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.util.CountUtils
-import java.util.*
 
 
 /**
@@ -67,16 +66,52 @@ data class NewsDetailData(
        return listOf(pics.split(",")).size
     }
 
-    fun getCommentCount(): String { // 获取评论数量
-        return CountUtils.formatNum(commentCount.toString(), false).toString()
+//    fun getCommentCount(): String { // 获取评论数量
+//        return CountUtils.formatNum(commentCount.toString(), false).toString()
+//    }
+//
+//    fun getLikeCount(): String {
+//        return CountUtils.formatNum(likesCount.toString(), false).toString()
+//    }
+//
+//    fun getShareCount(): String {
+//        return CountUtils.formatNum(shareCount.toString(), false).toString()
+//    }
+
+    fun getCommentCountResult(): String {
+        var commentCountResult: String = ""
+        if (commentCount == 0L) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(commentCount.toString(), false).toString()
+        return commentCountResult
     }
 
-    fun getLikeCount(): String {
-        return CountUtils.formatNum(likesCount.toString(), false).toString()
+    fun getLikesCountResult(): String {
+        var commentCountResult: String = ""
+        if (likesCount == 0L) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(likesCount.toString(), false).toString()
+        return commentCountResult
     }
 
-    fun getShareCount(): String {
-        return CountUtils.formatNum(shareCount.toString(), false).toString()
+    fun getCollectCountResult(): String {
+        var commentCountResult: String = ""
+        if (collectCount == 0L) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(collectCount.toString(), false).toString()
+        return commentCountResult
+    }
+
+    fun getShareCountResult(): String {
+        var commentCountResult: String = ""
+        if (shareCount == 0) {
+            return "0"
+        }
+        commentCountResult = CountUtils.formatNum(shareCount.toString(), false).toString()
+        return commentCountResult
     }
 
     fun getShowContent(): String {

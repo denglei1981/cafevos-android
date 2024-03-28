@@ -48,7 +48,10 @@ import com.changanford.common.utilext.toastShow
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 
-class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner,private val commentType:Int) :
+class PostDetailsCommentAdapter(
+    private val mLifecycleOwner: LifecycleOwner,
+    private val commentType: Int
+) :
     BaseQuickAdapter<CommentListBean, BaseViewHolder>(R.layout.item_post_details_comment),
     LoadMoreModule {
 
@@ -77,9 +80,8 @@ class PostDetailsCommentAdapter(private val mLifecycleOwner: LifecycleOwner,priv
                 item.authorBaseVo.avatar,
                 ImageOptions().apply { circleCrop = true })
             layoutHeader.tvAuthorName.text = item.nickname
-            if (!item.memberIcon.isNullOrEmpty()) {
-                layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
-            }
+            layoutHeader.ivVip.isVisible = !item.authorBaseVo.memberIcon.isNullOrEmpty()
+            layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
             binding.layoutHeader.btnFollow.isVisible =
                 MConstant.userId != item.authorBaseVo.authorId
             tvTime.text = item.getTimeAndAddress()

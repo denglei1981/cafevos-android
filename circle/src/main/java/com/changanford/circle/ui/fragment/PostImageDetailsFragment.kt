@@ -78,7 +78,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     private var isWhite = true//是否是白色状态
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(this,2)
+        PostDetailsCommentAdapter(this, 2)
     }
 
     private val labelAdapter by lazy {
@@ -152,12 +152,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
             }
             bottomView.run {
-                val commentCount = mData.commentCount
-                tvCommentNum.text = "${if (commentCount > 0) commentCount else "0"}"
-                layoutContent.tvCommentNum.text =
-                    if (commentCount > 0) "  (${mData.commentCount})" else ""
-                tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
-                tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+                tvCommentNum.text = mData.getCommentCountResult()
+                layoutContent.tvCommentNum.text = mData.getCommentCountResult()
+                tvLikeNum.text = mData.getLikesCountResult()
+                tvCollectionNum.text = mData.getCollectCountResult()
+                tvShareNum.text = mData.getShareCountResult()
                 ivLike.setImageResource(
                     if (mData.isLike == 1) {
 //                        ivLike.setAppColor()
@@ -200,7 +199,6 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         R.mipmap.circle_no_collection_image
                     }
                 )
-                tvShareNum.text = mData.shareCount.toString()
                 if (!mData.city.isNullOrEmpty()) {
                     layoutContent.tvAddress.visibility = View.VISIBLE
                     layoutContent.tvAddress.text = mData.showCity()
@@ -563,8 +561,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         mData.circleName
                     )
                 }
-                binding.bottomView.tvLikeNum.text =
-                    "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+                binding.bottomView.tvLikeNum.text = mData.getLikesCountResult()
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).postValue(mData.isLike)
             }
         }
@@ -598,8 +595,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         mData.circleName
                     )
                 }
-                binding.bottomView.tvCollectionNum.text =
-                    "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+                binding.bottomView.tvCollectionNum.text = mData.getCollectCountResult()
                 binding.bottomView.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.bottomView.ivCollection)
@@ -628,9 +624,8 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             it.msg.toast()
             page = 1
             mData.commentCount++
-            binding.bottomView.tvCommentNum.text =
-                "${if (mData.commentCount > 0) mData.commentCount else "0"}"
-            binding.layoutContent.tvCommentNum.text = "(${mData.commentCount})"
+            binding.bottomView.tvCommentNum.text = mData.getCommentCountResult()
+            binding.layoutContent.tvCommentNum.text = mData.getCommentCountResult()
             GIOUtils.commentSuccessPost(
                 "帖子详情页",
                 mData.topicId,
@@ -712,7 +707,7 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
         }
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             mData.shareCount++
-            binding.bottomView.tvShareNum.text = mData.shareCount.toString()
+            binding.bottomView.tvShareNum.text = mData.getShareCountResult()
         }
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this) {
             val bean = commentAdapter.getItem(commentAdapter.checkPosition)

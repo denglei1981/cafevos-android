@@ -84,7 +84,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private val commentAdapter by lazy {
-        PostDetailsCommentAdapter(this,2)
+        PostDetailsCommentAdapter(this, 2)
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,12 +107,10 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 }
             })
             ryComment.adapter = commentAdapter
-            val commentCount = mData.commentCount
-            tvCommentNum.text = "${if (commentCount > 0) mData.commentCount else "0"}"
-            if (commentCount > 0) commentTitle.text = "评论 $commentCount"
-            tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
-            tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
-            tvShareNum.text = "${if (mData.shareCount > 0) mData.shareCount else "0"}"
+            tvCommentNum.text = mData.getCommentCountResult()
+            tvLikeNum.text = mData.getLikesCountResult()
+            tvCollectionNum.text = mData.getCollectCountResult()
+            tvShareNum.text = mData.getShareCountResult()
 
             if (mData.isGood == 1) {
                 tvTitle.imageAndTextView(
@@ -151,13 +149,13 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         R.mipmap.circle_no_collection_image
                     }
                 )
-                val commentCount = mData.commentCount
-                tvCommentNum.text = "${if (commentCount > 0) mData.commentCount else "0"}"
-                if (commentCount > 0) commentTitle.text = "评论 $commentCount"
-                tvLikeNum.text = "${if (mData.likesCount > 0) mData.likesCount else "0"}"
-                tvCollectionNum.text = "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+
+                tvCommentNum.text = mData.getCommentCountResult()
+                commentTitle.text = mData.getCommentCountResult()
+                tvLikeNum.text = mData.getLikesCountResult()
+                tvCollectionNum.text = mData.getCollectCountResult()
+                tvShareNum.text = mData.getShareCountResult()
             }
-            tvShareNum.text = if (mData.shareCount > 0) mData.shareCount.toString() else "0"
             binding.ivHead.loadImage(
                 mData.authorBaseVo?.avatar,
                 ImageOptions().apply {
@@ -637,10 +635,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         mData.circleName
                     )
                 }
-                binding.tvLikeNum.text =
-                    "${if (mData.likesCount > 0) mData.likesCount else "0"}"
-                binding.bottomView.tvLikeNum.text =
-                    "${if (mData.likesCount > 0) mData.likesCount else "0"}"
+                binding.tvLikeNum.text = mData.getLikesCountResult()
+                binding.bottomView.tvLikeNum.text = mData.getLikesCountResult()
                 LiveDataBus.get().with(CircleLiveBusKey.REFRESH_POST_LIKE).postValue(mData.isLike)
             }
         }
@@ -674,10 +670,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                         mData.circleName
                     )
                 }
-                binding.tvCollectionNum.text =
-                    "${if (mData.collectCount > 0) mData.collectCount else "0"}"
-                binding.bottomView.tvCollectionNum.text =
-                    "${if (mData.collectCount > 0) mData.collectCount else "0"}"
+                binding.tvCollectionNum.text = mData.getCollectCountResult()
+                binding.bottomView.tvCollectionNum.text = mData.getCollectCountResult()
                 binding.ivCollection.setImageResource(
                     if (mData.isCollection == 1) {
                         AnimScaleInUtil.animScaleIn(binding.ivCollection)
@@ -751,9 +745,8 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             it.msg.toast()
             page = 1
             mData.commentCount++
-            binding.tvCommentNum.text =
-                "${if (mData.commentCount > 0) mData.commentCount else "0"}"
-            binding.commentTitle.text = "评论 ${mData.commentCount}"
+            binding.tvCommentNum.text = mData.getCommentCountResult()
+            binding.commentTitle.text = "评论 ${mData.getCommentCountResult()}"
             GIOUtils.commentSuccessPost(
                 "帖子详情页",
                 mData.topicId,
@@ -804,7 +797,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
         LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.ADD_SHARE_COUNT).observe(this) {
             mData.shareCount++
-            binding.tvShareNum.text = mData.shareCount.toString()
+            binding.tvShareNum.text = mData.getShareCountResult()
         }
         LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_CHILD_COUNT).observe(this) {
             val bean = commentAdapter.getItem(checkPosition)
