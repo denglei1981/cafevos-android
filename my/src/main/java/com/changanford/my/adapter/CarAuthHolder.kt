@@ -142,7 +142,11 @@ private fun crmHint(
                 }
             } else {
                 holder.btnAddCarNum.apply {
-                    if (isNewCar(item.plateNum)) {
+                    var usePlateNum=item.plateNum
+                    if (!item.plateNum.isNullOrEmpty()){
+                        usePlateNum?.length?.let {usePlateNum= usePlateNum!!.substring(1, it) }
+                    }
+                    if (isNewCar(usePlateNum)) {
                         setDrawableRight(R.mipmap.car_list_edit_plate)
                         setTextColor(ContextCompat.getColor(context, R.color.black))
                         holder.ivBtnAddCarNum.setBackgroundResource(R.mipmap.ic_car_x_plate)
@@ -220,10 +224,11 @@ fun toInCallChecking(bean: CarItemBean) {
 fun toInCallFail(bean: CarItemBean) {
     CommonUtils.skipInCallInfo(bean, false)
 }
-
+//新能源表达式
 fun isNewCar(licensePlate: String?): Boolean {
     if (licensePlate == null) return false
-    val regex =
-        "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-HJ-NP-Z](([0-9]{5}[ADF])|([ADF]([A-HJ-NP-Z0-9])[0-9]{4}))\$"
+    val regex = "^[0-9A-HJ-NP-Za-hj-np-z]{1}[0-9A-HJ-NP-Za-hj-np-z]{6}$"
+//  val regex =
+//      "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领][A-HJ-NP-Z](([0-9]{5}[ADF])|([ADF]([A-HJ-NP-Z0-9])[0-9]{4}))\$"
     return licensePlate.matches(regex.toRegex())
 }

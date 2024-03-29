@@ -303,7 +303,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         item.getTopic(),
                         R.mipmap.ic_home_refined_item
                     )
-                    tvContent.text = item.getTopic()
+//                    tvContent.text = item.getTopic()
                 }
                 if (TextUtils.isEmpty(item.getContent())) {
                     tvTopic.text = ""

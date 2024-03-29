@@ -72,8 +72,12 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
             binding.refreshLayout.finishRefresh()
             circleSquareAdapter.run {
                 if (it.isNotEmpty()) {
-                    circleSquareAdapter.topBinding.bViewpager.visibility = View.VISIBLE
-                    circleSquareAdapter.topBinding.bViewpager.refreshData(it)
+                    topBinding.bViewpager.visibility = View.VISIBLE
+                    if (topBinding.bViewpager.data.isNullOrEmpty()) {
+                        topBinding.bViewpager.refreshData(it)
+                    } else {
+                        refreshViewPager(it)
+                    }
                     if (!it.isNullOrEmpty()) {
                         val item = it[0]
                         it[0].adName?.let { it1 ->
@@ -84,7 +88,7 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
                         }
                     }
                 } else {
-                    circleSquareAdapter.topBinding.bViewpager.visibility = View.GONE
+                    topBinding.bViewpager.visibility = View.GONE
                 }
 
             }
@@ -105,39 +109,41 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
     }
 
     private fun checkSign() {
-            viewModel.getDay7Sign { daySignBean ->
-                var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
-                daySignBean?.sevenDays?.forEach {
-                    if (it.signStatus == 2) {
-                        canSign = true
-                    }
+        viewModel.getDay7Sign { daySignBean ->
+            var canSign = daySignBean == null || MConstant.token.isNullOrEmpty()
+            daySignBean?.sevenDays?.forEach {
+                if (it.signStatus == 2) {
+                    canSign = true
                 }
-                if (!canSign) {
-                    circleSquareAdapter.topBinding.tvSign.run {
-                        setBackgroundResource(R.drawable.shape_e9_15dp)
-                        text = "已签到"
-                        isEnabled = false
-                        setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
-                    }
-                } else {
-                    circleSquareAdapter.topBinding.tvSign.run {
-                        setBackgroundResource(R.drawable.bg_sign_top_topic)
-                        text = "签到得福币"
-                        isEnabled = true
-                        setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                        if (MConstant.userId.isNotEmpty()) {
-                            setOnClickListener {
-                                JumpUtils.instans?.jump(37)
-                            }
-                        } else {
-                            setOnClickListener { startARouter(ARouterMyPath.SignUI) }
+            }
+            if (!canSign) {
+                circleSquareAdapter.topBinding.tvSign.run {
+                    setBackgroundResource(R.drawable.shape_e9_15dp)
+                    text = "已签到"
+                    isEnabled = false
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
+                }
+            } else {
+                circleSquareAdapter.topBinding.tvSign.run {
+                    setBackgroundResource(R.drawable.bg_sign_top_topic)
+                    text = "签到得福币"
+                    isEnabled = true
+                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                    if (MConstant.userId.isNotEmpty()) {
+                        setOnClickListener {
+                            JumpUtils.instans?.jump(37)
                         }
+                    } else {
+                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
                     }
                 }
             }
+        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
+        viewModel.getRecommendTopic()
+        viewModel.communityTopic()
         circleSquareAdapter.run {
             outRefresh()
         }

@@ -25,11 +25,10 @@ class PostCommentChildAdapter(private val lifecycleOwner: LifecycleOwner) :
         binding?.let {
             binding.apply {
                 if (item.parentVo.isNullOrEmpty()) {
-                    tvName.text = "${item.nickname}:"
+                    tvName.text = "${item.nickname}:  ${item.content}"
                 } else {
-                    tvName.text = "${item.nickname}回复${item.parentVo[0].nickname}:"
+                    tvName.text = "${item.nickname}回复${item.parentVo[0].nickname}:  ${item.content}"
                 }
-                tvContent.text = item.content
             }
 //            binding.ivHead.loadImage(item.avatar, ImageOptions().apply { circleCrop = true })
             binding.bean = item

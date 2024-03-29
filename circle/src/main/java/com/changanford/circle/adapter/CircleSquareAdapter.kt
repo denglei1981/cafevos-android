@@ -26,6 +26,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toIntPx
+import com.xiaomi.push.it
 import com.youth.banner.util.BannerUtils
 import com.zhpan.bannerview.constants.PageStyle
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -147,7 +148,47 @@ class CircleSquareAdapter(
             })
         }
         setIndicator(binding)
+    }
 
+    fun refreshViewPager(listBean:List<AdBean>){
+        topBinding.let {
+
+//            it.ivTopicRight.setOnClickListener {
+//                startARouter(ARouterCirclePath.HotTopicActivity)
+//            }
+//            it.bViewpager.visibility = View.GONE
+            val recommendAdAdapter = CircleAdBannerAdapter()
+            it.bViewpager.setAdapter(recommendAdAdapter)
+            it.bViewpager.setCanLoop(true)
+            it.bViewpager.setPageMargin(20)
+            it.bViewpager.setRevealWidth(BannerUtils.dp2px(10f))
+            it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE)
+            it.bViewpager.registerLifecycleObserver(lifecycleRegistry)
+            it.bViewpager.setIndicatorView(it.drIndicator)
+            it.bViewpager.setAutoPlay(true)
+            it.bViewpager.setScrollDuration(500)
+            it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+            it.bViewpager.create()
+
+            it.bViewpager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if (it.bViewpager.visibility == View.VISIBLE) {
+                        val bean = it.bViewpager.data as List<AdBean>
+                        val item = bean[position]
+                        bean[position].adName?.let { it1 ->
+                            GIOUtils.homePageExposure(
+                                "广告位banner", (position + 1).toString(),
+                                it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
+                            )
+                        }
+                    }
+                }
+            })
+        }
+        topBinding.bViewpager.refreshData(listBean)
+        setIndicator(topBinding)
     }
 
     /**

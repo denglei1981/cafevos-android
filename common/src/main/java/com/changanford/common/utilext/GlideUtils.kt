@@ -289,7 +289,7 @@ object GlideUtils {
             Glide.with(imageView)
                 .asDrawable()
                 .load("$url?x-oss-process=video/snapshot,t_1000,f_jpg,w_1200,h_800,m_fast")
-                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
                 .apply {
                     if (errorDefaultRes != null) {
                         placeholder(errorDefaultRes)
@@ -306,7 +306,7 @@ object GlideUtils {
                 Glide.with(imageView)
                     .asDrawable()
                     .load(url?.let { it1 -> dealWithMuchImage(it1) })
-                    .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
+//                    .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(errorDefaultRes)
                     .error(errorDefaultRes)
 //                    .override(400.toIntPx(), 400.toIntPx())

@@ -32,7 +32,7 @@ class HotMainTopicAdapter :
             MUtils.setTopMargin(binding.clContent, 8, holder.layoutPosition)
             if (item.isHot == 1) {
                 binding.tvTalk.setDrawableRight(R.mipmap.ic_se_topic_hot)
-            } else if (item.isNew == "YES") {
+            } else if (item.isNew == 1) {
                 binding.tvTalk.setDrawableRight(R.mipmap.ic_se_topic_new)
             } else {
                 binding.tvTalk.setDrawableNull()

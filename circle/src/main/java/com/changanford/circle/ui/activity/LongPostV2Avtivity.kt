@@ -353,7 +353,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 viewModel.deleteLastPost()
             }
             isunSave = true
-            "发布成功".toast()
+            "已提交审核".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })

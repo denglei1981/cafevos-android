@@ -310,7 +310,7 @@ class AskRecommendFragment :
                 setPageStyle(PageStyle.MULTI_PAGE)
                 registerLifecycleObserver(lifecycle)
                 setIndicatorView(drIndicator)
-                setAutoPlay(false)
+                setAutoPlay(true)
                 setScrollDuration(500)
                 create()
             }

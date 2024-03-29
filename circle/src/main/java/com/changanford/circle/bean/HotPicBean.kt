@@ -23,7 +23,7 @@ data class HotPicItemBean(
     var isSearch:Boolean=false,
     val postsCount: Int = 0,
     val topicId: Int = 0,
-    var isNew: String = "",
+    var isNew: Int = 0,
     var isHot: Int = 0,
     val userCount: Int = 0,
     val viewsCount: Int = 0

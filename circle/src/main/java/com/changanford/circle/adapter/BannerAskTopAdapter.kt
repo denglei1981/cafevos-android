@@ -1,6 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ItemBannerAskTopBinding
@@ -30,6 +31,7 @@ class BannerAskTopAdapter : BaseBannerAdapter<QuestionItemBean>() {
             }
             tvType.text = data.questionTypeName
             tvFb.text = "${data.fbReward}福币奖励"
+            tvFb.isVisible = data.fbReward != "0"
             tvTime.text = TimeUtils.MillisTo_YMDHM2(data.createTime)
             tvTitle.text = data.title
         }
