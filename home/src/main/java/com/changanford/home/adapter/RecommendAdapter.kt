@@ -3,6 +3,7 @@ package com.changanford.home.adapter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -171,8 +172,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             val constraintSet = ConstraintSet()
             constraintSet.clone(it.clContent)
             constraintSet.setDimensionRatio(R.id.iv_acts, "h,343:193")
+//            constraintSet.setColorValue(it.clContent.id, "BackgroundColor", Color.parseColor("#FFFFFF"))
             constraintSet.applyTo(it.clContent)
-
+            it.clContent.setBackgroundResource(R.color.white)
             it.bt.isVisible = item.showButton()
             if (item.showButton()) {
                 it.bt.text = item.showButtonText()
