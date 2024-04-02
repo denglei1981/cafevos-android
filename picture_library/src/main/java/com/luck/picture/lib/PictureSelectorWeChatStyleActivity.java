@@ -299,7 +299,7 @@ public class PictureSelectorWeChatStyleActivity extends PictureSelectorActivity 
                 }
             } else {
 //                mTvPictureRight.setBackgroundResource(R.drawable.picture_send_button_default_bg);
-                mTvPictureRight.setTextColor(ContextCompat.getColor(getContext(), R.color.picture_1700F4));
+                mTvPictureRight.setTextColor(ContextCompat.getColor(getContext(), R.color.picture_color_grey));
                 mTvPicturePreview.setTextColor(ContextCompat.getColor(getContext(), R.color.picture_color_9b));
                 mTvPicturePreview.setText(getString(R.string.picture_preview));
                 mTvPictureRight.setText(getString(R.string.picture_send));

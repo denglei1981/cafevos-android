@@ -1,16 +1,16 @@
 package com.changanford.home.news.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.ScrollingMovementMethod
 import android.view.Gravity
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.constant.JumpConstant
@@ -34,10 +34,10 @@ import com.changanford.home.bean.shareBackUpHttp
 import com.changanford.home.data.InfoDetailsChangeData
 import com.changanford.home.databinding.ActivityNewsPicDetailsBinding
 import com.changanford.home.news.activity.InfoDetailActivity
-import com.changanford.home.news.adapter.NewsAdsListAdapter
 import com.changanford.home.news.adapter.NewsPicDetailsBannerAdapter
-import com.changanford.home.news.adapter.NewsRecommendListAdapter
+import com.changanford.home.news.data.ImageTexts
 import com.changanford.home.news.data.NewsDetailData
+import com.changanford.home.news.data.NewsExpandData
 import com.changanford.home.news.data.ReportDislikeBody
 import com.changanford.home.news.dialog.CommentPicsDialog
 import com.changanford.home.news.request.NewsDetailViewModel
@@ -55,13 +55,18 @@ import razerdp.basepopup.QuickPopupConfig
 class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailViewModel>(),
     View.OnClickListener {
 
-    private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
-        NewsRecommendListAdapter()
-    }
+//    //热门推荐adapter
+//    private val newsRecommendListAdapter: NewsRecommendListAdapter by lazy {
+//        NewsRecommendListAdapter()
+//    }
+//
+//    private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
+//        NewsAdsListAdapter()
+//    }
 
-    private val newsAdsListAdapter: NewsAdsListAdapter by lazy {
-        NewsAdsListAdapter()
-    }
+    private val newsBannerAdapter = NewsPicDetailsBannerAdapter()
+    private var infoDetailActivity: InfoDetailActivity? = null
+    private var newsDetailData: NewsDetailData? = null
 
     override fun initView() {
         StatusBarUtil.setStatusBarColor(requireActivity(), R.color.white)
@@ -70,18 +75,16 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         binding.layoutHeader.ivMore.setOnClickListener(this)
         binding.layoutHeader.ivBack.setOnClickListener { requireActivity().finish() }
 
-        binding.rvRelate.adapter = newsRecommendListAdapter
-        binding.rvAds.adapter = newsAdsListAdapter
-        newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
-                val item = newsRecommendListAdapter.getItem(position)
-                if (item.authors != null) {
-                    JumpUtils.instans?.jump(2, item.artId)
-                } else {
-                    toastShow("没有作者")
-                }
-            }
-        })
+//        newsRecommendListAdapter.setOnItemClickListener(object : OnItemClickListener {
+//            override fun onItemClick(adapter: BaseQuickAdapter<*, *>, view: View, position: Int) {
+//                val item = newsRecommendListAdapter.getItem(position)
+//                if (item.authors != null) {
+//                    JumpUtils.instans?.jump(2, item.artId)
+//                } else {
+//                    toastShow("没有作者")
+//                }
+//            }
+//        })
     }
 
     companion object {
@@ -106,8 +109,8 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
                 toastShow("没有该资讯类型")
             }
         }
-        val infoDetailActivity = activity as InfoDetailActivity
-        infoDetailActivity.getNewDetailBean()?.let {
+        infoDetailActivity = activity as InfoDetailActivity
+        infoDetailActivity?.getNewDetailBean()?.let {
             showHeadInfo(it)
             showBanner(it)
         }
@@ -138,21 +141,33 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         viewModel.recommendNewsLiveData.observe(this) {
             if (it.isSuccess) {
                 if (it.data != null) {
-                    if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
-                        binding.flRecommend.visibility = View.VISIBLE
-                        newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
-                    } else {
-                        binding.flRecommend.visibility = View.GONE
-                        binding.homeGrayLine.isVisible = false
-                    }
-                    if (it.data.ads != null && it.data.ads?.size!! > 0) {
-                        binding.rvAds.visibility = View.VISIBLE
-                        newsAdsListAdapter.setNewInstance(it.data.ads)
-                    } else {
-                        binding.rvAds.visibility = View.GONE
-                    }
+                    val useData = newsDetailData?.imageTexts
+                    useData?.add(
+                        ImageTexts(
+                            infoData = NewsExpandData(
+                                it.data.recommendArticles,
+                                it.data.ads
+                            )
+                        )
+                    )
+                    newsDetailData?.isAddAdvs = true
+                    binding.bViewpager.create(useData)
+//                    if (it.data.recommendArticles != null && it.data.recommendArticles?.size!! > 0) {
+//                        binding.flRecommend.visibility = View.VISIBLE
+//                        newsRecommendListAdapter.setNewInstance(it.data.recommendArticles)
+//                    } else {
+//                        binding.flRecommend.visibility = View.GONE
+//                        binding.homeGrayLine.isVisible = false
+//                    }
+//                    if (it.data.ads != null && it.data.ads?.size!! > 0) {
+//                        binding.rvAds.visibility = View.VISIBLE
+//                        newsAdsListAdapter.setNewInstance(it.data.ads)
+//                    } else {
+//                        binding.rvAds.visibility = View.GONE
+//                    }
                 } else {// 隐藏热门推荐。
-                    binding.flRecommend.visibility = View.GONE
+//                    binding.flRecommend.visibility = View.GONE
+                    binding.bViewpager.create(newsDetailData?.imageTexts)
                 }
             }
         }
@@ -242,36 +257,72 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
             mCommentDialog!!.bizId = newsDetailData?.artId.toString()
             mCommentDialog!!.show(parentFragmentManager, "commentShortVideoDialog")
         }
-
     }
 
+
+    @SuppressLint("SetTextI18n")
     private fun showBanner(newsDetailData: NewsDetailData) {
-        val newsBannerAdapter = NewsPicDetailsBannerAdapter()
         binding.bViewpager.setAdapter(newsBannerAdapter)
             .setCanLoop(true)
             .setAutoPlay(true)
             .setIndicatorGravity(IndicatorGravity.END)
             .setIndicatorVisibility(View.GONE)
-            .setScrollDuration(500)
+            .setScrollDuration(1500)
             .setPageStyle(PageStyle.MULTI_PAGE_SCALE)
             .registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
+                @SuppressLint("SetTextI18n")
                 override fun onPageSelected(position: Int) {
-                    binding.tvPicsNum.text = "${position + 1}/${newsDetailData.imageTexts.size}"
-                    binding.homeTvContent.text = newsDetailData.imageTexts[position].description
+                    if (newsBannerAdapter.getMList()?.get(position)?.infoData == null) {
+                        if (newsDetailData.isAddAdvs) {
+                            binding.tvPicsNum.text =
+                                "${position + 1}/${newsDetailData.imageTexts.size - 1}"
+                            binding.homeTvContent.text =
+                                newsDetailData.imageTexts[position].description
+                        } else {
+                            binding.tvPicsNum.text =
+                                "${position + 1}/${newsDetailData.imageTexts.size}"
+                            binding.homeTvContent.text =
+                                newsDetailData.imageTexts[position].description
+                        }
+                        binding.tvPicsNum.isVisible = true
+                        binding.homeTvContent.isVisible = true
+                        binding.llSpecial.isVisible =
+                            !newsDetailData.specialTopicTitle.isNullOrEmpty()
+                    } else {
+                        binding.tvPicsNum.isVisible = false
+                        binding.homeTvContent.isVisible = false
+                        binding.llSpecial.isVisible = false
+                    }
                 }
             })
-        binding.bViewpager.create(newsDetailData.imageTexts)
         binding.tvPicsNum.text = "1/${newsDetailData.imageTexts.size}"
         binding.homeTvContent.text = newsDetailData.imageTexts[0].description
         binding.homeTvContent.movementMethod = ScrollingMovementMethod.getInstance()
 
+        //动态设置viewpager2高度
+        binding.bViewpager.setPageTransformer { page, position ->
+            val viewpager2: ViewPager2 =
+                binding.bViewpager.findViewById<RelativeLayout>(R.id.vp_main) as ViewPager2
+            updatePagerHeightForChild(page, viewpager2)
+        }
+    }
+
+    private fun updatePagerHeightForChild(view: View, pager: ViewPager2) {
+        view.post {
+            val wMeasureSpec =
+                View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+            val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(wMeasureSpec, hMeasureSpec)
+            pager.layoutParams = (pager.layoutParams).also { lp -> lp.height = view.measuredHeight }
+            pager.invalidate()
+        }
     }
 
 
-    var newsDetailData: NewsDetailData? = null
     private fun showHeadInfo(newsDetailData: NewsDetailData) {
         this.newsDetailData = newsDetailData
+        binding.newsDetailData = newsDetailData
         val author = newsDetailData.authors
         if (author.authorId != MConstant.userId) {
             binding.layoutHeader.btnFollow.visibility = View.VISIBLE
@@ -368,7 +419,7 @@ class NewsPicsFragment : BaseFragment<ActivityNewsPicDetailsBinding, NewsDetailV
         if (collectCount != null) {
             newsDetailData?.collectCount = collectCount
         }
-        binding.llComment.tvCollectionNum.text =newsDetailData?.getCollectCountResult()
+        binding.llComment.tvCollectionNum.text = newsDetailData?.getCollectCountResult()
     }
 
     private fun setLikeState() { //设置是否喜欢文章。

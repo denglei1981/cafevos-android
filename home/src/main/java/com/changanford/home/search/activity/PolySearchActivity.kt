@@ -1,5 +1,6 @@
 package com.changanford.home.search.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -78,6 +79,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
         HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         title = "搜索页"
         val searchTypStr = intent.getStringExtra(SEARCH_TYPE)
@@ -123,6 +125,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         binding.rvAuto.adapter = sAdapter
+        binding.rvAuto.setOnTouchListener { v, event ->
+            hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            false
+        }
 
         binding.recyclerViewFind.adapter = searchHotAdapter
 
@@ -260,7 +266,7 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
             delay(600)
             HideKeyboardUtil.showSoftInput(binding.layoutSearch.searchContent)
         }
-        LiveDataBus.get().withs<String>(LiveDataBusKey.CLOSE_POLY).observe(this){
+        LiveDataBus.get().withs<String>(LiveDataBusKey.CLOSE_POLY).observe(this) {
             finish()
         }
     }

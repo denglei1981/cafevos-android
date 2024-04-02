@@ -39,6 +39,7 @@ import com.changanford.my.databinding.PopCircleBinding
 import com.changanford.my.databinding.PopMemberPartBinding
 import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CircleViewModel
+import com.changanford.my.widget.RoundCheckBox
 import com.google.android.material.imageview.ShapeableImageView
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
@@ -179,6 +180,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                                 delete(circleId, circleAdapter.getUserId())
                             }
                         }
+
                         1 -> {
                             //审核
                             binding.btnApply.setOnClickListener {
@@ -221,6 +223,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             0 -> {
                 viewModel.queryJoinCircle(pageSize, circleId)
             }
+
             1 -> {
                 viewModel.queryJoinCreateCircle(pageSize, circleId)
             }
@@ -348,7 +351,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             var date: TextView = holder.getView(R.id.item_date)
             var tag: AppCompatTextView = holder.getView(R.id.item_tag)
 //            icon.load(item.avatar)
-            GlideUtils.loadCircle(item.avatar,icon, R.mipmap.ic_def_square_img)
+            GlideUtils.loadCircle(item.avatar, icon, R.mipmap.ic_def_square_img)
             name.text = item.nickname
             date.text = "申请时间：${TimeUtils.InputTimetamp(item.createTime)}"
             if (item.starOrderNumStr.isNullOrEmpty()) {
@@ -364,7 +367,7 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                 setCheckNum()
             }
             checkMap[item.userId]?.let {
-                checkBox.isChecked =it
+                checkBox.isChecked = it
             }
 //            checkBox.isChecked = checkMap[item.userId]!!
             icon.setOnClickListener {
@@ -430,6 +433,9 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
             binding.circleTagRv.layoutManager = GridLayoutManager(requireContext(), 2)
             binding.circleTagRv.adapter = object :
                 BaseQuickAdapter<Refuse, BaseDataBindingHolder<ItemLabelBinding>>(R.layout.item_label) {
+                    private var checkBox: RoundCheckBox?=null
+                private var lastCheckPosition=-1
+
                 override fun convert(
                     holder: BaseDataBindingHolder<ItemLabelBinding>,
                     item: Refuse
@@ -440,9 +446,19 @@ class AllMangerCircleFragment : BaseMineFM<FragmentMemberCircleBinding, CircleVi
                                 map[item.type] = false
                             }
                             map[item.type] = isChecked
+                            data.forEach {
+                                it.isCheck = false
+                            }
+                            item.isCheck = isChecked
+                            if (lastCheckPosition!=holder.layoutPosition){
+                                checkBox?.isChecked=false
+                            }
+                            checkBox=it.checkbox
+                            lastCheckPosition=holder.layoutPosition
                         }
                         it.checkbox.text = "${item.type}"
                         it.checkbox.isChecked = map[item.type]!!
+//                        it.checkbox.isChecked = item.isCheck
                     }
                 }
 

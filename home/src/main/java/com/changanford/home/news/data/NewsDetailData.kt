@@ -18,7 +18,8 @@ data class NewsDetailData(
     var content: String,
     var createBy: Any,
     var createTime: Long,
-    var imageTexts: List<ImageTexts>, // 图片信息。纯图片使用。
+    var isAddAdvs:Boolean,
+    var imageTexts: ArrayList<ImageTexts>, // 图片信息。纯图片使用。
     var isCollect: Int,
     var isDeleted: Int,
     var isLike: Int,

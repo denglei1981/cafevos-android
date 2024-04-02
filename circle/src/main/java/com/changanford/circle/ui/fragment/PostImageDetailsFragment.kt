@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -199,11 +198,10 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         R.mipmap.circle_no_collection_image
                     }
                 )
-                if (!mData.city.isNullOrEmpty()) {
-                    layoutContent.tvAddress.visibility = View.VISIBLE
-                    layoutContent.tvAddress.text = mData.showCity()
-                }
-                if (mData.isGood == 1) {
+                layoutContent.tvAddress.isVisible = !mData.showCity().isNullOrEmpty()
+                layoutContent.tvAddress.text = mData.showCity()
+                layoutContent.tvTitle.isVisible = !mData.title.isNullOrEmpty()
+                if (mData.isGood == 1 && !mData.title.isNullOrEmpty()) {
                     layoutContent.tvTitle.imageAndTextView(
                         mData.title,
                         R.mipmap.ic_home_refined_item
@@ -288,7 +286,14 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         }
 
                         if (!TextUtils.isEmpty(mData.content)) {
-                            layoutContent.tvContent.text = mData.content
+                            if (mData.isGood == 1 && mData.title.isNullOrEmpty()) {
+                                layoutContent.tvContent.imageAndTextView(
+                                    mData.content,
+                                    R.mipmap.ic_home_refined_item
+                                )
+                            } else {
+                                layoutContent.tvContent.text = mData.content
+                            }
                         } else {
                             layoutContent.tvContent.text = ""
                         }
@@ -329,7 +334,15 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                         tvPage.visibility = View.GONE
                         if (!TextUtils.isEmpty(mData.content)) {
                             layoutContent.tvContent.visibility = View.VISIBLE
-                            layoutContent.tvContent.text = Html.fromHtml(mData.content)
+                            if (mData.isGood == 1 && mData.title.isNullOrEmpty()) {
+                                layoutContent.tvContent.imageAndTextView(
+                                    mData.content,
+                                    R.mipmap.ic_home_refined_item
+                                )
+                            } else {
+                                layoutContent.tvContent.text = mData.content
+                            }
+//                            layoutContent.tvContent.text = Html.fromHtml(mData.content)
                         } else {
                             layoutContent.tvContent.visibility = View.GONE
                         }
@@ -770,6 +783,9 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private fun startBaduMap() {
+        if (mData.lat == 0.0) {
+            return
+        }
         val permissions = Permissions.build(
             Manifest.permission.ACCESS_FINE_LOCATION,
         )

@@ -54,6 +54,10 @@ data class CircleItemBean(
     val needAudit: String,
     var star: String? = null,
     var status: String? = null,//1审核中 2通过
+    //圈子认证 0 未认证 1已认证
+    val manualAuth: Int = 0,
+    //圈子认证V标
+    val manualAuthImg: String? = null,
 
 ) : MultiItemEntity, Serializable
 
@@ -99,7 +103,8 @@ data class CircleTagBean(
 )
 
 data class Refuse(
-    val type: String
+    val type: String,
+    var isCheck:Boolean
 )
 
 data class CircleUserBean(

@@ -1,5 +1,6 @@
 package com.changanford.home.search.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.text.Editable
 import android.text.TextUtils
@@ -80,6 +81,7 @@ class PloySearchResultActivity :
         HomeSearchAcAdapter()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView() {
         title = "搜索结果页"
         GioPageConstant.infoEntrance = "搜索结果页"
@@ -135,7 +137,10 @@ class PloySearchResultActivity :
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
-
+        binding.rvAuto.setOnTouchListener { v, event ->
+            hideKeyboard(binding.layoutSearch.searchContent.windowToken)
+            false
+        }
         binding.ivBack.setOnClickListener {
             onBackPressed()
         }

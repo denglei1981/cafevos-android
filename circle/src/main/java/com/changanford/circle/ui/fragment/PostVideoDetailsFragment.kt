@@ -252,20 +252,24 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                     it1
                 )
             }
-            if (!mData.city.isNullOrEmpty()) {
-                tvAddress.visibility = View.VISIBLE
-                tvAddress.text = mData.showCity()
-                tvAddress.setOnClickListener {
-                    startBaduMap()
-                }
+            tvAddress.isVisible = !mData.showCity().isNullOrEmpty()
+            tvAddress.text = mData.showCity()
+            tvAddress.setOnClickListener {
+                startBaduMap()
             }
-            if (mData.isGood == 1) {
+            tvTitle.isVisible = !mData.title.isNullOrEmpty()
+            if (mData.isGood == 1 && !mData.title.isNullOrEmpty()) {
                 tvTitle.imageAndTextView(
                     mData.title,
                     R.mipmap.ic_home_refined_item
                 )
             } else {
                 tvTitle.text = mData.title
+            }
+            if (mData.isGood == 1 && mData.title.isNullOrEmpty()) {
+                tvContent.imageAndTextView(mData.content, R.mipmap.ic_home_refined_item)
+            } else {
+                tvContent.text = mData.content
             }
             if (mData.circleName.isNullOrEmpty()) {
                 tvFrom.visibility = View.INVISIBLE
@@ -285,8 +289,6 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
                 tvTopic.visibility = View.GONE
             }
             tvTopic.text = mData.topicName
-            tvContent.text = mData.content
-
             tvTopic.setOnClickListener {
                 GIOUtils.postDetailIsCheckTopic = true
                 GioPageConstant.topicEntrance = "帖子详情页"
@@ -854,6 +856,9 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
     }
 
     private fun startBaduMap() {
+        if (mData.lat == 0.0) {
+            return
+        }
         val permissions = Permissions.build(
             Manifest.permission.ACCESS_FINE_LOCATION,
         )

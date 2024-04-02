@@ -120,7 +120,7 @@ fun ImageView.loadColLImage(url: String?) {
     }
 }
 
-private fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply {
+ fun requestOptions(imageOptions: ImageOptions?) = RequestOptions().apply {
     imageOptions?.let {
         transform(RoundedCornersTransformation(it.cornersRadius, 0))
         placeholder(it.placeholder)

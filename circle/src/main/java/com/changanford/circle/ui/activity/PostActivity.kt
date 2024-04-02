@@ -467,7 +467,6 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 viewModel.deleteLastPost()
             }
             isunSave = true
-            "已提交审核".toast()
             startARouter(ARouterMyPath.MineFollowUI, true)
             finish()
         })
@@ -1215,66 +1214,66 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 }
 
             } else {
-                if (position == 0) {
-                    val array = java.util.ArrayList<String>()
-                    array.add("编辑封面")
-                    array.add("重选封面")
-                    HomeBottomDialog(this, *array.toTypedArray())
-                        .setOnClickItemListener(object :
-                            HomeBottomDialog.OnClickItemListener {
-                            override fun onClickItem(position: Int, str: String) {
-                                isunSave = true
-                                when (str) {
-                                    "重选封面" -> {
-                                        PictureUtil.openGalleryOnePic(this@PostActivity,
-                                            object : OnResultCallbackListener<LocalMedia> {
-                                                override fun onResult(result: MutableList<LocalMedia>?) {
-                                                    val localMedia = result?.get(0)
-                                                    localMedia?.let {
-                                                        val bundle = Bundle()
-                                                        bundle.putParcelableArrayList(
-                                                            "picList",
-                                                            arrayListOf(localMedia)
-                                                        )
-                                                        bundle.putInt("position", 0)
-                                                        bundle.putInt("showEditType", -1)
-                                                        bundle.putBoolean("longPostFM", true)
-                                                        startARouter(
-                                                            ARouterCirclePath.PictureeditlActivity,
-                                                            bundle
-                                                        )
-                                                    }
-                                                }
-
-                                                override fun onCancel() {
-                                                    isunSave = false
-                                                }
-
-                                            })
-
-                                    }
-
-                                    "编辑封面" -> {
-                                        val bundle = Bundle()
-                                        bundle.putParcelableArrayList(
-                                            "picList",
-                                            arrayListOf(selectList[0])
-                                        )
-                                        bundle.putInt("position", 0)
-                                        bundle.putInt("showEditType", -1)
-                                        bundle.putBoolean("longPostFM", true)
-                                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                                    }
-                                }
-                            }
-                        }).show()
-                } else {
+//                if (position == 0) {
+//                    val array = java.util.ArrayList<String>()
+//                    array.add("编辑封面")
+//                    array.add("重选封面")
+//                    HomeBottomDialog(this, *array.toTypedArray())
+//                        .setOnClickItemListener(object :
+//                            HomeBottomDialog.OnClickItemListener {
+//                            override fun onClickItem(position: Int, str: String) {
+//                                isunSave = true
+//                                when (str) {
+//                                    "重选封面" -> {
+//                                        PictureUtil.openGalleryOnePic(this@PostActivity,
+//                                            object : OnResultCallbackListener<LocalMedia> {
+//                                                override fun onResult(result: MutableList<LocalMedia>?) {
+//                                                    val localMedia = result?.get(0)
+//                                                    localMedia?.let {
+//                                                        val bundle = Bundle()
+//                                                        bundle.putParcelableArrayList(
+//                                                            "picList",
+//                                                            arrayListOf(localMedia)
+//                                                        )
+//                                                        bundle.putInt("position", 0)
+//                                                        bundle.putInt("showEditType", -1)
+//                                                        bundle.putBoolean("longPostFM", true)
+//                                                        startARouter(
+//                                                            ARouterCirclePath.PictureeditlActivity,
+//                                                            bundle
+//                                                        )
+//                                                    }
+//                                                }
+//
+//                                                override fun onCancel() {
+//                                                    isunSave = false
+//                                                }
+//
+//                                            })
+//
+//                                    }
+//
+//                                    "编辑封面" -> {
+//                                        val bundle = Bundle()
+//                                        bundle.putParcelableArrayList(
+//                                            "picList",
+//                                            arrayListOf(selectList[0])
+//                                        )
+//                                        bundle.putInt("position", 0)
+//                                        bundle.putInt("showEditType", -1)
+//                                        bundle.putBoolean("longPostFM", true)
+//                                        startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+//                                    }
+//                                }
+//                            }
+//                        }).show()
+//                } else {
                     val bundle = Bundle()
                     bundle.putParcelableArrayList("picList", selectList)
                     bundle.putInt("position", position)
                     bundle.putInt("showEditType", -1)
                     startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-                }
+//                }
             }
         }
         postPicAdapter.setOnItemChildClickListener { adapter, view, position ->

@@ -125,6 +125,11 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
         registerLiveBus()
         initObserver()
         addLiveDataBus()
+        LiveDataBus.get().withs<String>(LiveDataBusKey.MAIN_TAB_CHANGE).observe(this) {
+            if (it == "服务页") {
+                quickCallJs("AppViewDidShow")
+            }
+        }
     }
 
     private fun initObserver() {

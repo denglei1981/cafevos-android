@@ -1,7 +1,5 @@
 package com.changanford.circle.viewmodel
 
-import android.content.Context
-import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -9,14 +7,25 @@ import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.*
+import com.changanford.circle.bean.HotPicBean
+import com.changanford.circle.bean.ImageList
+import com.changanford.circle.bean.PlateBean
+import com.changanford.circle.bean.PostKeywordBean
+import com.changanford.circle.bean.PostTagData
+import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.basic.PostRoomViewModel
 import com.changanford.common.bean.LocationDataBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -25,10 +34,8 @@ import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.xiaomi.push.it
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -59,6 +66,7 @@ class PostViewModule() : PostRoomViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().postEdit(body.header(rKey), body.body(rKey))
                 .onSuccess {
+                    it?.toast()
                     postsuccess.value = "upsuccess"
                 }
                 .onWithMsgFailure {

@@ -34,6 +34,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="home_tv_content,ll_special" />
+
                 <TextView
                     android:id="@+id/tv_home_title"
                     style="@style/AppText.lineSpace.Bold"
@@ -55,11 +61,10 @@
                 <com.zhpan.bannerview.BannerViewPager
                     android:id="@+id/b_viewpager"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_goneMarginTop="24dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    app:layout_constraintDimensionRatio="w,1:1"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_home_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_home_title"
+                    app:layout_goneMarginTop="24dp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_pics_num"
@@ -81,7 +86,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    app:layout_goneMarginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:text="@{newsDetailData.content}"
                     android:textColor="@color/color_d916"
@@ -89,6 +93,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_viewpager"
+                    app:layout_goneMarginTop="16dp"
                     tools:text="大家好，上月我曾与大家分享了探险者TMS系-统的感受 ，受到很多网友们的私信，要求再详细讲解驾驶模式选择及实际应用。今天，我将具体分享一下在不同路况下如何选择合适的驾" />
 
 
@@ -125,72 +130,6 @@
                         android:textSize="12sp"
                         tools:text="@string/app_name" />
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_ads"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="18dp"
-                    android:orientation="vertical"
-                    android:scaleType="centerCrop"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintDimensionRatio="669:320"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ll_special"
-                    tools:visibility="visible" />
-
-                <View
-                    android:id="@+id/home_gray_line"
-                    style="@style/homeGraLine"
-                    android:layout_marginTop="@dimen/dp_10"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_ads" />
-
-                <FrameLayout
-                    android:id="@+id/fl_recommend"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/home_gray_line"
-                    tools:visibility="visible">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_relate_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/home_hot_recommend"
-                        android:textColor="@color/color_16"
-                        android:textSize="18sp" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:layout_marginEnd="@dimen/dp_14"
-                        android:drawableEnd="@drawable/home_right_blue"
-                        android:drawablePadding="4dp"
-                        android:text="@string/home_more"
-                        android:textColor="#ff74889d"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
-                </FrameLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_relate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@+id/fl_recommend" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

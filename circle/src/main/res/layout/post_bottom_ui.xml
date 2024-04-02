@@ -278,5 +278,5 @@
         android:background="@color/white"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="5" />
+        app:spanCount="8" />
 </LinearLayout>

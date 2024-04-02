@@ -488,6 +488,7 @@ open class RecommendFragment :
                     binding.smartLayout.finishLoadMore()
                     //设置状态完成
                     recommendAdapter.loadMoreModule.loadMoreComplete()
+                    recommendAddAds()
                 } else {
                     if (it.data == null || dataList.size == 0) {
                         showEmpty()
@@ -504,7 +505,6 @@ open class RecommendFragment :
                 } else {
                     binding.smartLayout.setEnableLoadMore(true)
                 }
-                recommendAddAds()
             } else {
                 when (it.message) {
                     getString(R.string.net_error) -> {
@@ -533,6 +533,13 @@ open class RecommendFragment :
                     if (adData.showPosition <= recommendAdapter.itemCount) {
                         for (i in 0 until adData.showPosition) {
                             val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
+                            if (itemType == 4 || itemType == 5) {
+                                adData.showPosition++
+                            }
+                        }
+                        if (adData.showPosition < recommendAdapter.itemCount) {
+                            val itemType =
+                                recommendAdapter.getItem(adData.showPosition).getItemTypeLocal()
                             if (itemType == 4 || itemType == 5) {
                                 adData.showPosition++
                             }

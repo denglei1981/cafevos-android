@@ -75,7 +75,7 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
                     }
 
                     2 -> {
-                        JumpUtils.instans?.jump(71)
+                        JumpUtils.instans?.jump(11)
                     }
 
                     3 -> {

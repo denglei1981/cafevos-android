@@ -186,20 +186,21 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     fun toSearch() {
-        when (binding.homeViewpager.currentItem) {
-            0 -> {
+        val fragmentName=fragmentList.get(binding.homeViewpager.currentItem).javaClass.name
+        when (fragmentName) {
+            "com.changanford.home.recommend.fragment.RecommendFragment" -> {
                 JumpUtils.instans!!.jump(108)
             }
 
-            1 -> {
+            "com.changanford.circle.CircleFragmentV2" -> {
                 JumpUtils.instans!!.jump(108, MConstant.circleCheckPosition.toString())
             }
 
-            2 -> {
+            "com.changanford.home.acts.fragment.ActsParentsFragment" -> {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_ACTS.toString())
             }
 
-            3 -> {
+            "com.changanford.home.news.fragment.NewsListFragment" -> {
                 JumpUtils.instans!!.jump(108, SearchTypeConstant.SEARCH_NEWS.toString())
             }
         }

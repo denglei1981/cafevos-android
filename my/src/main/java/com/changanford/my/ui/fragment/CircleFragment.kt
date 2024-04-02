@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
@@ -139,6 +140,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
             when (getItemViewType(holder.layoutPosition)) {
                 0 -> {
                     val icon: ShapeableImageView = holder.getView(R.id.item_icon)
+                    val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
@@ -146,6 +148,8 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         R.id.item_user,
                         "${item.userCount}  成员  ${item.postsCount}  帖子"
                     )
+                    ivAuth.isVisible = item.manualAuth == 1
+                    ivAuth.load(item.manualAuthImg)
                     //状态 状态 1待审核  2审核通过
                     val statusTv: TextView = holder.getView(R.id.status_text)
                     val status = item.status
@@ -173,11 +177,14 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 
                 1 -> {
                     val title: AppCompatTextView = holder.getView(R.id.circle_user)
+                    val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
                     title.text = item.typeStr
                     title.visibility = if (item.isShowTitle) View.VISIBLE else View.GONE
 
                     val icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     icon.load(item.pic)
+                    ivAuth.isVisible = item.manualAuth == 1
+                    ivAuth.load(item.manualAuthImg)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
                     holder.setText(

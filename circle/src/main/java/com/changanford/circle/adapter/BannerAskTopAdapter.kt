@@ -32,7 +32,7 @@ class BannerAskTopAdapter : BaseBannerAdapter<QuestionItemBean>() {
             tvType.text = data.questionTypeName
             tvFb.text = "${data.fbReward}福币奖励"
             tvFb.isVisible = data.fbReward != "0"
-            tvTime.text = TimeUtils.MillisTo_YMDHM2(data.createTime)
+            tvTime.text = TimeUtils.MillisTo_YMDHM(data.createTime)
             tvTitle.text = data.title
         }
     }

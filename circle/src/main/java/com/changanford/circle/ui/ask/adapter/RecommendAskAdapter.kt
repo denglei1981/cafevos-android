@@ -172,16 +172,21 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
                 topPadding = 2.dp
                 bottomPadding = 2.dp
             }
-            tvTitle.addTag(tvConfig).addImageTag {
-                imageResource = R.mipmap.question_fb
-                position = tvTitle.text.length - 1
-                marginLeft = 4.toIntPx()
-            }.addTextTag {
-                text = item.fbReward.toString().plus("福币")
-                position = tvTitle.text.length - 2
-                textSize = 10.sp.toFloat()
-                backgroundColor = ContextCompat.getColor(context, R.color.white)
-                textColor = ContextCompat.getColor(context, R.color.color_E1A743)
+            tvTitle.addTag(tvConfig).apply {
+                if (item.fbReward != 0) {
+                    addImageTag {
+                        imageResource = R.mipmap.question_fb
+                        position = tvTitle.text.length - 1
+                        marginLeft = 4.toIntPx()
+                    }
+                    addTextTag {
+                        text = item.fbReward.toString().plus("福币")
+                        position = tvTitle.text.length - 2
+                        textSize = 10.sp.toFloat()
+                        backgroundColor = ContextCompat.getColor(context, R.color.white)
+                        textColor = ContextCompat.getColor(context, R.color.color_E1A743)
+                    }
+                }
             }
         }
 //        showTag(binding?.layoutAskInfo?.tvTitle, item)

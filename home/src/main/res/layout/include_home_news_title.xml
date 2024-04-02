@@ -93,10 +93,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="2"
                     android:textColor="@color/color_16"
                     android:textSize="14sp"
-                    tools:text="你是我的眼" />
+                    tools:text="你是我的眼撒打算大撒的" />
 
 
             </LinearLayout>
