@@ -1,7 +1,6 @@
 package com.changanford.home.news.fragment
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -9,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.bean.SpecialListBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterHomePath.SpecialListActivity
 import com.changanford.common.router.startARouter
@@ -82,12 +80,7 @@ class NewsListFragment : BaseLoadSirFragment<FragmentNewsListBinding, FindNewsLi
                 it.bViewpager.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
-                        val speical = it.bViewpager.data[position] as SpecialListBean
-                        if (TextUtils.isEmpty(speical.title)) {
-                            it.tvSubTitle.text = "长安福特专题"
-                        } else {
-                            it.tvSubTitle.text = speical.title
-                        }
+
                     }
                 })
                 it.tvMore.setOnClickListener {
