@@ -960,6 +960,11 @@ class JumpUtils {
                 startARouter(ARouterHomePath.AgentWebActivity, bundle)
             }
 
+            143 -> {//沉浸式打开h5页面,且需求登录
+                bundle.putBoolean("isGoneTitle", true)
+                startARouter(ARouterHomePath.AgentWebActivity, bundle, true)
+            }
+
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {

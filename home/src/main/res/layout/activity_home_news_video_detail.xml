@@ -16,11 +16,12 @@
         <com.dueeeke.videoplayer.player.VideoView
             android:id="@+id/homes_dk_video"
             android:layout_width="match_parent"
-            app:screenScaleType="type_match_parent"
-            android:layout_height="@dimen/dp_235"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_max="@dimen/dp_235"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:screenScaleType="type_default" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_rv_content"

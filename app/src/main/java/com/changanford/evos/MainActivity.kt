@@ -658,7 +658,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 //社区
                 if (jumpValue == 10000) {
                     //0社区-广场 1圈子 2问答
-                    communityIndex = jumpValue
+                    communityIndex = jumpIndex.toInt()
                     jumpIndex = "1"
                 } else if (jumpValue == 1) {
                     when (jumpIndex) {

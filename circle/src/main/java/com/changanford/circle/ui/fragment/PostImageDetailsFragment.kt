@@ -52,6 +52,8 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.widget.webview.CustomWebHelper
@@ -200,6 +202,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                 )
                 layoutContent.tvAddress.isVisible = !mData.showCity().isNullOrEmpty()
                 layoutContent.tvAddress.text = mData.showCity()
+                if (!mData.city.isNullOrEmpty() && mData.addrName.isNullOrEmpty()) {
+                    layoutContent.tvAddress.setDrawableNull()
+                } else {
+                    layoutContent.tvAddress.setDrawableLeft(R.mipmap.ic_post_details_address)
+                }
                 layoutContent.tvTitle.isVisible = !mData.title.isNullOrEmpty()
                 if (mData.isGood == 1 && !mData.title.isNullOrEmpty()) {
                     layoutContent.tvTitle.imageAndTextView(

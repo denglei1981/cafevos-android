@@ -103,6 +103,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
         try {
             if (!TextUtils.isEmpty(valueItem)) {
                 pagerCurrent = valueItem!!.toInt()
+                if (!isFirst) {
+                    binding.viewPager.currentItem = pagerCurrent
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -216,7 +219,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
             }
         }
         viewModel.getInitQuestion()
-        binding.viewPager.currentItem = pagerCurrent
+        binding.magicTab.post {
+            binding.viewPager.currentItem = pagerCurrent
+        }
     }
 
     private fun openChoose() {

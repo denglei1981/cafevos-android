@@ -56,6 +56,8 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.wutil.ScreenUtils
@@ -89,7 +91,7 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        AppUtils.setStatusBarMarginTop(binding.relativeLayout, requireActivity())
+        AppUtils.setStatusBarPaddingTop(binding.relativeLayout, requireActivity())
         playerHelper = DKPlayerPostHelper(requireActivity(), binding.videoView)
         playerHelper.fullScreenGone()//隐藏全屏按钮
         playerHelper.startPlay(mData.videoUrl)
@@ -112,13 +114,19 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             tvCollectionNum.text = mData.getCollectCountResult()
             tvShareNum.text = mData.getShareCountResult()
 
-            if (mData.isGood == 1) {
+            if (mData.isGood == 1 && !mData.title.isNullOrEmpty()) {
                 tvTitle.imageAndTextView(
                     mData.title,
                     R.mipmap.ic_home_refined_item
                 )
             } else {
                 tvTitle.text = mData.title
+            }
+            tvTitle.isVisible = !mData.title.isNullOrEmpty()
+            if (mData.isGood == 1 && mData.title.isNullOrEmpty()) {
+                tvContent.imageAndTextView(mData.content, R.mipmap.ic_home_refined_item)
+            } else {
+                tvContent.text = mData.content
             }
             ivLike.setImageResource(
                 if (mData.isLike == 1) {
@@ -254,6 +262,11 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             }
             tvAddress.isVisible = !mData.showCity().isNullOrEmpty()
             tvAddress.text = mData.showCity()
+            if (!mData.city.isNullOrEmpty() && mData.addrName.isNullOrEmpty()) {
+                tvAddress.setDrawableNull()
+            } else {
+                tvAddress.setDrawableLeft(R.mipmap.ic_post_details_address)
+            }
             tvAddress.setOnClickListener {
                 startBaduMap()
             }
