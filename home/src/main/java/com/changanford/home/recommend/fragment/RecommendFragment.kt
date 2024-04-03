@@ -248,14 +248,17 @@ open class RecommendFragment :
             } else {
                 fi.llFast.visibility = View.VISIBLE
             }
+
+            var useData = dataList
+
             if (dataList.size > 5) {
-                dataList.subList(0, 5)
+                useData = dataList.subList(0, 5)
             }
             topFastViews.forEach {
                 it.shapeAbleImageView.isVisible = false
                 it.textView.isVisible = false
             }
-            dataList.forEachIndexed { index, adBean ->
+            useData.forEachIndexed { index, adBean ->
                 val bean = topFastViews[index]
                 bean.shapeAbleImageView.isVisible = true
                 bean.textView.isVisible = true
