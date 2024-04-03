@@ -62,11 +62,10 @@ class PostViewModule() : PostRoomViewModel() {
     fun postEdit(params: HashMap<String, Any>) {
         launch(block = {
             val body = params
-
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().postEdit(body.header(rKey), body.body(rKey))
+                .also { it.msg.toast() }
                 .onSuccess {
-                    it?.toast()
                     postsuccess.value = "upsuccess"
                 }
                 .onWithMsgFailure {

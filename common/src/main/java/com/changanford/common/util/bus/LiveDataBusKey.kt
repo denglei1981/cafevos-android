@@ -48,6 +48,7 @@ object LiveDataBusKey {
 
     //H5获取经纬度
     const val WEB_GET_LOCATION = "agentWeb_getLocation"
+    const val WEB_GET_LOCATION_SERVICE = "agentWeb_getLocation"
 
     //获取cac token
     const val WEB_GET_CACTOKEN = "agentWeb_getCacToken"

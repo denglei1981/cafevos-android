@@ -580,7 +580,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             if (bean.isBuyCarDiary == 1) {
                 isCarHistory(true)
                 startARouter(ARouterCirclePath.ChooseCarActivity)
-            }else{
+            } else {
                 isCarHistory(false)
             }
         }
@@ -1412,90 +1412,66 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             }
         }
         headBinding.ivFm.setOnClickListener {
-            PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
-                object : OnResultCallbackListener<LocalMedia> {
-                    override fun onResult(result: MutableList<LocalMedia>?) {
-                        val localMedia = result?.get(0)
-                        localMedia?.let {
-                            val bundle = Bundle()
-                            bundle.putParcelableArrayList(
-                                "picList",
-                                arrayListOf(localMedia)
-                            )
-                            bundle.putInt("position", 0)
-                            bundle.putInt("showEditType", -1)
-                            bundle.putBoolean("longPostFM", true)
-                            startARouter(
-                                ARouterCirclePath.PictureeditlActivity,
-                                bundle
-                            )
+            val array = ArrayList<String>()
+            array.add("编辑封面")
+            array.add("重选封面")
+//            array.add("删除封面")
+            HomeBottomDialog(this, *array.toTypedArray())
+                .setOnClickItemListener(object :
+                    HomeBottomDialog.OnClickItemListener {
+                    override fun onClickItem(position: Int, str: String) {
+                        isunSave = true
+                        when (str) {
+                            "重选封面" -> {
+                                PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
+                                    object : OnResultCallbackListener<LocalMedia> {
+                                        override fun onResult(result: MutableList<LocalMedia>?) {
+                                            val localMedia = result?.get(0)
+                                            localMedia?.let {
+                                                val bundle = Bundle()
+                                                bundle.putParcelableArrayList(
+                                                    "picList",
+                                                    arrayListOf(localMedia)
+                                                )
+                                                bundle.putInt("position", 0)
+                                                bundle.putInt("showEditType", -1)
+                                                bundle.putBoolean("longPostFM", true)
+                                                startARouter(
+                                                    ARouterCirclePath.PictureeditlActivity,
+                                                    bundle
+                                                )
+                                            }
+                                        }
+
+                                        override fun onCancel() {
+                                            isunSave = false
+                                        }
+
+                                    })
+
+                            }
+
+                            "编辑封面" -> {
+                                val bundle = Bundle()
+                                bundle.putParcelableArrayList("picList", arrayListOf(FMMeadia))
+                                bundle.putInt("position", 0)
+                                bundle.putInt("showEditType", -1)
+                                bundle.putBoolean("longPostFM", true)
+                                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                            }
+
+                            "删除封面" -> {
+                                FMMeadia = null
+                                headBinding.ivAddfm.visibility = View.VISIBLE
+                                headBinding.tvFm.visibility = View.VISIBLE
+                                headBinding.ivFm.visibility = View.GONE
+                                headBinding.tvFmTips.visibility = View.GONE
+
+                            }
                         }
                     }
+                }).show()
 
-                    override fun onCancel() {
-                        isunSave = false
-                    }
-
-                })
-//            val array = ArrayList<String>()
-//            array.add("编辑封面")
-//            array.add("重选封面")
-////            array.add("删除封面")
-//            HomeBottomDialog(this, *array.toTypedArray())
-//                .setOnClickItemListener(object :
-//                    HomeBottomDialog.OnClickItemListener {
-//                    override fun onClickItem(position: Int, str: String) {
-//                        isunSave = true
-//                        when (str) {
-//                            "重选封面" -> {
-//                                PictureUtil.openGalleryOnePic(this@LongPostV2Avtivity,
-//                                    object : OnResultCallbackListener<LocalMedia> {
-//                                        override fun onResult(result: MutableList<LocalMedia>?) {
-//                                            val localMedia = result?.get(0)
-//                                            localMedia?.let {
-//                                                val bundle = Bundle()
-//                                                bundle.putParcelableArrayList(
-//                                                    "picList",
-//                                                    arrayListOf(localMedia)
-//                                                )
-//                                                bundle.putInt("position", 0)
-//                                                bundle.putInt("showEditType", -1)
-//                                                bundle.putBoolean("longPostFM", true)
-//                                                startARouter(
-//                                                    ARouterCirclePath.PictureeditlActivity,
-//                                                    bundle
-//                                                )
-//                                            }
-//                                        }
-//
-//                                        override fun onCancel() {
-//                                            isunSave = false
-//                                        }
-//
-//                                    })
-//
-//                            }
-//
-//                            "编辑封面" -> {
-//                                val bundle = Bundle()
-//                                bundle.putParcelableArrayList("picList", arrayListOf(FMMeadia))
-//                                bundle.putInt("position", 0)
-//                                bundle.putInt("showEditType", -1)
-//                                bundle.putBoolean("longPostFM", true)
-//                                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
-//                            }
-//
-//                            "删除封面" -> {
-//                                FMMeadia = null
-//                                headBinding.ivAddfm.visibility = View.VISIBLE
-//                                headBinding.tvFm.visibility = View.VISIBLE
-//                                headBinding.ivFm.visibility = View.GONE
-//                                headBinding.tvFmTips.visibility = View.GONE
-//
-//                            }
-//                        }
-//                    }
-//                }).show()
         }
     }
 

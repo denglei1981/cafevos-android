@@ -345,7 +345,7 @@ class ServiceWebInterface(
      */
     @JavascriptInterface
     fun getLocation(callback: String) {
-        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_LOCATION).postValue(callback)
+        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_LOCATION_SERVICE).postValue(callback)
     }
 
     /**

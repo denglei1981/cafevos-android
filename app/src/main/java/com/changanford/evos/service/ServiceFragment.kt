@@ -132,6 +132,12 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
         }
     }
 
+    override fun onResume() {
+        binding.webView.onResume()
+        quickCallJs("AppViewDidShow")
+        super.onResume()
+    }
+
     private fun initObserver() {
         /**
          * 图片上传完成回调h5
@@ -452,7 +458,7 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
             uploadImgCallback = map["callback"].toString()
         })
         //地图定位
-        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_LOCATION).observe(this, Observer {
+        LiveDataBus.get().with(LiveDataBusKey.WEB_GET_LOCATION_SERVICE).observe(this, Observer {
             getLocationCallback = it as String
             val permissions = Permissions.build(
                 Manifest.permission.ACCESS_FINE_LOCATION,
