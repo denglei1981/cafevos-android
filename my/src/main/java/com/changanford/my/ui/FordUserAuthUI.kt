@@ -14,6 +14,7 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -30,7 +31,6 @@ import com.changanford.my.adapter.MineCommAdapter
 import com.changanford.my.bean.UniAuthImageBean
 import com.changanford.my.databinding.UiFordUserAuthBinding
 import com.changanford.my.interf.UploadPicCallback
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener

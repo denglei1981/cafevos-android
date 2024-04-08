@@ -5,12 +5,12 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
 import com.changanford.common.bean.InputBean
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
-import com.changanford.my.databinding.*
-import com.changanford.my.utils.ConfirmTwoBtnPop
+import com.changanford.my.databinding.UiEditInputBinding
 import com.changanford.my.viewmodel.SignViewModel
 
 /**

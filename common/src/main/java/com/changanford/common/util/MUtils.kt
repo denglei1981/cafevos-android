@@ -13,16 +13,21 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import com.changanford.common.R
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toIntPx
+import razerdp.basepopup.BasePopupWindow
 
 
 object MUtils {
@@ -169,7 +174,7 @@ object MUtils {
     }
 
     private var expand = "展开   "
-    private var collapse = "收起  "
+    private var collapse = "收起   "
 
     fun expandText(contentTextView: TextView, msg: String) {
         val text: CharSequence = contentTextView.text
@@ -221,7 +226,7 @@ object MUtils {
             drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
             val imageSpan = drawable?.let { CenterImageSpan(it) }
 
-            ssb.setSpan(imageSpan, ssb.length - 2, ssb.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(imageSpan, ssb.length - 3, ssb.length - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             contentTextView.movementMethod = LinkMovementMethod.getInstance()
             contentTextView.text = ssb
@@ -266,4 +271,25 @@ object MUtils {
         contentTextView.text = ssb
     }
 
+}
+
+class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
+
+    lateinit var contentText: AppCompatTextView
+    lateinit var btnCancel: AppCompatButton
+    lateinit var btnConfirm: AppCompatButton
+    lateinit var title: AppCompatTextView
+
+    init {
+        setContentView(R.layout.pop_two_btn)
+        popupGravity = Gravity.CENTER
+    }
+
+    override fun onViewCreated(contentView: View) {
+        super.onViewCreated(contentView)
+        contentText = contentView.findViewById(R.id.text_content)
+        btnCancel = contentView.findViewById(R.id.btn_cancel)
+        btnConfirm = contentView.findViewById(R.id.btn_comfir)
+        title = contentView.findViewById(R.id.title)
+    }
 }

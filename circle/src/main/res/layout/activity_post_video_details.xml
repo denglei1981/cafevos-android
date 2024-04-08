@@ -28,7 +28,6 @@
                     android:id="@+id/video_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:screenScaleType="type_center_crop"
                     android:paddingBottom="20dp"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -358,7 +357,6 @@
                 android:layout_width="0dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="19dp"
-                android:layout_marginEnd="19dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_video_bottom_edit"
                 android:drawableStart="@mipmap/circle_edit_pb_v"
@@ -374,7 +372,7 @@
                 android:id="@+id/ll_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
+                android:layout_marginStart="14dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -398,7 +396,7 @@
                 android:id="@+id/tv_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:drawableTop="@mipmap/circle_talk_image_v"
                 android:drawablePadding="3dp"
                 android:gravity="center"
@@ -410,7 +408,7 @@
                 android:id="@+id/ll_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
+                android:layout_marginStart="16dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -434,7 +432,7 @@
                 android:id="@+id/tv_share_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:drawableTop="@mipmap/circle_share_image_v"
                 android:drawablePadding="6dp"

@@ -49,11 +49,27 @@ object PermissionPopUtil {
             setBackgroundColor(MColor.PERMISSION_BG)
         }
 
-
+//        val lll = object : PermissionListener {
+//            override fun onSucceed(var1: Int, var2: MutableList<String>) {
+//
+//            }
+//
+//            override fun onFailed(var1: Int, var2: MutableList<String>) {
+//
+//            }
+//
+//        }
+//        val asd = ArrayList<String>()
+//        permissions.permissions.forEach {
+//            asd.add(it.permissionName)
+//        }
+//        val permissionTrackerListener = PermissionTrackerListener(BaseApplication.curActivity, lll)
+//        permissionTrackerListener.preRequestPermission(asd)
         SoulPermission.getInstance()
             .checkAndRequestPermissions(permissions,
                 object : CheckRequestPermissionsListener {
                     override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
+//                        lll.onSucceed(allPermissions)
                         pop.dismiss()
                         success.invoke()
                     }
@@ -84,7 +100,7 @@ object PermissionPopUtil {
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR -> CALENDAR_TITLE
                 else -> ""
             }
-            Thread{
+            Thread {
                 kotlin.run {
                     Thread.sleep(800)
                     if (MConstant.isOnBackground) {

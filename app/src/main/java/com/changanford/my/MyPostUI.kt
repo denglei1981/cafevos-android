@@ -16,13 +16,12 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.room.PostDatabase
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.utilext.logE
 import com.changanford.common.widget.SelectDialog
 import com.changanford.my.databinding.UiMyPostBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import java.lang.reflect.Method

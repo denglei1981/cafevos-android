@@ -23,6 +23,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -37,7 +38,6 @@ import com.changanford.my.databinding.FragmentMemberCircleBinding
 import com.changanford.my.databinding.ItemLabelBinding
 import com.changanford.my.databinding.PopCircleBinding
 import com.changanford.my.databinding.PopMemberPartBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CircleViewModel
 import com.changanford.my.widget.RoundCheckBox
 import com.google.android.material.imageview.ShapeableImageView

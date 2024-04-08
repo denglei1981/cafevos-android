@@ -22,6 +22,7 @@ import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
@@ -35,7 +36,6 @@ import com.changanford.common.utilext.toast
 import com.changanford.my.R
 import com.changanford.my.databinding.*
 import com.changanford.my.ui.UserAuthUI
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia

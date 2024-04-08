@@ -6,11 +6,6 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.os.Looper
-import android.text.Html
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.TextUtils
-import android.text.style.ForegroundColorSpan
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -343,14 +338,14 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
             ScreenUtils.getScreenHeight(requireContext()) - ScreenUtils.dp2px(requireContext(), 60f)
         binding.videoView.layoutParams = layoutParams
         binding.tvContent.post {
-            val textView = binding.tvContent
+//            val textView = binding.tvContent
 //            binding.tvExpand.text = if (isExpand) "收起" else "展开"
-            var originText: String? = ""
-            originText = if (!TextUtils.isEmpty(mData.content)) {
-                Html.fromHtml(mData.content).toString()
-            } else {
-                mData.content
-            }
+//            var originText: String? = ""
+//            originText = if (!TextUtils.isEmpty(mData.content)) {
+//                Html.fromHtml(mData.content).toString()
+//            } else {
+//                mData.content
+//            }
             if (isExpand) {
 //                textView.text =mData.content
                 android.os.Handler(Looper.myLooper()!!).postDelayed({
@@ -359,34 +354,34 @@ class PostVideoDetailsFragment(private val mData: PostsDetailBean) :
 
             } else {
                 binding.scrollView.smoothScrollTo(0, 0)
-                val paddingLeft = textView.paddingLeft
-                val paddingRight = textView.paddingRight
-                val paint = textView.paint
-                val availableTextWidth = (textView.width - paddingLeft - paddingRight).toFloat()
-
-                if (originText.isNullOrEmpty()) {
-                    textView.text = ""
-//                    binding.tvExpand.visibility = View.INVISIBLE
-                } else {
-                    val ellipsizeStr: CharSequence = TextUtils.ellipsize(
-                        originText, paint,
-                        availableTextWidth, TextUtils.TruncateAt.END
-                    )
-                    if (ellipsizeStr.length < originText.length) {
-                        val temp: CharSequence = ellipsizeStr.toString()
-                        val ssb = SpannableStringBuilder(temp)
-                        ssb.setSpan(
-                            ForegroundColorSpan(requireContext().resources.getColor(R.color.circle_9eaed8)),
-                            temp.length,
-                            temp.length,
-                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-                        )
-                        textView.text = ssb
-                    } else {
-//                        binding.tvExpand.visibility = View.INVISIBLE
-                        textView.text = originText
-                    }
-                }
+//                val paddingLeft = textView.paddingLeft
+//                val paddingRight = textView.paddingRight
+//                val paint = textView.paint
+//                val availableTextWidth = (textView.width - paddingLeft - paddingRight).toFloat()
+//
+//                if (originText.isNullOrEmpty()) {
+//                    textView.text = ""
+////                    binding.tvExpand.visibility = View.INVISIBLE
+//                } else {
+//                    val ellipsizeStr: CharSequence = TextUtils.ellipsize(
+//                        originText, paint,
+//                        availableTextWidth, TextUtils.TruncateAt.END
+//                    )
+//                    if (ellipsizeStr.length < originText.length) {
+//                        val temp: CharSequence = ellipsizeStr.toString()
+//                        val ssb = SpannableStringBuilder(temp)
+//                        ssb.setSpan(
+//                            ForegroundColorSpan(requireContext().resources.getColor(R.color.circle_9eaed8)),
+//                            temp.length,
+//                            temp.length,
+//                            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+//                        )
+//                        textView.text = ssb
+//                    } else {
+////                        binding.tvExpand.visibility = View.INVISIBLE
+//                        textView.text = originText
+//                    }
+//                }
             }
         }
     }

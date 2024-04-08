@@ -35,7 +35,7 @@ import com.changanford.common.ui.GetCoupopBindingPop
 import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.ui.dialog.BindDialog
-import com.changanford.common.ui.dialog.PostDialog
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -362,36 +362,66 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun showSavePop(state: String, postEntity: PostEntity, block: () -> Unit) {
         activity?.let { it1 ->
-            PostDialog(
-                it1,
-                "发现您还有草稿未发布",
-                postButtonListener = object : PostDialog.PostButtonListener {
-                    override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+         val   cannotUnbindPop = ConfirmTwoBtnPop(requireContext())
+            cannotUnbindPop.apply {
+                contentText.text = "发现您还有草稿未发布"
+                btnCancel.text = "不使用草稿"
+                btnConfirm.text = "继续编辑"
+                btnCancel.setOnClickListener {
+                    dismiss()
+                    block.invoke()
+                }
+                btnConfirm.setOnClickListener {
+                    when (state) {
+                        "2" -> {
+                            RouterManger.param("postEntity", postEntity)
+                                .startARouter(ARouterCirclePath.PostActivity)
+                        }
 
-                        when (state) {
-                            "2" -> {
-                                RouterManger.param("postEntity", postEntity)
-                                    .startARouter(ARouterCirclePath.PostActivity)
-                            }
+                        "3" -> {
+                            RouterManger.param("postEntity", postEntity)
+                                .startARouter(ARouterCirclePath.PostActivity)
+                        }
 
-                            "3" -> {
-                                RouterManger.param("postEntity", postEntity)
-                                    .startARouter(ARouterCirclePath.PostActivity)
-                            }
-
-                            "4" -> {
-                                RouterManger.param("postEntity", postEntity)
-                                    .startARouter(ARouterCirclePath.LongPostAvtivity)
-                            }
+                        "4" -> {
+                            RouterManger.param("postEntity", postEntity)
+                                .startARouter(ARouterCirclePath.LongPostAvtivity)
                         }
                     }
-
-                    override fun cancle() {  //不使用草稿
-                        block.invoke()
-                    }
-
-
-                }).show()
+                    dismiss()
+                }
+                showPopupWindow()
+            }
+//            PostDialog(
+//                it1,
+//                "发现您还有草稿未发布",
+//                postButtonListener = object : PostDialog.PostButtonListener {
+//                    override fun save() { //继续编辑 2 图片 3 视频 4 图文长帖
+//
+//                        when (state) {
+//                            "2" -> {
+//                                RouterManger.param("postEntity", postEntity)
+//                                    .startARouter(ARouterCirclePath.PostActivity)
+//                            }
+//
+//                            "3" -> {
+//                                RouterManger.param("postEntity", postEntity)
+//                                    .startARouter(ARouterCirclePath.PostActivity)
+//                            }
+//
+//                            "4" -> {
+//                                RouterManger.param("postEntity", postEntity)
+//                                    .startARouter(ARouterCirclePath.LongPostAvtivity)
+//                            }
+//                        }
+//                    }
+//
+//                    override fun cancle() {  //不使用草稿
+//                        block.invoke()
+//                    }
+//
+//
+//                }).show()
         }
     }
 

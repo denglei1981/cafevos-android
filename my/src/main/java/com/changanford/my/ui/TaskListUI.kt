@@ -14,6 +14,7 @@ import com.changanford.common.bean.RoundBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
@@ -28,7 +29,6 @@ import com.changanford.my.adapter.TaskTitleAdapter
 import com.changanford.my.compose.dailySignCompose
 import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch

@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import cn.we.swipe.helper.WeSwipe
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.fastjson.JSON
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.PostRoomViewModel
@@ -16,12 +15,12 @@ import com.changanford.common.room.PostDatabase
 import com.changanford.common.room.PostEntity
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.TimeUtils
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.ItemPostDraftBinding
 import com.changanford.my.databinding.UiPostDraftBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.google.gson.Gson
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 

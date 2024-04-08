@@ -162,7 +162,7 @@ class CircleRecommendAdapter(context: Context, private val lifecycleOwner: Lifec
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getMPicList())
             if (!item.addrName.isNullOrEmpty()) {
                 binding.layoutCount.tvLocation.setDrawableLeft(R.mipmap.icon_circle_location)
-                binding.layoutCount.tvLocation.text = item.addrName
+                binding.layoutCount.tvLocation.text = item.plusCityAddr()
                 binding.layoutCount.tvLocation.setOnClickListener {
                     startBaduMap(item)
                 }

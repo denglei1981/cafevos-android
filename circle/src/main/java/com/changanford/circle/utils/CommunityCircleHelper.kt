@@ -56,6 +56,7 @@ class CommunityCircleHelper(
                 "服务器开小差，请稍候再试".toast()
                 return@observe
             }
+            circleSquareAdapter.circleBinding.vLine2.visibility = View.VISIBLE
             if (!it.wonderfulControls.isNullOrEmpty()) {
                 if (it.wonderfulControls.size > 3) {
                     circleSquareAdapter.activityAdapter.setList(
@@ -67,14 +68,16 @@ class CommunityCircleHelper(
                 } else {
                     circleSquareAdapter.activityAdapter.setList(it.wonderfulControls)
                 }
+                circleSquareAdapter.circleBinding.vLine2.visibility = View.GONE
                 circleSquareAdapter.circleBinding.clActivity.visibility = View.VISIBLE
             } else {
                 circleSquareAdapter.circleBinding.clActivity.visibility = View.GONE
             }
-            circleSquareAdapter.circleBinding.clNotice.visibility = View.VISIBLE
+            circleSquareAdapter.circleBinding.clNotice.isVisible = !it.circleNotices.isNullOrEmpty()
             circleSquareAdapter.circleBinding.ivAuth.isVisible = it.manualAuth == 1
             circleSquareAdapter.circleBinding.ivAuth.load(it.manualAuthImg)
             if (it.circleNotices.isNullOrEmpty()) {
+                circleSquareAdapter.circleBinding.vLine2.isVisible = false
                 circleSquareAdapter.noticeAdapter.setEmptyView(R.layout.empty_notice)
             } else {
                 circleSquareAdapter.noticeAdapter.setList(it.circleNotices)
@@ -83,6 +86,7 @@ class CommunityCircleHelper(
                 circleSquareAdapter.circleBinding.clTopic.visibility = View.GONE
             } else {
                 circleSquareAdapter.circleBinding.clTopic.visibility = View.VISIBLE
+                circleSquareAdapter.circleBinding.vLine2.visibility = View.GONE
                 circleSquareAdapter.topicAdapter.setList(it.circleTopics)
             }
             if (it.isApply == 1) {//审核中

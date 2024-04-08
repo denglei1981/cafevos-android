@@ -3,7 +3,6 @@ package com.changanford.home.adapter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -477,7 +476,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             }
             if (!item.addrName.isNullOrEmpty()) {
                 city.setDrawableLeft(R.mipmap.icon_circle_location)
-                city.text = item.addrName
+                city.text = item.plusCityAddr()
                 city.isVisible = true
             } else if (!item.city.isNullOrEmpty()) {
                 city.setDrawableNull()

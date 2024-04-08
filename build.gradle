@@ -12,7 +12,7 @@ buildscript {
         versions_router_compiler = "1.5.2"
         versions_compose = '1.3.3'
         versions_compose_ext = '1.3.0'
-        versions_gio = '3.4.5'
+        versions_gio = '3.5.3'
         //TODO
     }
     repositories {

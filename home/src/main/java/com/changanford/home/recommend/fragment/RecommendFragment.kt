@@ -535,9 +535,13 @@ open class RecommendFragment :
                     val adBean = RecommendData(adBean = adData.ads[0])
                     if (adData.showPosition <= recommendAdapter.itemCount) {
                         for (i in 0 until adData.showPosition) {
-                            val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
-                            if (itemType == 4 || itemType == 5) {
-                                adData.showPosition++
+                            try {
+                                val itemType = recommendAdapter.getItem(i).getItemTypeLocal()
+                                if (itemType == 4 || itemType == 5) {
+                                    adData.showPosition++
+                                }
+                            }catch (error:IndexOutOfBoundsException){
+
                             }
                         }
                         if (adData.showPosition < recommendAdapter.itemCount) {

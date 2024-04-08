@@ -8,13 +8,13 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.databinding.UiConfirmCancelAccountBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 
 /**

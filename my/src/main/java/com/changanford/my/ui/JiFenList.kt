@@ -11,6 +11,7 @@ import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -21,7 +22,6 @@ import com.changanford.my.R
 import com.changanford.my.adapter.GrowUpAndJifenViewHolder
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.UiJifenBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 

@@ -15,6 +15,7 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.WaitReceiveBindingPop
 import com.changanford.common.util.AuthCarStatus
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -27,7 +28,6 @@ import com.changanford.my.adapter.CarAuthHolder
 import com.changanford.my.databinding.ItemCarAuthBinding
 import com.changanford.my.databinding.UiCarCrmAuthBinding
 import com.changanford.my.databinding.ViewHeadCarAuthBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.CarAuthViewModel
 import com.changanford.my.widget.WaitBindingDialog
 import com.scwang.smart.refresh.layout.SmartRefreshLayout

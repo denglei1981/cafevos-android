@@ -37,7 +37,6 @@ import com.changanford.my.fragment.HomePageFragment
 import com.changanford.my.fragment.MyCollectFragment
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.request.PersonCenterViewModel
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.utils.toIntPx
 import com.changanford.widget.ScaleTransitionPagerTitleView
 import com.google.android.material.appbar.AppBarLayout

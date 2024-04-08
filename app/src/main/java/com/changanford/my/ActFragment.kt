@@ -15,6 +15,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.CommonUtils.jumpActDetail
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.actTypeText
@@ -23,7 +24,6 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.home.databinding.ItemMyActsBinding
 import com.changanford.my.databinding.FragmentActBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch

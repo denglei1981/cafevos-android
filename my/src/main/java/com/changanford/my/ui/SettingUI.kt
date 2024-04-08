@@ -19,6 +19,7 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.DeviceUtils
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
@@ -29,10 +30,8 @@ import com.changanford.common.utilext.CleanDataUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiSeetingBinding
-import com.changanford.my.utils.ConfirmTwoBtnPop
 import com.changanford.my.viewmodel.SignViewModel
 import com.orhanobut.hawk.Hawk
-import com.xiaomi.push.it
 import java.lang.reflect.InvocationTargetException
 import kotlin.concurrent.thread
 

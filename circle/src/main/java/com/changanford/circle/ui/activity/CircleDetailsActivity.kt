@@ -499,7 +499,7 @@ class CircleDetailsActivity :
             } else {
                 binding.topContent.clActivity.visibility = View.GONE
             }
-            binding.topContent.clNotice.visibility = View.VISIBLE
+            binding.topContent.clNotice.isVisible = !it.circleNotices.isNullOrEmpty()
             binding.topContent.ivAuth.isVisible = it.manualAuth == 1
             binding.topContent.ivAuth.load(it.manualAuthImg)
             if (it.circleNotices.isNullOrEmpty()) {

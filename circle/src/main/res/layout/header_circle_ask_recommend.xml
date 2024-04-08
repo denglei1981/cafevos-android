@@ -191,8 +191,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:drawableEnd="@mipmap/right_74889d"
-                    android:drawablePadding="6dp"
+                    android:drawableEnd="@mipmap/ic_right_app_color"
+                    android:drawablePadding="4dp"
                     android:text="@string/str_all"
                     android:textColor="@color/color_1700F4"
                     android:textSize="14sp" />

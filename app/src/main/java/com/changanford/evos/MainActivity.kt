@@ -710,10 +710,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 try {
                     val jumpDataType = it.getString("jumpDataType")?.toInt()
                     val jumpDataValue = it.getString("jumpDataValue")
-                    JumpUtils.instans!!.jump(
-                        Integer.valueOf(jumpDataType ?: 99),
-                        jumpDataValue
-                    )
+                    lifecycleScope.launch {
+                        delay(1000)
+                        JumpUtils.instans?.jump(
+                            Integer.valueOf(jumpDataType ?: 99),
+                            jumpDataValue
+                        )
+                    }
+
                 } catch (e: Exception) {
                 }
             }

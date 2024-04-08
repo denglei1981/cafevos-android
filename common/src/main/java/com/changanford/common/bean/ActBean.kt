@@ -450,6 +450,14 @@ data class PostDataBean(
     var addrName: String? = ""
 ) {
 
+    fun plusCityAddr():String{
+        return if (!city.isNullOrEmpty()) {
+            "${city} · ${addrName}"
+        } else ({
+            addrName
+        }).toString()
+    }
+
     fun getCommentResult(): String {
         var commentCountResult: String = ""
         if (commentCount == 0L) {

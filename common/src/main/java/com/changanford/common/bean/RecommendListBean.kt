@@ -152,6 +152,14 @@ data class RecommendData(
         return 1
     }
 
+    fun plusCityAddr(): String {
+        return if (!city.isNullOrEmpty()) {
+            "${city} · ${addrName}"
+        } else ({
+            addrName
+        }).toString()
+    }
+
     fun getContent(): String { // 获取内容
         var contentString: String = ""
         when (rtype) {//1 资讯 2 帖子 3 活动

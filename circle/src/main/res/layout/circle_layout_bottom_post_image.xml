@@ -43,7 +43,7 @@
                 android:id="@+id/ll_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="14dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -67,7 +67,7 @@
                 android:id="@+id/tv_comment_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="16dp"
                 android:drawableTop="@mipmap/circle_talk_image"
                 android:drawablePadding="1dp"
                 android:gravity="center"
@@ -79,7 +79,7 @@
                 android:id="@+id/ll_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="vertical">
 
@@ -104,7 +104,6 @@
                 android:id="@+id/tv_share_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:layout_marginEnd="16dp"
                 android:drawableTop="@mipmap/circle_share_image"
                 android:drawablePadding="4dp"

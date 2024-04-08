@@ -3,22 +3,16 @@ package com.changanford.my.utils
 import android.Manifest
 import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.os.Environment
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
-import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.router.path.ARouterHomePath
-import com.changanford.common.router.startARouterForResult
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.H5_REGISTER_AGREEMENT
@@ -27,15 +21,13 @@ import com.changanford.common.util.MConstant.loginBgVideoUrl
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logE
-import com.changanford.common.utilext.toastShow
-import com.changanford.common.web.AgentWebActivity
-import com.changanford.my.R
 import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
-import okhttp3.*
-import razerdp.basepopup.BasePopupWindow
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -94,28 +86,6 @@ fun TextView.signAgreement() {
 
     this.text = spannable
     this.movementMethod = LinkMovementMethod.getInstance()
-}
-
-
-class ConfirmTwoBtnPop(context: Context?) : BasePopupWindow(context) {
-
-    lateinit var contentText: AppCompatTextView
-    lateinit var btnCancel: AppCompatButton
-    lateinit var btnConfirm: AppCompatButton
-    lateinit var title: AppCompatTextView
-
-    init {
-        setContentView(R.layout.pop_two_btn)
-        popupGravity = Gravity.CENTER
-    }
-
-    override fun onViewCreated(contentView: View) {
-        super.onViewCreated(contentView)
-        contentText = contentView.findViewById(R.id.text_content)
-        btnCancel = contentView.findViewById(R.id.btn_cancel)
-        btnConfirm = contentView.findViewById(R.id.btn_comfir)
-        title = contentView.findViewById(R.id.title)
-    }
 }
 
 
