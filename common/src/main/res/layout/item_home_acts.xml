@@ -77,8 +77,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_state"
-            android:layout_width="80dp"
-            android:layout_height="36dp"
+            android:layout_width="70dp"
+            android:layout_height="32dp"
             android:gravity="center"
             android:text="进行中"
             android:textColor="@color/white"

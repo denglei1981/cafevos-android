@@ -98,20 +98,20 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
                     labelAdapter.setItems(it)
                 }
             }
-            ImmersionBar.with(this@PostImageDetailsFragment).statusBarDarkFont(false).init()
+            ImmersionBar.with(requireActivity()).statusBarDarkFont(false).init()
             binding.nestScroll.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 val bannerHeight = binding.banner.bottom
                 if (scrollY >= bannerHeight / 2) {
                     binding.ivBack.setColorFilter(Color.parseColor("#D94a4a4a"))
                     binding.ivShare.setColorFilter(Color.parseColor("#D94a4a4a"))
-                    ImmersionBar.with(this@PostImageDetailsFragment).statusBarDarkFont(true).init()
+                    ImmersionBar.with(requireActivity()).statusBarDarkFont(true).init()
                     //图片变色
                     isWhite = false
                     binding.toolbar.background.mutate().alpha = 255
                 } else {
                     binding.ivBack.setColorFilter(Color.parseColor("#ffffff"))
                     binding.ivShare.setColorFilter(Color.parseColor("#ffffff"))
-                    ImmersionBar.with(this@PostImageDetailsFragment).statusBarDarkFont(false).init()
+                    ImmersionBar.with(requireActivity()).statusBarDarkFont(false).init()
                     isWhite = true
                     binding.toolbar.background.mutate().alpha = 0
                 }

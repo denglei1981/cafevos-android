@@ -530,7 +530,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
             this
         ) {
             isunSave = false
-            address = it.address ?: it.name ?: ""
+            address = it.city.plus("·${it.name}")
             params["address"] = address
             params["addrName"] = it.name
             it.location?.let { mit ->

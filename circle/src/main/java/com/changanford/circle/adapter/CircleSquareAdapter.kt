@@ -53,7 +53,10 @@ class CircleSquareAdapter(
 ) {
 
     private val tabList = listOf("推荐", "最新")
-
+    val circleRecommendV2Fragment =
+        CircleRecommendV2Fragment.newInstance(1)
+    val lastCircleRecommendV2Fragment =
+        CircleRecommendV2Fragment.newInstance(2)
 
 //    val topFragments = arrayListOf(
 //        CircleMainFragment.newInstance("0"),
@@ -253,11 +256,6 @@ class CircleSquareAdapter(
         ViewPagerHelper.bind(magicIndicator, binding.viewPager)
 
     }
-
-    val circleRecommendV2Fragment =
-        CircleRecommendV2Fragment.newInstance(1)
-    val lastCircleRecommendV2Fragment =
-        CircleRecommendV2Fragment.newInstance(2)
 
     var viewpagerBinding: ItemCircleMianBottomBinding? = null
     private fun initTabAndViewPager(binding: ItemCircleMianBottomBinding) {

@@ -1,19 +1,21 @@
 package com.changanford.home.acts.fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.changanford.common.basic.BaseLoadSirFragment
-import com.changanford.common.utilext.toastShow
-import com.changanford.home.acts.adapter.ActsMainAdapter
 import com.changanford.home.acts.request.ActsListViewModel
-import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.databinding.FragmentActsParentBinding
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
+
 class ActsParentsFragment : BaseLoadSirFragment<FragmentActsParentBinding, ActsListViewModel>(),
     OnRefreshListener {
 
-private var isFirst=true
+    private var isFirst = true
+    private val actsChildFragment by lazy {
+        ActsChildListFragment.newInstance()
+    }
 
     companion object {
         fun newInstance(): ActsParentsFragment {
@@ -24,13 +26,14 @@ private var isFirst=true
         }
     }
 
-    private val adapter by lazy {
-        ActsMainAdapter(requireContext(), this, requireActivity(), lifecycle)
-    }
+//    private val adapter by lazy {
+//        ActsMainAdapter(requireContext(), this, requireActivity(), lifecycle)
+//    }
 
     override fun initView() {
-
+        replaceFragment(actsChildFragment)
     }
+
 
     override fun initData() {
 
@@ -42,71 +45,39 @@ private var isFirst=true
     override fun onResume() {
         super.onResume()
 //        viewModel.getBanner()
-        if (isFirst){
-            isFirst=false
+        if (isFirst) {
+            isFirst = false
             initMyView()
         }
-        try {
-            adapter.startViewPagerLoop()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
     }
 
-    private fun initMyView(){
+    private fun initMyView() {
         binding.refreshLayout.setEnableRefresh(true)
         binding.refreshLayout.setOnRefreshListener(this)
-        binding.ryActs.setStickyHeight(0)
-        binding.ryActs.adapter = adapter
-        adapter.setItems(arrayListOf("", ""))
-        binding.ryActs.setStickyListener {
-            if (it) {
-                adapter.stopViewPagerLoop()
-            } else {
-                adapter.startViewPagerLoop()
-            }
-        }
-        viewModel.getBanner()
+        actsChildFragment.initMyView()
+
     }
 
     override fun observe() {
         super.observe()
-        viewModel.bannerLiveData.observe(this) {
-            if (it.isSuccess) {
-//                (parentFragment as HomeV2Fragment).stopRefresh()
-                binding.refreshLayout.finishRefresh()
-                adapter.setViewPagerData(it.data as ArrayList<CircleHeadBean>)
-            } else {
-                toastShow(it.message)
-            }
-        }
     }
 
     private fun homeRefersh() {
-        viewModel.getBanner()
-        adapter.actsChildFragment.getActList(false, adapter.allUnitCode, adapter.allActsCode)
+//        viewModel.getBanner()
+//        actsChildFragment.getActList(false)
+        actsChildFragment.initMyView()
+        binding.refreshLayout.finishRefresh()
     }
 
-    override fun onPause() {
-        super.onPause()
-        try {
-            adapter.stopViewPagerLoop()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = childFragmentManager
+        val transaction = fragmentManager.beginTransaction()
+        transaction.replace(com.changanford.home.R.id.fragment, fragment) //framelayout1使用的是帧布局中的id
+        //模拟返回栈
+        transaction.addToBackStack(null) //模拟返回栈,再次点击按钮的时候，返回原本的布局，但是我这里没起作用，不知道为什么。
+        transaction.commit()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            adapter.stopViewPagerLoop()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
         homeRefersh()

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.zhpan.bannerview.BannerViewPager
+                android:id="@+id/b_viewpager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="343:268"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.zhpan.bannerview.indicator.DrawableIndicator
+                android:id="@+id/dr_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/transparent"
+                app:layout_constraintBottom_toBottomOf="@+id/b_viewpager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp"
+            android:background="@color/white">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@color/white"
+                android:paddingBottom="@dimen/dp_4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabGravity="start"
+                app:tabIndicatorColor="@color/black"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="scrollable"
+                app:tabPaddingEnd="30dp"
+                app:tabPaddingStart="0dp"
+                app:tabRippleColor="@color/transparent"
+                app:tabSelectedTextColor="@color/black"
+                app:tabTextColor="@color/color_0817" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_srceen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/icon_home_screen2"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="@string/screen_acts"
+                android:textColor="@color/color_9916"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintBottom_toBottomOf="@+id/tabs"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tabs" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</layout>

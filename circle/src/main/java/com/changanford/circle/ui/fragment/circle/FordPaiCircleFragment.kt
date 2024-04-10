@@ -133,12 +133,12 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
                     ivIconRight.setImageResource(com.changanford.circle.R.mipmap.ic_circle_jion_num_right_b)
 
                     val layoutParam = tvMyCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam.topMargin = 15.toIntPx()
+                    layoutParam.topMargin = 45.toIntPx()
                     tvMyCircle.layoutParams = layoutParam
                     tvMyCircle.textSize = 18f
 
                     val layoutParam2 = tvHotCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam2.topMargin = 27.toIntPx()
+                    layoutParam2.topMargin = 60.toIntPx()
                     tvHotCircle.layoutParams = layoutParam2
                     tvHotCircle.textSize = 14f
 
@@ -172,12 +172,12 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
                     ivIconRight.setImageResource(com.changanford.circle.R.mipmap.ic_circle_jion_num_right_w)
 
                     val layoutParam = tvMyCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam.topMargin = 27.toIntPx()
+                    layoutParam.topMargin = 50.toIntPx()
                     tvMyCircle.layoutParams = layoutParam
                     tvMyCircle.textSize = 14f
 
                     val layoutParam2 = tvHotCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam2.topMargin = 15.toIntPx()
+                    layoutParam2.topMargin = 35.toIntPx()
                     tvHotCircle.layoutParams = layoutParam2
                     tvHotCircle.textSize = 18f
                 }

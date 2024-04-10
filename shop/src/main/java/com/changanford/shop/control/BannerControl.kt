@@ -17,9 +17,9 @@ import com.changanford.shop.R
  * @Description : BannerControl
  */
 object BannerControl {
-    fun bindingBanner(banner: BGABanner, advertList: MutableList<AdBean>?) {
-        bindingBanner(banner, advertList, 0)
-    }
+//    fun bindingBanner(banner: BGABanner, advertList: MutableList<AdBean>?) {
+//        bindingBanner(banner, advertList, 0)
+//    }
 
     fun bindingBanner(
         banner: BGABanner,

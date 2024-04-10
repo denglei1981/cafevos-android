@@ -1,7 +1,6 @@
 package com.changanford.home.acts.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -16,8 +15,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.adapter.BaseAdapter
-import com.changanford.common.bean.AdBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.launchWithCatch
@@ -34,10 +38,7 @@ import com.changanford.home.databinding.HomeActsBottomBinding
 import com.changanford.home.databinding.HomeActsHeaderBinding
 import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
-import com.xiaomi.push.it
 import com.zhpan.bannerview.constants.PageStyle
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import razerdp.basepopup.BasePopupWindow
 
 class ActsMainAdapter(
@@ -101,6 +102,7 @@ class ActsMainAdapter(
                     actsChildFragment.show()
                     GIOUtils.homePageClick("筛选区", 3.toString(), "筛选")
                 }
+
                 binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabReselected(tab: TabLayout.Tab?) {
                         val title = tab?.customView?.findViewById<TextView>(R.id.text_view)?.text
@@ -142,6 +144,17 @@ class ActsMainAdapter(
                     }
                 })
             }
+        }
+    }
+
+    private fun updatePagerHeightForChild(view: View, pager: ViewPager2) {
+        view.post {
+            val wMeasureSpec =
+                View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+            val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(wMeasureSpec, hMeasureSpec)
+            pager.layoutParams = (pager.layoutParams).also { lp -> lp.height = view.measuredHeight }
+            pager.invalidate()
         }
     }
 

@@ -39,6 +39,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 import java.net.URLDecoder
+import kotlin.math.abs
 
 
 /**
@@ -52,10 +53,30 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private var defaultTagName: String? = null
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { _: AppBarLayout?, i: Int ->
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { appBarLayout: AppBarLayout, i: Int ->
             binding.smartRl.isEnabled = i >= 0
+            val absOffset = abs(i).toFloat() * 2.5F
+            //改变透明度
+            if (absOffset <= appBarLayout.height) {
+                val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
+                binding.toolbar.background.mutate().alpha = mAlpha
+                binding.inHeader.apply {
+                    tvShopTips.visibility = View.INVISIBLE
+                    imgSearch.setImageResource(R.mipmap.shop_search)
+                    imgBuyCar.setImageResource(R.mipmap.shop_buy_car)
+                    imgMenu.setImageResource(R.mipmap.shop_menu)
+                }
+            } else {
+                binding.toolbar.background.mutate().alpha = 255
+                binding.inHeader.apply {
+                    tvShopTips.visibility = View.VISIBLE
+                    imgSearch.setImageResource(R.mipmap.shop_search_b)
+                    imgBuyCar.setImageResource(R.mipmap.shop_buy_car_b)
+                    imgMenu.setImageResource(R.mipmap.shop_menu_b)
+                }
+            }
         } as AppBarLayout.BaseOnOffsetChangedListener<*>)
-        AppUtils.setStatusBarPaddingTop(binding.inTop.clTitle, requireActivity())
+        AppUtils.setStatusBarPaddingTop(binding.toolbar, requireActivity())
         addLiveDataBus()
         addObserve()
         initKill()
@@ -63,13 +84,15 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.apply {
             smartRl.setOnRefreshListener(this@ShopFragment)
             //搜索
-            inTop.ivSearch.setOnClickListener {
+            inHeader.imgSearch.setOnClickListener {
                 JumpUtils.instans?.jump(108, SearchTypeConstant.SEARCH_SHOP.toString())
             }
             //购物车
-            inTop.ivMenu.setOnClickListener {
-//                JumpUtils.instans?.jump(119)
-                showPublish(inTop.clTitle)
+            inHeader.imgBuyCar.setOnClickListener {
+                JumpUtils.instans?.jump(119)
+            }
+            inHeader.imgMenu.setOnClickListener {
+                showPublish(inHeader.imgMenu)
             }
             inTop.apply {
                 recyclerViewRecommend.adapter = recommendAdapter
@@ -301,12 +324,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
 
     private fun bindCarNum(num: Int) {
-//        binding.inHeader.tvCarNumber.apply {
-//            visibility = if (num > 0) {
-//                text = "$num"
-//                View.VISIBLE
-//            } else View.GONE
-//        }
+        binding.inHeader.tvCarNumber.apply {
+            visibility = if (num > 0) {
+                text = "$num"
+                View.VISIBLE
+            } else View.GONE
+        }
     }
 
     private fun addLiveDataBus() {

@@ -422,7 +422,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
             this
         ) {
             isunSave = false
-            address = it.address ?: it.name ?: ""
+            address = it.city.plus("·${it.name}")
             params["address"] = address
             params["addrName"] = it.name
             it.location?.let { mit ->

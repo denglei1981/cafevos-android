@@ -3,6 +3,7 @@ package com.changanford.circle.ui.fragment
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleSquareAdapter
 import com.changanford.circle.databinding.FragmentSquareBinding
@@ -55,6 +56,10 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
         super.observe()
         viewModel.topSignBean.observe(this) {
             circleSquareAdapter.topBinding.run {
+                it.ontinuous?.let {
+                    val days = it.toInt()
+                    tvDaysNum.isVisible = days > 0
+                }
                 tvDaysNum.text = "已连续签到${it.ontinuous}天"
                 it.curDate?.let { ss ->
                     tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)

@@ -2,59 +2,71 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <LinearLayout
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_35">
+        android:gravity="center_vertical"
+        android:paddingEnd="15dp"
+        android:paddingBottom="@dimen/dp_5">
+
         <com.changanford.shop.view.TypefaceTextView
-            android:textColor="@color/color_666974"
-            android:textSize="@dimen/sp_22"
-            android:textStyle="bold"
-            android:text="@string/str_shop"
-            android:layout_weight="1"
+            android:id="@+id/tv_shop_tips"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/str_shop"
+            android:textColor="@color/color_d916"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="invisible" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_search"
-            android:background="@drawable/round_f8f9f9"
-            android:src="@mipmap/shop_search"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:src="@mipmap/shop_search" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="visible"
-            android:layout_marginStart="@dimen/dp_10"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:visibility="visible">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_buyCar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_car_number"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:src="@mipmap/ic_shop_buy_car"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <com.changanford.common.ui.view.WTextView
-                android:id="@+id/tv_car_number"
-                android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dp_13"
-                android:minWidth="@dimen/dp_13"
-                android:gravity="center"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:src="@mipmap/shop_buy_car"
+                app:layout_constraintEnd_toEndOf="@id/tv_car_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_car_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/shape_f21c44_6dp"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_13"
+                android:minHeight="@dimen/dp_13"
                 android:paddingStart="@dimen/dp_3"
                 android:paddingEnd="@dimen/dp_3"
                 android:text="0"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_9"/>
+                android:textSize="@dimen/sp_9"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@mipmap/shop_menu" />
     </LinearLayout>
 </layout>

@@ -16,11 +16,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_tab"
+                android:layout_marginTop="-5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/dp_45"
                     android:text="我的圈子"
                     android:textColor="@color/color_16"
                     android:textSize="18sp"
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="43dp"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginTop="@dimen/dp_60"
                     android:text="热门圈子"
                     android:textColor="@color/white"
                     android:textSize="14sp"

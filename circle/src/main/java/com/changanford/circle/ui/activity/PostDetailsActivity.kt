@@ -33,6 +33,7 @@ class PostDetailsActivity :
     }
 
     override fun initView() {
+        isDarkFont = false
         title = "帖子详情页"
         postsId = intent.getStringExtra("postsId").toString()
         setLoadSir(binding.frameLayout)

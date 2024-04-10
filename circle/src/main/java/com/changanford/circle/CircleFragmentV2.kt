@@ -344,9 +344,9 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 //                simplePagerTitleView.textSize = 18f
                 simplePagerTitleView.setPadding(18.toIntPx(), 0, 18.toIntPx(), 0)
                 simplePagerTitleView.normalColor =
-                    ContextCompat.getColor(context, R.color.color_99ff)
+                    ContextCompat.getColor(context, R.color.color_9916)
                 simplePagerTitleView.selectedColor =
-                    ContextCompat.getColor(context, R.color.white)
+                    ContextCompat.getColor(context, R.color.color_1700F4)
                 simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
                 return simplePagerTitleView
             }

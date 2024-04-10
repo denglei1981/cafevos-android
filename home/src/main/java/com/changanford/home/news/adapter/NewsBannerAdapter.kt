@@ -131,6 +131,7 @@ class NewsBannerAdapter : BaseBannerAdapter<SpecialListBean?>() {
         holder?.let {
             DataBindingUtil.bind<ItemRecommendBarBannerBinding>(it.itemView)?.apply {
                 data?.apply {
+                    flBg.isVisible = true
                     tvSubTitle.text = if (data.title.isNullOrEmpty()) "长安福特专题" else data.title
                     ivBanner.load(data.pics)
                     ivBanner.setOnClickListener {

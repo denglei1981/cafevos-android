@@ -429,7 +429,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 R.id.homeFragment -> {
                     GioPageConstant.mainTabName = "发现页"
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
-                    StatusBarUtil.setLightStatusBar(this, false)
+                    StatusBarUtil.setLightStatusBar(this, true)
                     // 埋点
                     val currentFragment = getFragment(HomeV2Fragment::class.java)
                     currentFragment?.let { it ->

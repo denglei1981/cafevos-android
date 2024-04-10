@@ -1,57 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-    </data>
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/smartRl"
+    <data></data>
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/dp_50">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/dp_50">
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/appbarLayout"
-                    android:background="@color/white"
+                android:layout_height="wrap_content"
+                app:elevation="0dp"
+                app:layout_behavior="@string/circle_behavior_app_bar_layout">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:elevation="0dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                    app:contentScrim="@color/transparent"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
                     <include
                         android:id="@+id/inTop"
-                        layout="@layout/in_shop_top"/>
-                    <LinearLayout
-                        android:id="@+id/tab_container"
+                        layout="@layout/in_shop_top" />
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_4"
-                        android:elevation="0dp"
-                        android:gravity="bottom">
-                        <com.google.android.material.tabs.TabLayout
-                            app:tabMode="scrollable"
-                            android:id="@+id/tab_layout"
-                            app:tabIndicator="@null"
-                            app:tabMinWidth="@dimen/dp_20"
-                            app:tabMaxWidth="@dimen/dp_200"
-                            app:tabTextAppearance="@style/style_indexTabItemStyle16"
-                            app:tabIndicatorColor="@null"
-                            app:tabSelectedTextColor="@color/white"
+                        android:background="@color/color_withe"
+                        app:layout_collapseMode="pin">
+
+                        <include
+                            android:id="@+id/in_header"
+                            layout="@layout/header_shop"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_32"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="@dimen/dp_5"
-                            android:layout_marginEnd="@dimen/dp_5"
-                            app:tabTextColor="@color/color_9394A0"
-                            android:textSize="@dimen/sp_16"/>
-                    </LinearLayout>
-                </com.google.android.material.appbar.AppBarLayout>
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewpager"
+                            android:layout_height="wrap_content" />
+
+                    </androidx.appcompat.widget.Toolbar>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:textSize="@dimen/sp_16"
+                    app:elevation="0dp"
+                    app:tabIndicator="@null"
+                    app:tabIndicatorColor="@null"
+                    app:tabMaxWidth="@dimen/dp_200"
+                    app:tabMinWidth="@dimen/dp_20"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextAppearance="@style/style_indexTabItemStyle16"
+                    app:tabTextColor="@color/color_9394A0" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

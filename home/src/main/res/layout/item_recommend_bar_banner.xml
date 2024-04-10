@@ -23,6 +23,7 @@
             android:id="@+id/fl_bg"
             android:layout_width="0dp"
             android:layout_height="40dp"
+            android:visibility="gone"
             android:background="@drawable/shape_ads_news"
             app:layout_constraintBottom_toBottomOf="@+id/iv_banner"
             app:layout_constraintEnd_toEndOf="@+id/iv_banner"

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,10 +9,9 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <com.changanford.common.widget.recy.ChildRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,12 +30,12 @@
                 android:id="@+id/iv_empty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/dp_30"
                 android:background="@mipmap/icon_common_acts_empty"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_empty"
@@ -45,21 +43,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="暂无内容"
-                app:layout_constraintTop_toBottomOf="@+id/iv_empty"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:textColor="@color/color_99"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_empty" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_empty"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:text="@string/base_click_me_to_retry"
-                android:visibility="gone" />
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_empty" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -42,6 +42,7 @@ import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.custom.AppBarLayoutStateChangeListener
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
@@ -58,6 +59,7 @@ import com.changanford.home.recommend.fragment.RecommendFragment
 import com.changanford.home.request.HomeV2ViewModel
 import com.changanford.home.shot.fragment.BigShotFragment
 import com.changanford.home.widget.pop.GetFbPop
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.luck.picture.lib.entity.LocalMedia
@@ -107,10 +109,28 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         addLiveDataBus()
         lifecycleScope.launch {
             delay(500)
-            StatusBarUtil.setLightStatusBar(requireActivity(), false)
+            StatusBarUtil.setLightStatusBar(requireActivity(), true)
         }
-        StatusBarUtil.setStatusBarPaddingTop(binding.layoutTopBar.root, requireActivity())
+        StatusBarUtil.setStatusBarMarginTop(binding.vLine, requireActivity())
         StatusBarUtil.setStatusBarMarginTop(binding.recommendContent.ivMore, requireActivity())
+        binding.appbarLayout.addOnOffsetChangedListener(object : AppBarLayoutStateChangeListener() {
+            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State) {
+                when (state) {
+                    State.EXPANDED -> {//展开
+//                        StatusBarUtil.setZeroStatusBarPaddingTop(binding.homeTab, requireActivity())
+                    }
+
+                    State.COLLAPSED -> {//关闭
+//                        StatusBarUtil.setStatusBarPaddingTop(binding.homeTab, requireActivity())
+                    }
+
+                    State.INTERMEDIATE -> {//中间
+//                        StatusBarUtil.setZeroStatusBarPaddingTop(binding.homeTab, requireActivity())
+                    }
+                }
+            }
+
+        })
         PostDatabase.getInstance(requireActivity()).getPostDao().findAll().observe(
             this
         ) {
@@ -125,7 +145,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.homeTab.setSelectedTabIndicatorColor(
             ContextCompat.getColor(
                 MyApp.mContext,
-                R.color.white
+                R.color.color_1700F4
             )
         )
         binding.homeTab.tabRippleColor = null
@@ -166,13 +186,13 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         binding.recommendContent.ivMore.setOnClickListener {
             showPublish(binding.homeTab)
         }
-        binding.layoutTopBar.ivScan.setOnClickListener {
+        binding.ivScan.setOnClickListener {
             showPublish(binding.homeTab)
         }
         binding.recommendContent.etSearchContent.setOnClickListener {
             toSearch()
         }
-        binding.layoutTopBar.searchContent.setOnClickListener {
+        binding.searchContent.setOnClickListener {
             toSearch()
         }
         binding.header.openTwoLevel(true)
@@ -186,7 +206,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
     }
 
     fun toSearch() {
-        val fragmentName=fragmentList.get(binding.homeViewpager.currentItem).javaClass.name
+        val fragmentName = fragmentList.get(binding.homeViewpager.currentItem).javaClass.name
         when (fragmentName) {
             "com.changanford.home.recommend.fragment.RecommendFragment" -> {
                 JumpUtils.instans!!.jump(108)
@@ -212,11 +232,11 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             // 埋点
             BuriedUtil.instant?.discoverTopMenu(tab.text.toString())
             mTabText?.isSelected = true
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white))
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700F4))
             mTabText?.paint?.isFakeBoldText = true
             mTabText?.textSize = 18f
         } else {
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white_b2))
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_9916))
             mTabText?.textSize = 16f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
@@ -293,14 +313,14 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                 mTabText.setTextColor(
                     ContextCompat.getColor(
                         MyApp.mContext,
-                        R.color.white
+                        R.color.color_1700F4
                     )
                 )
                 mTabText.paint.isFakeBoldText = true
                 mTabText.textSize = 18f
 
             } else {
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.white_b2))
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_9916))
                 mTabText.textSize = 16f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
@@ -362,7 +382,7 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
 
     private fun showSavePop(state: String, postEntity: PostEntity, block: () -> Unit) {
         activity?.let { it1 ->
-         val   cannotUnbindPop = ConfirmTwoBtnPop(requireContext())
+            val cannotUnbindPop = ConfirmTwoBtnPop(requireContext())
             cannotUnbindPop.apply {
                 contentText.text = "发现您还有草稿未发布"
                 btnCancel.text = "不使用草稿"
