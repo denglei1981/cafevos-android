@@ -146,8 +146,8 @@ class AllReplyActivity : BaseActivity<ActivityAllReplyBinding, AllReplyViewModel
                 ImageOptions().apply { circleCrop = true })
             binding.layoutHeader.tvAuthorName.text = item.nickname
             binding.tvTime.text = item.getTimeAndAddress()
-            if (!item.memberIcon.isNullOrEmpty()) {
-                binding.layoutHeader.ivVip.load(item.memberIcon)
+            if (!mAuthors?.memberIcon.isNullOrEmpty()) {
+                binding.layoutHeader.ivVip.load(mAuthors?.memberIcon)
             }
             binding.layoutHeader.btnFollow.setOnClickListener {
                 if (!MineUtils.getBindMobileJumpDataType(true)) {

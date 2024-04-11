@@ -65,7 +65,7 @@ class ItemCommentAdapter(private val lifecycleOwner: LifecycleOwner) :
 //            binding.bean = item
             binding.run {
                 layoutHeader.tvAuthorName.text = item.nickname
-                if (!item.memberIcon.isNullOrEmpty()) {
+                if (!item.authorBaseVo.memberIcon.isNullOrEmpty()) {
                     layoutHeader.ivVip.load(item.authorBaseVo.memberIcon)
                 }
                 tvTime.text = item.getTimeAndAddress()

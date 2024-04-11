@@ -271,8 +271,10 @@ class CircleHomeMyAdapter(
             )
             fragmentList.add(fragment)
         }
-        circleBottomBinding.viewPager.offscreenPageLimit = 3
-        circleBottomBinding.viewPager.adapter = CircleMainViewPagerAdapter(fragment, fragmentList)
+        circleBottomBinding.apply {
+            viewPager.offscreenPageLimit = 3
+            viewPager.adapter = CircleMainViewPagerAdapter(fragment, fragmentList)
+        }
 
     }
 

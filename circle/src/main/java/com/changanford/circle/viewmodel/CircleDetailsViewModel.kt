@@ -6,15 +6,29 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.*
+import com.changanford.circle.bean.ChoseCircleBean
+import com.changanford.circle.bean.CircleDetailBean
+import com.changanford.circle.bean.CircleMainBean
+import com.changanford.circle.bean.CircleSquareSignBean
+import com.changanford.circle.bean.CircleStarRoleDto
+import com.changanford.circle.bean.GetApplyManageBean
 import com.changanford.circle.source.RecommendPostSource
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.DaySignBean
 import com.changanford.common.bean.JoinCircleCheckBean
 import com.changanford.common.bean.PostBean
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.repository.JoinCircleRepository
 import com.changanford.common.router.path.ARouterMyPath
@@ -24,6 +38,7 @@ import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
+import com.changanford.common.utilext.toastShow
 import com.changanford.common.wutil.ShowPopUtils
 import kotlinx.coroutines.launch
 
@@ -111,8 +126,8 @@ class CircleDetailsViewModel : BaseViewModel() {
         }
     }
 
-    fun getRecommendPostData(viewType: Int, page: Int) {
-        launch(block = {
+    fun getRecommendPostData(viewType: Int, page: Int,isShowLoading:Boolean=false) {
+        launch(isShowLoading,block = {
             val body = MyApp.mContext.createHashMap()
             body["pageNo"] = page
             body["pageSize"] = 20
@@ -275,5 +290,35 @@ class CircleDetailsViewModel : BaseViewModel() {
         }, error = {
 
         })
+    }
+
+    val topSignBean = MutableLiveData<CircleSquareSignBean>()
+
+    fun getSignContinuousDays() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getSignContinuousDays(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    topSignBean.value = it
+                }
+        })
+    }
+
+    fun getDay7Sign(result:(DaySignBean)->Unit){
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                var rkey = getRandomKey()
+                apiService.day7Sign(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                it?.let {
+                    result(it)
+                }
+            }.onWithMsgFailure {
+                it?.let { it1 -> toastShow(it1) }
+            }
+        }
     }
 }

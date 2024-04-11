@@ -16,10 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.changanford.common.widget.recy.ChildRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_circle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
                 android:background="@color/white"
                 android:visibility="gone"
                 android:orientation="vertical"

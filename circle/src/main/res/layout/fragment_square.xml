@@ -18,7 +18,7 @@
             app:srlEnableOverScrollDrag="true"
             app:srlEnableLoadMore="false">
 
-            <com.changanford.common.widget.recy.ParentRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ry_circle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

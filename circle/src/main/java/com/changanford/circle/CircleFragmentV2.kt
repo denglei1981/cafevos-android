@@ -17,7 +17,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.changanford.circle.adapter.CircleMainViewPagerAdapter
 import com.changanford.circle.databinding.FragmentCircleV2Binding
 import com.changanford.circle.ui.ask.fragment.AskRecommendFragment
-import com.changanford.circle.ui.fragment.CircleSquareFragment
+import com.changanford.circle.ui.fragment.CircleRecommendV2Fragment
 import com.changanford.circle.ui.fragment.circle.FordPaiCircleFragment
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.circle.widget.titles.PostTransitionPagerTitleView
@@ -68,8 +68,8 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
 
     private val tabList = listOf("动态", "圈子", "问答" /*"Mustang专区"*/)
 
-    private val circleSquareFragment: CircleSquareFragment by lazy {
-        CircleSquareFragment.newInstance()
+    private val circleSquareFragment by lazy {
+        CircleRecommendV2Fragment.newInstance(1)
     }
     private val newCircleFragment by lazy {
         FordPaiCircleFragment()

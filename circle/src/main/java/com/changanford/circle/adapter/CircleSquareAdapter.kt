@@ -153,7 +153,7 @@ class CircleSquareAdapter(
         setIndicator(binding)
     }
 
-    fun refreshViewPager(listBean:List<AdBean>){
+    fun refreshViewPager(listBean: List<AdBean>) {
         topBinding.let {
 
 //            it.ivTopicRight.setOnClickListener {

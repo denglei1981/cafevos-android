@@ -16,15 +16,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:id="@+id/card_no_circle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                tools:visibility="visible"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/bg_bord_1a4a_1"
                 android:layout_marginEnd="16dp"
-                android:visibility="gone"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="3dp">
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="您暂未加入任何圈子"
+                        android:text="您还未加入任何圈子"
                         android:textColor="@color/color_E67400"
                         android:textSize="18sp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -47,7 +48,7 @@
                         android:id="@+id/tv_no_circle_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="加入圈子后，可尊享对应专属内容"
+                        android:text="即刻加入我们，玩转趣味社区"
                         android:textColor="@color/color_8016"
                         android:textSize="12sp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -63,7 +64,7 @@
                         android:gravity="center"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="加入, 享专属内容"
+                        android:text="去加圈"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -72,7 +73,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.cardview.widget.CardView>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

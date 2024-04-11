@@ -2,6 +2,7 @@ package com.changanford.circle.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -70,6 +71,9 @@ class HomeCircleDetailsFragment :
 
     override fun initView() {
 //        MUtils.scrollStopLoadImage(binding.ryCircle)
+        val linearLayoutManager=binding.ryCircle.layoutManager as LinearLayoutManager
+        linearLayoutManager.isSmoothScrollbarEnabled = true;
+        linearLayoutManager.isAutoMeasureEnabled = true;
         bus()
         mCheckForGapMethod =
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
