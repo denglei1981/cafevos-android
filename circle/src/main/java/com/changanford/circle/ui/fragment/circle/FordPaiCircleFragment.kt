@@ -7,8 +7,12 @@ import android.text.style.AbsoluteSizeSpan
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
+import com.changanford.circle.R
+import com.changanford.circle.adapter.EmojiAdapter
 import com.changanford.circle.databinding.FragmentFordPaiCircleBinding
+import com.changanford.circle.databinding.FragmentNewFordPaiCircleBinding
 import com.changanford.circle.utils.CommunityCircleHelper
 import com.changanford.circle.utils.CommunityHotHelper
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
@@ -30,8 +34,15 @@ import com.google.android.material.imageview.ShapeableImageView
  * @date: 2024/3/12
  * @description：
  */
-class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCircleViewModel>() {
+class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewCircleViewModel>() {
 
+    private lateinit var headBinding: FragmentFordPaiCircleBinding
+    private val headView by lazy {
+        layoutInflater.inflate(R.layout.fragment_ford_pai_circle, null)
+    }
+    private val adapter by lazy {
+        EmojiAdapter()
+    }
     private var selectTab = MutableLiveData<Int>()
     private lateinit var communityHotHelper: CommunityHotHelper
     private lateinit var communityCircleHelper: CommunityCircleHelper
@@ -41,14 +52,17 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     private var isLoginChange = false
 
     override fun initView() {
+        binding.ryFragment.adapter = adapter
+        headBinding = DataBindingUtil.bind(headView)!!
+        adapter.addHeaderView(headView)
         communityHotHelper = CommunityHotHelper(
-            binding.layoutHot,
-            binding,
+            headBinding.layoutHot,
+            headBinding,
             viewModel,
             this@FordPaiCircleFragment
         )
         communityCircleHelper =
-            CommunityCircleHelper(binding.layoutCircle, this)
+            CommunityCircleHelper(headBinding.layoutCircle, this)
         communityHotHelper.initCommunity()
         if (MConstant.token.isEmpty()) {
             selectTab.value = 1
@@ -59,7 +73,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     }
 
     private fun initListener() {
-        binding.apply {
+        headBinding.apply {
             vLeft.setOnClickListener { selectTab.value = 0 }
             vRight.setOnClickListener { selectTab.value = 1 }
             tvJoinNum.setOnClickListener { showMyCirclePop() }
@@ -84,9 +98,9 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             Spannable.SPAN_INCLUSIVE_INCLUSIVE
         )
         if (isLeft) {
-            binding.tvJoinNum.text = spanString
+            headBinding.tvJoinNum.text = spanString
         } else {
-            binding.tvHotNum.text = spanString
+            headBinding.tvHotNum.text = spanString
         }
     }
 
@@ -102,7 +116,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
             communityCircleHelper.initCommunity(it)
         }
         selectTab.observe(this) {
-            binding.apply {
+            headBinding.apply {
                 if (it == 0) {
                     isShowCircle(false)
                     ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_my_circle)
@@ -215,18 +229,18 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     }
 
     private fun isShowCircle(isShowLeft: Boolean) {
-        binding.layoutHot.root.isVisible = isShowLeft
-        binding.layoutCircle.root.isVisible = !isShowLeft
+        headBinding.layoutHot.root.isVisible = isShowLeft
+        headBinding.layoutCircle.root.isVisible = !isShowLeft
     }
 
     private fun setTopCircleData() {
 
-        binding.layoutLeftThree.apply {
+        headBinding.layoutLeftThree.apply {
             leftViews.add(ivOne)
             leftViews.add(ivTwo)
             leftViews.add(ivThree)
         }
-        binding.layoutRightThree.apply {
+        headBinding.layoutRightThree.apply {
             rightViews.add(ivOne)
             rightViews.add(ivTwo)
             rightViews.add(ivThree)
@@ -237,7 +251,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentFordPaiCircleBinding, NewCirc
     private fun showMyCirclePop() {
         MyCirclePop(requireContext()).run {
             setBackgroundColor(Color.TRANSPARENT)
-            showPopupWindow(binding.vPop)
+            showPopupWindow(headBinding.vPop)
             communityHotHelper.myCircles.value?.let { initPopData(it, nowCircleId) }
         }
     }

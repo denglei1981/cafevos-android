@@ -13,8 +13,7 @@
         android:background="@color/white"
         android:paddingStart="16dp"
         android:paddingTop="13dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="30dp">
+        android:paddingEnd="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top_content"
@@ -365,6 +364,14 @@
                 android:layout_height="0.5dp"
                 android:layout_marginTop="22dp"
                 android:background="@color/color_1a4a" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_tab"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_height="40dp"
+                android:layout_gravity="start"
+                android:paddingBottom="2dp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

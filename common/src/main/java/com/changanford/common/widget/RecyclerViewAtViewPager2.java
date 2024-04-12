@@ -34,7 +34,7 @@ public class RecyclerViewAtViewPager2  extends RecyclerView {
             case MotionEvent.ACTION_DOWN:
                 startX = (int) ev.getX();
                 startY = (int) ev.getY();
-                getParent().requestDisallowInterceptTouchEvent(true);//告诉viewgroup不要去拦截我
+                getParent().requestDisallowInterceptTouchEvent(true);
                 break;
             case MotionEvent.ACTION_MOVE:
                 int endX = (int) ev.getX();
@@ -42,18 +42,18 @@ public class RecyclerViewAtViewPager2  extends RecyclerView {
                 int disX = Math.abs(endX - startX);
                 int disY = Math.abs(endY - startY);
                 if (disX > disY) {
-                    getParent().requestDisallowInterceptTouchEvent(false);
+                    //如果是纵向滑动，告知父布局不进行时间拦截，交由子布局消费，　requestDisallowInterceptTouchEvent(true)
+                    getParent().requestDisallowInterceptTouchEvent(canScrollHorizontally(startX - endX));
                 } else {
-                    getParent().requestDisallowInterceptTouchEvent(true);//下拉的时候是false
+                    getParent().requestDisallowInterceptTouchEvent(canScrollVertically(startX - endX));
                 }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                getParent().requestDisallowInterceptTouchEvent(true);
+                getParent().requestDisallowInterceptTouchEvent(false);
                 break;
         }
         return super.dispatchTouchEvent(ev);
     }
-
 }
 

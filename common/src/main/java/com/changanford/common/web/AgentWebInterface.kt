@@ -207,34 +207,37 @@ class AgentWebInterface(
     @JavascriptInterface
     fun choseImg(callback: String) {
 //        toastShow("选择图片")
-        PictureUtils.openGarlly(500,
-            activity,
-            object : OnResultCallbackListener<LocalMedia?> {
-                override fun onCancel() {}
-                override fun onResult(result: MutableList<LocalMedia?>?) {
-                    if (result != null) {
-                        for (media in result) {
-                            var path = ""
-                            media?.let {
-                                path = if (media.isCut && !media.isCompressed) {
-                                    // 裁剪过
-                                    media.cutPath
-                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
-                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                                    media.compressPath
-                                } else {
-                                    // 原图
-                                    media.path
+        webView.post {
+            PictureUtils.openGarlly(500,
+                activity,
+                object : OnResultCallbackListener<LocalMedia?> {
+                    override fun onCancel() {}
+                    override fun onResult(result: MutableList<LocalMedia?>?) {
+                        if (result != null) {
+                            for (media in result) {
+                                var path = ""
+                                media?.let {
+                                    path = if (media.isCut && !media.isCompressed) {
+                                        // 裁剪过
+                                        media.cutPath
+                                    } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                        // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                        media.compressPath
+                                    } else {
+                                        // 原图
+                                        media.path
+                                    }
                                 }
-                            }
-                            path?.let {
-                                var base64Str = FileHelper.getImageStr(path)
-                                activity?.quickCallJs(callback, base64Str)
+                                path?.let {
+                                    var base64Str = FileHelper.getImageStr(path)
+                                    activity?.quickCallJs(callback, base64Str)
+                                }
                             }
                         }
                     }
-                }
-            })
+                })
+        }
+
     }
 
     /**
@@ -866,23 +869,25 @@ class AgentWebInterface(
      * */
     @JavascriptInterface
     fun openCamera(isEnableCrop: Boolean = true, isCompress: Boolean = true, callback: String) {
-        PictureUtils.opencarcme(
-            activity,
-            isEnableCrop,
-            isCompress,
-            object : OnResultCallbackListener<LocalMedia?> {
-                override fun onResult(result: List<LocalMedia?>) {
-                    if (result.isNotEmpty()) {
-                        for (media in result) {
-                            val path: String = PictureUtil.getFinallyPath(media!!)
-                            val base64Str = FileHelper.getImageStr(path)
-                            activity?.quickCallJs(callback, base64Str)
+        webView.post {
+            PictureUtils.opencarcme(
+                activity,
+                isEnableCrop,
+                isCompress,
+                object : OnResultCallbackListener<LocalMedia?> {
+                    override fun onResult(result: List<LocalMedia?>) {
+                        if (result.isNotEmpty()) {
+                            for (media in result) {
+                                val path: String = PictureUtil.getFinallyPath(media!!)
+                                val base64Str = FileHelper.getImageStr(path)
+                                activity?.quickCallJs(callback, base64Str)
+                            }
                         }
                     }
-                }
 
-                override fun onCancel() {}
-            })
+                    override fun onCancel() {}
+                })
+        }
     }
 
     @JavascriptInterface
@@ -898,40 +903,42 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun openPhoto(maxNum: Int = 1, isEnableCrop: Boolean = true, callback: String) {
-        PictureUtils.openGarlly(
-            500,
-            activity,
-            if (maxNum > 0) maxNum else 1,
-            isEnableCrop,
-            object : OnResultCallbackListener<LocalMedia?> {
-                override fun onCancel() {}
-                override fun onResult(result: MutableList<LocalMedia?>?) {
-                    if (result != null) {
-                        var base64Str = ""
-                        for (media in result) {
-                            var path = ""
-                            media?.let {
-                                path = if (media.isCut && !media.isCompressed) {
-                                    // 裁剪过
-                                    media.cutPath
-                                } else if (media.isCompressed || media.isCut && media.isCompressed) {
-                                    // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
-                                    media.compressPath
-                                } else {
-                                    // 原图
-                                    media.path
+        webView.post {
+            PictureUtils.openGarlly(
+                500,
+                activity,
+                if (maxNum > 0) maxNum else 1,
+                isEnableCrop,
+                object : OnResultCallbackListener<LocalMedia?> {
+                    override fun onCancel() {}
+                    override fun onResult(result: MutableList<LocalMedia?>?) {
+                        if (result != null) {
+                            var base64Str = ""
+                            for (media in result) {
+                                var path = ""
+                                media?.let {
+                                    path = if (media.isCut && !media.isCompressed) {
+                                        // 裁剪过
+                                        media.cutPath
+                                    } else if (media.isCompressed || media.isCut && media.isCompressed) {
+                                        // 压缩过,或者裁剪同时压缩过,以最终压缩过图片为准
+                                        media.compressPath
+                                    } else {
+                                        // 原图
+                                        media.path
+                                    }
                                 }
+                                val imgPath = FileHelper.getImageStr(path)
+                                base64Str += "$imgPath,"
                             }
-                            val imgPath = FileHelper.getImageStr(path)
-                            base64Str += "$imgPath,"
+                            if (base64Str.isNotEmpty()) activity?.quickCallJs(
+                                callback,
+                                base64Str.substring(0, base64Str.length - 1)
+                            )
                         }
-                        if (base64Str.isNotEmpty()) activity?.quickCallJs(
-                            callback,
-                            base64Str.substring(0, base64Str.length - 1)
-                        )
                     }
-                }
-            })
+                })
+        }
     }
 
     /**

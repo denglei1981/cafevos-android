@@ -28,6 +28,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.utilext.toIntPx
+import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
@@ -80,11 +81,13 @@ class CircleHomeMyAdapter(
 
     lateinit var circleBinding: LayoutMyCircleContentBinding
     private lateinit var circleBottomBinding: LayoutMyCircleBinding
+    private var magicIndicator:MagicIndicator?=null
 
     override fun fillData(vdBinding: ViewDataBinding?, item: String, position: Int, viewType: Int) {
         when (viewType) {
             0 -> {
                 val binding = vdBinding as LayoutMyCircleContentBinding
+                magicIndicator=binding.magicTab
                 circleBinding = binding
                 initView()
                 binding.ryTopic.adapter = topicAdapter
@@ -93,7 +96,7 @@ class CircleHomeMyAdapter(
             1 -> {
                 val binding = vdBinding as LayoutMyCircleBinding
                 circleBottomBinding = binding
-                initMagicIndicator(binding)
+                magicIndicator?.let { initMagicIndicator(it,binding) }
             }
         }
     }
@@ -192,8 +195,7 @@ class CircleHomeMyAdapter(
     }
 
 
-    private fun initMagicIndicator(binding: LayoutMyCircleBinding) {
-        val magicIndicator = binding.magicTab
+    private fun initMagicIndicator(magicIndicator: MagicIndicator, binding: LayoutMyCircleBinding) {
         val commonNavigator = CommonNavigator(context)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
@@ -206,7 +208,7 @@ class CircleHomeMyAdapter(
                     ScaleTransitionPagerTitleView(context)
                 simplePagerTitleView.text = viewModel.tabList[index]
                 simplePagerTitleView.textSize = 18f
-                simplePagerTitleView.setPadding(12.toIntPx(), 0, 12.toIntPx(), 10)
+                simplePagerTitleView.setPadding(0.toIntPx(), 0, 24.toIntPx(), 10)
                 simplePagerTitleView.normalColor =
                     ContextCompat.getColor(context, R.color.color_8016)
                 simplePagerTitleView.selectedColor =

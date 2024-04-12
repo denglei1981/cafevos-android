@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -82,7 +83,8 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomV2Binding>(holder.itemView)
         val activity = BaseApplication.curActivity
-        setTopMargin(binding?.root, 15, holder.layoutPosition)
+        Log.e("asdasd","circle")
+//        setTopMargin(binding?.root, 15, holder.layoutPosition)
         binding?.let {
             if (item.isLike == 1) {
                 binding.layoutCount.tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_light_ic)
