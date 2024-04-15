@@ -28,7 +28,7 @@
                 android:layout_marginTop="@dimen/dp_37"
                 android:layout_marginBottom="4dp"
                 android:gravity="center"
-                android:text="检测到3台车与您手机号一致"
+                android:text="检测到3台车与您的手机号一致"
                 android:textColor="@color/color_16"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -58,6 +58,7 @@
                     android:layout_height="@dimen/dp_46"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/shape_00095b_20dp"
+                    android:enabled="false"
                     android:gravity="center"
                     android:text="确定"
                     android:textColor="@color/colorWhite"
@@ -65,7 +66,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintWidth_percent="0.8" />
+                    app:layout_constraintWidth_percent="0.9" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 

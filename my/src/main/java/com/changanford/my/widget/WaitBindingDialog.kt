@@ -52,10 +52,34 @@ open class WaitBindingDialog(
     val waitBindingCarAdapter: WaitBindingCarAdapter by lazy {
         WaitBindingCarAdapter(object : groupInterface {
             override fun groupInt() {
-                isChecked = true
-                mDatabind.btnSubmit.setTextColor(ContextCompat.getColor(contexts, R.color.white))
-                mDatabind.btnSubmit.background =
-                    ContextCompat.getDrawable(contexts, R.drawable.shape_00095b_20dp)
+                var checkAll = true
+                val data = waitBindingCarAdapter.data
+                data.forEach {
+                    if (it.confirm == -2) {
+                        checkAll = false
+                    }
+                }
+                isChecked = checkAll
+                if (!checkAll) {
+                    mDatabind.btnSubmit.background =
+                        ContextCompat.getDrawable(contexts, R.drawable.bg_shape_80a6_23)
+                    mDatabind.btnSubmit.setTextColor(
+                        ContextCompat.getColor(
+                            contexts,
+                            R.color.color_4d16
+                        )
+                    )
+                } else {
+                    mDatabind.btnSubmit.setTextColor(
+                        ContextCompat.getColor(
+                            contexts,
+                            R.color.white
+                        )
+                    )
+                    mDatabind.btnSubmit.background =
+                        ContextCompat.getDrawable(contexts, R.drawable.shape_00095b_20dp)
+                }
+                mDatabind.btnSubmit.isEnabled = checkAll
             }
 
         })
@@ -70,10 +94,10 @@ open class WaitBindingDialog(
 
     @SuppressLint("SetTextI18n")
     override fun initView(savedInstanceState: Bundle?) {
-        mDatabind.tvTips.text = "检测到${dataBeanList.size}台车与您手机号一致"
+        mDatabind.tvTips.text = "检测到${dataBeanList.size}台车与您的手机号一致"
         mDatabind.rvList.layoutManager = LinearLayoutManager(activity)
         dataBeanList.forEach {
-            it.confirm = -1
+            it.confirm = -2
         }
         waitBindingCarAdapter.setNewInstance(dataBeanList)
         mDatabind.rvList.adapter = waitBindingCarAdapter

@@ -1,32 +1,46 @@
 package com.changanford.circle.ui.fragment.circle
 
 import android.graphics.Color
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.R
-import com.changanford.circle.adapter.EmojiAdapter
+import com.changanford.circle.adapter.CircleRecommendAdapterV2
 import com.changanford.circle.databinding.FragmentFordPaiCircleBinding
 import com.changanford.circle.databinding.FragmentNewFordPaiCircleBinding
 import com.changanford.circle.utils.CommunityCircleHelper
 import com.changanford.circle.utils.CommunityHotHelper
+import com.changanford.circle.viewmodel.CircleDetailsViewModel
 import com.changanford.circle.viewmodel.circle.NewCircleViewModel
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.CirceHomeBean
+import com.changanford.common.bean.PostDataBean
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MConstant.userId
+import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
+import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.gio.updateCircleDetailsData
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.MyCirclePop
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.tabs.TabLayout
 
 
 /**
@@ -36,12 +50,14 @@ import com.google.android.material.imageview.ShapeableImageView
  */
 class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewCircleViewModel>() {
 
+    private var checkPosition: Int? = null
     private lateinit var headBinding: FragmentFordPaiCircleBinding
+    private val circleDetailsViewModel = CircleDetailsViewModel()
     private val headView by lazy {
         layoutInflater.inflate(R.layout.fragment_ford_pai_circle, null)
     }
     private val adapter by lazy {
-        EmojiAdapter()
+        CircleRecommendAdapterV2(requireContext(), this)
     }
     private var selectTab = MutableLiveData<Int>()
     private lateinit var communityHotHelper: CommunityHotHelper
@@ -49,7 +65,10 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
     private val leftViews = arrayListOf<ShapeableImageView>()
     private val rightViews = arrayListOf<ShapeableImageView>()
     private var nowCircleId: String = ""
+    private var nowType = 0
     private var isLoginChange = false
+    private var page = 1
+    private var adapterList = ArrayList<PostDataBean>()
 
     override fun initView() {
         binding.ryFragment.adapter = adapter
@@ -67,9 +86,11 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
         if (MConstant.token.isEmpty()) {
             selectTab.value = 1
         }
+        initTab()
         initListener()
         setTopCircleData()
         addLiveDataBus()
+        adapter.headerWithEmptyEnable = true
     }
 
     private fun initListener() {
@@ -79,9 +100,112 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
             tvJoinNum.setOnClickListener { showMyCirclePop() }
             ivIconRight.setOnClickListener { showMyCirclePop() }
         }
+        adapter.loadMoreModule.setOnLoadMoreListener {
+            page++
+            getCircleDeleteData()
+        }
         binding.srl.setOnRefreshListener {
+            page = 1
+//            communityCircleHelper.initCommunity(nowCircleId)
             communityHotHelper.initData()
             it.finishRefresh()
+        }
+        adapter.setOnItemClickListener { _, view, position ->
+            GIOUtils.circleDetailPageResourceClick(
+                "帖子信息流",
+                (position + 1).toString(),
+                adapter.getItem(position).title
+            )
+            updateCircleDetailsData(adapter.getItem(position).title.toString(), "帖子详情页")
+            val bundle = Bundle()
+            bundle.putString("postsId", adapter.getItem(position).postsId.toString())
+            startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+            checkPosition = position
+        }
+    }
+
+    private fun initTab() {
+        nowType = circleDetailsViewModel.circleType[0].toInt()
+        headBinding.layoutCircle.homeTab.setSelectedTabIndicatorColor(
+            ContextCompat.getColor(
+                MyApp.mContext,
+                R.color.white
+            )
+        )
+        headBinding.layoutCircle.homeTab.tabRippleColor = null
+
+        headBinding.layoutCircle.homeTab.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                page = 1
+                selectTab(tab, true)
+                nowType =
+                    circleDetailsViewModel.circleType[headBinding.layoutCircle.homeTab.selectedTabPosition].toInt()
+                getCircleDeleteData(true)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                selectTab(tab, false)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+        })
+        val tabs = circleDetailsViewModel.tabList
+        for (i in 0 until tabs.size) {
+            //寻找到控件
+            val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_circle, null)
+            val mTabText = view.findViewById<TextView>(R.id.tv_title)
+            val bean = tabs[i]
+
+            mTabText.text = bean
+            if (0 == i) {
+                mTabText.isSelected = true
+                mTabText.setTextColor(
+                    ContextCompat.getColor(
+                        MyApp.mContext,
+                        R.color.color_1700F4
+                    )
+                )
+                mTabText.paint.isFakeBoldText = true
+                mTabText.textSize = 18f
+
+            } else {
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_8016))
+                mTabText.textSize = 16f
+                mTabText.paint.isFakeBoldText = false// 取消加粗
+            }
+            val tab = headBinding.layoutCircle.homeTab.newTab()
+            tab.customView = view
+            headBinding.layoutCircle.homeTab.addTab(tab)
+            headBinding.layoutCircle.homeTab.selectedTabPosition
+//            headBinding.layoutCircle.homeTab.getTabAt(i)?.customView = view
+        }
+    }
+
+    private fun getCircleDeleteData(isShowLoading: Boolean = false) {
+        circleDetailsViewModel.getListDataCircle(
+            nowType,
+            "",
+            nowCircleId,
+            page,
+            userId,
+            isShowLoading
+        )
+    }
+
+    private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
+        val mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
+        if (isSelect) {
+            // 埋点
+            mTabText?.isSelected = true
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700F4))
+            mTabText?.paint?.isFakeBoldText = true
+            mTabText?.textSize = 18f
+        } else {
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_8016))
+            mTabText?.textSize = 16f
+            mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
 
@@ -111,40 +235,55 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
 
     override fun observe() {
         super.observe()
+        circleDetailsViewModel.listBean.observe(this) {
+            if (page == 1) {
+                adapter.setList(it.dataList)
+                headBinding.layoutCircle.headEmpty.root.isVisible = it.dataList.size == 0
+            } else {
+                adapter.addData(it.dataList)
+                adapter.loadMoreModule.loadMoreComplete()
+            }
+            if (it.dataList.size != 20) {
+                adapter.loadMoreModule.loadMoreEnd()
+            }
+        }
         LiveDataBus.get().withs<String>(LiveDataBusKey.HOME_CIRCLE_CHECK_ID).observe(this) {
             nowCircleId = it
             communityCircleHelper.initCommunity(it)
+            page = 1
+            getCircleDeleteData()
         }
         selectTab.observe(this) {
             headBinding.apply {
                 if (it == 0) {
+                    adapter.setList(adapterList)
                     isShowCircle(false)
-                    ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_my_circle)
+                    ivTabBg.setImageResource(R.mipmap.ic_circle_tab_my_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.color_16
+                            R.color.color_16
                         )
                     )
                     tvJoinNum.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.color_16
+                            R.color.color_16
                         )
                     )
                     tvHotCircle.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.white
+                            R.color.white
                         )
                     )
                     tvHotNum.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.white
+                            R.color.white
                         )
                     )
-                    ivIconRight.setImageResource(com.changanford.circle.R.mipmap.ic_circle_jion_num_right_b)
+                    ivIconRight.setImageResource(R.mipmap.ic_circle_jion_num_right_b)
 
                     val layoutParam = tvMyCircle.layoutParams as ConstraintLayout.LayoutParams
                     layoutParam.topMargin = 45.toIntPx()
@@ -157,33 +296,38 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
                     tvHotCircle.textSize = 14f
 
                 } else {
+//                    adapter.setEmptyView(R.layout.empty_nothing)
+                    adapterList.clear()
+                    adapterList.addAll(adapter.data)
+                    adapter.data.clear()
+//                    adapterList= adapter.data as ArrayList<PostDataBean>
                     isShowCircle(true)
-                    ivTabBg.setImageResource(com.changanford.circle.R.mipmap.ic_circle_tab_hot_circle)
+                    ivTabBg.setImageResource(R.mipmap.ic_circle_tab_hot_circle)
                     tvMyCircle.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.white
+                            R.color.white
                         )
                     )
                     tvJoinNum.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.white
+                            R.color.white
                         )
                     )
                     tvHotCircle.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.color_16
+                            R.color.color_16
                         )
                     )
                     tvHotNum.setTextColor(
                         ContextCompat.getColor(
                             requireContext(),
-                            com.changanford.circle.R.color.color_16
+                            R.color.color_16
                         )
                     )
-                    ivIconRight.setImageResource(com.changanford.circle.R.mipmap.ic_circle_jion_num_right_w)
+                    ivIconRight.setImageResource(R.mipmap.ic_circle_jion_num_right_w)
 
                     val layoutParam = tvMyCircle.layoutParams as ConstraintLayout.LayoutParams
                     layoutParam.topMargin = 50.toIntPx()
@@ -201,8 +345,8 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
 
         communityHotHelper.myCircles.observe(this) {
             if (!it.isNullOrEmpty()) {
+                page = 1
                 communityCircleHelper.initCommunity(it[0].circleId)
-
                 nowCircleId = it[0].circleId
                 val useList = if (it.size > 3) {
                     it.subList(0, 3)
@@ -211,6 +355,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
                     leftViews[index].setCircular(4)
                     leftViews[index].load(data.pic)
                 }
+                getCircleDeleteData()
             }
         }
         LiveDataBus.get().withs<CirceHomeBean?>(LiveDataBusKey.HOME_CIRCLE_HOT_BEAN).observe(this) {
@@ -225,6 +370,24 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
                     rightViews[index].load(data)
                 }
             }
+        }
+        LiveDataBus.get().withs<Int>(CircleLiveBusKey.REFRESH_POST_LIKE).observe(this) {
+            val bean = checkPosition?.let { it1 -> adapter.getItem(it1) }
+            bean?.let { _ ->
+                bean.isLike = it
+                if (bean.isLike == 1) {
+                    bean.likesCount++
+                } else {
+                    bean.likesCount--
+                }
+            }
+
+            checkPosition?.let { it1 -> adapter.notifyItemChanged(it1) }
+        }
+        LiveDataBus.get().withs<Boolean>(CircleLiveBusKey.DELETE_CIRCLE_POST).observe(this) {
+            checkPosition?.let { it1 -> adapter.data.removeAt(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRemoved(it1) }
+            checkPosition?.let { it1 -> adapter.notifyItemRangeChanged(it1, adapter.itemCount) }
         }
     }
 
@@ -260,7 +423,11 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
         super.onResume()
         if (isLoginChange) {
             isLoginChange = false
-            selectTab.value = 0
+            if (MConstant.token.isEmpty()) {
+                selectTab.value = 1
+            } else {
+                selectTab.value = 0
+            }
             communityHotHelper.initData()
         }
     }

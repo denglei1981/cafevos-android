@@ -2,7 +2,6 @@ package com.changanford.common.widget.recy;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,18 +25,16 @@ public class CustomRecyclerView  extends RecyclerView {
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
-        int height = 0;
-        int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            measureChild(child, widthSpec, heightSpec);
-            int childHeight = child.getMeasuredHeight();
-            if (childHeight > height) {
-                height = childHeight;
-            }
+        if (MeasureSpec.getMode(heightSpec) == MeasureSpec.UNSPECIFIED) {
+            int size = MeasureSpec.getSize(heightSpec);
+            heightSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
         }
-        heightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
         super.onMeasure(widthSpec, heightSpec);
     }
+
+//    @Override
+//    protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+//        child.measure(parentWidthMeasureSpec, parentHeightMeasureSpec);
+//    }
 
 }

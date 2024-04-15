@@ -15,9 +15,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_fragment"
             android:layout_width="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="match_parent"
+            android:paddingBottom="30dp"
             android:orientation="vertical"
-            android:layout_height="wrap_content"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

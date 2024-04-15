@@ -191,6 +191,49 @@ class CircleDetailsViewModel : BaseViewModel() {
         })
     }
 
+    fun getListDataCircle(
+        viewType: Int,
+        topicId: String,
+        circleId: String,
+        page: Int,
+        userId: String? = null,
+        isShow: Boolean,
+        carModelIds: String? = null
+    ) {
+        launch(showLoading = isShow,block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = page
+            body["pageSize"] = 20
+
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["viewType"] = viewType
+                if (topicId.isNotEmpty()) {
+                    it["topicId"] = topicId
+                }
+                if (circleId.isNotEmpty()) {
+                    it["circleId"] = circleId
+                }
+                if (carModelIds != null) {
+                    if (carModelIds.toInt() > 0) {
+                        it["carModelIds"] = carModelIds
+                    }
+                }
+                if (viewType == 5) {
+                    userId?.let { _ ->
+                        it["userId"] = userId
+                    }
+                }
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getPosts(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    listBean.value = it
+                }
+                .onFailure { }
+
+        })
+    }
+
     fun getCircleDetails(circleId: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()

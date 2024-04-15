@@ -330,5 +330,6 @@ object LiveDataBusKey {
     const val HOME_CIRCLE_CHECK_ID = "homeCircleCheckId"
     const val HOME_CIRCLE_HOT_BEAN = "homeCircleHotBean"
     const val UPDATE_NEWS_PICS_HEIGHT = "updateNewsPicsHeight"
+    const val CIRCLE_INIT_HOT = "circleInitHot"
 }
 

@@ -15,7 +15,6 @@
             android:id="@+id/iv_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 
         <androidx.appcompat.widget.AppCompatImageView

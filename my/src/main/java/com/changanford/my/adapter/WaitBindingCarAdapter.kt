@@ -20,7 +20,6 @@ class WaitBindingCarAdapter(val groupInterface: groupInterface) :
 
             bd.radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
                 override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
-                    groupInterface.groupInt()
                     when (checkedId) {
                         bd.checkbox.id -> {
                             item.confirm = 1
@@ -34,6 +33,7 @@ class WaitBindingCarAdapter(val groupInterface: groupInterface) :
                             item.confirm = -1
                         }
                     }
+                    groupInterface.groupInt()
                 }
             })
         }
