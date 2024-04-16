@@ -258,4 +258,6 @@ object MConstant {
     val mouthUrl by lazy { if (isCanQeck) if (isDebug) "https://h5fymqa.fuyu.club/post-h5/" else "https://h5fym.fuyu.club/post-h5" else "https://h5fym.fuyu.club/post-h5" }
 
     var circleCheckPosition = 1
+
+    var mainTabSelectPosition=0
 }

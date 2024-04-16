@@ -248,7 +248,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
 //                            reasonLayout.visibility =
 //                                if (item.applyerCount > 0 && item.isAudit == 1) View.VISIBLE else View.GONE
                             val isShowAdd = (item.applyerCount > 0 && item.isAudit == 1)
-                            operation.isVisible = true
+                            operation.isVisible = item.applyerCount > 0
                             operation.text = "有${item.applyerCount}人申请加入圈子  去审核 >"
 //                            holder.setText(
 //                                R.id.item_reason,

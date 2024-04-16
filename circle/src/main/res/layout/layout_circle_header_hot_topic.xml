@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="18dp"
+                    android:nestedScrollingEnabled="false"
                     android:layout_marginEnd="10dp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/iv_topic_left"
@@ -124,6 +126,7 @@
                 android:id="@+id/b_viewpager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintDimensionRatio="335:66"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -73,6 +73,7 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.utilext.setDrawableRight
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.google.android.material.imageview.ShapeableImageView
@@ -355,6 +356,10 @@ class CarControl(
             }
             hCarHistoryBinding?.root?.isVisible = true
             hCarHistoryBinding?.ivBg?.setBackgroundResource(R.mipmap.ic_car_history_bg_two)
+            it.tvTitle.setTextColor(ContextCompat.getColor(activity, R.color.color_16))
+            it.tvContent.setTextColor(ContextCompat.getColor(activity, R.color.color_16))
+            it.tvMore.setTextColor(ContextCompat.getColor(activity, R.color.color_16))
+            it.tvMore.setDrawableRight(R.mipmap.circle_right_black_small)
             it.ivIcon.setCircular(5)
             it.ivIcon.loadCompress(bean.extend?.topicPic)
             it.tvTitle.text = bean.extend?.topicName

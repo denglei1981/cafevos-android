@@ -269,6 +269,10 @@ class AskRecommendFragment :
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     private fun showScreenDialog() {
         if (circleAskScreenDialog == null) {
             circleAskScreenDialog =

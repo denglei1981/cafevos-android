@@ -134,7 +134,9 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
 
     override fun onResume() {
         binding.webView.onResume()
-        quickCallJs("AppViewDidShow")
+        if (MConstant.mainTabSelectPosition == 3) {
+            quickCallJs("AppViewDidShow")
+        }
         super.onResume()
     }
 

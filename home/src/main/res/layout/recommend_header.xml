@@ -7,34 +7,28 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con_view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="14dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="14dp">
 
-        <com.zhpan.bannerview.BannerViewPager
+        <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/b_viewpager"
+            style="@style/BannerDefaultStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:banner_indicatorGravity="bottom"
+            app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
+            app:banner_pointDrawable="@drawable/indicator_style_circle"
+            app:banner_pointTopBottomMargin="@dimen/dp_10"
             app:layout_constraintDimensionRatio="343:268"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.zhpan.bannerview.indicator.DrawableIndicator
-            android:id="@+id/dr_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/transparent"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/b_viewpager" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

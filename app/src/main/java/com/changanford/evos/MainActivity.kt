@@ -370,6 +370,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
             when (destination.id) {
                 R.id.carFragment -> {
+                    MConstant.mainTabSelectPosition = 2
                     GioPageConstant.mainTabName = "爱车页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
@@ -381,6 +382,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
 
                 R.id.myFragment -> {
+                    MConstant.mainTabSelectPosition = 4
                     GioPageConstant.mainTabName = "我的页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
@@ -391,6 +393,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
 
                 R.id.serviceFragment -> {// 服务
+                    MConstant.mainTabSelectPosition = 3
                     GioPageConstant.mainTabName = "服务页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
@@ -409,9 +412,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
 
                 R.id.shopFragment -> {
+                    MConstant.mainTabSelectPosition = 1
                     GioPageConstant.mainTabName = "商城页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    StatusBarUtil.setLightStatusBar(this, true)
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("商城")
                     }
@@ -427,6 +432,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
 
                 R.id.homeFragment -> {
+                    MConstant.mainTabSelectPosition = 0
                     GioPageConstant.mainTabName = "发现页"
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
                     StatusBarUtil.setLightStatusBar(this, true)

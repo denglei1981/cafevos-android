@@ -12,55 +12,62 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title_text="@string/str_limitedTimeSecondsKill"
-            tools:minHeight="@dimen/dp_60"
+            app:layout_constraintTop_toTopOf="parent"
             app:right_text="@string/str_ruleDescription"
-            app:right_text_color="@color/color_1700f4"/>
+            app:right_text_color="@color/color_1700f4"
+            app:title_text="@string/str_limitedTimeSecondsKill"
+            tools:minHeight="@dimen/dp_60" />
+
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smartRl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
                 <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appbarLayout"
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:elevation="0dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                    android:background="@color/white"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:elevation="0dp">
+
                     <cn.bingoogolapple.bgabanner.BGABanner
                         android:id="@+id/banner"
-                        app:layout_scrollFlags="scroll"
+                        style="@style/BannerDefaultStyle"
                         android:layout_width="match_parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginStart="@dimen/dp_20"
                         android:layout_marginEnd="@dimen/dp_20"
-                        style="@style/BannerDefaultStyle"
+                        app:banner_aspectRatio="1.67"
                         app:banner_indicatorGravity="bottom|left"
-                        app:banner_pointTopBottomMargin="@dimen/dp_20"
                         app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
-                        app:banner_aspectRatio="1.67"/>
+                        app:banner_pointTopBottomMargin="@dimen/dp_20"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_scrollFlags="scroll" />
+
                     <include
                         android:id="@+id/in_kill"
-                        layout="@layout/in_goods_kill"/>
+                        layout="@layout/in_goods_kill" />
                 </com.google.android.material.appbar.AppBarLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginTop="@dimen/dp_10"
                     android:id="@+id/rv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:paddingStart="@dimen/dp_10"
                     android:paddingEnd="@dimen/dp_10"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.bean.RecommendData
@@ -26,6 +25,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.control.BannerControl
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.home.HomeV2Fragment
 import com.changanford.home.R
@@ -43,7 +43,6 @@ import com.changanford.home.widget.SpacesItemDecoration
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.zhpan.bannerview.constants.PageStyle
 
 
 /**
@@ -125,34 +124,34 @@ open class RecommendFragment :
             val recommendBannerAdapter = RecommendBannerAdapter()
             headNewBinding?.let {
                 isSecondHeader = true
-                recommendAdapter.addHeaderView(it.root, 0)
+                headNewBinding?.root?.let { recommendAdapter.addHeaderView(it, 0) }
                 headIndex++
-                it.bViewpager.setAdapter(recommendBannerAdapter)
-                it.bViewpager.setCanLoop(true)
-                it.bViewpager.registerLifecycleObserver(lifecycle)
-                it.bViewpager.setIndicatorView(it.drIndicator)
-                it.bViewpager.setAutoPlay(true)
-                it.bViewpager.setScrollDuration(500)
-                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
-                it.bViewpager.registerOnPageChangeCallback(object :
-                    ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        if (GioPageConstant.mainSecondPageName() == "发现页-推荐") {
-                            val bean = it.bViewpager.data as List<AdBean>
-                            val item = bean[position]
-                            bean[position].adName?.let { it1 ->
-                                GIOUtils.homePageExposure(
-                                    "广告位banner", (position + 1).toString(),
-                                    it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
-                                )
-                            }
-                        }
-                    }
-                })
-                it.bViewpager.create()
+//                it.bViewpager.setAdapter(recommendBannerAdapter)
+//                it.bViewpager.setCanLoop(true)
+//                it.bViewpager.registerLifecycleObserver(lifecycle)
+//                it.bViewpager.setIndicatorView(it.drIndicator)
+//                it.bViewpager.setAutoPlay(true)
+//                it.bViewpager.setScrollDuration(500)
+//                it.bViewpager.setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+//                it.bViewpager.registerOnPageChangeCallback(object :
+//                    ViewPager2.OnPageChangeCallback() {
+//                    override fun onPageSelected(position: Int) {
+//                        super.onPageSelected(position)
+//                        if (GioPageConstant.mainSecondPageName() == "发现页-推荐") {
+//                            val bean = it.bViewpager.data as List<AdBean>
+//                            val item = bean[position]
+//                            bean[position].adName?.let { it1 ->
+//                                GIOUtils.homePageExposure(
+//                                    "广告位banner", (position + 1).toString(),
+//                                    it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
+//                                )
+//                            }
+//                        }
+//                    }
+//                })
+//                it.bViewpager.create()
             }
-            setIndicator()
+//            setIndicator()
         }
     }
 
@@ -284,12 +283,12 @@ open class RecommendFragment :
      * */
     private fun setIndicator() {
         val dp6 = resources.getDimensionPixelOffset(R.dimen.dp_6)
-        headNewBinding?.drIndicator?.setIndicatorDrawable(
-            R.drawable.shape_home_banner_normal,
-            R.drawable.shape_home_banner_focus
-        )
-            ?.setIndicatorSize(dp6, dp6, resources.getDimensionPixelOffset(R.dimen.dp_20), dp6)
-            ?.setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
+//        headNewBinding?.drIndicator?.setIndicatorDrawable(
+//            R.drawable.shape_home_banner_normal,
+//            R.drawable.shape_home_banner_focus
+//        )
+//            ?.setIndicatorSize(dp6, dp6, resources.getDimensionPixelOffset(R.dimen.dp_20), dp6)
+//            ?.setIndicatorGap(resources.getDimensionPixelOffset(R.dimen.dp_5))
     }
 
     override fun observe() {
@@ -315,19 +314,28 @@ open class RecommendFragment :
 //            }
             recommendAddAds()
         }
-        viewModel.recommendBannerLiveData.safeObserve(this, Observer {
-            if (it.isSuccess) {
-                if (it.data == null || it.data.isEmpty()) {
+        viewModel.recommendBannerLiveData.observe(this, Observer {
+            if (true) {
+                if (it == null || it.isEmpty()) {
                     headNewBinding?.bViewpager?.visibility = View.GONE
-                    headNewBinding?.drIndicator?.visibility = View.GONE
+//                    headNewBinding?.drIndicator?.visibility = View.GONE
                 } else {
                     headNewBinding?.bViewpager?.visibility = View.VISIBLE
-                    headNewBinding?.drIndicator?.visibility = View.VISIBLE
+//                    headNewBinding?.drIndicator?.visibility = View.VISIBLE
                 }
-                headNewBinding?.bViewpager?.refreshData(it.data)
-                if (!it.data.isNullOrEmpty()) {
-                    val item = it.data[0]
-                    it.data[0].adName?.let { it1 ->
+//                headNewBinding?.bViewpager?.refreshData(it.data)
+                headNewBinding?.bViewpager?.let { it1 ->
+                    BannerControl.bindingBanner(
+                        it1,
+                        it as MutableList<AdBean>?,
+                        ScreenUtils.dp2px(requireContext(), 6f), true
+                    )
+                }
+//                headNewBinding?.bViewpager?.let { it1 -> BannerControl.bindingBanner(it1,
+//                    it.data as MutableList<AdBean>?,ScreenUtils.dp2px(requireContext(), 2.5f)) }
+                if (!it.isNullOrEmpty()) {
+                    val item = it[0]
+                    it[0].adName?.let { it1 ->
                         GIOUtils.homePageExposure(
                             "广告位banner", 1.toString(),
                             it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
@@ -337,7 +345,7 @@ open class RecommendFragment :
 
             } else {
                 headNewBinding?.bViewpager?.visibility = View.GONE
-                headNewBinding?.drIndicator?.visibility = View.GONE
+//                headNewBinding?.drIndicator?.visibility = View.GONE
             }
         })
         viewModel.fastEnterLiveData.safeObserve(this) {
@@ -540,7 +548,7 @@ open class RecommendFragment :
                                 if (itemType == 4 || itemType == 5) {
                                     adData.showPosition++
                                 }
-                            }catch (error:IndexOutOfBoundsException){
+                            } catch (error: IndexOutOfBoundsException) {
 
                             }
                         }
@@ -584,17 +592,17 @@ open class RecommendFragment :
 
     override fun onPause() {
         super.onPause()
-        headNewBinding?.bViewpager?.stopLoop()
+//        headNewBinding?.bViewpager?.stopLoop()
     }
 
     override fun onResume() {
         super.onResume()
-        headNewBinding?.bViewpager?.startLoop()
+//        headNewBinding?.bViewpager?.startLoop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        headNewBinding?.bViewpager?.stopLoop()
+//        headNewBinding?.bViewpager?.stopLoop()
     }
 }
 

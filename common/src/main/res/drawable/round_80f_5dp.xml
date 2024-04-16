@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:width="@dimen/dp_5" android:height="@dimen/dp_5">
+    <item
+        android:width="@dimen/dp_8"
+        android:height="@dimen/dp_8">
         <shape android:shape="rectangle">
-            <solid android:color="@color/color_withe_a50" />
-            <corners android:radius="@dimen/dp_5"/>
+            <solid android:color="@color/color_ccFFFFFF" />
+            <corners android:radius="@dimen/dp_8" />
         </shape>
     </item>
 </layer-list>

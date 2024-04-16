@@ -1,6 +1,7 @@
 package com.changanford.common.widget.pop
 
 import android.content.Context
+import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
@@ -13,6 +14,7 @@ import com.changanford.common.databinding.PopCircleMainMenuBinding
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.common.wutil.ShadowDrawable
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
@@ -32,6 +34,12 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
     init {
         contentView = binding.root
         popupGravity = Gravity.BOTTOM or Gravity.END
+
+        //设置阴影
+        ShadowDrawable.setShadowDrawable(
+            binding.ryManagement, Color.parseColor("#FFFFFF"), 12,
+            Color.parseColor("#1a000000"), 6, 0, 0
+        )
     }
 
     private val adapter by lazy {

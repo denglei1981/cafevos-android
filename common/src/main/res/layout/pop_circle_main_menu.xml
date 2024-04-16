@@ -8,9 +8,12 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/ll_menu"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:paddingEnd="12dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="2dp"
         android:orientation="vertical"
         tools:ignore="RtlSymmetry">
 

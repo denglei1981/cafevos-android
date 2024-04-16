@@ -16,8 +16,8 @@
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smart_layout"
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
             android:layout_height="match_parent"
+            android:paddingTop="8dp"
             app:srlEnableOverScrollDrag="true">
 
             <androidx.recyclerview.widget.RecyclerView

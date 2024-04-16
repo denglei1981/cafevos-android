@@ -69,28 +69,10 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
     private var isLoginChange = false
     private var page = 1
     private var adapterList = ArrayList<PostDataBean>()
+    private var isFirst = true
 
     override fun initView() {
-        binding.ryFragment.adapter = adapter
-        headBinding = DataBindingUtil.bind(headView)!!
-        adapter.addHeaderView(headView)
-        communityHotHelper = CommunityHotHelper(
-            headBinding.layoutHot,
-            headBinding,
-            viewModel,
-            this@FordPaiCircleFragment
-        )
-        communityCircleHelper =
-            CommunityCircleHelper(headBinding.layoutCircle, this)
-        communityHotHelper.initCommunity()
-        if (MConstant.token.isEmpty()) {
-            selectTab.value = 1
-        }
-        initTab()
-        initListener()
-        setTopCircleData()
-        addLiveDataBus()
-        adapter.headerWithEmptyEnable = true
+
     }
 
     private fun initListener() {
@@ -235,6 +217,10 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
 
     override fun observe() {
         super.observe()
+
+    }
+
+    private fun initMyObServe(){
         circleDetailsViewModel.listBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it.dataList)
@@ -286,7 +272,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
                     ivIconRight.setImageResource(R.mipmap.ic_circle_jion_num_right_b)
 
                     val layoutParam = tvMyCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam.topMargin = 45.toIntPx()
+                    layoutParam.topMargin = 40.toIntPx()
                     tvMyCircle.layoutParams = layoutParam
                     tvMyCircle.textSize = 18f
 
@@ -421,6 +407,31 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
 
     override fun onResume() {
         super.onResume()
+        if (isFirst) {
+            isFirst = false
+            binding.ryFragment.adapter = adapter
+            headBinding = DataBindingUtil.bind(headView)!!
+            adapter.addHeaderView(headView)
+            communityHotHelper = CommunityHotHelper(
+                headBinding.layoutHot,
+                headBinding,
+                viewModel,
+                this@FordPaiCircleFragment
+            )
+            communityCircleHelper =
+                CommunityCircleHelper(headBinding.layoutCircle, this)
+            communityHotHelper.initCommunity()
+            if (MConstant.token.isEmpty()) {
+                selectTab.value = 1
+            }
+            initTab()
+            initListener()
+            setTopCircleData()
+            addLiveDataBus()
+            adapter.headerWithEmptyEnable = true
+
+            initMyObServe()
+        }
         if (isLoginChange) {
             isLoginChange = false
             if (MConstant.token.isEmpty()) {

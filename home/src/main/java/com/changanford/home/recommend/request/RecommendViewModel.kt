@@ -1,5 +1,6 @@
 package com.changanford.home.recommend.request
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AdBean
@@ -28,8 +29,7 @@ class RecommendViewModel : BaseViewModel() {
     var recommendLiveData: SafeMutableLiveData<UpdateUiState<RecommendListBean>> =
         SafeMutableLiveData()
 
-    val recommendBannerLiveData: SafeMutableLiveData<UpdateUiState<List<AdBean>>> =
-        SafeMutableLiveData()
+    val recommendBannerLiveData = MutableLiveData<List<AdBean>>()
     val specialListLiveData = SafeMutableLiveData<SpecialListMainBean>() // 专题列表
     val recommendAdBean = SafeMutableLiveData<IndexInfoFlowAdBean>() // 广告
 
@@ -89,7 +89,7 @@ class RecommendViewModel : BaseViewModel() {
                 .getRecommendBanner(body.header(rkey), body.body(rkey))
                 .onSuccess {
                     val updateUiState = UpdateUiState<List<AdBean>>(it, true, "")
-                    recommendBannerLiveData.postValue(updateUiState)
+                    recommendBannerLiveData.postValue(it)
                 }.onWithMsgFailure {
                     if (it != null) {
                         toastShow(it)

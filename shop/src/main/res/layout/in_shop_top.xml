@@ -31,7 +31,7 @@
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="@+id/banner"
             android:src="@mipmap/ic_shop_top_bg"
-            android:layout_height="wrap_content"/>
+            android:layout_height="120dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_fb"
