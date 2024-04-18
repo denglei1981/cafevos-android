@@ -18,10 +18,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp">
 
-            <com.zhpan.bannerview.BannerViewPager
+            <cn.bingoogolapple.bgabanner.BGABanner
                 android:id="@+id/b_viewpager"
+                style="@style/BannerDefaultStyle"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                app:banner_indicatorGravity="bottom"
+                app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
+                app:banner_pointDrawable="@drawable/indicator_style_circle"
                 app:layout_constraintDimensionRatio="343:268"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

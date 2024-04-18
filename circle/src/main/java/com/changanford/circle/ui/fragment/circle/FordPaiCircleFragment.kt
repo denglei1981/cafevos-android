@@ -29,7 +29,6 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.MConstant.userId
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -166,14 +165,16 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
     }
 
     private fun getCircleDeleteData(isShowLoading: Boolean = false) {
-        circleDetailsViewModel.getListDataCircle(
-            nowType,
-            "",
-            nowCircleId,
-            page,
-            userId,
-            isShowLoading
-        )
+        if (MConstant.token.isNotEmpty()) {
+            circleDetailsViewModel.getListDataCircle(
+                nowType,
+                "",
+                nowCircleId,
+                page,
+                MConstant.userId,
+                isShowLoading
+            )
+        }
     }
 
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
@@ -220,11 +221,16 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
 
     }
 
-    private fun initMyObServe(){
+    private fun initMyObServe() {
         circleDetailsViewModel.listBean.observe(this) {
             if (page == 1) {
                 adapter.setList(it.dataList)
                 headBinding.layoutCircle.headEmpty.root.isVisible = it.dataList.size == 0
+                if (selectTab.value == 1) {
+                    adapterList.clear()
+                    adapterList.addAll(adapter.data)
+                    adapter.data.clear()
+                }
             } else {
                 adapter.addData(it.dataList)
                 adapter.loadMoreModule.loadMoreComplete()
@@ -277,7 +283,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
                     tvMyCircle.textSize = 18f
 
                     val layoutParam2 = tvHotCircle.layoutParams as ConstraintLayout.LayoutParams
-                    layoutParam2.topMargin = 60.toIntPx()
+                    layoutParam2.topMargin = 53.toIntPx()
                     tvHotCircle.layoutParams = layoutParam2
                     tvHotCircle.textSize = 14f
 
@@ -441,6 +447,7 @@ class FordPaiCircleFragment : BaseFragment<FragmentNewFordPaiCircleBinding, NewC
             }
             communityHotHelper.initData()
         }
+        headBinding.clTab.isVisible = MConstant.token.isNotEmpty()
     }
 
     private fun addLiveDataBus() {

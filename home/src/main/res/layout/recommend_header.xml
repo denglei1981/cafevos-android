@@ -22,7 +22,7 @@
             app:banner_indicatorGravity="bottom"
             app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
             app:banner_pointDrawable="@drawable/indicator_style_circle"
-            app:banner_pointTopBottomMargin="@dimen/dp_10"
+            app:banner_pointTopBottomMargin="@dimen/dp_20"
             app:layout_constraintDimensionRatio="343:268"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

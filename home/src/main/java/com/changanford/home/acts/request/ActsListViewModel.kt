@@ -4,13 +4,19 @@ import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.ActBean
-import com.changanford.common.net.*
+import com.changanford.common.bean.AdBean
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.PageConstant
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
-import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.ListMainBean
 import com.changanford.home.data.EnumBean
 
@@ -142,7 +148,7 @@ class ActsListViewModel : BaseViewModel() {
         })
     }
 
-    val bannerLiveData = MutableLiveData<UpdateUiState<List<CircleHeadBean>>>() //
+    val bannerLiveData = MutableLiveData<UpdateUiState<List<AdBean>>>() //
     fun getBanner() {
         launch(false, {
             val body = HashMap<String, Any>()
@@ -151,7 +157,7 @@ class ActsListViewModel : BaseViewModel() {
             ApiClient.createApi<HomeNetWork>()
                 .adsLists(body.header(rkey), body.body(rkey))
                 .onSuccess {
-                    val updateUiState = UpdateUiState<List<CircleHeadBean>>(it, true, "")
+                    val updateUiState = UpdateUiState<List<AdBean>>(it, true, "")
                     bannerLiveData.postValue(updateUiState)
 
                 }.onWithMsgFailure {

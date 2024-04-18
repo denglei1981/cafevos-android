@@ -6,9 +6,9 @@ import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
+import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.databinding.ItemHomeCircleBottomBinding
 import com.changanford.circle.viewmodel.CircleDetailsViewModel
-import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.ext.setCircular
@@ -22,14 +22,14 @@ import com.changanford.common.utilext.toast
  * @description：
  */
 class CircleHomeBottomAdapter :
-    BaseQuickAdapter<NewCircleBean, BaseDataBindingHolder<ItemHomeCircleBottomBinding>>(
+    BaseQuickAdapter<ChoseCircleBean, BaseDataBindingHolder<ItemHomeCircleBottomBinding>>(
         R.layout.item_home_circle_bottom
     ) {
 
     private val viewModel by lazy { CircleDetailsViewModel() }
     override fun convert(
         holder: BaseDataBindingHolder<ItemHomeCircleBottomBinding>,
-        item: NewCircleBean
+        item: ChoseCircleBean
     ) {
         holder.dataBinding?.run {
             ivAuth.isVisible = item.manualAuth == 1
@@ -42,7 +42,7 @@ class CircleHomeBottomAdapter :
         }
     }
 
-    private fun isJoin(btnJoin: AppCompatTextView, item: NewCircleBean) {
+    private fun isJoin(btnJoin: AppCompatTextView, item: ChoseCircleBean) {
         btnJoin.apply {
             visibility = View.VISIBLE
             when (item.isJoin) {

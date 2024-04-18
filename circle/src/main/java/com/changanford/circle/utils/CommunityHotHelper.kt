@@ -1,5 +1,6 @@
 package com.changanford.circle.utils
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.wutil.ShadowDrawable
 
 /**
  * @author: niubobo
@@ -41,6 +43,11 @@ class CommunityHotHelper(
 
     fun initCommunity() {
         initData()
+        //设置阴影
+        ShadowDrawable.setShadowDrawable(
+            headBinding.cardNoCircle, Color.parseColor("#FFFFFF"), 12,
+            Color.parseColor("#1a000000"), 12, 1, 1
+        )
         provinceLinearSnapHelper.attachToRecyclerView(headBinding.ryRank)
         headBinding.ryCircleTop.adapter = topCircleAdapter
         headBinding.ryRank.adapter = midRankAdapter
@@ -52,7 +59,7 @@ class CommunityHotHelper(
 
     fun initData() {
         viewModel.getCircleHomeData()
-        viewModel.getYouLikeData()
+        viewModel.getBottomCircle()
     }
 
     private fun observe() {
@@ -79,8 +86,8 @@ class CommunityHotHelper(
             }
         }
 
-        viewModel.youLikeData.observe(fragment) {
-            bottomCircleAdapter.setList(it)
+        viewModel.circleListBean.observe(fragment) {
+            bottomCircleAdapter.setList(it.dataList)
         }
     }
 

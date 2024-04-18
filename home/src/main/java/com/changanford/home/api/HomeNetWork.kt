@@ -302,7 +302,7 @@ interface HomeNetWork {
     suspend fun adsLists(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
-    ): CommonResponse<List<CircleHeadBean>>
+    ): CommonResponse<List<AdBean>>
 
     @POST("con/ads/bathList")
     suspend fun getTwoBanner(

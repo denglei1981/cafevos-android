@@ -69,6 +69,27 @@ class NewCircleViewModel : BaseViewModel() {
         })
     }
 
+    val circleListBean = MutableLiveData<HomeDataListBean<ChoseCircleBean>>()
+
+    fun getBottomCircle() {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            body["pageNo"] = 1
+            body["pageSize"] = 5
+            body["queryParams"] = HashMap<String, Any>().also {
+                it["type"] = 0
+            }
+            val rKey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>()
+                .getAllTypeCircles(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    circleListBean.value=it
+                }
+        }, error = {
+//            it.message?.toast()
+        })
+    }
+
     /**
      * 获取热门榜单分类
      * */

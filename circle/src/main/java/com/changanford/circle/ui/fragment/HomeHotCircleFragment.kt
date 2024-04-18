@@ -114,7 +114,7 @@ class HomeHotCircleFragment :
         }
 
         viewModel.youLikeData.observe(this) {
-            bottomCircleAdapter.setList(it)
+//            bottomCircleAdapter.setList(it)
         }
     }
 

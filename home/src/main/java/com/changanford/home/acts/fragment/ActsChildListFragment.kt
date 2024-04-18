@@ -6,13 +6,12 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.changanford.common.adapter.SearchActsResultAdapter
 import com.changanford.common.basic.BaseLoadSirFragment
+import com.changanford.common.bean.AdBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
 import com.changanford.common.net.getRandomKey
@@ -24,16 +23,14 @@ import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.gio.GIOUtils
-import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.widget.control.BannerControl
 import com.changanford.home.PageConstant
-import com.changanford.home.acts.adapter.SimpleAdapter
 import com.changanford.home.acts.dialog.HomeActsScreenDialog
 import com.changanford.home.acts.dialog.UnitActsPop
 import com.changanford.home.acts.request.ActsListViewModel
 import com.changanford.home.api.HomeNetWork
-import com.changanford.home.bean.CircleHeadBean
 import com.changanford.home.bean.ScreenData
 import com.changanford.home.callback.ICallback
 import com.changanford.home.data.EnumBean
@@ -42,7 +39,6 @@ import com.changanford.home.databinding.FragmentActsChildBinding
 import com.changanford.home.databinding.LayoutActsHomeHeaderBinding
 import com.changanford.home.util.newTabLayout
 import com.google.android.material.tabs.TabLayout
-import com.zhpan.bannerview.constants.PageStyle
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -59,7 +55,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     }
 
     private val params = arrayOf("综合排序", "全部活动")
-    private var adBean = ArrayList<CircleHeadBean>()
+    private var adBean = ArrayList<AdBean>()
     private var zonghescreens = MutableLiveData<List<EnumBean>>() //综合排序等
     private var screenstype = MutableLiveData<MutableList<EnumBean>>()  //进行中等
     private var guanfang = MutableLiveData<List<EnumBean>>()  //官方
@@ -121,7 +117,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
             viewModel.AddACTbrid(it)
         }
         initViewPager()
-        setIndicator()
+//        setIndicator()
 
         params.forEach {
             val view =
@@ -201,7 +197,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         viewModel.bannerLiveData.observe(this) {
             if (it.isSuccess) {
 //                (parentFragment as HomeV2Fragment).stopRefresh()
-                setViewPagerData(it.data as ArrayList<CircleHeadBean>)
+                setViewPagerData(it.data as ArrayList<AdBean>)
             } else {
                 toastShow(it.message)
             }
@@ -292,37 +288,37 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     }
 
     private fun initViewPager() {
-        headBinding.bViewpager.apply {
-            setAutoPlay(true)
-            setScrollDuration(500)
-            setCanLoop(true)
-            setAdapter(SimpleAdapter())
-            registerLifecycleObserver(lifecycle)
-            setIndicatorView(headBinding.drIndicator)
-            setRoundCorner(20).setPageStyle(PageStyle.MULTI_PAGE_SCALE)
-//            setOnPageClickListener { }
-            setIndicatorSliderColor(
-                ContextCompat.getColor(context, com.changanford.home.R.color.blue_tab),
-                ContextCompat.getColor(context, com.changanford.home.R.color.colorPrimary)
-            )
-
-            registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    if (GioPageConstant.mainSecondPageName() == "发现页-活动") {
-                        val bean = data as List<CircleHeadBean>
-                        val item = bean[position]
-                        bean[position].adName?.let { it1 ->
-                            GIOUtils.homePageExposure(
-                                "广告位banner", (position + 1).toString(),
-                                it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
-                            )
-                        }
-                    }
-                }
-            })
-        }.create()
+//        headBinding.bViewpager.apply {
+//            setAutoPlay(true)
+//            setScrollDuration(500)
+//            setCanLoop(true)
+//            setAdapter(SimpleAdapter())
+//            registerLifecycleObserver(lifecycle)
+//            setIndicatorView(headBinding.drIndicator)
+//            setRoundCorner(20).setPageStyle(PageStyle.MULTI_PAGE_SCALE)
+////            setOnPageClickListener { }
+//            setIndicatorSliderColor(
+//                ContextCompat.getColor(context, com.changanford.home.R.color.blue_tab),
+//                ContextCompat.getColor(context, com.changanford.home.R.color.colorPrimary)
+//            )
+//
+//            registerOnPageChangeCallback(object :
+//                ViewPager2.OnPageChangeCallback() {
+//                override fun onPageSelected(position: Int) {
+//                    super.onPageSelected(position)
+//                    if (GioPageConstant.mainSecondPageName() == "发现页-活动") {
+//                        val bean = data as List<CircleHeadBean>
+//                        val item = bean[position]
+//                        bean[position].adName?.let { it1 ->
+//                            GIOUtils.homePageExposure(
+//                                "广告位banner", (position + 1).toString(),
+//                                it1, item.maPlanId, item.maJourneyId, item.maJourneyActCtrlId
+//                            )
+//                        }
+//                    }
+//                }
+//            })
+//        }.create()
 
 
     }
@@ -389,11 +385,11 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     }
 
     private fun startViewPagerLoop() {
-        headBinding.bViewpager.startLoop()
+//        headBinding.bViewpager.startLoop()
     }
 
     private fun stopViewPagerLoop() {
-        headBinding.bViewpager.stopLoop()
+//        headBinding.bViewpager.stopLoop()
     }
 
     private fun setUnitPopu(list: MutableList<EnumBean>) {
@@ -475,9 +471,14 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         allActsPop?.setPopupGravity(BasePopupWindow.GravityMode.RELATIVE_TO_ANCHOR, Gravity.BOTTOM)
     }
 
-    fun setViewPagerData(list: ArrayList<CircleHeadBean>) {
+    private fun setViewPagerData(list: ArrayList<AdBean>) {
         this.adBean = list
-        headBinding.bViewpager.refreshData(list)
+        BannerControl.bindingBanner(
+            headBinding.bViewpager,
+            list,
+            8, true
+        )
+//        headBinding.bViewpager.refreshData(list)
         if (list.isNotEmpty()) {
             val item = list[0]
             list[0].adName?.let { it1 ->

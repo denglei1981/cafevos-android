@@ -328,7 +328,7 @@ open class RecommendFragment :
                     BannerControl.bindingBanner(
                         it1,
                         it as MutableList<AdBean>?,
-                        ScreenUtils.dp2px(requireContext(), 6f), true
+                        8, true
                     )
                 }
 //                headNewBinding?.bViewpager?.let { it1 -> BannerControl.bindingBanner(it1,
