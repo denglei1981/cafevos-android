@@ -254,10 +254,10 @@ class PloySearchResultActivity :
             mTabText?.isSelected = true
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
             mTabText?.paint?.isFakeBoldText = false
-            mTabText?.textSize = 18f
+            mTabText?.textSize = 17f
         } else {
             mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.textSize = 18f
+            mTabText?.textSize = 17f
             mTabText?.paint?.isFakeBoldText = false// 取消加粗
 
         }
@@ -277,11 +277,11 @@ class PloySearchResultActivity :
                 mTabText.isSelected = true
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
                 mTabText.paint.isFakeBoldText = false
-                mTabText.textSize = 18f
+                mTabText.textSize = 17f
 
             } else {
                 mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-                mTabText.textSize = 18f
+                mTabText.textSize = 17f
                 mTabText.paint.isFakeBoldText = false// 取消加粗
             }
             //更改选中项样式

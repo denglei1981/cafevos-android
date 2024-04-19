@@ -12,7 +12,12 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.RoundBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
@@ -44,6 +49,7 @@ import kotlin.math.abs
 @Route(path = ARouterMyPath.MineTaskListUI)
 class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     private var gioPreBean = GioPreBean()
+    private var isSign = false
     var isRefresh: Boolean = false //回到当前页面刷新列表
 
     val taskAdapter: TaskTitleAdapter by lazy {
@@ -57,6 +63,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     override fun initView() {
         title = "任务中心页"
 //        StatusBarUtil.setTranslucentForImageView(this, null)
+        isSign = intent.getBooleanExtra("isSign", false)
         setLoadSir(binding.root)
         binding.imBack.setOnClickListener {
             back()
@@ -120,6 +127,10 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     fun show7Day() {
         viewModel.getDay7Sign {
+            val canSign = it == null || MConstant.token.isNullOrEmpty()
+            if (canSign && isSign) {
+                JumpUtils.instans?.jump(37)
+            }
             binding?.sign7day?.setContent {
                 dailySignCompose(it)
             }

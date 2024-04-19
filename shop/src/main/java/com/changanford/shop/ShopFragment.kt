@@ -268,7 +268,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             binding.inTop.groupMyFb.isVisible = isLogin
             if (isLogin) {
                 binding.inTop.tvRightTips.text = getString(R.string.str_earnMoney)
-                binding.inTop.tvTips.text = "福币在手 精品我有"
+                binding.inTop.tvTips.text = "福币在手 随心兑换"
                 binding.inTop.tvTips.setDrawableNull()
             } else {
                 binding.inTop.tvRightTips.text = getString(R.string.str_loginToView)

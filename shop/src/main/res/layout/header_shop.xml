@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingEnd="15dp"
+        android:paddingTop="5dp"
         android:paddingBottom="@dimen/dp_5">
 
         <com.changanford.shop.view.TypefaceTextView

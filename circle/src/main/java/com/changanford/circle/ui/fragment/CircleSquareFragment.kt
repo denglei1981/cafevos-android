@@ -2,18 +2,11 @@ package com.changanford.circle.ui.fragment
 
 
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleSquareAdapter
 import com.changanford.circle.databinding.FragmentSquareBinding
 import com.changanford.circle.viewmodel.CircleViewModel
 import com.changanford.common.basic.BaseFragment
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -55,16 +48,16 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
     override fun observe() {
         super.observe()
         viewModel.topSignBean.observe(this) {
-            circleSquareAdapter.topBinding.run {
-                it.ontinuous?.let {
-                    val days = it.toInt()
-                    tvDaysNum.isVisible = days > 0
-                }
-                tvDaysNum.text = "已连续签到${it.ontinuous}天"
-                it.curDate?.let { ss ->
-                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
-                }
-            }
+//            circleSquareAdapter.topBinding.run {
+//                it.ontinuous?.let {
+//                    val days = it.toInt()
+//                    tvDaysNum.isVisible = days > 0
+//                }
+//                tvDaysNum.text = "已连续签到${it.ontinuous}天"
+//                it.curDate?.let { ss ->
+//                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
+//                }
+//            }
         }
         viewModel.topicBean.observe(this) {
             circleSquareAdapter.run {
@@ -121,28 +114,28 @@ class CircleSquareFragment : BaseFragment<FragmentSquareBinding, CircleViewModel
                     canSign = true
                 }
             }
-            if (!canSign) {
-                circleSquareAdapter.topBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.shape_e9_15dp)
-                    text = "已签到"
-                    isEnabled = false
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
-                }
-            } else {
-                circleSquareAdapter.topBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.bg_sign_top_topic)
-                    text = "签到得福币"
-                    isEnabled = true
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    if (MConstant.userId.isNotEmpty()) {
-                        setOnClickListener {
-                            JumpUtils.instans?.jump(37)
-                        }
-                    } else {
-                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
-                    }
-                }
-            }
+//            if (!canSign) {
+//                circleSquareAdapter.topBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.shape_e9_15dp)
+//                    text = "已签到"
+//                    isEnabled = false
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
+//                }
+//            } else {
+//                circleSquareAdapter.topBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.bg_sign_top_topic)
+//                    text = "签到得福币"
+//                    isEnabled = true
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+//                    if (MConstant.userId.isNotEmpty()) {
+//                        setOnClickListener {
+//                            JumpUtils.instans?.jump(37)
+//                        }
+//                    } else {
+//                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
+//                    }
+//                }
+//            }
         }
     }
 

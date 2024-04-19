@@ -3,7 +3,6 @@ package com.changanford.circle.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,11 +18,9 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -45,7 +42,7 @@ class CircleRecommendV2Fragment :
 
     private val adapter by lazy { CircleRecommendAdapter(requireContext(), this) }
     private val topicAdapter by lazy {
-        PolySearchTopicAdapter()
+        PolySearchTopicAdapter(false)
     }
     private val tabList = listOf("推荐", "最新")
     private lateinit var headBinding: LayoutCircleHeaderHotTopicBinding
@@ -54,7 +51,6 @@ class CircleRecommendV2Fragment :
         layoutInflater.inflate(R.layout.layout_circle_header_hot_topic, null)
     }
 
-    private var type = 0
     private var page = 1
 
     private var checkPosition: Int? = null
@@ -74,7 +70,7 @@ class CircleRecommendV2Fragment :
         initMagicIndicator()
         headBinding.ryTopic.adapter = topicAdapter
         adapter.addHeaderView(headView)
-        type = arguments?.getInt("type", 1)!!
+        tabMutable.value = arguments?.getInt("type", 1)!!
         binding.ryCircle.run {
             val layoutManager = binding.ryCircle.layoutManager as LinearLayoutManager
             layoutManager.initialPrefetchItemCount = 4
@@ -82,7 +78,7 @@ class CircleRecommendV2Fragment :
         binding.ryCircle.adapter = adapter
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getRecommendPostData(type, page)
+            viewModel.getRecommendPostData(tabMutable.value!!, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
             GioPageConstant.postEntrance = "社区-广场-信息流"
@@ -98,6 +94,10 @@ class CircleRecommendV2Fragment :
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()
+        }
+        topicAdapter.setOnItemClickListener { _, _, position ->
+            val bean = topicAdapter.data[position]
+            JumpUtils.instans?.jump(9, bean.topicId.toString())
         }
         initVpAd()
         bus()
@@ -133,9 +133,16 @@ class CircleRecommendV2Fragment :
             }
         }
         tabMutable.observe(this) {
-            viewModel.getRecommendPostData(type, it, true)
+            page = 1
+            if (isFirstInitRecommend) {
+                isFirstInitRecommend = false
+                return@observe
+            }
+            viewModel.getRecommendPostData(it, page, true)
         }
     }
+
+    private var isFirstInitRecommend = true
 
     override fun initData() {
         var useTabValue = 1
@@ -147,24 +154,24 @@ class CircleRecommendV2Fragment :
         }
         viewModel.getRecommendTopic()
         viewModel.communityTopic()
-        viewModel.getRecommendPostData(type, useTabValue)
+        viewModel.getRecommendPostData(useTabValue, page)
     }
 
 
     override fun observe() {
         super.observe()
-        viewModel.topSignBean.observe(this) {
-            headBinding.run {
-                it.ontinuous?.let {
-                    val days = it.toInt()
-                    tvDaysNum.isVisible = days > 0
-                }
-                tvDaysNum.text = "已连续签到${it.ontinuous}天"
-                it.curDate?.let { ss ->
-                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
-                }
-            }
-        }
+//        viewModel.topSignBean.observe(this) {
+//            headBinding.run {
+//                it.ontinuous?.let {
+//                    val days = it.toInt()
+//                    tvDaysNum.isVisible = days > 0
+//                }
+//                tvDaysNum.text = "已连续签到${it.ontinuous}天"
+//                it.curDate?.let { ss ->
+//                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
+//                }
+//            }
+//        }
         viewModel.topicBean.observe(this) {
             topicAdapter.setList(it.topics)
         }
@@ -214,7 +221,8 @@ class CircleRecommendV2Fragment :
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                viewModel.getRecommendPostData(type, 1)
+                page = 1
+                tabMutable.value?.let { it1 -> viewModel.getRecommendPostData(it1, page) }
             }
 
     }
@@ -335,7 +343,7 @@ class CircleRecommendV2Fragment :
     override fun onResume() {
         super.onResume()
         GioPageConstant.topicEntrance = ""
-        viewModel.getSignContinuousDays()
+//        viewModel.getSignContinuousDays()
         checkSign()
     }
 
@@ -347,33 +355,33 @@ class CircleRecommendV2Fragment :
                     canSign = true
                 }
             }
-            if (!canSign) {
-                headBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.shape_e9_15dp)
-                    text = "已签到"
-                    isEnabled = false
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
-                }
-            } else {
-                headBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.bg_sign_top_topic)
-                    text = "签到得福币"
-                    isEnabled = true
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    if (MConstant.userId.isNotEmpty()) {
-                        setOnClickListener {
-                            JumpUtils.instans?.jump(37)
-                        }
-                    } else {
-                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
-                    }
-                }
-            }
+//            if (!canSign) {
+//                headBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.shape_e9_15dp)
+//                    text = "已签到"
+//                    isEnabled = false
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
+//                }
+//            } else {
+//                headBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.bg_sign_top_topic)
+//                    text = "签到得福币"
+//                    isEnabled = true
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+//                    if (MConstant.userId.isNotEmpty()) {
+//                        setOnClickListener {
+//                            JumpUtils.instans?.jump(37)
+//                        }
+//                    } else {
+//                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
+//                    }
+//                }
+//            }
         }
     }
 
     fun outRefresh() {
         page = 1
-        viewModel.getRecommendPostData(type, page)
+        tabMutable.value?.let { viewModel.getRecommendPostData(it, page) }
     }
 }
