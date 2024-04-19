@@ -58,7 +58,7 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:layout_marginTop="6dp"
-                    android:text="福币在手 精品我有"
+                    android:text="福币在手 随心兑换"
                     android:textColor="@color/color_16"
                     android:textSize="14sp"
                     android:textStyle="bold"

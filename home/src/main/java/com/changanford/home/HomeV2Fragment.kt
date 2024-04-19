@@ -48,6 +48,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.request.addRecord
 import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.load
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.home.acts.fragment.ActsParentsFragment
 import com.changanford.home.adapter.TwoAdRvListAdapter
@@ -117,15 +118,22 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State) {
                 when (state) {
                     State.EXPANDED -> {//展开
-//                        StatusBarUtil.setZeroStatusBarPaddingTop(binding.homeTab, requireActivity())
+                        val asd = binding.vTop.layoutParams
+                        asd.height = 1.toIntPx()
+                        binding.vTop.layoutParams=asd
+
                     }
 
                     State.COLLAPSED -> {//关闭
-//                        StatusBarUtil.setStatusBarPaddingTop(binding.homeTab, requireActivity())
+                        val asd = binding.vTop.layoutParams
+                        asd.height = 15.toIntPx()
+                        binding.vTop.layoutParams=asd
                     }
 
                     State.INTERMEDIATE -> {//中间
-//                        StatusBarUtil.setZeroStatusBarPaddingTop(binding.homeTab, requireActivity())
+                        val asd = binding.vTop.layoutParams
+                        asd.height = 1.toIntPx()
+                        binding.vTop.layoutParams=asd
                     }
                 }
             }

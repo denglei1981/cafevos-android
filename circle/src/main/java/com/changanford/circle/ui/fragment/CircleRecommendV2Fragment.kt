@@ -54,7 +54,6 @@ class CircleRecommendV2Fragment :
         layoutInflater.inflate(R.layout.layout_circle_header_hot_topic, null)
     }
 
-    private var type = 0
     private var page = 1
 
     private var checkPosition: Int? = null
@@ -74,7 +73,7 @@ class CircleRecommendV2Fragment :
         initMagicIndicator()
         headBinding.ryTopic.adapter = topicAdapter
         adapter.addHeaderView(headView)
-        type = arguments?.getInt("type", 1)!!
+        tabMutable.value = arguments?.getInt("type", 1)!!
         binding.ryCircle.run {
             val layoutManager = binding.ryCircle.layoutManager as LinearLayoutManager
             layoutManager.initialPrefetchItemCount = 4
@@ -82,7 +81,7 @@ class CircleRecommendV2Fragment :
         binding.ryCircle.adapter = adapter
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
-            viewModel.getRecommendPostData(type, page)
+            viewModel.getRecommendPostData(tabMutable.value!!, page)
         }
         adapter.setOnItemClickListener { _, view, position ->
             GioPageConstant.postEntrance = "社区-广场-信息流"
@@ -98,6 +97,10 @@ class CircleRecommendV2Fragment :
         }
         binding.refreshLayout.setOnRefreshListener {
             initData()
+        }
+        topicAdapter.setOnItemClickListener { _, _, position ->
+            val bean = topicAdapter.data[position]
+            JumpUtils.instans?.jump(9, bean.topicId.toString())
         }
         initVpAd()
         bus()
@@ -133,9 +136,16 @@ class CircleRecommendV2Fragment :
             }
         }
         tabMutable.observe(this) {
-            viewModel.getRecommendPostData(type, it, true)
+            page = 1
+            if (isFirstInitRecommend) {
+                isFirstInitRecommend = false
+                return@observe
+            }
+            viewModel.getRecommendPostData(it, page, true)
         }
     }
+
+    private var isFirstInitRecommend = true
 
     override fun initData() {
         var useTabValue = 1
@@ -147,7 +157,7 @@ class CircleRecommendV2Fragment :
         }
         viewModel.getRecommendTopic()
         viewModel.communityTopic()
-        viewModel.getRecommendPostData(type, useTabValue)
+        viewModel.getRecommendPostData(useTabValue, page)
     }
 
 
@@ -214,7 +224,8 @@ class CircleRecommendV2Fragment :
         LiveDataBus.get()
             .with(LiveDataBusKey.USER_LOGIN_STATUS, UserManger.UserLoginStatus::class.java)
             .observe(this) {
-                viewModel.getRecommendPostData(type, 1)
+                page = 1
+                tabMutable.value?.let { it1 -> viewModel.getRecommendPostData(it1, page) }
             }
 
     }
@@ -374,6 +385,6 @@ class CircleRecommendV2Fragment :
 
     fun outRefresh() {
         page = 1
-        viewModel.getRecommendPostData(type, page)
+        tabMutable.value?.let { viewModel.getRecommendPostData(it, page) }
     }
 }
