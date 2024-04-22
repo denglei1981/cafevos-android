@@ -141,6 +141,9 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                 0 -> {
                     val icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
+                    val tvAddress: TextView = holder.getView(R.id.tv_address)
+                    tvAddress.isVisible = !item.addrDesc.isNullOrEmpty()
+                    tvAddress.text = item.addrDesc
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
@@ -178,6 +181,9 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                 1 -> {
                     val title: AppCompatTextView = holder.getView(R.id.circle_user)
                     val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
+                    val tvAddress: TextView = holder.getView(R.id.tv_address)
+                    tvAddress.isVisible = !item.addrDesc.isNullOrEmpty()
+                    tvAddress.text = item.addrDesc
                     title.text = item.typeStr
                     title.visibility = if (item.isShowTitle) View.VISIBLE else View.GONE
 

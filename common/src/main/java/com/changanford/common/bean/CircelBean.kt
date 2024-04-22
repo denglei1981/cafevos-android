@@ -53,6 +53,7 @@ data class CircleItemBean(
     val type: String,
     val needAudit: String,
     var star: String? = null,
+    var addrDesc: String? = null,
     var status: String? = null,//1审核中 2通过
     //圈子认证 0 未认证 1已认证
     val manualAuth: Int = 0,
