@@ -3,6 +3,8 @@ package com.changanford.circle.ui.ask.fragment
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.changanford.circle.ui.ask.adapter.HotMechanicAdapter
 import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
 import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.AskRecommendViewModel
+import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.QuestionItemBean
@@ -33,6 +36,7 @@ import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
+import com.google.android.material.tabs.TabLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -96,7 +100,7 @@ class AskRecommendFragment :
         }
 //        initMarginTab()
         viewModel.getInitQuestion()
-        viewModel.getQuestionList(false, questionTypes)
+//        viewModel.getQuestionList(false, questionTypes)
         binding.refreshLayout.setOnRefreshListener(this)
         binding.refreshLayout.setOnLoadMoreListener(this)
     }
@@ -166,10 +170,97 @@ class AskRecommendFragment :
 //                }
 
             }
+            viewModel.getAskTabsData()
+            viewModel.askTabsBean.observe(this) {
+                initTab(it)
+            }
         }
     }
 
-    fun isLogin(): Boolean {
+    private fun initTab(tabs: ArrayList<QuestionData>) {
+        headerBinding?.apply {
+            homeTab.setSelectedTabIndicatorColor(
+                ContextCompat.getColor(
+                    MyApp.mContext,
+                    R.color.white
+                )
+            )
+            homeTab.tabRippleColor = null
+
+            homeTab.addOnTabSelectedListener(object :
+                TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    selectTab(tab, true)
+                    val bean = tabs[homeTab.selectedTabPosition]
+                    questionTypes.clear()
+                    questionTypes.add(bean.dictValue)
+                    viewModel.getQuestionList(false, questionTypes, true)
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+                    selectTab(tab, false)
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+            })
+            for (i in 0 until tabs.size) {
+                //寻找到控件
+                val view: View =
+                    LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_circle, null)
+                val mTabText = view.findViewById<TextView>(R.id.tv_title)
+                val bean = tabs[i]
+
+                mTabText.text = bean.dictLabel
+                if (0 == i) {
+                    mTabText.isSelected = true
+                    mTabText.setTextColor(
+                        ContextCompat.getColor(
+                            MyApp.mContext,
+                            R.color.color_1700F4
+                        )
+                    )
+                    mTabText.paint.isFakeBoldText = true
+                    mTabText.textSize = 18f
+
+                } else {
+                    mTabText.setTextColor(
+                        ContextCompat.getColor(
+                            MyApp.mContext,
+                            R.color.color_8016
+                        )
+                    )
+                    mTabText.textSize = 16f
+                    mTabText.paint.isFakeBoldText = false// 取消加粗
+                }
+                val tab = homeTab.newTab()
+                tab.customView = view
+                homeTab.addTab(tab)
+                homeTab.selectedTabPosition
+            }
+            val bean = tabs[0]
+            questionTypes.clear()
+            questionTypes.add(bean.dictValue)
+            viewModel.getQuestionList(false, questionTypes)
+        }
+    }
+
+    private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
+        val mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
+        if (isSelect) {
+            // 埋点
+            mTabText?.isSelected = true
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700F4))
+            mTabText?.paint?.isFakeBoldText = true
+            mTabText?.textSize = 18f
+        } else {
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_8016))
+            mTabText?.textSize = 16f
+            mTabText?.paint?.isFakeBoldText = false// 取消加粗
+        }
+    }
+
+    private fun isLogin(): Boolean {
         return if (TextUtils.isEmpty(MConstant.token)) {
             startARouter(ARouterMyPath.SignUI)
             false

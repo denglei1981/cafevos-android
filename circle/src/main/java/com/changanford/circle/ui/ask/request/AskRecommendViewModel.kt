@@ -7,6 +7,7 @@ import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.MechanicData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.net.ApiClient
 import com.changanford.common.net.body
@@ -53,8 +54,8 @@ class AskRecommendViewModel : BaseViewModel() {
 
 
     var page: Int = 1
-    fun getQuestionList(isLoadMore: Boolean, questionTypes: MutableList<String>) {
-        launch(block = {
+    fun getQuestionList(isLoadMore: Boolean, questionTypes: MutableList<String>,isShowLoading: Boolean=false) {
+        launch(showLoading = isShowLoading,block = {
             val body = MyApp.mContext.createHashMap()
             if (isLoadMore) {
                 page += 1
@@ -100,11 +101,24 @@ class AskRecommendViewModel : BaseViewModel() {
             val rKey = getRandomKey()
             ApiClient.createApi<CircleNetWork>()
                 .questionOfPersonal(body.header(rKey), body.body(rKey)).onSuccess {
-                questionListBean.postValue(it)
-            }.onWithMsgFailure {
-                it?.toast()
-            }
+                    questionListBean.postValue(it)
+                }.onWithMsgFailure {
+                    it?.toast()
+                }
         })
     }
 
+    val askTabsBean=MutableLiveData<ArrayList<QuestionData>>()
+
+    fun getAskTabsData() {
+        launch(block = {
+            val body = HashMap<String, String>()
+            body["dictType"] = "qa_question_type"
+            val rkey = getRandomKey()
+            ApiClient.createApi<CircleNetWork>().getQuestionType(body.header(rkey), body.body(rkey))
+                .onSuccess {
+                    askTabsBean.value=it
+                }
+        })
+    }
 }

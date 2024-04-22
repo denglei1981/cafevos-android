@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingBottom="21dp"
         android:background="@color/transparent"
         android:orientation="vertical">
 
@@ -232,6 +233,7 @@
                     android:id="@+id/tv_screen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:drawableEnd="@drawable/icon_question_screen"
@@ -242,12 +244,27 @@
 
             </RelativeLayout>
 
-            <!--            <net.lucode.hackware.magicindicator.MagicIndicator-->
-            <!--                android:id="@+id/magic_tab_remen"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="40dp"-->
-            <!--                android:layout_marginStart="20dp"-->
-            <!--                android:layout_marginTop="@dimen/dp_10" />-->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/home_tab"
+                android:layout_width="match_parent"
+                android:layout_height="23dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="23dp"
+                android:background="@color/transparent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_top_bar"
+                app:tabBackground="@color/transparent"
+                app:tabIndicator="@null"
+                app:tabIndicatorHeight="0dp"
+                app:tabMinWidth="0dp"
+                app:tabMode="scrollable"
+                app:tabPadding="0dp"
+                app:tabPaddingBottom="0dp"
+                app:tabPaddingEnd="24dp"
+                app:tabPaddingStart="0dp"
+                app:tabPaddingTop="0dp"
+                app:tabRippleColor="@color/transparent"
+                app:tabSelectedTextColor="@color/circle_app_color"
+                app:tabTextColor="@color/black" />
         </LinearLayout>
 
     </LinearLayout>
