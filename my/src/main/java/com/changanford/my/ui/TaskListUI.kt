@@ -127,7 +127,12 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     fun show7Day() {
         viewModel.getDay7Sign {
-            val canSign = it == null || MConstant.token.isNullOrEmpty()
+            var canSign = it == null || MConstant.token.isNullOrEmpty()
+            it?.sevenDays?.forEach {
+                if (it.signStatus == 2) {
+                    canSign = true
+                }
+            }
             if (canSign && isSign) {
                 JumpUtils.instans?.jump(37)
             }

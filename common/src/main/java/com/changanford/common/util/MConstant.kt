@@ -219,6 +219,7 @@ object MConstant {
     //保存打开的页面，处理埋点时间
     var classesMap: HashMap<String, Long> = HashMap()
     var mainActivityIsOpen = false
+    var mineTabIsBlack = false
 
     //H5通用协议地址
     var H5_PUBLIC_INSTRUCTIONS = "${H5_BASE_URL_CSCIR}/richTextAp?key=%s"
@@ -259,5 +260,5 @@ object MConstant {
 
     var circleCheckPosition = 1
 
-    var mainTabSelectPosition=0
+    var mainTabSelectPosition = 0
 }

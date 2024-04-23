@@ -1,6 +1,7 @@
 package com.changanford.my
 
-import android.os.Bundle
+import android.graphics.Color
+import android.graphics.Rect
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -8,73 +9,76 @@ import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
-import com.changanford.common.bean.CarAuthBean
-import com.changanford.common.bean.MineRecommendCircle
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
-import com.changanford.common.util.CountUtils
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.SpannableStringUtils
+import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.StatusBarUtil
 import com.changanford.common.utilext.load
-import com.changanford.my.adapter.CircleDetailsPersonalAdapter
+import com.changanford.common.utilext.toIntPx
 import com.changanford.my.adapter.MineMenuAdapter
+import com.changanford.my.adapter.MineMidRyAdapter
 import com.changanford.my.bean.MineMenuData
-import com.changanford.my.compose.dailySignCompose
 import com.changanford.my.databinding.FooterMineBinding
 import com.changanford.my.databinding.FragmentMineV2Binding
 import com.changanford.my.databinding.HeaderMineBinding
 import com.changanford.my.viewmodel.MineViewModel
-import com.changanford.my.widget.FlyCirclePost
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
 class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRefreshListener {
 
-
-    var headNewBinding: HeaderMineBinding? = null
-    var couponNum = 0
-    var tuijiangou = ""
-    val mineMenuAdapter: MineMenuAdapter by lazy {
+    private var headNewBinding: HeaderMineBinding? = null
+    private var couponNum = 0
+    private var scrollY = 0
+    private val mineMenuAdapter by lazy {
         MineMenuAdapter()
-
+    }
+    private val midMenuAdapter by lazy {
+        MineMidRyAdapter()
     }
 
-    var footerAdBinding: FooterMineBinding? = null
+    private var footerAdBinding: FooterMineBinding? = null
     override fun initView() {
-
+        AppUtils.setStatusBarPaddingTop(binding.toolbar, requireActivity())
+        binding.toolbar.background.mutate().alpha = 0
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                scrollY += dy
+                MConstant.mineTabIsBlack = scrollY > 90.toIntPx()
+                if (scrollY > 90.toIntPx()) {
+                    StatusBarUtil.setLightStatusBar(requireActivity(), MConstant.mineTabIsBlack)
+                    binding.toolbar.background.mutate().alpha = 255
+                    binding.myScan.setColorFilter(Color.parseColor("#d9000000"))
+                    binding.myMsg.setColorFilter(Color.parseColor("#d9000000"))
+                    binding.ivSetting.setColorFilter(Color.parseColor("#d9000000"))
+                } else {
+                    StatusBarUtil.setLightStatusBar(requireActivity(), MConstant.mineTabIsBlack)
+                    binding.toolbar.background.mutate().alpha = 0
+                    binding.myScan.setColorFilter(Color.parseColor("#ffffff"))
+                    binding.myMsg.setColorFilter(Color.parseColor("#ffffff"))
+                    binding.ivSetting.setColorFilter(Color.parseColor("#ffffff"))
+                }
+            }
+        })
         binding.recyclerView.adapter = mineMenuAdapter
         binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
         addHeadView()
         addFooterView()
-
-//        if (Hawk.get(HawkKey.GUIDE_MINE,false) == false) {
-//            MineGuidePop(requireContext()).run {
-//                //无透明背景
-//                setBackgroundColor(Color.TRANSPARENT)
-//                //背景模糊false
-//                setBlurBackgroundEnable(false)
-//                showPopupWindow()
-//                onDismissListener = object : BasePopupWindow.OnDismissListener() {
-//                    override fun onDismiss() {
-//                        Hawk.put(HawkKey.GUIDE_MINE, true)
-//                    }
-//
-//                }
-//
-//            }
-//        }
         LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_SIGNED).observe(this) {
             show7Day()
         }
@@ -87,22 +91,22 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
      */
     private fun initClick() {
         headNewBinding?.let { h ->
-            h.daySign.setOnClickListener {
-                if (notSign) {
-                    JumpUtils.instans?.jump(37)
-                } else {
-                    JumpUtils.instans?.jump(55)
-                }
-
-            }
-            h.ivSetting.setOnClickListener {
+//            h.daySign.setOnClickListener {
+//                if (notSign) {
+//                    JumpUtils.instans?.jump(37)
+//                } else {
+//                    JumpUtils.instans?.jump(55)
+//                }
+//
+//            }
+            binding.ivSetting.setOnClickListener {
                 JumpUtils.instans?.jump(21)
 
             }
-            h.myMsg.setOnClickListener {
+            binding.myMsg.setOnClickListener {
                 JumpUtils.instans?.jump(24)
             }
-            h.myScan.setOnClickListener {
+            binding.myScan.setOnClickListener {
                 JumpUtils.instans?.jump(61)
             }
             h.ivHead.setOnClickListener {
@@ -122,61 +126,73 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 JumpUtils.instans?.jump(34)
 
             }
-            h.vCarBg.setOnClickListener {
-                JumpUtils.instans?.jump(41)
-            }
-            h.tvCoupon.setOnClickListener {
-                if (MConstant.token.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.SignUI)
-                } else {
-                    var bundle = Bundle()
-                    bundle.putInt("couponNum", couponNum)
-                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
-                }
-            }
-            h.flImgYouhui.setOnClickListener {
-                if (MConstant.token.isNullOrEmpty()) {
-                    startARouter(ARouterMyPath.SignUI)
-                } else {
-                    var bundle = Bundle()
-                    bundle.putInt("couponNum", couponNum)
-                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
-                }
-            }
-            h.tvGold.setOnClickListener {
-                JumpUtils.instans?.jump(30)
-
-            }
-            h.flImgFb.setOnClickListener {
-                JumpUtils.instans?.jump(30)
-            }
-            h.tvTuijian.setOnClickListener {
-                JumpUtils.instans?.jump(106, tuijiangou)
-            }
-            h.flImgTuijian.setOnClickListener {
-                JumpUtils.instans?.jump(106, tuijiangou)
-            }
+//            h.vCarBg.setOnClickListener {
+//                JumpUtils.instans?.jump(41)
+//            }
+//            h.tvCoupon.setOnClickListener {
+//                if (MConstant.token.isNullOrEmpty()) {
+//                    startARouter(ARouterMyPath.SignUI)
+//                } else {
+//                    var bundle = Bundle()
+//                    bundle.putInt("couponNum", couponNum)
+//                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
+//                }
+//            }
+//            h.flImgYouhui.setOnClickListener {
+//                if (MConstant.token.isNullOrEmpty()) {
+//                    startARouter(ARouterMyPath.SignUI)
+//                } else {
+//                    var bundle = Bundle()
+//                    bundle.putInt("couponNum", couponNum)
+//                    startARouter(ARouterShopPath.CouponMiddleActivity, bundle)
+//                }
+//            }
+//            h.tvGold.setOnClickListener {
+//                JumpUtils.instans?.jump(30)
+//
+//            }
+//            h.flImgFb.setOnClickListener {
+//                JumpUtils.instans?.jump(30)
+//            }
+//            h.tvTuijian.setOnClickListener {
+//                JumpUtils.instans?.jump(106, tuijiangou)
+//            }
+//            h.flImgTuijian.setOnClickListener {
+//                JumpUtils.instans?.jump(106, tuijiangou)
+//            }
             h.ddFollow.setOnClickListener {
                 JumpUtils.instans?.jump(25)
-
             }
             h.ddPublish.setOnClickListener {
-
                 JumpUtils.instans?.jump(23)
             }
+            h.fubilayout.setOnClickListener {
+                JumpUtils.instans?.jump(16)
+            }
+            h.llFb.setOnClickListener {
+                JumpUtils.instans?.jump(30)
+            }
+            h.llUp.setOnClickListener {
+                JumpUtils.instans?.jump(32)
+            }
             h.ddFans.setOnClickListener {
-
                 JumpUtils.instans?.jump(40)
             }
-
-
             h.tvCarName.setOnClickListener {
-
                 JumpUtils.instans?.jump(17)
             }
             h.tvNextPerson.setOnClickListener {
-
                 JumpUtils.instans?.jump(35)
+            }
+            h.tvGoSign.setOnClickListener {
+                if (MConstant.token.isEmpty()) {
+                    startARouter(ARouterMyPath.SignUI)
+                    return@setOnClickListener
+                }
+                if (!MineUtils.getBindMobileJumpDataType(true)) {
+                    RouterManger.needLogin(true).param("isSign", true)
+                        .startARouter(ARouterMyPath.MineTaskListUI)
+                }
             }
         }
     }
@@ -195,10 +211,12 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 val couponStr = "优惠券"/*.plus("\t\t${userInfoBean.couponCount}")*/
                 couponNum = userInfoBean.couponCount
                 val goldStr = "福币".plus("\t${userInfoBean.ext.totalIntegral}")
-                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
-                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
+                h.tvFbNum.text = userInfoBean.ext.totalIntegral
+                h.tvUpNum.text = userInfoBean.ext.totalGrowth.toString()
+//                h. tvUpNum.text = it.additionGrowth.toString()
+//                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
+//                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
                 h.tvUserLevel.text = userInfoBean.ext.growSeriesName
-
 
                 h.tvCarName.text = userInfoBean.ext.carOwner
                 if (TextUtils.isEmpty(userInfoBean.ext.carOwner)) {
@@ -208,8 +226,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 }
                 h.tvUserTags.text = userInfoBean.medalCount.toString().plus("枚勋章")
 
-                h.daySign.text = if (userInfoBean.isSignIn == 1) "已签到" else "签到"
-                h.messageStatus.visibility =
+//                h.daySign.text = if (userInfoBean.isSignIn == 1) "已签到" else "签到"
+                binding.messageStatus.visibility =
                     if (userInfoBean.isUnread == 1) View.VISIBLE else View.GONE
                 LiveDataBus.get().with(LiveDataBusKey.SHOULD_SHOW_MY_MSG_DOT)
                     .postValue(userInfoBean.isUnread == 1)
@@ -227,18 +245,20 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvNickname.visibility = View.GONE
                 h.tvNotLogin.visibility = View.VISIBLE
                 h.ivHead.load(R.mipmap.head_default)
-                h.ddPublish.setPageTitleText("0")
-                h.ddFans.setPageTitleText("0")
-                h.ddFollow.setPageTitleText("0")
+                h.ddPublish.setPageTitleText("-")
+                h.ddFans.setPageTitleText("-")
+                h.ddFollow.setPageTitleText("-")
                 h.tvUserLevel.visibility = View.GONE
                 h.tvCarName.visibility = View.GONE
                 h.tvUserTags.visibility = View.GONE
                 val couponStr = "优惠券"/*.plus("\t\t0")*/
                 val goldStr = "福币".plus("\t0")
-                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
-                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
-                h.daySign.text = "签到"
-                h.messageStatus.visibility = View.GONE
+                h.tvFbNum.text = "-"
+                h.tvUpNum.text = "-"
+//                h.tvCoupon.text = SpannableStringUtils.colorSpan(couponStr, 0, 3, R.color.color_66)
+//                h.tvGold.text = SpannableStringUtils.colorSpan(goldStr, 0, 2, R.color.color_66)
+//                h.daySign.text = "签到"
+                binding.messageStatus.visibility = View.GONE
                 h.tvUserTags.text = "0枚勋章"
                 h.ivVip.visibility = View.GONE
                 h.tvNextPerson.visibility = View.GONE
@@ -259,6 +279,29 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
             )
             headNewBinding?.let {
                 mineMenuAdapter.addHeaderView(it.root, 0)
+                val spacingInPx = 8.toIntPx()
+                it.ryMid.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(
+                        outRect: Rect,
+                        view: View,
+                        parent: RecyclerView,
+                        state: RecyclerView.State
+                    ) {
+                        val position = parent.getChildAdapterPosition(view)
+                        if (position < 3) {
+                            outRect.right = spacingInPx / 2
+                        } else {
+                            outRect.right = 0
+                        }
+                        if (position > 0) {
+                            outRect.left = spacingInPx / 2
+                        } else {
+                            outRect.left = 0
+                        }
+//                        outRect.right = spacingInPx - (column + 1) * spacingInPx / 4; // spacing - (column + 1) * ((spacing / spanCount))
+                    }
+                })
+                it.ryMid.adapter = midMenuAdapter
             }
             initClick()
         }
@@ -282,7 +325,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
     override fun initData() {
         getUserInfo()
         viewModel.getMenuList()
-        viewModel.getAuthCarInfo()
+//        viewModel.getAuthCarInfo()
         viewModel.getBottomAds()
     }
 
@@ -301,88 +344,27 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.userInfo.observe(this) {
             setData(it)
         }
-        viewModel.carAuthBean.observe(this, Observer {
-            setCarInfo(it)
-        })
-        viewModel.recommdCircleLiveData.observe(this, Observer {
-            showCircle(it)
-
-        })
-    }
-
-    fun showCircle(list: MutableList<MineRecommendCircle>) {
-
-        var showIndex = 0
-        if (list.size > 0) {
-            showIndex = 0
-            val mineRecommendCircle = list[showIndex]
-            showIndexCircle(mineRecommendCircle)
-        }
-        headNewBinding?.let { h ->
-            h.tvChange.setOnClickListener {
-                if (showIndex < list.size) {
-                    showIndex += 1
-                }
-                if (showIndex >= list.size) {
-                    showIndex = 0
-                }
-                showIndexCircle(list[showIndex])
-            }
-
-        }
-
-    }
-
-    val circleDetailsPersonalAdapter: CircleDetailsPersonalAdapter by lazy {
-        CircleDetailsPersonalAdapter(requireContext())
-
-    }
-
-    fun showIndexCircle(recommendCircle: MineRecommendCircle) {
-        headNewBinding?.let { h ->
-            h.tvPeople.text =
-                CountUtils.formatNum(recommendCircle.userCount.toString(), false).toString()
-                    .plus("车友活跃中")
-            h.tvCircleTips.text = recommendCircle.name
-            if (recommendCircle.avatars.size > 3) {
-                val subList: MutableList<String> = recommendCircle.avatars.subList(0, 3)
-                val arrList = ArrayList<String>()
-                subList.forEach { s ->
-                    arrList.add(s)
-                }
-                circleDetailsPersonalAdapter.setItems(arrList)
-            } else {
-                circleDetailsPersonalAdapter.setItems(recommendCircle.avatars)
-            }
-            h.vFlipper.removeAllViews()
-            h.vFlipper.stopFlipping()
-            recommendCircle.posts.forEach { p ->
-                val postView = FlyCirclePost(requireContext())
-                postView.setThumb(p.pics, p.postsId)
-                postView.setPageTitleText(p.getShowTitle())
-                h.vFlipper.addView(postView)
-            }
-            h.vFlipper.startFlipping()
-            h.rvCircle.adapter = circleDetailsPersonalAdapter
-            h.tvInCircle.setOnClickListener {
-                JumpUtils.instans?.jump(6, recommendCircle.circleId.toString())
-            }
-        }
     }
 
     override fun observe() {
         super.observe()
 
-        viewModel.menuBean.observe(this, Observer {
-            val menu = MineMenuData("常用功能", it)
+        viewModel.menuBean.observe(this) {
+            if (it.isNullOrEmpty()) return@observe
+            val subSize = if (it.size > 4) 4 else it.size
+            val midList = it.subList(0, subSize)
+            val bottomList = it.subList(subSize, it.size)
+            midMenuAdapter.setList(midList)
+            val menu = MineMenuData("常用功能", bottomList)
             val list = arrayListOf<MineMenuData>()
             list.add(menu)
             viewModel.getOrderKey(list)
 
 
-        })
+        }
         viewModel.updateOrderAdLiveData.observe(this, Observer {
-            viewModel.getCarListAds(it.data as ArrayList<MineMenuData>)
+            mineMenuAdapter.setList(it.data)
+//            viewModel.getCarListAds(it.data as ArrayList<MineMenuData>)
 
         })
         viewModel.updateCarAdLiveData.observe(this, Observer {
@@ -480,30 +462,6 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     }
 
-    fun setCarInfo(carAuthBean: CarAuthBean?) {
-        headNewBinding?.let { h ->
-            carAuthBean?.let {
-                MConstant.isCarOwner = carAuthBean.isCarOwner
-            }
-            if (carAuthBean?.isCarOwner == 1 && carAuthBean.carList != null) {
-                carAuthBean.carList?.let { l ->
-                    val carInfo = l[0]
-                    GlideUtils.loadBD(carInfo.modelUrl, h.ivCarPic, R.mipmap.head_default)
-                    h.tvAddLoveCar.text = carInfo.seriesName
-                }
-
-            } else {
-                GlideUtils.loadBD(
-                    carAuthBean?.carAuthConfVo?.img,
-                    h.ivCarPic,
-                    R.mipmap.head_default
-                )
-                h.tvAddLoveCar.text = "添加爱车"
-            }
-
-
-        }
-    }
 
     private fun setData(userInfoBean: UserInfoBean?) {
         if (userInfoBean == null) {
@@ -523,32 +481,32 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         viewModel.getUserInfo()
         viewModel.getMenuList()
         viewModel.getAuthCarInfo()
-        viewModel.getCircleInfo()
-        viewModel.getTuijianGou {
-            it.onSuccess {
-                if (it?.data.isNullOrEmpty()) {
-                    headNewBinding?.let { h ->
-                        h.tvTuijian.isVisible = false
-                        h.flImgTuijian.isVisible = false
-                    }
-                } else {
-                    headNewBinding?.let { h ->
-                        h.tvTuijian.isVisible = true
-                        h.flImgTuijian.isVisible = true
-                    }
-                    tuijiangou = it?.data ?: ""
-                }
-            }
-
-        }
-        headNewBinding?.vFlipper?.startFlipping()
+//        viewModel.getCircleInfo()
+//        viewModel.getTuijianGou {
+//            it.onSuccess {
+//                if (it?.data.isNullOrEmpty()) {
+//                    headNewBinding?.let { h ->
+//                        h.tvTuijian.isVisible = false
+//                        h.flImgTuijian.isVisible = false
+//                    }
+//                } else {
+//                    headNewBinding?.let { h ->
+//                        h.tvTuijian.isVisible = true
+//                        h.flImgTuijian.isVisible = true
+//                    }
+//                    tuijiangou = it?.data ?: ""
+//                }
+//            }
+//
+//        }
+//        headNewBinding?.vFlipper?.startFlipping()
         show7Day()
     }
 
     override fun onPause() {
         super.onPause()
         // 停止播放
-        headNewBinding?.vFlipper?.stopFlipping()
+//        headNewBinding?.vFlipper?.stopFlipping()
     }
 
     override fun onDestroy() {
@@ -556,24 +514,41 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
 
     }
 
-    fun show7Day() {
-//        if (MConstant.token.isNullOrEmpty()){
-//            headNewBinding?.sign7day?.setContent {
-//                dailySignCompose()
-//            }
-//        } else {
-        viewModel.getDay7Sign {
-            headNewBinding?.sign7day?.setContent {
-                dailySignCompose(it)
+    private fun show7Day() {
+        if (MConstant.token.isNullOrEmpty()) {
+            headNewBinding?.apply {
+                tvFbNum.text = "-"
+                tvUpNum.text = "-"
+                tvGoSign.isVisible = true
+                llSignDays.isVisible = false
+            }
+        } else {
+            viewModel.getDay7Sign {
+                var canSign = it == null || MConstant.token.isNullOrEmpty()
+                it?.sevenDays?.forEach {
+                    if (it.signStatus == 2) {
+                        canSign = true
+                    }
+                }
+                headNewBinding?.apply {
+                    if (canSign) {
+                        tvGoSign.isVisible = true
+                        llSignDays.isVisible = false
+                    } else {
+                        tvGoSign.isVisible = false
+                        llSignDays.isVisible = true
+                        tvSignDayNum.text = it.ontinuous.toString()
+                    }
+                }
             }
         }
-//        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        viewModel.getUserInfo()
-        viewModel.getAuthCarInfo()
-        show7Day()
+        initData()
+//        viewModel.getUserInfo()
+//        viewModel.getAuthCarInfo()
+//        show7Day()
         refreshLayout.finishRefresh()
     }
 }
