@@ -3,16 +3,32 @@ package com.changanford.my.compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,49 +44,50 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.testCalendar
 import com.changanford.common.utilext.toast
-import com.changanford.common.utilext.toastShow
 import com.changanford.my.R
 import com.github.gzuliyujiang.wheelpicker.TimePicker
 import com.orhanobut.hawk.Hawk
 
 
 @Composable
-fun dailySignCompose(daySignBean: DaySignBean? = null) {
-
+fun DailySignCompose(daySignBean: DaySignBean? = null) {
     Column(
         modifier = Modifier
             .fillMaxWidth(1f)
-            .padding(18.dp)
+            .padding(top = 24.dp, start = 16.dp, end = 16.dp)
+            .clip(shape = RoundedCornerShape(16.dp))
             .background(Color.White)
-            .padding(18.dp)
+            .padding(16.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth(1f)
         ) {
             Row(
-                horizontalArrangement = Arrangement.Start,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "每日签到", fontSize = 16.sp, color = Color(0xff666666))
+                val annotatedString = buildAnnotatedString {
+                    append("已连续签到")
+                    withStyle(style = SpanStyle(color = Color(0xff1700f4))) {
+                        append("${daySignBean?.ontinuous ?: 0}")
+                    }
+                    append("天")
+                }
                 Text(
-                    text = "签到规则 >",
-                    fontSize = 12.sp,
-                    color = Color(0xff999999),
-                    modifier = Modifier
-                        .clickable {
-                            JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
-                        }
-                        .padding(start = 12.dp)
-                        .weight(1f)
+                    text = annotatedString,
+                    fontSize = 16.sp,
+                    color = Color(0xff161616),
                 )
+//                Text(text = "每日签到", fontSize = 16.sp, color = Color(0xff666666))
+
                 Text(
                     text = "签到提醒",
-                    fontSize = 11.sp,
-                    color = Color(0xff999999),
+                    fontSize = 13.sp,
+                    color = Color(0x80161616),
                     modifier = Modifier
-                        .padding(end = 9.dp)
+                        .padding(end = 8.dp)
                 )
             }
 
@@ -93,8 +110,9 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 painter = painterResource(id = tipsImage),
                 contentDescription = "",
                 modifier = Modifier
+                    .padding(end = 4.dp)
                     .height(21.dp)
-                    .width(38.dp)
+                    .width(37.dp)
                     .clickable {
                         signInTipsClick(isOpenTips) {
                             isOpenTips = it
@@ -128,25 +146,32 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
                 }
             }
         }
-        if (daySignBean != null && !MConstant.token.isNullOrEmpty()){
-            val mSignDay = daySignBean.ontinuous ?: 0
-            if (mSignDay > 0) {
-                Text(
-                    text = "${if (!MConstant.token.isNullOrEmpty()) "已连续签到${daySignBean?.ontinuous ?: 0}天" else ""}",
-                    fontSize = 10.sp,
-                    color = Color(0xff999999),
-                    modifier = Modifier.padding(top = 10.dp)
-                )
-            }
-        }
+//        if (daySignBean != null && !MConstant.token.isNullOrEmpty()) {
+//            val mSignDay = daySignBean.ontinuous ?: 0
+//            if (mSignDay > 0) {
+//
+//            }
+//        }
+        Text(
+            text = "签到规则 > ",
+            fontSize = 12.sp,
+            color = Color(0xff999999),
+            textAlign = TextAlign.Right,
+            modifier = Modifier
+                .clickable {
+                    JumpUtils.instans?.jump(1, MConstant.H5_SIGN_PRESENT_AGREEMENT)
+                }
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .padding(top = 10.dp)
                 .height(45.dp)
-                .clip(shape = RoundedCornerShape(5.dp))
-//                .background(Color(if (canSign) 0xffE5EFFF else 0xffDDDDDD))
-                .background(Color(0xfff8f7ff))
+                .clip(shape = RoundedCornerShape(23.dp))
+                .background(Color(if (canSign) 0x081700f4 else 0x80a6a6a6))
+//                .background(Color(0xfff8f7ff))
                 .clickable {
                     if (canSign) {
                         JumpUtils.instans?.jump(37)
@@ -156,9 +181,9 @@ fun dailySignCompose(daySignBean: DaySignBean? = null) {
         ) {
             Text(
                 text = if (canSign) "立即签到" else "已签到",
-                fontSize = 15.sp,
-//                color = Color(if (canSign) 0xff1700f4 else 0xffF8FAFA)
-                color = Color( 0xff1700f4 )
+                fontSize = 16.sp,
+                color = Color(if (canSign) 0xff1700f4 else 0x4d161616)
+//                color = Color(0xff1700f4)
             )
         }
 
@@ -211,7 +236,8 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                     painter = painterResource(R.mipmap.icon_sign_gift),
                     contentDescription = "",
                     modifier = Modifier
-                        .size(25.dp)
+                        .padding(bottom = 2.dp)
+                        .size(32.dp, 26.dp)
                         .clickable {
                             if ((bean?.luckyBlessingBagId ?: 0) != 0) {
                                 JumpUtils.instans?.jump(
@@ -221,37 +247,39 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                         }
                 )
             } else {
-                Box(modifier = Modifier.size(25.dp))
+                Box(modifier = Modifier
+                    .padding(bottom = 2.dp)
+                    .size(32.dp, 26.dp))
             }
         }
         Box(
             modifier = Modifier
                 .clip(
                     shape =
-                    RoundedCornerShape(2.dp)
+                    RoundedCornerShape(4.dp)
                 )
                 .run {
                     when (bean?.signStatus ?: 0) {
                         1, 2 -> background(
                             brush = Brush.verticalGradient(
                                 colors = listOf(
-                                    Color(0xffFFF4E2),
-                                    Color(0xffFFE9C8),
+                                    Color(0x261700f4),
+                                    Color(0x261700f4),
                                 )
                             )
-                        ).padding(top = 10.dp, start = 7.dp, end = 7.dp, bottom = 5.dp)
+                        ).padding(top = 4.dp, start = 9.dp, end = 9.dp, bottom = 5.dp)
 
-                        3 -> background(color = Color(0xffF8FAFB)).padding(
-                            top = 10.dp,
-                            start = 7.dp,
-                            end = 7.dp,
+                        3 -> background(color = Color(0x0d000000)).padding(
+                            top = 4.dp,
+                            start = 9.dp,
+                            end = 9.dp,
                             bottom = 5.dp
                         )
 
-                        else -> background(color = Color(0xffF8FAFB)).padding(
-                            top = 10.dp,
-                            start = 7.dp,
-                            end = 7.dp,
+                        else -> background(color = Color(0x0d000000)).padding(
+                            top = 4.dp,
+                            start = 9.dp,
+                            end = 9.dp,
                             bottom = 5.dp
                         )
                     }
@@ -259,7 +287,6 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = "+${bean?.fb ?: 1}", fontSize = 10.sp, color = Color(0xff999999))
                 ConstraintLayout(
                     modifier = Modifier
                         .padding(top = 5.dp)
@@ -267,37 +294,47 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                         .height(24.dp)
                 ) {
                     val (coin, check) = createRefs()
+                    val useRes = if ((bean?.signStatus
+                            ?: 3) == 1
+                    ) R.mipmap.icon_has_sign_top else R.mipmap.icon_sign_coin
                     Image(
-                        painter = painterResource(id = R.mipmap.icon_sign_coin),
+                        painter = painterResource(id = useRes),
                         contentDescription = "",
                         modifier = Modifier
-                            .size(18.dp)
+                            .size(24.dp)
                             .constrainAs(coin) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
                             }
                     )
-                    if ((bean?.signStatus ?: 3) == 1) {
-                        Image(
-                            painter = painterResource(id = R.mipmap.icon_sign_signed),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(10.dp)
-                                .constrainAs(check) {
-                                    start.linkTo(coin.end)
-                                    end.linkTo(coin.end)
-                                    top.linkTo(coin.bottom)
-                                    bottom.linkTo(coin.bottom)
-                                }
-                        )
-                    }
+//                    if ((bean?.signStatus ?: 3) == 1) {
+//                        Image(
+//                            painter = painterResource(id = R.mipmap.icon_sign_signed),
+//                            contentDescription = "",
+//                            modifier = Modifier
+//                                .size(10.dp)
+//                                .constrainAs(check) {
+//                                    start.linkTo(coin.end)
+//                                    end.linkTo(coin.end)
+//                                    top.linkTo(coin.bottom)
+//                                    bottom.linkTo(coin.bottom)
+//                                }
+//                        )
+//                    }
                 }
+                Text(
+                    text = "+${bean?.fb ?: 1}",
+                    fontSize = 12.sp,
+                    color = Color(0x80161616),
+                    modifier = Modifier.padding(top = 5.dp)
+                )
             }
         }
         Text(
+            modifier = Modifier.padding(top = 4.dp),
             text = "${bean?.days ?: 1}天",
-            fontSize = 10.sp,
-            color = Color(if (bean?.signStatus == 1) 0xff333333 else 0xff999999)
+            fontSize = 12.sp,
+            color = Color(if (bean?.signStatus == 1) 0x80161616 else 0xff161616)
         )
 
     }

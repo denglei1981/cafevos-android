@@ -484,6 +484,8 @@ class CircleDetailsActivity :
             }
             circleName = it.name
             circleNameData.value = it.name
+            binding.topContent.tvAddress.isVisible = !it.addrDesc.isNullOrEmpty()
+            binding.topContent.tvAddress.text = it.addrDesc
             onlyAuthJoin = it.onlyAuthJoin
             if (isFirst) {
                 initMyView(it.userId.toString())

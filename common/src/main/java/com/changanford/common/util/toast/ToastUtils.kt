@@ -59,7 +59,7 @@ object ToastUtils {
      */
     fun showShortToast(msg: String, context: Context?) {
         if(msg.isNotEmpty()){
-            setToastGravity(Gravity.CENTER)
+            setToastGravity(Gravity.TOP)
             showToast(msg, Toast.LENGTH_SHORT, context)
         }
     }
@@ -119,7 +119,7 @@ object ToastUtils {
             mToast?.duration = Toast.LENGTH_SHORT
             mToastView?.setText(msg)
         }
-        mToast?.setGravity(Gravity.CENTER, 0, 0)
+        mToast?.setGravity(Gravity.TOP, 0, 0)
         mToast?.show()
     }
 }

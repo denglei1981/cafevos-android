@@ -17,6 +17,7 @@ data class CircleDetailBean(
     var isApply: Int = 0,
     val isOwner: Int = 0,
     val name: String = "",
+    val addrDesc: String = "",
     val nameColor: Any? = Any(),
     val permissions: ArrayList<CirclePermissionsData>? = ArrayList(),
     val pic: String = "",

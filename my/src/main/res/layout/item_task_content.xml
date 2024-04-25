@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_15"
-        android:paddingBottom="@dimen/dp_10">
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16">
 
         <TextView
             android:id="@+id/task_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="完善资料"
-            android:textColor="#333333"
+            android:textColor="@color/color_00"
             android:textSize="@dimen/text_size_mid"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/task_icon"
-            android:layout_width="@dimen/dp_16"
-            android:layout_height="@dimen/dp_16"
-            android:layout_marginStart="@dimen/dp_7"
-            android:layout_marginTop="@dimen/dp_1"
-            android:src="@mipmap/ic_task_jife"
-            app:layout_constraintLeft_toRightOf="@+id/task_title"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <ImageView-->
+<!--            android:id="@+id/task_icon"-->
+<!--            android:layout_width="@dimen/dp_16"-->
+<!--            android:layout_height="@dimen/dp_16"-->
+<!--            android:layout_marginStart="@dimen/dp_7"-->
+<!--            android:layout_marginTop="@dimen/dp_1"-->
+<!--            android:src="@mipmap/ic_task_jife"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/task_title"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/item_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_4"
-            android:text="+10"
-            android:textColor="#1B3B89"
-            android:textSize="@dimen/sp_13"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_1"
-            app:layout_constraintLeft_toRightOf="@+id/task_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/item_num"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="@dimen/dp_4"-->
+<!--            android:layout_marginTop="@dimen/dp_1"-->
+<!--            android:text="+10"-->
+<!--            android:textColor="#1B3B89"-->
+<!--            android:textSize="@dimen/sp_13"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintLeft_toRightOf="@+id/task_icon"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/task_title_des"
@@ -49,7 +50,7 @@
             android:enabled="true"
             android:maxLines="2"
             android:text="完善个人资料，上传头像"
-            android:textColor="#999999"
+            android:textColor="@color/color_8016"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintLeft_toLeftOf="@+id/task_title"
             app:layout_constraintRight_toLeftOf="@+id/task_finish"
@@ -57,14 +58,15 @@
 
         <TextView
             android:id="@+id/task_finish"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_23"
-            android:background="@drawable/task_finish_bg"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/cm_follow_new_bg"
             android:enabled="true"
             android:gravity="center"
             android:text="去完成"
-            android:textColor="#1B3B89"
-            android:textSize="@dimen/sp_10"
+            android:textColor="@color/color_1700F4"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/task_title" />
 
@@ -73,25 +75,26 @@
             android:id="@+id/item_task_des"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_2"
-            android:textColor="#999999"
-            android:textSize="@dimen/sp_9"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/progress"
-            app:layout_constraintTop_toBottomOf="@+id/task_title_des" />
+            app:layout_constraintTop_toBottomOf="@+id/task_title_des"
+            tools:text="奖励/次：" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress"
             style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-            android:layout_width="@dimen/dp_55"
+            android:layout_width="@dimen/dp_64"
             android:layout_height="@dimen/dp_6"
-            android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginEnd="@dimen/dp_3"
+            android:layout_marginEnd="@dimen/dp_8"
             android:max="10"
             android:progress="8"
             app:indicatorColor="#DEDEDE"
+            app:layout_constraintBottom_toBottomOf="@+id/task_title_info"
             app:layout_constraintRight_toLeftOf="@+id/task_title_info"
-            app:layout_constraintTop_toBottomOf="@+id/task_title_des"
+            app:layout_constraintTop_toTopOf="@+id/task_title_info"
             app:trackColor="#F4F4F4"
             app:trackCornerRadius="@dimen/dp_3" />
 
@@ -103,10 +106,10 @@
             android:layout_marginTop="@dimen/dp_2"
             android:layout_marginEnd="@dimen/dp_10"
             android:text="10/10"
-            android:textColor="#999999"
+            android:textColor="@color/color_8016"
             android:textSize="@dimen/sp_10"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_title_des" />
+            app:layout_constraintTop_toBottomOf="@+id/task_finish" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
