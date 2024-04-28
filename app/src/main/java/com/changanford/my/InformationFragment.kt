@@ -8,11 +8,10 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
 import com.changanford.home.news.adapter.NewsListAdapter
-import com.changanford.my.databinding.FragmentActBinding
+import com.changanford.my.databinding.FragmentInfomationBinding
 import com.changanford.my.viewmodel.ActViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
@@ -23,7 +22,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  描述: TODO
  *  修改描述：TODO
  */
-class InformationFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
+class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>() {
     var type: String = ""
     var userId: String = ""
 

@@ -41,7 +41,7 @@ class HomeMidRankAdapter :
 
     private fun setViewWidth(view: RelativeLayout) {
         val layoutParam = view.layoutParams
-        layoutParam.width = MConstant.deviceWidth - 52.toIntPx()
+        layoutParam.width = MConstant.deviceWidth - 72.toIntPx()
         view.layoutParams = layoutParam
     }
 }

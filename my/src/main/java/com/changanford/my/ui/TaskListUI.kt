@@ -145,6 +145,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_TASK_LIST_GIO).observe(this) {
             gioPreBean = it
         }
+        LiveDataBus.get().withs<String>(LiveDataBusKey.SIGN_UP_SUCCESS).observe(this) { task() }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -196,7 +197,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         updateMainGio("任务中心页", "任务中心页")
     }
 
-    fun task() {
+    private fun task() {
         viewModel.queryTasksList()
     }
 

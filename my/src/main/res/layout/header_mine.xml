@@ -129,7 +129,7 @@
                     android:maxEms="7"
                     android:singleLine="true"
                     android:textColor="@color/color_16"
-                    android:textSize="@dimen/sp_18"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="@string/test_str" />
 
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="16dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="6dp"
                     android:background="@drawable/shape_faebd8_100dp"
                     android:gravity="center"
                     android:paddingStart="6dp"
@@ -239,6 +239,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="任务中心"
+                android:drawablePadding="3dp"
+                android:drawableEnd="@mipmap/ic_mine_task_right"
                 android:textColor="@color/color_16"
                 android:textSize="18sp"
                 android:textStyle="bold"

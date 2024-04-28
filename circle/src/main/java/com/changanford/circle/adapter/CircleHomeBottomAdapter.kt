@@ -37,7 +37,7 @@ class CircleHomeBottomAdapter :
             ivCover.setCircular(12)
             ivCover.load(item.pic)
             tvName.text = item.name
-            tvPersonalNum.text = "${item.userCount} 位车主在这里"
+            tvPersonalNum.text = "${item.userCount} 成员"
             isJoin(tvJoinType, item)
         }
     }
