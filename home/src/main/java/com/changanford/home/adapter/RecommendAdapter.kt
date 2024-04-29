@@ -550,12 +550,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             context.startActivity(intent)
         }
         val fail = {
-            AlertDialog(MyApp.mContext).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消") { }.setPositiveButton(
-                    "确定"
-                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//            AlertDialog(MyApp.mContext).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消") { }.setPositiveButton(
+//                    "确定"
+//                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
     }

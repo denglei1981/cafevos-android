@@ -38,7 +38,6 @@ import com.changanford.common.bean.MediaListBean
 import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
 import com.changanford.common.util.LocationServiceUtil
@@ -46,7 +45,6 @@ import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toast
 import com.google.android.material.tabs.TabLayout
-import com.qw.soul.permission.SoulPermission
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage
 import com.tencent.mm.opensdk.modelmsg.WXMiniProgramObject
@@ -463,12 +461,13 @@ object WCommonUtil {
      * 去设置中心给应用设置定位权限
      * */
     fun setSettingLocation(context: Context) {
-        AlertDialog(context).builder()
-            .setTitle("提示")
-            .setMsg("您已禁止了定位权限，请到设置中心去打开")
-            .setNegativeButton("取消") { }.setPositiveButton(
-                "确定"
-            ) { SoulPermission.getInstance().goApplicationSettings() }.show()
+//        AlertDialog(context).builder()
+//            .setTitle("提示")
+//            .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//            .setNegativeButton("取消") { }.setPositiveButton(
+//                "确定"
+//            ) { SoulPermission.getInstance().goApplicationSettings() }.show()
+        ShowPopUtils.showNoAddressLocationPop()
     }
 
     fun pathUrlToBitmap(context: Context, url: String, listener: OnDownBitmapListener) {

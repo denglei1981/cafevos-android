@@ -31,7 +31,14 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.changanford.circle.R;
+import com.changanford.circle.databinding.ActivityReleaseBinding;
+import com.changanford.circle.ui.release.utils.DragListener;
+import com.changanford.circle.ui.release.utils.ParamsUtils;
+import com.changanford.circle.ui.release.utils.SolveEditTextScrollClash;
 import com.changanford.circle.ui.release.widget.ActivityTypeDialog;
+import com.changanford.circle.ui.release.widget.AttrbultPop;
+import com.changanford.circle.ui.release.widget.OpenCarcme;
 import com.changanford.common.basic.BaseActivity;
 import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.bean.AttributeBean;
@@ -54,14 +61,8 @@ import com.changanford.common.util.PictureUtils;
 import com.changanford.common.util.SoftHideKeyBoardUtil;
 import com.changanford.common.util.TimeUtils;
 import com.changanford.common.utilext.GlideUtils;
-import com.changanford.circle.R;
-import com.changanford.circle.databinding.ActivityReleaseBinding;
-import com.changanford.circle.ui.release.utils.DragListener;
-import com.changanford.circle.ui.release.utils.ParamsUtils;
-import com.changanford.circle.ui.release.utils.SolveEditTextScrollClash;
-import com.changanford.circle.ui.release.widget.AttrbultPop;
-import com.changanford.circle.ui.release.widget.OpenCarcme;
 import com.changanford.common.utilext.PermissionPopUtil;
+import com.changanford.common.wutil.ShowPopUtils;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.broadcast.BroadcastAction;
 import com.luck.picture.lib.broadcast.BroadcastManager;
@@ -76,10 +77,7 @@ import com.luck.picture.lib.tools.DoubleUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.ScreenUtils;
 import com.luck.picture.lib.tools.ToastUtils;
-import com.qw.soul.permission.SoulPermission;
-import com.qw.soul.permission.bean.Permission;
 import com.qw.soul.permission.bean.Permissions;
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener;
 import com.scwang.smart.refresh.layout.util.SmartUtil;
 
 import java.io.File;
@@ -515,20 +513,21 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
     }
 
     private Function0<Unit> failPer(){
-        new AlertDialog(ReleaseActivity.this).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).setPositiveButton("确定", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        SoulPermission.getInstance().goPermissionSettings();
-                    }
-                }).show();
+        ShowPopUtils.INSTANCE.showNoAddressLocationPop();
+//        new AlertDialog(ReleaseActivity.this).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                }).setPositiveButton("确定", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        SoulPermission.getInstance().goPermissionSettings();
+//                    }
+//                }).show();
         return null;
     }
 

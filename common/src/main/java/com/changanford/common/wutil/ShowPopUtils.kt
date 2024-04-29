@@ -4,6 +4,7 @@ import com.changanford.common.R
 import com.changanford.common.widget.pop.FordPaiCirclePop
 import com.changanford.common.widget.pop.FordTipsPop
 import com.changanford.common.widget.pop.JoinCircleAuPop
+import com.qw.soul.permission.SoulPermission
 
 /**
  *Author lcw
@@ -33,11 +34,35 @@ object ShowPopUtils {
     fun showFordTipsPop(
         content: String,
         bottomContent: String,
-        isShowBottomTwo: Boolean
+        isShowBottomTwo: Boolean,
+        cancelContent: String? = null,
+        sureListener: (() -> Unit?)? = null,
+        cancelListener: (() -> Unit?)? = null,
+        title: String? = null
     ) {
-        FordTipsPop(content, bottomContent, isShowBottomTwo).apply {
+        FordTipsPop(
+            content,
+            bottomContent,
+            isShowBottomTwo,
+            cancelContent,
+            sureListener,
+            cancelListener,
+            title
+        ).apply {
             setBackground(R.color.m_pop_bg)
             showPopupWindow()
         }
+    }
+
+    fun showNoAddressLocationPop(){
+        showFordTipsPop(
+            "您已禁止了定位权限，请到设置中心去打开",
+            "确认",
+            true,
+            "取消",
+            sureListener = {
+                SoulPermission.getInstance().goApplicationSettings()
+            },
+            title="提示")
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSONObject
@@ -16,9 +15,14 @@ import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.core.PoiInfo
 import com.baidu.mapapi.search.core.SearchResult
-import com.baidu.mapapi.search.geocode.GeoCodeOption
-import com.baidu.mapapi.search.geocode.GeoCoder
-import com.baidu.mapapi.search.poi.*
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener
+import com.baidu.mapapi.search.poi.PoiCitySearchOption
+import com.baidu.mapapi.search.poi.PoiDetailResult
+import com.baidu.mapapi.search.poi.PoiDetailSearchResult
+import com.baidu.mapapi.search.poi.PoiIndoorResult
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption
+import com.baidu.mapapi.search.poi.PoiResult
+import com.baidu.mapapi.search.poi.PoiSearch
 import com.changanford.circle.R
 import com.changanford.circle.adapter.LocaAdapter
 import com.changanford.circle.bean.CityEntity
@@ -26,21 +30,11 @@ import com.changanford.circle.databinding.ChooselocationBinding
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.toast
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
-import java.util.*
-import kotlin.collections.ArrayList
-import com.baidu.mapapi.search.poi.PoiCitySearchOption
-import com.changanford.circle.ui.release.LocationMMapActivity
-import com.changanford.common.MyApp
-import com.changanford.common.util.LocationServiceUtil
 import com.changanford.common.utilext.PermissionPopUtil
+import com.changanford.common.wutil.ShowPopUtils
 import com.qw.soul.permission.bean.Permissions
 
 
@@ -66,9 +60,9 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 
     private fun initlocation() {
         //声明LocationClient类
-        try{
+        try {
             mLocationClient = LocationClient(this)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         //注册监听函数
@@ -136,7 +130,6 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     }
 
 
-
     override fun initData() {
 
 
@@ -173,7 +166,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
 //            locaAdapter.notifyDataSetChanged()
 //            isselected = true
             LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATIONNOTHING, String::class.java)
-                        .postValue(binding.tvBuxs.text.toString())
+                .postValue(binding.tvBuxs.text.toString())
             finish()
         }
         binding.title.barTvOther.setOnClickListener {
@@ -211,13 +204,14 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
         }
     }
 
-    fun choiceOver(){
+    fun choiceOver() {
         LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
 //        LiveDataBus.get().with(LiveDataBusKey.CHOOSELOCATION).postValue(poiInfo)
 //        LiveDataBus.get().with(LiveDataBusKey.ColseCHOOSELOCATION, Boolean::class.java)
 //            .postValue(true)
         finish()
     }
+
     /**
      * 实现定位监听 位置一旦有所改变就会调用这个方法
      * 可以在这个方法里面获取到定位之后获取到的一系列数据
@@ -292,7 +286,7 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
                 .pageCapacity(99)
                 .pageNum(0)
         )
-        city=cityName
+        city = cityName
 
     }
 
@@ -350,12 +344,13 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
             initlocation()
         }
         val fail = {
-            AlertDialog(this@ChooseLocationActivity).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消") { finish() }.setPositiveButton(
-                    "确定"
-                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+//            AlertDialog(this@ChooseLocationActivity).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消") { finish() }.setPositiveButton(
+//                    "确定"
+//                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+          ShowPopUtils.showNoAddressLocationPop()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
 //        SoulPermission.getInstance()
@@ -395,12 +390,12 @@ class ChooseLocationActivity : BaseActivity<ChooselocationBinding, EmptyViewMode
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 121312) {
-                val dataExtra = data?.getSerializableExtra("city")
-                if(dataExtra!=null){
-                    val cityEntity = data?.getSerializableExtra("city") as CityEntity
-                    binding.tvLocation.text = cityEntity.name
-                    rightPoi(cityName = cityEntity.name)
-                }
+            val dataExtra = data?.getSerializableExtra("city")
+            if (dataExtra != null) {
+                val cityEntity = data?.getSerializableExtra("city") as CityEntity
+                binding.tvLocation.text = cityEntity.name
+                rightPoi(cityName = cityEntity.name)
+            }
         }
     }
 }

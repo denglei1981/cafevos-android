@@ -95,6 +95,10 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         }
     }
 
+    override fun hasLoadMore(): Boolean {
+        return true
+    }
+
     /**
      * 搜索
      * */
@@ -107,11 +111,11 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         super.initRefreshData(pageSize)
         when (index) {
             0 -> {
-                viewModel.myJoinCircle(searchKeys)
+                viewModel.myJoinCircle(searchKeys,pageSize)
             }
 
             1 -> {
-                viewModel.myMangerCircle(searchKeys)
+                viewModel.myMangerCircle(searchKeys,pageSize)
             }
         }
     }
