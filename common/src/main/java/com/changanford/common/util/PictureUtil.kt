@@ -39,7 +39,7 @@ object PictureUtil {
     fun getFinallyPath(media: LocalMedia): String {
         val path = ""
 //        return if (media.isCut && !media.isCompressed) {
-        return if (media.isCut ) {
+        return if (media.isCut) {
             media.cutPath
         } else if (media.isCompressed || media.isCut && media.isCompressed) {
             media.compressPath
@@ -390,7 +390,7 @@ object PictureUtil {
         activity: Activity,
         datas: ArrayList<LocalMedia>? = null,
         onResultCallbackListener: OnResultCallbackListener<LocalMedia>,
-        videoMaxSecond: Int =  60,//秒
+        videoMaxSecond: Int = 60,//秒
         videoMinSecond: Int = 3
     ) {
         val success = {
@@ -492,6 +492,13 @@ object PictureUtil {
             .isMaxSelectEnabledMask(false) // 选择数到了最大阀值列表是否启用蒙层效果
             .maxSelectNum(9) // 最大图片选择数量
             .minSelectNum(1) // 最小选择数量
+            .queryMimeTypeConditions(
+                PictureMimeType.ofJPEG(),
+                PictureMimeType.ofPNG(),
+                PictureMimeType.ofBMP(),
+                PictureMimeType.ofGIF(),
+                PictureMimeType.ofMP4(),
+            )// 查询指定后缀格式资源
             .videoMaxSecond(10 * 60) // 查询多少秒以内的视频
             .videoMinSecond(3) // 查询多少秒以内的视频
             .maxVideoSelectNum(1) // 视频最大选择数量
