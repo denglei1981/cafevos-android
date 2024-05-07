@@ -1,6 +1,5 @@
 package com.changanford.circle.utils
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -11,6 +10,7 @@ import com.changanford.circle.R
 import com.changanford.circle.adapter.CircleHomeBottomAdapter
 import com.changanford.circle.adapter.CircleTopRecommendAdapter
 import com.changanford.circle.adapter.HomeMidRankAdapter
+import com.changanford.circle.adapter.circle.MyCircleAdapter
 import com.changanford.circle.databinding.FragmentFordPaiCircleBinding
 import com.changanford.circle.databinding.LayoutHomeHotCielceHeaderBinding
 import com.changanford.circle.ui.activity.circle.HotListActivity
@@ -18,11 +18,12 @@ import com.changanford.circle.viewmodel.circle.NewCircleViewModel
 import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
-import com.changanford.common.wutil.ShadowDrawable
 
 /**
  * @author: niubobo
@@ -39,19 +40,21 @@ class CommunityHotHelper(
     private val topCircleAdapter by lazy { CircleTopRecommendAdapter() }
     private val midRankAdapter by lazy { HomeMidRankAdapter() }
     private val bottomCircleAdapter by lazy { CircleHomeBottomAdapter() }
+    private val myCircleAdapter by lazy { MyCircleAdapter() }
     private val provinceLinearSnapHelper = LinearSnapHelper()
 
     fun initCommunity() {
         initData()
         //设置阴影
-        ShadowDrawable.setShadowDrawable(
-            headBinding.cardNoCircle, Color.parseColor("#FFFFFF"), 12,
-            Color.parseColor("#1a000000"), 12, 1, 1
-        )
+//        ShadowDrawable.setShadowDrawable(
+//            headBinding.cardNoCircle, Color.parseColor("#FFFFFF"), 12,
+//            Color.parseColor("#1a000000"), 12, 1, 1
+//        )
         provinceLinearSnapHelper.attachToRecyclerView(headBinding.ryRank)
         headBinding.ryCircleTop.adapter = topCircleAdapter
         headBinding.ryRank.adapter = midRankAdapter
         headBinding.ryCircleBottom.adapter = bottomCircleAdapter
+        headBinding.ryMyCircle.adapter = myCircleAdapter
         setIndicator()
         initListener()
         observe()
@@ -64,6 +67,8 @@ class CommunityHotHelper(
 
     private fun observe() {
         viewModel.cirCleHomeData.observe(fragment) {
+            binding.loadingView.isVisible = false
+            binding.layoutHot.root.isVisible = true
             LiveDataBus.get().with(LiveDataBusKey.HOME_CIRCLE_HOT_BEAN).postValue(it)
             topCircleAdapter.setList(it?.circleTypes)
             midRankAdapter.setList(it?.topList)
@@ -73,17 +78,13 @@ class CommunityHotHelper(
                 headBinding.drIndicator.isVisible = pageSize > 1
             }
             myCircles.value = it?.myCircles
-            if (MConstant.token.isEmpty() || it?.myCircles.isNullOrEmpty()) {
-                binding.clTab.isVisible = false
-                headBinding.cardNoCircle.isVisible = true
-                binding.layoutHot.root.isVisible = true
-                binding.layoutCircle.root.isVisible = false
-            } else {
-                binding.clTab.isVisible = true
-                headBinding.cardNoCircle.isVisible = false
-                binding.layoutHot.root.isVisible = false
-                binding.layoutCircle.root.isVisible = true
-            }
+            myCircleAdapter.setList(it?.myCircles)
+            headBinding.cardNoCircle.isVisible =
+                MConstant.token.isEmpty() || it?.myCircles.isNullOrEmpty()
+            headBinding.ryMyCircle.isVisible =
+                MConstant.token.isNotEmpty() && !it?.myCircles.isNullOrEmpty()
+            headBinding.tvMoreCircle.isVisible =
+                MConstant.token.isNotEmpty() && !it?.myCircles.isNullOrEmpty()
         }
 
         viewModel.circleListBean.observe(fragment) {
@@ -98,6 +99,9 @@ class CommunityHotHelper(
             tvJoinTips.setOnClickListener {
                 startARouter(ARouterCirclePath.CircleListActivity)
             }
+            tvMoreCircle.setOnClickListener {
+                JumpUtils.instans?.jump(28)
+            }
             ryRank.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -111,6 +115,17 @@ class CommunityHotHelper(
                 val bundle = Bundle()
                 bundle.putString("circleId", bottomCircleAdapter.data[position].circleId)
                 startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+            }
+            myCircleAdapter.setOnItemClickListener { _, _, position ->
+                val bundle = Bundle()
+                val itemData = myCircleAdapter.getItem(position)
+                bundle.putString("circleId", itemData.circleId)
+                startARouter(ARouterCirclePath.CircleDetailsActivity, bundle)
+                GIOUtils.homePageClick(
+                    "我的圈子",
+                    (position + 1).toString(),
+                    itemData.name
+                )
             }
             tvMoreRank.setOnClickListener {
                 GioPageConstant.hotCircleEntrance = "社区-圈子-热门榜单-更多"

@@ -9,151 +9,157 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp">
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/cl_tab"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="-5dp">-->
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_tab_bg"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/ic_circle_tab_my_circle"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <androidx.appcompat.widget.AppCompatImageView-->
+<!--                android:id="@+id/iv_tab_bg"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:src="@mipmap/ic_circle_tab_my_circle"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <View
-                android:id="@+id/v_mid_line"
-                android:layout_width="1dp"
-                android:layout_height="1dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+<!--            <View-->
+<!--                android:id="@+id/v_mid_line"-->
+<!--                android:layout_width="1dp"-->
+<!--                android:layout_height="1dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />-->
 
-            <View
-                android:id="@+id/v_left"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"
-                app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"
-                app:layout_constraintRight_toLeftOf="@+id/v_mid_line"
-                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+<!--            <View-->
+<!--                android:id="@+id/v_left"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"-->
+<!--                app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"-->
+<!--                app:layout_constraintRight_toLeftOf="@+id/v_mid_line"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />-->
 
-            <View
-                android:id="@+id/v_right"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"
-                app:layout_constraintLeft_toRightOf="@+id/v_mid_line"
-                app:layout_constraintRight_toRightOf="@+id/iv_tab_bg"
-                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+<!--            <View-->
+<!--                android:id="@+id/v_right"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/iv_tab_bg"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/v_mid_line"-->
+<!--                app:layout_constraintRight_toRightOf="@+id/iv_tab_bg"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_my_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="@dimen/dp_40"
-                android:text="我的圈子"
-                android:textColor="@color/color_16"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"
-                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_my_circle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="20dp"-->
+<!--                android:layout_marginTop="@dimen/dp_40"-->
+<!--                android:text="我的圈子"-->
+<!--                android:textColor="@color/color_16"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintLeft_toLeftOf="@+id/iv_tab_bg"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />-->
 
-            <include
-                android:id="@+id/layout_left_three"
-                layout="@layout/layout_circle_three_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_my_circle"
-                app:layout_constraintLeft_toRightOf="@+id/tv_my_circle"
-                app:layout_constraintTop_toTopOf="@+id/tv_my_circle" />
+<!--            <include-->
+<!--                android:id="@+id/layout_left_three"-->
+<!--                layout="@layout/layout_circle_three_top"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/tv_my_circle"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/tv_my_circle"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/tv_my_circle" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_join_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="4dp"
-                android:gravity="bottom"
-                android:textColor="@color/color_16"
-                android:textSize="10sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_my_circle"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_circle"
-                tools:text="123213" />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_join_num"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawablePadding="4dp"-->
+<!--                android:gravity="bottom"-->
+<!--                android:textColor="@color/color_16"-->
+<!--                android:textSize="10sp"-->
+<!--                app:layout_constraintLeft_toLeftOf="@+id/tv_my_circle"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_my_circle"-->
+<!--                tools:text="123213" />-->
 
-            <View
-                android:id="@+id/v_pop"
-                android:layout_width="0.1dp"
-                android:layout_height="0.1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintRight_toLeftOf="@+id/iv_icon_right"
-                app:layout_constraintTop_toBottomOf="@+id/iv_icon_right" />
+<!--            <View-->
+<!--                android:id="@+id/v_pop"-->
+<!--                android:layout_width="0.1dp"-->
+<!--                android:layout_height="0.1dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginEnd="10dp"-->
+<!--                app:layout_constraintRight_toLeftOf="@+id/iv_icon_right"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/iv_icon_right" />-->
 
-            <ImageView
-                android:id="@+id/iv_icon_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="4dp"
-                android:paddingBottom="4dp"
-                android:src="@mipmap/ic_circle_jion_num_right_b"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_join_num"
-                app:layout_constraintLeft_toRightOf="@+id/tv_join_num" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_icon_right"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingStart="4dp"-->
+<!--                android:paddingBottom="4dp"-->
+<!--                android:src="@mipmap/ic_circle_jion_num_right_b"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/tv_join_num"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/tv_join_num" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_hot_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="43dp"
-                android:layout_marginTop="@dimen/dp_53"
-                android:text="热门圈子"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                app:layout_constraintLeft_toRightOf="@+id/v_mid_line"
-                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_hot_circle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="43dp"-->
+<!--                android:layout_marginTop="@dimen/dp_53"-->
+<!--                android:text="热门圈子"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="14sp"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/v_mid_line"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/iv_tab_bg" />-->
 
-            <include
-                android:id="@+id/layout_right_three"
-                layout="@layout/layout_circle_three_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_hot_circle"
-                app:layout_constraintLeft_toRightOf="@+id/tv_hot_circle"
-                app:layout_constraintTop_toTopOf="@+id/tv_hot_circle" />
+<!--            <include-->
+<!--                android:id="@+id/layout_right_three"-->
+<!--                layout="@layout/layout_circle_three_top"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/tv_hot_circle"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/tv_hot_circle"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/tv_hot_circle" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_hot_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_hot_circle"
-                app:layout_constraintTop_toBottomOf="@+id/tv_hot_circle" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_hot_num"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="10sp"-->
+<!--                app:layout_constraintLeft_toLeftOf="@+id/tv_hot_circle"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_hot_circle" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <include
             android:id="@+id/layout_hot"
             layout="@layout/layout_home_hot_cielce_header"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_height="match_parent" />
 
-        <include
-            android:id="@+id/layout_circle"
-            layout="@layout/layout_circle_home_ry"
+        <com.changanford.common.widget.TopLoadingView
+            android:id="@+id/loading_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:layout_height="match_parent"/>
+
+<!--        <include-->
+<!--            android:id="@+id/layout_circle"-->
+<!--            layout="@layout/layout_circle_home_ry"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:visibility="gone" />-->
     </LinearLayout>
 
 

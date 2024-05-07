@@ -57,6 +57,7 @@ import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toast
 import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.widget.webview.CustomWebHelper
+import com.changanford.common.wutil.ShowPopUtils
 import com.gyf.immersionbar.ImmersionBar
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions
@@ -806,12 +807,13 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
             startActivity(intent)
         }
         val fail = {
-            AlertDialog(MyApp.mContext).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消") { }.setPositiveButton(
-                    "确定"
-                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+            ShowPopUtils.showNoAddressLocationPop()
+//            AlertDialog(MyApp.mContext).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消") { }.setPositiveButton(
+//                    "确定"
+//                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
 //        SoulPermission.getInstance()

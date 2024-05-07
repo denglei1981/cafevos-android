@@ -15,6 +15,7 @@
 
     <dimen name="dot_width">5dp</dimen>
     <dimen name="dot_height">5dp</dimen>
+    <dimen name="tag_text_size">14sp</dimen>
 
     <!--设置后方便后期使用  SmallestWidth -->
     <dimen name="dp_m_60">-60dp</dimen>

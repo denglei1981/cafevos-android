@@ -90,14 +90,14 @@ class AskRecommendFragment :
             GIOUtils.homePageClick("热门问答", (position + 1).toString(), recommendData.title)
             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
         }
-        recommendAskAdapter.setOnItemChildClickListener { adapter, view, position ->
-            when (view.id) {
-                R.id.cl_user -> {
-                    val bean = recommendAskAdapter.getItem(position)
-                    JumpUtils.instans?.jump(114, bean.qaAnswer?.qaUserVO?.conQaUjId.toString())
-                }
-            }
-        }
+//        recommendAskAdapter.setOnItemChildClickListener { adapter, view, position ->
+//            when (view.id) {
+//                R.id.cl_user -> {
+//                    val bean = recommendAskAdapter.getItem(position)
+//                    JumpUtils.instans?.jump(114, bean.qaAnswer?.qaUserVO?.conQaUjId.toString())
+//                }
+//            }
+//        }
 //        initMarginTab()
         viewModel.getInitQuestion()
 //        viewModel.getQuestionList(false, questionTypes)

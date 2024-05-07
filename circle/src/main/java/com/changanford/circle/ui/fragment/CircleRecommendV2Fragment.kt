@@ -3,7 +3,6 @@ package com.changanford.circle.ui.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,11 +18,9 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.AdBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterCirclePath
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -45,7 +42,7 @@ class CircleRecommendV2Fragment :
 
     private val adapter by lazy { CircleRecommendAdapter(requireContext(), this) }
     private val topicAdapter by lazy {
-        PolySearchTopicAdapter()
+        PolySearchTopicAdapter(false)
     }
     private val tabList = listOf("推荐", "最新")
     private lateinit var headBinding: LayoutCircleHeaderHotTopicBinding
@@ -163,18 +160,18 @@ class CircleRecommendV2Fragment :
 
     override fun observe() {
         super.observe()
-        viewModel.topSignBean.observe(this) {
-            headBinding.run {
-                it.ontinuous?.let {
-                    val days = it.toInt()
-                    tvDaysNum.isVisible = days > 0
-                }
-                tvDaysNum.text = "已连续签到${it.ontinuous}天"
-                it.curDate?.let { ss ->
-                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
-                }
-            }
-        }
+//        viewModel.topSignBean.observe(this) {
+//            headBinding.run {
+//                it.ontinuous?.let {
+//                    val days = it.toInt()
+//                    tvDaysNum.isVisible = days > 0
+//                }
+//                tvDaysNum.text = "已连续签到${it.ontinuous}天"
+//                it.curDate?.let { ss ->
+//                    tvDays.text = TimeUtils.MillisToStrHM2(it.curDate)
+//                }
+//            }
+//        }
         viewModel.topicBean.observe(this) {
             topicAdapter.setList(it.topics)
         }
@@ -346,7 +343,7 @@ class CircleRecommendV2Fragment :
     override fun onResume() {
         super.onResume()
         GioPageConstant.topicEntrance = ""
-        viewModel.getSignContinuousDays()
+//        viewModel.getSignContinuousDays()
         checkSign()
     }
 
@@ -358,28 +355,28 @@ class CircleRecommendV2Fragment :
                     canSign = true
                 }
             }
-            if (!canSign) {
-                headBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.shape_e9_15dp)
-                    text = "已签到"
-                    isEnabled = false
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
-                }
-            } else {
-                headBinding.tvSign.run {
-                    setBackgroundResource(R.drawable.bg_sign_top_topic)
-                    text = "签到得福币"
-                    isEnabled = true
-                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                    if (MConstant.userId.isNotEmpty()) {
-                        setOnClickListener {
-                            JumpUtils.instans?.jump(37)
-                        }
-                    } else {
-                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
-                    }
-                }
-            }
+//            if (!canSign) {
+//                headBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.shape_e9_15dp)
+//                    text = "已签到"
+//                    isEnabled = false
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.color_4d16))
+//                }
+//            } else {
+//                headBinding.tvSign.run {
+//                    setBackgroundResource(R.drawable.bg_sign_top_topic)
+//                    text = "签到得福币"
+//                    isEnabled = true
+//                    setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+//                    if (MConstant.userId.isNotEmpty()) {
+//                        setOnClickListener {
+//                            JumpUtils.instans?.jump(37)
+//                        }
+//                    } else {
+//                        setOnClickListener { startARouter(ARouterMyPath.SignUI) }
+//                    }
+//                }
+//            }
         }
     }
 

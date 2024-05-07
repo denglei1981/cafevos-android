@@ -21,9 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:textColor="@color/color_D1D2D7"
+            android:textColor="@color/color_8016"
             android:textSize="@dimen/sp_17"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/img_ranking"
             app:layout_constraintStart_toStartOf="@id/img_ranking"
@@ -42,13 +41,13 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_icon"
-            android:layout_width="88dp"
-            android:layout_height="88dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:layout_marginStart="9dp"
-            app:layout_goneMarginStart="16dp"
             android:scaleType="centerCrop"
             app:layout_constraintLeft_toRightOf="@+id/img_ranking"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="16dp"
             tools:src="@color/color_1700f4" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -68,26 +67,12 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="16dp"
             android:textColor="@color/color_16"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_icon"
             app:layout_constraintTop_toTopOf="@+id/iv_icon"
             tools:text="美食街区" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/color_8016"
-            android:textSize="13sp"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_title"
-            app:layout_constraintRight_toRightOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            tools:text="每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_join"
@@ -106,38 +91,69 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:visibility="visible" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <RelativeLayout
+            android:id="@+id/rl_mid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintLeft_toLeftOf="@+id/tv_title"
             app:layout_constraintRight_toRightOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            tools:listitem="@layout/item_circle_tag" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/color_8016"
+                android:textSize="12sp"
+                tools:text="每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事每天跟三五好友一起开黑，才是人间趣事" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_circle_tag" />
+        </RelativeLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_marginTop="3dp"
             android:textColor="@color/color_8016"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_icon"
+            android:textSize="10sp"
             app:layout_constraintEnd_toStartOf="@id/btn_join"
             app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/rl_mid"
             tools:text="123 成员     12232 帖子" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:drawableStart="@mipmap/ic_left_sm_location"
+            android:drawablePadding="2dp"
+            android:textColor="@color/color_8016"
+            android:textSize="10sp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            app:layout_constraintLeft_toRightOf="@+id/iv_icon"
+            android:layout_marginStart="13dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_num"
+            tools:text="addrDesc" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="0.5dp"
             android:layout_marginTop="15dp"
-            android:background="@color/color_1a4a"
             android:layout_marginEnd="16dp"
+            android:background="@color/color_1a4a"
             app:layout_constraintLeft_toLeftOf="@+id/iv_icon"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_icon" />

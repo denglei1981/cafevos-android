@@ -55,6 +55,7 @@ data class NewCircleBean(
     val id: String? = null,
     val name: String = "",
     val icon: String? = null,
+    val addrDesc: String? = null,
     val isRegion: String? = null,
     //圈子认证 0 未认证 1已认证
     val manualAuth: Int = 0,

@@ -50,9 +50,15 @@ class HomeMidRankItemAdapter(private val isShowLeft: Boolean) :
             ivIcon.setCircular(12)
             tvNum.text = "${item.postsCount} 帖子     ${item.userCount} 成员"
             ivIcon.load(item.pic)
+            tvAddress.isVisible = !item.addrDesc.isNullOrEmpty()
+            tvAddress.text = item.addrDesc
             ivAuth.isVisible = item.manualAuth == 1
             ivAuth.load(item.manualAuthImg)
-            isJoin(btnJoin, item)
+            if (!isShowLeft) {
+                btnJoin.isVisible = false
+            } else {
+                isJoin(btnJoin, item)
+            }
             item.tags?.apply {
                 recyclerView.layoutManager = FlowLayoutManager(context, true, true)
                 recyclerView.adapter = CircleListTagAdapter().apply {

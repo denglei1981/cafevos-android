@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"
             style="@style/AppText.lineSpace"
@@ -23,79 +22,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/test_str" />
-
-        <com.changanford.common.ui.view.WTextView
-            android:id="@+id/tv_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_00095b_4dp"
-            android:gravity="center"
-            android:minWidth="@dimen/dp_32"
-            android:paddingStart="@dimen/dp_5"
-            android:layout_marginTop="3dp"
-            android:paddingTop="@dimen/dp_2"
-            android:paddingEnd="@dimen/dp_5"
-            android:paddingBottom="@dimen/dp_2"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <FrameLayout
-            android:id="@+id/fl_pics_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title">
-
-            <com.changanford.circle.widget.assninegridview.AssNineGridView
-                android:id="@+id/iv_nine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_16"
-                android:scaleType="centerCrop"
-                app:angv_gridSpace="3dp"
-                app:angv_maxSize="2"
-                app:angv_singleImgRatio="1"
-                tools:src="@drawable/image_recommed_default" />
-
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_more"
-                style="@style/materialButton"
-                android:layout_width="40dp"
-                android:layout_height="@dimen/dp_25"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="5dp"
-                android:backgroundTint="#66000000"
-                android:minWidth="@dimen/dp_62"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                android:visibility="gone"
-                app:cornerRadius="@dimen/dp_20"
-                tools:text="+8"
-                tools:visibility="visible" />
-
-
-        </FrameLayout>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_pic"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="335:190"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
-            tools:src="@drawable/image_recommed_default"
-            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

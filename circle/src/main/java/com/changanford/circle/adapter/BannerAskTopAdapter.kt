@@ -1,6 +1,7 @@
 package com.changanford.circle.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
@@ -8,6 +9,7 @@ import com.changanford.circle.databinding.ItemBannerAskTopBinding
 import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
+import com.changanford.common.wutil.ShadowDrawable
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -26,6 +28,11 @@ class BannerAskTopAdapter : BaseBannerAdapter<QuestionItemBean>() {
     ) {
         val binding = DataBindingUtil.bind<ItemBannerAskTopBinding>(holder.itemView)
         binding?.run {
+            //设置阴影
+            ShadowDrawable.setShadowDrawable(
+                binding.clContent, Color.parseColor("#FFFFFF"), 12,
+                Color.parseColor("#1a000000"), 6, 0, 0
+            )
             root.setOnClickListener {
                 JumpUtils.instans?.jump(data.jumpType, data.jumpValue)
             }

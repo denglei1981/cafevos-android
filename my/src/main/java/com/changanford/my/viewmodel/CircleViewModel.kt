@@ -3,9 +3,19 @@ package com.changanford.my.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.*
-import com.changanford.common.net.*
-import com.changanford.common.util.MConstant.userId
+import com.changanford.common.bean.CircleItemBean
+import com.changanford.common.bean.CircleListBean
+import com.changanford.common.bean.CircleMemberBean
+import com.changanford.common.bean.CircleStatusItemBean
+import com.changanford.common.bean.CircleUserBean
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
 
@@ -21,12 +31,14 @@ class CircleViewModel : ViewModel() {
      * 我管理的圈子
      */
     var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
-    fun myMangerCircle(searchKeys: String) {
+    fun myMangerCircle(searchKeys: String,pageNo: Int) {
         val circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
 //                    body["searchKeys"] = searchKeys
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
                     it["searchKeys"] = searchKeys
                 }
@@ -73,10 +85,12 @@ class CircleViewModel : ViewModel() {
      */
     var mJoinCircle: MutableLiveData<CircleListBean> = MutableLiveData()
 
-    fun myJoinCircle(searchKeys: String) {
+    fun myJoinCircle(searchKeys: String,pageNo:Int) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
+                body["pageNo"] = pageNo
+                body["pageSize"] = "20"
 //                searchKeys?.apply {
                 body["queryParams"] = HashMap<String, Any>().also {
                     it["searchKeys"] = searchKeys

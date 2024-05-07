@@ -1,32 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <LinearLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_f6"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/smart_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:background="@color/color_F4">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dp_72"
+                android:background="@color/transparent"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                android:paddingBottom="@dimen/dp_52"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-    </LinearLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:paddingBottom="10dp"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/my_scan"
+                        android:layout_width="@dimen/dp_22"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginStart="2dp"
+                        android:src="@mipmap/icon_mine_scan"
+                        app:layout_constraintBottom_toBottomOf="@+id/my_msg"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/my_msg" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/my_msg"
+                        android:layout_width="@dimen/dp_22"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="22dp"
+                        android:contentDescription="@string/test_str"
+                        android:src="@mipmap/icon_mine_msg"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_setting"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/message_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/message_have_bg"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/my_msg"
+                        app:layout_constraintTop_toTopOf="@+id/my_msg"
+                        tools:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/iv_setting"
+                        android:layout_width="@dimen/dp_22"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginEnd="22dp"
+                        android:contentDescription="@string/app_name"
+                        android:src="@mipmap/icon_mine_setting"
+                        app:layout_constraintEnd_toStartOf="@+id/my_msg"
+                        app:layout_constraintTop_toTopOf="@+id/my_msg" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 </layout>

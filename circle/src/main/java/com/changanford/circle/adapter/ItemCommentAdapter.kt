@@ -42,7 +42,7 @@ import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
-import com.view.text.setSpecificTextColor
+import com.changanford.common.text.setSpecificTextColor
 import razerdp.basepopup.QuickPopupBuilder
 import razerdp.basepopup.QuickPopupConfig
 

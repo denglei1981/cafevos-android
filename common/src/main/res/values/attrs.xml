@@ -172,4 +172,57 @@
         <attr name="lineSpacing" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="TagTextView">
+        <attr name="tvt_type" format="enum">
+            <enum name="text" value="0"/>
+            <enum name="image" value="1"/>
+            <enum name="textImage" value="2"/>
+        </attr>
+        <attr name="tvt_radius" format="dimension"/>
+        <attr name="tvt_left_top_radius" format="dimension" />
+        <attr name="tvt_left_bottom_radius" format="dimension" />
+        <attr name="tvt_right_top_radius" format="dimension" />
+        <attr name="tvt_right_bottom_radius" format="dimension" />
+        <attr name="tvt_padding" format="dimension"/>
+        <attr name="tvt_top_padding" format="dimension" />
+        <attr name="tvt_right_padding" format="dimension" />
+        <attr name="tvt_bottom_padding" format="dimension" />
+        <attr name="tvt_left_padding" format="dimension" />
+        <attr name="tvt_background_color" format="color" />
+        <attr name="tvt_background_img" format="reference" />
+        <attr name="tvt_start_gradient_background_color" format="color"/>
+        <attr name="tvt_end_gradient_background_color" format="color"/>
+        <attr name="tvt_stroke_width" format="dimension" />
+        <attr name="tvt_stroke_color" format="color"/>
+        <attr name="tvt_text_size" format="dimension"/>
+        <attr name="tvt_text_color" format="color"/>
+        <attr name="tvt_width" format="dimension"/>
+        <attr name="tvt_height" format="dimension"/>
+        <attr name="tvt_align" format="enum">
+            <enum name="baseline" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="bottom" value="2"/>
+            <enum name="top" value="3"/>
+        </attr>
+        <attr name="tvt_text" format="string"/>
+        <attr name="tvt_image_resource" format="reference"/>
+        <attr name="tvt_position" format="integer"/>
+        <attr name="tvt_margin_left" format="dimension"/>
+        <attr name="tvt_margin_right" format="dimension"/>
+        <attr name="tvt_text_margin_image" format="dimension"/>
+        <attr name="tvt_layout" format="reference"/>
+        <attr name="tvt_image_align_text" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="top" value="1"/>
+            <enum name="right" value="2"/>
+            <enum name="bottom" value="3"/>
+        </attr>
+        <attr name="tvt_drawable_zoom_type" format="enum">
+            <enum name="original" value="0"/>
+            <enum name="text" value="-1"/>
+            <enum name="custom" value="1"/>
+        </attr>
+        <attr name="tvt_image_width" format="dimension"/>
+        <attr name="tvt_image_height" format="dimension"/>
+    </declare-styleable>
 </resources>

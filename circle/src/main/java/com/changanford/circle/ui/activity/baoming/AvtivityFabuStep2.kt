@@ -61,6 +61,7 @@ import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.common.widget.HomeBottomDialog
+import com.changanford.common.wutil.ShowPopUtils
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -906,12 +907,13 @@ class AvtivityFabuStep2 : BaseActivity<ActivityFabudeitalBinding, PostViewModule
             )
         }
         val fail = {
-            AlertDialog(this@AvtivityFabuStep2).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消") { }.setPositiveButton(
-                    "确定"
-                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+            ShowPopUtils.showNoAddressLocationPop()
+//            AlertDialog(this@AvtivityFabuStep2).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消") { }.setPositiveButton(
+//                    "确定"
+//                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
 //        SoulPermission.getInstance()

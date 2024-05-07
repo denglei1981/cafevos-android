@@ -57,6 +57,7 @@ import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.ShowPopUtils
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions
 import razerdp.basepopup.QuickPopupBuilder
@@ -408,12 +409,13 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
             context.startActivity(intent)
         }
         val fail = {
-            AlertDialog(MyApp.mContext).builder()
-                .setTitle("提示")
-                .setMsg("您已禁止了定位权限，请到设置中心去打开")
-                .setNegativeButton("取消") { }.setPositiveButton(
-                    "确定"
-                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
+            ShowPopUtils.showNoAddressLocationPop()
+//            AlertDialog(MyApp.mContext).builder()
+//                .setTitle("提示")
+//                .setMsg("您已禁止了定位权限，请到设置中心去打开")
+//                .setNegativeButton("取消") { }.setPositiveButton(
+//                    "确定"
+//                ) { SoulPermission.getInstance().goPermissionSettings() }.show()
         }
         PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
 //        SoulPermission.getInstance()

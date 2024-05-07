@@ -1,6 +1,8 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +14,14 @@ import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.RoundBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -26,10 +34,11 @@ import com.changanford.common.util.gio.updateTaskList
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.TaskTitleAdapter
-import com.changanford.my.compose.dailySignCompose
+import com.changanford.my.compose.DailySignCompose
 import com.changanford.my.databinding.ItemSignDayBinding
 import com.changanford.my.databinding.UiTaskBinding
 import com.changanford.my.viewmodel.SignViewModel
+import com.gyf.immersionbar.ImmersionBar
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -44,22 +53,52 @@ import kotlin.math.abs
 @Route(path = ARouterMyPath.MineTaskListUI)
 class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
     private var gioPreBean = GioPreBean()
+    private var isSign = false
+    private var isWhite = true//是否是白色状态
     var isRefresh: Boolean = false //回到当前页面刷新列表
 
-    val taskAdapter: TaskTitleAdapter by lazy {
+    private val taskAdapter: TaskTitleAdapter by lazy {
         TaskTitleAdapter()
     }
 
-    val dayAdapter: DayAdapter by lazy {
+    private val dayAdapter: DayAdapter by lazy {
         DayAdapter()
     }
 
     override fun initView() {
         title = "任务中心页"
+        AppUtils.setStatusBarPaddingTop(binding.toolbar, this)
 //        StatusBarUtil.setTranslucentForImageView(this, null)
+        isSign = intent.getBooleanExtra("isSign", false)
         setLoadSir(binding.root)
         binding.imBack.setOnClickListener {
             back()
+        }
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val absOffset = abs(verticalOffset).toFloat() * 4.5F
+            //滑动到高度一半不是白色状态
+            if (absOffset < appBarLayout.height * 0.3F && !isWhite) {
+                binding.imBack.setColorFilter(Color.parseColor("#ffffff"))
+                binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.white))
+                binding.tvTaskExplain.setTextColor(ContextCompat.getColor(this, R.color.white))
+                isWhite = true
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
+            }
+            //超过高度一半是白色状态
+            else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
+                binding.imBack.setColorFilter(Color.parseColor("#000000"))
+                binding.tvTitle.setTextColor(ContextCompat.getColor(this, R.color.black))
+                binding.tvTaskExplain.setTextColor(ContextCompat.getColor(this, R.color.black))
+                isWhite = false
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
+            }
+            //改变透明度
+            if (absOffset <= appBarLayout.height) {
+                val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
+                binding.toolbar.background.mutate().alpha = mAlpha
+            } else {
+                binding.toolbar.background.mutate().alpha = 255
+            }
         }
         binding.tvTaskExplain.setOnClickListener { //任务说明
             updateTaskList("任务说明页", "任务说明页")
@@ -82,7 +121,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         binding.rcyDay.adapter = dayAdapter
         viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, Observer {
             it?.let {
-                binding.tvTaskJifenNum.text = "我的福币：${it.integral?.toInt()}"
+                binding.tvTaskJifenNum.text = "${it.integral?.toInt()}"
             }
         })
 
@@ -106,6 +145,7 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         LiveDataBus.get().withs<GioPreBean>(LiveDataBusKey.UPDATE_TASK_LIST_GIO).observe(this) {
             gioPreBean = it
         }
+        LiveDataBus.get().withs<String>(LiveDataBusKey.SIGN_UP_SUCCESS).observe(this) { task() }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -120,8 +160,17 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
 
     fun show7Day() {
         viewModel.getDay7Sign {
+            var canSign = it == null || MConstant.token.isNullOrEmpty()
+            it?.sevenDays?.forEach {
+                if (it.signStatus == 2) {
+                    canSign = true
+                }
+            }
+            if (canSign && isSign) {
+                JumpUtils.instans?.jump(37)
+            }
             binding?.sign7day?.setContent {
-                dailySignCompose(it)
+                DailySignCompose(it)
             }
         }
     }
@@ -130,6 +179,8 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
         return ViewEmptyTopBinding.inflate(layoutInflater).root
     }
 
+    private var isFirst = true
+
     override fun onResume() {
         super.onResume()
         getData()
@@ -137,12 +188,16 @@ class TaskListUI : BaseMineUI<UiTaskBinding, SignViewModel>() {
             isRefresh = false
             task()
         }
-        show7Day()
+        if (!isFirst) {
+            show7Day()
+        } else {
+            isFirst = false
+        }
         GIOUtils.taskCenterPageView(gioPreBean.prePageName, gioPreBean.prePageType)
         updateMainGio("任务中心页", "任务中心页")
     }
 
-    fun task() {
+    private fun task() {
         viewModel.queryTasksList()
     }
 

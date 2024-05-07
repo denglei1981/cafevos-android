@@ -120,20 +120,20 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
                     State.EXPANDED -> {//展开
                         val asd = binding.vTop.layoutParams
                         asd.height = 1.toIntPx()
-                        binding.vTop.layoutParams=asd
+                        binding.vTop.layoutParams = asd
 
                     }
 
                     State.COLLAPSED -> {//关闭
                         val asd = binding.vTop.layoutParams
                         asd.height = 15.toIntPx()
-                        binding.vTop.layoutParams=asd
+                        binding.vTop.layoutParams = asd
                     }
 
                     State.INTERMEDIATE -> {//中间
                         val asd = binding.vTop.layoutParams
                         asd.height = 1.toIntPx()
-                        binding.vTop.layoutParams=asd
+                        binding.vTop.layoutParams = asd
                     }
                 }
             }
@@ -196,6 +196,16 @@ class HomeV2Fragment : BaseFragment<FragmentSecondFloorBinding, HomeV2ViewModel>
         }
         binding.ivScan.setOnClickListener {
             showPublish(binding.homeTab)
+        }
+        binding.ivSignIn.setOnClickListener {
+            if (MConstant.token.isEmpty()) {
+                startARouter(ARouterMyPath.SignUI)
+                return@setOnClickListener
+            }
+            if (!MineUtils.getBindMobileJumpDataType(true)) {
+                RouterManger.needLogin(true).param("isSign", true)
+                    .startARouter(ARouterMyPath.MineTaskListUI)
+            }
         }
         binding.recommendContent.etSearchContent.setOnClickListener {
             toSearch()

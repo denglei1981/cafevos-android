@@ -386,6 +386,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     GioPageConstant.mainTabName = "我的页"
                     // 埋点
                     StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+                    StatusBarUtil.setLightStatusBar(this,  MConstant.mineTabIsBlack)
                     if (!isJumpMenu) {
                         BuriedUtil.instant?.mainButtomMenu("我的")
                     }

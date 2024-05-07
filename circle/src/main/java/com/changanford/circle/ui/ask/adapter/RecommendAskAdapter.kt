@@ -1,54 +1,41 @@
 package com.changanford.circle.ui.ask.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.view.View
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
-import com.changanford.circle.widget.assninegridview.AssNineGridViewAskClickAdapter
-import com.changanford.common.bean.ImageInfo
-import com.changanford.common.util.TimeUtils
+import com.changanford.common.text.addTag
+import com.changanford.common.text.addTextTag
+import com.changanford.common.text.addUrlTag
+import com.changanford.common.text.annotation.DrawableZoomType
+import com.changanford.common.text.config.TagConfig
+import com.changanford.common.text.config.Type
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.utilext.toIntPx
 import com.core.util.dp
 import com.core.util.sp
-import com.view.text.addImageTag
-import com.view.text.addTag
-import com.view.text.addTextTag
-import com.view.text.config.TagConfig
-import com.view.text.config.Type
+
 
 /**
  *Author lcw
  *Time on 2021/9/22
  *Purpose
  */
-class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewHolder>() {
-
-
-    init {
-        addItemType(0, R.layout.item_recommend_ask_no_answer)  //默认选择模块
-        addItemType(1, R.layout.item_recommend_ask_answer_pic)
-        addItemType(2, R.layout.item_recommend_ask_no_answer)
-        addItemType(3, R.layout.empty_ask)
-        addChildClickViewIds(R.id.cl_user)
-    }
+@Suppress("IMPLICIT_CAST_TO_ANY")
+class RecommendAskAdapter :
+    BaseQuickAdapter<AskListMainData, BaseViewHolder>(R.layout.item_recommend_ask_no_answer) {
 
     override fun convert(holder: BaseViewHolder, item: AskListMainData) {
 
@@ -68,239 +55,103 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
 
     }
 
-//    fun hasAnswer(view: View, item: AskListMainData) { // 有答案
-//        val binding = DataBindingUtil.bind<ItemRecommendAskAnswerPicBinding>(view)
-//        showQuestion(binding, item)
-//
-//    }
-
+    @SuppressLint("SetTextI18n", "NewApi")
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
-
         binding?.let {
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = false
+            it.layoutAnswer.layoutCount.tvCount.text =
+                "${item.answerCount}回答  ${item.viewVal}浏览"
+            it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
-                answer.qaUserVO?.let { _ ->
-                    GlideUtils.loadBD(answer.qaUserVO.avater, it.layoutAnswer.ivHeader)
+                it.layoutAnswer.apply {
+                    it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" != answer.adopt
+//                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
+                    tvContent.isVisible = !answer.content.isNullOrEmpty()
+                    tvContent.text = answer.content
+                    tvContent.addUrlTag {
+                        imageUrl =
+                            if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(
+                                answer.qaUserVO.avater
+                            )
+                        isCircle = true
+                        imageHeight = 25.dp
+                        imageWidth = 25.dp
+                        drawableZoomType = DrawableZoomType.CUSTOM
+                        leftTopRadius = 50.dp.toFloat()
+                        rightPadding = 3.dp
+                        startGradientBackgroundColor = Color.parseColor("#F6D242")
+                        endGradientBackgroundColor = Color.parseColor("#FF52E5")
+                        position = 0
+                    }.addTextTag {
+                        leftPadding = 3.dp
+                        rightPadding = 2.dp
+                        text = " ${if (answer.qaUserVO == null) "" else answer.qaUserVO.nickName}: "
+                        textColor = ContextCompat.getColor(context, R.color.color_9916)
+                        backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    }
                 }
-                it.layoutAnswer.tvSubTitle.text = TimeUtils.MillisTo_YMDHM(answer.answerTime)
-                it.layoutAnswer.tvAuthorName.text = answer.qaUserVO?.nickName
-                if ("NO" == answer.adopt) {
-                    it.layoutAnswer.btnFollow.visibility = View.GONE
-                } else {
-                    it.layoutAnswer.btnFollow.visibility = View.VISIBLE
-                }
-                it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
-
-                it.layoutAnswer.tvContent.text = answer.content
-                it.layoutAnswer.layoutCount.tvCommentCount.text = item.answerCount.toString()
-                it.layoutAnswer.layoutCount.tvLikeCount.setPageTitleText(item.viewVal.toString())
-                if (answer.qaUserVO?.identity == "TECHNICIAN") it.layoutAnswer.ivVip.visibility =
-                    View.VISIBLE else it.layoutAnswer.ivVip.visibility = View.GONE
             }
-
-
         }
-
     }
 
-//    private fun showQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
-//        binding?.layoutAskInfo?.tvTag?.text = item.questionTypeName
-//        showTag(binding?.layoutAskInfo?.tvTitle, item)
-//
-//        val picList = item.getPicLists()
-//        if (picList?.isEmpty() == false) {
-//            when {
-//                picList.size > 1 -> {
-//                    val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
-//                    picList.forEach {
-//                        val imageInfo = ImageInfo()
-//                        imageInfo.bigImageUrl = it
-//                        imageInfo.thumbnailUrl = it
-//                        imageInfo.jumpType = item.jumpType
-//                        imageInfo.jumpValue = item.jumpValue
-//                        imageInfoList.add(imageInfo)
-//                    }
-//                    val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
-//                    binding?.layoutAskInfo?.ivNine?.setAdapter(assNineAdapter)
-//                    binding?.layoutAskInfo?.ivNine?.visibility = View.VISIBLE
-//                    binding?.layoutAskInfo?.ivPic?.visibility = View.GONE
-//                    if (picList.size > 4) {
-//                        binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
-//                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size - 1)
-//                    } else {
-//                        binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-//                    }
-//                }
-//                picList.size == 1 -> {
-//                    binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-//                    GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
-//                    binding?.layoutAskInfo?.ivPic?.visibility = View.VISIBLE
-//                    binding.layoutAskInfo.btnMore.visibility = View.GONE
-//                }
-//                else -> {
-//                    binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-//                    binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-//                    binding?.layoutAskInfo?.ivPic?.visibility = View.GONE
-//
-//                }
-//            }
-//        } else {
-//            binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-//            binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-//            binding?.layoutAskInfo?.ivPic?.visibility = View.GONE
-//        }
-//    }
-
-
-    fun noAnswer(view: View, item: AskListMainData) {
+    private fun noAnswer(view: View, item: AskListMainData) {
         val binding = DataBindingUtil.bind<ItemRecommendAskNoAnswerBinding>(view)
         showNoQuestion(binding, item)
 
     }
 
-    fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
-        binding?.layoutAskInfo?.tvTag?.text = item.questionTypeName
+    private fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
+        showAnswer(binding, item)
+        val picList = item.getPicLists()
+        if (picList?.isEmpty() == false) {
+            binding?.layoutAnswer?.clPic?.isVisible = true
+            when {
+                picList.size > 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = false
+                        ivTwoOnePic.isVisible = true
+                        ivTwoTwoPic.isVisible = true
+                        ivTwoOnePic.loadCompress2(picList[0])
+                        ivTwoTwoPic.loadCompress2(picList[1])
+                        tvPicNum.isVisible = picList.size > 2
+                        tvPicNum.text = "+${picList.size - 2}"
+                    }
+                }
+
+                picList.size == 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = true
+                        ivTwoOnePic.isVisible = false
+                        ivTwoTwoPic.isVisible = false
+                        ivOnePic.loadCompress2(picList[0])
+                        tvPicNum.isVisible = picList.size > 2
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        } else {
+            binding?.layoutAnswer?.clPic?.isVisible = false
+            binding?.layoutAnswer?.tvPicNum?.isVisible = false
+        }
         binding?.layoutAskInfo?.run {
-            tvTag.isVisible = false
             tvTitle.text = item.title
             val tvConfig = TagConfig(Type.TEXT).apply {
                 text = item.questionTypeName
                 textColor = ContextCompat.getColor(context, R.color.white)
                 marginRight = 10.toIntPx()
-                backgroundColor = ContextCompat.getColor(context, R.color.color_1700F4)
+                backgroundColor =
+                    ContextCompat.getColor(context, R.color.color_1700F4)
                 radius = 4.dp.toFloat()
                 textSize = 10.sp.toFloat()
                 topPadding = 2.dp
                 bottomPadding = 2.dp
             }
-            tvTitle.addTag(tvConfig).apply {
-                if (item.fbReward != 0) {
-                    addImageTag {
-                        imageResource = R.mipmap.question_fb
-                        position = tvTitle.text.length - 1
-                        marginLeft = 4.toIntPx()
-                    }
-                    addTextTag {
-                        text = item.fbReward.toString().plus("福币")
-                        position = tvTitle.text.length - 2
-                        textSize = 10.sp.toFloat()
-                        backgroundColor = ContextCompat.getColor(context, R.color.white)
-                        textColor = ContextCompat.getColor(context, R.color.color_E1A743)
-                    }
-                }
-            }
+            tvTitle.addTag(tvConfig)
         }
-//        showTag(binding?.layoutAskInfo?.tvTitle, item)
-        if (item.qaAnswer == null) {
-            binding?.layoutAnswer?.conAnswerContent?.visibility = View.GONE
-            binding?.layoutNoAnswer?.tvNoAnswer?.visibility = View.VISIBLE
-        } else {
-            showAnswer(binding, item)
-            binding?.layoutAnswer?.conAnswerContent?.visibility = View.VISIBLE
-            binding?.layoutNoAnswer?.tvNoAnswer?.visibility = View.GONE
-        }
-        val picList = item.getPicLists()
-        if (picList?.isEmpty() == false) {
-            when {
-                picList.size > 1 -> {
-                    val imageInfoList: ArrayList<ImageInfo> = arrayListOf()
-                    picList.forEach {
-                        val imageInfo = ImageInfo()
-                        imageInfo.bigImageUrl = it
-                        imageInfo.thumbnailUrl = it
-                        imageInfo.jumpType = item.jumpType
-                        imageInfo.jumpValue = item.jumpValue
-                        imageInfoList.add(imageInfo)
-                    }
-                    val assNineAdapter = AssNineGridViewAskClickAdapter(context, imageInfoList)
-                    binding?.layoutAskInfo?.ivNine?.setAdapter(assNineAdapter)
-                    binding?.layoutAskInfo?.ivNine?.visibility = View.VISIBLE
-                    binding?.layoutAskInfo?.ivPic?.visibility = View.GONE
-                    if (picList.size > 4) {
-                        binding?.layoutAskInfo?.btnMore?.visibility = View.VISIBLE
-                        binding?.layoutAskInfo?.btnMore?.text = "+".plus(picList.size - 1)
-                    } else {
-                        binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-                    }
-                }
-
-                picList.size == 1 -> {
-                    binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-                    binding?.layoutAskInfo?.ivPic?.visibility = View.VISIBLE
-//                    GlideUtils.loadBD(picList[0], binding?.layoutAskInfo?.ivPic!!)
-                    binding?.layoutAskInfo?.ivPic?.loadCompress(picList[0])
-                    binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-                }
-
-                else -> {
-                    binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-                    binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-                }
-            }
-        } else {
-            binding?.layoutAskInfo?.ivNine?.visibility = View.GONE
-            binding?.layoutAskInfo?.btnMore?.visibility = View.GONE
-            binding?.layoutAskInfo?.ivPic?.visibility = View.GONE
-        }
-    }
-
-    fun showTag(text: AppCompatTextView?, item: AskListMainData) {
-        if (item.fbReward <= 0) {
-            showZero(text, item)
-            return
-        }
-        val fbNumber = item.fbReward.toString().plus("福币")
-        var tagName = item.questionTypeName
-        if (TextUtils.isEmpty(tagName)) {
-            tagName = "其他"
-        }
-        val starStr = " ".repeat(tagName.length * 3)
-        val str = "$starStr\t\t\t${item.title} [icon] $fbNumber"
-        //先设置原始文本
-        text?.text = str
-        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
-        text?.post { //获取第一行的宽度
-            val stringBuilder: StringBuilder = StringBuilder(str)
-            //SpannableString的构建
-            val spannableString = SpannableString("$stringBuilder ")
-            val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
-            drawable?.apply {
-                val imageSpan = CustomImageSpan(this)
-                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-                val strLength = spannableString.length
-                val numberLength = fbNumber.length
-                val startIndex = strLength - numberLength - 1
-                spannableString.setSpan(
-                    AbsoluteSizeSpan(30),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    ForegroundColorSpan(Color.parseColor("#E1A743")),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    imageSpan,
-                    str.lastIndexOf("["),
-                    str.lastIndexOf("]") + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                text.text = spannableString
-            }
-        }
-    }
-
-    fun showZero(text: AppCompatTextView?, item: AskListMainData) {
-        val tagName = item.questionTypeName
-        if (!TextUtils.isEmpty(tagName)) {
-            val starStr = " ".repeat(tagName.length * 3)
-            val str = "$starStr\t\t\t\t${item.title}"
-            //先设置原始文本
-            text?.text = str
-        }
-
     }
 
     /**
@@ -328,5 +179,6 @@ class RecommendAskAdapter : BaseMultiItemQuickAdapter<AskListMainData, BaseViewH
             canvas.restore()
         }
     }
+
 
 }

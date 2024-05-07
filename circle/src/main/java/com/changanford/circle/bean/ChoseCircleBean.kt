@@ -13,6 +13,7 @@ data class ChoseCircleBean(
     val circleId: String,
     val createTime: Any,
     val description: String,
+    val addrDesc: String?,
     val hotIcon: String,
     //圈子认证 0 未认证 1已认证
     val manualAuth: Int = 0,

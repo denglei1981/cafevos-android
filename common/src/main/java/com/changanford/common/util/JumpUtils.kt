@@ -1018,6 +1018,7 @@ class JumpUtils {
                         "签到",
                         it.actionCode
                     )
+                    LiveDataBus.get().with(LiveDataBusKey.SIGN_UP_SUCCESS).postValue("")
                     if (it.additionStatus == 1) {//有额外弹框
                         var bundle = Bundle()
                         bundle.putString("signInfo", JSON.toJSONString(it))

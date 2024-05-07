@@ -16,8 +16,8 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_icon"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
+            android:layout_width="77dp"
+            android:layout_height="77dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -52,13 +52,15 @@
 
         <TextView
             android:id="@+id/status_text"
-            android:layout_width="54dp"
-            android:layout_height="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:background="@drawable/bg_post_pic_fm"
             android:gravity="center"
             android:text="通过"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintLeft_toLeftOf="@+id/item_icon"
             app:layout_constraintTop_toTopOf="@+id/item_icon" />
 
@@ -66,11 +68,11 @@
             android:id="@+id/item_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:layout_marginEnd="10dp"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="@color/color_d916"
+            android:maxLines="1"
+            android:textColor="@color/color_8016"
             android:textSize="12sp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="@+id/item_title"
@@ -82,13 +84,27 @@
             android:id="@+id/item_user"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_3"
             android:textColor="@color/color_8016"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/item_icon"
+            app:layout_constraintTop_toBottomOf="@+id/item_date"
             app:layout_constraintEnd_toStartOf="@id/img_star"
             app:layout_constraintStart_toStartOf="@id/item_title"
             tools:text="123 成员  12232 帖子" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:drawableStart="@mipmap/ic_left_sm_location"
+            android:drawablePadding="2dp"
+            android:textColor="@color/color_8016"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="@+id/item_user"
+            app:layout_constraintTop_toBottomOf="@+id/item_user"
+            tools:text="addrDesc" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img_star"

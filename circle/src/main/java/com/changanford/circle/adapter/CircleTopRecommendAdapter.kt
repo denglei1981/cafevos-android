@@ -8,7 +8,6 @@ import com.changanford.circle.ui.activity.CircleListActivity
 import com.changanford.common.bean.NewCircleBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.util.ext.loadImage
-import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
 
 /**
@@ -25,7 +24,7 @@ class CircleTopRecommendAdapter :
         item: NewCircleBean
     ) {
         holder.dataBinding?.run {
-            ivCover.setCircular(12)
+//            ivCover.setCircular(12)
             ivCover.loadImage(item.icon)
             tvName.text=item.name
             root.setOnClickListener {

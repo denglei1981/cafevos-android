@@ -26,7 +26,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     var pageSize: Int = 1
     private var pageNum: Int = 10
     private var isFirst: Boolean = true //首次进入页面
-    var emptyBinding: ViewEmptyBinding?=null
+    var emptyBinding: ViewEmptyBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
     }
 
     override fun initData() {
-        emptyBinding= ViewEmptyBinding.inflate(layoutInflater)
+        emptyBinding = ViewEmptyBinding.inflate(layoutInflater)
         bindSmartLayout()?.let {
             it.setEnableLoadMore(hasLoadMore())
             it.setEnableRefresh(hasRefresh())
@@ -97,9 +97,10 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
                 }
                 newData?.let {
                     when {
-                        total > it.size + data.size -> {// 总数大于获取的数据
+                        total > it.size + data.size && hasLoadMore() -> {// 总数大于获取的数据
                             bindSmartLayout()?.apply { setEnableLoadMore(true) } // 加载更多
                         }
+
                         else -> {
                             bindSmartLayout()?.apply { setEnableLoadMore(false) }// 禁止加载更多
                         }

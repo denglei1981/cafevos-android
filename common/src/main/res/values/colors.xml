@@ -175,6 +175,7 @@
     <color name="color_e6333333">#e6333333</color>
     <color name="color_FB944F">#FB944F</color>
     <color name="color_66A1FA">#66A1FA</color>
+    <color name="color_661f">#661f1f1f</color>
     <color name="color_222B80">#222B80</color>
     <color name="color_1A1700f4">#1A1700f4</color>
     <color name="color_80EEEEEE">#80EEEEEE</color>
@@ -277,4 +278,5 @@
     <color name="circle_99000000">#99000000</color>
     <color name="color_3e">#3e3e3e</color>
     <color name="color_b200">#b2000000</color>
+    <color name="color_79594a">#79594a</color>
 </resources>

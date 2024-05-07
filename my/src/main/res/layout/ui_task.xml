@@ -12,6 +12,7 @@
         android:background="#f6f6f6">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent">
@@ -20,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:contentScrim="#ff4267c0"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <RelativeLayout
@@ -30,21 +30,21 @@
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_264"
-                        android:background="@mipmap/ic_task_top_bg"
-                        app:layout_collapseMode="parallax" />
+                        android:layout_height="@dimen/dp_226"
+                        android:background="@mipmap/ic_task_top_bg" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_fb"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_103">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/im_jifen"
-                            android:layout_width="@dimen/dp_32"
-                            android:layout_height="@dimen/dp_32"
+                            android:layout_width="@dimen/dp_43"
+                            android:layout_height="@dimen/dp_43"
                             android:layout_marginStart="@dimen/dp_20"
-                            android:src="@mipmap/ic_task_jife"
+                            android:src="@mipmap/ic_task_jife_new"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,10 +52,10 @@
                             android:id="@+id/tv_task_jifen_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp_13"
+                            android:layout_marginStart="@dimen/dp_8"
                             android:text="@string/app_name"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp_20"
+                            android:textSize="28sp"
                             app:layout_constraintBottom_toBottomOf="@+id/im_jifen"
                             app:layout_constraintLeft_toRightOf="@+id/im_jifen"
                             app:layout_constraintTop_toTopOf="@+id/im_jifen" />
@@ -64,22 +64,23 @@
 
                     <androidx.compose.ui.platform.ComposeView
                         android:id="@+id/sign7day"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="@dimen/dp_172"
-                        android:layout_marginBottom="@dimen/dp_6"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_below="@+id/cl_fb"
+                        android:layout_marginBottom="@dimen/dp_6" />
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="@dimen/dp_20"
-                        android:visibility="gone"
                         android:layout_marginTop="@dimen/dp_172"
                         android:layout_marginEnd="@dimen/dp_20"
                         android:layout_marginBottom="@dimen/dp_6"
                         android:background="@drawable/shape_task_top_bg"
-                        android:minHeight="@dimen/dp_176">
+                        android:minHeight="@dimen/dp_176"
+                        android:visibility="gone">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -133,9 +134,9 @@
                                 android:layout_marginTop="@dimen/dp_4"
                                 android:layout_marginBottom="@dimen/dp_12"
                                 android:text="再签到5天领"
-                                android:visibility="gone"
                                 android:textColor="#B9B9B9"
                                 android:textSize="@dimen/sp_12"
+                                android:visibility="gone"
                                 app:layout_constraintBottom_toTopOf="@+id/task_finish"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/rcy_day"
@@ -163,12 +164,12 @@
                 </RelativeLayout>
 
                 <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_0"
-                    android:layout_marginTop="@dimen/statusbar_view_height"
                     android:layout_marginEnd="@dimen/dp_0"
-                    android:minHeight="?attr/actionBarSize"
+                    android:background="@color/white"
                     android:theme="?attr/actionBarTheme"
                     app:contentInsetStart="@dimen/dp_0"
                     app:layout_collapseMode="pin">
@@ -180,14 +181,15 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/im_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/dp_8"
                             android:padding="@dimen/dp_8"
                             android:src="@mipmap/ic_arrow_lift_ff" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
@@ -206,7 +208,7 @@
                             android:layout_marginEnd="@dimen/dp_20"
                             android:text="任务说明"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/sp_16" />
+                            android:textSize="@dimen/sp_14" />
                     </RelativeLayout>
                 </androidx.appcompat.widget.Toolbar>
 

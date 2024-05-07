@@ -11,16 +11,13 @@
         android:id="@+id/mytoollayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_corner5"
-        android:paddingTop="15dp"
-        android:paddingBottom="@dimen/dp_15"
-       >
+        android:paddingBottom="17dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
-            android:layout_width="@dimen/dp_22"
-            android:layout_height="@dimen/dp_22"
-            android:scaleType="matrix"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:scaleType="center"
             android:src="@mipmap/icon_coupon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,9 +27,9 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="6dp"
             android:text="@string/app_name"
-            android:textColor="@color/black"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

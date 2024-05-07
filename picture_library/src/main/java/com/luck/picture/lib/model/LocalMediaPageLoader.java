@@ -3,6 +3,8 @@ package com.luck.picture.lib.model;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.media.MediaExtractor;
+import android.media.MediaFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,7 +24,9 @@ import com.luck.picture.lib.tools.MediaUtils;
 import com.luck.picture.lib.tools.PictureFileUtils;
 import com.luck.picture.lib.tools.SdkVersionUtils;
 import com.luck.picture.lib.tools.ValueOf;
+import com.luck.picture.lib.util.GetFilePathFromUri;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -462,7 +467,20 @@ public final class LocalMediaPageLoader {
                             allMediaFolder.setOfAllType(config.chooseMode);
                             allMediaFolder.setCameraFolder(true);
                             mediaFolders.add(0, allMediaFolder);
-
+//                            List<LocalMediaFolder> useMediaFolders = new ArrayList<>();
+//                            //筛选出h264的视频,h265在ios播放不起
+//                            for (LocalMediaFolder mediaFolder : mediaFolders) {
+//                                if (mediaFolder.getFirstMimeType().contains("mp4")) {
+//                                    String bbb = GetFilePathFromUri.getFileAbsolutePath(mContext, Uri.parse(mediaFolder.getFirstImagePath()));
+//                                    String codec = getCodec(bbb);
+//                                    Log.e("asdasd",codec);
+//                                    if (Objects.equals(codec, "video/avc")) {
+//                                        useMediaFolders.add(mediaFolder);
+//                                    }
+//                                } else {
+//                                    useMediaFolders.add(mediaFolder);
+//                                }
+//                            }
                             return mediaFolders;
                         }
                     }
@@ -485,6 +503,20 @@ public final class LocalMediaPageLoader {
                 }
             }
         });
+    }
+
+    public static String getCodec(String videoFilePath) {
+        MediaExtractor extractor = new MediaExtractor();
+        try {
+            extractor.setDataSource(videoFilePath);
+            MediaFormat format = extractor.getTrackFormat(0); // Assuming first track is video
+            return format.getString(MediaFormat.KEY_MIME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            extractor.release();
+        }
+        return null;
     }
 
     /**

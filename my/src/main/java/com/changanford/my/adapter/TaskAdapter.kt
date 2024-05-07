@@ -2,6 +2,7 @@ package com.changanford.my.adapter
 
 import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GrowUpItem
@@ -16,6 +17,10 @@ import com.changanford.my.R
 import com.changanford.my.databinding.ItemGrowUpBinding
 import com.changanford.my.databinding.ItemTaskContentBinding
 import com.changanford.my.databinding.ItemTaskTitleBinding
+import com.core.util.dp
+import com.core.util.sp
+import com.changanford.common.text.addImageTag
+import com.changanford.common.text.addTextTag
 
 /**
  *  文件名：TaskAdapter
@@ -40,7 +45,7 @@ class TaskTitleAdapter() :
     }
 }
 
-class TaskContentAdapter() :
+class TaskContentAdapter :
     BaseQuickAdapter<ItemTaskBean, BaseDataBindingHolder<ItemTaskContentBinding>>(
         R.layout.item_task_content
     ) {
@@ -51,7 +56,7 @@ class TaskContentAdapter() :
         holder.dataBinding?.let {
             it.taskTitle.text = item.taskName
             it.taskTitleDes.text = item.taskBrief
-            it.itemNum.text = "+${item.taskScore}"
+//            it.itemNum.text = "+${item.taskScore}"
             it.progress.visibility = if (item.taskAllCount == 0) View.INVISIBLE else View.VISIBLE
             if (item.taskAllCount > 1) {
                 it.progress.max = item.taskAllCount
@@ -63,14 +68,57 @@ class TaskContentAdapter() :
                 it.taskTitleInfo.text =
                     if (item.taskAllCount == 0) "已完成${item.taskIsDone}次" else "${if (item.taskIsDone == 1) 1 else 0}/1"
             }
-            it.itemTaskDes.text = ("奖励: " + item.taskScore + "福币/次 | "
-                    + item.taskGrowthValue + "成长值/次") //奖励: 50积分 | 200成长值
+            it.itemTaskDes.text = ("奖励/次: ") //奖励: 50积分 | 200成长值
 
+            it.itemTaskDes.apply {
+                addImageTag {
+                    imageHeight = 20.dp
+                    imageWidth = 20.dp
+                    imageResource = R.mipmap.question_fb
+                    position = it.itemTaskDes.text.length
+                    leftPadding = 4.dp
+                    rightPadding = 0
+                }
+                addTextTag {
+                    text = "+${item.taskScore}"
+                    position = it.itemTaskDes.text.length - 1
+                    textSize = 12.sp.toFloat()
+                    leftPadding = 1.dp
+                    backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    textColor = ContextCompat.getColor(context, R.color.color_16)
+                }
+                addTextTag {
+                    text = "  成长值"
+                    position = it.itemTaskDes.text.length - 2
+                    textSize = 12.sp.toFloat()
+                    rightPadding = 0
+                    backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    textColor = ContextCompat.getColor(context, R.color.color_8016)
+                }
+                addTextTag {
+                    text = "+${item.taskGrowthValue}"
+                    position = it.itemTaskDes.text.length - 3
+                    textSize = 12.sp.toFloat()
+                    leftPadding = 1.dp
+                    backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    textColor = ContextCompat.getColor(context, R.color.color_16)
+                }
+            }
             if (item.taskIsDone == 1) {
                 it.taskFinish.text = "已完成"
                 it.taskFinish.isSelected = false
-                it.taskFinish.setTextColor(Color.parseColor("#999999"))
+                it.taskFinish.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_80a6_100)
+                it.taskFinish.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
             } else {
+                it.taskFinish.background =
+                    ContextCompat.getDrawable(context, R.drawable.cm_follow_new_bg)
+                it.taskFinish.setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.circle_app_color
+                    )
+                )
                 it.taskFinish.text = "去完成"
                 it.taskFinish.isSelected = true
                 it.taskFinish.setOnClickListener {
@@ -84,15 +132,19 @@ class TaskContentAdapter() :
                         18 -> {
                             updateTaskList("绑定手机号页", "绑定手机号页")
                         }
+
                         17 -> {
                             updateTaskList("车主认证页", "车主认证页")
                         }
+
                         1 -> {
                             updateTaskList("无", "无")
                         }
+
                         34 -> {
                             updateTaskList("基本信息页", "基本信息页")
                         }
+
                         21 -> {
                             updateTaskList("设置页", "设置页")
                         }
@@ -113,7 +165,6 @@ class TaskContentAdapter() :
                         JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
                     }
                 }
-                it.taskFinish.setTextColor(Color.parseColor("#1B3B89"))
             }
         }
     }

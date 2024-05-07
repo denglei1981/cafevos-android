@@ -14,7 +14,7 @@ import com.changanford.common.utilext.toIntPx
  * @date: 2024/2/1
  * @description：
  */
-class PolySearchTopicAdapter :
+class PolySearchTopicAdapter(private val isShowContent: Boolean = true) :
     BaseQuickAdapter<Topic, BaseDataBindingHolder<ItemSearchTopicBinding>>(
         R.layout.item_search_topic
     ) {
@@ -28,11 +28,11 @@ class PolySearchTopicAdapter :
                 item,
                 holder.layoutPosition
             )
-
+            tvContent.isVisible = isShowContent
         }
     }
 
-    private fun setMargin(binding: ItemSearchTopicBinding, item: Topic,position: Int) {
+    private fun setMargin(binding: ItemSearchTopicBinding, item: Topic, position: Int) {
         binding.root.post {
             val params = binding.tvIcon.layoutParams as ViewGroup.MarginLayoutParams
             if (isOdd(position)) {

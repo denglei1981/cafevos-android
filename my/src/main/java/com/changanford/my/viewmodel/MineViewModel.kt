@@ -1,18 +1,28 @@
 package com.changanford.my.viewmodel
 
-import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.alibaba.fastjson.JSON
 import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.*
+import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CarAuthBean
+import com.changanford.common.bean.DaySignBean
+import com.changanford.common.bean.MenuBeanItem
+import com.changanford.common.bean.MineRecommendCircle
+import com.changanford.common.bean.SettingPhoneBean
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.net.response.UpdateUiState
-import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.MConstant
-import com.changanford.common.util.SafeMutableLiveData
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.R
@@ -183,6 +193,7 @@ class MineViewModel : BaseViewModel() {
     //订单类型
     var  mOrderTypesLiveData: MutableLiveData<MutableList<MenuBeanItem>> = MutableLiveData()
     val  updateOrderAdLiveData  = MutableLiveData<UpdateUiState<List<MineMenuData>>>()
+
     fun getOrderKey( allList:ArrayList<MineMenuData>){
         viewModelScope.launch {
             fetchRequest {

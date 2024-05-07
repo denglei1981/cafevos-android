@@ -274,7 +274,7 @@ dependencies {
     //网易行为验证吗
     api 'io.github.yidun:captcha:3.5.7.1'
 
-    api 'com.github.ChinaLike:TagTextView:0.2.7'
+//    api 'com.github.ChinaLike:TagTextView:0.2.7'
 
     api 'com.github.ChinaLike:XUtils:1.1.1'
 

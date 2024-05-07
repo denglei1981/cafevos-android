@@ -18,7 +18,11 @@ import razerdp.util.animation.TranslationConfig
 class FordTipsPop(
     private val content: String,
     private val bottomContent: String,
-    private val isShowBottomTwo: Boolean
+    private val isShowBottomTwo: Boolean,
+    private val cancelContent: String? = null,
+    private val sureListener: (() -> Unit?)? =null,
+    private val cancelListener: (() -> Unit?)? =null,
+    private val title:String?=null
 ) :
     BasePopupWindow(BaseApplication.curActivity) {
 
@@ -35,11 +39,19 @@ class FordTipsPop(
         viewDataBinding?.apply {
             tvContent.text = content
             tvAu.text = bottomContent
+            title?.let {
+                tvTips.text=it
+            }
+            cancelContent?.let {
+                tvNoAu.text = it
+            }
             tvNoAu.isVisible = isShowBottomTwo
             tvAu.setOnClickListener {
+                sureListener?.invoke()
                 dismiss()
             }
             tvNoAu.setOnClickListener {
+                cancelListener?.invoke()
                 dismiss()
             }
         }
