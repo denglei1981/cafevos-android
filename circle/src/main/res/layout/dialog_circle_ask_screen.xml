@@ -9,18 +9,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_only_top"
-        android:paddingBottom="@dimen/dp_10">
+        android:background="@drawable/shape_white_top_18dp"
+        android:paddingBottom="@dimen/dp_20">
 
         <TextView
             android:id="@+id/tv_ask_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:text="问题类型"
             android:textStyle="bold"
-            android:textColor="#ff081725"
+            android:textColor="@color/color_16"
             android:textSize="15sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_19"
+            android:layout_marginTop="@dimen/dp_24"
             android:layout_marginRight="@dimen/dp_20"
             app:labelBackground="@drawable/shape_dialog_post_tag"
             app:labelTextColor="@drawable/shape_dialog_post_text_color"
@@ -38,47 +38,48 @@
             app:labelTextPaddingLeft="15dp"
             app:labelTextPaddingRight="15dp"
             app:labelTextPaddingTop="5dp"
-            app:labelTextSize="13sp"
+            app:labelTextSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/tv_ask_type"
-            app:labelTextHeight="@dimen/dp_40"
+            app:labelTextHeight="30dp"
             app:lineMargin="@dimen/dp_13"
-            app:labelTextWidth="@dimen/dp_100"
+            app:labelTextWidth="80dp"
             app:labelGravity="center"
             app:maxColumns="3"
             app:selectType="MULTI"
-            app:wordMargin="@dimen/dp_9" />
+            app:wordMargin="@dimen/dp_13" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_rest"
             style="@style/materialButton"
-            android:layout_width="@dimen/dp_157"
-            android:layout_height="@dimen/dp_40"
-            android:layout_marginTop="@dimen/dp_82"
-            android:backgroundTint="@color/color_f1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_43"
+            android:layout_marginTop="@dimen/dp_35"
             android:text="@string/reset"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/dp_20"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/bg_bord_1700f4_100"
+            android:textColor="@color/circle_1700F4"
             app:layout_constraintEnd_toStartOf="@+id/home_btn_sure"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labels_type" />
 
-
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/home_btn_sure"
             style="@style/materialButton"
-            android:layout_width="@dimen/dp_157"
-            android:layout_height="@dimen/dp_40"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_43"
             android:layout_marginEnd="@dimen/dp_23"
             android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_82"
+            android:background="@drawable/bg_1700f4_100"
+            app:layout_goneMarginEnd="16dp"
+            android:layout_marginTop="@dimen/dp_35"
             android:backgroundTint="@color/color_1700f4"
             android:text="@string/sure"
             android:textSize="15sp"
             android:textColor="@color/white"
             app:cornerRadius="@dimen/dp_20"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/btn_rest"
             app:layout_constraintTop_toBottomOf="@+id/labels_type" />

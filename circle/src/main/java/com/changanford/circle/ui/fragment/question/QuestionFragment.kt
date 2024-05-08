@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.changanford.circle.adapter.question.QuestionListAdapter
 import com.changanford.circle.databinding.FragmentQuestionBinding
-import com.changanford.circle.ui.compose.EmptyCompose
-import com.changanford.circle.ui.compose.EmptyQuestionCompose
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.wutil.ScreenUtils
 
 /**
  * @Author : wenke
@@ -76,7 +73,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding, QuestionViewModel
             }
             binding.smartRl.apply {
                 listener?.onFinish(mAdapter.data.size)
-                binding.composeView.visibility =
+                binding.compose.visibility =
                     if (1 == pageNo && it?.dataList.isNullOrEmpty()) View.VISIBLE else View.GONE
                 if (null == it || mAdapter.data.size >= it.total) setEnableLoadMore(false)
                 else setEnableLoadMore(true)
@@ -102,24 +99,14 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding, QuestionViewModel
         this.listener = listener
     }
 
-    fun setEmpty(topHeight: Int = 1035) {
-        val h: Int = ScreenUtils.getScreenHeight(requireContext()) - topHeight
-        binding.composeView.setContent {
-            if (isOneself && personalPageType == "QUESTION") EmptyQuestionCompose(
-                ScreenUtils.px2dp(
-                    requireContext(),
-                    h.toFloat()
-                )
-            ) //是自己并且是提问tab 则展示提问特有缺省页
-            else if (isOneself && personalPageType == "ANSWER") EmptyCompose(
-                height = ScreenUtils.px2dp(
-                    requireContext(),
-                    h.toFloat()
-                ),
-                isMyAnswer = true,
-                noContext = "您还没未回答问题，快去答题吧"
-            ) //我的问答
-            else EmptyCompose(height = ScreenUtils.px2dp(requireContext(), h.toFloat()))//普通缺省页
+    fun setEmpty() {
+        if (isOneself) {
+            if (personalPageType == "QUESTION") {
+                binding.tvEmpty.text = "买车用车，您想了解的都可以在\n这里得到解答"
+            }
+            if (personalPageType == "ANSWER") {
+                binding.tvEmpty.text = "您还未回答问题，快去答题吧"
+            }
         }
     }
 }

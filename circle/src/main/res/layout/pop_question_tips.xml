@@ -8,29 +8,22 @@
     </data>
 
     <LinearLayout
-        android:layout_width="172dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingEnd="12dp"
-        tools:ignore="RtlSymmetry">
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="15dp"
-            android:src="@mipmap/circle_pop_top" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/ry_management"
             style="@style/AppText.lineSpace"
-            android:layout_width="match_parent"
+            android:layout_width="242dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_whit5_bg"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/sp_10"
+            android:layout_marginEnd="24dp"
+            android:padding="12dp"
+            android:textColor="@color/color_16"
+            android:textSize="@dimen/sp_12"
             tools:text="@string/pop_question_tips" />
 
     </LinearLayout>
+
 </layout>

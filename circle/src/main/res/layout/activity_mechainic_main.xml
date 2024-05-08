@@ -25,7 +25,7 @@
             android:id="@+id/iv_header"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginTop="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_60"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
             android:layout_width="@dimen/dp_0"
             android:layout_height="45dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/dp_42"
+            android:layout_marginTop="@dimen/dp_52"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_header" />
@@ -60,34 +60,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="简介"
-            android:textColor="#ff333333"
-            android:textSize="15sp"
+            android:text="问答个人简介"
+            android:textColor="@color/color_16"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/layout_good_at"
-            app:layout_constraintTop_toBottomOf="@+id/layout_nick_name"
-
-            />
+            app:layout_constraintTop_toBottomOf="@+id/layout_nick_name" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_12"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/shape_f9f9_corners5"
+            android:background="@drawable/bg_081700f4_12"
             android:gravity="start"
             android:hint="留下你的自我介绍，让更多人了解你"
-            android:maxHeight="280dp"
-            android:maxLength="8"
+            android:maxHeight="140dp"
+            android:maxLength="30"
             android:minHeight="130dp"
-            android:paddingStart="@dimen/dp_8"
-            android:paddingTop="@dimen/dp_8"
-            android:paddingEnd="@dimen/dp_8"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_15"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            android:textColor="@color/color_16"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_info_tips"
             app:layout_constraintTop_toBottomOf="@+id/tv_info_tips" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/et_info"
+            app:layout_constraintRight_toRightOf="@+id/et_info"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="5dp"
+            android:text="0/30"
+            android:textSize="12sp"
+            android:textColor="@color/color_8016"
+            app:layout_goneMarginEnd="12dp"
+            android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

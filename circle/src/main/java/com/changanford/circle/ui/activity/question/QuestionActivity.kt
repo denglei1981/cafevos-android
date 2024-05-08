@@ -2,24 +2,24 @@ package com.changanford.circle.ui.activity.question
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.view.Gravity
-import android.view.View
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.changanford.circle.R
+import com.changanford.circle.adapter.LabelAdapter
+import com.changanford.circle.adapter.QuestionTopTagAdapter
 import com.changanford.circle.databinding.ActivityQuestionBinding
-
-import com.changanford.circle.ui.compose.BtnQuestionCompose
-import com.changanford.circle.ui.compose.ComposeQuestionTop
 import com.changanford.circle.ui.fragment.question.QuestionFragment
 import com.changanford.circle.viewmodel.question.QuestionViewModel
 import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
@@ -33,10 +33,11 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.google.android.material.appbar.AppBarLayout
+import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ScreenUtils
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -89,7 +90,8 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
     private var questionInfoBean: QuestionInfoBean? = null
     override fun initView() {
         title = "问答页"
-        StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+//        StatusBarUtil.setStatusBarColor(this, R.color.transparent)
+        isDarkFont = false
         initSmartRefreshLayout()
         initAppbarLayout()
         intent.getStringExtra("value")?.apply {
@@ -112,19 +114,20 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
             imgBack.setOnClickListener { finish() }
             topBar.setPadding(
                 0,
-                ScreenUtils.getStatusBarHeight(this@QuestionActivity) + 10,
+                ScreenUtils.getStatusBarHeight(this@QuestionActivity) + 10.toIntPx(),
                 0,
                 ScreenUtils.dip2px(this@QuestionActivity, 10f)
             )
+            tvAskQuestions.isVisible = false
             tvAskQuestions.setOnClickListener {
                 WBuriedUtil.clickQuestionAskTop()
                 GioPageConstant.askSourceEntrance = "我的问答页面-右上角提问"
                 JumpUtils.instans?.jump(116)
             }
         }
-        binding.composeViewQuestion.setContent {
-            BtnQuestionCompose()
-        }
+//        binding.composeViewQuestion.setContent {
+//            BtnQuestionCompose()
+//        }
     }
 
     override fun initData() {
@@ -136,13 +139,37 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                 if (identity == 1) {
                     viewModel.getQuestionType()
                 } else {
-                    binding.composeView.setContent {
-                        ComposeQuestionTop(this@QuestionActivity, this)
+                    binding.layoutTopUser.apply {
+                        ivHeader.load(user.avater)
+                        ivVip.isVisible = !user.memberIcon.isNullOrEmpty()
+                        ivVip.load(user.memberIcon)
+                        tvUserName.text = user.nickName
+                        rvUserTag.isVisible = !user.imags.isNullOrEmpty()
+                        val labelAdapter = LabelAdapter(this@QuestionActivity, 15)
+                        labelAdapter.setItems(user.imags)
+                        rvUserTag.adapter = labelAdapter
+//                        tvCarOwner.isVisible = getIdentity() == 2
+                        tvCarOwner.text = user.modelName.plus("车主")
+                        tvEdit.isVisible = isOneself() && getIdentity() == 1
+                        tvContent.text = introduction
+                        tvContent.isVisible = !introduction.isNullOrEmpty()
+                        val tagAdapter = QuestionTopTagAdapter()
+                        ryTag.isVisible = !tagNameArr.isNullOrEmpty()
+                        if (!tagNameArr.isNullOrEmpty()) {
+                            ryTag.adapter = tagAdapter
+                            tagAdapter.setList(tagNameArr)
+                        }
+                        tvQuestionNum.text = questionNum
+                        tvAskNum.text = anserNum
+                        tvGetNum.text = adoptNum
                     }
+//                    binding.composeView.setContent {
+//                        ComposeQuestionTop(this@QuestionActivity, this)
+//                    }
                 }
                 binding.inHeader.apply {
                     //是否显示提问入口
-                    tvAskQuestions.visibility = if (it.getIsQuestion()) View.VISIBLE else View.GONE
+//                    tvAskQuestions.visibility = if (it.getIsQuestion()) View.VISIBLE else View.GONE
                     tvTitle.setText(
                         when {
                             isOneself -> R.string.str_myQuestionAndAnswer
@@ -158,7 +185,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                         initMagicIndicator(this)
                         initTabAndViewPager(this, isOneself, getIdentity())
                         Handler(Looper.myLooper()!!).postDelayed({
-                            fragments.forEach { fragment -> fragment.setEmpty(binding.magicTab.bottom) }
+                            fragments.forEach { fragment -> fragment.setEmpty() }
                         }, 100)
                     }
                 }
@@ -167,9 +194,40 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
         }
         viewModel.questTagList.observe(this) {
             questionInfoBean?.setTagNames()
-            binding.composeView.setContent {
-                ComposeQuestionTop(this@QuestionActivity, questionInfoBean)
+            questionInfoBean?.apply {
+                binding.layoutTopUser.apply {
+                    tvEdit.setOnClickListener {
+                        JumpUtils.instans?.jump(115, user.conQaTechnicianId)
+                    }
+                    tvUserTag.isVisible = true
+                    ivHeader.load(user.avater)
+                    ivVip.isVisible = !user.memberIcon.isNullOrEmpty()
+                    ivVip.load(user.memberIcon)
+                    tvUserName.text = user.nickName
+                    rvUserTag.isVisible = !user.imags.isNullOrEmpty()
+                    val labelAdapter = LabelAdapter(this@QuestionActivity, 15)
+                    labelAdapter.setItems(user.imags)
+                    rvUserTag.adapter = labelAdapter
+                    tvCarOwner.isVisible = getIdentity() == 2
+                    tvCarOwner.text = user.modelName.plus("车主")
+                    tvEdit.isVisible = isOneself() && getIdentity() == 1
+                    tvContent.text = introduction
+                    tvContent.isVisible = !introduction.isNullOrEmpty()
+                    val tagAdapter = QuestionTopTagAdapter()
+                    ryTag.isVisible = !tagNameArr.isNullOrEmpty()
+                    if (!tagNameArr.isNullOrEmpty()) {
+                        ryTag.adapter = tagAdapter
+                        tagAdapter.setList(tagNameArr)
+                    }
+                    tvQuestionNum.text = questionNum
+                    tvAskNum.text = anserNum
+                    tvGetNum.text = adoptNum
+//            binding.composeView.setContent {
+//                ComposeQuestionTop(this@QuestionActivity, questionInfoBean)
+//            }
+                }
             }
+
         }
 //        viewModel.personalQA(conQaUjId,true)
     }
@@ -213,32 +271,54 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     return fragments[position]
                 }
             }
-            binding.composeViewQuestion.visibility =
-                if (isOneself && tabs[currentItem].tag == "QUESTION") {
-                    addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                        override fun onPageScrolled(
-                            position: Int,
-                            positionOffset: Float,
-                            positionOffsetPixels: Int
-                        ) {
+            binding.tvBottom.isVisible = isOneself
+            binding.tvBottom.setOnClickListener {
+                WBuriedUtil.clickQuestionAskTop()
+                GioPageConstant.askSourceEntrance = "我的问答页面-提问"
+                JumpUtils.instans?.jump(116)
+            }
+//            binding.tvBottom.visibility =
+//                if (isOneself && tabs[currentItem].tag == "QUESTION") {
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    when (tabs[position].tag) {
+                        "QUESTION" -> {
+                            binding.tvBottom.text = "去提问"
+                            binding.tvBottom.setOnClickListener {
+                                WBuriedUtil.clickQuestionAskTop()
+                                GioPageConstant.askSourceEntrance = "我的问答页面-提问"
+                                JumpUtils.instans?.jump(116)
+                            }
                         }
 
-                        override fun onPageSelected(position: Int) {
-                            binding.composeViewQuestion.visibility =
-                                if (tabs[position].tag == "QUESTION" && fragments[position].mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                        else -> {
+                            binding.tvBottom.text = "去回答"
+                            binding.tvBottom.setOnClickListener { finish() }
                         }
 
-                        override fun onPageScrollStateChanged(state: Int) {}
-                    })
-                    if (fragments[currentItem].mAdapter.data.size > 0) View.VISIBLE else View.GONE
-                } else View.GONE
+                    }
+//                            binding.tvBottom.visibility =
+//                                if (tabs[position].tag == "QUESTION" && fragments[position].mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+            })
+//                    if (fragments[currentItem].mAdapter.data.size > 0) View.VISIBLE else View.GONE
+//                } else View.GONE
         }
     }
 
     private fun initMagicIndicator(tabs: MutableList<QuestionTagBean>) {
         val magicIndicator = binding.magicTab
         magicIndicator.removeAllViews()
-        magicIndicator.setBackgroundResource(R.color.color_F4)
+        magicIndicator.setBackgroundResource(R.color.white)
         val commonNavigator = CommonNavigator(this)
         commonNavigator.scrollPivotX = 0.8f
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
@@ -253,9 +333,9 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     gravity = Gravity.CENTER_HORIZONTAL
                     text = tabs[index].tagName
                     textSize = 18f
-                    setPadding(10.toIntPx(), 0, 10.toIntPx(), 0)
+                    setPadding(4.toIntPx(), 0, 4.toIntPx(), 0)
                     width = ScreenUtils.getScreenWidth(this@QuestionActivity) / 3
-                    normalColor = ContextCompat.getColor(this@QuestionActivity, R.color.color_33)
+                    normalColor = ContextCompat.getColor(this@QuestionActivity, R.color.color_9916)
                     selectedColor =
                         ContextCompat.getColor(this@QuestionActivity, R.color.circle_app_color)
                     setOnClickListener { binding.viewPager.currentItem = index }
@@ -266,9 +346,9 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
             override fun getIndicator(context: Context): IPagerIndicator {
                 LinePagerIndicator(context).apply {
                     mode = LinePagerIndicator.MODE_EXACTLY
-                    lineHeight = UIUtil.dip2px(context, 3.0).toFloat()
-                    lineWidth = UIUtil.dip2px(context, 22.0).toFloat()
-                    roundRadius = UIUtil.dip2px(context, 1.5).toFloat()
+                    lineHeight = UIUtil.dip2px(context, 2.0).toFloat()
+                    lineWidth = UIUtil.dip2px(context, 32.0).toFloat()
+                    roundRadius = UIUtil.dip2px(context, 1.0).toFloat()
                     startInterpolator = AccelerateInterpolator()
                     endInterpolator = DecelerateInterpolator(2.0f)
                     setColors(
@@ -290,7 +370,8 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
                 binding.inHeader.apply {
-                    imgBack.setImageResource(R.mipmap.whit_left)
+//                    imgBack.setImageResource(R.mipmap.whit_left)
+                    imgBack.setColorFilter(Color.parseColor("#ffffff"))
                     tvAskQuestions.setTextColor(
                         ContextCompat.getColor(
                             this@QuestionActivity,
@@ -305,11 +386,12 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     )
                 }
                 isWhite = true
-            }
-            //超过高度一半是白色状态
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
+            } //超过高度一半是白色状态
             else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
                 binding.inHeader.apply {
-                    imgBack.setImageResource(R.mipmap.back_xhdpi)
+//                    imgBack.setImageResource(R.mipmap.back_xhdpi)
+                    imgBack.setColorFilter(Color.parseColor("#333333"))
                     tvAskQuestions.setTextColor(
                         ContextCompat.getColor(
                             this@QuestionActivity,
@@ -324,6 +406,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     )
                 }
                 isWhite = false
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
             }
             //改变透明度
             if (absOffset <= appBarLayout.height) {
@@ -342,8 +425,8 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
     }
 
     override fun onFinish(code: Int) {
-        binding.composeViewQuestion.visibility =
-            if (code != 0 && isOneself && tabs?.get(binding.viewPager.currentItem)?.tag == "QUESTION") View.VISIBLE else View.GONE
+//        binding.tvBottom.visibility =
+//            if (code != 0 && isOneself && tabs?.get(binding.viewPager.currentItem)?.tag == "QUESTION") View.VISIBLE else View.GONE
     }
 
     override fun onStart() {

@@ -6,13 +6,16 @@
     <data>
 
     </data>
+
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/smartRl">
+        android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -21,65 +24,93 @@
                     android:id="@+id/appbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:elevation="0dp"
                     app:elevation="0dp"
-                    android:background="@color/color_F4"
                     app:layout_behavior="@string/circle_behavior_app_bar_layout">
+
                     <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/white"
                         app:contentScrim="@color/transparent"
-                        android:background="@color/color_F4"
                         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                        <androidx.compose.ui.platform.ComposeView
-                            android:id="@+id/composeView"
+                        <!--                        <androidx.compose.ui.platform.ComposeView-->
+                        <!--                            android:id="@+id/composeView"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            app:layout_scrollFlags="scroll|exitUntilCollapsed" />-->
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+                            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                            android:layout_height="wrap_content">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="match_parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:scaleType="center"
+                                android:background="@mipmap/ic_question_top_bg"
+                                android:layout_height="wrap_content"/>
+
+                            <include
+                                android:id="@+id/layout_top_user"
+                                layout="@layout/layout_question_top_new"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="80dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.appcompat.widget.Toolbar
                             android:id="@+id/toolbar"
                             android:layout_width="match_parent"
+                            app:contentInsetStart="@dimen/dp_0"
                             android:layout_height="wrap_content"
-                            app:layout_collapseMode="pin"
-                            app:contentInsetStart="@dimen/dp_0">
+                            app:layout_collapseMode="pin">
+
                             <include
                                 android:id="@+id/in_header"
-                                layout="@layout/header_questionlist"/>
+                                layout="@layout/header_questionlist" />
 
                         </androidx.appcompat.widget.Toolbar>
                     </com.google.android.material.appbar.CollapsingToolbarLayout>
 
                     <net.lucode.hackware.magicindicator.MagicIndicator
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:background="@color/color_F4"
                         android:id="@+id/magic_tab"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/dp_30"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:background="@color/white" />
                 </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@color/white"
                     android:paddingTop="@dimen/dp_10"
-                    android:paddingStart="@dimen/dp_20"
-                    android:paddingEnd="@dimen/dp_20"
-                    android:background="@color/color_F4"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-            <androidx.compose.ui.platform.ComposeView
-                android:id="@+id/composeView_question"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:layout_marginEnd="@dimen/dp_11"
-                android:layout_marginBottom="@dimen/dp_100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_bottom"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:paddingStart="42dp"
+                android:layout_marginBottom="40dp"
+                android:paddingEnd="42dp"
+                android:background="@drawable/bg_1700f4_100"
+                android:text="去提问"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

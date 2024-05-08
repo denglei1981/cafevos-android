@@ -130,6 +130,8 @@ data class QuestionUserInfo(
     val avater: String? = null,
     val conQaTechnicianId: String? = null,
     val conQaUjId: String? = null,
+    val memberIcon: String? = null,
+    val imags: ArrayList<Imag> = arrayListOf(),
     val identity: String = "",
     val modelCode: String? = null,
     val modelName: String? = null,

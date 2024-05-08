@@ -18,7 +18,7 @@
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="4dp"
             android:contentDescription="@string/app_name"
             android:padding="10dp"
             android:src="@mipmap/back_xhdpi"

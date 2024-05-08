@@ -62,41 +62,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:maxLines="1"
             android:text="#以心护海 探启新程"
             android:textColor="@color/color_1700f4"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@+id/tv_topic" />
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/tv_topic"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_circle"
             android:layout_width="wrap_content"
-            android:visibility="gone"
             android:layout_height="22dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_081700f4_100"
             android:drawableStart="@mipmap/ic_post_circle_left"
             android:drawablePadding="4dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:maxLines="1"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
-            android:text="探险者EXPLORER"
             android:textColor="@color/color_1700f4"
+            android:textSize="10sp"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_topic" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_post_topic"
+            tools:text="探险者EXPLORER"
+            tools:visibility="visible" />
 
         <include
             android:id="@+id/layout_pics"
             layout="@layout/item_common_pics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_circle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_circle" />
 
         <ImageView
             android:id="@+id/iv_play"

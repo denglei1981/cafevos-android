@@ -91,19 +91,18 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_pic_num"
-                android:layout_width="wrap_content"
+                android:layout_width="46dp"
                 android:layout_height="26dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/bg_home_item_video_time"
                 android:gravity="center"
-                android:paddingStart="8dp"
                 android:visibility="gone"
-                android:paddingEnd="8dp"
+                tools:visibility="visible"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_two_two_pic"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="10:12" />
+                tools:text="+2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include

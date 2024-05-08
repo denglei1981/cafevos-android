@@ -3,6 +3,6 @@
     <!-- 标签选中时的文字颜色 -->
     <item android:color="@color/color_1700f4" android:state_selected="true" />
     <!-- 标签的正常文字颜色 -->
-    <item android:color="@color/color_66" />
+    <item android:color="@color/color_d916" />
 
 </selector>

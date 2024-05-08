@@ -23,6 +23,7 @@
         android:layout_height="0dp"
         android:background="@drawable/bg_081700f4_12"
         android:visibility="gone"
+        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/img"
         app:layout_constraintLeft_toLeftOf="@+id/img"
         app:layout_constraintRight_toRightOf="@id/img"

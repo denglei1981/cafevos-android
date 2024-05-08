@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -53,7 +54,6 @@ import java.io.File
 @Route(path = ARouterCirclePath.CreateQuestionActivity)
 class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, QuestionViewModel>() {
 
-
     lateinit var postPicAdapter: AskPicAdapter
     private var selectList = ArrayList<LocalMedia>()
     private var type = 0
@@ -77,9 +77,16 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.layoutTitle.tvTitle.text = "提问"
         binding.layoutTitle.barTvOther.text = "发布"
+        binding.layoutTitle.barTvOther.textSize = 16f
         binding.layoutTitle.barTvOther.visibility = View.VISIBLE
-        binding.layoutTitle.barTvOther.background =
-            resources.getDrawable(R.drawable.question_btn_enable_release)
+        binding.layoutTitle.barTvOther.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.color_4d16
+            )
+        )
+//        binding.layoutTitle.barTvOther.background =
+//            resources.getDrawable(R.drawable.question_btn_enable_release)
 //            resources.getDrawable(R.drawable.question_btn_can_release)
 
         binding.layoutTitle.ivBack.setOnClickListener {
@@ -151,11 +158,23 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
 
     fun setReleaseBg() {
         if (TextUtils.isEmpty(title) && TextUtils.isEmpty(cotnent)) {
-            binding.layoutTitle.barTvOther.background =
-                resources.getDrawable(R.drawable.question_btn_enable_release)
+            binding.layoutTitle.barTvOther.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_4d16
+                )
+            )
+//            binding.layoutTitle.barTvOther.background =
+//                resources.getDrawable(R.drawable.question_btn_enable_release)
         } else {
-            binding.layoutTitle.barTvOther.background =
-                resources.getDrawable(R.drawable.question_btn_can_release)
+            binding.layoutTitle.barTvOther.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.color_1700F4
+                )
+            )
+//            binding.layoutTitle.barTvOther.background =
+//                resources.getDrawable(R.drawable.question_btn_can_release)
         }
 
     }
@@ -399,6 +418,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请输入5-20字的标题".toast()
                 return
             }
+
             !TextUtils.isEmpty(content) && content.length > 200 -> {
                 "请输入200字以内的内容".toast()
                 return
@@ -411,6 +431,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                 "请选择问题类型".toast()
                 return
             }
+
             !viewModel.fordRewardList.value.isNullOrEmpty() && (labelsReaward.isEmpty() || labelsReaward.size <= 0) -> {
                 "请选择打赏福币".toast()
                 return
@@ -564,6 +585,7 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
                     postPicAdapter.setList(selectList)
                     postPicAdapter.notifyDataSetChanged()
                 }
+
                 UCrop.RESULT_ERROR -> {
                     val cropError = UCrop.getError(data!!)
                 }

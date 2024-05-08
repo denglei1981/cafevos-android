@@ -58,14 +58,14 @@ class RecommendAskAdapter :
     @SuppressLint("SetTextI18n", "NewApi")
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         binding?.let {
-            it.layoutAnswer.layoutCount.tvAskFb.isVisible = false
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = true
+            it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
             it.layoutAnswer.layoutCount.tvCount.text =
                 "${item.answerCount}回答  ${item.viewVal}浏览"
             it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
                 it.layoutAnswer.apply {
-                    it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
-                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" != answer.adopt
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
 //                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
                     tvContent.isVisible = !answer.content.isNullOrEmpty()
                     tvContent.text = answer.content

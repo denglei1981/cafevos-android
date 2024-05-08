@@ -2,70 +2,46 @@ package com.changanford.circle.adapter.question
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.graphics.Color
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.ImageSpan
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.circle.R
-import com.changanford.circle.databinding.ItemQuestionBinding
-import com.changanford.circle.ui.ask.adapter.RecommendAskAdapter
-import com.changanford.circle.ui.compose.QuestionItemUI
+import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
 import com.changanford.common.bean.QuestionItemBean
+import com.changanford.common.text.addTag
+import com.changanford.common.text.addTextTag
+import com.changanford.common.text.addUrlTag
+import com.changanford.common.text.annotation.DrawableZoomType
+import com.changanford.common.text.config.TagConfig
+import com.changanford.common.text.config.Type
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.GlideUtils.loadCompress2
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.wutil.ScreenUtils
-import kotlin.math.floor
+import com.core.util.dp
+import com.core.util.sp
 
 
 class QuestionListAdapter(
     val activity: Activity,
     var identity: Int? = null,
     var personalPageType: String? = null
-) : BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemQuestionBinding>>(
-    R.layout.item_question
+) : BaseQuickAdapter<QuestionItemBean, BaseDataBindingHolder<ItemRecommendAskNoAnswerBinding>>(
+    R.layout.item_recommend_ask_no_answer
 ) {
     private val viewWidth by lazy { ScreenUtils.getScreenWidthDp(context) - 60 }
 
     //    private val dp12 by lazy { ScreenUtils.dp2px(context,12f) }
     @SuppressLint("SetTextI18n")
     override fun convert(
-        holder: BaseDataBindingHolder<ItemQuestionBinding>,
+        holder: BaseDataBindingHolder<ItemRecommendAskNoAnswerBinding>,
         itemData: QuestionItemBean
     ) {
         holder.dataBinding?.apply {
-            val position = holder.absoluteAdapterPosition
-//            WCommonUtil.setMargin(layoutRoot,0,0,0,if(identity!=1)0 else dp12)
-            layoutRoot.apply {
-                if (data.size == 1)
-                    setBackgroundResource(R.drawable.circle_white_5_bg)
-                else {
-                    when (position) {
-                        0 -> setBackgroundResource(R.drawable.shape_white_t_5dp)
-                        data.size - 1 -> setBackgroundResource(R.drawable.shape_white_b_5dp)
-                        else -> setBackgroundResource(R.color.colorWhite)
-                    }
-                }
-            }
-            val fbReward = itemData.fbReward
-            val tagName = itemData.questionTypeName
-            if (fbReward == null || fbReward == "0") {
-                val tagLength = tagName.length
-                val starStr = " ".repeat(tagLength * (if (tagLength < 2) 5 else 3))
-                val str = "$starStr\t\t\t\t${itemData.title}"
-                tvTitle.text = str
-            } else showTag(tvTitle, itemData)
-//            else setTxt(context,tvTitle,"$str    $fbNumber",fbNumber)
-            tvTag.text = tagName
-            composeView.setContent {
-                QuestionItemUI(itemData, viewWidth, position == data.size - 1, personalPageType)
-            }
+            showNoQuestion(holder.dataBinding, itemData)
             root.setOnClickListener {
                 JumpUtils.instans?.jump(
                     itemData.jumpType,
@@ -75,98 +51,96 @@ class QuestionListAdapter(
         }
     }
 
-    private fun showTag(text: AppCompatTextView?, item: QuestionItemBean) {
-        val fbNumber = item.fbReward.plus("福币")
-        val tagName = item.questionTypeName
-        val tagLength = tagName.length
-        val starStr = " ".repeat(tagLength * (if (tagLength < 2) 5 else 3))
-        val str = "$starStr\t\t\t\t${item.title} [icon] $fbNumber"
-        //先设置原始文本
-        text?.text = str
-        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
-        text?.post { //获取第一行的宽度
-            val stringBuilder: StringBuilder = StringBuilder(str)
-            //SpannableString的构建
-            val spannableString = SpannableString("$stringBuilder ")
-            val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
-            drawable?.apply {
-                val imageSpan = RecommendAskAdapter.CustomImageSpan(this)
-                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-                val strLength = spannableString.length
-                val numberLength = fbNumber.length
-                val startIndex = strLength - numberLength - 1
-                spannableString.setSpan(
-                    AbsoluteSizeSpan(30),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    ForegroundColorSpan(Color.parseColor("#E1A743")),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    imageSpan,
-                    str.lastIndexOf("["),
-                    str.lastIndexOf("]") + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                text.text = spannableString
+    private fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: QuestionItemBean) {
+        showAnswer(binding, item)
+        val picList = item.imgs?.split(",")?.filter { it != "" }
+        if (picList?.isEmpty() == false) {
+            binding?.layoutAnswer?.clPic?.isVisible = true
+            when {
+                picList.size > 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = false
+                        ivTwoOnePic.isVisible = true
+                        ivTwoTwoPic.isVisible = true
+                        ivTwoOnePic.loadCompress2(picList[0])
+                        ivTwoTwoPic.loadCompress2(picList[1])
+                        tvPicNum.isVisible = picList.size > 2
+                        tvPicNum.text = "+${picList.size - 2}"
+                    }
+                }
+
+                picList.size == 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = true
+                        ivTwoOnePic.isVisible = false
+                        ivTwoTwoPic.isVisible = false
+                        ivOnePic.loadCompress2(picList[0])
+                        tvPicNum.isVisible = picList.size > 2
+                    }
+                }
+
+                else -> {
+
+                }
             }
+        } else {
+            binding?.layoutAnswer?.clPic?.isVisible = false
+            binding?.layoutAnswer?.tvPicNum?.isVisible = false
+        }
+        binding?.layoutAskInfo?.run {
+            tvTitle.text = item.title
+            val tvConfig = TagConfig(Type.TEXT).apply {
+                text = item.questionTypeName
+                textColor = ContextCompat.getColor(context, R.color.white)
+                marginRight = 10.toIntPx()
+                backgroundColor =
+                    ContextCompat.getColor(context, R.color.color_1700F4)
+                radius = 4.dp.toFloat()
+                textSize = 10.sp.toFloat()
+                topPadding = 2.dp
+                bottomPadding = 2.dp
+            }
+            tvTitle.addTag(tvConfig)
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setTxt(context: Context, text: TextView, str: String, fbNumber: String) {
-        //先设置原始文本
-        text.text = str
-        //使用post方法，在TextView完成绘制流程后在消息队列中被调用
-        text.post { //获取第一行的宽度
-            val lineWidth = text.layout.getLineWidth(0)
-            //获取第一行最后一个字符的下标
-            val lineEnd = text.layout.getLineEnd(0)
-            //计算每个字符占的宽度
-            val widthPerChar = lineWidth / (lineEnd + 1)
-            //计算TextView一行能够放下多少个字符
-            val numberPerLine = floor((text.width / widthPerChar).toDouble()).toInt()
-            //在原始字符串中插入一个空格，插入的位置为numberPerLine - 1
-//            val stringBuilder: StringBuilder =StringBuilder(str).insert(numberPerLine - 1, " ")
-            val stringBuilder: StringBuilder =
-                if (str.length <= numberPerLine) StringBuilder(str) else StringBuilder(str).insert(
-                    numberPerLine - 1,
-                    " "
-                )
-            //SpannableString的构建
-            val spannableString = SpannableString("$stringBuilder ")
-            val drawable = ContextCompat.getDrawable(context, R.mipmap.question_fb)
-            drawable?.apply {
-                setBounds(0, 0, intrinsicWidth, intrinsicHeight)
-                val imageSpan = ImageSpan(this, ImageSpan.ALIGN_BASELINE)
-                val strLength = spannableString.length
-                val numberLength = fbNumber.length
-                val startIndex = strLength - numberLength - 1
-//                val endIndex=strLength
-                spannableString.setSpan(
-                    AbsoluteSizeSpan(30),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    ForegroundColorSpan(android.graphics.Color.parseColor("#E1A743")),
-                    startIndex,
-                    strLength,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                spannableString.setSpan(
-                    imageSpan,
-                    startIndex - 3,
-                    startIndex - 1,
-                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE
-                )
-                text.text = spannableString
+    @SuppressLint("SetTextI18n", "NewApi")
+    private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: QuestionItemBean) {
+        binding?.let {
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = true
+            it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
+            it.layoutAnswer.layoutCount.tvCount.text =
+                "${item.answerCount}回答  ${item.viewVal}浏览"
+            it.layoutAnswer.tvContent.isVisible = false
+            item.qaAnswer?.let { answer ->
+                it.layoutAnswer.apply {
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
+//                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
+                    tvContent.isVisible = !answer.content.isNullOrEmpty()
+                    tvContent.text = answer.content
+                    tvContent.addUrlTag {
+                        imageUrl =
+                            if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(
+                                answer.qaUserVO?.avater
+                            )
+                        isCircle = true
+                        imageHeight = 25.dp
+                        imageWidth = 25.dp
+                        drawableZoomType = DrawableZoomType.CUSTOM
+                        leftTopRadius = 50.dp.toFloat()
+                        rightPadding = 3.dp
+                        startGradientBackgroundColor = Color.parseColor("#F6D242")
+                        endGradientBackgroundColor = Color.parseColor("#FF52E5")
+                        position = 0
+                    }.addTextTag {
+                        leftPadding = 3.dp
+                        rightPadding = 2.dp
+                        text =
+                            " ${if (answer.qaUserVO == null) "" else answer.qaUserVO?.nickName}: "
+                        textColor = ContextCompat.getColor(context, R.color.color_9916)
+                        backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    }
+                }
             }
         }
     }

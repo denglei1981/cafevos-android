@@ -10,14 +10,16 @@ import com.changanford.common.utilext.GlideUtils
 import com.luck.picture.lib.entity.LocalMedia
 
 
-class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_video_pic_item),
+class AskPicAdapter(private val type: Int) :
+    BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.post_video_pic_item),
     DraggableModule {
 
     init {
         addChildClickViewIds(R.id.iv_delete)
     }
+
     override fun getDefItemCount(): Int {
-        return super.getDefItemCount()+1
+        return super.getDefItemCount() + 1
     }
 
     override fun getItem(position: Int): LocalMedia {
@@ -38,15 +40,16 @@ class AskPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseVie
 
         //当为添加按钮展示
         if (holder.itemViewType == 0x9843) {
-            holder.setImageResource(R.id.img, R.mipmap.add_image)
+//            holder.setImageResource(R.id.img, R.mipmap.add_image)
+            holder.setVisible(R.id.cl_add, true)
             holder.setGone(R.id.fm_tv, true)
-            holder.setGone(R.id.iv_delete,true)
-            if (getDefItemCount()==11){
-                holder.itemView.visibility=View.GONE
-            }else{
-                holder.itemView.visibility=View.VISIBLE
+            holder.setGone(R.id.iv_delete, true)
+            if (getDefItemCount() == 11) {
+                holder.itemView.visibility = View.GONE
+            } else {
+                holder.itemView.visibility = View.VISIBLE
             }
-        }else{
+        } else {
             val path = PictureUtil.getFinallyPath(item)
             GlideUtils.loadRoundLocal(
                 path,

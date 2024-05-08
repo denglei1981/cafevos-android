@@ -1,9 +1,11 @@
 package com.changanford.circle.ui.ask.activity
 
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.bumptech.glide.Glide
@@ -11,9 +13,7 @@ import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityMechainicMainBinding
 import com.changanford.circle.interf.UploadPicCallback
 import com.changanford.circle.ui.ask.pop.AnswerGoodAtDialog
-import com.changanford.circle.ui.ask.pop.CircleAskScreenDialog
 import com.changanford.circle.ui.ask.request.MechanicMainViewModel
-import com.changanford.circle.ui.ask.request.QuestionViewModel
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.QuestionData
@@ -25,7 +25,10 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.PictureUtils
-import com.changanford.common.utilext.*
+import com.changanford.common.utilext.GlideUtils
+import com.changanford.common.utilext.StatusBarUtil
+import com.changanford.common.utilext.logE
+import com.changanford.common.utilext.toast
 import com.changanford.common.widget.SelectDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
@@ -39,6 +42,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
     var circleAskScreenDialog: AnswerGoodAtDialog? = null
 
 
+    @SuppressLint("SetTextI18n")
     override fun initView() {
         StatusBarUtil.setStatusBarMarginTop(binding.layoutTitle.conTitle, this)
         binding.layoutTitle.tvTitle.text = "个人信息"
@@ -50,7 +54,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
                 R.color.color_1700f4
             )
         )
-        binding.layoutTitle.vLine.background=ContextCompat.getDrawable(this,R.color.transparent)
+        binding.layoutTitle.vLine.background = ContextCompat.getDrawable(this, R.color.transparent)
 
 //        binding.ivHeader.setOnClickListener {
 //            selectIcon()
@@ -66,7 +70,10 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
 
         binding.layoutTitle.barTvOther.setOnClickListener {
             save()
-
+        }
+        binding.etInfo.addTextChangedListener {
+            val contentSize = it?.length
+            binding.tvNum.text = "${contentSize}/30"
         }
     }
 
@@ -78,25 +85,25 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
 
         val nickName = binding.layoutNickName.tvRememberTime.text.toString().trim()
 
-        val goodAtStr=binding.layoutGoodAt.tvRememberTime.text
+        val goodAtStr = binding.layoutGoodAt.tvRememberTime.text
 
         if (TextUtils.isEmpty(info)) {
             "请填写个人资料".toast()
             return
         }
-        if(TextUtils.isEmpty(nickName)){
+        if (TextUtils.isEmpty(nickName)) {
             "请填写昵称".toast()
             return
         }
-        if(TextUtils.isEmpty(goodAtStr)){
+        if (TextUtils.isEmpty(goodAtStr)) {
             "请选择擅长类型".toast()
             return
         }
 
-        params["nickName"]=nickName
-        params["introduction"]= info
-        if(!TextUtils.isEmpty(headIconUrl)){
-            params["avater"]=headIconUrl
+        params["nickName"] = nickName
+        params["introduction"] = info
+        if (!TextUtils.isEmpty(headIconUrl)) {
+            params["avater"] = headIconUrl
         }
 
 
@@ -149,7 +156,8 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
                     // 结果回调
                     if (result.isNotEmpty()) {
                         for (media in result) {
-                            val path: String = media?.let { PictureUtil.getFinallyPath(it) }.toString()
+                            val path: String =
+                                media?.let { PictureUtil.getFinallyPath(it) }.toString()
 //                        loadCircleFilePath(path, binding.editIcon)
                             headIconPath = path
                             saveHeadIcon()
@@ -200,13 +208,16 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
                     headIconPath.logE()
                     runOnUiThread {
 //                        GlideUtils.loadBD(headIconPath,binding.ivHeader)
-                        Glide.with(this@MechanicMainActivity).load( File(headIconPath)).into(binding.ivHeader)
+                        Glide.with(this@MechanicMainActivity).load(File(headIconPath))
+                            .into(binding.ivHeader)
                     }
 //                    Glide.with(this@MechanicMainActivity).load( File(headIconPath)).into(binding.ivHeader)
                 }
+
                 override fun onUploadFailed(errCode: String) {
                     dialog.dismiss()
                 }
+
                 override fun onuploadFileprogress(progress: Long) {
                 }
             })
@@ -229,7 +240,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
             }
         })
         viewModel.changTechLiveData.observe(this, Observer {
-             this.finish()
+            this.finish()
         })
     }
 
@@ -240,11 +251,11 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
         binding.layoutNickName.tvRememberTime.setText(technicianData.nickName)
         var goodAtStri = ""
         params["questionTypeCodes"] = technicianData.questionTypeCodes
-        params["avater"]=technicianData.avater
+        params["avater"] = technicianData.avater
         technicianData.questionTypeCodes.forEach { td ->
             questionTypeList.forEach { qd ->
                 if (qd.dictValue == td) {
-                    goodAtStri = goodAtStri.plus(qd.dictLabel).plus("/")
+                    goodAtStri = goodAtStri.plus(qd.dictLabel).plus("  ")
                 }
             }
         }
@@ -269,7 +280,7 @@ class MechanicMainActivity : BaseActivity<ActivityMechainicMainBinding, Mechanic
                             var goodAdStr = ""
                             questionData.forEach {
                                 questionTypes.add(it.dictValue)
-                                goodAdStr = goodAdStr.plus(it.dictLabel + "/")
+                                goodAdStr = goodAdStr.plus(it.dictLabel + "  ")
                             }
                             if (!TextUtils.isEmpty(goodAdStr)) {
                                 val take = goodAdStr.take(goodAdStr.length - 1)
