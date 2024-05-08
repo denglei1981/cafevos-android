@@ -75,8 +75,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     var wonderfulType: Int = -1
 
 
-    var allActsCode: String = ""// 进行中
-    var allUnitCode: String = ""// 综合排序code
+    var allTimeCode: String = ""// 进行中
+    var allTypeCode: String = ""// 综合排序code
 
     companion object {
         fun newInstance(): ActsChildListFragment {
@@ -96,8 +96,8 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         searchActsResultAdapter.loadMoreModule.setOnLoadMoreListener {
             getActList(
                 true,
-                allActsCode,
-                allUnitCode
+                allTypeCode,
+                allTimeCode
             )
         }
         searchActsResultAdapter.setOnItemClickListener { adapter, view, position ->
@@ -185,11 +185,11 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
     private var xianshangEnum: List<EnumBean>? = null
 
     private fun showEmptys() {
-        binding.llEmpty.visibility = View.VISIBLE
+        headBinding.llEmpty.visibility = View.VISIBLE
     }
 
     private fun hideEmptys() {
-        binding.llEmpty.visibility = View.GONE
+        headBinding.llEmpty.visibility = View.GONE
     }
 
     override fun observe() {
@@ -209,6 +209,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                 } else {
                     if (it.data.dataList.size == 0) {
                         showEmptys()
+                        searchActsResultAdapter.setList(null)
                     } else {
                         hideEmptys()
                         searchActsResultAdapter.setNewInstance(it.data.dataList)
@@ -241,16 +242,16 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
         activityTimeStatus: String = ""
     ) // 过期，还是进行中。ON_GOING CLOSED
     {
-        this.allActsCode = orderType
-        this.allUnitCode = activityTimeStatus
+        this.allTypeCode = orderType
+        this.allTimeCode = activityTimeStatus
         viewModel.getActList(
             isLoadMore,
             cityId = cityId,
             cityName = cityName,
             wonderfulType = wonderfulType,
             official = officialCode,
-            orderType = allActsCode,
-            activityTimeStatus = allUnitCode
+            orderType = allTypeCode,
+            activityTimeStatus = allTimeCode
         )
     }
 
@@ -277,7 +278,7 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         } else {
                             -1
                         }
-                        getActList(false)
+                        getActList(false, orderType = allTypeCode, activityTimeStatus = allTimeCode)
                     }
                 }
             })
@@ -401,11 +402,11 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                         headBinding.tabs.getTabAt(0)
                             ?.customView?.findViewById<TextView>(com.changanford.home.R.id.text_view)
                             ?.text = allEnum?.message
-                        allUnitCode = allEnum?.code.toString()
+                        allTypeCode = allEnum?.code.toString()
                         getActList(
                             false,
-                            orderType = allUnitCode,
-                            activityTimeStatus = allActsCode
+                            orderType = allTypeCode,
+                            activityTimeStatus = allTimeCode
                         )
                         unitPop?.setSelectedPosition(unitPop?.getitemPosition(allEnum!!) ?: 0)
                     }
@@ -440,11 +441,11 @@ class ActsChildListFragment : BaseLoadSirFragment<FragmentActsChildBinding, Acts
                             headBinding.tabs.getTabAt(1)
                                 ?.customView?.findViewById<TextView>(com.changanford.home.R.id.text_view)
                                 ?.text = allEnum?.message
-                            allActsCode = allEnum?.code.toString()
+                            allTimeCode = allEnum?.code.toString()
                             getActList(
                                 false,
-                                orderType = allUnitCode,
-                                activityTimeStatus = allActsCode
+                                orderType = allTypeCode,
+                                activityTimeStatus = allTimeCode
                             )
                             allActsPop?.setSelectedPosition(
                                 allActsPop?.getitemPosition(allEnum!!) ?: 0
