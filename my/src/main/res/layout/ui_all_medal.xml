@@ -2,105 +2,179 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/statusbar_view_height">
+    android:orientation="vertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bg_color"
+            android:background="@color/white"
             android:elevation="0dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:elevation="0dp"
+            app:layout_behavior="@string/circle_behavior_app_bar_layout">
 
-            <include
-                android:id="@+id/medal_toolbar"
-                layout="@layout/view_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/ic_medal_top_bg"
-                android:minHeight="@dimen/dp_181"
-                app:layout_scrollFlags="scroll">
+                app:contentScrim="@color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/im_medal_with_icon"
-                    android:layout_width="@dimen/dp_81"
-                    android:layout_height="@dimen/dp_81"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:src="@mipmap/icon_mine_all_medal"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/im_medal_with_name"
-                    android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_medail_top_bg"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/im_medal_with_icon"
+                        android:layout_width="@dimen/dp_88"
+                        android:layout_height="@dimen/dp_88"
+                        android:layout_marginBottom="16dp"
+                        android:src="@mipmap/icon_mine_all_medal"
+                        app:layout_constraintBottom_toTopOf="@+id/im_medal_with_name"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/im_medal_with_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/sp_12"
+                        android:layout_marginBottom="8dp"
+                        android:text="当前未佩戴勋章"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_18"
+                        app:layout_constraintBottom_toTopOf="@+id/im_with_vip_num"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/im_with_vip_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:layout_marginBottom="25dp"
+                        android:text="2个身份"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/mine_medal"
+                        android:layout_width="@dimen/dp_76"
+                        android:layout_height="@dimen/dp_36"
+                        android:layout_marginTop="@dimen/dp_25"
+                        android:background="@drawable/shape_r_lift_18_c_ff"
+                        android:gravity="center"
+                        android:text="我的勋章"
+                        android:textColor="#01025C"
+                        android:textSize="@dimen/sp_14"
+                        android:visibility="gone"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/sp_12"
-                    android:text="当前未佩戴勋章"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_15"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/im_medal_with_icon" />
+                    android:background="@color/color_withe"
+                    app:layout_collapseMode="pin">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/im_with_vip_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:text="2个身份"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/sp_15"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/im_medal_with_name" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="25dp"
+                        android:paddingBottom="5dp">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/mine_medal"
-                    android:layout_width="@dimen/dp_76"
-                    android:layout_height="@dimen/dp_36"
-                    android:layout_marginTop="@dimen/dp_25"
-                    android:background="@drawable/shape_r_lift_18_c_ff"
-                    android:gravity="center"
-                    android:text="我的勋章"
-                    android:textColor="#01025C"
-                    android:textSize="@dimen/sp_14"
-                    android:visibility="gone"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/back_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingStart="3dp"
+                            android:paddingEnd="10dp"
+                            android:src="@mipmap/whit_left"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/toolbar_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:ellipsize="end"
+                            android:maxWidth="200dp"
+                            android:maxLines="1"
+                            android:text="会员勋章"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/toolbar_save"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:text="我的勋章"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <LinearLayout
                 android:id="@+id/tab_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginTop="@dimen/dp_20"
                 android:background="@color/white"
                 android:elevation="0dp"
-                android:gravity="bottom">
+                android:gravity="center">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_44"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
                     android:background="@color/white"
+                    android:elevation="0dp"
                     app:tabIndicator="@null"
                     app:tabIndicatorColor="@android:color/transparent"
                     app:tabIndicatorHeight="0dp"
-                    app:tabMode="fixed"
+                    app:tabMode="auto"
+                    app:tabPaddingEnd="16dp"
+                    app:tabPaddingStart="16dp"
                     app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="#161E37"
                     app:tabTextAppearance="@style/TabLayoutTextStyle"

@@ -1,6 +1,5 @@
 package com.changanford.my.ui
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
@@ -46,7 +45,7 @@ class GrowUpUI : BaseMineUI<UiGrowUpBinding, SignViewModel>() {
 
         binding.mineToolbar.toolbarSave.visibility = View.VISIBLE
         binding.mineToolbar.toolbarSave.text = "关于成长值"
-        binding.mineToolbar.toolbarSave.setTextColor(Color.parseColor("#01025C"))
+//        binding.mineToolbar.toolbarSave.setTextColor(Color.parseColor("#01025C"))
         binding.mineToolbar.toolbarSave.setOnClickListener {
             JumpUtils.instans?.jump(1, MConstant.H5_MINE_GROW_UP)
         }

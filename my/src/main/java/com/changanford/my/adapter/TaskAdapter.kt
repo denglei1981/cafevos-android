@@ -8,6 +8,8 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.bean.ItemTaskBean
 import com.changanford.common.bean.RootTaskBean
+import com.changanford.common.text.addImageTag
+import com.changanford.common.text.addTextTag
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -19,8 +21,6 @@ import com.changanford.my.databinding.ItemTaskContentBinding
 import com.changanford.my.databinding.ItemTaskTitleBinding
 import com.core.util.dp
 import com.core.util.sp
-import com.changanford.common.text.addImageTag
-import com.changanford.common.text.addTextTag
 
 /**
  *  文件名：TaskAdapter
@@ -188,14 +188,14 @@ fun GrowUpAndJifenViewHolder(
         if (isGrowUp) {
             if (item.growth < 0) {
                 it.num.text = "${item.growth}"
-                it.num.setTextColor(Color.parseColor("#1B3B89"))
+                it.num.setTextColor(Color.parseColor("#1700f4"))
             } else {
                 it.num.text = "+${item.growth}"
-                it.num.setTextColor(Color.parseColor("#333333"))
+                it.num.setTextColor(Color.parseColor("#1700f4"))
             }
         } else {
             if (item.integral < 0) {
-                it.num.setTextColor(Color.parseColor("#333333"))
+                it.num.setTextColor(Color.parseColor("#1700f4"))
                 holder.dataBinding?.num?.text = "${item.integral}"
             } else {
                 holder.dataBinding?.num?.text = "+${item.integral}"

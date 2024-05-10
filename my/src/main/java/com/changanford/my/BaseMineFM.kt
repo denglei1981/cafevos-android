@@ -97,7 +97,7 @@ abstract class BaseMineFM<VB : ViewBinding, VM : ViewModel> : BaseFragment<VB, V
                 }
                 newData?.let {
                     when {
-                        total > it.size + data.size && hasLoadMore() -> {// 总数大于获取的数据
+                        total > it.size + data.size-> {// 总数大于获取的数据
                             bindSmartLayout()?.apply { setEnableLoadMore(true) } // 加载更多
                         }
 

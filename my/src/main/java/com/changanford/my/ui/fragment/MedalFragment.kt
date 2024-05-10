@@ -55,7 +55,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
 //                            viewModel.wearMedal(item.medalId, item.medalKey)
 //                        }
 //                    }
-                    item.isGet=="1"-> {//获取
+                    item.isGet == "1" -> {//获取
                         var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
@@ -66,12 +66,15 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
                             )
                         }点亮\n$r"
                         it.imMedalIcon.alpha = 1.0f
+                        it.tvMedalName.alpha = 1.0f
                     }
+
                     else -> {//已获取
                         it.btnGetMedal.visibility = View.GONE
                         it.tvMedalDes.visibility = View.VISIBLE
                         var r: String = if (item.remark.isNullOrEmpty()) "" else item.remark
                         it.tvMedalDes.text = "暂未点亮\n$r"
+                        it.tvMedalName.alpha = 0.5f
                     }
                 }
             }

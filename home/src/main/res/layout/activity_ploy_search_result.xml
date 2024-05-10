@@ -47,8 +47,6 @@
         app:tabPadding="0dp"
         app:tabMinWidth="30dp"
         app:tabPaddingBottom="0dp"
-        app:tabPaddingEnd="11dp"
-        app:tabPaddingStart="13dp"
         app:tabPaddingTop="0dp"
         app:tabRippleColor="@color/transparent"
         app:tabSelectedTextColor="@color/blue_tab"

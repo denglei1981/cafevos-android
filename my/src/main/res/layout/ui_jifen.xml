@@ -70,6 +70,7 @@
             <include
                 android:id="@+id/rcy_jifen"
                 layout="@layout/view_recycler"
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_20"

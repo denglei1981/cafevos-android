@@ -4,6 +4,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include
@@ -14,17 +15,19 @@
             android:id="@+id/like_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="请选择您的行业"
             android:gravity="center"
+            android:text="请选择您的行业"
             android:textSize="@dimen/text_size_mid"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="4dp"
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
             android:layout_height="match_parent" />
     </LinearLayout>
 </layout>

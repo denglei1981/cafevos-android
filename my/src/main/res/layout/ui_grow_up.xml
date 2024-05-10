@@ -23,16 +23,17 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/dp_20"
-                android:paddingRight="@dimen/dp_17">
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <TextView
                     android:id="@+id/my_grade_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginTop="@dimen/dp_15"
                     android:text="福域等级"
-                    android:textColor="#081725"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_16"
                     android:textSize="@dimen/sp_18"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -42,10 +43,10 @@
                     android:id="@+id/num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_25"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:text="当前成长值0"
-                    android:textColor="#AFB3B6"
-                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/color_4d16"
+                    android:textSize="@dimen/sp_10"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/my_grade_title" />
 
@@ -54,15 +55,13 @@
                     android:id="@+id/my_update_grade"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@mipmap/growup_grade_to"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:layout_marginTop="@dimen/dp_23"
-                    android:padding="@dimen/dp_2"
+                    android:drawableRight="@mipmap/right_99"
                     android:text="去升级"
-                    android:textColor="#071726"
-                    android:textSize="@dimen/sp_13"
+                    android:textColor="@color/color_d916"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/num"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/my_grade_title" />
+                    app:layout_constraintTop_toTopOf="@+id/num" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -70,7 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_14"
-                    android:background="#F6F6F6"
+                    android:background="@drawable/bg_f6_12"
                     app:layout_constraintTop_toBottomOf="@+id/num">
 
 
@@ -78,46 +77,46 @@
                         android:id="@+id/my_grade_v"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="@dimen/dp_20"
-                        tools:text="LV0"
-                        android:textColor="#333333"
-                        android:textSize="@dimen/sp_20"
+                        android:layout_marginStart="14dp"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:textColor="@color/color_16"
+                        android:textSize="@dimen/sp_16"
                         android:textStyle="bold|italic"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="LV0" />
 
                     <TextView
                         android:id="@+id/my_grade_des"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_19"
-                        android:layout_marginTop="@dimen/dp_10"
-                        tools:text="2343"
-                        android:textColor="#AFB3B6"
-                        android:textSize="@dimen/text_size_small"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:textColor="@color/color_8016"
+                        android:textSize="@dimen/sp_10"
+                        app:layout_constraintBottom_toTopOf="@+id/my_grade_progressbar"
                         app:layout_constraintLeft_toRightOf="@+id/my_grade_v"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        tools:text="2343" />
 
                     <com.changanford.my.widget.HorizontalProgressBar
                         android:id="@+id/my_grade_progressbar"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_27"
+                        android:layout_marginEnd="47dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/my_grade_v"
                         app:layout_constraintLeft_toLeftOf="@+id/my_grade_des"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/my_grade_des" />
+                        app:layout_constraintTop_toTopOf="@+id/my_grade_v" />
 
 
                     <TextView
                         android:id="@+id/my_grade_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_1"
-                        android:layout_marginBottom="@dimen/dp_16"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="8dp"
                         android:text="0/0"
-                        android:textColor="#071726"
-                        android:textSize="@dimen/sp_13"
+                        android:textColor="@color/color_16"
+                        android:textSize="@dimen/sp_10"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="@+id/my_grade_des"
                         app:layout_constraintTop_toBottomOf="@+id/my_grade_progressbar" />
@@ -140,9 +139,10 @@
                     android:id="@+id/grow_uo_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_24"
                     android:text="成长值记录"
-                    android:textColor="#01025C"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_16"
                     android:textSize="@dimen/sp_18"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/banner" />
@@ -152,7 +152,7 @@
                     layout="@layout/view_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/grow_uo_title" />
 

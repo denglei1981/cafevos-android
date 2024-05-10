@@ -19,10 +19,9 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/im_medal_icon"
-                android:layout_width="@dimen/dp_81"
-                android:layout_height="@dimen/dp_81"
+                android:layout_width="@dimen/dp_66"
+                android:layout_height="@dimen/dp_66"
                 android:layout_marginTop="@dimen/dp_8"
-                android:src="@mipmap/ic_medal_ex"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -47,7 +46,7 @@
                     android:gravity="center_horizontal"
                     android:maxLines="1"
                     android:text="@string/app_name"
-                    android:textColor="#071726"
+                    android:textColor="@color/color_16"
                     android:textSize="@dimen/sp_14" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -60,7 +59,7 @@
                     android:lineSpacingMultiplier="1.2"
                     android:maxLines="2"
                     android:text="2021.08.31点亮\n车迷级勋章"
-                    android:textColor="#999999"
+                    android:textColor="@color/color_4d16"
                     android:textSize="@dimen/sp_10"
                     android:visibility="gone" />
 
@@ -69,7 +68,6 @@
                     android:layout_width="@dimen/dp_67"
                     android:layout_height="@dimen/dp_22"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/shape_login_sms_r_16_c_89"
                     android:gravity="center"
                     android:text="立即点亮"
                     android:textColor="#01025C"

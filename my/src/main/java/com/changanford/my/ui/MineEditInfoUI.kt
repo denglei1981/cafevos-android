@@ -6,15 +6,25 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.bean.*
+import com.changanford.common.bean.CityBean
+import com.changanford.common.bean.IndustryReturnBean
+import com.changanford.common.bean.InputBean
+import com.changanford.common.bean.RetrunLike
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.ui.ConfirmPop
+import com.changanford.common.ui.dialog.FordPaiBottomDialog
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.*
-import com.changanford.common.util.MineUtils.listPhoto
-import com.changanford.common.util.MineUtils.listSex
+import com.changanford.common.util.ConfirmTwoBtnPop
+import com.changanford.common.util.Constellation
+import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
+import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_LIKE
@@ -22,7 +32,6 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.GlideUtils.loadCircle
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
-import com.changanford.common.widget.SelectDialog
 import com.changanford.common.widget.picker.CityPicker
 import com.changanford.common.widget.picker.contract.OnAddressPickedListener
 import com.changanford.common.widget.picker.entity.CityEntity
@@ -38,9 +47,6 @@ import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
 import com.google.gson.Gson
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 /**
  *  文件名：MineEditInfoUI
@@ -184,6 +190,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 //                    binding.editAutograph.rightDesc = "${it.content}"
                     map["brief"] = it.content
                 }
+
                 2 -> {
                     binding.editEmail.rightDesc = "${it.content}"
                     map["email"] = it.content
@@ -346,11 +353,13 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     datePicker != null -> {
                         datePicker?.show()
                     }
+
                     else -> {
                         selectBirthDay()
                     }
                 }
             }
+
             R.id.edit_nickname -> clickInfo(2)
             R.id.edit_hobby -> startActivity(
                 Intent(
@@ -358,16 +367,19 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     MineLikeUI::class.java
                 ).putExtra("hobbyIds", body["hobbyIds"])
             )
+
             R.id.edit_address -> {
                 when {
                     cityBean.isNullOrEmpty() -> {
                         "请稍后再试".toast()
                     }
+
                     else -> {
                         picker?.show()
                     }
                 }
             }
+
             R.id.edit_industry -> {
                 startActivity(
                     Intent(this, MineIndustryUI::class.java).putExtra(
@@ -376,9 +388,11 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                     )
                 )
             }
+
             R.id.edit_autograph -> {
                 clickInfo(3)
             }
+
             R.id.edit_email -> {
                 startActivity(
                     Intent(this, InputUI::class.java)
@@ -393,20 +407,37 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 点击头像
      */
     private fun selectIcon() {
-        SelectDialog(
+//        SelectDialog(
+//            this,
+//            R.style.transparentFrameWindowStyle,
+//            listPhoto,
+//            "",
+//            1,
+//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+//
+//                when (i) {
+//                    0 -> takePhoto()
+//                    1 -> pic()
+//                }
+//            }
+//        ).show()
+        FordPaiBottomDialog(
             this,
-            R.style.transparentFrameWindowStyle,
-            listPhoto,
-            "",
-            1,
-            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+            "请选择图片",
+            arrayListOf("打开相册", "从相册选择"),
+            this,
+        ) { adapter, view, position ->
+            when (position) {
+                0 -> {
+                    takePhoto()
+                }
 
-                when (i) {
-                    0 -> takePhoto()
-                    1 -> pic()
+                1 -> {
+                    pic()
                 }
             }
-        ).show()
+            LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
+        }.show()
     }
 
 
@@ -414,7 +445,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 选择图片
      */
     private fun pic() {
-        PictureUtils.openHeadGarlly(this@MineEditInfoUI, 1,false,object :
+        PictureUtils.openHeadGarlly(this@MineEditInfoUI, 1, false, object :
             OnResultCallbackListener<LocalMedia?> {
             override fun onResult(result: List<LocalMedia?>) {
                 for (media in result) {
@@ -434,23 +465,26 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
      * 拍照
      */
     private fun takePhoto() {
-        PictureUtils.opencarcme(this@MineEditInfoUI, object : OnResultCallbackListener<LocalMedia?> {
-            override fun onResult(result: List<LocalMedia?>) {
-                // 结果回调
-                if (result?.isNotEmpty() == true) {
-                    for (media in result) {
-                        var path: String = media?.let { PictureUtil.getFinallyPath(it) }.toString()
+        PictureUtils.opencarcme(
+            this@MineEditInfoUI,
+            object : OnResultCallbackListener<LocalMedia?> {
+                override fun onResult(result: List<LocalMedia?>) {
+                    // 结果回调
+                    if (result?.isNotEmpty() == true) {
+                        for (media in result) {
+                            var path: String =
+                                media?.let { PictureUtil.getFinallyPath(it) }.toString()
 //                        loadCircleFilePath(path, binding.editIcon)
-                        headIconPath = path
-                        saveHeadIcon()
+                            headIconPath = path
+                            saveHeadIcon()
+                        }
                     }
                 }
-            }
 
-            override fun onCancel() {
-                // 取消
-            }
-        })
+                override fun onCancel() {
+                    // 取消
+                }
+            })
     }
 
 
@@ -513,9 +547,11 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             1 -> {//头像
                 selectIcon()
             }
+
             2 -> {//昵称
                 editNickname()
             }
+
             3 -> {//个性签名
                 startActivity(
                     Intent(this, InputUI::class.java)
@@ -557,22 +593,57 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
 
     private fun selectSex() {
-
-        SelectDialog(
+//        SelectDialog(
+//            this,
+//            R.style.transparentFrameWindowStyle,
+//            listSex,
+//            "",
+//            1,
+//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+//                binding.editSex.setRightDesc(dialogBottomBean.title)
+//                body["sex"] = dialogBottomBean.id.toString()
+//
+//                var map = HashMap<String, String>()
+//                map["sex"] = dialogBottomBean.id.toString()
+//                saveUserInfo(false, map)
+//            }
+//        ).show()
+        FordPaiBottomDialog(
             this,
-            R.style.transparentFrameWindowStyle,
-            listSex,
-            "",
-            1,
-            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-                binding.editSex.setRightDesc(dialogBottomBean.title)
-                body["sex"] = dialogBottomBean.id.toString()
+            "请选择性别",
+            arrayListOf("男", "女", "保密"),
+            this,
+        ) { adapter, view, position ->
+            when (position) {
+                0 -> {
+                    binding.editSex.rightDesc = "男"
+                    body["sex"] = "1"
 
-                var map = HashMap<String, String>()
-                map["sex"] = dialogBottomBean.id.toString()
-                saveUserInfo(false, map)
+                    val map = HashMap<String, String>()
+                    map["sex"] = "1"
+                    saveUserInfo(false, map)
+                }
+
+                1 -> {
+                    binding.editSex.rightDesc = "女"
+                    body["sex"] = "2"
+
+                    val map = HashMap<String, String>()
+                    map["sex"] = "2"
+                    saveUserInfo(false, map)
+                }
+
+                2 -> {
+                    binding.editSex.rightDesc = "保密"
+                    body["sex"] = "0"
+
+                    val map = HashMap<String, String>()
+                    map["sex"] = "0"
+                    saveUserInfo(false, map)
+                }
             }
-        ).show()
+            LiveDataBus.get().with(LiveDataBusKey.DISMISS_FORD_PAI_DIALOG).postValue("")
+        }.show()
     }
 
     /**

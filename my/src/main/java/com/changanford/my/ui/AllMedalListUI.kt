@@ -1,5 +1,6 @@
 package com.changanford.my.ui
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.Gravity
@@ -15,11 +16,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.util.room.SysUserInfoBean
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
@@ -29,10 +29,9 @@ import com.changanford.my.databinding.UiAllMedalBinding
 import com.changanford.my.ui.fragment.MedalFragment
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.gson.Gson
+import com.gyf.immersionbar.ImmersionBar
 import razerdp.basepopup.BasePopupWindow
-import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 /**
  *  文件名：AllMedalListUI
@@ -46,6 +45,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
 
 
     private var oldPosition = 0
+    private var isWhite = true//是否是白色状态
 
     private var medalItem: MedalListBeanItem? = null
 
@@ -57,9 +57,12 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     var medalDatas: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
+        ImmersionBar.with(this).statusBarDarkFont(false).init()
+        AppUtils.setStatusBarPaddingTop(binding.toolbar, this)
         updateMainGio("会员勋章页", "会员勋章页")
-        binding.medalToolbar.toolbarTitle.text = "会员勋章"
-        binding.medalToolbar.toolbarSave.apply {
+        binding.toolbarTitle.text = "会员勋章"
+
+        binding.toolbarSave.apply {
             text = "我的勋章"
             textSize = 14f
             setOnClickListener {
@@ -72,6 +75,33 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 binding.imWithVipNum.MedalNum(it)
             }
         })
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val absOffset = abs(verticalOffset).toFloat() * 4.5F
+            //滑动到高度一半不是白色状态
+            if (absOffset < appBarLayout.height * 0.3F && !isWhite) {
+                binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
+                binding.toolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.white))
+                binding.toolbarSave.setTextColor(ContextCompat.getColor(this, R.color.white))
+                isWhite = true
+                ImmersionBar.with(this).statusBarDarkFont(false).init()
+            }
+            //超过高度一半是白色状态
+            else if (absOffset > appBarLayout.height * 0.3F && isWhite) {
+                binding.backImg.setColorFilter(Color.parseColor("#000000"))
+                //图片变色
+                binding.toolbarTitle.setTextColor(ContextCompat.getColor(this, R.color.black))
+                binding.toolbarSave.setTextColor(ContextCompat.getColor(this, R.color.black))
+                isWhite = false
+                ImmersionBar.with(this).statusBarDarkFont(true).init()
+            }
+            //改变透明度
+            if (absOffset <= appBarLayout.height) {
+                val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
+                binding.toolbar.background.mutate().alpha = mAlpha
+            } else {
+                binding.toolbar.background.mutate().alpha = 255
+            }
+        }
         viewModel.allMedal.observe(this, Observer {
             it?.let { l ->
                 medalDatas.clear()
@@ -80,7 +110,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     if (item.isGet == "0" && null == medalItem) {
                         medalItem = item
                     }
-                    if (!TextUtils.isEmpty(item.isShow)&&item.isShow=="1") {
+                    if (!TextUtils.isEmpty(item.isShow) && item.isShow == "1") {
                         nowMedal(item)
                     }
                 }
@@ -101,7 +131,8 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
         viewModel.wearMedal.observe(this, Observer {
             if ("true" == it) {
                 showToast("已点亮")
-                LiveDataBus.get().with("refreshMedal", String::class.java).postValue("${medalItem?.medalId},")
+                LiveDataBus.get().with("refreshMedal", String::class.java)
+                    .postValue("${medalItem?.medalId},")
             } else {
                 showToast(it)
             }
@@ -125,6 +156,10 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     private fun nowMedal(item: MedalListBeanItem) {
         binding.imMedalWithIcon.load(item.medalImage, R.mipmap.icon_mine_all_medal)
         binding.imMedalWithName.text = "当前佩戴：${item.medalName}"
+    }
+
+    override fun isUseFullScreenMode(): Boolean {
+        return true
     }
 
     override fun onPause() {
@@ -153,11 +188,11 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     val oldIn =
                         binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (oldTitle != null) {
-                        oldTitle.textSize = 14F
+                        oldTitle.textSize = 16F
                         oldTitle.setTextColor(
                             ContextCompat.getColor(
                                 context,
-                                R.color.color_0817
+                                R.color.color_9916
                             )
                         )
                         oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
@@ -169,7 +204,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                     val newIn =
                         binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tab_in)
                     if (title != null) {
-                        title.textSize = 15F
+                        title.textSize = 18F
                         title.setTextColor(
                             ContextCompat.getColor(
                                 context,
@@ -177,7 +212,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                             )
                         )
                         //加粗
-                        title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+//                        title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                         newIn?.isSelected = true
                     }
 
@@ -191,7 +226,7 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                 //解决第一次进来item显示不完的bug
                 itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
                 if (tabPosition == 0) {
-                    itemHelpTabBinding.tvTab.textSize = 15F
+                    itemHelpTabBinding.tvTab.textSize = 18F
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
@@ -199,15 +234,15 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
                         )
                     )
                     //加粗
-                    itemHelpTabBinding.tvTab.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+//                    itemHelpTabBinding.tvTab.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                 } else {
-                    itemHelpTabBinding.tvTab.textSize = 14F
+                    itemHelpTabBinding.tvTab.textSize = 16F
                     itemHelpTabBinding.tvTab.typeface =
                         Typeface.defaultFromStyle(Typeface.NORMAL)
                     itemHelpTabBinding.tvTab.setTextColor(
                         ContextCompat.getColor(
                             context,
-                            R.color.color_0817
+                            R.color.color_9916
                         )
                     )
                 }

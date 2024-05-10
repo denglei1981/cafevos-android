@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.changanford.my.R;
-import com.changanford.my.utils.DensityUtil;
 
 
 /**
@@ -91,19 +90,19 @@ public class MineView extends LinearLayout {
 
         lineSize = ta.getInteger(R.styleable.MineView_bottom_line_size, 1);// 线的高度 默认1
         lienLeftRightMargin = ta.getInteger(R.styleable.MineView_line_left_right_margin, 1);
-        LayoutParams params =
-                new LayoutParams(LayoutParams.MATCH_PARENT, DensityUtil.dip2px(context, lineSize));
-        params.leftMargin = DensityUtil.dip2px(context, lienLeftRightMargin);
-        params.rightMargin = DensityUtil.dip2px(context, lienLeftRightMargin);
-        bottomLine.setLayoutParams(params);
+//        LayoutParams params =
+//                new LayoutParams(LayoutParams.MATCH_PARENT, DensityUtil.dip2px(context, lineSize));
+//        params.leftMargin = DensityUtil.dip2px(context, lienLeftRightMargin);
+//        params.rightMargin = DensityUtil.dip2px(context, lienLeftRightMargin);
+//        bottomLine.setLayoutParams(params);
 
-        int minHeight = ta.getInt(R.styleable.MineView_min_height, 44);
-        //要显示左边图标时 最小高度为48
-        if (isShowLeftIcon && minHeight < 44) {
-            layout.setMinimumHeight(DensityUtil.dip2px(context, 44));
-        } else {
-            layout.setMinimumHeight(DensityUtil.dip2px(context, minHeight));
-        }
+//        int minHeight = ta.getInt(R.styleable.MineView_min_height, 44);
+//        //要显示左边图标时 最小高度为48
+//        if (isShowLeftIcon && minHeight < 44) {
+//            layout.setMinimumHeight(DensityUtil.dip2px(context, 44));
+//        } else {
+//            layout.setMinimumHeight(DensityUtil.dip2px(context, minHeight));
+//        }
 
         ta.recycle();//回收
         setGravity(Gravity.CENTER_VERTICAL);

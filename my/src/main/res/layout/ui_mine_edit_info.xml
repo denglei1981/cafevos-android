@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F4F4F4"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include
@@ -19,22 +19,36 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/info"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:layout_width="match_parent"
-                    android:textColor="@color/textblack"
-                    android:textSize="@dimen/sp_12"
-                    android:gravity="center"
-                    android:background="#1A01025C"
+                    android:layout_height="40dp"
+                    android:background="#26387FFF"
+                    android:drawableStart="@mipmap/ic_mine_setting_top"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
                     android:text="完善所有资料才能获得任务奖励"
-                    android:layout_height="@dimen/dp50"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    android:textColor="@color/color_d900"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:text="基础数据"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/helay"
@@ -48,140 +62,140 @@
                         android:id="@+id/edit_name_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="18dp"
+                        android:layout_marginLeft="24dp"
                         android:text="头像"
-                        android:textColor="@color/color_00"
-                        android:textSize="@dimen/text_size_mid"
+                        android:textColor="@color/color_d916"
+                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@+id/edit_icon"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/edit_icon" />
 
                     <ImageView
                         android:id="@+id/edit_icon"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:layout_marginRight="24dp"
+                        android:layout_width="54dp"
+                        android:layout_height="54dp"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginRight="16dp"
                         android:src="@mipmap/my_headdefault"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <View
-                    android:id="@+id/edit_line1"
-                    style="@style/line"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/helay" />
-
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_nickname"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_line1"
+                    android:layout_height="wrap_content"
                     app:left_text="昵称"
-                    app:left_text_color="@color/color_00"
-                    app:line_left_right_margin="14"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
-
+                    app:left_text_color="@color/color_d916"
+                    app:right_icon="@mipmap/ic_setting_new_right"
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_autograph"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_nickname"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:left_text="个性签名"
-                    app:left_text_color="@color/color_00"
-                    app:line_left_right_margin="14"
-                    app:show_bottom_line="true" />
+                    app:left_text_color="@color/color_d916"
+                    app:right_icon="@mipmap/ic_setting_new_right"
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_sex"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_autograph"
                     app:left_text="性别"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
+                    app:right_icon="@mipmap/ic_setting_new_right"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_birthday"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_sex"
                     app:left_text="生日"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
+                    app:right_icon="@mipmap/ic_setting_new_right"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_constellation"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_birthday"
                     app:left_text="星座"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
-
+                    app:right_text="-"
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_hobby"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_constellation"
                     app:left_text="兴趣爱好"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
+                    app:right_icon="@mipmap/ic_setting_new_right"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="42dp"
+                    android:text="联系信息"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_email"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_hobby"
                     app:left_text="邮箱"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
                     app:right_text="请填写"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
 
                 <LinearLayout
                     android:id="@+id/edit_contact"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -197,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="联系方式"
-                        android:textColor="@color/color_00"
+                        android:textColor="@color/color_d916"
                         android:textSize="14sp" />
 
                     <EditText
@@ -213,7 +227,7 @@
                         android:inputType="phone"
                         android:maxLength="12"
                         android:maxLines="1"
-                        android:textColor="@color/color_00"
+                        android:textColor="@color/color_d916"
                         android:textSize="14sp"
                         android:visibility="gone" />
 
@@ -223,48 +237,58 @@
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_address"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_contact"
                     app:left_text="地区"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
+                    app:right_icon="@mipmap/ic_setting_new_right"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_industry"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_address"
                     app:left_text="行业"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
-                    app:right_icon="@mipmap/arrow_right"
+                    app:right_icon="@mipmap/ic_setting_new_right"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="42dp"
+                    android:text="其他信息"
+                    android:textColor="@color/color_16"
+                    android:textSize="18sp" />
 
                 <com.changanford.my.widget.MineView
                     android:id="@+id/edit_reg_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_industry"
                     app:left_text="注册时间"
-                    app:left_text_color="@color/color_00"
+                    app:left_text_color="@color/color_d916"
                     app:line_left_right_margin="14"
                     app:right_text="请选择"
-                    app:right_text_color="@color/color_33"
-                    app:show_bottom_line="true" />
+                    app:right_text_color="@color/color_9916"
+                    app:show_bottom_line="false" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -272,7 +296,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_19"
-                    android:drawableRight="@mipmap/ic_arrow_right_user_info"
+                    android:drawableRight="@mipmap/ic_setting_new_right"
                     android:drawablePadding="@dimen/dp_6"
                     android:padding="@dimen/dp_4"
                     android:text="长安福特员工认证"
@@ -283,7 +307,10 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edit_reg_time" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

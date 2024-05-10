@@ -4,16 +4,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_14"
-        android:paddingBottom="@dimen/dp_4">
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="注册成功"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/text_size_mid"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="2020-08-08 12:12:22"
-            android:textColor="@color/color_cc"
+            android:textColor="@color/color_4d16"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -36,6 +35,7 @@
             android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/date"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />
 
@@ -54,6 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             android:background="@color/line_default_color"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

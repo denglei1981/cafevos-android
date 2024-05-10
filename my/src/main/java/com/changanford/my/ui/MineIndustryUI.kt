@@ -5,8 +5,8 @@ import com.changanford.common.bean.IndustryReturnBean
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_INDUSTRY
 import com.changanford.my.BaseMineUI
-import com.changanford.my.databinding.*
 import com.changanford.my.adapter.MineCommAdapter
+import com.changanford.my.databinding.ViewRvBinding
 import com.changanford.my.viewmodel.SignViewModel
 
 /**
@@ -24,7 +24,7 @@ class MineIndustryUI : BaseMineUI<ViewRvBinding, SignViewModel>() {
     var industryIds: String? = null
 
     override fun initView() {
-        binding.mineToolbar.toolbarTitle.text = "行业"
+        binding.mineToolbar.toolbarTitle.text = "请选择您的行业"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
             back()
         }
