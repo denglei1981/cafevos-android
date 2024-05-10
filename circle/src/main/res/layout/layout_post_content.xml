@@ -128,14 +128,14 @@
                 android:id="@+id/tv_from"
                 android:layout_width="wrap_content"
                 android:layout_height="23dp"
-                android:background="@drawable/bg_081700f4_50"
-                android:drawableStart="@mipmap/ic_post_circle_left"
                 android:drawablePadding="3dp"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_11"
+                android:background="@drawable/bg_1a4a_25"
+                android:drawableStart="@mipmap/ic_post_circle_left_b"
+                android:textColor="@color/color_d916"
                 tools:text="来自蒙迪欧MONDEO" />
 
         </RelativeLayout>
@@ -209,13 +209,12 @@
                 android:layout_marginTop="17dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_081700f4_50"
-                android:drawableStart="@mipmap/ic_post_topic_left"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_11"
-                tools:text="#深度用车体验#（7月）" />
+                tools:text="深度用车体验#（7月）" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/post_tag"

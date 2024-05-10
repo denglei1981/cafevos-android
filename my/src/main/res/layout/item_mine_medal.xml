@@ -14,8 +14,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/medal_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
             android:src="@mipmap/ic_medal_ex" />
 
         <LinearLayout
@@ -41,8 +41,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="观星者"
-                android:textColor="#071726"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="14sp"
+                android:textColor="#071726" />
 
         </LinearLayout>
     </LinearLayout>

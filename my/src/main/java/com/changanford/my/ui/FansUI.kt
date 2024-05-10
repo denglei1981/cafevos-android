@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -60,6 +61,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
         }
 
         binding.fansRcy.rcyCommonView.adapter = fanAdapter
+        binding.fansToolbar.toolbar.setNavigationOnClickListener { finish() }
 
         viewModel.cancelTip.observe(this, Observer {
             if ("true" == it) {
@@ -71,6 +73,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                                     1, 0 -> {//互相关注变更为关注
                                         it.isMutualAttention = 100
                                     }
+
                                     100 -> {
                                         if (it.isEachOther) {
                                             it.isMutualAttention = 1
@@ -78,6 +81,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                                             it.isMutualAttention = 0
                                         }
                                     }
+
                                     else -> {
                                         it.isMutualAttention = 100
                                     }
@@ -86,6 +90,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                         }
                         fanAdapter.notifyDataSetChanged()
                     }
+
                     1 -> {
                         initRefreshData(1)
 
@@ -118,52 +123,54 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
             holder.dataBinding?.let {
                 it.itemFansName.text = item.nickname
                 it.itemFansIcon.load(item.avatar)
-                if (type == 2) {
-                    it.layout.isSelected = false
-                    it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
+                it.ivVip.isVisible = !item.memberIcon.isNullOrEmpty()
+                it.ivVip.load(item.memberIcon)
+                it.tvSubTitle.isVisible = !item.carOwner.isNullOrEmpty()
+                it.tvSubTitle.text = item.carOwner
+                if (type == 2) {//关注
+                    it.itemText.setTextColor(Color.parseColor("#80a6a6a6"))
+                    it.itemText.setBackgroundResource(R.drawable.bg_bord_80a6_23)
                     when (item.isMutualAttention) {
                         1 -> {
-                            it.itemIcon.setImageResource(0)
                             it.itemText.text = "相互关注"
                             item.isEachOther = true
                         }
+
                         100 -> {
-                            it.layout.isSelected = true
                             it.itemText.text = "关注"
-                            it.itemText.setTextColor(Color.parseColor("#01025C"))
-                            it.itemIcon.setImageResource(0)
                         }
+
                         else -> {
                             it.itemText.text = "已关注"
-                            it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
                         }
                     }
-                } else {
+                } else {//粉丝
                     when (item.isMutualAttention) {
                         1 -> {
-                            it.layout.isSelected = false
-                            it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
-                            it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
+                            it.itemText.setTextColor(Color.parseColor("#80a6a6a6"))
                             it.itemText.text = "相互关注"
+                            it.itemText.setBackgroundResource(R.drawable.bg_bord_80a6_23)
                         }
+
                         0 -> {
-                            it.layout.isSelected = true
                             it.itemText.text = "关注"
-                            it.itemText.setTextColor(Color.parseColor("#01025C"))
-                            it.itemIcon.setImageResource(0)
+                            it.itemText.setTextColor(Color.parseColor("#1700f4"))
+                            it.itemText.setBackgroundResource(R.drawable.bg_bord_1700f4_23)
                         }
 
                     }
                 }
-                it.layout.setOnClickListener {
+                it.itemText.setOnClickListener {
                     if (type == 2) {
                         when (item.isMutualAttention) {
                             1 -> {//取消关注
                                 cancel(item.authorId.toString(), "2", item.nickname)
                             }
+
                             100 -> {//关注
                                 cancel(item.authorId.toString(), "1", item.nickname)
                             }
+
                             else -> {
                                 cancel(item.authorId.toString(), "2", item.nickname)
                             }
@@ -174,6 +181,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                             1 -> {//取消
                                 cancel(item.authorId.toString(), "2", item.nickname)
                             }
+
                             0 -> {//关注
                                 cancel(item.authorId.toString(), "1", item.nickname)
                             }

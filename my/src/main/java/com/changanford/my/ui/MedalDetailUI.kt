@@ -4,6 +4,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.Observer
@@ -45,44 +46,67 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
     var indexMedalItem: Int = 0
 
     var medals: ArrayList<MedalListBeanItem> = ArrayList()
+    private var mNickName = ""
 
     override fun initView() {
 //        binding.medalToolbar.toolbarTitle.text = "勋章详情"
         AppUtils.setStatusBarMarginTop(binding.back, this)
+        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this) {
+            if (null == it || it.userJson.isNullOrEmpty()) {
+                if (MConstant.token.isNotEmpty()) {
+                    viewModel.getUserInfo()
+                }
+            } else {
+                var userInfoBean: UserInfoBean =
+                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
+                userInfoBean?.nickname?.let {
+                    mNickName = "@${it}"
+                }
+                intent?.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
+                    var medal = (it as ArrayList<MedalListBeanItem>).apply {
+                        medals.addAll(it)
+                    }
+                    intent?.extras?.getInt(RouterManger.KEY_TO_ID, 0)?.let {
+                        indexMedalItem = it
+                    }
+                    if (medal.size > 0) {
+                        setItem(indexMedalItem)
+                    }
+                    binding.banner.isAutoLoop(false)
+                    binding.banner.setAdapter(MedalAdapter(medal))
+                        .addBannerLifecycleObserver(this)
+                        .setBannerGalleryEffect(30, 18)
+                        .addOnPageChangeListener(this)
+                        .setIndicator(binding.indicator, false)
+                        .currentItem = indexMedalItem + 1
+                    //更多使用方法仔细阅读文档，或者查看demo
+                }
+            }
+        }
         binding.back.setOnClickListener {
             back()
         }
-        intent?.extras?.getSerializable(RouterManger.KEY_TO_OBJ)?.let {
-            var medal = (it as ArrayList<MedalListBeanItem>).apply {
-                medals.addAll(it)
-            }
-            intent?.extras?.getInt(RouterManger.KEY_TO_ID, 0)?.let {
-                indexMedalItem = it
-            }
-            if (medal.size > 0) {
-                setItem(indexMedalItem)
-            }
-            binding.banner.isAutoLoop(false)
-            binding.banner.setAdapter(MedalAdapter(medal))
-                .addBannerLifecycleObserver(this)
-                .setBannerGalleryEffect(30, 18)
-                .addOnPageChangeListener(this)
-                .setIndicator(binding.indicator, false)
-                .currentItem = indexMedalItem + 1
-            //更多使用方法仔细阅读文档，或者查看demo
-        }
-
         binding.btnGetMedal.setOnClickListener {
             if (indexMedalItem in 0..medals.size) {
                 var medal = medals[indexMedalItem]
                 if (null != medal && medal?.isGet == "0") {
-                    medal.let{
+                    medal.let {
                         viewModel.wearMedal(it.medalId, it.medalKey)
                     }
                 }
             }
         }
 
+        binding.vOne.setOnClickListener {
+            val nowCurrent = binding.banner.currentItem
+            val useCurrent = if (nowCurrent - 1 < 0) medals.size else nowCurrent - 1
+            binding.banner.currentItem = useCurrent
+        }
+        binding.vTwo.setOnClickListener {
+            val nowCurrent = binding.banner.currentItem
+            val useCurrent = if (nowCurrent + 1 > medals.size) 0 else nowCurrent + 1
+            binding.banner.currentItem = nowCurrent+1
+        }
         viewModel.wearMedal.observe(this, Observer {
             if ("true" == it) {
                 var medal = medals[indexMedalItem]
@@ -110,19 +134,6 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
 
     override fun initData() {
         super.initData()
-        viewModel.userDatabase.getUniUserInfoDao().getUser().observe(this, {
-            if (null == it || it.userJson.isNullOrEmpty()) {
-                if (MConstant.token.isNotEmpty()) {
-                    viewModel.getUserInfo()
-                }
-            } else {
-                var userInfoBean: UserInfoBean =
-                    Gson().fromJson(it.userJson, UserInfoBean::class.java)
-                userInfoBean?.nickname?.let {
-                    binding.nickName.text = "@${it}"
-                }
-            }
-        })
     }
 
     inner class MedalAdapter(mDatas: ArrayList<MedalListBeanItem>) :
@@ -148,7 +159,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
         ) {
             var icon: AppCompatImageView = holder.rootView.findViewById(R.id.item_medal_icon)
             icon.load(data.medalImage, R.mipmap.ic_medal_ex)
-            icon.alpha = if (data.isGet == "1") 1f else 0.3f
+//            icon.alpha = if (data.isGet == "1") 1f else 0.3f
 
             var medalName: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_title)
             medalName.text = data.medalName
@@ -158,6 +169,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
             medalAd.visibility = if (data.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
             var medalTime: AppCompatTextView = holder.rootView.findViewById(R.id.item_medal_time)
             medalTime.text = "暂未点亮"
+            holder.rootView.findViewById<TextView>(R.id.tv_nick_name).text = mNickName
             data?.getTime?.let {
                 medalTime.text = "${
                     TimeUtils.InputTimetamp(
@@ -188,6 +200,7 @@ class MedalDetailUI : BaseMineUI<UiMedalDetailBinding, SignViewModel>(),
         var medal = medals[position]
         binding.tvConTitle.text = "勋章获得条件"
         binding.tvCon.text = medal.fillCondition
+        binding.tvPagePosition.text = "${position + 1}/${medals.size}"
         if (medal.isGet == "0") {
             binding.btnGetMedal.text = "立即点亮"
             binding.btnGetMedal.visibility = View.GONE

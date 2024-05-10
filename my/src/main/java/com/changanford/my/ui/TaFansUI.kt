@@ -3,6 +3,7 @@ package com.changanford.my.ui
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -56,6 +57,7 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
         }
 
         binding.fansRcy.rcyCommonView.adapter = fanAdapter
+        binding.fansToolbar.toolbar.setNavigationOnClickListener { finish() }
 
         viewModel.cancelTip.observe(this, Observer {
             if ("true" == it) {
@@ -87,23 +89,25 @@ class TaFansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
             holder.dataBinding?.let {
                 it.itemFansName.text = item.nickname
                 it.itemFansIcon.load(item.avatar)
+                it.ivVip.isVisible = !item.memberIcon.isNullOrEmpty()
+                it.ivVip.load(item.memberIcon)
+                it.tvSubTitle.isVisible = !item.carOwner.isNullOrEmpty()
+                it.tvSubTitle.text = item.carOwner
                 when (item.isFollow) {
                     1 -> {
-                        it.layout.isSelected = false
-                        it.itemIcon.setImageResource(R.mipmap.ic_fans_check)
-                        it.itemText.setTextColor(Color.parseColor("#B0B3B5"))
+                        it.itemText.setTextColor(Color.parseColor("#80a6a6a6"))
+                        it.itemText.setBackgroundResource(R.drawable.bg_bord_80a6_23)
                         it.itemText.text = "已关注"
                     }
                     0 -> {
-                        it.layout.isSelected = true
+                        it.itemText.setTextColor(Color.parseColor("#1700f4"))
+                        it.itemText.setBackgroundResource(R.drawable.bg_bord_1700f4_23)
                         it.itemText.text = "关注"
-                        it.itemText.setTextColor(Color.parseColor("#01025C"))
-                        it.itemIcon.setImageResource(0)
                     }
                 }
-                it.layout.visibility =
+                it.itemText.visibility =
                     if (item.authorId == "${UserManger.getSysUserInfo()?.uid}") View.GONE else View.VISIBLE
-                it.layout.setOnClickListener {
+                it.itemText.setOnClickListener {
                     when (item.isFollow) {
                         1 -> {//取消
                             cancel(item.authorId.toString(), "2", item.nickname)

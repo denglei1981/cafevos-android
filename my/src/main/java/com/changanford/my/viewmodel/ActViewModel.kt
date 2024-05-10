@@ -2,8 +2,20 @@ package com.changanford.my.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.bean.*
-import com.changanford.common.net.*
+import com.changanford.common.bean.AccBean
+import com.changanford.common.bean.InfoBean
+import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.ShopBean
+import com.changanford.common.bean.UpdateActivityV2Req
+import com.changanford.common.bean.UpdateVoteReq
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import kotlinx.coroutines.launch
 
 /**
@@ -14,6 +26,9 @@ import kotlinx.coroutines.launch
  *  修改描述：TODO
  */
 class ActViewModel : ViewModel() {
+
+    val tabList = arrayListOf("全部", "精华")
+
     /**
      * 点击活动统计
      */
@@ -32,10 +47,15 @@ class ActViewModel : ViewModel() {
             }
         }
     }
+
     /**
      * 我收藏的 资讯 1
      */
-    fun queryMineCollectInfo(pageNo: Int,searchKeys:String, result: (CommonResponse<InfoBean>) -> Unit) {
+    fun queryMineCollectInfo(
+        pageNo: Int,
+        searchKeys: String,
+        result: (CommonResponse<InfoBean>) -> Unit
+    ) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
@@ -43,7 +63,7 @@ class ActViewModel : ViewModel() {
                 body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
 
-                        it["searchKeys"] =searchKeys
+                    it["searchKeys"] = searchKeys
 
                 }
                 var rkey = getRandomKey()
@@ -78,14 +98,18 @@ class ActViewModel : ViewModel() {
     /**
      * 我收藏的帖子
      */
-    fun queryMineCollectPost(pageNo: Int, searchKeys:String,result: (CommonResponse<PostBean>) -> Unit) {
+    fun queryMineCollectPost(
+        pageNo: Int,
+        searchKeys: String,
+        result: (CommonResponse<PostBean>) -> Unit
+    ) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
+                    it["searchKeys"] = searchKeys
                 }
                 var rkey = getRandomKey()
                 apiService.queryMineCollectInfo(body.header(rkey), body.body(rkey))
@@ -97,7 +121,11 @@ class ActViewModel : ViewModel() {
     /**
      * 我收藏的活动
      */
-    fun queryMineCollectAc(pageNo: Int,searchKeys:String, result: (CommonResponse<AccBean>) -> Unit) {
+    fun queryMineCollectAc(
+        pageNo: Int,
+        searchKeys: String,
+        result: (CommonResponse<AccBean>) -> Unit
+    ) {
 
         viewModelScope.launch {
             result(fetchRequest {
@@ -105,7 +133,7 @@ class ActViewModel : ViewModel() {
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
+                    it["searchKeys"] = searchKeys
 
                 }
                 var rkey = getRandomKey()
@@ -176,6 +204,7 @@ class ActViewModel : ViewModel() {
     fun queryMineSendPost(
         userId: String,
         pageNo: Int,
+        isGood: Int? = 0,
         result: (CommonResponse<PostBean>) -> Unit
     ) {
         viewModelScope.launch {
@@ -183,7 +212,7 @@ class ActViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
-                body["queryParams"] = mapOf("userId" to userId)
+                body["queryParams"] = mapOf("userId" to userId, "isGood" to isGood)
                 var rkey = getRandomKey()
                 apiService.queryMineSendPost(body.header(rkey), body.body(rkey))
             })
@@ -266,7 +295,10 @@ class ActViewModel : ViewModel() {
     /**
      * 活动重新编辑获取
      */
-    fun activityInfo4Update(wonderfulId: Int, result: (CommonResponse<UpdateActivityV2Req>) -> Unit) {
+    fun activityInfo4Update(
+        wonderfulId: Int,
+        result: (CommonResponse<UpdateActivityV2Req>) -> Unit
+    ) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
@@ -355,14 +387,18 @@ class ActViewModel : ViewModel() {
     /**
      * 我的收藏 商品
      */
-    fun queryShopCollect(pageNo: Int, searchKeys:String,result: (CommonResponse<ShopBean>) -> Unit) {
+    fun queryShopCollect(
+        pageNo: Int,
+        searchKeys: String,
+        result: (CommonResponse<ShopBean>) -> Unit
+    ) {
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
                 body["queryParams"] = HashMap<String, Any>().also {
-                    it["searchKeys"] =searchKeys
+                    it["searchKeys"] = searchKeys
 
                 }
                 var rkey = getRandomKey()
@@ -370,7 +406,6 @@ class ActViewModel : ViewModel() {
             })
         }
     }
-
 
 
 }

@@ -28,6 +28,7 @@ import com.changanford.common.util.ext.ImageOptions
 import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.createHashMap
@@ -53,12 +54,11 @@ class CircleMainBottomAdapter(context: Context) :
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomBinding>(holder.itemView)
         binding?.let {
-            binding.ivBg.setCircular(5)
-
+            binding.ivBg.setCircular(12)
             val params = binding.clContent.layoutParams as ViewGroup.MarginLayoutParams
             if (holder.layoutPosition == 0 || holder.layoutPosition == 1) {
                 params.topMargin =
-                    10.toIntPx()
+                    20.toIntPx()
             } else params.topMargin = 0
 
             binding.tvLikeNum.text = "${if (item.likesCount > 0) item.likesCount else "0"}"
@@ -113,10 +113,17 @@ class CircleMainBottomAdapter(context: Context) :
                 binding.tvCity.text = item.city
             }
 
+            val content = if (!item.title.isNullOrEmpty()) {
+                item.title
+            } else item.content
+
             if (item.isGood == 1) {
-                binding.ivVery.visibility = View.VISIBLE
+                binding.tvTitle.imageAndTextView(
+                    content,
+                    R.mipmap.ic_home_refined_item
+                )
             } else {
-                binding.ivVery.visibility = View.GONE
+                binding.tvTitle.text = content
             }
 
             if (item.itemImgHeight == 0) {
@@ -135,12 +142,6 @@ class CircleMainBottomAdapter(context: Context) :
             binding.ivBg.loadImage(
                 item.pics,
                 ImageOptions().apply { placeholder = R.mipmap.ic_def_square_img })
-
-            val content = if (!item.title.isNullOrEmpty()) {
-                item.title
-            } else item.content
-            binding.tvTitle.text = content
-
             val labelAdapter = LabelAdapter(context, 15)
             labelAdapter.setItems(item.authorBaseVo?.imags)
             binding.ryLabel.adapter = labelAdapter

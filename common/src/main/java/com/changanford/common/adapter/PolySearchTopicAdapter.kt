@@ -1,5 +1,6 @@
 package com.changanford.common.adapter
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -32,16 +33,29 @@ class PolySearchTopicAdapter(private val isShowContent: Boolean = true) :
         }
     }
 
+    fun setTopMargin(view: View, margin: Int, position: Int) {
+        val params = view.layoutParams as ViewGroup.MarginLayoutParams
+        if (isOdd(position)) {
+            params.leftMargin = margin.toIntPx()
+        } else params.leftMargin = 0
+    }
+
     private fun setMargin(binding: ItemSearchTopicBinding, item: Topic, position: Int) {
         binding.root.post {
-            val params = binding.tvIcon.layoutParams as ViewGroup.MarginLayoutParams
-            if (isOdd(position)) {
-                val leftMargin =
-                    binding.clContent.width - binding.tvIcon.width - binding.tvTitle.maxWidth - binding.ivTag.width - 4.toIntPx()
-                params.setMargins(leftMargin, 0, 0, 0)
-//                params.leftMargin = 28.toIntPx()
-            } else params.setMargins(0, 0, 0, 0)
-            binding.tvIcon.layoutParams = params
+//            val params = binding.tvTitle.layoutParams as ViewGroup.MarginLayoutParams
+            setTopMargin(binding.root,35,position)
+//            if (isOdd(position)) {
+//                val leftMargin =
+//                    binding.clContent.width  - binding.tvTitle.maxWidth - binding.ivTag.width - 4.toIntPx()
+////                params.setMargins(leftMargin, 0, 0, 0)
+//                binding.tvTitle.maxWidth=101.dp
+//                binding.tvTitle.setPadding(leftMargin,0,0,0)
+////                params.leftMargin = 28.toIntPx()
+//            } else {
+//                binding.tvTitle.maxWidth=151.dp
+//                binding.tvTitle.setPadding(0,0,0,0)
+//            }
+//            binding.tvTitle.layoutParams = params
 
             binding.apply {
                 tvTitle.text = item.name

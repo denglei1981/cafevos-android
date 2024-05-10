@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -30,6 +31,8 @@ import com.changanford.my.ui.fragment.MedalFragment
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import razerdp.basepopup.BasePopupWindow
 import kotlin.math.abs
 
@@ -57,10 +60,14 @@ class AllMedalListUI : BaseMineUI<UiAllMedalBinding, SignViewModel>() {
     var medalDatas: ArrayList<MedalListBeanItem> = ArrayList()
 
     override fun initView() {
-        ImmersionBar.with(this).statusBarDarkFont(false).init()
         AppUtils.setStatusBarPaddingTop(binding.toolbar, this)
+        lifecycleScope.launch {
+            delay(500)
+            ImmersionBar.with(this@AllMedalListUI).statusBarDarkFont(false).init()
+        }
         updateMainGio("会员勋章页", "会员勋章页")
         binding.toolbarTitle.text = "会员勋章"
+        binding.backImg.setOnClickListener { finish() }
 
         binding.toolbarSave.apply {
             text = "我的勋章"

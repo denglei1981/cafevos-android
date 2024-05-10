@@ -173,6 +173,17 @@ object MUtils {
         } else params.topMargin = 0
     }
 
+    /**
+     * 列表小于item追加margin
+     */
+    fun setTopMarginWithGra(view: View, margin: Int, position: Int,endPosition:Int) {
+        val params = view.layoutParams as ViewGroup.MarginLayoutParams
+        if (position < endPosition) {
+            params.topMargin =
+                margin.toIntPx()
+        } else params.topMargin = 0
+    }
+
     private var expand = "展开   "
     private var collapse = "收起   "
 

@@ -22,6 +22,7 @@ import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
@@ -66,6 +67,7 @@ class NewsListAdapter(
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
         val binding = DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
         binding?.let {
+            MUtils.setTopMargin(it.root,15,holder.layoutPosition)
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getPics())
         }
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)

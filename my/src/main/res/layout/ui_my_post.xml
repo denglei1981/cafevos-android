@@ -9,12 +9,23 @@
         android:id="@+id/post_toolbar"
         layout="@layout/view_toolbar" />
 
-    <include
-        android:id="@+id/rcy_post"
-        layout="@layout/view_recycler"
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="2dp" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
+    <!--    <include-->
+    <!--        android:id="@+id/rcy_post"-->
+    <!--        layout="@layout/view_recycler"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginStart="@dimen/dp_10"-->
+    <!--        android:layout_weight="1" />-->
 
 </LinearLayout>

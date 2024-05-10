@@ -16,7 +16,7 @@
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_20"
         android:text="选择勋章"
-        android:textColor="#081725"
+        android:textColor="@color/color_16"
         android:textSize="@dimen/sp_18" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -24,10 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_8"
         android:text="选择佩戴勋章，在外部展示"
-        android:textColor="#AFB3B6"
-        android:textSize="@dimen/sp_12" />
+        android:textColor="@color/color_8016"
+        android:textSize="@dimen/sp_14" />
 
     <include
         android:id="@+id/rcy_medal"

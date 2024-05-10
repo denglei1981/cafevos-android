@@ -11,6 +11,7 @@ import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.databinding.ItemMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.utilext.load
@@ -42,6 +43,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             item: MedalListBeanItem
         ) {
             holder.dataBinding?.let {
+                MUtils.setTopMarginWithGra(it.root, 20, holder.layoutPosition, 3)
                 it.imMedalIcon.load(item.medalImage, R.mipmap.ic_medal_ex)
                 it.tvMedalName.text = item.medalName
                 it.btnGetMedal.setOnClickListener(null)
@@ -107,9 +109,9 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
             medalType = it
         }
 
-        binding.rcyMedal.rcyCommonView.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rcyCommonView.layoutManager = GridLayoutManager(requireContext(), 3)
 
-        binding.rcyMedal.rcyCommonView.adapter = adapter
+        binding.rcyCommonView.adapter = adapter
 
         viewModel.wearMedal.observe(this, Observer {
             if ("true" == it) {
@@ -163,7 +165,7 @@ class MedalFragment : BaseMineFM<FmMedalBinding, SignViewModel>() {
 
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
-        return binding.rcyMedal.smartCommonLayout
+        return binding.smartCommonLayout
     }
 
     override fun hasRefresh(): Boolean {

@@ -1,30 +1,30 @@
 package com.changanford.my
 
-import android.os.Bundle
+import android.content.Context
 import android.view.View
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.circle.adapter.CircleMainBottomAdapter
-import com.changanford.common.MyApp
-import com.changanford.common.bean.DialogBottomBean
-import com.changanford.common.bean.PostDataBean
+import com.changanford.circle.R
+import com.changanford.circle.widget.titles.TopicTransitionPagerTitleView
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.manger.RouterManger.startARouter
-import com.changanford.common.manger.UserManger
-import com.changanford.common.net.onSuccess
-import com.changanford.common.net.onWithMsgFailure
-import com.changanford.common.room.PostDatabase
-import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.util.ConfirmTwoBtnPop
-import com.changanford.common.util.MConstant
-import com.changanford.common.util.MineUtils
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.common.widget.SelectDialog
+import com.changanford.common.utilext.toIntPx
 import com.changanford.my.databinding.UiMyPostBinding
+import com.changanford.my.fragment.MyPostFragment
 import com.changanford.my.viewmodel.ActViewModel
-import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import java.lang.reflect.Method
+import net.lucode.hackware.magicindicator.ViewPagerHelper
+import net.lucode.hackware.magicindicator.buildins.UIUtil
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView
 
 /**
  *  文件名：MyPostUI
@@ -36,200 +36,94 @@ import java.lang.reflect.Method
 @Route(path = ARouterMyPath.MineFollowUI)
 class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
 
-    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
-    private lateinit var mCheckForGapMethod: Method
-
-    var userId: String = ""
-    var num: Int = 0
-
-    val postAdapter: CircleMainBottomAdapter by lazy {
-        CircleMainBottomAdapter(this)
-    }
-
     override fun initView() {
         title = "我的帖子页"
 //        "${MConstant.imgcdn}".logE()
-        PostDatabase.getInstance(MyApp.mContext).getPostDao().findAll().value?.let {
-            num = it.size
-        }
+
         binding.postToolbar.toolbarTitle.text = "我的帖子"
         binding.postToolbar.toolbarSave.text = "草稿"
         binding.postToolbar.toolbarSave.visibility = View.VISIBLE
+        binding.postToolbar.toolbar.setNavigationOnClickListener { finish() }
         binding.postToolbar.toolbarSave.setOnClickListener {
             RouterManger.startARouter(ARouterMyPath.MyPostDraftUI)
         }
-        userId = UserManger.getSysUserInfo()?.uid?:""
-        mCheckForGapMethod =
-            StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
-        mCheckForGapMethod.isAccessible = true
-
-        staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
-        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-        binding.rcyPost.rcyCommonView.layoutManager = staggeredGridLayoutManager
-        binding.rcyPost.rcyCommonView.adapter = postAdapter
-
-        postAdapter.setOnItemLongClickListener { adapter, view, position ->
-            showEditDialog(position)
-            true
-        }
-
-        postAdapter.setOnItemClickListener { _, view, position ->
-            val bundle = Bundle()
-            bundle.putString("postsId", postAdapter.getItem(position).postsId.toString())
-            com.changanford.common.router.startARouter(
-                ARouterCirclePath.PostDetailsActivity,
-                bundle
-            )
-        }
+        initMagicIndicator()
+        initTabAndViewPager()
     }
 
-    /**
-     * 715 长按
-     */
-    fun showEditDialog(position: Int) {
-        var post: PostDataBean = postAdapter.getItem(position)
+    private fun initTabAndViewPager() {
+        binding.viewPager.apply {
 
-        var postList = MineUtils.postBottomList
-        var bottomBean: DialogBottomBean = postList[0]
-        when (post.isGood) {
-            1 -> {
-                bottomBean.id = 1001
-                bottomBean.title = "已加精"
-            }//已加
-            2 -> {
-                bottomBean.id = 1
-                bottomBean.title = "申请加精"
-
-            }//申请加精
-            3 -> {
-                bottomBean.id = 1001
-                bottomBean.title = "加精审核中"
-            }//申请中
-        }
-
-        SelectDialog(
-            this,
-            R.style.transparentFrameWindowStyle,
-            postList,
-            "",
-            1,
-            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-
-                var ids = ArrayList<Int>()
-                ids.add(post.postsId)
-                when (dialogBottomBean.id) {
-                    1 -> {//加精
-                        viewModel.postSetGood("${post.postsId}") {
-                            it.onSuccess {
-                                showToast("申请提交成功")
-                                initRefreshData(1)
-                            }
-                            it.onWithMsgFailure {
-                                it?.let {
-                                    showToast(it)
-                                }
-                            }
-                        }
-                    }
-                    2 -> {//编辑
-                        val bundle = Bundle()
-                        bundle.putString(
-                            "postsId", "${post.postsId}"
-                        )
-                        when (post.type) {
-                            2 -> {//图文
-                                startARouter(ARouterCirclePath.PostActivity, bundle)
-                            }
-                            3 -> {//视频
-                                startARouter(ARouterCirclePath.VideoPostActivity, bundle)
-                            }
-                            4 -> {//长图页
-                                startARouter(ARouterCirclePath.LongPostAvtivity, bundle)
-                            }
-                        }
-                        finish()
-                    }
-                    3 -> {//删除
-                        deleteItem(ids)
-                    }
+            adapter = object : FragmentPagerAdapter(
+                supportFragmentManager,
+                BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+            ) {
+                override fun getCount(): Int {
+                    return viewModel.tabList.size
                 }
+
+                override fun getItem(position: Int): Fragment {
+
+                    return MyPostFragment.newInstance(position)
+                }
+
             }
-        ).show()
-    }
-
-
-    /**
-     * 删除
-     */
-    fun deleteItem(ids: ArrayList<Int>) {
-        if (ids.size == 0) {
-            showToast("请先选择")
-            return
+            offscreenPageLimit = 1
         }
-        ConfirmTwoBtnPop(this)
-            .apply {
-                contentText.text = "是否确定删除？\n\n删除后将无法找回，请谨慎操作"
-                btnConfirm.setOnClickListener {
-                    dismiss()
-                    postDelete(ids)
-                }
-                btnCancel.setOnClickListener {
-                    dismiss()
-                }
-            }.showPopupWindow()
+
     }
 
-
-    /**
-     * 帖子删除
-     */
-    fun postDelete(ids: ArrayList<Int>) {
-        viewModel.deletePost(ids) {
-            it.onSuccess {
-                showToast("删除成功")
-                initRefreshData(1)
+    private fun initMagicIndicator() {
+        val magicIndicator = binding.magicTab
+//        magicIndicator.setBackgroundColor(Color.WHITE)
+        val commonNavigator = CommonNavigator(this)
+        commonNavigator.scrollPivotX = 0.8f
+        commonNavigator.adapter = object : CommonNavigatorAdapter() {
+            override fun getCount(): Int {
+                return viewModel.tabList.size
             }
-            it.onWithMsgFailure {
-                it?.let {
-                    showToast(it)
-                }
-            }
-        }
-    }
 
-    override fun bindSmartLayout(): SmartRefreshLayout? {
-        return binding.rcyPost.smartCommonLayout
-    }
-
-    override fun initRefreshData(pageSize: Int) {
-        super.initRefreshData(pageSize)
-        var total: Int = 0
-        viewModel.queryMineSendPost(userId, pageSize) { response ->
-            response?.data?.total?.let {
-                total = it
+            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
+                val simplePagerTitleView: SimplePagerTitleView =
+                    TopicTransitionPagerTitleView(context)
+                simplePagerTitleView.text = viewModel.tabList[index]
+//                simplePagerTitleView.textSize = 18f
+                simplePagerTitleView.setPadding(15.toIntPx(), 0, 15.toIntPx(), 0)
+                simplePagerTitleView.normalColor =
+                    ContextCompat.getColor(this@MyPostUI, R.color.color_9916)
+                simplePagerTitleView.selectedColor =
+                    ContextCompat.getColor(this@MyPostUI, R.color.circle_app_color)
+                simplePagerTitleView.setOnClickListener { binding.viewPager.currentItem = index }
+                return simplePagerTitleView
             }
-            response.onSuccess {
-                completeRefresh(it?.dataList, postAdapter, total)
+
+            override fun getIndicator(context: Context): IPagerIndicator {
+                val indicator = LinePagerIndicator(context)
+                indicator.mode = LinePagerIndicator.MODE_EXACTLY
+                indicator.lineHeight =
+                    UIUtil.dip2px(context, 2.0).toFloat()
+                indicator.lineWidth =
+                    UIUtil.dip2px(context, 30.0).toFloat()
+                indicator.roundRadius =
+                    UIUtil.dip2px(context, 0.0).toFloat()
+                indicator.top = 8
+                indicator.startInterpolator = AccelerateInterpolator()
+                indicator.endInterpolator = DecelerateInterpolator(2.0f)
+                indicator.setColors(
+                    ContextCompat.getColor(
+                        this@MyPostUI,
+                        R.color.circle_app_color
+                    )
+                )
+                return indicator
             }
         }
-    }
-
-    var isRefresh: Boolean = false
-
-    override fun onPause() {
-        super.onPause()
-        isRefresh = true
+        magicIndicator.navigator = commonNavigator
+        ViewPagerHelper.bind(magicIndicator, binding.viewPager)
     }
 
     override fun onResume() {
         super.onResume()
-        if (isRefresh) {
-            isRefresh = false
-            initRefreshData(1)
-        }
         updateMainGio("我的帖子页", "我的帖子页")
     }
 }
