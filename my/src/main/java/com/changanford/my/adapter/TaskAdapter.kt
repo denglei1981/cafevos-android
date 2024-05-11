@@ -11,6 +11,7 @@ import com.changanford.common.bean.RootTaskBean
 import com.changanford.common.text.addImageTag
 import com.changanford.common.text.addTextTag
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.gio.GIOUtils
@@ -180,6 +181,7 @@ fun GrowUpAndJifenViewHolder(
     source: String = ""
 ) {
     holder.dataBinding?.let {
+        MUtils.setTopMargin(it.root,10,holder.layoutPosition)
         it.title.text = item.actionName
         it.date.text = "${TimeUtils.MillisToStr(item.createTime)}"
         it.from.text =

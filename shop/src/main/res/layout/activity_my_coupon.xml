@@ -15,35 +15,36 @@
         <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
             android:layout_width="0dp"
-            android:background="@color/color_F4"
-            app:right_text="说明"
-            app:title_text="优惠券"
             android:layout_height="wrap_content"
+            android:background="@color/color_F4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:right_text="说明"
+            app:right_text_color="@color/color_1700f4"
+            app:title_text="优惠券" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/search_tab"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_44"
-            android:background="@color/color_F4"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top"
-            app:tabBackground="@color/transparent"
-            app:tabIndicator="@drawable/shape_coupon_indicator"
-            app:tabIndicatorHeight="8dp"
-            app:tabMode="fixed"
+            app:tabBackground="@null"
             app:tabGravity="fill"
+            app:tabIndicator="@color/transparent"
+            app:tabIndicatorColor="@color/transparent"
+            app:tabMode="fixed"
             app:tabPadding="0dp"
             app:tabPaddingBottom="0dp"
             app:tabPaddingEnd="0dp"
             app:tabPaddingStart="0dp"
             app:tabPaddingTop="0dp"
-            app:tabRippleColor="@color/transparent"
-            app:tabSelectedTextColor="@color/color_1700f4"
-            app:tabTextColor="@color/black" />
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="@color/color_1700f4" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"

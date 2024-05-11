@@ -1,89 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include
             android:id="@+id/mine_toolbar"
             layout="@layout/view_toolbar" />
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/dp_10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_weight="1"
-                style="@style/commonTextView.Normal.Black"
-                android:text="热门问题"/>
-            <TextView
-                android:id="@+id/more"
-                android:text="更多"
-                android:padding="@dimen/dp_10"
-                style="@style/commonTextView.Small.Black"/>
-            <ImageView
-                android:layout_width="@dimen/dp_10"
-                android:layout_height="@dimen/dp_10"
-                android:src="@mipmap/right_arrow_black"/>
-        </LinearLayout>
 
-        <View
-            style="@style/linelight"
-            />
-        <include
-            android:layout_height="@dimen/dp_0"
-            android:layout_weight="1"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:id="@+id/mine_refresh"
-            layout="@layout/refresh_layout" />
+            android:layout_height="@dimen/dp_44"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            app:tabBackground="@null"
+            app:tabIndicator="@null"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabRippleColor="@null"
+            app:tabSelectedTextColor="#161E37"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabTextColor="#90161E37" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
-            android:gravity="center_vertical"
             android:layout_margin="@dimen/dp_10"
-            android:background="@drawable/line_circle_bg_eee">
+            android:background="@drawable/line_circle_bg_eee"
+            android:gravity="center_vertical">
+
             <LinearLayout
                 android:id="@+id/kefu"
-                android:orientation="horizontal"
-                android:gravity="center"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <ImageView
-                    android:src="@mipmap/icon_feedback_kefu"
                     android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:padding="@dimen/dp_5"
-                    android:layout_height="@dimen/dp_30"></ImageView>
+                    android:src="@mipmap/icon_feedback_kefu" />
+
                 <TextView
                     style="@style/commonTextView.Normal.Black"
-                    android:text="客服热线"/>
+                    android:text="客服热线" />
             </LinearLayout>
+
             <View
-                android:background="#eeeeee"
                 android:layout_width="1dp"
-                android:layout_height="@dimen/dp_40"/>
+                android:layout_height="@dimen/dp_40"
+                android:background="#eeeeee" />
+
             <LinearLayout
                 android:id="@+id/yijian"
-                android:orientation="horizontal"
-                android:gravity="center"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_height="wrap_content">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <ImageView
-                    android:src="@mipmap/icon_feedback_write"
                     android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:padding="@dimen/dp_5"
-                    android:layout_height="@dimen/dp_30"></ImageView>
+                    android:src="@mipmap/icon_feedback_write" />
+
                 <TextView
                     style="@style/commonTextView.Normal.Black"
-                    android:text="意见反馈"/>
+                    android:text="意见反馈" />
             </LinearLayout>
         </LinearLayout>
-
 
 
     </LinearLayout>

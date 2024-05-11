@@ -2,8 +2,10 @@ package com.changanford.shop.ui.coupon
 
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.MyApp
@@ -22,29 +24,31 @@ import com.changanford.shop.view.TopBar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
+
 @Route(path = ARouterShopPath.CouponActivity)
 class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
-    var fragmentList: ArrayList<Fragment> = arrayListOf()
+    private var fragmentList: ArrayList<Fragment> = arrayListOf()
 
-    var titleList = mutableListOf<String>()
+    private var titleList = mutableListOf<String>()
 
-    val couponCanUseFragment: CouponCanUseFragment by lazy {
+    private val couponCanUseFragment: CouponCanUseFragment by lazy {
         CouponCanUseFragment.newInstance("1")
     }
-    val couponUseOverFragment: CouponUseOverFragment by lazy {
+    private val couponUseOverFragment: CouponUseOverFragment by lazy {
         CouponUseOverFragment.newInstance("2")
     }
-    val couponUseInvalidFragment: CouponUseInvalidFragment by lazy {
+    private val couponUseInvalidFragment: CouponUseInvalidFragment by lazy {
         CouponUseInvalidFragment.newInstance("3")
     }
+
     override fun initView() {
-        binding.layoutTop.setOnRightTvClickListener(object :TopBar.OnRightTvClickListener{
+        binding.layoutTop.setOnRightTvClickListener(object : TopBar.OnRightTvClickListener {
             override fun onRightTvClick() {
                 JumpUtils.instans?.jump(1, MConstant.COUPON_TASK_RULE)
             }
 
         })
-        binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
+        binding.layoutTop.setOnBackClickListener(object : TopBar.OnBackClickListener {
             override fun onBackClick() {
                 onBackPressed()
             }
@@ -62,38 +66,68 @@ class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
             }
         })
     }
+
     private fun selectTab(tab: TabLayout.Tab, isSelect: Boolean) {
         val mTabText = tab.customView?.findViewById<TextView>(R.id.tv_title)
+        val mView = tab.customView?.findViewById<View>(R.id.m_view)
         if (isSelect) {
+            mView?.isVisible = true
             mTabText?.isSelected = true
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
-            mTabText?.paint?.isFakeBoldText = true
-
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
+            mTabText?.textSize = 18f
+//            mTabText?.paint?.isFakeBoldText = true
         } else {
-            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.gray_999999))
-
-            mTabText?.paint?.isFakeBoldText = false// 取消加粗
-
+            mView?.isVisible = false
+            mTabText?.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_9916))
+            mTabText?.textSize = 16f
+//            mTabText?.paint?.isFakeBoldText = false// 取消加粗
         }
     }
+
     private fun initTab() {
         for (i in 0 until binding.searchTab.tabCount) {
             //寻找到控件
             val view: View = LayoutInflater.from(MyApp.mContext).inflate(R.layout.tab_coupon, null)
             val mTabText = view.findViewById<TextView>(R.id.tv_title)
+            val mView = view.findViewById<View>(R.id.m_view)
+            when (i) {
+                0 -> {
+                    val params = mTabText.layoutParams as RelativeLayout.LayoutParams
+                    params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE)
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE)
+                    mTabText.setLayoutParams(params)
+                }
 
+                1 -> {
+                    val params = mTabText.layoutParams as RelativeLayout.LayoutParams
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+                    mTabText.setLayoutParams(params)
+                }
+
+                2 -> {
+                    val params = mTabText.layoutParams as RelativeLayout.LayoutParams
+                    params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE)
+                    params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE)
+                    mTabText.setLayoutParams(params)
+                }
+            }
             mTabText.text = titleList[i]
             if (itemPunchWhat == i) {
+                mView.isVisible = true
                 mTabText.isSelected = true
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.black))
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_1700f4))
+                mTabText.textSize = 18f
             } else {
-                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.gray_999999))
+                mView.isVisible = false
+                mTabText.setTextColor(ContextCompat.getColor(MyApp.mContext, R.color.color_9916))
+                mTabText.textSize = 16f
             }
             //更改选中项样式
             //设置样式
             binding.searchTab.getTabAt(i)?.customView = view
         }
     }
+
     var itemPunchWhat: Int = 0
     override fun initData() {
         fragmentList.add(couponCanUseFragment)

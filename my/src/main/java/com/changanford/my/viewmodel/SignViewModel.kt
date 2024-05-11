@@ -7,10 +7,59 @@ import androidx.lifecycle.viewModelScope
 import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseApplication
-import com.changanford.common.bean.*
+import com.changanford.common.bean.AuthBean
+import com.changanford.common.bean.BindAuthBeanItem
+import com.changanford.common.bean.BindMobileJumpData
+import com.changanford.common.bean.CancelReasonBeanItem
+import com.changanford.common.bean.CancelVerifyBean
+import com.changanford.common.bean.CarAuthBean
+import com.changanford.common.bean.CityBeanItem
+import com.changanford.common.bean.CmcStatePhoneBean
+import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.DaySignBean
+import com.changanford.common.bean.FansListBean
+import com.changanford.common.bean.FeedbackInfoList
+import com.changanford.common.bean.FeedbackMemberBean
+import com.changanford.common.bean.FeedbackMineListBean
+import com.changanford.common.bean.FeedbackQBean
+import com.changanford.common.bean.FeedbackSettingBean
+import com.changanford.common.bean.FeedbackTagsItem
+import com.changanford.common.bean.GrowUpBean
+import com.changanford.common.bean.GrowUpQYBean
+import com.changanford.common.bean.HobbyBeanItem
+import com.changanford.common.bean.IndustryBeanItem
+import com.changanford.common.bean.LoginBean
+import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.bean.MenuBeanItem
+import com.changanford.common.bean.MessageListBean
+import com.changanford.common.bean.MessageQueryParams
+import com.changanford.common.bean.MessageStatusBean
+import com.changanford.common.bean.MonthSignBean
+import com.changanford.common.bean.MyFastInData
+import com.changanford.common.bean.RootTaskBean
+import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.SmartCodeBean
+import com.changanford.common.bean.UserIdCardBeanItem
+import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.*
-import com.changanford.common.util.*
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.StatusCode
+import com.changanford.common.net.body
+import com.changanford.common.net.bodyNoAES
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.headerNoSign
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithAllFailure
+import com.changanford.common.net.onWithMsgFailure
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.AppUtils
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.USER_LOGIN_STATUS
 import com.changanford.common.util.gio.setTrackCmcUserId
@@ -30,8 +79,7 @@ import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.leolin.shortcutbadger.ShortcutBadger
-import java.util.*
-import kotlin.collections.HashMap
+import java.util.TreeMap
 
 /**
  *  文件名：SignViewModel
@@ -186,6 +234,20 @@ class SignViewModel : ViewModel() {
             fetchRequest {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = "1"
+                body["pageSize"] = "20"
+                var rKey = getRandomKey()
+                apiService.getFeedbackQ(body.header(rKey), body.body(rKey))
+            }.onSuccess {
+                _feedBackBean.postValue(it)
+            }
+        }
+    }
+
+    fun getFeedbackPage(pageNo: Int) {
+        viewModelScope.launch {
+            fetchRequest {
+                var body = HashMap<String, Any>()
+                body["pageNo"] = "$pageNo"
                 body["pageSize"] = "20"
                 var rKey = getRandomKey()
                 apiService.getFeedbackQ(body.header(rKey), body.body(rKey))

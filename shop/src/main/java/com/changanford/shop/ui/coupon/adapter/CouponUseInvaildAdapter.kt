@@ -7,14 +7,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
-import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.widget.loadmore.TheHellLoadMoreView
 import com.changanford.shop.R
-import com.changanford.shop.databinding.ItemCanUseCouponBinding
 import com.changanford.shop.databinding.ItemCanUseInvalidCouponBinding
-import com.changanford.shop.databinding.ItemCanUseOverCouponBinding
-import com.changanford.shop.utils.DateTimeUtil
 
 class CouponUseInvaildAdapter() :
     BaseQuickAdapter<CouponsItemBean, BaseDataBindingHolder<ItemCanUseInvalidCouponBinding>>(R.layout.item_can_use_invalid_coupon),
@@ -29,8 +26,7 @@ class CouponUseInvaildAdapter() :
         item: CouponsItemBean
     ) {
         holder.dataBinding?.apply {
-
-
+            MUtils.setTopMargin(root, 15, holder.layoutPosition)
             tvMoney.text = item.getShowMoney()
             tvExtendsTips.text = item.getBottomTips()
             tvGoodsTitle.text = item.couponName

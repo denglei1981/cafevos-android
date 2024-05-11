@@ -13,12 +13,26 @@ import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.DraggableModule
+import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.basic.adapter.BaseAdapterOneLayout
-import com.changanford.common.bean.*
+import com.changanford.common.bean.Condition
+import com.changanford.common.bean.FeedbackItem
+import com.changanford.common.bean.FeedbackMineListItem
+import com.changanford.common.bean.FeedbackTagsItem
+import com.changanford.common.bean.HobbyBeanItem
+import com.changanford.common.bean.HobbyItem
+import com.changanford.common.bean.IndustryBeanItem
+import com.changanford.common.bean.IndustryItemBean
+import com.changanford.common.bean.RoundBean
 import com.changanford.common.databinding.ItemUniAuthConditionBinding
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
@@ -34,7 +48,13 @@ import com.changanford.common.utilext.GlideUtils.loadRoundFilePath
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toast
 import com.changanford.my.R
-import com.changanford.my.databinding.*
+import com.changanford.my.databinding.ItemFeedbackLabelBinding
+import com.changanford.my.databinding.ItemFeedbackListBinding
+import com.changanford.my.databinding.ItemFeedbackRecordBinding
+import com.changanford.my.databinding.ItemHangyeBinding
+import com.changanford.my.databinding.ItemLikeOneBinding
+import com.changanford.my.databinding.ItemSignmonthdayBinding
+import com.changanford.my.databinding.ItemUniUserBinding
 import com.changanford.my.ui.UserAuthUI
 import com.changanford.my.viewmodel.SignViewModel
 import com.donkingliang.labels.LabelsView
@@ -227,7 +247,7 @@ object MineCommAdapter {
      */
 
     class FeedbackAdapter constructor(var layoutId: Int) :
-        BaseQuickAdapter<FeedbackItem, BaseDataBindingHolder<ItemFeedbackListBinding>>(layoutId) {
+        BaseQuickAdapter<FeedbackItem, BaseDataBindingHolder<ItemFeedbackListBinding>>(layoutId),LoadMoreModule {
 
         private lateinit var isStart: IntArray
 
@@ -266,6 +286,13 @@ object MineCommAdapter {
         override fun addData(newData: Collection<FeedbackItem>) {
             super.addData(newData)
             isStart = IntArray(newData.size)
+        }
+
+        override fun setList(list: Collection<FeedbackItem>?) {
+            super.setList(list)
+            list?.let {
+                isStart=IntArray(it.size)
+            }
         }
 
         fun setStyle(

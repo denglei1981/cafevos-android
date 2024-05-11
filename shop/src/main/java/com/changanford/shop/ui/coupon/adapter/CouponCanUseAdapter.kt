@@ -6,13 +6,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.widget.loadmore.TheHellLoadMoreView
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemCanUseCouponBinding
 import com.changanford.shop.ui.coupon.UseCouponsActivity
-import com.changanford.shop.utils.DateTimeUtil
 
 class CouponCanUseAdapter() :
     BaseQuickAdapter<CouponsItemBean, BaseDataBindingHolder<ItemCanUseCouponBinding>>(R.layout.item_can_use_coupon),
@@ -27,8 +27,9 @@ class CouponCanUseAdapter() :
         item: CouponsItemBean
     ) {
         holder.dataBinding?.apply {
+            MUtils.setTopMargin(root, 15, holder.layoutPosition)
             GlideUtils.loadBD(item.img, imgGoodsCover)
-            tvUseNow.text = "立即使用"
+            tvUseNow.text = "去使用"
             GlideUtils.loadBD(item.markImg, ivVipTips)
             tvMoney.text = item.getShowMoney()
             tvExtendsTips.text = item.getBottomTips()

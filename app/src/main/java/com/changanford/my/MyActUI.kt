@@ -1,6 +1,5 @@
 package com.changanford.my
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.widget.TextView
@@ -10,19 +9,15 @@ import androidx.lifecycle.Observer
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.home.data.PublishData
 import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiMyActBinding
 import com.changanford.my.viewmodel.MyActUiViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import java.lang.Exception
 
 /**
  *  文件名：MyActUI
@@ -48,7 +43,7 @@ class MyActUI : BaseMineUI<UiMyActBinding, MyActUiViewModel>() {
         title = "我的活动页"
         binding.collectToolbar.toolbarTitle.text = "我的活动"
         binding.collectToolbar.toolbarSave.text = "草稿箱"
-        binding.collectToolbar.toolbarSave.setTextColor(Color.parseColor("#1B3B89"))
+        binding.collectToolbar.toolbarSave.setTextColor(ContextCompat.getColor(this,R.color.color_1700F4))
         binding.collectToolbar.toolbarSave.visibility = View.VISIBLE
         binding.collectToolbar.toolbarSave.setOnClickListener {
             RouterManger.param("act",true).startARouter(ARouterMyPath.MyPostDraftUI)

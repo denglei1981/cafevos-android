@@ -7,7 +7,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.painter.Painter
 import com.alibaba.fastjson.JSON
 import com.changanford.common.util.SpannableStringUtils
-import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
@@ -1105,7 +1104,7 @@ data class CouponsItemBean(
     }
 
     private fun getCouponNum(): String {
-        return "劵编号 ".plus(couponRecordId).plus("\n")
+        return "劵编号 ".plus(couponRecordId).plus("")
     }
 
     fun getBottomTips(): String {

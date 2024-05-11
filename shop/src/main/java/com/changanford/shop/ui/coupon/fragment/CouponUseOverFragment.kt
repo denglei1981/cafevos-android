@@ -2,13 +2,9 @@ package com.changanford.shop.ui.coupon.fragment
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.changanford.common.basic.BaseFragment
 import com.changanford.common.basic.BaseLoadSirFragment
 import com.changanford.common.utilext.toastShow
-import com.changanford.common.widget.loadmore.TheHellLoadMoreView
-import com.changanford.shop.databinding.BaseRecyclerViewBinding
 import com.changanford.shop.databinding.BaseRecyclerViewGrayBinding
-import com.changanford.shop.ui.coupon.adapter.CouponCanUseAdapter
 import com.changanford.shop.ui.coupon.adapter.CouponUseOverAdapter
 import com.changanford.shop.ui.coupon.request.CouponViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -18,11 +14,9 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, CouponViewModel>(),
     OnRefreshListener {
 
-    val couponCanUseAdapter: CouponUseOverAdapter by lazy {
+    private val couponCanUseAdapter: CouponUseOverAdapter by lazy {
         CouponUseOverAdapter()
-
     }
-
 
     companion object {
         fun newInstance(type: String): CouponUseOverFragment {

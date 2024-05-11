@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.changanford.common.utilext.toIntPx
 import com.changanford.shop.R
 import com.luck.picture.lib.tools.ScreenUtils
 
@@ -41,7 +42,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.TopBar)
         val bgColor = typedArray.getResourceId(R.styleable.TopBar_bg_color, R.color.transparent)
         val backIcon =
-            typedArray.getResourceId(R.styleable.TopBar_back_icon, R.mipmap.shop_back_black)
+            typedArray.getResourceId(R.styleable.TopBar_back_icon, R.mipmap.ic_left_back_gray)
         val rightIcon = typedArray.getResourceId(R.styleable.TopBar_right_icon, 0)
         val titleText = typedArray.getString(R.styleable.TopBar_title_text)
         val titleColor = typedArray.getResourceId(R.styleable.TopBar_title_color, R.color.color_33)
@@ -56,7 +57,7 @@ class TopBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = 
 
         layoutHeader.setPadding(
             0,
-            ScreenUtils.getStatusBarHeight(context) + 10,
+            ScreenUtils.getStatusBarHeight(context) + 10.toIntPx(),
             0,
             ScreenUtils.dip2px(context, 10f)
         )

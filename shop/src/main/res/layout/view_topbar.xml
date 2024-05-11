@@ -9,9 +9,9 @@
     android:id="@+id/layout_topbar">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_back"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_20"
-        android:src="@mipmap/back_xhdpi"
+        android:paddingStart="14dp"
+        android:paddingEnd="16dp"
+        android:src="@mipmap/ic_left_back_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
@@ -19,7 +19,7 @@
     <com.changanford.shop.view.TypefaceTextView
         android:id="@+id/tv_title"
         android:textSize="@dimen/sp_18"
-        android:textColor="@color/color_33"
+        android:textColor="@color/color_00"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_title"
         app:layout_constraintBottom_toBottomOf="@id/tv_title"
-        android:paddingEnd="@dimen/dp_20"
+        android:paddingEnd="16dp"
         android:paddingStart="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
