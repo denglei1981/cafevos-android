@@ -216,6 +216,7 @@ data class InfoDataBean(
     val artId: String = "",
     var authors: AuthorBaseVo? = null,
     val catId: Int = 0,
+    var isCheck: Boolean = false,
     val collectCount: Int = 0,
     var commentCount: Long = 0L,
     val content: String = "",
@@ -341,7 +342,7 @@ data class InfoDataBean(
 
 @Parcelize
 data class AuthorBaseVo(
-    val authorId: String="",
+    val authorId: String = "",
     val avatar: String = "",
     val imags: ArrayList<Imag> = arrayListOf(),
     var isFollow: Int = 0, //1 是已关注
@@ -450,7 +451,7 @@ data class PostDataBean(
     var addrName: String? = ""
 ) {
 
-    fun plusCityAddr():String{
+    fun plusCityAddr(): String {
         return if (!city.isNullOrEmpty()) {
             "${city} · ${addrName}"
         } else ({

@@ -7,7 +7,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
@@ -38,6 +37,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -79,7 +79,12 @@ object MineCommAdapter {
                             it.des.text = "未满足"
                             it.des.setTextColor(Color.parseColor("#999999"))
                             it.des.setOnClickListener(null)
-                            it.des.setCompoundDrawablesWithIntrinsicBounds(0,0,0,R.mipmap.arrow_right_5c)
+                            it.des.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                0,
+                                R.mipmap.arrow_right_5c
+                            )
                         } else {
                             it.des.text = "${item.noConditionName}"
                             it.des.setTextColor(Color.parseColor("#01025C"))
@@ -92,11 +97,12 @@ object MineCommAdapter {
                         }
                         LiveDataBus.get().with("isCondition", Boolean::class.java).postValue(false)
                     }
+
                     "1" -> {
                         it.des.text = "已满足"
                         it.des.setTextColor(Color.parseColor("#999999"))
                         it.des.setOnClickListener(null)
-                        it.des.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0)
+                        it.des.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     }
                 }
             }
@@ -247,15 +253,16 @@ object MineCommAdapter {
      */
 
     class FeedbackAdapter constructor(var layoutId: Int) :
-        BaseQuickAdapter<FeedbackItem, BaseDataBindingHolder<ItemFeedbackListBinding>>(layoutId),LoadMoreModule {
+        BaseQuickAdapter<FeedbackItem, BaseDataBindingHolder<ItemFeedbackListBinding>>(layoutId),
+        LoadMoreModule {
 
-        private lateinit var isStart: IntArray
+        var isShowContent: Boolean = false
 
         override fun convert(
             holder: BaseDataBindingHolder<ItemFeedbackListBinding>,
             item: FeedbackItem
         ) {
-
+            holder.dataBinding?.root?.let { MUtils.setTopMargin(it, 15, holder.layoutPosition) }
             holder.dataBinding?.itemQ?.text = "Q${holder.adapterPosition + 1}"
             holder.dataBinding?.title?.text = "${item.questionName}"
             holder.dataBinding?.des?.text = "${item.questionContent}"
@@ -267,9 +274,7 @@ object MineCommAdapter {
                     holder.dataBinding?.checkbox!!,
                     holder.dataBinding?.des!!,
                     holder.dataBinding?.title!!,
-                    holder.adapterPosition
                 )
-                isStart[holder.adapterPosition]++
             }
 
             holder.dataBinding?.title?.setOnClickListener {
@@ -277,32 +282,39 @@ object MineCommAdapter {
                     holder.dataBinding?.checkbox!!,
                     holder.dataBinding?.des!!,
                     holder.dataBinding?.title!!,
-                    holder.adapterPosition
                 )
-                isStart[holder.adapterPosition]++
+            }
+            if (isShowContent) {
+                holder.dataBinding?.apply {
+                    checkbox.animate().rotation(-180F)
+                    des.visibility = View.VISIBLE
+                    title.isSingleLine = false
+                }
+            } else {
+                holder.dataBinding?.apply {
+                    title.isSingleLine = true
+                    title.ellipsize = TextUtils.TruncateAt.END
+                    checkbox.animate().rotation(0F)
+                    des.visibility = View.GONE
+                }
             }
         }
 
         override fun addData(newData: Collection<FeedbackItem>) {
             super.addData(newData)
-            isStart = IntArray(newData.size)
         }
 
         override fun setList(list: Collection<FeedbackItem>?) {
             super.setList(list)
-            list?.let {
-                isStart=IntArray(it.size)
-            }
         }
 
-        fun setStyle(
+        private fun setStyle(
             checkbox: ImageView,
             contentText: TextView,
             textView: TextView,
-            position: Int
         ) {
             //箭头旋转  描述隐藏或者显示
-            if (isStart[position] % 2 == 0) {
+            if (checkbox.rotation == 0f) {
                 checkbox.animate().rotation(-180F)
                 contentText.visibility = View.VISIBLE
                 textView.isSingleLine = false
@@ -362,7 +374,7 @@ object MineCommAdapter {
             holder.dataBinding?.let {
                 if (item.path.isNullOrEmpty()) {
                     it.delete.visibility = View.GONE
-                    it.itemIcon.setImageResource(R.mipmap.icon_add)
+                    it.itemIcon.setImageResource(R.mipmap.ic_add_img_feedback)
                     it.itemIcon.setOnClickListener {
                         iconClick.callback(null)
                     }
@@ -459,31 +471,34 @@ object MineCommAdapter {
             when (item.isReply) {
                 0 -> {
                     binding.tvType.text = "[待回复]"
-                    binding.tvType.setTextColor(
-                        ContextCompat.getColor(
-                            mContext,
-                            R.color.mine_other
-                        )
-                    )
+//                    binding.tvType.setTextColor(
+//                        ContextCompat.getColor(
+//                            mContext,
+//                            R.color.mine_other
+//                        )
+//                    )
                 }
+
                 1 -> {
                     binding.tvType.text = "[已回复]"
-                    binding.tvType.setTextColor(
-                        ContextCompat.getColor(
-                            mContext,
-                            R.color.mine_other
-                        )
-                    )
+//                    binding.tvType.setTextColor(
+//                        ContextCompat.getColor(
+//                            mContext,
+//                            R.color.mine_other
+//                        )
+//                    )
                 }
+
                 2 -> {
                     binding.tvType.text = "[已关闭]"
-                    binding.tvType.setTextColor(
-                        ContextCompat.getColor(
-                            mContext,
-                            R.color.mine_close
-                        )
-                    )
+//                    binding.tvType.setTextColor(
+//                        ContextCompat.getColor(
+//                            mContext,
+//                            R.color.mine_close
+//                        )
+//                    )
                 }
+
                 else -> {
 
                 }
@@ -542,7 +557,7 @@ object MineCommAdapter {
                 }
                 if (TimeUtils.dayBefore(item.date)) {//在之前
                     if (item.isSignIn == 0) {//没有
-                        if (TimeUtils.isToday(item.date)){//今天没签到
+                        if (TimeUtils.isToday(item.date)) {//今天没签到
                             icon.load(R.mipmap.icon_sign_unreachday)
                             word.text = item.integral?.let {
                                 when (it > 0) {
@@ -571,7 +586,8 @@ object MineCommAdapter {
                                                 body.body(rkey)
                                             )
                                         }.onSuccess {
-                                            LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_FIX).postValue(holder.layoutPosition)
+                                            LiveDataBus.get().with(LiveDataBusKey.MINE_SIGN_FIX)
+                                                .postValue(holder.layoutPosition)
                                         }.onWithMsgFailure {
                                             it?.toast()
                                         }

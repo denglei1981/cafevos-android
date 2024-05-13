@@ -67,8 +67,14 @@ class RecommendAskAdapter :
                 it.layoutAnswer.apply {
                     it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
 //                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
-                    tvContent.isVisible = !answer.content.isNullOrEmpty()
-                    tvContent.text = answer.content
+                    tvContent.isVisible =
+                        !answer.content.isNullOrEmpty() || !answer.answerContents.isNullOrEmpty()
+                    tvContent.text =
+                        if (!answer.content.isNullOrEmpty()) answer.content else if (!answer.answerContents.isNullOrEmpty()) {
+                            answer.answerContents[0].imgDesc
+                        } else {
+                            ""
+                        }
                     tvContent.addUrlTag {
                         imageUrl =
                             if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(

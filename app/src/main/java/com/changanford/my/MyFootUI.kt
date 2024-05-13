@@ -2,9 +2,12 @@ package com.changanford.my
 
 import android.graphics.Typeface
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -14,7 +17,8 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
-import com.changanford.my.databinding.ItemMedalTabBinding
+import com.changanford.common.utilext.toIntPx
+import com.changanford.my.databinding.ItemFootTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -30,6 +34,8 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     private val titles = arrayListOf("资讯", "帖子", "活动", "商品")
     private var oldPosition = 0
+    private var nowPosition = 0
+    private val manageType = MutableLiveData<Int>()
 
     override fun onResume() {
         super.onResume()
@@ -47,6 +53,87 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
             showContent()
         }
         initViewpager()
+        manageType.observe(this) {
+            when (it) {
+                0 -> {
+                    binding.viewpager.setPadding(0, 0, 0, 0)
+                    binding.rlDelete.isVisible = false
+                    binding.collectToolbar.toolbarSave.text = "管理"
+                }
+
+                else -> {
+                    binding.viewpager.setPadding(0, 0, 0, 74.toIntPx())
+                    binding.rlDelete.isVisible = true
+                    binding.collectToolbar.toolbarSave.text = "完成"
+                }
+            }
+            refreshBottomFragment(nowPosition)
+        }
+        binding.collectToolbar.toolbarSave.setOnClickListener {
+            if (manageType.value == 0) {
+                manageType.value = 1
+            } else {
+                manageType.value = 0
+            }
+        }
+        binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.white))
+                binding.tvDelete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_shape_1700f4_23)
+            } else {
+                binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
+                binding.tvDelete.background =
+                    ContextCompat.getDrawable(this, R.drawable.bg_shape_80a6_23)
+            }
+        }
+        binding.checkbox.setOnClickListener {
+            refreshBottomDataFragment(nowPosition, binding.checkbox.isChecked)
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_FOOT_CHECK).observe(this) {
+            binding.checkbox.isChecked = it
+        }
+    }
+
+    private fun refreshBottomDataFragment(position: Int, isAll: Boolean) {
+        when (position) {
+            0 -> {//资讯
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_INFORMATION_DATA).postValue(isAll)
+            }
+
+            1 -> {//帖子
+
+            }
+
+            2 -> {//活动
+
+            }
+
+            3 -> {//商品
+
+            }
+        }
+    }
+
+    private fun refreshBottomFragment(position: Int) {
+        when (position) {
+            0 -> {//资讯
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_INFORMATION_FRAGMENT)
+                    .postValue(manageType.value == 1)
+            }
+
+            1 -> {//帖子
+
+            }
+
+            2 -> {//活动
+
+            }
+
+            3 -> {//商品
+
+            }
+        }
     }
 
     private fun initViewpager() {
@@ -63,15 +150,19 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                         0 -> {
                             InformationFragment.newInstance("footInformation")
                         }
+
                         1 -> {
                             PostFragment.newInstance("footPost")
                         }
+
                         2 -> {
                             ActFragment.newInstance("footAct")
                         }
+
                         3 -> {
                             MyShopFragment.newInstance("footShop")
                         }
+
                         else -> {
                             PostFragment.newInstance("$position")
                         }
@@ -82,6 +173,10 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    nowPosition = position
+                    manageType.value = 0
+                    refreshBottomFragment(oldPosition)
+                    refreshBottomDataFragment(oldPosition, false)
                     val oldTitle =
                         binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tv_tab)
                     val oldIn =
@@ -120,10 +215,50 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
             })
 
             TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, tabPosition ->
-                val itemHelpTabBinding = ItemMedalTabBinding.inflate(layoutInflater)
+                val itemHelpTabBinding = ItemFootTabBinding.inflate(layoutInflater)
                 itemHelpTabBinding.tvTab.text = titles[tabPosition]
                 //解决第一次进来item显示不完的bug
                 itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
+                //tabLayout左右对齐
+                when (tabPosition) {
+                    0 -> {
+                        val params =
+                            itemHelpTabBinding.tvTab.layoutParams as RelativeLayout.LayoutParams
+                        params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE)
+                        params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE)
+                        itemHelpTabBinding.tvTab.setLayoutParams(params)
+                    }
+
+                    1 -> {
+                        val params =
+                            itemHelpTabBinding.tvTab.layoutParams as RelativeLayout.LayoutParams
+                        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+                        itemHelpTabBinding.tvTab.setLayoutParams(params)
+                        itemHelpTabBinding.tvTab.setPadding(0, 0, 15.toIntPx(), 0)
+                    }
+
+                    2 -> {
+                        val params =
+                            itemHelpTabBinding.tvTab.layoutParams as RelativeLayout.LayoutParams
+                        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
+                        itemHelpTabBinding.tvTab.setLayoutParams(params)
+                        itemHelpTabBinding.tvTab.setPadding(15.toIntPx(), 0, 0, 0)
+
+                        val tabInLayoutParam =
+                            itemHelpTabBinding.tabIn.layoutParams as RelativeLayout.LayoutParams
+                        tabInLayoutParam.leftMargin = 18.toIntPx()
+                        itemHelpTabBinding.tabIn.layoutParams = tabInLayoutParam
+
+                    }
+
+                    3 -> {
+                        val params =
+                            itemHelpTabBinding.tvTab.layoutParams as RelativeLayout.LayoutParams
+                        params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE)
+                        params.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE)
+                        itemHelpTabBinding.tvTab.setLayoutParams(params)
+                    }
+                }
                 if (tabPosition == 0) {
                     itemHelpTabBinding.tvTab.textSize = 15F
                     itemHelpTabBinding.tvTab.setTextColor(

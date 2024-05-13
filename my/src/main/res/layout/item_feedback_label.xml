@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:button="@null"
-        android:drawableLeft="@drawable/checkbox"
+        android:drawableLeft="@drawable/my_car_check_box"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
         android:text="操作问题"

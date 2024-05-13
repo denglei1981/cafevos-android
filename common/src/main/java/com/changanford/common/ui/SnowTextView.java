@@ -6,7 +6,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -14,7 +13,7 @@ import androidx.annotation.Nullable;
  * Created by Administrator on 2018/5/31.
  */
 
-public class SnowTextView extends TextView {
+public class SnowTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public SnowTextView(Context context) {
         this(context, null);

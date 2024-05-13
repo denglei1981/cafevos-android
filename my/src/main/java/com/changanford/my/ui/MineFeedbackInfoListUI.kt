@@ -9,6 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -16,7 +18,12 @@ import com.changanford.common.bean.FeedbackInfoItem
 import com.changanford.common.bean.FeedbackMemberBean
 import com.changanford.common.chat.adapter.BottomMenuAdapter
 import com.changanford.common.chat.adapter.ChatAdapter
-import com.changanford.common.chat.bean.*
+import com.changanford.common.chat.bean.BottomMenuBean
+import com.changanford.common.chat.bean.MessageBean
+import com.changanford.common.chat.bean.MessageImageBody
+import com.changanford.common.chat.bean.MessageStatus
+import com.changanford.common.chat.bean.MessageTextBody
+import com.changanford.common.chat.bean.MessageType
 import com.changanford.common.chat.utils.ChatUiHelper
 import com.changanford.common.chat.utils.LogUtil
 import com.changanford.common.chat.utils.Utils
@@ -26,8 +33,11 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouterForResult
-import com.changanford.common.ui.ConfirmPop
-import com.changanford.common.util.*
+import com.changanford.common.util.ConfirmTwoBtnPop
+import com.changanford.common.util.MConstant
+import com.changanford.common.util.MineUtils
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.PictureUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toastShow
@@ -38,9 +48,7 @@ import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import java.util.UUID
 
 /**
  *  文件名：MineFeedbackInfoListUI1
@@ -123,7 +131,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
 
         binding.btnSend.setOnClickListener(this)
 
-        viewModel.feedbackInfo.observe(this,  {
+        viewModel.feedbackInfo.observe(this, {
             it.let { feedbackInfo ->
                 //反馈状态,0 待回复 ，1 已回复, 2 已关闭
                 if (feedbackInfo.feedbackStatus == 2) {
@@ -155,7 +163,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
                             getBaseSendMessage(MessageType.TEXT, item.messageType, item.createTime)
                         message.messageStatus = MessageStatus.MESSAGE_SUCCESS
 
-                        var textMsgBody = MessageTextBody(item.messageContent?:"")
+                        var textMsgBody = MessageTextBody(item.messageContent ?: "")
                         message.messageBody = textMsgBody
                         mReceiveMsgList.add(message)
                     }
@@ -212,6 +220,7 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
                 0 -> {
                     takePhoto()
                 }
+
                 1 -> {
                     pic()
                 }
@@ -236,16 +245,41 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
                 sendTextMsg(binding.input.text.toString())
                 binding.input.setText("")
             }
+
             R.id.quest_off -> {
-                var pop = ConfirmPop(this)
-                pop.contentText.text = "你即将关闭该问题反馈，如后续有其他新问题再次提交意见反馈"
-                pop.cancelBtn.text = "暂不关闭"
-                pop.submitBtn.text = "确认关闭"
-                pop.submitBtn.setOnClickListener {
-                    pop.dismiss()
-                    questOff()
+                val cannotUnbindPop = ConfirmTwoBtnPop(this)
+                cannotUnbindPop.apply {
+                    contentText.text = "你即将关闭该问题反馈，如后续有其他新问题再次提交意见反馈"
+                    contentText.textSize=14f
+                    contentText.setTextColor(ContextCompat.getColor(this@MineFeedbackInfoListUI,R.color.color_9916))
+                    btnCancel.text = "暂不关闭"
+                    btnConfirm.text = "继续关闭"
+                    title.text = "即将结束问题反馈"
+                    title.isVisible = true
+                    title.setTextColor(
+                        ContextCompat.getColor(
+                            this@MineFeedbackInfoListUI,
+                            R.color.color_16
+                        )
+                    )
+                    btnCancel.setOnClickListener {
+                        dismiss()
+                    }
+                    btnConfirm.setOnClickListener {
+                        questOff()
+                        dismiss()
+                    }
+                    showPopupWindow()
                 }
-                pop.showPopupWindow()
+//                var pop = ConfirmPop(this)
+//                pop.contentText.text = "你即将关闭该问题反馈，如后续有其他新问题再次提交意见反馈"
+//                pop.cancelBtn.text = "暂不关闭"
+//                pop.submitBtn.text = "确认关闭"
+//                pop.submitBtn.setOnClickListener {
+//                    pop.dismiss()
+//                    questOff()
+//                }
+//                pop.showPopupWindow()
             }
         }
     }
@@ -365,12 +399,12 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
      * 用户主动关闭问题
      */
     fun questOff() {
-        viewModel.closeFeedback(userFeedbackId){
+        viewModel.closeFeedback(userFeedbackId) {
             it.onSuccess {
                 startTime = 0L
                 viewModel.queryFeedbackInfoList(1, userFeedbackId)
             }.onFailure {
-                toastShow(it?:"")
+                toastShow(it ?: "")
 
             }
         }
@@ -400,11 +434,11 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
         feedbackParam["messageContent"] = (mMessgae.messageBody as MessageTextBody).messageText
         feedbackParam["messageType"] = 1
         feedbackParam.remove("messageImg")
-        uploadFeedback(){
+        uploadFeedback() {
             it.onSuccess {
                 sendMessage(mMessgae, true)
             }.onFailure {
-                toastShow(it?:"")
+                toastShow(it ?: "")
                 sendMessage(mMessgae, false)
             }
         }
@@ -518,11 +552,11 @@ class MineFeedbackInfoListUI : BaseMineUI<UiFeedbackInfoBinding, SignViewModel>(
         feedbackParam["messageType"] = 1
         feedbackParam["messageImg"] = pathUrl
         feedbackParam.remove("messageContent")
-        viewModel.addFeedbackInfo(feedbackParam){
+        viewModel.addFeedbackInfo(feedbackParam) {
             it.onSuccess {
                 chatRvPost(true)
             }.onFailure {
-                toastShow(it?:"")
+                toastShow(it ?: "")
                 //上传失败删除数据
                 try {
                     updateList.forEach { item ->

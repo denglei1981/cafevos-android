@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@ import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.GlideUtils.loadCompress
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -52,6 +54,7 @@ class NewsListAdapter(
     var isShowFollow: Boolean = true
     var isShowTag: Boolean = false
     var type = ""
+    var isManage = false
 
     init {
         addChildClickViewIds(
@@ -67,17 +70,21 @@ class NewsListAdapter(
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
         val binding = DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
         binding?.let {
-            MUtils.setTopMargin(it.root,15,holder.layoutPosition)
+            it.checkbox.isChecked = item.isCheck
+            if (isManage) {
+                it.checkbox.isVisible = true
+                it.clContent.translationX = 36.toIntPx().toFloat()
+            } else {
+                it.checkbox.isVisible = false
+                it.clContent.translationX = 0f
+            }
+            MUtils.setTopMargin(it.root, 15, holder.layoutPosition)
             ItemCommonPics.setItemCommonPics(binding.layoutContent.layoutPics, item.getPics())
         }
         val ivHeader = holder.getView<ShapeableImageView>(R.id.iv_header)
         val tvAuthorName = holder.getView<TextView>(R.id.tv_author_name)
         val tvSubtitle = holder.getView<TextView>(R.id.tv_sub_title)
-//        val ivPicBig = holder.getView<ShapeableImageView>(R.id.iv_pic)
-//        val tag = holder.getView<AppCompatTextView>(R.id.tv_news_tag)
-//        GlideUtils.loadBD(item.authors?.avatar, ivHeader)
         ivHeader.loadCompress(item.authors?.avatar)
-//        ivPicBig.loadCompress(item.pics)
         tvAuthorName.text = item.authors?.nickname
         if (TextUtils.isEmpty(item.authors?.getMemberNames())) {
             tvSubtitle.visibility = View.GONE
@@ -85,25 +92,18 @@ class NewsListAdapter(
             tvSubtitle.visibility = View.VISIBLE
             tvSubtitle.text = item.authors?.carOwner
         }
-//        tvSubtitle.text = item.authors?.getMemberNames()
         val tvContent = holder.getView<TextView>(R.id.tv_content)
         val btnFollow = holder.getView<TextView>(R.id.btn_follow)
 
-        if (item.authors?.authorId != MConstant.userId && isShowFollow) {
+        if (item.authors?.authorId != MConstant.userId && isShowFollow && !isManage) {
             btnFollow.visibility = View.VISIBLE
         } else {
             btnFollow.visibility = View.GONE
         }
-//        btnFollow.visibility = if (isShowFollow) View.VISIBLE else View.GONE
-//        tag.visibility = if (isShowTag) View.VISIBLE else View.GONE
-//        tag.text = "资讯"
         item.authors?.let {
             setFollowState(btnFollow, it)
         }
         tvContent.text = item.title
-//        val tvLikeCount = holder.getView<DrawCenterTextView>(R.id.tv_like_count)
-//        val tvCommentCount = holder.getView<TextView>(R.id.tv_comment_count)
-//        val tvLookCount = holder.getView<TextView>(R.id.tv_time_look_count)
         val tvTime = holder.getView<TextView>(R.id.tv_post_time)
         val tvLocation = holder.getView<TextView>(R.id.tv_location)
         val viewCount = holder.getView<TextView>(R.id.tv_view_count)
@@ -128,23 +128,6 @@ class NewsListAdapter(
         } else {
             tvLikeCount.setDrawableLeft(R.mipmap.item_good_count_ic)
         }
-//        tvLikeCount.setPageTitleText(item.likesCount.toString())
-//        setLikeState(tvLikeCount, item, false)
-//        tvCommentCount.text = item.getCommentCountResult()
-//        tvCommentCount.setOnTouchListener { v, event ->
-//            GIOUtils.clickCommentInfo(
-//                if (type.isNotEmpty()) {
-//                    type
-//                } else if (isSpecialDetail) {
-//                    "专题详情页"
-//                } else "发现-资讯",
-//                item.specialTopicTitle,
-//                item.artId,
-//                item.title
-//            )
-//            false
-//        }
-//        tvLookCount.text = item.getTimeAdnViewCount()
         val tvTopic = holder.getView<TextView>(R.id.tv_topic)
         if (TextUtils.isEmpty(item.summary)) {
             tvTopic.visibility = View.GONE
@@ -175,14 +158,26 @@ class NewsListAdapter(
         btnFollow.setOnClickListener {
             // 判断是否登录。
             if (LoginUtil.isLongAndBindPhone()) {
-                if (item.authors != null) {
-                    followAction(btnFollow, item.authors!!, holder.adapterPosition)
+                if (isManage) {
+                    item.isCheck = !item.isCheck
+                    binding?.checkbox?.isChecked = item.isCheck
+                    checkIsAllCheck()
+                } else {
+                    if (item.authors != null) {
+                        followAction(btnFollow, item.authors!!, holder.adapterPosition)
 
+                    }
                 }
             }
         }
         tvLikeCount.setOnClickListener {
             if (LoginUtil.isLongAndBindPhone()) {
+                if (isManage) {
+                    item.isCheck = !item.isCheck
+                    binding?.checkbox?.isChecked = item.isCheck
+                    checkIsAllCheck()
+                    return@setOnClickListener
+                }
                 if (item.authors != null) {
                     if (item.isLike == 0) {
                         GIOUtils.infoLickClick(
@@ -329,5 +324,19 @@ class NewsListAdapter(
                 )
             }
         }
+    }
+
+    fun checkIsAllCheck() {
+        if (data.isNullOrEmpty()) {
+            LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+            return
+        }
+        data.forEach {
+            if (!it.isCheck) {
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+                return
+            }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(true)
     }
 }

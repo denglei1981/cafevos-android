@@ -56,14 +56,23 @@ data class AskListMainData(
     override var itemType: Int = getItemTypeLocal()
 
     fun getPicLists(): List<String>? {
-        if (imgs == null) {
-            return pisList
-        }
-        return if (imgs?.isEmpty() == true) {
-            pisList
+        if (qaAnswer?.answerContents.isNullOrEmpty()) {
+            return null
         } else {
-            imgs?.split(",")
+            val mList = ArrayList<String>()
+            qaAnswer?.answerContents?.forEach {
+                mList.add(it.imgUrl)
+            }
+            return mList
         }
+//        if (imgs == null) {
+//            return pisList
+//        }
+//        return if (imgs?.isEmpty() == true) {
+//            pisList
+//        } else {
+//            imgs?.split(",")
+//        }
     }
 
 
@@ -75,8 +84,11 @@ data class QaAnswer(
     val conQaAnswerId: Int,
     val content: String,
     val qaUserVO: QaUserVO,
-    val replyCount: Int
+    val replyCount: Int,
+    val answerContents: ArrayList<AnswerContentsData>?,
 )
+
+data class AnswerContentsData(val imgUrl: String, val imgDesc: String)
 
 data class QaUserVO(
     val avater: String?,

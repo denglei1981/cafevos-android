@@ -43,6 +43,7 @@
             android:layout_height="44dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
+            android:visibility="gone"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/bg_bt_blue_corner39"

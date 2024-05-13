@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id="@+id/item_q"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_25"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:background="@mipmap/icon_feedback"
             android:gravity="center"
@@ -19,27 +21,28 @@
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="5dp"
             android:text=""
-            android:textColor="#071726"
-            android:textSize="15sp"
+            android:textColor="@color/color_d916"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_q"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@+id/item_q"
             app:layout_constraintRight_toLeftOf="@+id/checkbox"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123123123" />
 
         <ImageView
             android:id="@+id/checkbox"
             android:layout_width="@dimen/dp_30"
             android:layout_height="@dimen/dp_20"
-            android:layout_marginRight="18dp"
+            android:layout_marginRight="16dp"
             android:padding="6dp"
             android:src="@mipmap/arrow_down"
             app:layout_constraintRight_toRightOf="parent"
@@ -49,27 +52,30 @@
             android:id="@+id/des"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="18dp"
             android:gravity="left"
             android:lineSpacingMultiplier="1.1"
             android:text=""
-            android:textColor="#666666"
-            android:textSize="13sp"
+            android:textColor="@color/color_9916"
+            android:textSize="14sp"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="@+id/title"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            app:layout_goneMarginBottom="8dp" />
+            app:layout_goneMarginBottom="8dp"
+            tools:text="123123123"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/line"
             style="@style/line"
             android:layout_width="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="18dp"
-            app:layout_constraintLeft_toLeftOf="@+id/title"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/des"
             app:layout_goneMarginTop="16dp" />

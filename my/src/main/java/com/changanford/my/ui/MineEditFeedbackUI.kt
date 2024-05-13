@@ -2,14 +2,12 @@ package com.changanford.my.ui
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.changanford.common.bean.DialogBottomBean
 import com.changanford.common.bean.FeedbackTagsItem
-import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithCodeFailure
 import com.changanford.common.net.onWithMsgFailure
@@ -17,15 +15,14 @@ import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.LoadDialog
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
-import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.PictureUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey.MINE_SUBMIT_FEEDBACK_SUCCESS
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
-import com.changanford.common.widget.SelectDialog
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
@@ -34,7 +31,6 @@ import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import java.lang.Exception
 
 /**
  *  文件名：MineEditFeedbackUI
@@ -68,14 +64,19 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.setLoadingText("图片上传中..")
 
+        binding.mineToolbar.apply {
+            binding.mineToolbar.toolbarSave.text = "反馈记录"
+            toolbarSave.setTextColor(
+                ContextCompat.getColor(
+                    this@MineEditFeedbackUI,
+                    R.color.color_9916
+                )
+            )
+            binding.mineToolbar.toolbarSave.setOnClickListener {
+                JumpUtils.instans?.jump(42)
+            }
+        }
 
-        /**
-         * 不需要常见问题
-         */
-//        binding.mineToolbar.toolbarSave.text = "常见问题"
-//        binding.mineToolbar.toolbarSave.setOnClickListener {
-//            startARouter(ARouterMyPath.MineFeedbackUI)
-//        }
 
         binding.mineToolbar.toolbarTitle.text = "意见反馈"
         binding.mineToolbar.toolbar.setNavigationOnClickListener {
@@ -86,23 +87,23 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
 
         binding.save.setOnClickListener {
             if (labelAdapter.checkedPosition == -1) {
-                ToastUtils.showLongToast("请选择意见标签",this)
+                ToastUtils.showLongToast("请选择意见标签", this)
                 return@setOnClickListener
             }
             if (binding.feedbackInput.text.toString().isEmpty()) {
-                ToastUtils.showLongToast("请输入问题描述",this)
+                ToastUtils.showLongToast("请输入问题描述", this)
                 return@setOnClickListener
             }
             if (binding.feedbackInput.text.toString().length < 5) {
-                ToastUtils.showLongToast("请输入5-300字问题详细描述",this)
+                ToastUtils.showLongToast("请输入5-300字问题详细描述", this)
                 return@setOnClickListener
             }
             if (binding.inputName.text.isNullOrEmpty()) {
-                ToastUtils.showLongToast("请输入正确的姓名",this)
+                ToastUtils.showLongToast("请输入正确的姓名", this)
                 return@setOnClickListener
             }
             if (!MineUtils.isMobileNO(binding.inputMobile.text.toString())) {
-                ToastUtils.showLongToast("请输入正确的电话",this)
+                ToastUtils.showLongToast("请输入正确的电话", this)
                 return@setOnClickListener
             }
 
@@ -136,7 +137,7 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
         binding.feedbackRv.adapter = labelAdapter
 
 
-        binding.feedbackPicRv.layoutManager = GridLayoutManager(this, 4)
+        binding.feedbackPicRv.layoutManager = GridLayoutManager(this, 3)
         binding.feedbackPicRv.adapter = picAdapter
         picAdapter.addIcons(datas)
 
@@ -169,15 +170,15 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
                 tag = json.getString("tagId").toInt()
                 var content = json.getString("content")
                 binding.feedbackInput.setText(content)
-            }catch ( e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
         viewModel.getFeedbackTags()
-        viewModel._lables.observe(this,{
+        viewModel._lables.observe(this, {
             it?.let {
                 it.forEachIndexed { index, feedbackTagsItem ->
-                    if (feedbackTagsItem.tagId == tag){
+                    if (feedbackTagsItem.tagId == tag) {
                         labelAdapter.checkedPosition = index
                         labelAdapter.canChange = false
                     }
@@ -206,9 +207,10 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
 
 
         viewModel.addFeedback(
-            body){
+            body
+        ) {
             it.onSuccess {
-                ToastUtils.showLongToast("提交成功",this)
+                ToastUtils.showLongToast("提交成功", this)
                 if (isBack) {
                     LiveDataBus.get().with(MINE_SUBMIT_FEEDBACK_SUCCESS, Boolean::class.java)
                         .postValue(true)
@@ -223,7 +225,8 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
                     pop.title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
                     pop.title.setTextColor(Color.parseColor("#1C1E20"))
                     pop.title.visibility = View.VISIBLE
-                    pop.contentText.text = "您之前已反馈过该问题，无需再次提交，如有疑问可在之前的反馈记录中进行再次反馈。"
+                    pop.contentText.text =
+                        "您之前已反馈过该问题，无需再次提交，如有疑问可在之前的反馈记录中进行再次反馈。"
                     pop.cancelBtn.text = "重新编辑"
                     pop.submitBtn.text = "返回列表"
                     pop.submitBtn.setOnClickListener {
@@ -242,20 +245,21 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
      * 选择照片
      */
     fun selectIcon() {
-        SelectDialog(
-            this,
-            R.style.transparentFrameWindowStyle,
-            MineUtils.listPhoto,
-            "",
-            1,
-            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
-
-                when (i) {
-                    0 -> takePhoto()
-                    1 -> pic()
-                }
-            }
-        ).show()
+        pic()
+//        SelectDialog(
+//            this,
+//            R.style.transparentFrameWindowStyle,
+//            MineUtils.listPhoto,
+//            "",
+//            1,
+//            SelectDialog.SelectDialogListener() { view: View, i: Int, dialogBottomBean: DialogBottomBean ->
+//
+//                when (i) {
+//                    0 -> takePhoto()
+//                    1 -> pic()
+//                }
+//            }
+//        ).show()
     }
 
 

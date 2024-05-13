@@ -54,16 +54,16 @@ class MineCenterFeedbackUI : BaseMineUI<UiCenterFeedbackBinding, SignViewModel>(
             mobile = it.LRPhone
         }
         binding.yijian.setOnClickListener {
-            JumpUtils.instans?.jump(
-                when (hasFeedbacks) {
-                    1 -> {
-                        42
-                    }
-
-                    else -> {
-                        11
-                    }
-                }
+            JumpUtils.instans?.jump(11
+//                when (hasFeedbacks) {
+//                    1 -> {
+//                        42
+//                    }
+//
+//                    else -> {
+//                        11
+//                    }
+//                }
             )
         }
 //        binding.more.setOnClickListener {

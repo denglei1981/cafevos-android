@@ -28,7 +28,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
 
     var searchKeys: String = ""
 
-    val infoAdapter: NewsListAdapter by lazy {
+    private val infoAdapter: NewsListAdapter by lazy {
         NewsListAdapter(this)
     }
 
@@ -81,9 +81,22 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
             val item = infoAdapter.getItem(position)
             when (view.id) {
                 R.id.iv_header, R.id.tv_author_name, R.id.tv_sub_title -> {// 去用户主页？
+                    if (infoAdapter.isManage) {
+                        item.isCheck = !item.isCheck
+                        infoAdapter.notifyItemChanged(position)
+                        infoAdapter.checkIsAllCheck()
+                        return@setOnItemChildClickListener
+                    }
                     JumpUtils.instans!!.jump(35, item.authors?.authorId)
                 }
+
                 R.id.layout_content, R.id.tv_time_look_count, R.id.tv_comment_count -> {// 去资讯详情。
+                    if (infoAdapter.isManage) {
+                        item.isCheck = !item.isCheck
+                        infoAdapter.notifyItemChanged(position)
+                        infoAdapter.checkIsAllCheck()
+                        return@setOnItemChildClickListener
+                    }
                     if (item.authors != null) {
 //                        var newsValueData = NewsValueData(item.artId, item.type)
 //                        var values = Gson().toJson(newsValueData)
@@ -94,6 +107,17 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                     }
                 }
             }
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_INFORMATION_FRAGMENT)
+            .observe(this) {
+                infoAdapter.isManage = it
+                infoAdapter.notifyDataSetChanged()
+            }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_INFORMATION_DATA).observe(this) {
+            infoAdapter.data.forEach { data ->
+                data.isCheck = it
+            }
+            infoAdapter.notifyDataSetChanged()
         }
     }
 
@@ -106,6 +130,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
             "centerInformation" -> {
                 ViewEmptyTopBinding.inflate(layoutInflater).root
             }
+
             else -> {
                 super.showEmpty()
             }
@@ -132,6 +157,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                 infoAdapter.isShowTag = true
                 myCollectInfo(pageSize)
             }
+
             "footInformation" -> {
                 infoAdapter.isShowTag = true
                 viewModel.queryMineFootInfo(pageSize) { reponse ->
@@ -140,8 +166,12 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, infoAdapter, total)
+                    if (pageSize>1){
+                        infoAdapter.checkIsAllCheck()
+                    }
                 }
             }
+
             "centerInformation" -> {
                 viewModel.queryMineSendInfoList(userId, pageSize) { reponse ->
                     reponse?.data?.total?.let {

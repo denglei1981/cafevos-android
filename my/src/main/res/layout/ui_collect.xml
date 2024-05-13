@@ -24,20 +24,25 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
         android:layout_gravity="center_vertical"
-        android:layout_marginTop="15dp"
-        android:background="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_search"
+        app:tabBackground="@null"
+        app:tabGravity="fill"
         app:tabIndicator="@null"
         app:tabIndicatorColor="@color/color_1700F4"
         app:tabIndicatorHeight="0dp"
-        app:tabMode="auto"
-        app:tabPaddingEnd="32dp"
-        app:tabRippleColor="@color/transparent"
+        app:tabMode="fixed"
+        app:tabPaddingEnd="0dp"
+        app:tabPaddingStart="0dp"
+        app:tabRippleColor="@null"
         app:tabSelectedTextColor="@color/color_1700F4"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/color_1700F4" />
@@ -49,4 +54,44 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout" />
+
+    <RelativeLayout
+        android:id="@+id/rl_delete"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.changanford.common.ui.RoundCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/login_checkbox"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text=" 全选"
+            android:textColor="@drawable/checkbox_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:theme="@style/mine_checkbox" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_delete"
+            android:layout_width="81dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_shape_80a6_23"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="@color/color_4d16"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

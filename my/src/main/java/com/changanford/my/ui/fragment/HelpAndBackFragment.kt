@@ -37,6 +37,9 @@ class HelpAndBackFragment : BaseLoadSirFragment<FragmentHelpAndBackBinding, Sign
         setLoadSir(binding.refreshLayout)
         arguments?.let {
             position = it.getInt("position")
+            if (position == 0) {
+                adapter.isShowContent = true
+            }
         }
         adapter.loadMoreModule.setOnLoadMoreListener {
             page++
