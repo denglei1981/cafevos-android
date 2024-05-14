@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
@@ -11,6 +13,7 @@ import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.constant.SearchTypeConstant
+import com.changanford.common.databinding.ItemShopTabBinding
 import com.changanford.common.manger.UserManger
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.JumpUtils
@@ -19,11 +22,11 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.wutil.ViewPage2AdapterFragment
-import com.changanford.common.wutil.WCommonUtil
 import com.changanford.shop.adapter.goods.GoodsKillAdapter
 import com.changanford.shop.adapter.goods.ShopRecommendListAdapter1
 import com.changanford.shop.control.BannerControl
@@ -51,6 +54,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private val dp38 by lazy { ScreenUtils.dp2px(requireContext(), 38f) }
     private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
     private var defaultTagName: String? = null
+    private var oldPosition = 0
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { appBarLayout: AppBarLayout, i: Int ->
@@ -137,19 +141,54 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
 
     private fun initTab() {
-        WCommonUtil.setTabSelectStyle(
-            requireContext(),
-            binding.tabLayout,
-            16f,
-            Typeface.DEFAULT_BOLD,
-            R.color.color_33
-        )
+//        WCommonUtil.setTabSelectStyle(
+//            requireContext(),
+//            binding.tabLayout,
+//            16f,
+//            Typeface.DEFAULT_BOLD,
+//            R.color.color_33
+//        )
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 viewModel.classificationLiveData.value?.get(position)?.apply {
                     WBuriedUtil.clickShopType(tagName)
                 }
                 fragments[position].startRefresh()
+
+                val oldTitle =
+                    binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tv_tab)
+                val oldIn =
+                    binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tab_in)
+                if (oldTitle != null) {
+                    oldTitle.textSize = 16F
+                    oldTitle.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.color_9916
+                        )
+                    )
+                    oldTitle.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+                    oldIn?.isSelected = false
+                }
+
+                val title =
+                    binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tv_tab)
+                val newIn =
+                    binding.tabLayout.getTabAt(position)?.view?.findViewById<TextView>(R.id.tab_in)
+                if (title != null) {
+                    title.textSize = 18F
+                    title.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.text_01025C
+                        )
+                    )
+                    //加粗
+                    title.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                    newIn?.isSelected = true
+                }
+
+                oldPosition = position
             }
         })
     }
@@ -170,7 +209,32 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             offscreenPageLimit = 10
             isSaveEnabled = false
             TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
-                tab.text = tabs[tabPosition].tagName
+                val itemHelpTabBinding = ItemShopTabBinding.inflate(layoutInflater)
+                itemHelpTabBinding.tvTab.text = tabs[tabPosition].tagName
+                //解决第一次进来item显示不完的bug
+                itemHelpTabBinding.tabIn.isSelected = tabPosition == 0
+                if (tabPosition == 0) {
+                    itemHelpTabBinding.tvTab.textSize = 18F
+                    itemHelpTabBinding.tvTab.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.text_01025C
+                        )
+                    )
+                    //加粗
+                    itemHelpTabBinding.tvTab.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                } else {
+                    itemHelpTabBinding.tvTab.textSize = 16F
+                    itemHelpTabBinding.tvTab.typeface =
+                        Typeface.defaultFromStyle(Typeface.NORMAL)
+                    itemHelpTabBinding.tvTab.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.color_9916
+                        )
+                    )
+                }
+                tab.customView = itemHelpTabBinding.root
             }.attach()
         }
         setCurrentItem()
@@ -230,6 +294,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
 
     private fun getData(showLoading: Boolean = false) {
+        viewModel.getShopKingKongData()
         viewModel.getBannerData()
         viewModel.getShopHomeData(showLoading)
 //        viewModel.getClassification()
@@ -258,6 +323,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     )
                 }
             }
+        }
+        viewModel.shopKingKongData.observe(this) {
+            binding.inTop.layoutKg.root.isVisible = !it.isNullOrEmpty()
+            ItemCommonPics.setItemShopPics(binding.inTop.layoutKg, it)
         }
         viewModel.fbData.observe(this) {
             //我的福币

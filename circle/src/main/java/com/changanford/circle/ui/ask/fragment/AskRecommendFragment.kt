@@ -59,6 +59,7 @@ class AskRecommendFragment :
     private var headerBinding: HeaderCircleAskRecommendBinding? = null
 
     private var moreJumpData: moreJumpData? = null
+    private var selectTab = ""
 
     var questionTypes = mutableListOf<String>()
     var questionTypeNames = mutableListOf<String>()
@@ -80,27 +81,17 @@ class AskRecommendFragment :
     override fun initData() {
         binding.ryAsk.adapter = recommendAskAdapter
         recommendAskAdapter.setOnItemClickListener { adapter, view, position ->
-//            startARouter(ARouterCirclePath.CreateQuestionActivity, true)
             val recommendData = recommendAskAdapter.getItem(position = position)
             // 埋点
             BuriedUtil.instant?.communityQuestion(
-                recommendData.questionTypeName,
+                if (recommendData.questionTypeName.isNullOrEmpty()) selectTab else recommendData.questionTypeName,
                 recommendData.title
             )
             GIOUtils.homePageClick("热门问答", (position + 1).toString(), recommendData.title)
             JumpUtils.instans?.jump(recommendData.jumpType.toIntOrNull(), recommendData.jumpValue)
         }
-//        recommendAskAdapter.setOnItemChildClickListener { adapter, view, position ->
-//            when (view.id) {
-//                R.id.cl_user -> {
-//                    val bean = recommendAskAdapter.getItem(position)
-//                    JumpUtils.instans?.jump(114, bean.qaAnswer?.qaUserVO?.conQaUjId.toString())
-//                }
-//            }
-//        }
-//        initMarginTab()
+
         viewModel.getInitQuestion()
-//        viewModel.getQuestionList(false, questionTypes)
         binding.refreshLayout.setOnRefreshListener(this)
         binding.refreshLayout.setOnLoadMoreListener(this)
     }
@@ -192,6 +183,7 @@ class AskRecommendFragment :
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     selectTab(tab, true)
                     val bean = tabs[homeTab.selectedTabPosition]
+                    selectTab = bean.dictLabel
                     questionTypes.clear()
                     questionTypes.add(bean.dictValue)
                     viewModel.getQuestionList(false, questionTypes, true)

@@ -3,9 +3,27 @@ package com.changanford.shop.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
-import com.changanford.common.bean.*
+import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.CommentBean
+import com.changanford.common.bean.CommentInfoBean
+import com.changanford.common.bean.GoodsClassification
+import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.bean.GoodsListBean
+import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.bean.OtherInfoBean
+import com.changanford.common.bean.SeckillSessionsBean
+import com.changanford.common.bean.ShopHomeBean
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.repository.AdsRepository
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.MineUtils
@@ -17,7 +35,6 @@ import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.utils.WConstant
-import com.luck.picture.lib.config.PictureSelectionConfig.listener
 import kotlinx.coroutines.launch
 
 /**
@@ -581,6 +598,22 @@ class GoodsViewModel : BaseViewModel() {
                         serviceDescriptionData.value = it?.content
                     }
             }
+        }
+    }
+
+    val shopKingKongData = MutableLiveData<ArrayList<AdBean>?>()
+    fun getShopKingKongData() {
+        launch(false) {
+            val body = HashMap<String, Any>()
+            val rKey = getRandomKey()
+            body["posCode"] = "mall_kong_area"
+            ApiClient.createApi<NetWorkApi>()
+                .getAdList(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    shopKingKongData.postValue(it)
+                }.onWithMsgFailure {
+
+                }
         }
     }
 }

@@ -273,6 +273,7 @@ data class MyShopBean(
     val normalFb: String = "0",
     val count: String = "0",
     val spuImgs: String = "",
+    var isCheck: Boolean=false,
     val mallMallSpuId: String
 )
 

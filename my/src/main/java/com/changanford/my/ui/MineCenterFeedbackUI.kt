@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.databinding.ItemMedalTabBinding
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MineUtils
@@ -15,7 +16,6 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCenterFeedbackBinding
 import com.changanford.my.ui.fragment.HelpAndBackFragment
 import com.changanford.my.viewmodel.SignViewModel

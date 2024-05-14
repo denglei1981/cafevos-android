@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
@@ -46,6 +47,7 @@ class CircleMainBottomAdapter(context: Context) :
     LoadMoreModule {
 
     var type = ""
+    var isManage = false
 
     private val imgWidth by lazy {
         (ScreenUtils.getScreenWidth(context) - DensityUtils.dip2px(60F)) / 2
@@ -58,9 +60,24 @@ class CircleMainBottomAdapter(context: Context) :
             val params = binding.clContent.layoutParams as ViewGroup.MarginLayoutParams
             if (holder.layoutPosition == 0 || holder.layoutPosition == 1) {
                 params.topMargin =
-                    20.toIntPx()
+                    10.toIntPx()
             } else params.topMargin = 0
-
+            if (!isOdd(holder.layoutPosition)) {
+                params.rightMargin = 6.toIntPx()
+                params.leftMargin = 0
+            } else {
+                params.rightMargin = 0
+                params.leftMargin = 6.toIntPx()
+            }
+            binding.clContent.layoutParams = params
+            binding.checkbox.isVisible = isManage
+            binding.tvName.text = item.authorBaseVo?.nickname
+            binding.checkbox.isChecked = item.checkBoxChecked
+            binding.checkbox.setOnClickListener {
+                val isCheck = binding.checkbox.isChecked
+                item.checkBoxChecked = isCheck
+                checkIsAllCheck()
+            }
             binding.tvLikeNum.text = "${if (item.likesCount > 0) item.likesCount else "0"}"
 
             binding.ivLike.setImageResource(
@@ -70,25 +87,21 @@ class CircleMainBottomAdapter(context: Context) :
             )
 
             binding.llLike.setOnClickListener {
+                if (isManage) {
+                    item.checkBoxChecked = !item.checkBoxChecked
+                    binding.checkbox.isChecked = item.checkBoxChecked
+                    checkIsAllCheck()
+                    return@setOnClickListener
+                }
                 likePost(binding, item, holder.layoutPosition)
             }
-
-//            if (item.topicName.isNullOrEmpty()) {
-//                binding.tvTalk.visibility = View.GONE
-//            } else {
-//                binding.tvTalk.visibility = View.VISIBLE
-//                binding.tvTalk.text = item.topicName
-//                binding.tvTalk.setOnClickListener {
-//                    val bundle = Bundle()
-//                    bundle.putString("topicId", item.topicId.toString())
-//                    startARouter(ARouterCirclePath.TopicDetailsActivity, bundle)
-//                }
-//            }
-
             binding.ivHead.setOnClickListener {
-//                val bundle = Bundle()
-//                bundle.putString("value", item.userId.toString())
-//                startARouter(ARouterMyPath.TaCentreInfoUI, bundle)
+                if (isManage) {
+                    item.checkBoxChecked = !item.checkBoxChecked
+                    binding.checkbox.isChecked = item.checkBoxChecked
+                    checkIsAllCheck()
+                    return@setOnClickListener
+                }
                 JumpUtils.instans?.jump(35, item.userId.toString())
             }
 
@@ -130,7 +143,7 @@ class CircleMainBottomAdapter(context: Context) :
                 item.itemImgHeight = imgWidth//默认正方形
             }
 
-            binding.ivBg.layoutParams?.height = item.itemImgHeight
+//            binding.ivBg.layoutParams?.height = item.itemImgHeight
 
 //            binding.ivHead.loadImage(
 //                item.authorBaseVo?.avatar,
@@ -203,5 +216,23 @@ class CircleMainBottomAdapter(context: Context) :
                     }
                 }
         }
+    }
+
+    fun checkIsAllCheck() {
+        if (data.isNullOrEmpty()) {
+            LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+            return
+        }
+        data.forEach {
+            if (!it.checkBoxChecked) {
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+                return
+            }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(true)
+    }
+
+    private fun isOdd(number: Int): Boolean {
+        return number % 2 != 0 // 如果余数不等于零则表示该数字为奇数
     }
 }

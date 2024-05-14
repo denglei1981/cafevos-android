@@ -9,26 +9,24 @@
 
     </data>
 
-    <com.changanford.common.widget.ShadowLayout
-        android:id="@+id/layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_4"
-        android:layout_marginBottom="@dimen/dp_2"
-        app:sl_cornerRadius="@dimen/dp_4"
-        app:sl_shadowColor="#88dddddd"
-        app:sl_shadowRadius="@dimen/dp_2">
+        android:layout_marginBottom="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_icon"
                 android:layout_width="@dimen/dp_110"
                 android:layout_height="@dimen/dp_110"
-                android:layout_marginLeft="@dimen/dp_14"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginBottom="@dimen/dp_10"
                 android:src="@mipmap/ic_def_square_img"
@@ -44,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_11"
                 android:layout_marginTop="@dimen/dp_8"
-                android:layout_marginEnd="@dimen/dp_17"
+                android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="#333333"
@@ -57,7 +55,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_11"
-                android:layout_marginEnd="@dimen/dp_17"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="@dimen/dp_8"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="@+id/item_icon"
@@ -73,29 +71,51 @@
                     android:text=""
                     android:textColor="@color/color_33"
                     android:textSize="@dimen/sp_15"
-                    tools:text="￥100"
-                    app:layout_constraintRight_toLeftOf="@+id/item_collect_num" />
+                    app:layout_constraintRight_toLeftOf="@+id/item_collect_num"
+                    tools:text="￥100" />
+
                 <com.changanford.common.ui.view.WTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_2"
                     android:layout_weight="1"
                     android:text="@string/str_since"
-                    android:layout_marginStart="@dimen/dp_2"
-                    android:textSize="@dimen/sp_9"
-                    android:textColor="@color/color_66"/>
+                    android:textColor="@color/color_66"
+                    android:textSize="@dimen/sp_9" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/item_collect_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    tools:text="100人收藏"
                     android:textColor="@color/color_99"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_12"
+                    tools:text="100人收藏" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.changanford.common.ui.RoundCheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="18dp"
+            android:background="@null"
+            android:button="@null"
+            android:drawableStart="@drawable/login_checkbox"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@drawable/checkbox_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:theme="@style/mine_checkbox"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.changanford.common.widget.ShadowLayout>
 </layout>

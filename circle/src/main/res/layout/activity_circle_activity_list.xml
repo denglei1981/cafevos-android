@@ -26,8 +26,6 @@
                 android:id="@+id/ry_activity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

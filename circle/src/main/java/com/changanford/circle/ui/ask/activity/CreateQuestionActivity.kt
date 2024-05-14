@@ -21,7 +21,6 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
 import com.changanford.circle.databinding.ActivityCreateQuestionBinding
-
 import com.changanford.circle.ui.ask.adapter.AskPicAdapter
 import com.changanford.circle.ui.ask.pop.QuestionTipsPop
 import com.changanford.circle.ui.ask.request.QuestionViewModel
@@ -34,6 +33,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -71,6 +71,27 @@ class CreateQuestionActivity : BaseActivity<ActivityCreateQuestionBinding, Quest
 
     var title: String = ""
     var cotnent: String = ""
+
+    override fun onBackPressed() {
+        if (!binding.etQuestionTitle.text.isNullOrEmpty() || !binding.etQuestion.text.isNullOrEmpty() || selectList.size > 0) {
+            val cannotUnbindPop = ConfirmTwoBtnPop(this)
+            cannotUnbindPop.apply {
+                contentText.text = "您正在编辑提问，是否确认离开"
+                btnCancel.text = "离开"
+                btnConfirm.text = "继续编辑"
+                btnCancel.setOnClickListener {
+                    dismiss()
+                    finish()
+                }
+                btnConfirm.setOnClickListener {
+                    dismiss()
+                }
+                showPopupWindow()
+            }
+        } else {
+            finish()
+        }
+    }
 
     override fun initView() {
         title = "提问页"

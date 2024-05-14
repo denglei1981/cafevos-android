@@ -54,8 +54,12 @@ class AskRecommendViewModel : BaseViewModel() {
 
 
     var page: Int = 1
-    fun getQuestionList(isLoadMore: Boolean, questionTypes: MutableList<String>,isShowLoading: Boolean=false) {
-        launch(showLoading = isShowLoading,block = {
+    fun getQuestionList(
+        isLoadMore: Boolean,
+        questionTypes: MutableList<String>,
+        isShowLoading: Boolean = false
+    ) {
+        launch(showLoading = isShowLoading, block = {
             val body = MyApp.mContext.createHashMap()
             if (isLoadMore) {
                 page += 1
@@ -65,7 +69,7 @@ class AskRecommendViewModel : BaseViewModel() {
             body["pageNo"] = page
             body["pageSize"] = 20
             body["queryParams"] = HashMap<String, Any>().also {
-                if (questionTypes.size > 0) {
+                if (questionTypes.size > 0&&questionTypes[0]!="-100") {
                     it["questionTypes"] = questionTypes
                 }
             }
@@ -108,7 +112,7 @@ class AskRecommendViewModel : BaseViewModel() {
         })
     }
 
-    val askTabsBean=MutableLiveData<ArrayList<QuestionData>>()
+    val askTabsBean = MutableLiveData<ArrayList<QuestionData>>()
 
     fun getAskTabsData() {
         launch(block = {
@@ -117,7 +121,12 @@ class AskRecommendViewModel : BaseViewModel() {
             val rkey = getRandomKey()
             ApiClient.createApi<CircleNetWork>().getQuestionType(body.header(rkey), body.body(rkey))
                 .onSuccess {
-                    askTabsBean.value=it
+                    val useList = ArrayList<QuestionData>()
+                    useList.add(QuestionData(dictLabel = "全部", dictValue = "-100"))
+                    if (it != null) {
+                        useList.addAll(it)
+                    }
+                    askTabsBean.value = useList
                 }
         })
     }

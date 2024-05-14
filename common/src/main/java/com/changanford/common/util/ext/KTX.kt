@@ -52,6 +52,13 @@ fun ShapeableImageView.setCircular(circular: Int) {
             .build()
 }
 
+fun ShapeableImageView.setTopCircular(circular: Int) {
+    this.shapeAppearanceModel =
+        ShapeAppearanceModel.builder().setTopLeftCorner(CornerFamily.ROUNDED, circular.toPx())
+            .setTopRightCorner(CornerFamily.ROUNDED, circular.toPx())
+            .build()
+}
+
 fun RecyclerView.dealMuchImage(list: ArrayList<ImageInfo>?) {
     list?.let {
         val mList = if (list.size > 4) {

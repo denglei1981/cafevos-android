@@ -333,7 +333,13 @@ object LiveDataBusKey {
     const val CIRCLE_INIT_HOT = "circleInitHot"
     const val SIGN_UP_SUCCESS = "signUpSuccess"
     const val REFRESH_INFORMATION_FRAGMENT = "refreshInformationFragment"
+    const val REFRESH_POST_FRAGMENT = "refreshPostFragment"
+    const val REFRESH_ACTS_FRAGMENT = "refreshActsFragment"
+    const val REFRESH_SHOP_FRAGMENT = "refreshShopFragment"
     const val REFRESH_FOOT_CHECK = "refreshFootCheck"
     const val REFRESH_INFORMATION_DATA = "refreshInformationData"
+    const val REFRESH_POST_DATA = "refreshPostData"
+    const val REFRESH_ACTS_DATA = "refreshActsData"
+    const val REFRESH_SHOP_DATA = "refreshShopData"
 }
 

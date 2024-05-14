@@ -51,20 +51,21 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_40"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:layout_marginEnd="@dimen/dp_5"
+                    android:background="@null"
                     android:textSize="@dimen/sp_16"
-                    app:elevation="0dp"
+                    app:tabBackground="@null"
                     app:tabIndicator="@null"
-                    app:tabIndicatorColor="@null"
-                    app:tabMaxWidth="@dimen/dp_200"
-                    app:tabMinWidth="@dimen/dp_20"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabIndicatorHeight="0dp"
                     app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/white"
-                    app:tabTextAppearance="@style/style_indexTabItemStyle16"
-                    app:tabTextColor="@color/color_9394A0" />
+                    app:tabPaddingEnd="@dimen/dp_16"
+                    app:tabPaddingStart="@dimen/dp_16"
+                    app:tabRippleColor="@null"
+                    app:tabSelectedTextColor="#161E37"
+                    app:tabTextAppearance="@style/TabLayoutTextStyle"
+                    app:tabTextColor="#90161E37" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager2.widget.ViewPager2

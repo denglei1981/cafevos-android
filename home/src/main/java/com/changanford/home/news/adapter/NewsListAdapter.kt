@@ -40,6 +40,7 @@ import com.changanford.home.api.HomeNetWork
 import com.changanford.home.databinding.ItemNewsItemsBinding
 import com.changanford.home.util.LoginUtil
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.android.synthetic.main.item_news_items.view.checkbox
 
 
 class NewsListAdapter(
@@ -70,6 +71,11 @@ class NewsListAdapter(
     override fun convert(holder: BaseViewHolder, item: InfoDataBean) {
         val binding = DataBindingUtil.bind<ItemNewsItemsBinding>(holder.itemView)
         binding?.let {
+            it.checkbox.setOnClickListener {
+                val isCheck = it.checkbox.isChecked
+                item.isCheck = isCheck
+                checkIsAllCheck()
+            }
             it.checkbox.isChecked = item.isCheck
             if (isManage) {
                 it.checkbox.isVisible = true

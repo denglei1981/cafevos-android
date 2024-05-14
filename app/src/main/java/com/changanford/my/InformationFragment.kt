@@ -166,7 +166,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, infoAdapter, total)
-                    if (pageSize>1){
+                    if (pageSize > 1 && infoAdapter.isManage) {
                         infoAdapter.checkIsAllCheck()
                     }
                 }

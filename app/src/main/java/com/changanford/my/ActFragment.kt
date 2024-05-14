@@ -12,7 +12,12 @@ import com.changanford.common.bean.ActDataBean
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
-import com.changanford.common.net.*
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.CommonUtils.jumpActDetail
 import com.changanford.common.util.ConfirmTwoBtnPop
@@ -39,15 +44,15 @@ import kotlinx.coroutines.launch
 class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
     var type: String = ""
     var userId: String = ""
-    var isRefresh: Boolean = false
+    private var isRefresh: Boolean = false
 
-    val actAdapter: SearchActsResultAdapter by lazy {
+    private val actAdapter: SearchActsResultAdapter by lazy {
         SearchActsResultAdapter()
     }
 
     companion object {
         fun newInstance(value: String, userId: String = ""): ActFragment {
-            val bundle: Bundle = Bundle()
+            val bundle = Bundle()
             bundle.putString(RouterManger.KEY_TO_OBJ, value)
             bundle.putString(RouterManger.KEY_TO_ID, userId)
             val medalFragment = ActFragment()
@@ -66,8 +71,19 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
         }
 
         binding.rcyAct.rcyCommonView.adapter = actAdapter
-        actAdapter.sSetLogHistory{
+        binding.rcyAct.rcyCommonView.itemAnimator = null
+        actAdapter.sSetLogHistory {
             viewModel.AddACTbrid(it)
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_ACTS_FRAGMENT).observe(this) {
+            actAdapter.isManage = it
+            actAdapter.notifyDataSetChanged()
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_ACTS_DATA).observe(this) {
+            actAdapter.data.forEach { data ->
+                data.isCheck = it
+            }
+            actAdapter.notifyDataSetChanged()
         }
     }
 
@@ -87,17 +103,19 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             initRefreshData(1)
         }
     }
-    var searchKeys:String=""
 
-    fun  mySerachInfo(){
+    var searchKeys: String = ""
+
+    fun mySerachInfo() {
         var total: Int = 0
-        viewModel.queryMineCollectAc(1,searchKeys) { reponse ->
+        viewModel.queryMineCollectAc(1, searchKeys) { reponse ->
             reponse?.data?.total?.let {
                 total = it
             }
             completeRefresh(reponse?.data?.dataList, actAdapter, total)
         }
     }
+
     override fun <T, VH : BaseViewHolder> completeRefresh(
         newData: Collection<T>?,
         adapter: BaseQuickAdapter<T, VH>,
@@ -133,6 +151,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         total > it.size + data.size -> {// 总数大于获取的数据
                             bindSmartLayout()?.apply { setEnableLoadMore(true) } // 加载更多
                         }
+
                         else -> {
                             bindSmartLayout()?.apply { setEnableLoadMore(false) }// 禁止加载更多
                         }
@@ -142,26 +161,32 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             }
         }
     }
+
     override fun initRefreshData(pageSize: Int) {
         super.initRefreshData(pageSize)
         var total: Int = 0
         when (type) {
             "collectAct" -> {
-                viewModel.queryMineCollectAc(pageSize,searchKeys) { reponse ->
+                viewModel.queryMineCollectAc(pageSize, searchKeys) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
             }
+
             "footAct" -> {
                 viewModel.queryMineFootAc(pageSize) { reponse ->
                     reponse?.data?.total?.let {
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
+                    if (pageSize > 1 && actAdapter.isManage) {
+                        actAdapter.checkIsAllCheck()
+                    }
                 }
             }
+
             "actMyCreate", "actTaCreate" -> {
                 viewModel.queryMineSendAc(userId, pageSize) { reponse ->
                     reponse?.data?.total?.let {
@@ -170,14 +195,14 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
                 }
                 actAdapter.toFinishActivity {
-                    viewModel.endedActivity(it){_->
+                    viewModel.endedActivity(it) { _ ->
                         initRefreshData(1)
                     }
                 }
-                actAdapter.reEdit{//重新编辑
-                    when(it.wonderfulType){
-                        1,0->{//报名
-                            viewModel.activityInfo4Update(it.wonderfulId){
+                actAdapter.reEdit {//重新编辑
+                    when (it.wonderfulType) {
+                        1, 0 -> {//报名
+                            viewModel.activityInfo4Update(it.wonderfulId) {
                                 it.onSuccess {
                                     it?.let { it1 ->
                                         RouterManger.param("dto", it1)
@@ -187,8 +212,9 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
 
                             }
                         }
+
                         4 -> {//投票
-                            viewModel.voteInfo4Update(it.wonderfulId){
+                            viewModel.voteInfo4Update(it.wonderfulId) {
                                 it.onSuccess {
                                     it?.let { it1 ->
                                         RouterManger.param("voteBean", it1)
@@ -201,6 +227,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     }
                 }
             }
+
             "actMyJoin" -> {
                 viewModel.queryMineJoinAc(pageSize) { reponse ->
                     reponse?.data?.total?.let {
@@ -218,6 +245,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             "actTaCreate" -> {
                 ViewEmptyTopBinding.inflate(layoutInflater).root
             }
+
             else -> {
                 super.showEmpty()
             }
@@ -255,8 +283,10 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvHomeActLookNum.visibility = View.VISIBLE
                         it.tvHomeActLookNum.text = "${MineUtils.num(item.browseCount)}浏览"
                     }
+
                     else -> {//创建时间
-                        it.tvHomeActTimes.text = "创建时间：${TimeUtils.MillisTo_YMDHM(item.createTime)}"
+                        it.tvHomeActTimes.text =
+                            "创建时间：${TimeUtils.MillisTo_YMDHM(item.createTime)}"
                     }
                 }
                 //"官方", "线上活动", "免费" official 0-官方，1-非官方
@@ -277,14 +307,16 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         it.tvActNum.text = "原因：${item.reason}"
                         it.btnEndAct.visibility = View.GONE
                         it.tvToLookAct.visibility = View.GONE
-                        it.tvActNum.visibility=View.VISIBLE
+                        it.tvActNum.visibility = View.VISIBLE
                     }
+
                     0 -> {
                         it.btnFollow.text = "待审核"
                         it.btnEndAct.visibility = View.GONE
                         it.tvToLookAct.visibility = View.GONE
-                        it.tvActNum.visibility=View.GONE
+                        it.tvActNum.visibility = View.GONE
                     }
+
                     2 -> {
                         var startTime: Long =
                             if (!item.beginTime.isNullOrEmpty()) item.beginTime.toLong() else 0
@@ -293,9 +325,11 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                             item.serverTime < startTime -> {//未开始
                                 it.btnFollow.text = "未开始"
                             }
+
                             item.serverTime < endTime -> {//进行中
                                 it.btnFollow.text = "进行中"
                             }
+
                             else -> {//已结束
                                 it.btnFollow.text = "已截止"
                             }
@@ -310,14 +344,15 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                             (type == "actMyCreate" || type == "actMyJoin")
                         ) {
                             it.tvActNum.text = "报名人数${item.activityJoinCount}人"
-                            it.tvActNum.visibility=View.VISIBLE
+                            it.tvActNum.visibility = View.VISIBLE
                         }
                     }
+
                     3 -> {
                         it.btnFollow.text = "已结束"
                         if (!(item.jumpType == 1 || item.jumpType == 2)) {
                             it.tvActNum.text = "报名人数${item.activityJoinCount}人"
-                            it.tvActNum.visibility=View.VISIBLE
+                            it.tvActNum.visibility = View.VISIBLE
                         }
                         it.btnEndAct.visibility = View.GONE
                     }

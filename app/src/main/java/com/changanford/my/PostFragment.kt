@@ -3,6 +3,7 @@ package com.changanford.my
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.changanford.circle.adapter.CircleMainBottomAdapter
 import com.changanford.common.databinding.ViewEmptyTopBinding
@@ -11,6 +12,8 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updatePersonalData
 import com.changanford.my.databinding.FragmentPostBinding
@@ -27,13 +30,13 @@ import java.lang.reflect.Method
  */
 class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
 
-    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
+//    private lateinit var staggeredGridLayoutManager: StaggeredGridLayoutManager
     private lateinit var mCheckForGapMethod: Method
 
     var type: String = ""
     var userId: String = ""
 
-    val postAdapter: CircleMainBottomAdapter by lazy {
+    private val postAdapter: CircleMainBottomAdapter by lazy {
         CircleMainBottomAdapter(requireContext())
     }
 
@@ -65,8 +68,6 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
     }
 
     override fun initView() {
-
-
         arguments?.getString(RouterManger.KEY_TO_OBJ)?.let {
             type = it
             if (it == "footPost") {
@@ -82,7 +83,6 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             }
 
         }
-
         userId = UserManger.getSysUserInfo()?.uid ?: ""
         arguments?.getString(RouterManger.KEY_TO_ID)?.let {
             userId = it
@@ -91,20 +91,38 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             StaggeredGridLayoutManager::class.java.getDeclaredMethod("checkForGaps")
         mCheckForGapMethod.isAccessible = true
 
-        staggeredGridLayoutManager = StaggeredGridLayoutManager(
-            2,
-            StaggeredGridLayoutManager.VERTICAL
-        )
-        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
-        binding.rcyPost.rcyCommonView.layoutManager = staggeredGridLayoutManager
+//        staggeredGridLayoutManager = StaggeredGridLayoutManager(
+//            2,
+//            StaggeredGridLayoutManager.VERTICAL
+//        )
+//        staggeredGridLayoutManager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_NONE
+        binding.rcyPost.rcyCommonView.layoutManager = GridLayoutManager(requireContext(),2)
         binding.rcyPost.rcyCommonView.adapter = postAdapter
+        binding.rcyPost.rcyCommonView.itemAnimator = null
 
         postAdapter.setOnItemClickListener { _, view, position ->
+            val item = postAdapter.getItem(position)
+            if (postAdapter.isManage) {
+                item.checkBoxChecked = !item.checkBoxChecked
+                postAdapter.notifyItemChanged(position)
+                postAdapter.checkIsAllCheck()
+                return@setOnItemClickListener
+            }
             GioPageConstant.postEntrance = "发帖人个人主页"
             updatePersonalData(postAdapter.getItem(position).title.toString(), "帖子详情页")
             val bundle = Bundle()
             bundle.putString("postsId", postAdapter.getItem(position).postsId.toString())
             startARouter(ARouterCirclePath.PostDetailsActivity, bundle)
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_POST_FRAGMENT).observe(this) {
+            postAdapter.isManage = it
+            postAdapter.notifyDataSetChanged()
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_POST_DATA).observe(this) {
+            postAdapter.data.forEach { item ->
+                item.checkBoxChecked = it
+            }
+            postAdapter.notifyDataSetChanged()
         }
     }
 
@@ -140,6 +158,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                     }
                 }
             }
+
             "footPost" -> {
                 viewModel.queryMineFootPost(pageSize) { response ->
                     response?.data?.total?.let {
@@ -148,8 +167,12 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                     response.onSuccess {
                         completeRefresh(it?.dataList, postAdapter, total)
                     }
+                    if (pageSize > 1 && postAdapter.isManage) {
+                        postAdapter.checkIsAllCheck()
+                    }
                 }
             }
+
             "centerPost" -> {
                 viewModel.queryMineSendPost(userId, pageSize) { response ->
                     response?.data?.total?.let {
@@ -168,6 +191,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             "centerPost" -> {
                 ViewEmptyTopBinding.inflate(layoutInflater).root
             }
+
             else -> {
                 super.showEmpty()
             }

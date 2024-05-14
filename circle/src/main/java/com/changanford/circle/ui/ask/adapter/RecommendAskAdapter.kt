@@ -58,7 +58,7 @@ class RecommendAskAdapter :
     @SuppressLint("SetTextI18n", "NewApi")
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         binding?.let {
-            it.layoutAnswer.layoutCount.tvAskFb.isVisible = true
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
             it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
             it.layoutAnswer.layoutCount.tvCount.text =
                 "${item.answerCount}回答  ${item.viewVal}浏览"
@@ -145,18 +145,20 @@ class RecommendAskAdapter :
         }
         binding?.layoutAskInfo?.run {
             tvTitle.text = item.title
-            val tvConfig = TagConfig(Type.TEXT).apply {
-                text = item.questionTypeName
-                textColor = ContextCompat.getColor(context, R.color.white)
-                marginRight = 10.toIntPx()
-                backgroundColor =
-                    ContextCompat.getColor(context, R.color.color_1700F4)
-                radius = 4.dp.toFloat()
-                textSize = 10.sp.toFloat()
-                topPadding = 2.dp
-                bottomPadding = 2.dp
+            if (!item.questionTypeName.isNullOrEmpty()) {
+                val tvConfig = TagConfig(Type.TEXT).apply {
+                    text = item.questionTypeName
+                    textColor = ContextCompat.getColor(context, R.color.white)
+                    marginRight = 10.toIntPx()
+                    backgroundColor =
+                        ContextCompat.getColor(context, R.color.color_1700F4)
+                    radius = 4.dp.toFloat()
+                    textSize = 10.sp.toFloat()
+                    topPadding = 2.dp
+                    bottomPadding = 2.dp
+                }
+                tvTitle.addTag(tvConfig)
             }
-            tvTitle.addTag(tvConfig)
         }
     }
 

@@ -154,7 +154,27 @@ data class QuestionItemBean(
     val questionTypeName: String = "",
     val title: String? = null,
     val viewVal: String? = null,
-)
+){
+    fun getPicLists(): List<String>? {
+        if (qaAnswer?.answerContents.isNullOrEmpty()) {
+            return null
+        } else {
+            val mList = ArrayList<String>()
+            qaAnswer?.answerContents?.forEach {
+                mList.add(it.imgUrl)
+            }
+            return mList
+        }
+//        if (imgs == null) {
+//            return pisList
+//        }
+//        return if (imgs?.isEmpty() == true) {
+//            pisList
+//        } else {
+//            imgs?.split(",")
+//        }
+    }
+}
 data class AnswerInfoBean(
     val adopt:String?=null,
     val answerTime:Long?=null,
@@ -162,4 +182,7 @@ data class AnswerInfoBean(
     val content:String?=null,
     val replyCount:String?=null,
     val qaUserVO:QuestionUserInfo?=null,
+    val answerContents: ArrayList<AnswerContentsData>?,
 )
+
+data class AnswerContentsData(val imgUrl: String, val imgDesc: String)

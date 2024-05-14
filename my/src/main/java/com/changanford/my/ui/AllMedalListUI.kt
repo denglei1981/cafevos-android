@@ -16,6 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.databinding.ItemMedalTabBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.AppUtils
@@ -24,7 +25,6 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.load
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.PopMedalBinding
 import com.changanford.my.databinding.UiAllMedalBinding
 import com.changanford.my.ui.fragment.MedalFragment

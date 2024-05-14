@@ -79,6 +79,7 @@ class ActBean {
     val beginTime: Long = 0//活动开始时间
     val cityName: String = ""//城市名称
     val coverImg: String = ""//封面图片
+    var isCheck: Boolean = false
     val deadLineTime: Long = 0//	报名活动截止时间
     val endTime: Long = 0//活动结束时间
     val hot: String =
@@ -398,6 +399,7 @@ data class PostDataBean(
     val collectCount: Int = 0,
     var commentCount: Long = 0,
     val content: String = "",
+    var checkBoxChecked: Boolean = false,
     val circleName: String = "",
     val firstComment: FirstCommentData? = null,
     val contentLike: Any? = Any(),

@@ -1,6 +1,7 @@
 package com.changanford.circle.bean
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.changanford.common.bean.AnswerContentsData
 
 data class MechanicData(
     var identityType: String? = "",
@@ -87,8 +88,6 @@ data class QaAnswer(
     val replyCount: Int,
     val answerContents: ArrayList<AnswerContentsData>?,
 )
-
-data class AnswerContentsData(val imgUrl: String, val imgDesc: String)
 
 data class QaUserVO(
     val avater: String?,

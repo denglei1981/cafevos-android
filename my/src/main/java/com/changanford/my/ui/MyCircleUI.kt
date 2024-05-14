@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.changanford.common.databinding.ItemMedalTabBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
@@ -18,7 +19,6 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.changanford.my.ui.fragment.CircleFragment
 import com.changanford.my.viewmodel.CircleViewModel

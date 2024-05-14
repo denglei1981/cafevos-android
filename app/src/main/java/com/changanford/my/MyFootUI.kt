@@ -78,10 +78,12 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         }
         binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
+                binding.tvDelete.isEnabled = true
                 binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.white))
                 binding.tvDelete.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_shape_1700f4_23)
             } else {
+                binding.tvDelete.isEnabled = false
                 binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
                 binding.tvDelete.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_shape_80a6_23)
@@ -90,6 +92,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         binding.checkbox.setOnClickListener {
             refreshBottomDataFragment(nowPosition, binding.checkbox.isChecked)
         }
+        //底部是否全选
         LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_FOOT_CHECK).observe(this) {
             binding.checkbox.isChecked = it
         }
@@ -97,41 +100,44 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
 
     private fun refreshBottomDataFragment(position: Int, isAll: Boolean) {
         when (position) {
-            0 -> {//资讯
+            0 -> {//资讯是否全部选中
                 LiveDataBus.get().with(LiveDataBusKey.REFRESH_INFORMATION_DATA).postValue(isAll)
             }
 
             1 -> {//帖子
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_POST_DATA).postValue(isAll)
             }
 
             2 -> {//活动
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_ACTS_DATA).postValue(isAll)
             }
 
             3 -> {//商品
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_SHOP_DATA).postValue(isAll)
             }
         }
     }
 
     private fun refreshBottomFragment(position: Int) {
         when (position) {
-            0 -> {//资讯
+            0 -> {//资讯是否显示删除
                 LiveDataBus.get().with(LiveDataBusKey.REFRESH_INFORMATION_FRAGMENT)
                     .postValue(manageType.value == 1)
             }
 
             1 -> {//帖子
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_POST_FRAGMENT)
+                    .postValue(manageType.value == 1)
             }
 
             2 -> {//活动
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_ACTS_FRAGMENT)
+                    .postValue(manageType.value == 1)
             }
 
             3 -> {//商品
-
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_SHOP_FRAGMENT)
+                    .postValue(manageType.value == 1)
             }
         }
     }
@@ -177,6 +183,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                     manageType.value = 0
                     refreshBottomFragment(oldPosition)
                     refreshBottomDataFragment(oldPosition, false)
+                    binding.checkbox.isChecked = false
                     val oldTitle =
                         binding.tabLayout.getTabAt(oldPosition)?.view?.findViewById<TextView>(R.id.tv_tab)
                     val oldIn =
@@ -282,6 +289,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 }
                 tab.customView = itemHelpTabBinding.root
             }.attach()
+            offscreenPageLimit = 4
         }
     }
 }

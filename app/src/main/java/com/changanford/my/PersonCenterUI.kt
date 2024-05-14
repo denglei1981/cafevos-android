@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MedalListBeanItem
 import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.databinding.ItemMedalTabBinding
 import com.changanford.common.databinding.ItemPersonMedalBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.net.onSuccess
@@ -27,7 +28,6 @@ import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.load
 import com.changanford.my.adapter.LabelAdapter
-import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiPersonCenterBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.android.material.tabs.TabLayoutMediator

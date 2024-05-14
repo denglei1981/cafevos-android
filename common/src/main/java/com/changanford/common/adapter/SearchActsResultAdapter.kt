@@ -15,8 +15,12 @@ import com.changanford.common.constant.preLoadNumber
 import com.changanford.common.databinding.ItemHomeActsBinding
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.toIntPx
 
 /**
  * 活动列表。
@@ -28,6 +32,8 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
     init {
         loadMoreModule.preLoadNumber = preLoadNumber
     }
+
+    var isManage = false
 
     var toFinish: (wonderfulId: Int) -> Unit = {}
     fun toFinishActivity(toFinish: (wonderfulId: Int) -> Unit) {
@@ -46,8 +52,29 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
 
     override fun convert(holder: BaseDataBindingHolder<ItemHomeActsBinding>, item: ActBean) {
         holder.dataBinding?.let {
+            it.checkbox.setOnClickListener { _ ->
+                val isCheck = it.checkbox.isChecked
+                item.isCheck = isCheck
+                checkIsAllCheck()
+            }
+            it.checkbox.isChecked = item.isCheck
+            if (isManage) {
+                it.checkbox.isVisible = true
+                it.clContent.translationX = 36.toIntPx().toFloat()
+            } else {
+                it.checkbox.isVisible = false
+                it.clContent.translationX = 0f
+            }
+            MUtils.setTopMargin(it.root, 15, holder.layoutPosition)
+
             it.ivActs.loadCompress(item.coverImg)
-            it.root.setOnClickListener {
+            it.root.setOnClickListener { _ ->
+                if (isManage) {
+                    item.isCheck = !item.isCheck
+                    it.checkbox.isChecked = item.isCheck
+                    checkIsAllCheck()
+                    return@setOnClickListener
+                }
                 GIOUtils.homePageClick("活动信息流", (holder.position + 1).toString(), item.title)
                 JumpUtils.instans?.jump(item.jumpDto.jumpCode, item.jumpDto.jumpVal)
                 if (item.outChain == "YES") {
@@ -101,7 +128,7 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
             it.tvSignpeople.isVisible = item.showJoinNum()
 //            it.tvSignpeopleImg.isVisible = item.showJoinNum()
             it.tvSignpeople.text = "${item.activityJoinCount}人参与"
-            it.bt.isVisible = item.showButton()
+            it.bt.isVisible = item.showButton() && !isManage
             if (item.showButton()) {
                 it.bt.text = item.showButtonText()
             }
@@ -112,7 +139,13 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
                 it.bt.background = ContextCompat.getDrawable(context, R.drawable.bg_80a6_18)
                 it.bt.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             }
-            it.bt.setOnClickListener {
+            it.bt.setOnClickListener { _ ->
+                if (isManage) {
+                    item.isCheck = !item.isCheck
+                    it.checkbox.isChecked = item.isCheck
+                    checkIsAllCheck()
+                    return@setOnClickListener
+                }
                 if (item.isFinish()) {
                     AlertThreeFilletDialog(BaseApplication.curActivity).builder()
                         .setMsg(
@@ -137,45 +170,21 @@ class SearchActsResultAdapter(private val isSearch: Boolean = false) :
             }
             it.reedit.isVisible = item.showReedit()
 
-
-//            it.tvTagTwo.actTypeText(item.wonderfulType)
-//
-//            when (item.wonderfulType) {
-//                0 -> {
-//                    it.tvTagTwo.text = "线上活动"
-//                    it.tvHomeActAddress.visibility = View.GONE
-//                }
-//                1 -> {
-//                    it.tvTagTwo.text = "线下活动"
-//                    it.tvHomeActAddress.text = item.getAddress()
-//                    it.tvHomeActAddress.visibility = View.VISIBLE
-//                }
-//                2 -> {
-//                    it.tvTagTwo.text = "调查问卷"
-//                    it.tvHomeActAddress.visibility = View.GONE
-//                    it.tvHomeActTimes.text = item.getEndTimeTips()
-//                }
-//                3 -> {
-//                    it.tvTagTwo.text = "福域活动"
-//                    it.tvHomeActAddress.visibility = View.GONE
-//                }
-//            }
-//            when (item.official) {
-//                0 -> {
-//                    it.tvTagOne.text = context.getString(R.string.platform_acts)
-//                    it.tvTagOne.visibility = View.VISIBLE
-//                }
-//                2 -> {
-//                    it.tvTagOne.text = "经销商"
-//                    it.tvTagOne.visibility = View.VISIBLE
-//                }
-//                else -> {
-//                    it.tvTagOne.visibility = View.VISIBLE
-//                    it.tvTagOne.text = "个人"
-//                }
-//            }
-
         }
 
+    }
+
+    fun checkIsAllCheck() {
+        if (data.isNullOrEmpty()) {
+            LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+            return
+        }
+        data.forEach {
+            if (!it.isCheck) {
+                LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
+                return
+            }
+        }
+        LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(true)
     }
 }

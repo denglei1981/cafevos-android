@@ -12,11 +12,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.EmptyViewModel
 import com.changanford.common.router.path.ARouterMyPath
-import com.changanford.my.databinding.ItemMedalTabBinding
 import com.changanford.my.databinding.UiCollectBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.inputmethod.EditorInfo
 import com.changanford.common.constant.JumpConstant
+import com.changanford.common.databinding.ItemMedalTabBinding
 import com.changanford.common.util.HideKeyboardUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
