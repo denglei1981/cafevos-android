@@ -162,6 +162,7 @@
             app:drawableEndCompat="@mipmap/ic_right_app_color"
             app:layout_constraintBottom_toBottomOf="@id/tvKillTitle"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvKillTitle"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -188,6 +189,7 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerView"
+            app:layout_goneMarginTop="10dp"
             tools:visibility="visible" />
 
         <com.changanford.common.ui.view.WTextView
@@ -200,6 +202,7 @@
             android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_14"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_recommendList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_recommendList"
             tools:visibility="visible" />

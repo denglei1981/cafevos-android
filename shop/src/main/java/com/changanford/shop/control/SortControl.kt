@@ -1,12 +1,13 @@
 package com.changanford.shop.control
 
 import android.content.Context
-import android.graphics.Typeface
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.widget.pop.ShopFilterPricePop
 import com.changanford.shop.R
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -27,6 +28,18 @@ class SortControl(
     private val drawableEnd2 by lazy { ContextCompat.getDrawable(context, R.mipmap.ic_sort_2) }
     private var drawableEnd: Drawable? = null
     private val drawableNormal by lazy { ContextCompat.getDrawable(context, R.mipmap.ic_sort_0) }
+    private val drawableEndFilterSelected by lazy {
+        ContextCompat.getDrawable(
+            context,
+            R.mipmap.ic_shop_filter_selected
+        )
+    }
+    private val drawableEndFilter by lazy {
+        ContextCompat.getDrawable(
+            context,
+            R.mipmap.ic_shop_filter_select
+        )
+    }
     private var lastIndex: Int = -1
     private val mallSortTypeArr = arrayOf("COMPREHENSIVE", "SALES", "PRICE")
     private var ascOrDesc = "DESC"//ASC:正序、DESC:倒叙
@@ -48,7 +61,7 @@ class SortControl(
 
     /**
      * 更新排序
-     * [index]0 综合排序、1 销量、2 价格
+     * [index]0 综合排序、1 销量、2 价格 3筛选
      * */
     private fun updateSort(index: Int = 0) {
         //点击item切换
@@ -63,7 +76,11 @@ class SortControl(
             updateUi(index, true)
         }
         lastIndex = index
-        listener.onSelectSortListener(mallSortTypeArr[index], ascOrDesc)
+        if (index < 3) {
+            listener.onSelectSortListener(mallSortTypeArr[index], ascOrDesc)
+        }else{
+            showFilterPop()
+        }
     }
 
     private fun updateUi(index: Int, isSelected: Boolean) {
@@ -75,6 +92,7 @@ class SortControl(
             1 -> {
                 GIOUtils.homePageClick("二级tab名称", 2.toString(), "销量$indexOrder")
             }
+
             2 -> {
                 GIOUtils.homePageClick("二级tab名称", 3.toString(), "价格$indexOrder")
             }
@@ -82,20 +100,38 @@ class SortControl(
         viewArr[index].apply {
             if (isSelected) {
                 isChecked = true
-                typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-                if (index > 0) {
-                    setTextColor(ContextCompat.getColor(context, R.color.color_33))
+//                typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                if (index in 1..2) {
+                    setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
                     setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
+                }
+                if (index == 3) {
+                    setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
+                    setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        null,
+                        null,
+                        drawableEndFilterSelected,
+                        null
+                    )
                 }
             } else {
                 isChecked = false
-                typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-                if (index > 0) {
-                    setTextColor(ContextCompat.getColor(context, R.color.color_9394A0))
+//                typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
+                if (index in 1..2) {
+                    setTextColor(ContextCompat.getColor(context, R.color.color_9916))
                     setCompoundDrawablesRelativeWithIntrinsicBounds(
                         null,
                         null,
                         drawableNormal,
+                        null
+                    )
+                }
+                if (index == 3) {
+                    setTextColor(ContextCompat.getColor(context, R.color.color_9916))
+                    setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        null,
+                        null,
+                        drawableEndFilter,
                         null
                     )
                 }
@@ -109,12 +145,26 @@ class SortControl(
                 updateSort(0)
                 GIOUtils.homePageClick("二级tab名称", 1.toString(), "综合排序")
             }
+
             R.id.rb_1 -> {
                 updateSort(1)
             }
+
             R.id.rb_2 -> {
                 updateSort(2)
             }
+
+            R.id.rb_3 -> {
+                updateSort(3)
+            }
+        }
+    }
+
+    private fun showFilterPop() {
+        ShopFilterPricePop(context).run {
+            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(viewArr.get(3))
+            initShopData()
         }
     }
 

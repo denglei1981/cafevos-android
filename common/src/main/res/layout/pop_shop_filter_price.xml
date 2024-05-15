@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:background="@color/white"
+       >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ry_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="10dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_one"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:hint="自定义最低价"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textColor="@color/color_16"
+                android:textColorHint="@color/color_9916"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="9dp"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/color_9916"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_two"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:hint="自定义最高价"
+                android:inputType="number"
+                android:maxLength="8"
+                android:textColor="@color/color_16"
+                android:textColorHint="@color/color_9916"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_reset"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_bord_1700f4_23"
+                android:gravity="center"
+                android:text="重置"
+                android:textColor="@color/color_1700f4"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_shape_1700f4_23"
+                android:gravity="center"
+                android:text="确认"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/color_1a4a"
+            android:layout_marginTop="30dp"
+            android:layout_height="1dp"/>
+    </LinearLayout>
+</layout>

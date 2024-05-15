@@ -7,10 +7,10 @@
         <item name="tabIndicatorColor">@color/color_1700F4</item>
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabTextAppearance">@style/style_indexTabItemStyle</item>
-        <item name="tabBackground">@color/transparent</item>
-        <item name="tabRippleColor">@color/transparent</item>
+        <item name="tabBackground">@null</item>
+        <item name="tabRippleColor">@null</item>
         <item name="tabSelectedTextColor">@color/color_1700F4</item>
-        <item name="tabTextColor">@color/color_33</item>
+        <item name="tabTextColor">@color/color_9916</item>
     </style>
     <style name="style_indexTabItemStyle16" parent="TextAppearance.AppCompat.Title.Inverse">
         <item name="android:textSize">@dimen/sp_16</item>
@@ -66,7 +66,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/btn_selector</item>
         <item name="android:textSize">@dimen/sp_15</item>
-        <item name="android:layout_height">@dimen/dp_40</item>
+        <item name="android:layout_height">@dimen/dp_44</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center</item>
     </style>
@@ -76,7 +76,7 @@
         <item name="android:background">@drawable/radiobutton_bt_goods</item>
     </style>
     <style name="rb_goods1">
-        <item name="android:textColor">@color/color_99</item>
+        <item name="android:textColor">@color/color_8016</item>
         <item name="android:background">@drawable/radiobutton_bt_goods_</item>
     </style>
     <style name="rb_kill_date">

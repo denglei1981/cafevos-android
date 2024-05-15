@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
@@ -60,6 +61,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { appBarLayout: AppBarLayout, i: Int ->
             binding.smartRl.isEnabled = i >= 0
             val absOffset = abs(i).toFloat() * 2.5F
+            val absOffset2 = abs(i).toFloat() * 1.5F
+            binding.ivToTop.isVisible = absOffset2 > MConstant.deviceHeight
             //改变透明度
             if (absOffset <= appBarLayout.height) {
                 val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
@@ -104,6 +107,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     RecommendActivity.start()
                 }
             }
+            ivToTop.setOnClickListener {
+                scrollTop(appbarLayout)
+            }
         }
         binding.inTop.banner.apply {
             setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -139,6 +145,20 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 
         }
     }
+
+    private fun scrollTop(appBarLayout: AppBarLayout) {
+        if (appBarLayout.layoutParams is CoordinatorLayout.LayoutParams) {
+            val behavior = (appBarLayout.layoutParams as CoordinatorLayout.LayoutParams).behavior
+            if (behavior is AppBarLayout.Behavior) {
+                val topAndBottomOffset = behavior.topAndBottomOffset
+                if (topAndBottomOffset != 0) {
+                    behavior.setTopAndBottomOffset(0)
+                    binding.ivToTop.isVisible = false
+                }
+            }
+        }
+    }
+
 
     private fun initTab() {
 //        WCommonUtil.setTabSelectStyle(
@@ -297,10 +317,25 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         viewModel.getShopKingKongData()
         viewModel.getBannerData()
         viewModel.getShopHomeData(showLoading)
+        viewModel.getShopConfig()
 //        viewModel.getClassification()
     }
 
     private fun addObserve() {
+        viewModel.shopConfigBean.observe(this) {
+            binding.inTop.apply {
+                val killIsVisible = it.seckill_area_off
+                val rankIsVisible = it.rank_off
+
+                tvShopMoreKill.isVisible = killIsVisible == true
+                tvKillTitle.isVisible = killIsVisible == true
+                recyclerView.isVisible = killIsVisible == true
+
+                tvAllList.isVisible = rankIsVisible == true
+                tvRecommendList.isVisible = rankIsVisible == true
+                recyclerViewRecommend.isVisible = rankIsVisible == true
+            }
+        }
         viewModel.advertisingList.observe(this) {
             BannerControl.bindingBanner(
                 binding.inTop.banner,
@@ -358,18 +393,22 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             bindCarNum(it.shoppingCartCount ?: 0)
             mAdapter.setList(it.indexSeckillDtoList)
             binding.inTop.apply {
-                val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
-                tvShopMoreKill.visibility = visibility
-                tvKillTitle.visibility = visibility
+//                val visibility = if (mAdapter.data.size > 0) View.VISIBLE else View.GONE
+                if (mAdapter.data.size <= 0) {
+                    tvShopMoreKill.visibility = View.GONE
+                    tvKillTitle.visibility = View.GONE
+                    recyclerView.visibility = View.GONE
+                }
+
 //                //我的福币
 //                compose.setContent {
 //                    HomeMyIntegralCompose(it.totalIntegral)
 //                }
                 //推荐
                 if (it.mallSpuKindDtos != null && it.mallSpuKindDtos?.size!! > 0) {
-                    tvAllList.visibility = View.VISIBLE
-                    tvRecommendList.visibility = View.VISIBLE
-                    recyclerViewRecommend.visibility = View.VISIBLE
+//                    tvAllList.visibility = View.VISIBLE
+//                    tvRecommendList.visibility = View.VISIBLE
+//                    recyclerViewRecommend.visibility = View.VISIBLE
                     recommendAdapter.setList(it.mallSpuKindDtos)
                 } else {
                     tvAllList.visibility = View.GONE

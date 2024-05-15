@@ -1,11 +1,32 @@
 package com.changanford.shop.api
 
-import com.changanford.common.bean.*
+import com.changanford.common.bean.CommentBean
+import com.changanford.common.bean.CommentInfoBean
+import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.CreateOrderBean
+import com.changanford.common.bean.GoodsClassification
+import com.changanford.common.bean.GoodsDetailBean
+import com.changanford.common.bean.GoodsItemBean
+import com.changanford.common.bean.GoodsListBean
+import com.changanford.common.bean.GoodsTypesItemBean
+import com.changanford.common.bean.ListMainBean
+import com.changanford.common.bean.NewGoodsDetailBean
+import com.changanford.common.bean.OrderConfirmSkuItems
+import com.changanford.common.bean.OrderInfoBean
+import com.changanford.common.bean.OrderItemBean
+import com.changanford.common.bean.OrderTypesBean
+import com.changanford.common.bean.OtherInfoBean
+import com.changanford.common.bean.PayBackBean
+import com.changanford.common.bean.SeckillSessionsBean
+import com.changanford.common.bean.ShopHomeBean
+import com.changanford.common.bean.ShopOrderBean
+import com.changanford.common.bean.ShopOrderRefundBean
 import com.changanford.common.net.CommonResponse
 import com.changanford.shop.bean.InvoiceDetails
 import com.changanford.shop.bean.PackMainData
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.bean.RefundProgressMultipleBean
+import com.changanford.shop.bean.ShopConfigBean
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.HeaderMap
@@ -523,4 +544,13 @@ interface ShopNetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Boolean>
+
+    /**
+     * 获取商城配置
+     * */
+    @POST("/base/config/getConfigValueByKey")
+    suspend fun getShopConfig(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ShopConfigBean>
 }

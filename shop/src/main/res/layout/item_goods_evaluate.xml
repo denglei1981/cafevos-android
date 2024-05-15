@@ -4,76 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.CommentItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/bord_ee_b_0d5dp"
-        android:paddingBottom="@dimen/dp_16"
-        android:paddingTop="@dimen/dp_16"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_ee_b_0d5dp"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16">
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_avatar"
-            android:layout_marginStart="@dimen/dp_20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@mipmap/head_default"
             android:layout_width="@dimen/dp_35"
             android:layout_height="@dimen/dp_35"
-            app:shapeAppearanceOverlay="@style/circleImageStyle"/>
+            android:layout_marginStart="@dimen/dp_16"
+            android:src="@mipmap/head_default"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_userName"
-            android:layout_marginStart="@dimen/dp_18"
+            style="@style/style_txt_ellipsize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_2"
+            android:text="@{model.nickName}"
+            android:textColor="@color/color_16"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toEndOf="@id/img_avatar"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dp_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/ratingBar"
-            style="@style/style_txt_ellipsize"
-            tools:text="@string/str_anonymousUsers"
-            android:text="@{model.nickName}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_12" />
+            tools:text="@string/str_anonymousUsers" />
+
         <com.changanford.shop.view.TypefaceTextView
-            app:layout_constraintTop_toBottomOf="@id/tv_userName"
-            app:layout_constraintStart_toStartOf="@id/tv_userName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/ratingBar"
             style="@style/style_txt_ellipsize"
-            tools:text="刚刚"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@{model.evalTimeTxt}"
-            android:textColor="@color/color_cc"
-            android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.ratingbar.AndRatingBar
-            app:layout_constraintBottom_toBottomOf="@id/img_avatar"
-            app:layout_constraintTop_toTopOf="@id/img_avatar"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/ratingBar"
-            android:minHeight="@dimen/dp_12"
-            android:rating="@{model.evalScore}"
-            android:layout_marginEnd="@dimen/dp_20"
-            style="@style/AndRatingBarStyle"/>
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="@id/tv_userName"
+            app:layout_constraintTop_toBottomOf="@id/tv_userName"
+            tools:text="刚刚" />
+
+<!--        <com.changanford.shop.view.ratingbar.AndRatingBar-->
+<!--            android:id="@+id/ratingBar"-->
+<!--            style="@style/AndRatingBarStyle"-->
+<!--            android:layout_marginEnd="@dimen/dp_16"-->
+<!--            android:minHeight="@dimen/dp_12"-->
+<!--            android:rating="@{model.evalScore}"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/img_avatar"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/img_avatar" />-->
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_evaluate_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_18"
-            app:layout_constraintTop_toBottomOf="@id/img_avatar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_18"
+            android:layout_marginEnd="@dimen/dp_16"
             android:text="@{model.evalText}"
-            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 最新版蓝牙耳机 降噪耳机"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
+            android:textColor="@color/color_16"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintTop_toBottomOf="@id/img_avatar"
+            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 最新版蓝牙耳机 降噪耳机" />
+
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/composeView"
-            app:layout_constraintTop_toBottomOf="@id/tv_evaluate_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_evaluate_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

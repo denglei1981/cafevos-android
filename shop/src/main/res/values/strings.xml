@@ -187,6 +187,7 @@
     <string name="str_comprehensiveRanking">综合排序</string>
     <string name="str_sales">销量</string>
     <string name="str_price">价格</string>
+    <string name="str_filter_shop">筛选</string>
     <string name="str_clickingTooFast">点击频率过快!</string>
     <string name="str_hasChangeXa">已兑换%1$s件</string>
     <string name="str_walk">逛一逛</string>

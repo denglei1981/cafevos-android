@@ -34,6 +34,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
+import com.changanford.shop.bean.ShopConfigBean
 import com.changanford.shop.utils.WConstant
 import kotlinx.coroutines.launch
 
@@ -117,7 +118,7 @@ class GoodsViewModel : BaseViewModel() {
     //首页
     var fbData = MutableLiveData<ShopHomeBean>()
 
-    fun getFB(){
+    fun getFB() {
         viewModelScope.launch {
             fetchRequest() {
                 body.clear()
@@ -614,6 +615,24 @@ class GoodsViewModel : BaseViewModel() {
                 }.onWithMsgFailure {
 
                 }
+        }
+    }
+
+    val shopConfigBean = MutableLiveData<ShopConfigBean>()
+
+    fun getShopConfig() {
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["configKey"] = "mall_second_config"
+                body["obj"] = true
+                val randomKey = getRandomKey()
+                shopApiService.getShopConfig(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+//                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                shopConfigBean.postValue(it)
+            }
         }
     }
 }

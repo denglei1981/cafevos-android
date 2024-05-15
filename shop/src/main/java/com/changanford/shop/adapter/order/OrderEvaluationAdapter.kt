@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.util.FullyGridLayoutManager
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.logD
@@ -27,103 +28,115 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 
 
-class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false): BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation){
-    val postBean:ArrayList<PostEvaluationBean> = arrayListOf()
-    val selectPicArr =arrayListOf<OrderFormState>()
+class OrderEvaluationAdapter(val activity: Activity, var reviewEval: Boolean = false) :
+    BaseQuickAdapter<OrderItemBean, BaseDataBindingHolder<ItemPostEvaluationBinding>>(R.layout.item_post_evaluation) {
+    val postBean: ArrayList<PostEvaluationBean> = arrayListOf()
+    val selectPicArr = arrayListOf<OrderFormState>()
     var postBeanLiveData = MutableLiveData<MutableList<PostEvaluationBean>>()
+
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemPostEvaluationBinding>, item: OrderItemBean) {
+    override fun convert(
+        holder: BaseDataBindingHolder<ItemPostEvaluationBinding>,
+        item: OrderItemBean
+    ) {
         holder.dataBinding?.apply {
-            val position=holder.absoluteAdapterPosition
-            model=item
+            MUtils.setTopMargin(root, 15, holder.absoluteAdapterPosition)
+            val position = holder.absoluteAdapterPosition
+            model = item
             executePendingBindings()
             imgGoodsCover.load(item.skuImg)
             updatePostBean(this, position)
             edtContent.onTextChanged {
-                updatePostBean(this,position)
+                updatePostBean(this, position)
             }
             val visibilityView: Int
             //追评
-            if(reviewEval){
-                visibilityView=View.GONE
-            }else{
-                visibilityView=View.VISIBLE
+            if (reviewEval) {
+                visibilityView = View.GONE
+            } else {
+                visibilityView = View.VISIBLE
                 ratingBar.setOnRatingChangeListener { _, _, _ ->
                     updatePostBean(this, position)
                 }
-                initPic(this,position)
+                initPic(this, position)
             }
-            checkBox.visibility=visibilityView
-            recyclerView.visibility=visibilityView
-            ratingBar.visibility=visibilityView
-            tvTitle.visibility=visibilityView
-            tvScore.visibility=visibilityView
+//            checkBox.visibility = visibilityView
+            recyclerView.visibility = visibilityView
+            ratingBar.visibility = visibilityView
+            tvTitle.visibility = visibilityView
+            tvScore.visibility = visibilityView
         }
     }
-    fun initBean(){
+
+    fun initBean() {
         selectPicArr.clear()
         data.forEach { item ->
-            val itemBean=PostEvaluationBean(mallMallOrderSkuId= item.mallOrderSkuId)
+            val itemBean = PostEvaluationBean(mallMallOrderSkuId = item.mallOrderSkuId)
             postBean.add(itemBean)
             selectPicArr.add(OrderFormState())
         }
     }
-    private fun updatePostBean(dataBinding:ItemPostEvaluationBinding,position:Int){
+
+    private fun updatePostBean(dataBinding: ItemPostEvaluationBinding, position: Int) {
         dataBinding.apply {
-            val content=edtContent.text.toString()
-            val rating=ratingBar.rating.toInt()
+            val content = edtContent.text.toString()
+            val rating = ratingBar.rating.toInt()
             tvContentLength.setText("${content.length}")
             postBean[position].apply {
-                evalText=content
-                if(!reviewEval){
+                evalText = content
+                if (!reviewEval) {
                     selectPicArr[position].getImgPaths()
-                    anonymous=if(checkBox.isChecked)"YES" else "NO"
-                    evalScore=rating
-                    dataBinding.tvScore.text=getEvalText(context,rating)
+//                    anonymous = if (checkBox.isChecked) "YES" else "NO"
+                    evalScore = rating
+                    dataBinding.tvScore.text = getEvalText(context, rating)
                 }
                 updateStatus(reviewEval)
             }
             postBeanLiveData.postValue(postBean)
         }
     }
-    private fun initPic(dataBinding:ItemPostEvaluationBinding,pos:Int){
-        val manager = FullyGridLayoutManager(context,4, GridLayoutManager.VERTICAL, false)
-        val postPicAdapter=PostPicAdapter(0)
+
+    private fun initPic(dataBinding: ItemPostEvaluationBinding, pos: Int) {
+        val manager = FullyGridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        val postPicAdapter = PostPicAdapter(0)
         dataBinding.recyclerView.apply {
-            layoutManager=manager
+            layoutManager = manager
 //            //允许拖拽
 //            postPicAdapter.draggableModule.isDragEnabled = true
-            adapter= postPicAdapter
+            adapter = postPicAdapter
             postPicAdapter.setList(selectPicArr[pos].selectPics)
         }
         postPicAdapter.setOnItemClickListener { _, _, position ->
             val holder = dataBinding.recyclerView.findViewHolderForLayoutPosition(position)
-            val selectList=selectPicArr[pos].selectPics?: arrayListOf()
+            val selectList = selectPicArr[pos].selectPics ?: arrayListOf()
             if (holder != null && holder.itemViewType == 0x9843) {//添加
-                PictureUtil.openGallery(activity,selectList,
+                PictureUtil.openGallery(
+                    activity, selectList,
                     object : OnResultCallbackListener<LocalMedia> {
                         override fun onResult(result: MutableList<LocalMedia>?) {
                             result?.apply {
                                 selectList.clear()
                                 selectList.addAll(this)
-                                selectPicArr[pos].selectPics=selectList
+                                selectPicArr[pos].selectPics = selectList
                                 postPicAdapter.setList(selectList)
-                                updatePostBean(dataBinding,pos)
+                                updatePostBean(dataBinding, pos)
                             }
                         }
+
                         override fun onCancel() {}
 
-                    },maxNum=10,isPreviewImage=true, isCompress = true)
+                    }, maxNum = 10, isPreviewImage = true, isCompress = true
+                )
             } else {
             }
         }
         postPicAdapter.setOnItemChildClickListener { _, view, position ->
-            val selectList=selectPicArr[pos].selectPics?: arrayListOf()
+            val selectList = selectPicArr[pos].selectPics ?: arrayListOf()
             if (view.id == R.id.iv_delete) {
                 selectList.remove(postPicAdapter.getItem(position))
                 postPicAdapter.remove(postPicAdapter.getItem(position))
-                selectPicArr[pos].selectPics=selectList
-                updatePostBean(dataBinding,pos)
+                selectPicArr[pos].selectPics = selectList
+                updatePostBean(dataBinding, pos)
                 postPicAdapter.notifyDataSetChanged()
             }
         }
@@ -141,7 +154,12 @@ class OrderEvaluationAdapter(val activity:Activity,var reviewEval:Boolean=false)
                 holder.itemView.alpha = 0.7f
             }
 
-            override fun onItemDragMoving(source: RecyclerView.ViewHolder?,from: Int,target: RecyclerView.ViewHolder?,to: Int) {
+            override fun onItemDragMoving(
+                source: RecyclerView.ViewHolder?,
+                from: Int,
+                target: RecyclerView.ViewHolder?,
+                to: Int
+            ) {
                 """"move from: " + source.getAdapterPosition() + " to: " + target.getAdapterPosition() """.logD()
             }
 

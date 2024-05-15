@@ -5,7 +5,13 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -42,48 +48,56 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener
  * @Description : 商品评价
  */
 @Route(path = ARouterShopPath.GoodsEvaluateActivity)
-class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel>(),
+class GoodsEvaluateActivity : BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel>(),
     OnRefreshLoadMoreListener {
-    companion object{
+    companion object {
         //"{\"spuId\": \"维保商品ID\",\"spuPageType\": \"MAINTENANCE\"}"  或者直接 spuId
-        fun start(goodsInfo:String?) {
+        fun start(goodsInfo: String?) {
 //            context.startActivity(Intent(context,GoodsEvaluateActivity::class.java).putExtra("spuId",spuId))
-            goodsInfo?.let { JumpUtils.instans?.jump(111,it) }
+            goodsInfo?.let { JumpUtils.instans?.jump(111, it) }
         }
     }
+
     private val mAdapter by lazy { GoodsEvaluationAdapter() }
-    private var pageNo=1
-    private var spuId:String="0"
-    private var spuPageType:String?=null
-    private var selectedTag: MutableState<String>?=null
+    private var pageNo = 1
+    private var spuId: String = "0"
+    private var spuPageType: String? = null
+    private var selectedTag: MutableState<String>? = null
     override fun initView() {
         binding.topBar.setActivity(this)
 //        spuId=intent.getStringExtra("spuId")?:"0"
-        val goodsInfo=intent.getStringExtra("goodsInfo")
-        if(BuildConfig.DEBUG)Log.e("okhttp","goodsInfo:$goodsInfo")
-        if(TextUtils.isEmpty(goodsInfo)){
-            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal),this)
+        val goodsInfo = intent.getStringExtra("goodsInfo")
+        if (BuildConfig.DEBUG) Log.e("okhttp", "goodsInfo:$goodsInfo")
+        if (TextUtils.isEmpty(goodsInfo)) {
+            ToastUtils.showLongToast(getString(R.string.str_parameterIllegal), this)
             this.finish()
             return
         }
         goodsInfo?.apply {
-            if(startsWith("{")){
-                val dataBean= Gson().fromJson(goodsInfo, GoodsDetailBean::class.java)
-                spuPageType=dataBean.spuPageType
-                spuId=dataBean.spuId
-            }else spuId=this
+            if (startsWith("{")) {
+                val dataBean = Gson().fromJson(goodsInfo, GoodsDetailBean::class.java)
+                spuPageType = dataBean.spuPageType
+                spuId = dataBean.spuId
+            } else spuId = this
         }
 
         binding.apply {
-            recyclerView.adapter=mAdapter
+            recyclerView.adapter = mAdapter
             mAdapter.setEmptyView(R.layout.view_empty)
             smartRl.setOnRefreshLoadMoreListener(this@GoodsEvaluateActivity)
         }
     }
+
     override fun initData() {
-        viewModel.getGoodsEvalInfo(spuId,spuPageType=spuPageType)
-        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType, showLoading = true)
-        viewModel.commentInfoLiveData.observe(this){
+        viewModel.getGoodsEvalInfo(spuId, spuPageType = spuPageType)
+        viewModel.getGoodsEvalList(
+            spuId,
+            pageNo,
+            queryType = selectedTag?.value,
+            spuPageType = spuPageType,
+            showLoading = true
+        )
+        viewModel.commentInfoLiveData.observe(this) {
             it?.apply {
                 binding.model = this
                 binding.composeView.setContent {
@@ -94,8 +108,8 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
         viewModel.commentLiveData.observe(this) {
             it?.apply {
                 if (1 == pageNo) mAdapter.setList(dataList)
-                else if(dataList !=null)mAdapter.addData(dataList!!)
-                binding.smartRl.setEnableLoadMore(mAdapter.data.size<total)
+                else if (dataList != null) mAdapter.addData(dataList!!)
+                binding.smartRl.setEnableLoadMore(mAdapter.data.size < total)
             }
             binding.smartRl.apply {
                 finishLoadMore()
@@ -105,44 +119,86 @@ class GoodsEvaluateActivity:BaseActivity<ActGoodsEvaluateBinding, GoodsViewModel
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        pageNo=1
-        viewModel.getGoodsEvalList(spuId,pageNo,queryType=selectedTag?.value,spuPageType=spuPageType)
+        pageNo = 1
+        viewModel.getGoodsEvalList(
+            spuId,
+            pageNo,
+            queryType = selectedTag?.value,
+            spuPageType = spuPageType
+        )
     }
 
     override fun onLoadMore(refreshLayout: RefreshLayout) {
         pageNo++
-        viewModel.getGoodsEvalList(spuId,pageNo, queryType =selectedTag?.value,spuPageType=spuPageType)
+        viewModel.getGoodsEvalList(
+            spuId,
+            pageNo,
+            queryType = selectedTag?.value,
+            spuPageType = spuPageType
+        )
     }
 
     @Composable
-    private fun SelectTag(info: QueryTypeCountBean?){
-        if(info==null)return
-        val itemWidth=(ScreenUtils.getScreenWidthDp(this)-72)/5
+    private fun SelectTag(info: QueryTypeCountBean?) {
+        if (info == null) return
+        val itemWidth = (ScreenUtils.getScreenWidthDp(this) - 72) / 5
         selectedTag = remember { mutableStateOf("ALL") }
-        val tagInfoArr= arrayListOf(
+        val tagInfoArr = arrayListOf(
             ShopTagInfoBean(tagName = "全部", tag = "ALL", tagExtension = info.ALL),
-            ShopTagInfoBean(tagName = "有图${info.HAVE_IMG}", tag = "HAVE_IMG", tagExtension = info.HAVE_IMG),
-            ShopTagInfoBean(tagName = "追评${info.REVIEWS}", tag = "REVIEWS", tagExtension = info.REVIEWS),
-            ShopTagInfoBean(tagName = "好评${info.PRAISE}", tag = "PRAISE", tagExtension = info.PRAISE),
-            ShopTagInfoBean(tagName = "差评${info.NEGATIVE}", tag = "NEGATIVE", tagExtension = info.NEGATIVE)).filter { it.tagExtension!="0" }
+            ShopTagInfoBean(
+                tagName = "有图${info.HAVE_IMG}",
+                tag = "HAVE_IMG",
+                tagExtension = info.HAVE_IMG
+            ),
+            ShopTagInfoBean(
+                tagName = "追评${info.REVIEWS}",
+                tag = "REVIEWS",
+                tagExtension = info.REVIEWS
+            ),
+            ShopTagInfoBean(
+                tagName = "好评${info.PRAISE}",
+                tag = "PRAISE",
+                tagExtension = info.PRAISE
+            ),
+            ShopTagInfoBean(
+                tagName = "差评${info.NEGATIVE}",
+                tag = "NEGATIVE",
+                tagExtension = info.NEGATIVE
+            )
+        ).filter { it.tagExtension != "0" }
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)) {
-            for ((i,item)in tagInfoArr.withIndex()){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            for ((i, item) in tagInfoArr.withIndex()) {
                 Box(modifier = Modifier
 //                    .weight(1f)
-                    .height(24.dp)
+                    .height(26.dp)
                     .width(itemWidth.dp)
-                    .background(color = colorResource(if(selectedTag?.value==item.tag)R.color.color_1700f4 else R.color.color_F5), shape = RoundedCornerShape(12.dp))
-                    .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
-                        selectedTag?.value=item.tag?:""
+                    .background(
+                        color = colorResource(if (selectedTag?.value == item.tag) R.color.color_1700f4 else R.color.color_081700f4),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        selectedTag?.value = item.tag ?: ""
                         binding.smartRl.autoRefresh()
                     },
-                    contentAlignment = Alignment.Center) {
-                    Text(text = item.tagName?:"", fontSize = 10.sp, color = if(selectedTag?.value==item.tag) Color.Companion.White else colorResource(R.color.color_66))
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = item.tagName ?: "",
+                        fontSize = 10.sp,
+                        color = if (selectedTag?.value == item.tag) Color.Companion.White else colorResource(
+                            R.color.color_1700f4
+                        )
+                    )
                 }
-                if(i!=tagInfoArr.size-1)Spacer(modifier = Modifier.width(8.dp))
+                if (i != tagInfoArr.size - 1) Spacer(modifier = Modifier.width(8.dp))
             }
         }
     }

@@ -10,54 +10,80 @@
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_16"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_10">
+
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_0"
-            tools:checked="true"
-            tools:textStyle="bold"
-            android:text="@string/str_comprehensiveRanking"
-            android:textSize="@dimen/sp_14"
-            android:textColor="@drawable/cb_text_sort"
-            android:button="@null"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:text="@string/str_comprehensiveRanking"
+            android:textColor="@drawable/cb_text_sort"
+            android:textSize="@dimen/sp_14"
+            tools:checked="true"
+            tools:textStyle="bold" />
+
         <View
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_1"/>
+            android:layout_height="@dimen/dp_1"
+            android:layout_weight="1" />
+
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_1"
-            android:text="@string/str_sales"
-            android:textSize="@dimen/sp_14"
-            android:textColor="@color/color_9394A0"
-            android:button="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:drawableEnd="@drawable/cb_selector_sort"
+            android:button="@null"
             android:drawableEnd="@mipmap/ic_sort_0"
             android:drawablePadding="@dimen/dp_5"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:text="@string/str_sales"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            tools:drawableEnd="@drawable/cb_selector_sort" />
+
         <View
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_1"/>
+            android:layout_height="@dimen/dp_1"
+            android:layout_weight="1" />
+
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_2"
-            android:text="@string/str_price"
-            android:textSize="@dimen/sp_14"
-            tools:checked="true"
-            android:textColor="@color/color_9394A0"
-            android:button="@null"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:drawableEnd="@drawable/cb_selector_sort"
+            android:button="@null"
             android:drawableEnd="@mipmap/ic_sort_0"
             android:drawablePadding="@dimen/dp_5"
-            android:gravity="center_vertical"/>
+            android:gravity="center_vertical"
+            android:text="@string/str_price"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            tools:checked="true"
+            tools:drawableEnd="@drawable/cb_selector_sort" />
+
+        <View
+            android:id="@+id/v_line_three"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="@dimen/dp_1"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:visibility="gone"
+            android:drawableEnd="@mipmap/ic_shop_filter_select"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center_vertical"
+            android:text="@string/str_filter_shop"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            tools:checked="true" />
     </LinearLayout>
 </layout>

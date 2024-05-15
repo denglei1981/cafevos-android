@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.CommentBean" />
@@ -12,28 +13,58 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/color_F4"
-        android:paddingBottom="@dimen/dp_10">
+        android:background="@color/white"
+        android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title_text="@string/str_eval"
-            app:bg_color="@color/white"/>
+            app:bg_color="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="@string/str_eval" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0"
             android:layout_weight="1"
-            tools:listitem="@layout/item_post_evaluation"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-        <com.changanford.shop.view.btn.BtnView
-            android:enabled="false"
-            android:id="@+id/btn_submit"
-            android:layout_margin="@dimen/dp_20"
-            style="@style/style_btn"
-            android:text="@string/str_postEvaluation" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_post_evaluation" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="2.4"
+                android:button="@null"
+                android:drawableStart="@drawable/cb_order"
+                android:drawablePadding="@dimen/dp_3"
+                android:text="@string/str_anonymousSubmissions"
+                android:textColor="@color/text_colorv6"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerView" />
+
+            <com.changanford.shop.view.btn.BtnView
+                android:id="@+id/btn_submit"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/str_postEvaluation" />
+        </LinearLayout>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -75,6 +75,9 @@ class RecommendAskAdapter :
                         } else {
                             ""
                         }
+                    if (tvContent.text.isEmpty()){
+                        return@let
+                    }
                     tvContent.addUrlTag {
                         imageUrl =
                             if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(

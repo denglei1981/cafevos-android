@@ -9,32 +9,31 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title_text="@string/str_recommendedList"/>
-        <View
-            android:background="@color/color_EF"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_5"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="@string/str_shop_recommendedList" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            android:layout_marginTop="@dimen/dp_19"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_10"
             style="@style/tabLayout_style"
-            app:tabIndicator="@drawable/shape_00095b_w25dp"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_35"
-            app:tabTextAppearance="@style/style_indexTabItemStyle16"
-            android:background="@color/white"/>
+            android:layout_height="@dimen/dp_40"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/white"
+            app:tabIndicator="@drawable/shape_00095b_w25dp"
+            app:tabPaddingBottom="6dp"
+            app:tabTextAppearance="@style/style_indexTabItemStyle16" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

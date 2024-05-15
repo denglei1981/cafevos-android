@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -179,8 +180,8 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
     itemData?.apply {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
-            .padding(top = 10.dp, bottom = 10.dp, start = 15.dp, end = 20.dp)
+            .wrapContentHeight()
+            .padding(top = 10.dp, bottom = 10.dp, start = 16.dp, end = 16.dp)
             .clickable(indication = null,
                 interactionSource = remember { MutableInteractionSource() }) {
                 val bundle = Bundle()
@@ -196,7 +197,7 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
         ) {
             //排名
             Box(modifier = Modifier.size(28.dp), contentAlignment = Alignment.Center) {
-                if (position < 3) {
+                if (position < 0) {
                     Image(
                         painter = painterResource(
                             when (position) {
@@ -215,7 +216,7 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                     )
                 }
             }
-            Spacer(modifier = Modifier.width(11.dp))
+            Spacer(modifier = Modifier.width(4.dp))
             //封面
             Image(
                 painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(getImgPath())
@@ -223,7 +224,7 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                     builder = { placeholder(R.mipmap.head_default) }),
                 contentScale = ContentScale.Crop,
                 contentDescription = null, modifier = Modifier
-                    .size(60.dp)
+                    .size(88.dp)
                     .clip(RoundedCornerShape(5.dp))
             )
             Spacer(modifier = Modifier.width(11.dp))
@@ -234,8 +235,8 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                 //标题
                 Text(
                     text = spuName,
-                    color = colorResource(R.color.color_33),
-                    fontSize = 14.sp,
+                    color = colorResource(R.color.color_16),
+                    fontSize = 16.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -248,8 +249,8 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                     Text(buildAnnotatedString {
                         withStyle(
                             style = SpanStyle(
-                                color = colorResource(R.color.color_33),
-                                fontSize = 14.sp
+                                color = colorResource(R.color.color_16),
+                                fontSize = 16.sp
                             )
                         ) {
                             append("¥${getRMB(priceFb)} ")
@@ -257,7 +258,7 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                         withStyle(
                             style = SpanStyle(
                                 color = colorResource(R.color.color_66),
-                                fontSize = 9.sp
+                                fontSize = 10.sp
                             )
                         ) {
                             append(stringResource(R.string.str_since))
@@ -267,7 +268,7 @@ fun RecommendItemCompose(position: Int, itemData: GoodsItemBean?) {
                         text = stringResource(
                             com.changanford.shop.R.string.str_hasChangeXa,
                             "$salesCount"
-                        ), color = colorResource(R.color.color_99), fontSize = 11.sp
+                        ), color = colorResource(R.color.color_8016), fontSize = 12.sp
                     )
                 }
             }

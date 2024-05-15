@@ -65,6 +65,7 @@
     <string name="str_earnMoney">做任务 赚福币</string>
     <string name="str_loginToView">登录查看</string>
     <string name="str_recommendedList">推荐榜单</string>
+    <string name="str_shop_recommendedList">商品推荐榜单</string>
     <string name="str_listName">榜单名称</string>
     <string name="str_since">起</string>
     <string name="reload">重试</string>

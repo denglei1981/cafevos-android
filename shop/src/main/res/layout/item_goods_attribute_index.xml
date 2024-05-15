@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             tools:text="@string/str_color"
             android:text="@{model.attributeName}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_15" />
+            android:textColor="@color/color_16"
+            android:textSize="@dimen/sp_14" />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="@dimen/dp_13"
             android:id="@+id/recyclerView"

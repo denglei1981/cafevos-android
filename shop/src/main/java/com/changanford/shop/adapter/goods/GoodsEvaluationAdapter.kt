@@ -5,7 +5,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -30,22 +39,28 @@ import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsEvaluateBinding
 import com.changanford.shop.utils.DateTimeUtil
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 
-class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate){
+class GoodsEvaluationAdapter :
+    BaseQuickAdapter<CommentItem, BaseDataBindingHolder<ItemGoodsEvaluateBinding>>(R.layout.item_goods_evaluate) {
     private val anonymousUsers by lazy { context.getString(R.string.str_anonymousUsers) }
-    private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context)-56)/3 }
+    private val imgWidth by lazy { (ScreenUtils.getScreenWidthDp(context) - 56) / 3 }
+
     @SuppressLint("SimpleDateFormat")
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
+
     @SuppressLint("SetTextI18n")
-    override fun convert(holder: BaseDataBindingHolder<ItemGoodsEvaluateBinding>, item: CommentItem) {
+    override fun convert(
+        holder: BaseDataBindingHolder<ItemGoodsEvaluateBinding>,
+        item: CommentItem
+    ) {
         holder.dataBinding?.apply {
             item.apply {
-                evalTimeTxt=sfDate.format(evalTime)
-                nickName=if("YES"!=anonymous)nickName else anonymousUsers
-                imgAvatar.load(avater,R.mipmap.head_default)
-                model=item
+                evalTimeTxt = sfDate.format(evalTime)
+                nickName = if ("YES" != anonymous) nickName else anonymousUsers
+                imgAvatar.load(avater, R.mipmap.head_default)
+                model = item
                 executePendingBindings()
                 composeView.setContent {
                     ItemUI(item)
@@ -53,45 +68,64 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
             }
         }
     }
+
     @Composable
-    private fun ItemUI(item: CommentItem?){
+    private fun ItemUI(item: CommentItem?) {
         item?.apply {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
                 //首先过滤掉空字符串
-                val imgArr=evalImgs?.filter { it!="" }
-                val imgSize=imgArr?.size
-                if(imgSize!=null&&imgSize>0){
+                val imgArr = evalImgs?.filter { it != "" }
+                val imgSize = imgArr?.size
+                if (imgSize != null && imgSize > 0) {
                     Spacer(modifier = Modifier.height(13.dp))
                     Row(modifier = Modifier.fillMaxWidth()) {
-                        val maxSize=if(imgSize>=3)3 else imgSize
-                        for(i in 0 until maxSize){
-                            Box(modifier = Modifier.size(imgWidth.dp).clickable(indication = null, interactionSource = remember { MutableInteractionSource() }) {
-                                //查看大图
-                                WCommonUtil.toViewALargerVersion(imgArr,i)
-                            }, contentAlignment = Alignment.BottomEnd) {
-                                Image(painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(imgArr[i]) ?: com.changanford.common.R.mipmap.head_default,
-                                    builder = {placeholder(com.changanford.common.R.mipmap.head_default)}),
+                        val maxSize = if (imgSize >= 3) 3 else imgSize
+                        for (i in 0 until maxSize) {
+                            Box(
+                                modifier = Modifier
+                                    .size(imgWidth.dp)
+                                    .clickable(
+                                        indication = null,
+                                        interactionSource = remember { MutableInteractionSource() }) {
+                                        //查看大图
+                                        WCommonUtil.toViewALargerVersion(imgArr, i)
+                                    }, contentAlignment = Alignment.BottomEnd
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(data = GlideUtils.handleNullableUrl(
+                                        imgArr[i]
+                                    ) ?: com.changanford.common.R.mipmap.head_default,
+                                        builder = { placeholder(com.changanford.common.R.mipmap.head_default) }),
                                     contentScale = ContentScale.Crop,
-                                    contentDescription =null,modifier = Modifier
+                                    contentDescription = null, modifier = Modifier
                                         .size(imgWidth.dp)
-                                        .clip(RoundedCornerShape(5.dp)))
-                                if(i==2&&imgSize>3){
+                                        .clip(RoundedCornerShape(5.dp))
+                                )
+                                if (i == 2 && imgSize > 3) {
                                     Row(modifier = Modifier.padding(bottom = 4.dp, end = 4.dp)) {
-                                        Box(modifier = Modifier
-                                            .height(18.dp)
-                                            .defaultMinSize(minWidth = 40.dp)
-                                            .background(
-                                                color = colorResource(R.color.color_4D000000),
-                                                shape = RoundedCornerShape(10.dp)
-                                            ), contentAlignment = Alignment.Center) {
-                                            Text(text = "+${imgSize-3}",color= Color.White, fontSize = 12.sp)
+                                        Box(
+                                            modifier = Modifier
+                                                .height(18.dp)
+                                                .defaultMinSize(minWidth = 40.dp)
+                                                .background(
+                                                    color = colorResource(R.color.color_4D000000),
+                                                    shape = RoundedCornerShape(10.dp)
+                                                ), contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = "+${imgSize - 3}",
+                                                color = Color.White,
+                                                fontSize = 12.sp
+                                            )
                                         }
                                     }
                                 }
                             }
-                            if(i!=2)Spacer(modifier = Modifier.width(8.dp))
+                            if (i != 2) Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
                 }
@@ -99,15 +133,23 @@ class GoodsEvaluationAdapter: BaseQuickAdapter<CommentItem, BaseDataBindingHolde
                 reviewEval?.apply {
                     Spacer(modifier = Modifier.height(18.dp))
                     //主评价时间
-                    val starDate=Date()
-                    starDate.time=item.evalTime
+                    val starDate = Date()
+                    starDate.time = item.evalTime
                     //追评时间
-                    val endDate=Date()
-                    endDate.time=evalTime
-                    val timeStr=DateTimeUtil.formatFriendly(starDate,endDate)
-                    Text(text = "${timeStr}追评",color= colorResource(R.color.color_1700f4), fontSize = 12.sp)
+                    val endDate = Date()
+                    endDate.time = evalTime
+                    val timeStr = DateTimeUtil.formatFriendly(starDate, endDate)
+                    Text(
+                        text = "${timeStr}追评",
+                        color = colorResource(R.color.color_1700f4),
+                        fontSize = 12.sp
+                    )
                     Spacer(modifier = Modifier.height(11.dp))
-                    Text(text = evalText?:"",color= colorResource(R.color.color_33), fontSize = 14.sp)
+                    Text(
+                        text = evalText ?: "",
+                        color = colorResource(R.color.color_33),
+                        fontSize = 14.sp
+                    )
                 }
             }
         }

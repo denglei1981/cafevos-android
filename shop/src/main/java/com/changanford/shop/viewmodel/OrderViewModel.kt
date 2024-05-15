@@ -16,8 +16,7 @@ import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
 import com.changanford.shop.bean.PostEvaluationBean
-import com.changanford.shop.utils.WConstant
-import com.xiaomi.push.it
+import com.changanford.shop.bean.ShopConfigBean
 import kotlinx.coroutines.launch
 
 /**
@@ -624,6 +623,24 @@ class OrderViewModel : BaseViewModel() {
                 it?.toast()
             }.onSuccess {
                 responseData.postValue(ResponseBean(true))
+            }
+        }
+    }
+
+    val shopConfigBean = MutableLiveData<ShopConfigBean>()
+
+    fun getShopConfig() {
+        viewModelScope.launch {
+            fetchRequest {
+                body.clear()
+                body["configKey"] = "mall_second_config"
+                body["obj"] = true
+                val randomKey = getRandomKey()
+                shopApiService.getShopConfig(body.header(randomKey), body.body(randomKey))
+            }.onWithMsgFailure {
+//                ToastUtils.showLongToast(it)
+            }.onSuccess {
+                shopConfigBean.postValue(it)
             }
         }
     }

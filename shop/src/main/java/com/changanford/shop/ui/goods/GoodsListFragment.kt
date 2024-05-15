@@ -1,6 +1,9 @@
 package com.changanford.shop.ui.goods
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsListBean
 import com.changanford.common.buried.WBuriedUtil
@@ -9,7 +12,8 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.control.SortControl
-import com.changanford.shop.databinding.FragmentExchangeBinding
+import com.changanford.shop.databinding.FragmentNewShopBinding
+import com.changanford.shop.databinding.InSortLayoutBinding
 import com.changanford.shop.viewmodel.GoodsViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 
@@ -18,7 +22,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  * @Time : 2021/9/9
  * @Description : ExchangeListFragment
  */
-class GoodsListFragment : BaseFragment<FragmentExchangeBinding, GoodsViewModel>(),
+class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>(),
     SortControl.OnSelectSortListener {
     companion object {
         fun newInstance(itemId: String, tagType: String? = null): GoodsListFragment {
@@ -31,6 +35,7 @@ class GoodsListFragment : BaseFragment<FragmentExchangeBinding, GoodsViewModel>(
         }
     }
 
+    private var headerBinding: InSortLayoutBinding? = null
     private var parentSmartRefreshLayout: SmartRefreshLayout? = null
     private var pageNo = 1
     private val mAdapter by lazy { GoodsAdapter() }
@@ -53,8 +58,7 @@ class GoodsListFragment : BaseFragment<FragmentExchangeBinding, GoodsViewModel>(
             )
             isRequest = true
         }
-        val viewArr = arrayOf(binding.inSort.rb0, binding.inSort.rb1, binding.inSort.rb2)
-        sortControl = SortControl(requireContext(), viewArr, this)
+        addHead()
         viewModel.goodsListData.observe(this) {
             isRequest = false
             bindingData(it)
@@ -78,6 +82,25 @@ class GoodsListFragment : BaseFragment<FragmentExchangeBinding, GoodsViewModel>(
                 mallSortType = mallSortType,
                 ascOrDesc = ascOrDesc
             )
+        }
+    }
+
+    private fun addHead() {
+        if (headerBinding == null) {
+            headerBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(requireContext()),
+                R.layout.in_sort_layout,
+                binding.recyclerView,
+                false
+            )
+            headerBinding?.apply{
+                headerBinding?.vLineThree?.isVisible = true
+                headerBinding?.rb3?.isVisible = true
+                val viewArr =
+                    arrayOf(rb0, rb1, rb2, rb3)
+                sortControl = SortControl(requireContext(), viewArr, this@GoodsListFragment)
+                mAdapter.addHeaderView(root)
+            }
         }
     }
 

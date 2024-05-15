@@ -35,10 +35,11 @@ class ShopRecommendListAdapter1 :
                 )
             }
             recyclerView.adapter = shopAdapter
-            tvMore.setOnClickListener {
+            tvName.setOnClickListener {
                 GIOUtils.homePageClick("推荐榜单", 0.toString(), item.kindName)
                 RecommendActivity.start(item.kindName)
             }
+
         }
     }
 }
