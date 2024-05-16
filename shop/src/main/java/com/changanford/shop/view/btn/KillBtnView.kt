@@ -3,7 +3,7 @@ package com.changanford.shop.view.btn
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.changanford.shop.R
 
@@ -12,7 +12,7 @@ import com.changanford.shop.R
  * @Time : 2021/9/23 0023
  * @Description : KillBtnView
  */
-class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButton(context, attrs) {
+class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
     private var btnStates =
         -1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换
 
@@ -76,7 +76,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
                 setBackgroundResource(if (!isDetailkill) R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = false
-                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_20dp)
             }
             //提醒我
             3 -> {
@@ -103,21 +103,21 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
 //                setBackgroundResource(R.drawable.bg_btn_stock_tips)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = true
-                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_20dp)
             }
 
             15 -> {//已订阅
                 setBackgroundResource(R.drawable.bord_d_20dp)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = false
-                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_20dp)
             }
             //未开始,福币不足
             7, 8 -> {
                 setBackgroundResource(R.drawable.shadow_dd_20dp)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = false
-                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_r20dp)
+                if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_20dp)
             }
         }
         setText(statesTxt[states])
@@ -135,7 +135,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
         if (isEnabled) {
             setBackgroundResource(R.drawable.btn_selector)
             if (btnSource == 0) {
-                setBackgroundResource(R.drawable.border1dp_round_l20dp_00095b)
+                setBackgroundResource(R.drawable.bg_bord_80a6_23)
                 setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
             } else if (btnSource == 1) {
                 setBackgroundResource(R.drawable.border1dp_round_20dp_00095b)
@@ -144,7 +144,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatButt
         } else {
             setBackgroundResource(R.drawable.shadow_dd_20dp)
             if (btnSource == 0) {
-                setBackgroundResource(R.drawable.border1dp_round_l20dp_dd)
+                setBackgroundResource(R.drawable.bg_bord_80a6_23)
                 setTextColor(ContextCompat.getColor(context, R.color.color_DD))
             } else if (btnSource == 1) {
                 setBackgroundResource(R.drawable.border1dp_round_20dp_dd)

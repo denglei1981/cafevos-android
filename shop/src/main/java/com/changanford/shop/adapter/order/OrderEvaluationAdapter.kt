@@ -33,6 +33,7 @@ class OrderEvaluationAdapter(val activity: Activity, var reviewEval: Boolean = f
     val postBean: ArrayList<PostEvaluationBean> = arrayListOf()
     val selectPicArr = arrayListOf<OrderFormState>()
     var postBeanLiveData = MutableLiveData<MutableList<PostEvaluationBean>>()
+    var hintContent = ""
 
     @SuppressLint("SetTextI18n")
     override fun convert(
@@ -42,6 +43,11 @@ class OrderEvaluationAdapter(val activity: Activity, var reviewEval: Boolean = f
         holder.dataBinding?.apply {
             MUtils.setTopMargin(root, 15, holder.absoluteAdapterPosition)
             val position = holder.absoluteAdapterPosition
+            if (hintContent.isNotEmpty()) {
+                edtContent.hint = hintContent
+            } else {
+                edtContent.hint = context.getString(R.string.str_pleaseEnterComments)
+            }
             model = item
             executePendingBindings()
             imgGoodsCover.load(item.skuImg)

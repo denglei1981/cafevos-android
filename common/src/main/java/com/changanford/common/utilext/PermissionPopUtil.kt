@@ -49,27 +49,10 @@ object PermissionPopUtil {
             setBackgroundColor(MColor.PERMISSION_BG)
         }
 
-//        val lll = object : PermissionListener {
-//            override fun onSucceed(var1: Int, var2: MutableList<String>) {
-//
-//            }
-//
-//            override fun onFailed(var1: Int, var2: MutableList<String>) {
-//
-//            }
-//
-//        }
-//        val asd = ArrayList<String>()
-//        permissions.permissions.forEach {
-//            asd.add(it.permissionName)
-//        }
-//        val permissionTrackerListener = PermissionTrackerListener(BaseApplication.curActivity, lll)
-//        permissionTrackerListener.preRequestPermission(asd)
         SoulPermission.getInstance()
             .checkAndRequestPermissions(permissions,
                 object : CheckRequestPermissionsListener {
                     override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-//                        lll.onSucceed(allPermissions)
                         pop.dismiss()
                         success.invoke()
                     }
@@ -111,39 +94,10 @@ object PermissionPopUtil {
                                 pop.showPopupWindow()
                             }
                         }
-//                Hawk.put(permissionName, true)
                     }
                 }
             }.start()
 
-//            else {
-//                if (ContextCompat.checkSelfPermission(
-//                        BaseApplication.curActivity,
-//                        permissionName
-//                    ) == PackageManager.PERMISSION_DENIED && !ActivityCompat.shouldShowRequestPermissionRationale(
-//                        BaseApplication.curActivity,
-//                        permissionName
-//                    )
-//                ) {
-//                    //判断权限是否处于不再询问状态的代码有点小BUG，它必须申请过一次权限并且用户做出了选择之后判断才能够准确。
-//                    // 该权限已经被永久禁止了
-//                } else if (ContextCompat.checkSelfPermission(
-//                        BaseApplication.curActivity,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                    ) != PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    // 需要向用户请求获取该权限
-//                    if (!pop.isShowing) {
-//                        pop.setTitle(useTitle)
-//                        pop.setContent(useTips)
-//                        pop.showPopupWindow()
-//                    }
-//
-//                } else {
-//                    // 有权限访问外部存储空间
-//
-//                }
-//            }
 
         }
     }

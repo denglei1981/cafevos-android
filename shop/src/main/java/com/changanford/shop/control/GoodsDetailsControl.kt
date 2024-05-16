@@ -5,7 +5,7 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.ShareBean
@@ -34,7 +34,6 @@ import com.changanford.shop.ui.compose.ShopServiceDescription
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.view.btn.KillBtnView
 import com.changanford.shop.viewmodel.GoodsViewModel
-import com.xiaomi.push.it
 import razerdp.basepopup.BasePopupWindow
 import java.text.SimpleDateFormat
 
@@ -140,9 +139,11 @@ class GoodsDetailsControl(
             "MEMBER_DISCOUNT" -> {
                 headerBinding.inVip.apply {
                     imgVip.visibility = View.VISIBLE
-                    val textColor = ContextCompat.getColor(activity, R.color.color_F21C44)
-                    tvRmbPrice.setTextColor(textColor)
-                    tvFbPrice.setTextColor(textColor)
+                    tvOldPrice.isVisible=true
+                    tvOldPrice.text="原价：¥${dataBean.orginPrice}"
+//                    val textColor = ContextCompat.getColor(activity, R.color.color_F21C44)
+//                    tvRmbPrice.setTextColor(textColor)
+//                    tvFbPrice.setTextColor(textColor)
                 }
             }
 

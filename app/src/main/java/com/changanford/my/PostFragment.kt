@@ -124,6 +124,17 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
             }
             postAdapter.notifyDataSetChanged()
         }
+        LiveDataBus.get().with(LiveDataBusKey.DELETE_POST_DATA).observe(this) {
+            val list = ArrayList<String>()
+            postAdapter.data.forEach {
+                if (it.checkBoxChecked) {
+                    list.add(it.postsId.toString())
+                }
+            }
+            viewModel.deleteHistory(3, list) {
+                initRefreshData(1)
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -167,7 +178,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                     response.onSuccess {
                         completeRefresh(it?.dataList, postAdapter, total)
                     }
-                    if (pageSize > 1 && postAdapter.isManage) {
+                    if ( postAdapter.isManage) {
                         postAdapter.checkIsAllCheck()
                     }
                 }

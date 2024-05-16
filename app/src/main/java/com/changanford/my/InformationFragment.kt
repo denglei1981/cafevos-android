@@ -119,6 +119,17 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
             }
             infoAdapter.notifyDataSetChanged()
         }
+        LiveDataBus.get().with(LiveDataBusKey.DELETE_INFORMATION_DATA).observe(this) {
+            val list = ArrayList<String>()
+            infoAdapter.data.forEach {
+                if (it.isCheck) {
+                    list.add(it.artId)
+                }
+            }
+            viewModel.deleteHistory(1, list) {
+                initRefreshData(1)
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -166,7 +177,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, infoAdapter, total)
-                    if (pageSize > 1 && infoAdapter.isManage) {
+                    if ( infoAdapter.isManage) {
                         infoAdapter.checkIsAllCheck()
                     }
                 }

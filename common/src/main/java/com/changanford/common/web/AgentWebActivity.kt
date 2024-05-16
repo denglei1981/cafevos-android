@@ -33,7 +33,9 @@ import com.changanford.common.router.startARouterForResult
 import com.changanford.common.ui.CaptureActivity.SCAN_RESULT
 import com.changanford.common.ui.LoadingDialog
 import com.changanford.common.util.AppUtils
+import com.changanford.common.util.FileHelper
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MConstant
 import com.changanford.common.util.MConstant.totalWebNum
 import com.changanford.common.util.SoftHideKeyBoardUtil
 import com.changanford.common.util.bus.LiveDataBus
@@ -49,6 +51,7 @@ import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallbac
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
+import com.yalantis.ucrop.UCrop
 import org.json.JSONArray
 import org.json.JSONException
 
@@ -894,6 +897,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                     data?.getStringExtra(SCAN_RESULT)?.let { quickCallJs(it) }
                 }
 
+                UCrop.REQUEST_CROP -> {
+                    val resultUri = UCrop.getOutput(data!!)
+                    val base64Str = FileHelper.getImageStr(resultUri?.path)
+                    quickCallJs(MConstant.carpWebCallBack, base64Str)
+                }
             }
         }
         data?.extras?.apply { UnionPayUtils.payOnActivityResult(this) }

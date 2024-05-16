@@ -10,8 +10,8 @@
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_10"
         android:paddingTop="@dimen/dp_7"
-        android:paddingEnd="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_33"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_5"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <CheckBox
@@ -85,44 +85,37 @@
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
             android:gravity="end"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_cart"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.changanford.shop.view.btn.KillBtnView
                 android:id="@+id/btn_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
-                android:layout_marginEnd="@dimen/dp_m_1"
-                android:background="@drawable/border1dp_round_l20dp_00095b"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@drawable/bg_bord_1700f4_23"
                 android:gravity="center"
-                android:minWidth="@dimen/dp_100"
+                android:minWidth="100dp"
                 android:onClick="onClick"
                 android:text="@string/str_addShoppingCart"
                 android:textColor="@color/color_1700f4"
-                android:textSize="@dimen/sp_15"
-                app:layout_constraintEnd_toStartOf="@id/btn_buy"
-                app:layout_constraintStart_toEndOf="@id/tv_cart"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="@dimen/sp_14" />
 
             <com.changanford.shop.view.btn.KillBtnView
                 android:id="@+id/btn_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
-                android:background="@drawable/shape_00095b_r20dp"
+                android:background="@drawable/bg_shape_1700f4_23"
                 android:gravity="center"
                 android:minWidth="@dimen/dp_100"
                 android:onClick="onClick"
                 android:text="@string/str_immediatelyChange"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_15"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_cart"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="@dimen/sp_15" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <!--        <com.changanford.shop.view.btn.KillBtnView-->

@@ -1,8 +1,11 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
@@ -17,12 +20,12 @@ import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
 import com.changanford.shop.databinding.ActPostEvaluationBinding
+import com.changanford.shop.databinding.LayoutPostEvaluationBottomBinding
 import com.changanford.shop.listener.UploadPicCallback
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.changanford.shop.viewmodel.UploadViewModel
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
-import com.xiaomi.push.it
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.concurrent.TimeUnit
 
@@ -54,6 +57,9 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
     private val uploadViewModel by lazy { UploadViewModel() }
     private var reviewEval = false//是否追评
     private var upI = 0
+    private var needPicNum = 0
+    private var needContentNum = 0
+    private var bottomBinding: LayoutPostEvaluationBottomBinding? = null
     private lateinit var dialog: LoadDialog
     private val mAdapter by lazy { OrderEvaluationAdapter(this, reviewEval) }
 
@@ -67,8 +73,8 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val isComplete =
-                        mAdapter.postBeanLiveData.value?.find { item -> !item.isComplete }
-                    if (!reviewEval&&isComplete!=null) {//普通评价没全部写完给出弹窗提示
+                        mAdapter.postBeanLiveData.value?.find { item -> !item.isComplete && item.getImageSize() > needPicNum && item.getContentSize() > needContentNum }
+                    if (!reviewEval && isComplete != null) {//普通评价没全部写完给出弹窗提示
                         val cannotUnbindPop = ConfirmTwoBtnPop(this@PostEvaluationActivity)
                         cannotUnbindPop.apply {
                             contentText.text =
@@ -96,11 +102,46 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         dialog.setLoadingText("图片上传中..")
     }
 
+    private fun addBottomView() {
+        if (bottomBinding == null && !reviewEval) {
+            bottomBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_post_evaluation_bottom,
+                binding.recyclerView,
+                false
+            )
+            bottomBinding?.apply {
+                mAdapter.addFooterView(root)
+                tvScore.text = getEvalText(this@PostEvaluationActivity, ratingBar.rating.toInt())
+                tvScore2.text = getEvalText(this@PostEvaluationActivity, ratingBar2.rating.toInt())
+                ratingBar.setOnRatingChangeListener { _, _, _ ->
+                    tvScore.text =
+                        getEvalText(this@PostEvaluationActivity, ratingBar.rating.toInt())
+                }
+                ratingBar2.setOnRatingChangeListener { _, _, _ ->
+                    tvScore2.text =
+                        getEvalText(this@PostEvaluationActivity, ratingBar2.rating.toInt())
+                }
+            }
+        }
+    }
+
     override fun initData() {
         viewModel.getShopConfig()
         viewModel.shopConfigBean.observe(this) {
             intent.getStringExtra("info")?.apply {
                 "订单评价：${this}".wLogE("okhttp")
+                it.evaluate_conf?.apply {
+                    evaluate_tip?.let {
+                        mAdapter.hintContent = it
+                    }
+                    commit_pic_num?.let {
+                        needPicNum = it
+                    }
+                    commit_word_num?.let {
+                        needContentNum = it
+                    }
+                }
                 if (this.startsWith("{")) {
                     Gson().fromJson(this, OrderItemBean::class.java).let {
                         orderNo = it.orderNo
@@ -115,6 +156,7 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                     orderNo = this
                     viewModel.getOrderDetail(orderNo)
                 }
+                addBottomView()
             }
             binding.checkBox.isVisible = !reviewEval
             if (reviewEval) {
@@ -154,7 +196,8 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
             if (reviewEval) null else mAdapter.selectPicArr.find { it.imgPathArr != null && it.imgPathArr!!.size > 0 }
         if (find == null) {//追评或者没有选择图片则立即提交评价
             //只提交已完成输入的商品
-            val postBean = mAdapter.postBean.filter { it.isComplete }
+//            val postBean = mAdapter.postBean.filter { it.isComplete }
+            val postBean = mAdapter.postBean
             if (!reviewEval) {
                 postBean.forEach {
                     it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
@@ -192,12 +235,22 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         upI++
         postBean[pos].imgUrls = files
         if (upI == postBean.size) {//图片以上传完成
-            val usePostBean = postBean.filter { it.isComplete }
-            usePostBean.forEach {
+            postBean.forEach {
                 it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
             }
-            viewModel.postEvaluation(orderNo, usePostBean, reviewEval)
+            viewModel.postEvaluation(orderNo, postBean, reviewEval)
             dialog.dismiss()
         } else uploadPic(pos + 1)
+    }
+
+    private fun getEvalText(context: Context, rating: Int = 0): String {
+        val ratingStr = when {
+            rating == 0 -> ""
+            rating < 3 -> context.getString(R.string.str_badReview)
+            rating > 3 -> context.getString(R.string.str_goodReview)
+            rating == 3 -> context.getString(R.string.str_mediumReview)
+            else -> ""
+        }
+        return ratingStr
     }
 }

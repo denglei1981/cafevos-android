@@ -77,17 +77,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
             }
         }
         binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                binding.tvDelete.isEnabled = true
-                binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.white))
-                binding.tvDelete.background =
-                    ContextCompat.getDrawable(this, R.drawable.bg_shape_1700f4_23)
-            } else {
-                binding.tvDelete.isEnabled = false
-                binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
-                binding.tvDelete.background =
-                    ContextCompat.getDrawable(this, R.drawable.bg_shape_80a6_23)
-            }
+            deleteCanCheck(isChecked)
         }
         binding.checkbox.setOnClickListener {
             refreshBottomDataFragment(nowPosition, binding.checkbox.isChecked)
@@ -95,6 +85,46 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         //底部是否全选
         LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_FOOT_CHECK).observe(this) {
             binding.checkbox.isChecked = it
+        }
+        LiveDataBus.get().withs<Boolean>(LiveDataBusKey.FOOT_UI_CAN_DELETE).observe(this) {
+            deleteCanCheck(it)
+        }
+        binding.tvDelete.setOnClickListener {
+            deleteSelectFragmentData()
+        }
+    }
+
+    private fun deleteCanCheck(canCheck: Boolean) {
+        if (canCheck) {
+            binding.tvDelete.isEnabled = true
+            binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.white))
+            binding.tvDelete.background =
+                ContextCompat.getDrawable(this, R.drawable.bg_shape_1700f4_23)
+        } else {
+            binding.tvDelete.isEnabled = false
+            binding.tvDelete.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
+            binding.tvDelete.background =
+                ContextCompat.getDrawable(this, R.drawable.bg_shape_80a6_23)
+        }
+    }
+
+    private fun deleteSelectFragmentData() {
+        when (nowPosition) {
+            0 -> {
+                LiveDataBus.get().with(LiveDataBusKey.DELETE_INFORMATION_DATA).postValue("")
+            }
+
+            1 -> {
+                LiveDataBus.get().with(LiveDataBusKey.DELETE_POST_DATA).postValue("")
+            }
+
+            2 -> {
+                LiveDataBus.get().with(LiveDataBusKey.DELETE_ACT_DATA).postValue("")
+            }
+
+            3 -> {
+                LiveDataBus.get().with(LiveDataBusKey.DELETE_SHOP_DATA).postValue("")
+            }
         }
     }
 

@@ -164,8 +164,6 @@ class ActViewModel : ViewModel() {
      *我的足迹帖子
      */
     fun queryMineFootPost(pageNo: Int, result: (CommonResponse<PostBean>) -> Unit) {
-
-
         viewModelScope.launch {
             result(fetchRequest {
                 var body = HashMap<String, Any>()
@@ -407,5 +405,19 @@ class ActViewModel : ViewModel() {
         }
     }
 
-
+    /**
+     *我的足迹-删除
+     * type 1 资讯，2 活动，3 帖子,4圈子, 5商城
+     */
+    fun deleteHistory(type: Int, ids: List<String>, result: (CommonResponse<Any>) -> Unit) {
+        viewModelScope.launch {
+            result(fetchRequest {
+                var body = HashMap<String, Any>()
+                body["historyType"] = type
+                body["historyIds"] = ids
+                var rkey = getRandomKey()
+                apiService.deleteByHistoryIdsAndType(body.header(rkey), body.body(rkey))
+            })
+        }
+    }
 }

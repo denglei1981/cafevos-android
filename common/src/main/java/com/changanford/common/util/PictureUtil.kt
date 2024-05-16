@@ -49,6 +49,7 @@ object PictureUtil {
         return path
     }
 
+    //裁剪图片
     fun startUCrop(
         activity: Activity,
         path: String,
@@ -59,7 +60,6 @@ object PictureUtil {
         val sourceUri = Uri.fromFile(File(path))
         val outDir = MyApp.mContext.getExternalFilesDir("")?.absolutePath
         val outFile = File(outDir, System.currentTimeMillis().toString() + ".jpg")
-        //裁剪后图片的绝对路径
         //裁剪后图片的绝对路径
         val cameraScalePath = outFile.absolutePath
         val destinationUri = Uri.fromFile(outFile)

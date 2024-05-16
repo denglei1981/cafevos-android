@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="综合评分"
+            android:textSize="14sp"
+            android:textColor="@color/color_d916"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_wl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="物流服务"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ratingBar" />
+
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_14"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            app:srb_drawableEmpty="@mipmap/shop_order_star_0"
+            app:srb_drawableFilled="@mipmap/shop_order_star_1"
+            app:srb_minimumStars="1"
+            app:srb_rating="5"
+            app:srb_starHeight="24dp"
+            app:srb_starPadding="4dp"
+            app:srb_starWidth="24dp" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/color_1700f4"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBar"
+            app:layout_constraintStart_toEndOf="@id/ratingBar"
+            app:layout_constraintTop_toTopOf="@id/ratingBar"
+            tools:text="5.0好评" />
+
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="服务态度"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBar2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ratingBar2" />
+
+        <com.willy.ratingbar.ScaleRatingBar
+            android:id="@+id/ratingBar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_14"
+            app:layout_constraintStart_toEndOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/ratingBar"
+            app:srb_drawableEmpty="@mipmap/shop_order_star_0"
+            app:srb_drawableFilled="@mipmap/shop_order_star_1"
+            app:srb_minimumStars="1"
+            app:srb_rating="5"
+            app:srb_starHeight="24dp"
+            app:srb_starPadding="4dp"
+            app:srb_starWidth="24dp" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_score2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:gravity="center"
+            android:text=" "
+            android:textColor="@color/color_1700f4"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/ratingBar2"
+            app:layout_constraintStart_toEndOf="@id/ratingBar2"
+            app:layout_constraintTop_toTopOf="@id/ratingBar2"
+            tools:text="5.0好评" />
+
+        <View
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/ratingBar2"
+            android:layout_height="50dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

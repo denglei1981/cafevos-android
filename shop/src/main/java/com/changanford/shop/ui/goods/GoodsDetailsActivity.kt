@@ -3,9 +3,9 @@ package com.changanford.shop.ui.goods
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +30,6 @@ import com.changanford.shop.control.GoodsDetailsControl
 import com.changanford.shop.databinding.ActivityGoodsDetailsBinding
 import com.changanford.shop.databinding.HeaderGoodsDetailsBinding
 import com.changanford.shop.utils.ScreenUtils
-import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -124,7 +123,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
         mAdapter.addHeaderView(headerBinding.root)
         binding.rvGoodsImg.addOnScrollListener(onScrollListener)
         control = GoodsDetailsControl(this, binding, headerBinding, viewModel)
-        WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive, "#FFE7B2", "#E0AF60")
+//        WCommonUtil.setTextViewStyles(headerBinding.inVip.tvVipExclusive, "#FFE7B2", "#E0AF60")
         initTab()
         viewModel.queryGoodsDetails(spuId, true)
     }
@@ -160,6 +159,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
     override fun initData() {
         viewModel.getServiceDescription()
+        viewModel.getShopConfig()
         viewModel.goodsDetailData.observe(this) {
             val newData = it.apply {
                 skuVos.forEach { skuVo ->
@@ -187,14 +187,22 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
                 }
             }
         }
+        viewModel.shopConfigBean.observe(this) {
+            it.pro_detail_roll?.apply {
+                //跑马灯
+                headerBinding.inComment.topContent.isVisible = !content.isNullOrEmpty()
+                headerBinding.inComment.topContent.text = content
+                headerBinding.inComment.topContent.isSelected = true
+            }
+
+        }
         viewModel.collectionGoodsStates.observe(this) {
             isCollection = it
             binding.inBottom.cbCollect.isChecked = isCollection
             binding.inHeader.imgCollection.setImageResource(
                 when {
-                    isCollection -> R.mipmap.shop_collect_1
-                    oldScrollY < commentH -> R.mipmap.shop_collect_0
-                    else -> R.mipmap.shop_collect_00
+                    isCollection -> if (oldScrollY < commentH) R.mipmap.shop_collect_1_top else R.mipmap.shop_collect_1
+                    else -> if (oldScrollY < commentH) R.mipmap.shop_collect_0_top else R.mipmap.shop_collect_00
                 }
             )
         }
@@ -311,34 +319,28 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
 
 //                val alpha0 = 255-alpha
                 val alpha0 = 255
-                binding.inHeader.imgBack.background.alpha = alpha0
-                binding.inHeader.imgShare.background.alpha = alpha0
-                binding.inHeader.imgCollection.background.alpha = alpha0
 
-                binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back)
-                binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share)
-                binding.inHeader.imgCollection.setImageResource(if (isCollection) R.mipmap.shop_collect_1 else R.mipmap.shop_collect_0)
+                binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back_top)
+                binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share_top)
+                binding.inHeader.imgCollection.setImageResource(if (isCollection) R.mipmap.shop_collect_1_top else R.mipmap.shop_collect_0_top)
             } else {
                 topBarBg.alpha = 255
                 tabLayout.alpha = 1f
                 if (tabLayout.tabCount > 2) {
-                    if (!isClickSelect && oldScrollY >= walkH && selectedTabPosition != 3) {
+                    if (!isClickSelect && oldScrollY >= walkH) {
                         tabLayout.getTabAt(3)?.select()
-                    } else if (!isClickSelect && oldScrollY >= detailsH && selectedTabPosition != 2) {
+                    } else if (!isClickSelect && oldScrollY >= detailsH) {
                         tabLayout.getTabAt(2)?.select()
-                    } else if (!isClickSelect && oldScrollY < detailsH && selectedTabPosition != 1) {
+                    } else if (!isClickSelect && oldScrollY < detailsH) {
                         tabLayout.getTabAt(1)?.select()
                     }
                 } else if (!isClickSelect && oldScrollY >= commentH && selectedTabPosition != 1) {
                     tabLayout.getTabAt(1)?.select()
                 }
-                binding.inHeader.imgBack.background.alpha = 0
                 binding.inHeader.imgBack.setImageResource(R.mipmap.shop_back_black)
 
-                binding.inHeader.imgShare.background.alpha = 0
                 binding.inHeader.imgShare.setImageResource(R.mipmap.shop_share_black)
 
-                binding.inHeader.imgCollection.background.alpha = 0
                 binding.inHeader.imgCollection.setImageResource(if (isCollection) R.mipmap.shop_collect_1 else R.mipmap.shop_collect_00)
             }
         }

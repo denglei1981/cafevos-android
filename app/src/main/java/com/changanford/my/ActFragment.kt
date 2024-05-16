@@ -85,6 +85,17 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             }
             actAdapter.notifyDataSetChanged()
         }
+        LiveDataBus.get().with(LiveDataBusKey.DELETE_ACT_DATA).observe(this) {
+            val list = ArrayList<String>()
+            actAdapter.data.forEach {
+                if (it.isCheck) {
+                    list.add(it.wonderfulId.toString())
+                }
+            }
+            viewModel.deleteHistory(2, list) {
+                initRefreshData(1)
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -181,7 +192,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, actAdapter, total)
-                    if (pageSize > 1 && actAdapter.isManage) {
+                    if ( actAdapter.isManage) {
                         actAdapter.checkIsAllCheck()
                     }
                 }

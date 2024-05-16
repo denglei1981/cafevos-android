@@ -261,4 +261,6 @@ object MConstant {
     var circleCheckPosition = 1
 
     var mainTabSelectPosition = 0
+
+    var carpWebCallBack = ""
 }

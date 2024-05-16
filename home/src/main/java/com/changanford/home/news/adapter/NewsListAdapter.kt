@@ -337,6 +337,8 @@ class NewsListAdapter(
             LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
             return
         }
+        val canDelete=data.filter { item-> item.isCheck }
+        LiveDataBus.get().with(LiveDataBusKey.FOOT_UI_CAN_DELETE).postValue(canDelete.isNotEmpty())
         data.forEach {
             if (!it.isCheck) {
                 LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)

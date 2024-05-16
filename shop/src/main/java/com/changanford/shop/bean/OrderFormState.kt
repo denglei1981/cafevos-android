@@ -64,4 +64,13 @@ data class PostEvaluationBean(
         }
         return ratingStr
     }
+
+    fun getImageSize(): Int {
+        return if (imgUrls.isNullOrEmpty()) 0 else imgUrls!!.size
+    }
+
+    fun getContentSize():Int{
+        return  if (evalText.isNullOrEmpty()) 0 else evalText!!.length
+    }
+
 }

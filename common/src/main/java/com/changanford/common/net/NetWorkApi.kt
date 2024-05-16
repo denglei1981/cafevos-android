@@ -1,7 +1,94 @@
 package com.changanford.common.net
 
 import com.alibaba.fastjson.JSONObject
-import com.changanford.common.bean.*
+import com.changanford.common.bean.AccBean
+import com.changanford.common.bean.ActBean
+import com.changanford.common.bean.ActivityBean
+import com.changanford.common.bean.ActivityListBean
+import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.AddressBeanItem
+import com.changanford.common.bean.AppNavigateBean
+import com.changanford.common.bean.AttributeBean
+import com.changanford.common.bean.AuthBean
+import com.changanford.common.bean.BackEnumBean
+import com.changanford.common.bean.BindAuthBeanItem
+import com.changanford.common.bean.BindCarBean
+import com.changanford.common.bean.BizCodeBean
+import com.changanford.common.bean.CancelReasonBeanItem
+import com.changanford.common.bean.CancelVerifyBean
+import com.changanford.common.bean.CarAUthResultBean
+import com.changanford.common.bean.CarAuthBean
+import com.changanford.common.bean.CarAuthQYBean
+import com.changanford.common.bean.CarItemBean
+import com.changanford.common.bean.CarMoreInfoBean
+import com.changanford.common.bean.CircleItemBean
+import com.changanford.common.bean.CircleListBean
+import com.changanford.common.bean.CircleMainBean
+import com.changanford.common.bean.CircleMemberBean
+import com.changanford.common.bean.CircleStatusItemBean
+import com.changanford.common.bean.CircleTagBean
+import com.changanford.common.bean.CircleUserBean
+import com.changanford.common.bean.CityBeanItem
+import com.changanford.common.bean.CmcStatePhoneBean
+import com.changanford.common.bean.CmcUrl
+import com.changanford.common.bean.ConfigBean
+import com.changanford.common.bean.CouponMiddleData
+import com.changanford.common.bean.CouponsItemBean
+import com.changanford.common.bean.DaySignBean
+import com.changanford.common.bean.FansListBean
+import com.changanford.common.bean.FeedbackInfoList
+import com.changanford.common.bean.FeedbackMemberBean
+import com.changanford.common.bean.FeedbackMineListBean
+import com.changanford.common.bean.FeedbackQBean
+import com.changanford.common.bean.FeedbackTagsItem
+import com.changanford.common.bean.FordPhotosBean
+import com.changanford.common.bean.GrowUpBean
+import com.changanford.common.bean.GrowUpQYBean
+import com.changanford.common.bean.HobbyBeanItem
+import com.changanford.common.bean.HotPicBean
+import com.changanford.common.bean.IndustryBeanItem
+import com.changanford.common.bean.InfoBean
+import com.changanford.common.bean.JoinCircleCheckBean
+import com.changanford.common.bean.JumpDataBean
+import com.changanford.common.bean.ListMainBean
+import com.changanford.common.bean.LocationDataBean
+import com.changanford.common.bean.LoginBean
+import com.changanford.common.bean.LoginVideoBean
+import com.changanford.common.bean.LoveCarActivityListBean
+import com.changanford.common.bean.MedalListBeanItem
+import com.changanford.common.bean.MenuBeanItem
+import com.changanford.common.bean.MessageListBean
+import com.changanford.common.bean.MessageStatusBean
+import com.changanford.common.bean.MiddlePageBean
+import com.changanford.common.bean.MineRecommendCircle
+import com.changanford.common.bean.MonthSignBean
+import com.changanford.common.bean.MyBindCarListBean
+import com.changanford.common.bean.MyFastInData
+import com.changanford.common.bean.NewCarBannerBean
+import com.changanford.common.bean.NewCarInfoBean
+import com.changanford.common.bean.NewCircleBean
+import com.changanford.common.bean.OcrBean
+import com.changanford.common.bean.PostBean
+import com.changanford.common.bean.PostDataBean
+import com.changanford.common.bean.QueryDetail
+import com.changanford.common.bean.QuestionData
+import com.changanford.common.bean.RecommendListBean
+import com.changanford.common.bean.RootTaskBean
+import com.changanford.common.bean.STSBean
+import com.changanford.common.bean.SettingPhoneBean
+import com.changanford.common.bean.ShopBean
+import com.changanford.common.bean.SmartCodeBean
+import com.changanford.common.bean.SpecialCarListBean
+import com.changanford.common.bean.SpecialDetailData
+import com.changanford.common.bean.TaskShareBean
+import com.changanford.common.bean.Topic
+import com.changanford.common.bean.UpdateActivityV2Req
+import com.changanford.common.bean.UpdateInfo
+import com.changanford.common.bean.UpdateVoteReq
+import com.changanford.common.bean.User
+import com.changanford.common.bean.UserIdCardBeanItem
+import com.changanford.common.bean.UserInfoBean
+import com.changanford.common.bean.WaitReceiveBean
 import com.changanford.common.buried.BaseBean
 import io.reactivex.Observable
 import okhttp3.RequestBody
@@ -1551,6 +1638,15 @@ interface NetWorkApi {
      */
     @POST("con/posts/addComment")
     suspend fun addPostsComment(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     *  我的足迹-删除
+     */
+    @POST("/userVisitHistory/deleteByHistoryIdsAndType")
+    suspend fun deleteByHistoryIdsAndType(
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>

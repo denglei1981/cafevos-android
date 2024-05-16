@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Base64
 import android.util.Log
 import android.webkit.JavascriptInterface
 import androidx.lifecycle.lifecycleScope
@@ -42,8 +43,14 @@ import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import com.qw.soul.permission.bean.Permissions
 import com.tencent.smtt.sdk.WebView
+import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.set
@@ -53,7 +60,7 @@ import kotlin.collections.set
  * H5调用原生方法
  */
 class AgentWebInterface(
-    val webView:WebView,
+    val webView: WebView,
     var activity: AgentWebActivity?,
     val jsCallback: JsCallback
 ) {
@@ -461,13 +468,16 @@ class AgentWebInterface(
                     "0" -> {
                         startARouter(ARouterCirclePath.LongPostAvtivity, b, true)
                     }
+
                     "1" -> {
                         startARouter(ARouterCirclePath.PostActivity, b, true)
 
                     }
+
                     "2" -> {
                         startARouter(ARouterCirclePath.VideoPostActivity, b, true)
                     }
+
                     else -> {
                         showPostDialog(b)
                     }
@@ -568,7 +578,7 @@ class AgentWebInterface(
             .postValue(callback)
     }
 
-    private fun savePermissionSuccess(url: String, callback: String){
+    private fun savePermissionSuccess(url: String, callback: String) {
         try {
             if (url.contains(".gif")) {
                 GifUtils.saveGif(
@@ -608,8 +618,10 @@ class AgentWebInterface(
 
         }
         webView.post {
-            PermissionPopUtil.checkPermissionAndPop(permissions,
-                { savePermissionSuccess(url, callback) }, fail)
+            PermissionPopUtil.checkPermissionAndPop(
+                permissions,
+                { savePermissionSuccess(url, callback) }, fail
+            )
         }
 //        SoulPermission.getInstance()
 //            .checkAndRequestPermission(
@@ -942,6 +954,68 @@ class AgentWebInterface(
     }
 
     /**
+     * 裁剪图片
+     */
+    @JavascriptInterface
+    fun KJNovaClipper(callback: String, img: String) {
+        val permissions = Permissions.build(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        )
+        val fail = {
+
+        }
+        val success = {
+            MConstant.carpWebCallBack=callback
+            val file = saveImage(webView.context, img)
+            activity?.let {
+                PictureUtil.startUCrop(
+                    it,
+                    file?.absolutePath.toString(), UCrop.REQUEST_CROP, 16f, 9f
+                )
+            }
+        }
+        webView.post {
+            PermissionPopUtil.checkPermissionAndPop(
+                permissions,
+                { success.invoke() }, fail
+            )
+        }
+    }
+
+    private fun saveImage(context: Context, imageData: String?): File? {
+        val imgBytesData = Base64.decode(
+            imageData,
+            Base64.DEFAULT
+        )
+
+        val file = File.createTempFile("image", null, context.cacheDir)
+        val fileOutputStream: FileOutputStream
+        try {
+            fileOutputStream = FileOutputStream(file)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            return null
+        }
+
+        val bufferedOutputStream = BufferedOutputStream(
+            fileOutputStream
+        )
+        try {
+            bufferedOutputStream.write(imgBytesData)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        } finally {
+            try {
+                bufferedOutputStream.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return file
+    }
+
+    /**
      * 获取用户认证车辆列表
      */
     @JavascriptInterface
@@ -955,7 +1029,7 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun webGoBack() {
-        webView.post{
+        webView.post {
             if (webView.canGoBack()) {
                 webView.goBack()
             } else {
@@ -968,7 +1042,7 @@ class AgentWebInterface(
      * 获取临时code授权码
      */
     @JavascriptInterface
-    fun getAccessCode(clientId:String,redirectUrl:String,callback: String){
-        activity?.getAccessCode(clientId,redirectUrl,callback)
+    fun getAccessCode(clientId: String, redirectUrl: String, callback: String) {
+        activity?.getAccessCode(clientId, redirectUrl, callback)
     }
 }

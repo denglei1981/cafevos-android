@@ -1,100 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingBottom="@dimen/dp_17"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_withe"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
-        android:orientation="vertical">
-        <com.changanford.shop.view.TypefaceTextView
-            android:visibility="gone"
-            tools:visibility="visible"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:id="@+id/tv_consumption"
-            android:layout_marginTop="@dimen/dp_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:start_txt="@string/str_hasChange"
-            app:end_txt="@string/str_a"
-            android:text="@{model.purchasedNum}"
-            tools:text="已兑换141件"
-            android:textColor="@color/color_74889D"
-            android:textSize="@dimen/sp_12"/>
-        <com.changanford.shop.view.TypefaceTextView
-            app:layout_constraintTop_toBottomOf="@id/tv_consumption"
-            android:id="@+id/tv_goodsTitle"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{model.spuName}"
-            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 "
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_17" />
-        <com.changanford.shop.view.TypefaceTextView
-            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
-            android:id="@+id/tv_goodsDes"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{model.secondName}"
-            tools:text="中强度运动，不受约束，前置拉链，一秒穿脱，美背设计，凸显蝴蝶谷"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_12" />
-        <View
-            android:id="@+id/view_divider"
-            app:layout_constraintTop_toBottomOf="@id/tv_goodsDes"
-            android:layout_marginTop="@dimen/dp_15"
-            android:background="@color/color_EC"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_5"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:onClick="onClick"
-            android:id="@+id/tv_goodsAttrs"
-            android:gravity="center_vertical"
-            android:drawableEnd="@mipmap/shop_right"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"
-            android:layout_marginTop="@dimen/dp_15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/style_txt_ellipsize"
-            app:start_txt="@string/str_select"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_14" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_freight"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/tv_goodsAttrs"
-            android:layout_marginTop="@dimen/dp_27"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/str_goods_freightX"
-            app:start_txt="@string/str_freight"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_14" />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_17">
 
         <com.changanford.shop.view.TypefaceTextView
-            tools:visibility="visible"
+            android:id="@+id/tv_consumption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_12"
+            android:text="@{model.purchasedNum}"
+            android:textColor="@color/color_4d16"
+            android:textSize="@dimen/sp_12"
             android:visibility="gone"
+            app:end_txt="@string/str_a"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:start_txt="@string/str_hasChange"
+            tools:text="已兑换141件"
+            tools:visibility="visible" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goodsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:text="@{model.spuName}"
+            android:textColor="@color/color_16"
+            android:textSize="@dimen/sp_17"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tv_consumption"
+            tools:text="无线蓝牙耳机 降噪耳机 苹果airpords 2021 " />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goodsDes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@{model.secondName}"
+            android:textColor="@color/color_9916"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
+            tools:text="中强度运动，不受约束，前置拉链，一秒穿脱，美背设计，凸显蝴蝶谷" />
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@color/color_EC"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsDes" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_goodsAttrs"
+            style="@style/style_txt_ellipsize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:drawableEnd="@mipmap/shop_right"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintTop_toBottomOf="@id/view_divider"
+            app:start_txt="@string/str_select" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_freight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_27"
+            android:gravity="center_vertical"
+            android:text="@string/str_goods_freightX"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintTop_toBottomOf="@id/tv_goodsAttrs"
+            app:start_txt="@string/str_freight" />
+
+        <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_parameter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:gravity="center_vertical"
-            android:textColor="@color/color_99"
+            android:textColor="@color/color_8016"
             android:textSize="@dimen/sp_14"
-            app:start_txt="@string/str_parameter"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tv_freight"
-            tools:layout_editor_absoluteX="20dp"/>
+            app:start_txt="@string/str_parameter"
+            tools:layout_editor_absoluteX="20dp"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -79,6 +79,17 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
             }
             shopAdapter.notifyDataSetChanged()
         }
+        LiveDataBus.get().with(LiveDataBusKey.DELETE_SHOP_DATA).observe(this) {
+            val list = ArrayList<String>()
+            shopAdapter.data.forEach {
+                if (it.isCheck) {
+                    list.add(it.mallMallSpuId)
+                }
+            }
+            viewModel.deleteHistory(5, list) {
+                initRefreshData(1)
+            }
+        }
     }
 
     override fun bindSmartLayout(): SmartRefreshLayout? {
@@ -115,7 +126,7 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                         total = it.total
                     }
                     completeRefresh(it.data?.dataList, shopAdapter, total)
-                    if (pageSize > 1 && shopAdapter.isManage) {
+                    if (shopAdapter.isManage) {
                         shopAdapter.checkIsAllCheck()
                     }
                 }
@@ -181,6 +192,9 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
                 return
             }
+            val canDelete = data.filter { item -> item.isCheck }
+            LiveDataBus.get().with(LiveDataBusKey.FOOT_UI_CAN_DELETE)
+                .postValue(canDelete.isNotEmpty())
             data.forEach {
                 if (!it.isCheck) {
                     LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)

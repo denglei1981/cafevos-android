@@ -99,16 +99,20 @@ fun HomeMyIntegralCompose(fbNumber: String? = null) {
                 .padding(top = 8.dp, bottom = 8.dp, start = 16.dp, end = 16.dp)
         ) {
             Spacer(modifier = Modifier.width(8.dp))
-            Column( modifier = Modifier
-                .wrapContentWidth()) {
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
                 Text(
                     text = "福币在手 精品我有", color = colorResource(id = R.color.color_16),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                Row(horizontalArrangement = Arrangement.Start,  modifier = Modifier
-                    .wrapContentWidth()) {
+                Row(
+                    horizontalArrangement = Arrangement.Start, modifier = Modifier
+                        .wrapContentWidth()
+                ) {
                     Text(
                         text = stringResource(
                             R.string.str_myFbX2
@@ -301,10 +305,10 @@ fun DetailsWalkCompose(dataBean: MutableList<GoodsItemBean>? = null) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(com.changanford.shop.R.string.str_walk),
-                color = colorResource(R.color.color_33),
+                color = colorResource(R.color.color_16),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier.padding(start = 16.dp)
             )
             Spacer(modifier = Modifier.height(14.dp))
             for (row in 0 until rowTotal) {
@@ -315,7 +319,7 @@ fun DetailsWalkCompose(dataBean: MutableList<GoodsItemBean>? = null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     for (i in 0 until columnSize) {
                         Box(
@@ -324,7 +328,7 @@ fun DetailsWalkCompose(dataBean: MutableList<GoodsItemBean>? = null) {
                         ) {
                             ItemDetailsWalkCompose(if (itemListSize > i) itemList[i] else null)
                         }
-                        if (i < 2) Spacer(modifier = Modifier.width(10.dp))
+                        if (i < 2) Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
                 Spacer(modifier = Modifier.height(25.dp))
@@ -336,7 +340,7 @@ fun DetailsWalkCompose(dataBean: MutableList<GoodsItemBean>? = null) {
 /**
  * 逛一逛的item
  */
-private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext) - 60) / 3 }
+private val walkItemWidth by lazy { (ScreenUtils.getScreenWidthDp(MyApp.mContext) - 48) / 3 }
 
 @Composable
 private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
@@ -355,13 +359,13 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
                 contentScale = ContentScale.Crop,
                 contentDescription = null, modifier = Modifier
                     .size(walkItemWidth.dp)
-                    .clip(RoundedCornerShape(5.dp))
+                    .clip(RoundedCornerShape(12.dp))
             )
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             //商品名称
             Text(
                 text = spuName,
-                color = colorResource(R.color.color_33),
+                color = colorResource(R.color.color_16),
                 fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -371,16 +375,17 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
             Text(buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = colorResource(R.color.color_33),
-                        fontSize = 12.sp
+                        color = colorResource(R.color.color_1700F4),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
                     )
                 ) {
                     append("¥${getRMB(vipFb)} ")
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = colorResource(R.color.color_66),
-                        fontSize = 9.sp
+                        color = colorResource(R.color.color_1700F4),
+                        fontSize = 10.sp
                     )
                 ) {
                     append(stringResource(R.string.str_since))
@@ -389,7 +394,7 @@ private fun ItemDetailsWalkCompose(itemData: GoodsItemBean? = null) {
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = stringResource(com.changanford.shop.R.string.str_hasChangeXa, "$salesCount"),
-                color = colorResource(R.color.color_33), fontSize = 10.sp
+                color = colorResource(R.color.color_4d16), fontSize = 10.sp
             )
         }
     }
@@ -421,7 +426,7 @@ fun ShopServiceDescription(urlPath: String?) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = Modifier.padding(start = 20.dp),
+                modifier = Modifier.padding(start = 16.dp),
                 text = "服务说明",
                 color = colorResource(id = R.color.color_33),
                 fontSize = 15.sp,

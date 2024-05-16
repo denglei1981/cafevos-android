@@ -2,163 +2,193 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.GoodsDetailBean" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_kill"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20"
-        android:background="@drawable/line_eb6067_f89b82"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_54"
-        tools:visibility="visible"
-        android:visibility="gone">
-       <ImageView
-           android:id="@+id/img_logoKill"
-           android:src="@mipmap/shop_kill"
-           app:layout_constraintStart_toStartOf="parent"
-           app:layout_constraintBottom_toBottomOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/dp_58"
+        android:background="@mipmap/ic_skill_mid_bg"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
+        android:visibility="gone"
+        tools:visibility="visible">
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_kill_rmbPrice"
-            android:layout_marginStart="@dimen/dp_8"
-            app:layout_constraintStart_toEndOf="@id/img_logoKill"
-            app:layout_constraintTop_toTopOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@{model.rmbPrice}"
-            app:start_txt="@string/str_rmb"
-            android:textStyle="bold"
             android:textColor="@color/color_withe"
-            android:textSize="@dimen/sp_18" />
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:start_txt="@string/str_rmb" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="1dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_4Dffffff"
+            app:layout_constraintLeft_toRightOf="@+id/tv_kill_rmbPrice"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_kill_fbPrice"
-            android:layout_marginStart="@dimen/dp_10"
-            app:layout_constraintBottom_toBottomOf="@id/tv_kill_rmbPrice"
-            app:layout_constraintStart_toEndOf="@id/tv_kill_rmbPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="1600"
-            android:text="@{model.fbPrice}"
-            android:drawablePadding="@dimen/dp_3"
-            android:textStyle="bold"
+            android:layout_marginStart="@dimen/dp_6"
+            android:layout_marginTop="8dp"
             android:drawableStart="@mipmap/ic_shop_fb_42"
+            android:drawablePadding="@dimen/dp_3"
+            android:text="@{model.fbPrice}"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/sp_18" />
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/v_line"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1600" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_skill"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_skill_mid_white"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_kill_rmbPrice"
+            app:layout_constraintTop_toBottomOf="@+id/tv_kill_rmbPrice"
+            android:layout_height="wrap_content"/>
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_limitBuyNum"
-            app:layout_constraintStart_toStartOf="@id/tv_kill_rmbPrice"
-            app:layout_constraintTop_toBottomOf="@+id/tv_kill_fbPrice"
-            app:layout_constraintBottom_toBottomOf="@id/img_logoKill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:start_txt="@string/str_limited"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/color_99ff"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintTop_toTopOf="@+id/iv_skill"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_skill"
             app:end_txt="@string/str_a"
-            android:textColor="@color/color_withe"
-            android:textSize="@dimen/sp_10" />
+            app:layout_constraintLeft_toRightOf="@+id/iv_skill"
+            app:start_txt="@string/str_limited" />
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_timeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
             android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            app:layout_constraintTop_toTopOf="parent">
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_kill_states"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
                 android:text="@string/str_fromEnd"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_10"
-                android:layout_marginEnd="@dimen/dp_8"/>
+                android:textSize="@dimen/sp_10" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_kill_h"
-                android:background="@drawable/shadow_white_3dp"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_584d00_2"
+                android:gravity="center"
                 android:minWidth="@dimen/dp_18"
                 android:minHeight="@dimen/dp_18"
                 android:paddingStart="@dimen/dp_1"
                 android:paddingEnd="@dimen/dp_1"
                 android:text="@string/str_zero2"
-                android:textColor="@color/color_E94A52"
-                android:textSize="@dimen/sp_12" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+
             <com.changanford.shop.view.TypefaceTextView
-                android:layout_marginStart="@dimen/dp_3"
-                android:layout_marginEnd="@dimen/dp_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_marginEnd="@dimen/dp_3"
                 android:text="@string/str_colon"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_12" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_kill_m"
-                android:background="@drawable/shadow_white_3dp"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_584d00_2"
+                android:gravity="center"
                 android:minWidth="@dimen/dp_18"
                 android:minHeight="@dimen/dp_18"
                 android:paddingStart="@dimen/dp_1"
                 android:paddingEnd="@dimen/dp_1"
                 android:text="@string/str_zero2"
-                android:textColor="@color/color_E94A52"
-                android:textSize="@dimen/sp_12" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
+
             <com.changanford.shop.view.TypefaceTextView
-                android:layout_marginStart="@dimen/dp_3"
-                android:layout_marginEnd="@dimen/dp_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_marginEnd="@dimen/dp_3"
                 android:text="@string/str_colon"
                 android:textColor="@color/color_withe"
                 android:textSize="@dimen/sp_12" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_kill_s"
-                android:background="@drawable/shadow_white_3dp"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_584d00_2"
+                android:gravity="center"
                 android:minWidth="@dimen/dp_18"
                 android:minHeight="@dimen/dp_18"
                 android:paddingStart="@dimen/dp_1"
                 android:paddingEnd="@dimen/dp_1"
                 android:text="@string/str_zero2"
-                android:textColor="@color/color_E94A52"
-                android:textSize="@dimen/sp_12" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_5"
-            app:layout_constraintTop_toBottomOf="@id/layout_timeCount"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:gravity="center_vertical"
+            app:layout_constraintLeft_toLeftOf="@+id/layout_timeCount"
+            app:layout_constraintTop_toBottomOf="@id/layout_timeCount">
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_stockProportion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:start_txt="@string/str_hasBeenRobbed"
                 android:text="@{model.stockProportion}"
                 android:textColor="@color/color_withe"
-                android:textSize="@dimen/sp_10" />
+                android:textSize="@dimen/sp_10"
+                app:start_txt="@string/str_hasBeenRobbed" />
+
             <ProgressBar
-                android:layout_marginStart="@dimen/dp_8"
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="@dimen/dp_52"
+                android:layout_height="@dimen/dp_4"
+                android:layout_marginStart="@dimen/dp_8"
                 android:max="@{model.totalStock}"
-                tools:progress="10"
                 android:progress="@{model.salesCount}"
                 android:progressDrawable="@drawable/progressbar_kill_bg"
-                android:layout_width="@dimen/dp_67"
-                android:layout_height="@dimen/dp_4"/>
+                tools:progress="10" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

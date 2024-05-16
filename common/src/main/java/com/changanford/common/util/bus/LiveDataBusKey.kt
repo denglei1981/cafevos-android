@@ -337,9 +337,14 @@ object LiveDataBusKey {
     const val REFRESH_ACTS_FRAGMENT = "refreshActsFragment"
     const val REFRESH_SHOP_FRAGMENT = "refreshShopFragment"
     const val REFRESH_FOOT_CHECK = "refreshFootCheck"
+    const val FOOT_UI_CAN_DELETE = "footUiCanDelete"
     const val REFRESH_INFORMATION_DATA = "refreshInformationData"
     const val REFRESH_POST_DATA = "refreshPostData"
     const val REFRESH_ACTS_DATA = "refreshActsData"
     const val REFRESH_SHOP_DATA = "refreshShopData"
+    const val DELETE_INFORMATION_DATA = "deleteInformationData"
+    const val DELETE_POST_DATA = "deletePostData"
+    const val DELETE_ACT_DATA = "deleteActData"
+    const val DELETE_SHOP_DATA = "deleteShopData"
 }
 

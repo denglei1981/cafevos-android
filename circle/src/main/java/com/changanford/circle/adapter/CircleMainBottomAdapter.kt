@@ -223,6 +223,8 @@ class CircleMainBottomAdapter(context: Context) :
             LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
             return
         }
+        val canDelete = data.filter { item -> item.checkBoxChecked }
+        LiveDataBus.get().with(LiveDataBusKey.FOOT_UI_CAN_DELETE).postValue(canDelete.isNotEmpty())
         data.forEach {
             if (!it.checkBoxChecked) {
                 LiveDataBus.get().with(LiveDataBusKey.REFRESH_FOOT_CHECK).postValue(false)
