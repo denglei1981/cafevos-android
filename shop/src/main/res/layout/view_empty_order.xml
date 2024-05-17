@@ -20,6 +20,6 @@
             android:text="@string/str_noOrder"
             android:textColor="@color/color_99"
             android:textSize="@dimen/sp_12"
-            app:drawableTopCompat="@mipmap/shop_no_order" />
+            app:drawableTopCompat="@mipmap/ic_result_empty" />
     </LinearLayout>
 </layout>

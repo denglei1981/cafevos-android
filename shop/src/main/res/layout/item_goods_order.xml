@@ -13,23 +13,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_15">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goodsCover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_98"
+            android:layout_height="@dimen/dp_98"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_h_one_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goodsCover_bg"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_98"
+            android:layout_height="@dimen/dp_98"
             android:background="#1A0C0C0C"
             android:scaleType="centerCrop"
             android:visibility="gone"
@@ -37,7 +37,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/img_goodsCover"
             app:layout_constraintRight_toRightOf="@+id/img_goodsCover"
             app:layout_constraintTop_toTopOf="@+id/img_goodsCover"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle"
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle"
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -50,7 +50,7 @@
             android:paddingBottom="5dp"
             android:text="预计7天内发货"
             android:textColor="@color/color_FF"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/img_goodsCover"
             app:layout_constraintLeft_toLeftOf="@+id/img_goodsCover"
@@ -65,9 +65,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{model.spuName}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"
             app:layout_constraintTop_toTopOf="parent"
@@ -90,10 +89,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:textColor="@color/color_74889D"
-            android:textSize="@dimen/sp_12"
-            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@id/rv_goods_property"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/rv_goods_property"
@@ -118,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_3"
             android:text="@{model.rmbPrice}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             app:end_txt="@string/str_left_parentheses"
             app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
@@ -133,7 +131,7 @@
             android:drawableStart="@mipmap/ic_shop_fb_42"
             android:drawablePadding="@dimen/dp_2"
             android:text="@{model.orginPrice}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             app:end_txt="@string/str_right_parentheses"
             app:layout_constraintStart_toEndOf="@id/tv_rmbPrice"

@@ -10,7 +10,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -21,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -28,8 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
@@ -209,10 +217,10 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         btnSubmit.visibility = View.VISIBLE
                         composeView.visibility = View.GONE
                         model = dataBean
-                        tvAccountPoints.setHtmlTxt(
-                            getString(R.string.str_Xfb, totalIntegral),
-                            "#1700f4"
-                        )
+//                        tvAccountPoints.setHtmlTxt(
+//                            getString(R.string.str_Xfb, totalIntegral),
+//                            "#1700f4"
+//                        )
                         //账户余额小于所支付额度 则余额不足
                         if (totalIntegral!!.toFloat() < (payFb
                                 ?: "0").toFloat()
@@ -262,10 +270,10 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         btnSubmit.visibility = View.VISIBLE
                         composeView.visibility = View.GONE
                         model = dataBean
-                        tvAccountPoints.setHtmlTxt(
-                            getString(R.string.str_Xfb, totalIntegral),
-                            "#1700f4"
-                        )
+//                        tvAccountPoints.setHtmlTxt(
+//                            getString(R.string.str_Xfb, totalIntegral),
+//                            "#1700f4"
+//                        )
                         //账户余额小于所支付额度 则余额不足
                         if (totalIntegral!!.toFloat() < (payFb
                                 ?: "0").toFloat()
@@ -500,7 +508,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .background(color = colorResource(R.color.color_F4))
+                    .background(color = colorResource(R.color.white))
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Column(
@@ -514,43 +522,70 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                     Text(
                         text = "￥$payRmb",
                         fontSize = 28.sp,
-                        color = colorResource(R.color.color_33)
+                        color = colorResource(R.color.color_16)
                     )
-                    Spacer(modifier = Modifier.height(14.dp))
-                    //剩余支付时间
-                    Text(
-                        text = "${stringResource(R.string.str_remainingTimePayment)}${countdown.value}",
-                        fontSize = 13.sp,
-                        color = colorResource(R.color.color_33)
-                    )
-                    Spacer(modifier = Modifier.height(26.dp))
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(color = colorResource(id = R.color.color_081700f4))
+                            .clip(RoundedCornerShape(4))
+                            .height(25.dp)
+                            .padding(start = 8.dp, end = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        //剩余支付时间
+                        Text(
+                            text = "${stringResource(R.string.str_remainingTimePayment)}${countdown.value}",
+                            fontSize = 12.sp,
+                            color = colorResource(R.color.color_991700f4)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(72.dp))
                     Divider(color = colorResource(R.color.color_F5), thickness = 0.5.dp)
                     Spacer(modifier = Modifier.height(5.dp))
                     for ((i, item) in payWayArr.withIndex()) {
                         item.apply {
-                            Row(verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp, vertical = 15.dp)
-                                    .clickable(
-                                        indication = null,
-                                        interactionSource = remember { MutableInteractionSource() }) {
-                                        selectedTag.value = payType
-                                    }) {
-                                Image(
-                                    painter = icon ?: painterResource(R.mipmap.ic_shop_wx),
-                                    contentDescription = null
+                            Column(
+                                modifier = Modifier.padding(
+                                    horizontal = 16.dp,
+                                    vertical = 15.dp
                                 )
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Text(
-                                    text = payWayName ?: "",
-                                    color = colorResource(R.color.color_33),
-                                    fontSize = 14.sp,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                Image(
-                                    painter = painterResource(if (selectedTag.value == payType) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0),
-                                    contentDescription = null
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable(
+                                            indication = null,
+                                            interactionSource = remember { MutableInteractionSource() }) {
+                                            selectedTag.value = payType
+                                        }) {
+                                    Image(
+                                        painter = icon ?: painterResource(R.mipmap.ic_shop_wx),
+                                        contentDescription = null
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = payWayName ?: "",
+                                        color = colorResource(R.color.color_d916),
+                                        fontSize = 18.sp,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    Image(
+                                        painter = painterResource(if (selectedTag.value == payType) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0_new),
+                                        contentDescription = null
+                                    )
+                                }
+
+                                Spacer(
+                                    modifier = Modifier
+                                        .padding(top = 16.dp)
+                                        .height(0.5.dp)
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = colorResource(
+                                                id = R.color.color_1a4a
+                                            )
+                                        )
                                 )
                             }
                         }
@@ -561,7 +596,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .padding(horizontal = 20.dp), contentAlignment = Alignment.BottomCenter
+                        .padding(horizontal = 24.dp), contentAlignment = Alignment.BottomCenter
                 ) {
                     Button(
                         onClick = {
@@ -581,19 +616,19 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         enabled = selectedTag.value != "0" && countdown.value != timeStr,
                         shape = RoundedCornerShape(20.dp),
                         contentPadding = PaddingValues(horizontal = 0.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value != "0" && countdown.value != timeStr) R.color.color_1700f4 else R.color.color_DD)),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(if (selectedTag.value != "0" && countdown.value != timeStr) R.color.color_1700f4 else R.color.color_80a6)),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp)
+                            .height(46.dp)
                     ) {
                         Text(
                             stringResource(R.string.str_payConfirm),
                             fontSize = 15.sp,
-                            color = Color.White
+                            color =if (selectedTag.value != "0" && countdown.value != timeStr)  Color.White else colorResource(R.color.color_4d16)
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
     }

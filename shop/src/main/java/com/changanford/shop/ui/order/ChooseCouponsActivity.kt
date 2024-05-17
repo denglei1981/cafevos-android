@@ -19,35 +19,37 @@ import com.google.gson.Gson
  * @Description : 选择优惠券
  */
 @Route(path = ARouterShopPath.ChooseCouponsActivity)
-class ChooseCouponsActivity:BaseActivity<ActChooseCouponsBinding,OrderViewModel>() {
-    companion object{
+class ChooseCouponsActivity : BaseActivity<ActChooseCouponsBinding, OrderViewModel>() {
+    companion object {
         /**
          * [defaultItem]默认选中("couponId_couponRecordId")
-        * */
-        fun start(defaultItem:String?=null, infoBean: CreateOrderBean?) {
+         * */
+        fun start(defaultItem: String? = null, infoBean: CreateOrderBean?) {
             val bundle = Bundle()
-            bundle.putString("defaultItem",defaultItem)
+            bundle.putString("defaultItem", defaultItem)
             bundle.putString("infoBean", Gson().toJson(infoBean))
-            startARouter(ARouterShopPath.ChooseCouponsActivity,bundle)
+            startARouter(ARouterShopPath.ChooseCouponsActivity, bundle)
         }
     }
+
     private lateinit var infoBean: CreateOrderBean
-    private lateinit var skuItems:ArrayList<OrderSkuItem>
-    private lateinit var couponListBean:ArrayList<CouponsItemBean>
+    private lateinit var skuItems: ArrayList<OrderSkuItem>
+    private lateinit var couponListBean: ArrayList<CouponsItemBean>
     override fun initView() {
         binding.topBar.setActivity(this)
     }
 
     override fun initData() {
-        intent.getStringExtra("infoBean")?.let {infoItem->
-            infoBean=Gson().fromJson(infoItem,CreateOrderBean::class.java)
-            couponListBean=infoBean.coupons?: arrayListOf()
-            skuItems=infoBean.skuItems?: arrayListOf()
+        intent.getStringExtra("infoBean")?.let { infoItem ->
+            infoBean = Gson().fromJson(infoItem, CreateOrderBean::class.java)
+            couponListBean = infoBean.coupons ?: arrayListOf()
+            skuItems = infoBean.skuItems ?: arrayListOf()
             //默认选中
-            val defaultItem=intent.getStringExtra("defaultItem")
-            val defaultItemBean=couponListBean.find { "${it.couponId}_${it.couponRecordId}"==defaultItem }
+            val defaultItem = intent.getStringExtra("defaultItem")
+            val defaultItemBean =
+                couponListBean.find { "${it.couponId}_${it.couponRecordId}" == defaultItem }
             binding.composeView.setContent {
-                ChooseCouponsCompose(this,defaultItemBean,couponListBean)
+                ChooseCouponsCompose(this, defaultItemBean, couponListBean)
             }
         }
     }

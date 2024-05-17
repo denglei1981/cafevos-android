@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_white_t_5dp"
-        android:paddingStart="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_18"
         android:paddingBottom="@dimen/dp_16">
 
@@ -25,8 +25,7 @@
             android:drawableStart="@mipmap/shop_location"
             android:drawablePadding="@dimen/dp_5"
             android:onClick="onClick"
-
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,10 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_23"
             android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_16"
             android:onClick="onClick"
-
-            android:textColor="@color/text_colorv6"
+            android:textColor="@color/color_9916"
             android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toStartOf="@id/img_right"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +50,7 @@
             android:id="@+id/img_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_16"
             android:visibility="gone"
             android:onClick="onClick"
             android:src="@mipmap/shop_right"

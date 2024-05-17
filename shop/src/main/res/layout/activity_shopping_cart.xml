@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4"
-        >
+        android:background="@color/color_F4">
 
         <include
             android:id="@+id/layout_top"
@@ -35,11 +34,9 @@
             app:srlEnableLoadMore="false"
             app:srlEnableOverScrollDrag="true">
 
-
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_4"
                 android:layout_marginBottom="@dimen/dp_12"
                 app:layout_constraintBottom_toTopOf="@+id/con_handle"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,44 +52,41 @@
                         android:id="@+id/rv_shopping"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_4"
                         android:layout_marginBottom="@dimen/dp_12"
                         android:orientation="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toTopOf="@+id/con_handle"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layout_top"
-                       />
+                        app:layout_constraintTop_toBottomOf="@+id/layout_top" />
 
                     <FrameLayout
                         android:id="@+id/fl_invaild"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
+                        android:background="@color/white"
                         android:visibility="gone"
-                        tools:visibility="visible"
-                        android:background="@color/white">
+                        tools:visibility="visible">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_invaild"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|bottom"
-                            android:layout_marginStart="@dimen/dp_20"
+                            android:layout_marginStart="@dimen/dp_16"
                             android:text="失效商品"
-
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_15" />
+                            android:textColor="@color/color_8016"
+                            android:textSize="@dimen/sp_14" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tv_clear"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|bottom"
-                            android:layout_marginEnd="@dimen/dp_20"
+                            android:layout_marginEnd="@dimen/dp_16"
                             android:text="一键清空"
-                            android:textColor="@color/color_74889D"
-                            android:textSize="@dimen/sp_15" />
+                            android:textColor="@color/color_1700f4"
+                            android:textSize="@dimen/sp_14" />
                     </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -132,14 +126,16 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_over"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="36dp"
                 android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginEnd="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_16"
                 android:background="@drawable/select_bottom_shopping_over"
                 android:gravity="center"
-                android:minWidth="98dp"
+                android:minWidth="81dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:textColor="@drawable/selector_bottom_shopping_over_color"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -150,9 +146,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_16"
                 android:gravity="end|center_vertical"
-                android:textColor="@color/black"
+                android:textColor="@color/color_16"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_over"
                 app:layout_constraintEnd_toStartOf="@+id/tv_over"
@@ -164,12 +160,12 @@
                 android:id="@+id/check_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_16"
                 android:button="@drawable/shopping_cart_check_box"
                 android:gravity="center_vertical"
                 android:padding="@dimen/dp_6"
                 android:text="全选"
-                android:textColor="@color/color_66"
+                android:textColor="@color/color_9916"
                 android:textSize="@dimen/sp_13"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_over"
                 app:layout_constraintStart_toStartOf="parent"

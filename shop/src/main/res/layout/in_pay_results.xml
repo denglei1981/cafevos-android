@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.OrderItemBean" />
     </data>
+
     <LinearLayout
-        app:layout_constraintTop_toBottomOf="@id/topBar"
         android:id="@+id/layout_payResults"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dp_90">
+        android:paddingTop="@dimen/dp_90"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        tools:visibility="visible">
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_payResults_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:drawableTop="@mipmap/shop_pay_succes"
             android:drawablePadding="@dimen/dp_15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/str_paySucces"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_20" />
+            android:textColor="@color/color_16"
+            android:textSize="@dimen/sp_22" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_payResults_price"
-            android:layout_marginTop="@dimen/dp_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="asdsadads"
-            android:textColor="@color/text_colorv6"
-            android:textSize="@dimen/sp_12" />
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            tools:text="asdsadads" />
     </LinearLayout>
 </layout>

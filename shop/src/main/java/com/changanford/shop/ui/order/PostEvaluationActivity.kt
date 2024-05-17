@@ -73,7 +73,10 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val isComplete =
-                        mAdapter.postBeanLiveData.value?.find { item -> !item.isComplete && item.getImageSize() > needPicNum && item.getContentSize() > needContentNum }
+                        mAdapter.postBean.find { item -> !item.isComplete || item.getImageSize() > needPicNum || item.getContentSize() > needContentNum }
+//                    mAdapter.postBean.forEach {
+//                        Log.e("asdasd","${it.isComplete}===${it.getImageSize()}===${it.getContentSize()}===${needContentNum}===${needPicNum}")
+//                    }
                     if (!reviewEval && isComplete != null) {//普通评价没全部写完给出弹窗提示
                         val cannotUnbindPop = ConfirmTwoBtnPop(this@PostEvaluationActivity)
                         cannotUnbindPop.apply {
@@ -199,8 +202,12 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
 //            val postBean = mAdapter.postBean.filter { it.isComplete }
             val postBean = mAdapter.postBean
             if (!reviewEval) {
+                val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
+                val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
                 postBean.forEach {
                     it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
+                    it.logisticsService = logisticsServiceNum
+                    it.serviceAttitude = serviceAttitudeNum
                 }
             }
             viewModel.postEvaluation(orderNo, postBean, reviewEval)
@@ -235,8 +242,12 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         upI++
         postBean[pos].imgUrls = files
         if (upI == postBean.size) {//图片以上传完成
+            val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
+            val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
             postBean.forEach {
                 it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
+                it.logisticsService = logisticsServiceNum
+                it.serviceAttitude = serviceAttitudeNum
             }
             viewModel.postEvaluation(orderNo, postBean, reviewEval)
             dialog.dismiss()

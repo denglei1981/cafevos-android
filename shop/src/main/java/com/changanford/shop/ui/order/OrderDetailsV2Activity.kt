@@ -10,11 +10,7 @@ import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
-import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.OrderReceiveAddress
@@ -32,19 +28,16 @@ import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
-
-import com.changanford.shop.bean.SaleAfterBean
 import com.changanford.shop.control.OrderControl
 import com.changanford.shop.control.time.PayTimeCountControl
 import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.listener.OnTimeCountListener
 import com.changanford.shop.popupwindow.PublicPop
-import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.order.adapter.OrderDetailsItemV2Adapter
-import com.changanford.shop.ui.sale.adapter.OrderSaleStateAdapter
 import com.changanford.shop.ui.shoppingcart.MultiplePackageActivity
 import com.changanford.shop.ui.shoppingcart.request.NoLogisticsInfoActivity
 import com.changanford.shop.utils.WCommonUtil
+import com.changanford.shop.view.TopBar
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import razerdp.basepopup.BasePopupWindow
@@ -70,7 +63,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     private var waitPayCountDown: Long = 1800//支付剩余时间 默认半小时
     private var timeCountControl: PayTimeCountControl? = null
 
-    val orderDetailsItemV2Adapter: OrderDetailsItemV2Adapter by lazy {
+    private val orderDetailsItemV2Adapter: OrderDetailsItemV2Adapter by lazy {
         OrderDetailsItemV2Adapter(object : OrderDetailsItemV2Adapter.OrderStatusListener {
             override fun orderStatusShow(
                 item: OrderItemBean,
@@ -88,6 +81,12 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     override fun initView() {
         title = "订单详情页"
         binding.topBar.setActivity(this)
+        binding.topBar.setOnRightClickListener(object :TopBar.OnRightClickListener{
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
+            }
+
+        })
         orderNo = intent.getStringExtra("orderNo") ?: ""
         if (orderNo.isEmpty()) {
             ToastUtils.showLongToast(getString(R.string.str_parameterIllegal), this)
@@ -664,7 +663,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         }
         val fbNumber = item.payFb
 
-        val starStr = "合计: "
+        val starStr = ""
         val str = if (TextUtils.isEmpty(item.payRmb)) {
             "$starStr[icon] ${item.payFb}"
         } else {
@@ -699,7 +698,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     }
 
     // 开票状态
-    fun showInvoiceState(localDataBean: OrderItemBean) { // 开票状态
+    private fun showInvoiceState(localDataBean: OrderItemBean) { // 开票状态
         localDataBean.invoiced?.let { invoice ->
             when (invoice) {
                 "NOT_BEGIN" -> {// 未申请

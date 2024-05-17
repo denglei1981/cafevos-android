@@ -10,17 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_F4">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:title_text="@string/str_chooseCoupons"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="@string/str_chooseCoupons" />
+
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/composeView"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_marginTop="8dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topBar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

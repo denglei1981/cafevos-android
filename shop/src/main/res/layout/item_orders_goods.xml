@@ -1,205 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginTop="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_10">
-        <View
-            android:id="@+id/view_start"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_height="1dp"/>
-        <com.changanford.common.ui.view.WTextView
-            android:id="@+id/tv_tag"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:background="@drawable/border0d5dp_round_2dp_00095b"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="@id/view_start"
-            app:layout_constraintEnd_toStartOf="@id/tv_orderNo"
-            android:layout_marginEnd="@dimen/dp_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="@dimen/dp_30"
-            android:minHeight="@dimen/dp_16"
-            android:gravity="center"
-            android:text="@string/str_refund"
-            android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_11"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_orderNo"
-            app:layout_constraintStart_toEndOf="@id/tv_tag"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:start_txt="@string/str_orderNo"
-            tools:layout_marginStart="@dimen/dp_4"
-            android:text="@{model.orderNo}"
-            tools:text="订单编号：DD202109110023"
-            android:textColor="@color/color_74889D"
-            android:textSize="@dimen/sp_12" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginEnd="@dimen/dp_20"
-            android:id="@+id/tv_order_states"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="待发货"
-            android:text="@{model.orderStatusName}"
-            android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_12" />
-        <include
-            android:id="@+id/in_goodsInfo"
-            android:layout_marginTop="@dimen/dp_13"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_orderNo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/in_item_order_goods"/>
-        <com.changanford.shop.view.TypefaceTextView
-            android:id="@+id/tv_total"
-            app:layout_constraintTop_toTopOf="@id/tv_totalPrice"
-            app:layout_constraintEnd_toStartOf="@id/tv_totalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_combined"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14" />
-        <com.changanford.shop.view.TypefaceTextView
-            android:drawableStart="@mipmap/ic_shop_fb_42"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:id="@+id/tv_totalPrice"
-            android:drawablePadding="@dimen/dp_3"
-            app:layout_constraintTop_toBottomOf="@id/in_goodsInfo"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_14" />
-        <View
-            android:id="@+id/view_divider"
-            app:layout_constraintTop_toBottomOf="@id/tv_totalPrice"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/color_ee"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_5"/>
-        <View
-            android:layout_marginEnd="@dimen/dp_15"
-            android:visibility="invisible"
-            android:id="@+id/view_n"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/view_divider"
-            android:layout_width="@dimen/dp_0_1"
-            android:layout_height="@dimen/dp_30" />
-        <androidx.appcompat.widget.AppCompatButton
-            style="?android:attr/borderlessButtonStyle"
-            tools:visibility="visible"
-            android:visibility="invisible"
-            android:id="@+id/btn_confirm"
-            android:layout_marginEnd="@dimen/dp_5"
-            android:gravity="center"
-            app:layout_constraintEnd_toStartOf="@id/view_n"
-            app:layout_constraintTop_toTopOf="@+id/view_n"
-            android:minWidth="@dimen/dp_80"
-            android:background="@drawable/bord_00095b_15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            tools:text="@string/str_immediatePayment"
-            android:textStyle="bold"
-            android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_12" />
-        <androidx.appcompat.widget.AppCompatButton
-            style="?android:attr/borderlessButtonStyle"
-            tools:visibility="visible"
-            android:visibility="invisible"
-            android:id="@+id/btn_cancel"
-            android:gravity="center"
-            android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/view_n"
-            app:layout_constraintEnd_toStartOf="@id/btn_confirm"
-            android:minWidth="@dimen/dp_80"
-            android:background="@drawable/bord_99_15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            android:text="@string/str_cancelOrder"
-            android:textStyle="bold"
-            android:textColor="@color/picture_color_66"
-            android:textSize="@dimen/sp_12" />
-        <androidx.appcompat.widget.AppCompatButton
-            style="?android:attr/borderlessButtonStyle"
-            tools:visibility="visible"
-            android:visibility="invisible"
-            android:id="@+id/btn_logistics"
-            android:gravity="center"
-            android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/view_n"
-            app:layout_constraintEnd_toStartOf="@id/btn_cancel"
-            android:minWidth="@dimen/dp_80"
-            android:background="@drawable/bord_99_15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            android:text="@string/str_lookLogistics"
-            android:textStyle="bold"
-            android:textColor="@color/picture_color_66"
-            android:textSize="@dimen/sp_12" />
-        <androidx.appcompat.widget.AppCompatButton
-            style="?android:attr/borderlessButtonStyle"
-            tools:visibility="visible"
-            android:visibility="invisible"
-            android:id="@+id/btn_invoice"
-            android:gravity="center"
-            android:layout_marginEnd="@dimen/dp_5"
-            app:layout_constraintTop_toTopOf="@id/view_n"
-            app:layout_constraintEnd_toStartOf="@id/btn_logistics"
-            android:minWidth="@dimen/dp_80"
-            android:background="@drawable/bord_99_15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_30"
-            android:text="@string/str_applyInvoice"
-            android:textStyle="bold"
-            android:textColor="@color/picture_color_66"
-            android:textSize="@dimen/sp_12" />
+        android:orientation="vertical">
 
-        <com.changanford.shop.view.TypefaceTextView
-            android:layout_marginStart="@dimen/dp_20"
-            android:id="@+id/tv_orderType"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_30"
-            android:gravity="center_vertical"
-            android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_10"
-            app:layout_constraintBottom_toBottomOf="@id/view_n"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_n"
-            tools:text="请在09月05日 15:09 前支付" />
-        <androidx.compose.ui.platform.ComposeView
-            android:id="@+id/composeView"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/view_n"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/view_n"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:background="@color/white"
+            android:paddingTop="@dimen/dp_20">
+
+            <View
+                android:id="@+id/view_start"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/dp_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.changanford.common.ui.view.WTextView
+                android:id="@+id/tv_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:background="@drawable/bg_081700f4_23"
+                android:gravity="center"
+                android:minHeight="@dimen/dp_16"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@string/str_refund"
+                android:textColor="@color/color_1700f4"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@id/tv_orderNo"
+                app:layout_constraintStart_toStartOf="@id/view_start"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_orderNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.orderNo}"
+                android:textColor="@color/color_7300"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintStart_toEndOf="@id/tv_tag"
+                app:layout_constraintTop_toTopOf="parent"
+                app:start_txt="@string/str_orderNo"
+                tools:layout_marginStart="@dimen/dp_4"
+                tools:text="订单编号：DD202109110023" />
+
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_order_states"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:text="@{model.orderStatusName}"
+                android:textColor="@color/color_1700f4"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="待发货" />
+
+            <include
+                android:id="@+id/in_goodsInfo"
+                layout="@layout/in_item_order_goods"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_orderNo" />
+
+            <!--            <com.changanford.shop.view.TypefaceTextView-->
+            <!--                android:id="@+id/tv_total"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="@string/str_combined"-->
+            <!--                android:textColor="@color/color_33"-->
+            <!--                android:textSize="@dimen/sp_14"-->
+            <!--                app:layout_constraintEnd_toStartOf="@id/tv_totalPrice"-->
+            <!--                app:layout_constraintTop_toTopOf="@id/tv_totalPrice" />-->
+
+            <!--            <com.changanford.shop.view.TypefaceTextView-->
+            <!--                android:id="@+id/tv_totalPrice"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/dp_16"-->
+            <!--                android:layout_marginEnd="@dimen/dp_16"-->
+            <!--                android:drawableStart="@mipmap/ic_shop_fb_42"-->
+            <!--                android:drawablePadding="@dimen/dp_3"-->
+            <!--                android:textColor="@color/color_1700f4"-->
+            <!--                android:textSize="@dimen/sp_14"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/in_goodsInfo" />-->
+
+            <View
+                android:id="@+id/view_divider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@color/color_1A000000"
+                app:layout_constraintTop_toBottomOf="@id/in_goodsInfo" />
+
+            <View
+                android:id="@+id/view_n"
+                android:layout_width="@dimen/dp_0_1"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_divider" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:background="@drawable/bg_081700f4_23"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_80"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@id/view_n"
+                app:layout_constraintTop_toTopOf="@+id/view_n"
+                tools:text="@string/str_immediatePayment"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/bg_bord_80a6_23"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_80"
+                android:text="@string/str_cancelOrder"
+                android:textColor="@color/color_d916"
+                android:textSize="@dimen/sp_12"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@id/btn_confirm"
+                app:layout_constraintTop_toTopOf="@id/view_n"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_logistics"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/bg_bord_80a6_23"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_80"
+                android:text="@string/str_lookLogistics"
+                android:textColor="@color/color_d916"
+                android:textSize="@dimen/sp_12"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@id/btn_cancel"
+                app:layout_constraintTop_toTopOf="@id/view_n"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_invoice"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginEnd="@dimen/dp_5"
+                android:background="@drawable/bg_bord_80a6_23"
+                android:gravity="center"
+                android:minWidth="@dimen/dp_80"
+                android:text="@string/str_applyInvoice"
+                android:textColor="@color/color_d916"
+                android:textSize="@dimen/sp_12"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toStartOf="@id/btn_logistics"
+                app:layout_constraintTop_toTopOf="@id/view_n"
+                tools:visibility="visible" />
+
+            <com.changanford.shop.view.TypefaceTextView
+                android:id="@+id/tv_orderType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/dp_30"
+                android:textColor="@color/color_1700f4"
+                android:textSize="@dimen/sp_10"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/view_n"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/view_n"
+                tools:text="请在09月05日 15:09 前支付"
+                tools:visibility="visible" />
+
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/composeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/view_n"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/view_n" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_F4" />
+    </LinearLayout>
 </layout>

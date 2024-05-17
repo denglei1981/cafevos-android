@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
@@ -35,7 +34,10 @@ class RefundOrderItemAdapter() :
     ) {
         holder.dataBinding?.apply {
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
-            showTotalTag(tvIntegral, item)
+            tvIntegral.text = "实付价￥${item.getMPayPrice()}"
+            vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            tvOldPrice.text = "原价￥${item.price}"
+//            showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
             recyclerView.adapter = goodsAttributeAdapter

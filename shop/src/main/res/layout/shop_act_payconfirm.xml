@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="com.changanford.common.bean.OrderItemBean" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,74 +18,85 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/layout_pay"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_100"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/dp_40"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            tools:visibility="visible">
+
             <com.changanford.shop.view.TypefaceTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:end_txt="@string/str_integral"
+                android:drawableStart="@mipmap/ic_big_fb_pay"
                 android:text="@{model.payFb}"
-                android:textColor="@color/color_1700f4"
-                android:textSize="@dimen/sp_28" />
+                android:textColor="@color/color_16"
+                android:textSize="@dimen/sp_28"
+                app:end_txt="" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_payTime"
-                android:gravity="center"
-                android:background="@drawable/shadow_f2f4f9_14dp"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_width="@dimen/dp_130"
-                android:layout_height="@dimen/dp_22"
-                app:start_txt="@string/str_remainingTimePayment"
-                tools:text="支付剩余时间：00:26:50"
-                android:textColor="@color/color_74889D"
-                android:textSize="@dimen/sp_10" />
-            <com.changanford.shop.view.TypefaceTextView
-                android:id="@+id/tv_accountPoints"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/str_yourAccountPoints_font"
-                app:start_txt="@string/str_yourAccount"
-                android:textColor="@color/text_colorv6"
-                android:textSize="@dimen/sp_12" />
+                android:layout_height="@dimen/dp_28"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_081700f4_4"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:textColor="@color/color_991700f4"
+                android:textSize="@dimen/sp_12"
+                app:start_txt="@string/str_remainingTimePayment"
+                tools:text="支付剩余时间：00:26:50" />
+
+            <!--            <com.changanford.shop.view.TypefaceTextView-->
+            <!--                android:id="@+id/tv_accountPoints"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="@dimen/dp_10"-->
+            <!--                android:textColor="@color/text_colorv6"-->
+            <!--                android:textSize="@dimen/sp_12"-->
+            <!--                app:start_txt="@string/str_yourAccount"-->
+            <!--                tools:text="@string/str_yourAccountPoints_font" />-->
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <include
-            tools:visibility="gone"
             android:id="@+id/in_payResults"
-            layout="@layout/in_pay_results"/>
+            layout="@layout/in_pay_results"
+            tools:visibility="gone" />
+
         <com.changanford.shop.view.btn.KillBtnView
-            app:layout_constraintTop_toBottomOf="@+id/layout_pay"
-            android:onClick="btnSubmit"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
             android:id="@+id/btn_submit"
-            android:layout_marginTop="@dimen/dp_57"
-            android:text="@string/str_payConfirm"
-            android:gravity="center"
-            android:textSize="@dimen/sp_15"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_selector"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"/>
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_57"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/btn_selector"
+            android:gravity="center"
+            android:onClick="btnSubmit"
+            android:text="@string/str_payConfirm"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title_text="@string/str_payConfirm"
-            app:bg_color="@color/white"/>
+            app:bg_color="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="@string/str_payConfirm" />
+
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/composeView"
-            tools:visibility="visible"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/topBar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topBar"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

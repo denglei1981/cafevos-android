@@ -18,16 +18,21 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.BaseViewModel
-import com.changanford.common.bean.*
+import com.changanford.common.bean.BackEnumBean
+import com.changanford.common.bean.ImageUrlBean
+import com.changanford.common.bean.PayShowBean
+import com.changanford.common.bean.RefundOrderItemBean
+import com.changanford.common.bean.STSBean
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
-import com.changanford.common.util.*
+import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.PictureUtil
+import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.crash.ActivityStackManager
+import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
@@ -51,9 +56,6 @@ import java.math.BigDecimal
  * */
 @Route(path = ARouterShopPath.RefundApplySingleActivity)
 class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, RefundViewModel>() {
-
-
-
 
     var backEnumBean: BackEnumBean? = null
     lateinit var refundApplyPicAdapter: RefundApplyPicAdapter
@@ -187,17 +189,21 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
             }).show()
         }
         val finallyNumber = binding.addSubtractView.getNumber() // 最终的数量
-        if (TextUtils.isEmpty(orderItemBean.sharedRmb) && !TextUtils.isEmpty(orderItemBean.sharedFb)) {
+        if (TextUtils.isEmpty(orderItemBean.sharedRmb.toString()) && !TextUtils.isEmpty(
+                orderItemBean.sharedFb.toString()
+            )) {
             payShowBean.payFb =
                 BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
 
-        if (TextUtils.isEmpty(orderItemBean.sharedFb) && !TextUtils.isEmpty(orderItemBean.sharedRmb)) {
+        if (TextUtils.isEmpty(orderItemBean.sharedFb.toString()) && !TextUtils.isEmpty(orderItemBean.sharedRmb.toString())) {
 
             payShowBean.payRmb =
                 BigDecimal(orderItemBean.sharedRmb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
-        if (!TextUtils.isEmpty(orderItemBean.sharedFb) && !TextUtils.isEmpty(orderItemBean.sharedRmb)) {
+        if (!TextUtils.isEmpty(orderItemBean.sharedFb.toString()) && !TextUtils.isEmpty(
+                orderItemBean.sharedRmb.toString()
+            )) {
             payShowBean.payFb =
                 BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
             payShowBean.payRmb =

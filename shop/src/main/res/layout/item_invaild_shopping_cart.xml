@@ -15,33 +15,32 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:minHeight="@dimen/dp_138"
-        android:paddingStart="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_36"
-        android:paddingEnd="@dimen/dp_20"
-        >
+        android:paddingEnd="@dimen/dp_16">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/check_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/icon_shopping_car_cant_choice"
             android:gravity="center_vertical"
             android:padding="@dimen/dp_6"
+            android:src="@mipmap/icon_shopping_car_cant_choice"
             android:textColor="@color/color_66"
             android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/img_goodsCover"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/img_goodsCover" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goodsCover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_85"
+            android:layout_height="@dimen/dp_85"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_h_one_default"
             app:layout_constraintStart_toEndOf="@+id/check_status"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsTitle"
@@ -49,13 +48,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_11"
-            android:text="@{model.spuName}"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_14"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="@{model.spuName}"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="无线蓝牙耳机 降噪耳机全新苹…" />
@@ -70,16 +68,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_goodsTitle"
             app:layout_constraintTop_toBottomOf="@id/tv_goodsTitle"
-            tools:listitem="@layout/item_attribute" />
+            tools:listitem="@layout/item_attribute_gray" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_3"
-            android:textColor="@color/color_99"
-            android:textSize="@dimen/sp_14"
             android:text="该商品不能购买"
+            android:textColor="@color/color_4d16"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
             app:layout_constraintStart_toStartOf="@id/tv_goodsTitle" />
 
@@ -88,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="删除"
-            android:textColor="@color/color_74889D"
+            android:textColor="@color/color_1700f4"
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@id/tv_integral"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -97,9 +95,9 @@
             android:layout_width="0dp"
             android:layout_height="1px"
             android:layout_marginTop="24dp"
-            android:background="@color/color_F4"
+            android:background="@color/color_0d00"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/img_goodsCover"
+            app:layout_constraintStart_toStartOf="@+id/check_status"
             app:layout_constraintTop_toBottomOf="@+id/img_goodsCover" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

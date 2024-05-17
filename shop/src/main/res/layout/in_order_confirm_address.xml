@@ -7,48 +7,51 @@
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:background="@drawable/bord_f4_t_10dp"
-        android:onClick="onClick"
         android:id="@+id/layout_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
         android:gravity="center_vertical"
-        android:paddingTop="@dimen/dp_26"
-        android:paddingBottom="@dimen/dp_16"
         android:minHeight="@dimen/dp_70"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:onClick="onClick"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_26"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingBottom="@dimen/dp_16">
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_address"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                tools:text="新欧鹏电子商务大厦20-1"
-                android:textColor="@color/color_33"
-                android:textSize="@dimen/sp_15" />
+                android:textColor="@color/color_d916"
+                android:textSize="@dimen/sp_14"
+                tools:text="新欧鹏电子商务大厦20-1" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_address_remark"
-                android:layout_marginTop="@dimen/dp_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="谢谢你\t17756788760"
-                android:textColor="@color/text_colorv6"
-                android:textSize="@dimen/sp_12" />
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/color_9916"
+                android:textSize="@dimen/sp_12"
+                tools:text="谢谢你\t17756788760" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <ImageView
-            android:layout_marginStart="@dimen/dp_20"
-            android:src="@mipmap/shop_right"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:src="@mipmap/shop_right" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

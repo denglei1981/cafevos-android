@@ -708,8 +708,8 @@ data class OrderItemBean(
     var statusDesc: String? = null,
     var couponDiscount: String = "",
     var haggleDiscount: String? = null,
-    var sharedFb: String? = null,
-    var sharedRmb: String? = null,
+    var sharedFb: Int? = null,
+    var sharedRmb: Double? = null,
     var mallRefundStatus: String? = null, // 单个sku 状态
     var historyPackage: String? = null,
     var reviewEval: Boolean? = false,
@@ -725,6 +725,26 @@ data class OrderItemBean(
 ) {
     fun getRMBPrice() {
         rmbPrice = if (rmb != "0") rmb else getRMB(fb, "")
+    }
+
+    fun getMPayPrice(): String {
+        if (sharedFb == null) {
+            return "0"
+        }
+        val fbToFloat = sharedFb?.toFloat()
+        val remainder = fbToFloat?.div(100)
+        remainder?.let {
+            val payFb = WCommonUtil.getRoundedNum(
+                it.toString(),
+                2
+            )
+            if (sharedRmb == null) {
+                return payFb.toFloat().toString()
+            }
+            val payMoney = payFb.toFloat() + sharedRmb!!
+            return payMoney.toFloat().toString()
+        }
+        return "0"
     }
 
     /**
@@ -1154,8 +1174,8 @@ data class RefundOrderItemBean(
     var buyNum: Int,
     var price: String,
     var singleRefundType: String,
-    var sharedFb: String,
-    var sharedRmb: String,
+    var sharedFb: Int,
+    var sharedRmb: Double,
     var orderNo: String,
     var refundType: String,
     var refundNum: String,
@@ -1166,6 +1186,26 @@ data class RefundOrderItemBean(
             return specifications.split(",").filter { "" != it }
         }
         return arrayListOf()
+    }
+
+    fun getMPayPrice(): String {
+        if (sharedFb == null) {
+            return "0"
+        }
+        val fbToFloat = sharedFb?.toFloat()
+        val remainder = fbToFloat?.div(100)
+        remainder?.let {
+            val payFb = WCommonUtil.getRoundedNum(
+                it.toString(),
+                2
+            )
+            if (sharedRmb == null) {
+                return payFb.toFloat().toString()
+            }
+            val payMoney = payFb.toFloat() + sharedRmb!!
+            return payMoney.toFloat().toString()
+        }
+        return "0"
     }
 
     fun getSaleNum(): String {

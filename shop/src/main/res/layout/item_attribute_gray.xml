@@ -3,29 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="model"
             type="String" />
     </data>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/dp_5"
         android:paddingBottom="@dimen/dp_5">
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_attribute"
-            android:background="@drawable/shadow_f5f5f5_11dp"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
-            android:gravity="center"
+            style="@style/style_txt_ellipsize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/dp_22"
-            tools:text="红色"
-            android:text="@{model}"
+            android:background="@drawable/bg_084a_4"
+            android:gravity="center"
             android:maxWidth="@dimen/dp_90"
-            style="@style/style_txt_ellipsize"
-            android:textColor="@color/gray_999999"
-            android:textSize="@dimen/sp_11"/>
+            android:minHeight="@dimen/dp_26"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
+            android:text="@{model}"
+            android:textColor="@color/color_8016"
+            android:textSize="@dimen/sp_11"
+            tools:text="红色" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

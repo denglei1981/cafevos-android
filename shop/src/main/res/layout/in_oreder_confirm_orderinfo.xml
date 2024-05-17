@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bord_f4_t_10dp"
-        android:paddingStart="@dimen/dp_20"
+        android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_16"
         android:paddingBottom="@dimen/dp_16">
 
         <com.changanford.shop.view.TypefaceTextView
@@ -24,8 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_amountGoods"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,8 +33,8 @@
             android:id="@+id/tv_amount_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_amount"
             app:start_txt="@string/str_rmb" />
@@ -43,10 +43,10 @@
             android:id="@+id/tv_memberDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_27"
+            android:layout_marginTop="@dimen/dp_17"
             android:text="@string/str_memberDiscount"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_freight"
             tools:visibility="visible" />
@@ -56,8 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{model.preferentialFb}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memberDiscount"
             app:start_txt="@string/str_reduction"
@@ -67,10 +67,10 @@
             android:id="@+id/tv_freight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_27"
+            android:layout_marginTop="@dimen/dp_17"
             android:text="@string/str_freight"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_amount" />
 
@@ -79,8 +79,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="¥0"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_freight"
             app:start_txt="@string/str_rmb" />
@@ -89,10 +89,10 @@
             android:id="@+id/tv_coupons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_27"
+            android:layout_marginTop="@dimen/dp_17"
             android:text="@string/str_coupons"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_memberDiscount" />
 
@@ -103,8 +103,8 @@
             android:drawableEnd="@mipmap/right_99"
             android:drawablePadding="@dimen/dp_5"
             android:onClick="onClick"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_coupons"
             app:start_txt="@string/str_subtractRmb" />
@@ -113,10 +113,10 @@
             android:id="@+id/tv_bargaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_27"
+            android:layout_marginTop="@dimen/dp_17"
             android:text="@string/str_bargaining_discounts"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_coupons"
@@ -126,8 +126,8 @@
             android:id="@+id/tv_tv_bargaining_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_13"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_bargaining"
@@ -138,20 +138,32 @@
             android:id="@+id/view_divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"
-            android:layout_marginTop="@dimen/dp_17"
+            android:visibility="invisible"
             android:background="@color/color_ED"
             app:layout_constraintTop_toBottomOf="@id/tv_bargaining" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_all_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="合计"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_total"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total"
+            tools:visibility="visible" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_17"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view_divider"
-            app:start_txt="@string/str_combined"
+            app:start_txt=""
             tools:text="@string/str_combinedXintegral" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

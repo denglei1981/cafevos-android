@@ -23,28 +23,32 @@ class OrderGoodsAttributeAdapter :
                 dataBinding.tvAttribute.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_99
+                        R.color.color_1700f4
                     )
                 )
-                dataBinding.tvAttribute.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.shadow_f5_11dp
-                    )
-                )
+                dataBinding.tvAttribute.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_081700f4_4)
+//                dataBinding.tvAttribute.setBackgroundDrawable(
+//                    ContextCompat.getDrawable(
+//                        context,
+//                        R.drawable.shadow_f5_11dp
+//                    )
+//                )
             } else {
                 dataBinding.tvAttribute.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.color_74889D
+                        R.color.color_1700f4
                     )
                 )
-                dataBinding.tvAttribute.setBackgroundDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.shadow_f2f4f9_11dp
-                    )
-                )
+                dataBinding.tvAttribute.background =
+                    ContextCompat.getDrawable(context, R.drawable.bg_081700f4_4)
+//                    .setBackgroundDrawable(
+//                    ContextCompat.getDrawable(
+//                        context,
+//                        R.drawable.shadow_f2f4f9_11dp
+//                    )
+//                )
             }
         }
 

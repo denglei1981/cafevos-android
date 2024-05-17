@@ -2,6 +2,7 @@ package com.changanford.shop.ui.goods
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.changanford.common.bean.GioPreBean
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -190,9 +192,19 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
         viewModel.shopConfigBean.observe(this) {
             it.pro_detail_roll?.apply {
                 //跑马灯
-                headerBinding.inComment.topContent.isVisible = !content.isNullOrEmpty()
-                headerBinding.inComment.topContent.text = content
-                headerBinding.inComment.topContent.isSelected = true
+                headerBinding.inComment.topContent.apply {
+                    isVisible = !content.isNullOrEmpty()
+                    text = content
+                    isSelected = true
+                    setOnClickListener {
+                        val bundle = Bundle()
+                        bundle.putString(
+                            "value",
+                            "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
+                        )
+                        startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                    }
+                }
             }
 
         }

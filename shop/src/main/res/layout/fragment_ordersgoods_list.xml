@@ -10,11 +10,12 @@
         android:id="@+id/smartRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4">
+        android:background="@color/white">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

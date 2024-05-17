@@ -1,12 +1,15 @@
 package com.changanford.shop.viewmodel
 
 import android.text.TextUtils
+import androidx.core.view.isVisible
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
+import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.*
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.*
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.room.UserDatabase
@@ -181,10 +184,22 @@ class OrderViewModel : BaseViewModel() {
 ////                    LiveDataBus.get().with(LiveDataBusKey.SHOW_ERROR_ADDRESS)
 ////                        .postValue(it.toString())
 //                } else {
-                    ToastUtils.showLongToast(it, MyApp.mContext)
+//                    ToastUtils.showLongToast(it, MyApp.mContext)
 //                }
+                it?.let { it1 -> showToastPop(it1) }
             }
         }
+    }
+
+    private fun showToastPop(content: String) {
+        ConfirmTwoBtnPop(BaseApplication.curActivity).apply {
+            contentText.text = content
+            btnCancel.isVisible = false
+            btnConfirm.text = "好的"
+            btnConfirm.setOnClickListener {
+                dismiss()
+            }
+        }.showPopupWindow()
     }
 
     val jdCheckBean = MutableLiveData<ArrayList<OrderConfirmSkuItems>>()
@@ -261,12 +276,13 @@ class OrderViewModel : BaseViewModel() {
         orderStatus: Int,
         pageNo: Int,
         pageSize: Int = this.pageSize,
+        searchContent: String = "",
         showLoading: Boolean = false
     ) {
         var typeI = orderStatus + 1
         if (typeI < 0 || typeI >= queryType.size) typeI = 0
         if (typeI == 5) {
-            getShopOrderRefundList(pageNo, pageSize, showLoading)
+            getShopOrderRefundList(pageNo, pageSize, searchContent,showLoading)
             return
         }
         viewModelScope.launch {
@@ -276,6 +292,9 @@ class OrderViewModel : BaseViewModel() {
                 body["pageSize"] = pageSize
                 body["queryParams"] = HashMap<String, Any>().also {
                     it["queryType"] = queryType[typeI]
+                    if (searchContent.isNotEmpty()){
+                        it["keyWord"] = searchContent
+                    }
                 }
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderListV2(body.header(randomKey), body.body(randomKey))
@@ -297,6 +316,7 @@ class OrderViewModel : BaseViewModel() {
     fun getShopOrderRefundList(
         pageNo: Int,
         pageSize: Int = this.pageSize,
+        searchContent: String="",
         showLoading: Boolean = false
     ) {
         viewModelScope.launch {
@@ -304,6 +324,9 @@ class OrderViewModel : BaseViewModel() {
                 body.clear()
                 body["pageNo"] = pageNo
                 body["pageSize"] = pageSize
+                if (searchContent.isNotEmpty()){
+                    body["keyWord"] = searchContent
+                }
                 val randomKey = getRandomKey()
                 shopApiService.shopOrderRefundListV2(body.header(randomKey), body.body(randomKey))
             }.onWithMsgFailure {

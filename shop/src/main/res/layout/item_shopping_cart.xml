@@ -28,19 +28,19 @@
             android:padding="@dimen/dp_6"
             android:textColor="@color/color_66"
             android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/img_goodsCover"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/img_goodsCover" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goodsCover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_85"
+            android:layout_height="@dimen/dp_85"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_h_one_default"
             app:layout_constraintStart_toEndOf="@+id/check_status"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+            app:shapeAppearanceOverlay="@style/rounded12ImageStyle" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsTitle"
@@ -51,9 +51,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{model.spuName}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_16"
             android:textSize="@dimen/sp_14"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_goodsCover"
             app:layout_constraintTop_toTopOf="parent"
@@ -76,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_3"
-            android:textColor="@color/color_1700f4"
+            android:textColor="@color/color_16"
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="@id/img_goodsCover"
             app:layout_constraintStart_toStartOf="@id/tv_goodsTitle" />
@@ -92,9 +91,9 @@
             android:layout_width="0dp"
             android:layout_height="1px"
             android:layout_marginTop="24dp"
-            android:background="@color/color_F4"
+            android:background="@color/color_0d00"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/img_goodsCover"
+            app:layout_constraintStart_toStartOf="@+id/check_status"
             app:layout_constraintTop_toBottomOf="@+id/img_goodsCover" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

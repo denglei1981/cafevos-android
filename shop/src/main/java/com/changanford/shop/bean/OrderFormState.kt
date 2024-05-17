@@ -44,6 +44,8 @@ data class PostEvaluationBean(
     var imgUrls: List<String>? = null,
     var mallMallOrderSkuId: String? = null,//订单skuId
     var isComplete: Boolean = false,
+    var logisticsService: Int? = null,//物流服务
+    var serviceAttitude: Int? = null//服务态度
 ) {
     /**
      * 是否完成（评分、评价内容为必填项）
@@ -69,8 +71,8 @@ data class PostEvaluationBean(
         return if (imgUrls.isNullOrEmpty()) 0 else imgUrls!!.size
     }
 
-    fun getContentSize():Int{
-        return  if (evalText.isNullOrEmpty()) 0 else evalText!!.length
+    fun getContentSize(): Int {
+        return if (evalText.isNullOrEmpty()) 0 else evalText!!.length
     }
 
 }

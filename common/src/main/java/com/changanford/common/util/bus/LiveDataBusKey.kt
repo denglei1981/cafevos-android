@@ -346,5 +346,7 @@ object LiveDataBusKey {
     const val DELETE_POST_DATA = "deletePostData"
     const val DELETE_ACT_DATA = "deleteActData"
     const val DELETE_SHOP_DATA = "deleteShopData"
+    const val SHOP_ORDER_SEARCH = "shopOrderSearch"
+    const val ORDERS_GOODS_SHOW_EMPTY = "ordersGoodsShowEmpty"
 }
 

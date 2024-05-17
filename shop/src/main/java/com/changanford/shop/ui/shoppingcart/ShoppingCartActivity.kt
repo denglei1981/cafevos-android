@@ -2,6 +2,7 @@ package com.changanford.shop.ui.shoppingcart
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -10,10 +11,10 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.updateMainGio
+import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityShoppingCartBinding
 import com.changanford.shop.ui.order.OrderConfirmActivity
 import com.changanford.shop.ui.shoppingcart.adapter.ShoppingCartAdapter
@@ -36,7 +37,6 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
                 setTitle()
             }
         }, singleCheck)
-
     }
     val shoppingCartInvaildAdapter: ShoppingCartInvaildAdapter by lazy {
         ShoppingCartInvaildAdapter(object : ShoppingCartInvaildAdapter.ShopBackListener {
@@ -71,6 +71,7 @@ class ShoppingCartActivity : BaseActivity<ActivityShoppingCartBinding, ShoppingC
             onBackPressed()
         }
         binding.layoutTop.tvRight.text = "编辑"
+        binding.layoutTop.tvRight.setTextColor(ContextCompat.getColor(this, R.color.color_1700F4))
         binding.layoutTop.tvRight.visibility = View.VISIBLE
         if (singleCheck) {
             binding.checkStatus.isVisible = false

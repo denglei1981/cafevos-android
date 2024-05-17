@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#03DAC5</color>
@@ -121,6 +121,7 @@
     <color name="color_1Aff">#1Affffff</color>
     <color name="color_0F1524">#0F1524</color>
     <color name="color_74889D">#74889D</color>
+    <color name="color_7300">#73000000</color>
     <color name="color_01025C">#1700f4</color>
     <color name="color_1a01025C">#1a01025C</color>
     <color name="color_9394A0">#9394A0</color>
@@ -227,10 +228,10 @@
     <color name="color_0d16">#0d161616</color>
     <color name="color_0d00">#0d000000</color>
     <color name="color_d900">#d9000000</color>
-    <color name="color_7300">#73000000</color>
     <color name="color_4d16">#4d161616</color>
     <color name="color_4d1700f4">#4d1700f4</color>
     <color name="color_9916">#99161616</color>
+    <color name="color_084a">#084a4a4a</color>
     <color name="color_991700f4">#991700f4</color>
     <color name="color_33a6">#33a6a6a6</color>
     <color name="color_99ff">#99ffffff</color>
@@ -246,6 +247,7 @@
     <color name="color_201700f4">#201700f4</color>
     <color name="color_501700f4">#501700f4</color>
     <color name="color_261700f4">#261700f4</color>
+    <color name="color_141700f4">#141700f4</color>
     <color name="color_264a4a4a">#264a4a4a</color>
     <color name="color_26ffffff">#26ffffff</color>
     <color name="color_26e67400">#26e67400</color>

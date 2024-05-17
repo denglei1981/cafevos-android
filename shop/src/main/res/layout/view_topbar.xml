@@ -2,52 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="@dimen/dp_30"
-    android:paddingBottom="@dimen/dp_10"
+    android:id="@+id/layout_topbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/layout_topbar">
+    android:paddingTop="@dimen/dp_30"
+    android:paddingBottom="@dimen/dp_10">
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingStart="14dp"
         android:paddingEnd="16dp"
         android:src="@mipmap/ic_left_back_gray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.changanford.shop.view.TypefaceTextView
         android:id="@+id/tv_title"
-        android:textSize="@dimen/sp_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/color_00"
+        android:textSize="@dimen/sp_18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_right"
-        tools:visibility="visible"
-        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingStart="@dimen/dp_20"
         android:paddingEnd="@dimen/dp_16"
-        tools:src="@mipmap/shop_search"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        tools:src="@mipmap/shop_search"
+        tools:visibility="visible" />
+
     <com.changanford.shop.view.TypefaceTextView
-        tools:visibility="visible"
-        android:visibility="gone"
         android:id="@+id/tv_right"
-        android:textSize="@dimen/sp_15"
-        android:textColor="@color/color_33"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_title"
-        app:layout_constraintBottom_toBottomOf="@id/tv_title"
-        android:paddingEnd="16dp"
-        android:paddingStart="@dimen/dp_10"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        tools:text="@string/str_screening" />
+        android:paddingStart="@dimen/dp_10"
+        android:paddingEnd="16dp"
+        android:textColor="@color/color_33"
+        android:textSize="@dimen/sp_15"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
+        tools:text="@string/str_screening"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,83 +5,91 @@
     <data>
 
     </data>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_F4"
         android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title_text="@string/str_orderConfirm"
-            app:bg_color="@color/white"/>
+            app:bg_color="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title_text="@string/str_orderConfirm" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-<!--                地址信息-->
+                <!--                地址信息-->
                 <include
                     android:id="@+id/in_address"
-                    layout="@layout/in_order_confirm_address"/>
-<!--                商品基本信息-->
+                    layout="@layout/in_order_confirm_address" />
+                <!--                商品基本信息-->
                 <include
                     android:id="@+id/in_goodsInfo"
-                    layout="@layout/in_order_confirm_goods_list"/>
-<!--                维保订单 VIN码-->
+                    layout="@layout/in_order_confirm_goods_list" />
+                <!--                维保订单 VIN码-->
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/composeView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-<!--                订单信息-->
+                    android:layout_height="wrap_content" />
+                <!--                订单信息-->
                 <include
                     android:id="@+id/in_orderInfo"
-                    layout="@layout/in_oreder_confirm_orderinfo"/>
-<!--                支付信息-->
-<!--                <include-->
-<!--                    android:id="@+id/in_payInfo"-->
-<!--                    layout="@layout/in_oreder_confirm_pay"/>-->
-<!--                支付方式选择-->
+                    layout="@layout/in_oreder_confirm_orderinfo" />
+                <!--                支付信息-->
+                <!--                <include-->
+                <!--                    android:id="@+id/in_payInfo"-->
+                <!--                    layout="@layout/in_oreder_confirm_pay"/>-->
+                <!--                支付方式选择-->
                 <include
                     android:id="@+id/in_payWay"
-                    layout="@layout/in_order_pay_way"/>
+                    layout="@layout/in_order_pay_way" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:background="@color/color_E8EBF3"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_32"
-            android:gravity="center_vertical">
+            android:layout_height="@dimen/dp_42"
+            android:background="@color/circle_081700F4"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16">
+
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkBox"
-                android:onClick="onClick"
-                android:textSize="@dimen/sp_12"
-                android:textColor="@color/color_33"
-                android:text="@string/str_haveAgreedAndAccepted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@null"
-                android:drawablePadding="@dimen/dp_5"
                 android:drawableStart="@drawable/cb_order"
-                android:gravity="center_vertical"/>
+                android:drawablePadding="@dimen/dp_5"
+                android:gravity="center_vertical"
+                android:onClick="onClick"
+                android:text="@string/str_haveAgreedAndAccepted"
+                android:textColor="@color/color_16"
+                android:textSize="@dimen/sp_12" />
+
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_agreement"
-                android:onClick="onClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClick"
                 android:text="@string/str_fuyuAPPStoreTermsService"
                 android:textColor="@color/color_1700f4"
                 android:textSize="@dimen/sp_12" />
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <include
             android:id="@+id/in_bottom"
-            layout="@layout/in_order_confirm_bottom"/>
+            layout="@layout/in_order_confirm_bottom" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

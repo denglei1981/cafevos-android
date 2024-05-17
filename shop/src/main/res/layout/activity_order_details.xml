@@ -12,33 +12,45 @@
             type="com.changanford.common.bean.OrderItemBean" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_00095b"
         android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_top_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/ic_order_d_top_bg"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:back_icon="@mipmap/whit_left"
-            app:title_color="@color/white"
+            app:back_icon="@mipmap/back_xhdpi"
+            app:layout_constraintTop_toTopOf="parent"
+            app:right_icon="@mipmap/ic_order_d_back"
+            app:title_color="@color/color_d916"
             app:title_text="@string/str_orderDetails" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_wait_pay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_15">
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_25"
+            app:layout_constraintTop_toBottomOf="@+id/topBar">
 
             <com.changanford.shop.view.TypefaceTextView
                 android:id="@+id/tv_order_states"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{model.orderStatusName}"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_15"
+                android:textColor="@color/color_d916"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/topBar"
                 tools:text="待支付" />
@@ -47,7 +59,7 @@
                 android:id="@+id/tv_order_prompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_99white"
+                android:textColor="@color/color_9916"
                 android:textSize="@dimen/sp_10"
                 android:visibility="gone"
                 tools:text="@string/prompt_orderUpdateAddress"
@@ -58,28 +70,29 @@
             android:id="@+id/tv_order_remainingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_10"
             android:text=" "
-            android:textColor="@color/color_99white"
+            android:textColor="@color/color_9916"
             android:textSize="@dimen/sp_12"
+            app:layout_constraintLeft_toLeftOf="@+id/ll_wait_pay"
+            app:layout_constraintTop_toBottomOf="@+id/ll_wait_pay"
             app:start_txt="@string/str_remainingTimePayment0" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/dp_25"
-            android:layout_weight="1"
-            android:background="@drawable/shadow_f4_t_5dp"
+            android:background="@color/white"
+            android:paddingBottom="65dp"
             app:layout_constraintBottom_toTopOf="@id/in_bottom"
-            app:layout_constraintTop_toBottomOf="@id/tv_order_remainingTime">
+            app:layout_constraintTop_toBottomOf="@id/iv_top_bg">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shadow_f4_t_5dp"
+                android:background="@color/white"
                 android:orientation="vertical">
+
                 <include
                     android:id="@+id/in_refund"
                     layout="@layout/layout_order_refund_progress"
@@ -89,12 +102,16 @@
                     android:id="@+id/in_address"
                     layout="@layout/item_in_order_only_detail_address" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:background="@color/color_F4" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_shopping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
@@ -119,5 +136,5 @@
         <include
             android:id="@+id/in_sale_bottom"
             layout="@layout/in_order_detail_sale_after_v2" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

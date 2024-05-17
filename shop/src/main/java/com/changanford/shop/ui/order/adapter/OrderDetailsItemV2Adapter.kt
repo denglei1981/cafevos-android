@@ -18,9 +18,7 @@ import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.TimeUtils
-import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.toast
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
@@ -51,8 +49,11 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
         holder.dataBinding?.apply {
             model = item
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
-            showTotalTag(tvIntegral, item)
+//            showTotalTag(tvIntegral, item)
 
+            tvIntegral.text = "实付价￥${item.getMPayPrice()}"
+            vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+            tvOldPrice.text = "原价￥${item.price}"
             val layoutManager = FlowLayoutManager(context, false, true)
             recyclerView.layoutManager = layoutManager
             val goodsAttributeAdapter = GoodsAttributeAdapter()

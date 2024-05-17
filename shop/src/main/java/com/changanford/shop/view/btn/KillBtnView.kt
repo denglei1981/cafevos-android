@@ -12,7 +12,8 @@ import com.changanford.shop.R
  * @Time : 2021/9/23 0023
  * @Description : KillBtnView
  */
-class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatTextView(context, attrs) {
+class KillBtnView(context: Context, attrs: AttributeSet? = null) :
+    AppCompatTextView(context, attrs) {
     private var btnStates =
         -1//按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒 5立即兑换
 
@@ -134,6 +135,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatText
         this.isEnabled = isEnabled
         if (isEnabled) {
             setBackgroundResource(R.drawable.btn_selector)
+            setTextColor(ContextCompat.getColor(context, R.color.white))
             if (btnSource == 0) {
                 setBackgroundResource(R.drawable.bg_bord_80a6_23)
                 setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
@@ -143,6 +145,7 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) : AppCompatText
             }
         } else {
             setBackgroundResource(R.drawable.shadow_dd_20dp)
+            setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             if (btnSource == 0) {
                 setBackgroundResource(R.drawable.bg_bord_80a6_23)
                 setTextColor(ContextCompat.getColor(context, R.color.color_DD))

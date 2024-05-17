@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginStart="43dp"
-    android:layout_marginEnd="43dp"
-    android:paddingBottom="16dp"
+    android:layout_marginStart="52dp"
+    android:layout_marginEnd="52dp"
     android:background="@drawable/shape_whit12_bg"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,22 +22,22 @@
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginEnd="@dimen/dp_20"
             android:gravity="center"
-            tools:text="123123"
-            tools:visibility="visible"
             android:text=""
             android:textColor="@color/color_01025C"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="123123"
+            tools:visibility="visible" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
             android:layout_below="@+id/title"
+            android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
             android:paddingStart="@dimen/dp_15"
             android:paddingEnd="@dimen/dp_15"
             android:text="是否确定取消关注"
@@ -58,9 +58,10 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_cancel"
-            android:layout_width="111dp"
+            android:layout_width="0dp"
             android:layout_height="43dp"
-            android:layout_marginEnd="@dimen/dp_15"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
             android:background="@drawable/border_0095b_20dp"
             android:gravity="center"
             android:text="取消"
@@ -69,8 +70,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_comfir"
-            android:layout_width="111dp"
+            android:layout_width="0dp"
             android:layout_height="43dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="1"
             android:background="@drawable/shape_00095b_20dp"
             android:gravity="center"
             android:text="确定"

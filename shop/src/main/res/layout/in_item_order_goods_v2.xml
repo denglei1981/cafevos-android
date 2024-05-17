@@ -15,36 +15,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingTop="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goods_cover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_98"
+            android:layout_height="@dimen/dp_98"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_h_one_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
-        <com.changanford.shop.view.TypefaceTextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/tv_orderType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:background="@drawable/shadow_b300095b_2dp"
-            android:gravity="center"
-            android:minWidth="@dimen/dp_32"
-            android:minHeight="@dimen/dp_16"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_11"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/img_goods_cover"
-            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
-            tools:text="秒杀"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_title"
@@ -52,9 +42,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_5"
             android:text="@{model.spuName}"
-            android:textColor="@color/color_33"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +58,7 @@
             android:layout_marginTop="@dimen/dp_8"
             android:gravity="center"
             android:text="@{model.buyNum}"
-            android:textColor="@color/color_74889D"
+            android:textColor="@color/color_8016"
             android:textSize="@dimen/sp_12"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -89,6 +78,15 @@
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_attribute" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_old_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_4d16"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/recyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+            tools:text="原价￥130" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_carInfo"
@@ -107,11 +105,9 @@
             android:id="@+id/tv_integral"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:text="@={model.fbOfUnitPrice}"
-            android:textColor="@color/color_33"
-            android:textSize="@dimen/sp_14"
-            app:end_txt="@string/str_integral"
+            android:textColor="@color/color_d916"
+            android:textSize="@dimen/sp_12"
+            app:start_txt="实付价￥"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
             tools:text="1200(2000福币)" />
@@ -120,24 +116,25 @@
             android:id="@+id/tv_sale_handler"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_white_stroke_gray"
+            android:background="@drawable/bg_bord_80a6_23"
             android:gravity="center"
-            android:paddingStart="8dp"
             android:minWidth="70dp"
             android:minHeight="@dimen/dp_28"
+            android:paddingStart="8dp"
             android:paddingTop="4dp"
             android:paddingEnd="8dp"
             android:paddingBottom="@dimen/dp_4"
             android:text="申请售后"
-            tools:visibility="visible"
-            android:textColor="@color/black"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_11"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/tv_integral"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_integral" />
+            app:layout_constraintTop_toTopOf="@+id/tv_integral"
+            tools:visibility="visible" />
 
         <View
+            android:id="@+id/v_line"
             android:layout_width="0dp"
             android:layout_height="1px"
             android:layout_marginTop="20dp"
