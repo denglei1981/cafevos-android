@@ -386,7 +386,7 @@ data class GoodsDetailBean(
     var source: String? = "0",
     var evalCount: String? = "0",
     var isAgree: Boolean = false,//是否同意协议
-    var killStates: Int = 0,//秒杀状态
+    var killStates: Int = 0,//秒杀状态  //按钮状态 0 去抢购、 1 已抢光、 2 已结束、3 提醒我、4 取消提醒
     var secondarySpuPageTagType: String? = "",
     var isUpdateBuyNum: Boolean = true,//是否可以更改购买数量
     var vinCode: String? = null,//维保商品 VIN码

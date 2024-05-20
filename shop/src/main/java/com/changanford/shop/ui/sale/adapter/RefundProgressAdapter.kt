@@ -4,13 +4,10 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.util.TimeUtils
 import com.changanford.shop.R
-import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.bean.RefundStautsBean
 import com.changanford.shop.databinding.ItemRefundLineProgressBinding
 
@@ -39,16 +36,12 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
             if (holder.layoutPosition == 1) {
                 ivRight.visibility = View.VISIBLE
                 tvRefundStates.visibility=View.VISIBLE
-                tvRefundStates.setTextColor(ContextCompat.getColor(context, R.color.black))
-                tvShoperStates.setTextColor(ContextCompat.getColor(context, R.color.black))
-                tvShoperTips.setTextColor(ContextCompat.getColor(context, R.color.black))
-                tvTime.setTextColor(ContextCompat.getColor(context, R.color.black))
-                ivRight.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.mipmap.shop_order_cb_1
-                    )
-                )
+                tvRefundStates.setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
+                tvShoperStates.setTextColor(ContextCompat.getColor(context, R.color.color_d916))
+                tvShoperTips.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
+                tvTime.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
+                ivRight.setBackgroundResource(R.drawable.bg_oval_app_color)
+                vLineTop.setBackgroundColor(ContextCompat.getColor(context,R.color.color_1700F4))
             } else {
                 val index = holder.layoutPosition
                 val lastIndex = index - 1
@@ -63,16 +56,12 @@ class RefundProgressAdapter(val baseViewModel: BaseViewModel) :
                     }
                 }
 
-                tvRefundStates.setTextColor(ContextCompat.getColor(context, R.color.gray_999999))
-                tvShoperStates.setTextColor(ContextCompat.getColor(context, R.color.gray_999999))
-                tvShoperTips.setTextColor(ContextCompat.getColor(context, R.color.gray_999999))
-                tvTime.setTextColor(ContextCompat.getColor(context, R.color.gray_999999))
-                ivRight.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.mipmap.icon_shopping_line_uncheck
-                    )
-                )
+                tvRefundStates.setTextColor(ContextCompat.getColor(context, R.color.color_9916))
+                tvShoperStates.setTextColor(ContextCompat.getColor(context, R.color.color_9916))
+                tvShoperTips.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
+                tvTime.setTextColor(ContextCompat.getColor(context, R.color.color_8016))
+                ivRight.setBackgroundResource(R.drawable.bg_oval_4d_app_color)
+                vLineTop.setBackgroundColor(ContextCompat.getColor(context,R.color.color_26000000))
             }
         }
 

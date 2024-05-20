@@ -26,6 +26,7 @@
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/smartRl"
             android:layout_width="match_parent"
+            android:background="@color/color_F4"
             android:layout_height="match_parent">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,11 +46,9 @@
                         android:id="@+id/banner"
                         style="@style/BannerDefaultStyle"
                         android:layout_width="match_parent"
-                        android:layout_marginStart="@dimen/dp_20"
-                        android:layout_marginEnd="@dimen/dp_20"
                         app:banner_aspectRatio="1.67"
-                        app:banner_indicatorGravity="bottom|left"
-                        app:banner_pointContainerLeftRightPadding="@dimen/dp_23"
+                        app:banner_indicatorGravity="bottom|center_horizontal"
+                        app:banner_pointContainerLeftRightPadding="@dimen/dp_8"
                         app:banner_pointTopBottomMargin="@dimen/dp_20"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_scrollFlags="scroll" />

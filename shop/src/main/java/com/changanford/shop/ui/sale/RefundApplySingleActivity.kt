@@ -28,6 +28,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -84,17 +85,22 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
     }
 
     override fun initView() {
-        val questionStr = "补充说明(选填，200字内)"
-        val questionSpan = SpannableStringUtils.getSpanNOBoldString(
-            questionStr,
-            questionStr.indexOf("("),
-            questionStr.indexOf(")") + 1,
-            R.color.color_cc
-        )
-        binding.llRefundNotes.tvSupply.text = questionSpan
+//        val questionStr = "补充说明(选填，200字内)"
+//        val questionSpan = SpannableStringUtils.getSpanNOBoldString(
+//            questionStr,
+//            questionStr.indexOf("("),
+//            questionStr.indexOf(")") + 1,
+//            R.color.color_16
+//        )
+//        binding.llRefundNotes.tvSupply.text = questionSpan
         binding.layoutTop.setOnBackClickListener(object : TopBar.OnBackClickListener {
             override fun onBackClick() {
                 onBackPressed()
+            }
+        })
+        binding.layoutTop.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
             }
         })
         binding.tvHandle.setOnClickListener {
@@ -106,7 +112,8 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                 }
             }
         }
-        binding.tvHandle.background = ContextCompat.getDrawable(this, R.drawable.shape_gray_ddd)
+        binding.tvHandle.background = ContextCompat.getDrawable(this, R.drawable.bg_bord_80a6_23)
+        binding.tvHandle.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
     }
 
     fun addApply() {
@@ -133,19 +140,20 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         }
         return true
     }
-    fun showNumState(num:Int){
-        if(num>=orderItemBean.buyNum){
+
+    fun showNumState(num: Int) {
+        if (num >= orderItemBean.buyNum) {
             binding.addSubtractView.setAddGrayOrBlack(false)
-        }else{
+        } else {
             binding.addSubtractView.setAddGrayOrBlack(true)
         }
-        if(num<=1){
+        if (num <= 1) {
             binding.addSubtractView.setReduceAddGrayOrBlack(false)
-        }else{
+        } else {
             binding.addSubtractView.setReduceAddGrayOrBlack(true)
         }
 
-        showTotalTag(this, binding.tvRefundMoney, payShowBean, false,orderItemBean.buyNum,num)
+        showTotalTag(this, binding.tvRefundMoney, payShowBean, false, orderItemBean.buyNum, num)
     }
 
     override fun initData() {
@@ -159,7 +167,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         binding.addSubtractView.setMax(orderItemBean.buyNum, true)
         binding.addSubtractView.setEditBlean(false)
         showNumState(orderItemBean.buyNum)
-        binding.addSubtractView.numberLiveData.observe(this, Observer { num->
+        binding.addSubtractView.numberLiveData.observe(this, Observer { num ->
             showNumState(num)
         })
         when (orderItemBean.singleRefundType) {
@@ -167,6 +175,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                 binding.layoutTop.setTitle("仅退款")
                 binding.gRefundWay.visibility = View.GONE
             }
+
             "CONTAIN_GOODS" -> {
                 binding.layoutTop.setTitle("退货退款")
                 binding.gRefundWay.visibility = View.VISIBLE
@@ -183,7 +192,13 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                     backEnumBean = reson
                     binding.tvHandle.background = ContextCompat.getDrawable(
                         this@RefundApplySingleActivity,
-                        R.drawable.shape_00095b_20dp
+                        R.drawable.bg_shape_1700f4_23
+                    )
+                    binding.tvHandle.setTextColor(
+                        ContextCompat.getColor(
+                            this@RefundApplySingleActivity,
+                            R.color.white
+                        )
                     )
                 }
             }).show()
@@ -191,7 +206,8 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         val finallyNumber = binding.addSubtractView.getNumber() // 最终的数量
         if (TextUtils.isEmpty(orderItemBean.sharedRmb.toString()) && !TextUtils.isEmpty(
                 orderItemBean.sharedFb.toString()
-            )) {
+            )
+        ) {
             payShowBean.payFb =
                 BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
@@ -203,13 +219,21 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
         }
         if (!TextUtils.isEmpty(orderItemBean.sharedFb.toString()) && !TextUtils.isEmpty(
                 orderItemBean.sharedRmb.toString()
-            )) {
+            )
+        ) {
             payShowBean.payFb =
                 BigDecimal(orderItemBean.sharedFb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
             payShowBean.payRmb =
                 BigDecimal(orderItemBean.sharedRmb)/*.multiply(BigDecimal(finallyNumber))*/.toString()
         }
-        showTotalTag(this, binding.tvRefundMoney, payShowBean, false,orderItemBean.buyNum,orderItemBean.buyNum)
+        showTotalTag(
+            this,
+            binding.tvRefundMoney,
+            payShowBean,
+            false,
+            orderItemBean.buyNum,
+            orderItemBean.buyNum
+        )
         initPicAdapter()
     }
 
@@ -329,7 +353,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
             if (dialog.isShowing) {
                 dialog.dismiss()
             }
-            if(it=="success"){
+            if (it == "success") {
                 LiveDataBus.get().with(LiveDataBusKey.SINGLE_REFUND).postValue("success")
                 LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).postValue("")
                 this.finish()
@@ -434,6 +458,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
                     refundApplyPicAdapter.setList(selectList)
                     refundApplyPicAdapter.notifyDataSetChanged()
                 }
+
                 UCrop.RESULT_ERROR -> {
                     val cropError = UCrop.getError(data!!)
                 }

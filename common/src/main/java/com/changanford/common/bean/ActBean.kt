@@ -669,7 +669,7 @@ data class PostCircleDataBean(
     val starName: String?
 )
 
-data class BackEnumBean(var code: String, var message: String) {
+data class BackEnumBean(var code: String, var message: String,var isSelect: Boolean) {
 
 }
 

@@ -3,6 +3,7 @@ package com.changanford.shop.ui.sale
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.shop.adapter.order.OrderRefundMultipleAdapter
@@ -47,7 +48,11 @@ class RefundProgressMultipleActivity :
         binding.smartLayout.setOnRefreshListener {
             viewModel.getOrderMultiple(orderNo, mallOrderSkuId)
         }
-
+        binding.tobBar.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
+            }
+        })
         LiveDataBus.get().withs<String>(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).observe(this) {
             adapter.isShowBack = it=="true"
             initData()

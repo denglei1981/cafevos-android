@@ -9,29 +9,34 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
         android:background="@color/white"
         android:orientation="vertical">
+
         <View
-            android:layout_marginBottom="@dimen/dp_2"
-            app:layout_constraintBottom_toBottomOf="@id/rv_date"
-            android:background="@drawable/line_white_0095b_white"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"/>
+            android:layout_height="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/bg_081700f4_23"
+            app:layout_constraintBottom_toBottomOf="@id/rv_date" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:paddingTop="@dimen/dp_10"
-            app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/rv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_10"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintTop_toBottomOf="@id/rv_date"
+            android:id="@+id/rv_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_time"
+            android:layout_marginTop="@dimen/dp_10"
+            android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
+            app:layout_constraintTop_toBottomOf="@id/rv_date" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

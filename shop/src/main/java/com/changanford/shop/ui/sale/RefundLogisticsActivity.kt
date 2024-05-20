@@ -8,6 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -16,7 +19,6 @@ import com.alibaba.sdk.android.oss.model.PutObjectRequest
 import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.common.basic.BaseActivity
-import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.ImageUrlBean
 import com.changanford.common.bean.STSBean
 import com.changanford.common.router.path.ARouterCirclePath
@@ -24,6 +26,7 @@ import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -32,7 +35,6 @@ import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityRefundLogisticsBinding
-import com.changanford.shop.databinding.BaseRecyclerViewBinding
 import com.changanford.shop.ui.sale.adapter.RefundApplyPicAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
 import com.changanford.shop.view.TopBar
@@ -171,11 +173,31 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
                 }
             }
         }
-        binding.layoutTop.setOnBackClickListener(object :TopBar.OnBackClickListener{
+        binding.layoutTop.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
+            }
+        })
+        binding.llRefundNotes.vLineBc.isVisible = false
+        binding.layoutTop.setOnBackClickListener(object : TopBar.OnBackClickListener {
             override fun onBackClick() {
                 onBackPressed()
             }
         })
+        binding.etLogisticsNum.addTextChangedListener { checkBottomState() }
+        binding.etLogisticsCompany.addTextChangedListener { checkBottomState() }
+    }
+
+    private fun checkBottomState() {
+        val companySize = binding.etLogisticsCompany.text.toString().length
+        val logisticsNumSize = binding.etLogisticsNum.text.toString().length
+        if (companySize > 0 && logisticsNumSize > 0) {
+            binding.tvHandle.setBackgroundResource(R.drawable.bg_shape_1700f4_23)
+            binding.tvHandle.setTextColor(ContextCompat.getColor(this, R.color.white))
+        } else {
+            binding.tvHandle.setBackgroundResource(R.drawable.bg_shape_80a6_23)
+            binding.tvHandle.setTextColor(ContextCompat.getColor(this, R.color.color_8016))
+        }
     }
 
     private fun canHandle(): Boolean {
@@ -212,11 +234,11 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
             }
         })
         viewModel.fillInLogisticsLiveData.observe(this, Observer {
-            if(it=="success"){
+            if (it == "success") {
                 "物流信息填写成功".toast()
                 LiveDataBus.get().with(LiveDataBusKey.FILL_IN_LOGISTICS).postValue("success")
                 this.finish()
-            }else{
+            } else {
                 dialog.dismiss()
             }
 
@@ -327,6 +349,7 @@ class RefundLogisticsActivity : BaseActivity<ActivityRefundLogisticsBinding, Ref
                     refundApplyPicAdapter.setList(selectList)
                     refundApplyPicAdapter.notifyDataSetChanged()
                 }
+
                 UCrop.RESULT_ERROR -> {
                     val cropError = UCrop.getError(data!!)
                 }

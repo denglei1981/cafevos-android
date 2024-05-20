@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.changanford.common.bean.CommentItem
 import com.changanford.common.bean.GoodsDetailBean
@@ -139,8 +140,8 @@ class GoodsDetailsControl(
             "MEMBER_DISCOUNT" -> {
                 headerBinding.inVip.apply {
                     imgVip.visibility = View.VISIBLE
-                    tvOldPrice.isVisible=true
-                    tvOldPrice.text="原价：¥${dataBean.orginPrice}"
+                    tvOldPrice.isVisible = true
+                    tvOldPrice.text = "原价：¥${dataBean.orginPrice}"
 //                    val textColor = ContextCompat.getColor(activity, R.color.color_F21C44)
 //                    tvRmbPrice.setTextColor(textColor)
 //                    tvFbPrice.setTextColor(textColor)
@@ -151,7 +152,8 @@ class GoodsDetailsControl(
 //                dataBean.isUpdateBuyNum=false//秒杀商品禁止修改商品数量
                 val secKillInfo = dataBean.secKillInfo
                 if (null != secKillInfo) {
-                    headerBinding.inGoodsInfo.tvConsumption.visibility = View.VISIBLE
+//                    headerBinding.inGoodsInfo.tvConsumption.visibility = View.VISIBLE
+                    binding.inBottom.cbCollect.isVisible = false
                     headerBinding.inVip.layoutVip.visibility = View.GONE
                     headerBinding.inKill.apply {
                         layoutKill.visibility = View.VISIBLE
@@ -233,15 +235,37 @@ class GoodsDetailsControl(
             if (remainingTime > 0) {//未开始
                 tvKillStates.setText(R.string.str_fromStart)
                 dataBean.killStates = 7
+                binding.inBottom.btnBuy.apply {
+                    text = "未开始"
+                    setBackgroundResource(R.drawable.bg_shape_80a6_23)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
+                }
             } else {//已开始、已结束
                 //距离结束剩余时间
                 remainingTime = endTime - nowTime
                 if (remainingTime > 0) {//进行中
                     dataBean.killStates = 5
                     tvKillStates.setText(R.string.str_fromEnd)
+                    binding.inBottom.btnBuy.apply {
+                        text = "立即兑换"
+                        setBackgroundResource(R.drawable.bg_shape_1700f4_23)
+                        setTextColor(ContextCompat.getColor(context, R.color.white))
+                    }
                 } else {//已结束
                     dataBean.killStates = 2
                     tvKillStates.setText(R.string.str_hasEnded)
+                    binding.inBottom.btnBuy.apply {
+                        text = "已结束"
+                        setBackgroundResource(R.drawable.bg_shape_80a6_23)
+                        setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
+                    }
+                }
+            }
+            if (dataBean.killStates == 1) {
+                binding.inBottom.btnBuy.apply {
+                    text = "已抢光"
+                    setBackgroundResource(R.drawable.bg_shape_80a6_23)
+                    setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
                 }
             }
             if (remainingTime <= 0) return
@@ -414,10 +438,10 @@ class GoodsDetailsControl(
         return skuCode.contains("-") && skuCode.split("-").find { it == "0" } != null
     }
 
-    fun isNoStock(skuCode: String,skuVos: ArrayList<SkuVo>):Boolean{
+    fun isNoStock(skuCode: String, skuVos: ArrayList<SkuVo>): Boolean {
         skuVos.forEach {
-            if (it.skuCode==skuCode){
-                if (it.stock=="0"){
+            if (it.skuCode == skuCode) {
+                if (it.stock == "0") {
                     return true
                 }
             }

@@ -12,36 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:paddingStart="@dimen/dp_20"
-        android:paddingTop="@dimen/dp_20"
-        android:paddingEnd="@dimen/dp_20">
+        android:paddingStart="@dimen/dp_16"
+        android:paddingTop="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/img_goods_cover"
-            android:layout_width="@dimen/dp_90"
-            android:layout_height="@dimen/dp_90"
+            android:layout_width="@dimen/dp_98"
+            android:layout_height="@dimen/dp_98"
             android:scaleType="centerCrop"
             android:src="@mipmap/image_h_one_default"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
 
-        <com.changanford.shop.view.TypefaceTextView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/tv_orderType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_5"
-            android:background="@drawable/shadow_b300095b_2dp"
-            android:gravity="center"
-            android:minWidth="@dimen/dp_32"
-            android:minHeight="@dimen/dp_16"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_11"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/img_goods_cover"
-            app:layout_constraintTop_toTopOf="@id/img_goods_cover"
-            tools:text="秒杀"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="@id/img_goods_cover" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goods_title"
@@ -49,16 +40,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_5"
-
-            android:textColor="@color/color_33"
+            android:layout_marginTop="@dimen/dp_1"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_goods_cover"
             app:layout_constraintTop_toTopOf="@id/img_goods_cover"
             tools:text="无线蓝牙耳机 降噪耳机全新苹噪机 降噪耳机全新苹噪耳机 降噪耳机全新苹噪耳" />
-
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -93,8 +82,8 @@
             android:id="@+id/tv_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:textColor="@color/color_33"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             app:end_txt="@string/str_integral"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
@@ -102,12 +91,12 @@
             tools:text="1200(2000福币)" />
 
 
-
         <View
             android:layout_width="0dp"
             android:layout_height="1px"
             android:layout_marginTop="20dp"
             android:background="@color/color_F4"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

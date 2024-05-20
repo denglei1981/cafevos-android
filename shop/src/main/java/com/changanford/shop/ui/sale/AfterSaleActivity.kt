@@ -20,17 +20,21 @@ import com.google.gson.Gson
 @Route(path = ARouterShopPath.AfterSaleActivity)
 class AfterSaleActivity : BaseActivity<ActivityAfterSaleBinding, BaseViewModel>() {
 
-
-
-    val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
+    private val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
         RefundOrderItemAdapter()
     }
+
     override fun initView() {
-            binding.layoutTop.setOnBackClickListener(object:TopBar.OnBackClickListener{
-                override fun onBackClick() {
-                       onBackPressed()
-                }
-            })
+        binding.layoutTop.setOnBackClickListener(object : TopBar.OnBackClickListener {
+            override fun onBackClick() {
+                onBackPressed()
+            }
+        })
+        binding.layoutTop.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
+            }
+        })
     }
 
     override fun initData() {
@@ -40,26 +44,26 @@ class AfterSaleActivity : BaseActivity<ActivityAfterSaleBinding, BaseViewModel>(
         val orderItemBean = gson.fromJson(orderString, RefundOrderItemBean::class.java)
         val list = arrayListOf<RefundOrderItemBean>()
         list.add(orderItemBean)
-        binding.rvShopping.adapter=orderDetailsItemV2Adapter
+        binding.rvShopping.adapter = orderDetailsItemV2Adapter
         orderDetailsItemV2Adapter.setNewInstance(list)
         binding.tvOnlyMoney.setOnClickListener {
-             orderItemBean.singleRefundType="ONLY_COST"
-            val gson =Gson()
+            orderItemBean.singleRefundType = "ONLY_COST"
+            val gson = Gson()
             val toJson = gson.toJson(orderItemBean)
-            JumpUtils.instans?.jump(125,toJson)
+            JumpUtils.instans?.jump(125, toJson)
         }
         binding.tvMoneyShop.setOnClickListener {
-            orderItemBean.singleRefundType="CONTAIN_GOODS"
-            val gson =Gson()
+            orderItemBean.singleRefundType = "CONTAIN_GOODS"
+            val gson = Gson()
             val toJson = gson.toJson(orderItemBean)
-            JumpUtils.instans?.jump(125,toJson)
+            JumpUtils.instans?.jump(125, toJson)
         }
     }
 
     override fun observe() {
         super.observe()
         LiveDataBus.get().with(LiveDataBusKey.SINGLE_REFUND).observe(this, Observer {
-             this.finish()
+            this.finish()
         })
     }
 }

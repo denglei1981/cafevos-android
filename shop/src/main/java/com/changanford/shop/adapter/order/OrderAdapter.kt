@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.OrderBriefBean
@@ -232,6 +233,7 @@ class OrderAdapter(
         if (-2 != orderSource) { //聚合订单将不展示操作按钮
             val evalStatus = item.evalStatus
             val orderStatus = item.orderStatus
+            dataBinding.viewN.isVisible = true
             if ("FINISH" == orderStatus && null != evalStatus && "WAIT_EVAL" == evalStatus) {//待评价
                 dataBinding.apply {
                     btnCancel.apply {//申请售后
@@ -260,7 +262,7 @@ class OrderAdapter(
                             PostEvaluationActivity.start(item.orderNo)
                         }
                         setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                        setTextColor(ContextCompat.getColor(context,R.color.white))
+                        setTextColor(ContextCompat.getColor(context, R.color.white))
                     }
                 }
             } else {
@@ -280,7 +282,7 @@ class OrderAdapter(
                             }
 //                            setBackgroundResource(R.drawable.bord_00095b_15dp)
                             setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                            setTextColor(ContextCompat.getColor(context,R.color.white))
+                            setTextColor(ContextCompat.getColor(context, R.color.white))
                         }
                         dataBinding.btnCancel.apply {
                             visibility = View.VISIBLE
@@ -301,7 +303,7 @@ class OrderAdapter(
                                 visibility = View.VISIBLE
                                 setText(R.string.str_applyARefund)
                                 setBackgroundResource(R.drawable.bg_bord_80a6_23)
-                                setTextColor(ContextCompat.getColor(context,R.color.color_d916))
+                                setTextColor(ContextCompat.getColor(context, R.color.color_d916))
                                 setOnClickListener {
                                     control.orderBtnClick(4, item)
                                 }
@@ -314,7 +316,8 @@ class OrderAdapter(
                             btnCancel.visibility = View.GONE
                             btnLogistics.visibility = View.GONE
                             btnInvoice.visibility = View.GONE
-                            btnConfirm.visibility = View.INVISIBLE
+                            btnConfirm.visibility = View.GONE
+                            dataBinding.viewN.isVisible = false
                         }
                     }
                     //待收货->可确认收货
@@ -343,7 +346,7 @@ class OrderAdapter(
                                     confirmGoods(position, item)
                                 }
                                 setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                                setTextColor(ContextCompat.getColor(context,R.color.white))
+                                setTextColor(ContextCompat.getColor(context, R.color.white))
                             }
                         }
                     }
@@ -372,7 +375,7 @@ class OrderAdapter(
                                 setText(R.string.str_onceAgainToBuy)
 //                                setBackgroundResource(R.drawable.bord_00095b_15dp)
                                 setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                                setTextColor(ContextCompat.getColor(context,R.color.white))
+                                setTextColor(ContextCompat.getColor(context, R.color.white))
                                 setOnClickListener {
                                     item.apply {
                                         WBuriedUtil.clickShopOrderBuy(orderNo, spuName, rmb ?: fb)
@@ -387,9 +390,10 @@ class OrderAdapter(
                         dataBinding.btnLogistics.visibility = View.GONE
                         dataBinding.btnInvoice.visibility = View.GONE
                         dataBinding.btnCancel.visibility = View.GONE
+                        dataBinding.viewN.isVisible = false
                         if ("2" != item.busSourse) {
                             dataBinding.btnConfirm.apply {
-                                visibility = View.INVISIBLE
+                                visibility = View.GONE
                                 setText(R.string.str_onceAgainToBuy)
                                 setOnClickListener {
                                     item.apply {
@@ -399,9 +403,9 @@ class OrderAdapter(
                                 }
 //                                setBackgroundResource(R.drawable.bord_00095b_15dp)
                                 setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                                setTextColor(ContextCompat.getColor(context,R.color.white))
+                                setTextColor(ContextCompat.getColor(context, R.color.white))
                             }
-                        } else dataBinding.btnConfirm.visibility = View.INVISIBLE
+                        } else dataBinding.btnConfirm.visibility = View.GONE
                     }
                     //待评价
                     "WAIT_EVAL" -> {
@@ -436,7 +440,7 @@ class OrderAdapter(
                                     PostEvaluationActivity.start(item.orderNo)
                                 }
                                 setBackgroundResource(R.drawable.bg_shape_1700f4_23)
-                                setTextColor(ContextCompat.getColor(context,R.color.white))
+                                setTextColor(ContextCompat.getColor(context, R.color.white))
                             }
                         }
                     }
@@ -445,7 +449,8 @@ class OrderAdapter(
                         dataBinding.btnLogistics.visibility = View.GONE
                         dataBinding.btnInvoice.visibility = View.GONE
                         dataBinding.btnCancel.visibility = View.GONE
-                        dataBinding.btnConfirm.visibility = View.INVISIBLE
+                        dataBinding.btnConfirm.visibility = View.GONE
+                        dataBinding.viewN.isVisible=false
                     }
                 }
             }

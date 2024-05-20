@@ -10,18 +10,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4">
+        android:background="@color/white">
 
 
         <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
-            app:title_text="填写物流"
             android:layout_width="0dp"
-            android:background="@color/white"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:right_icon="@mipmap/ic_order_d_back"
+            app:title_text="填写物流" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_info"
@@ -39,9 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_20"
-                android:text="物流公司"
                 android:background="@null"
-                android:textColor="@color/black"
+                android:text="物流公司"
+                android:textColor="@color/color_9916"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,11 +54,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="@dimen/dp_20"
-                android:gravity="center_vertical|end"
                 android:background="@null"
-                android:maxLines="1"
-                android:maxLength="30"
+                android:gravity="center_vertical|end"
                 android:hint="请填写"
+                android:maxLength="30"
+                android:maxLines="1"
+                android:textColor="@color/color_d916"
+                android:textColorHint="@color/color_4d16"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_logistics_company_tips"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_logistics_company_tips"
@@ -69,11 +73,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_20"
-                android:maxLines="1"
                 android:maxLength="50"
+                android:maxLines="1"
                 android:text="物流单号"
-
-                android:textColor="@color/black"
+                android:textColor="@color/color_9916"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_logistics_company_tips"
@@ -85,9 +88,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="@dimen/dp_20"
+                android:background="@null"
                 android:gravity="center_vertical|end"
                 android:hint="请填写"
-                android:background="@null"
+                android:textColor="@color/color_d916"
+                android:textColorHint="@color/color_4d16"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_logistics_num_tips"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_logistics_num_tips"
@@ -108,17 +114,18 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_handle"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="@dimen/dp_44"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="73dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginBottom="@dimen/dp_30"
-            android:background="@drawable/shape_00095b_20dp"
+            android:background="@drawable/bg_shape_80a6_23"
             android:gravity="center"
             android:text="提交"
-            android:textColor="@color/white"
+            android:textColor="@color/color_8016"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

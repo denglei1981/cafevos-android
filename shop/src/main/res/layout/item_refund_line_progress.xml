@@ -10,13 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
         android:background="@color/white">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <View
             android:id="@+id/iv_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/shop_order_cb_1"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_oval_app_color"
             app:layout_constraintEnd_toEndOf="@+id/v_line_top"
             app:layout_constraintStart_toStartOf="@+id/v_line_top"
             app:layout_constraintTop_toTopOf="parent" />
@@ -25,54 +27,53 @@
             android:id="@+id/v_line_top"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_16"
             android:background="@color/color_ee"
-            app:layout_constraintBottom_toTopOf="@+id/iv_small_circle"
-
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_right" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/iv_small_circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/shape_gray_ddd"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_shoper_states"
-            app:layout_constraintEnd_toEndOf="@+id/v_line_top"
-            app:layout_constraintStart_toStartOf="@+id/v_line_top"
-            app:layout_constraintTop_toTopOf="@+id/tv_shoper_states" />
+        <!--        <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:id="@+id/iv_small_circle"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:src="@drawable/shape_gray_ddd"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/tv_shoper_states"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/v_line_top"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/v_line_top"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/tv_shoper_states" />-->
 
-        <View
-            android:id="@+id/v_line_bottom"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="@color/color_ee"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/v_line_top"
-            app:layout_constraintTop_toBottomOf="@+id/iv_small_circle" />
+        <!--        <View-->
+        <!--            android:id="@+id/v_line_bottom"-->
+        <!--            android:layout_width="1dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:background="@color/color_ee"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/v_line_top"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/v_line_top" />-->
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_refund_states"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_16"
             android:text="退款成功"
             android:textColor="@color/gray_999999"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_right"
-            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
+            app:layout_constraintStart_toEndOf="@+id/v_line_top"
             app:layout_constraintTop_toTopOf="@+id/iv_right" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_shoper_states"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/dp_8"
             android:textColor="@color/gray_999999"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
+            app:layout_constraintStart_toEndOf="@+id/v_line_top"
             app:layout_constraintTop_toBottomOf="@+id/tv_refund_states"
             tools:text="商家已同意" />
 
@@ -80,13 +81,13 @@
             android:id="@+id/tv_shoper_tips"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_16"
             android:textColor="@color/gray_999999"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
+            app:layout_constraintStart_toEndOf="@+id/v_line_top"
 
             app:layout_constraintTop_toBottomOf="@+id/tv_shoper_states"
             tools:text="@string/test_str" />
@@ -95,15 +96,15 @@
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/dp_16"
-            android:layout_marginEnd="@dimen/dp_20"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_16"
             android:maxLines="2"
             android:paddingBottom="8dp"
             android:textColor="@color/gray_999999"
             android:textSize="@dimen/sp_11"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/v_line_bottom"
+            app:layout_constraintStart_toEndOf="@+id/v_line_top"
             app:layout_constraintTop_toBottomOf="@+id/tv_shoper_tips"
             tools:text="2022-04-01 14:23:23" />
 

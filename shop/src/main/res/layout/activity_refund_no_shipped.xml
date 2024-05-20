@@ -9,9 +9,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/color_F4"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/layout_top"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/dp_20"
+                android:paddingBottom="@dimen/dp_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -37,10 +37,10 @@
                     android:id="@+id/tv_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:text="温馨提示"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_d916"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -49,15 +49,15 @@
                     android:id="@+id/tv_sub_tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginStart="@dimen/dp_16"
                     android:layout_marginTop="11dp"
                     android:paddingBottom="@dimen/dp_10"
                     android:text="1. 订单一旦取消，无法恢复;\n
 2. 退款金额不包含优惠及折扣;\n
 3. 退款后预计3个工作日内退回到支付账户
 "
-                    android:textColor="@color/gray_999999"
-                    android:textSize="12sp" />
+                    android:textColor="@color/color_8016"
+                    android:textSize="14sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -82,10 +82,10 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_20"
+                    android:layout_marginStart="@dimen/dp_16"
                     android:layout_marginTop="20dp"
                     android:text="退款信息"
-                    android:textColor="@color/black"
+                    android:textColor="@color/color_d916"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="退款信息" />
@@ -94,17 +94,16 @@
                     android:id="@+id/con_refund_reason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_20"
-
-                    android:layout_marginTop="@dimen/dp_24">
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_16">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_reason_tips"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_28"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:text="退款原因"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color_d916"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_refund_money_tips"
@@ -114,13 +113,13 @@
                         android:id="@+id/tv_reason"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_20"
-                        android:layout_marginEnd="@dimen/dp_20"
-                        android:drawableEnd="@drawable/circle_right_black_small"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_16"
+                        android:drawableEnd="@mipmap/right_99"
                         android:drawablePadding="8dp"
                         android:gravity="end|center_vertical"
                         android:text="请选择"
-                        android:textColor="@color/gray_999999"
+                        android:textColor="@color/color_4d16"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_reason_tips"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -133,7 +132,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="退款金额"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color_d916"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -143,11 +142,11 @@
                         android:id="@+id/tv_refund_money"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_20"
-                        android:layout_marginEnd="@dimen/dp_20"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginEnd="@dimen/dp_16"
                         android:drawablePadding="8dp"
                         android:gravity="end|center_vertical"
-                        android:textColor="@color/black"
+                        android:textColor="@color/color_d916"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_refund_money_tips"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -158,24 +157,31 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_handle"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginTop="73dp"
-                android:layout_marginBottom="@dimen/dp_44"
-                android:background="@drawable/shape_00095b_20dp"
-                android:gravity="center"
-                android:text="申请退款"
-                android:textColor="@color/white"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-                app:layout_constraintWidth_percent="0.8" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_handle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_44"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="@dimen/dp_24"
+                    android:background="@drawable/bg_bord_80a6_23"
+                    android:gravity="center"
+                    android:text="申请退款"
+                    android:textColor="@color/color_8016" />
+            </RelativeLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

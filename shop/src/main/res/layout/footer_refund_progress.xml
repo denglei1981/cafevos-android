@@ -29,31 +29,6 @@
             android:id="@+id/layout_refund_info"
             layout="@layout/layout_refund_hole_shop_info" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:background="@color/color_F4"
-            android:paddingBottom="@dimen/dp_40">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_handle"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginTop="73dp"
-                android:background="@drawable/shape_00095b_20dp"
-                android:gravity="center"
-                tools:text="申请退款"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.8" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

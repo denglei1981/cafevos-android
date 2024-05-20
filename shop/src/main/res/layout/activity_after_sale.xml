@@ -10,8 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_F4">
-
+        android:background="@color/white">
 
         <com.changanford.shop.view.TopBar
             android:id="@+id/layout_top"
@@ -21,18 +20,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:right_icon="@mipmap/ic_order_d_back"
             app:title_text="申请售后" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="32dp"
+            android:layout_marginTop="@dimen/dp_10"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:paddingStart="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_16"
             android:text="退款商品"
+            android:textColor="@color/color_d916"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_top" />
@@ -56,44 +58,43 @@
             android:layout_marginTop="@dimen/dp_10"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_16"
             app:layout_constraintTop_toBottomOf="@+id/rv_shopping">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_16"
                 android:text="退款类型"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textColor="@color/color_16"
+                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_only_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:drawableEnd="@drawable/circle_right_black_small"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:drawableEnd="@mipmap/right_99"
                 android:gravity="center_vertical"
                 android:text="仅退款"
-                android:textColor="@color/black"
+                android:textColor="@color/color_d916"
                 android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_money_shop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:drawableEnd="@drawable/circle_right_black_small"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:drawableEnd="@mipmap/right_99"
                 android:gravity="center_vertical"
                 android:text="退货退款"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/color_d916"
+                android:textSize="14sp" />
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

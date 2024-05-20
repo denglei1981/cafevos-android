@@ -32,46 +32,5 @@
             android:id="@+id/layout_refund_info"
             layout="@layout/layout_refund_single_shop_info" />
 
-        <LinearLayout
-            android:id="@+id/ll_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_120"
-            android:background="@color/color_F4"
-            android:orientation="horizontal"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_handle"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_gravity="center_vertical"
-
-                android:layout_weight="1"
-                android:background="@drawable/shape_00095b_20dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:visibility="visible"
-
-                tools:text="申请退款" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_input_order"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/bord_00095b_1dp"
-                android:gravity="center"
-                android:text="填写物流信息"
-                android:textColor="@color/color_1700f4"
-                android:visibility="visible"
-                tools:text="撤销退款申请" />
-
-
-        </LinearLayout>
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

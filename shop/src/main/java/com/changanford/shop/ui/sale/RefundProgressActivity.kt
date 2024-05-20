@@ -3,6 +3,7 @@ package com.changanford.shop.ui.sale
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -35,11 +36,12 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
     }
 
     companion object {
-        fun start(mallMallRefundId:String){
+        fun start(mallMallRefundId: String) {
             JumpUtils.instans?.jump(124, mallMallRefundId)
         }
     }
-    val refundProgressAdapter: RefundProgressAdapter by lazy {
+
+    private val refundProgressAdapter: RefundProgressAdapter by lazy {
         RefundProgressAdapter(viewModel)
     }
 
@@ -47,6 +49,11 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
         binding.tobBar.setOnBackClickListener(object : TopBar.OnBackClickListener {
             override fun onBackClick() {
                 onBackPressed()
+            }
+        })
+        binding.tobBar.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
             }
         })
         binding.tobBar.setTitle("退款进度")
@@ -64,23 +71,29 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
 
     override fun observe() {
         super.observe()
-        viewModel.refundProgressLiveData.observe(this, Observer {
+        viewModel.refundProgressLiveData.observe(this) {
             refundProgressAdapter.refundStatus = it.refundStatus // 当前状态
             refundProgressAdapter.setNewInstance(it.refundList)
             showFooterAndHeader(it)
-        })
+//            footerBinding?.apply {
+//                layoutRefundInfo.layoutShop.apply {
+//                    root.isVisible = it.sku == null
+//                }
+//            }
+        }
         viewModel.cancelRefundLiveData.observe(this, Observer {
             // 撤销退款申请成功
             this.finish()
         })
     }
 
-    fun showFooterAndHeader(refundProgressBean: RefundProgressBean) {
+    private fun showFooterAndHeader(refundProgressBean: RefundProgressBean) {
         headNewBinding?.let {
             viewModel.StatusEnum("MallRefundStatusEnum", refundProgressBean.refundStatus, it.tvTips)
             when (refundProgressBean.refundStatus) {
                 "FINISH" -> {
                     it.tvSubTips.visibility = View.VISIBLE
+                    it.llBack.isVisible = true
                     showTotalTag(
                         this,
                         it.tvSubTips,
@@ -88,8 +101,10 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                         false
                     )
                 }
+
                 else -> {
                     it.tvSubTips.visibility = View.GONE
+                    it.llBack.isVisible = false
 //                    showTotalTag(
 //                        this,
 //                        it.tvSubTips,
@@ -114,8 +129,8 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                     ft.layoutRefundInfo.tvResonShow
                 )
             }
-            if(TextUtils.isEmpty(refundProgressBean.refundReason)){
-                ft.layoutRefundInfo.tvResonShow.text="--"
+            if (TextUtils.isEmpty(refundProgressBean.refundReason)) {
+                ft.layoutRefundInfo.tvResonShow.text = "--"
             }
 
             showTotalTag(
@@ -126,17 +141,18 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
             )
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
-                    ft.tvHandle.visibility = View.VISIBLE
-                    ft.tvHandle.text = "撤销退款申请"
-                    ft.tvHandle.setOnClickListener {
+                    binding.clBottom.visibility = View.VISIBLE
+                    binding.tvHandle.text = "撤销退款申请"
+                    binding.tvHandle.setOnClickListener {
                         // 撤销退款申请
                         viewModel.cancelRefund(refundProgressBean.mallMallRefundId)
                     }
                 }
+
                 "CLOSED" -> { // 退款关闭
-                    ft.tvHandle.visibility = View.GONE
-                    ft.tvHandle.text = "申请退款"
-                    ft.tvHandle.setOnClickListener {
+                    binding.clBottom.visibility = View.GONE
+                    binding.tvHandle.text = "申请退款"
+                    binding.tvHandle.setOnClickListener {
                         val gson = Gson()
                         val refundBean =
                             RefundBean(
@@ -150,15 +166,16 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
                         JumpUtils.instans?.jump(121, refundJson)
                     }
                 }
+
                 else -> {
-                    ft.tvHandle.visibility = View.GONE
+                    binding.clBottom.visibility = View.GONE
                 }
             }
 
         }
     }
 
-    var headNewBinding: HeaderRefundProgressBinding? = null
+    private var headNewBinding: HeaderRefundProgressBinding? = null
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(

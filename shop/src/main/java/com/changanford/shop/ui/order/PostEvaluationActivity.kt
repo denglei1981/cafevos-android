@@ -73,11 +73,9 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     val isComplete =
-                        mAdapter.postBean.find { item -> !item.isComplete || item.getImageSize() > needPicNum || item.getContentSize() > needContentNum }
-//                    mAdapter.postBean.forEach {
-//                        Log.e("asdasd","${it.isComplete}===${it.getImageSize()}===${it.getContentSize()}===${needContentNum}===${needPicNum}")
-//                    }
-                    if (!reviewEval && isComplete != null) {//普通评价没全部写完给出弹窗提示
+                        mAdapter.postBean.filter { item -> !item.isComplete && item.getImageSize() > needPicNum && item.getContentSize() > needContentNum }
+                    val allComplete = (isComplete.size == mAdapter.postBean.size)
+                    if (!reviewEval && !allComplete) {//普通评价没全部写完给出弹窗提示
                         val cannotUnbindPop = ConfirmTwoBtnPop(this@PostEvaluationActivity)
                         cannotUnbindPop.apply {
                             contentText.text =

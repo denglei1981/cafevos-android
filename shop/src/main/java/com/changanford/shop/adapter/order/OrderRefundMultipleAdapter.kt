@@ -3,8 +3,10 @@ package com.changanford.shop.adapter.order
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.PayShowBean
@@ -50,7 +52,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
     ) {
         holder.dataBinding?.run {
             setStatusEnum(item.refundStatus, tvTips, this, item)
-            setFinishValue(tvSubTips, item)
+            setFinishValue(llGet, tvSubTips, item)
             tvTime.text = TimeUtils.MillisToStr(item.applyTime)
 
             val refundProgressAdapter = RefundProgressAdapter(baseViewModel)
@@ -90,7 +92,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
     ) {
         val refundImgsAdapter = RefundImgsAdapter()
         footerBinding.let { ft ->
-            ft.llBottom.visibility = View.GONE
+//            binding.llBottom.visibility = View.GONE
             ft.layoutRefundInfo.tvReasonNum.text = refundProgressBean.refundNo
             refundProgressBean.refundReason?.let {
 //                setBotStatus(it,ft.layoutRefundInfo.tvResonShow)
@@ -199,7 +201,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
         }
     }
 
-    private fun setBotStatus(state: String,tv:TextView){
+    private fun setBotStatus(state: String, tv: TextView) {
         when (state) {
             "ON_GOING" -> {
                 tv.text = "退款中"
@@ -233,7 +235,8 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
                     baseViewModel.cancelRefund(item.mallMallRefundId) {
 //                        item.refundStatus = "CLOSED"
 //                        notifyItemChanged(position)
-                        LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS).postValue("true")
+                        LiveDataBus.get().with(LiveDataBusKey.REFUND_NOT_SHOP_SUCCESS)
+                            .postValue("true")
                     }
                 }
                 binding.tvInputOrder.setOnClickListener {
@@ -311,10 +314,15 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
         }
     }
 
-    private fun setFinishValue(tv: AppCompatTextView, item: RefundProgressMultipleBean) {
+    private fun setFinishValue(
+        ll: LinearLayout,
+        tv: AppCompatTextView,
+        item: RefundProgressMultipleBean
+    ) {
         when (item.refundStatus) {
             "FINISH" -> {
                 tv.visibility = View.VISIBLE
+                ll.isVisible = true
                 showTotalTag(
                     context,
                     tv,
@@ -325,6 +333,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
 
             else -> {
                 tv.visibility = View.GONE
+                ll.isVisible = false
             }
         }
     }

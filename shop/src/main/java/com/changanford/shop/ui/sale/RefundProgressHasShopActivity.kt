@@ -4,6 +4,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -12,7 +13,6 @@ import com.changanford.common.bean.PayShowBean
 import com.changanford.common.bean.RefundBean
 import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.router.path.ARouterShopPath
-import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -22,7 +22,9 @@ import com.changanford.common.wutil.WCommonUtil.getRoundedNum
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.bean.RefundProgressBean
-import com.changanford.shop.databinding.*
+import com.changanford.shop.databinding.ActivityRefundProgressHasBinding
+import com.changanford.shop.databinding.FooterRefundProgressHasShopBinding
+import com.changanford.shop.databinding.HeaderRefundProgressBinding
 import com.changanford.shop.ui.sale.adapter.RefundImgsAdapter
 import com.changanford.shop.ui.sale.adapter.RefundProgressAdapter
 import com.changanford.shop.ui.sale.request.RefundViewModel
@@ -38,7 +40,7 @@ import java.math.BigDecimal
  * */
 @Route(path = ARouterShopPath.RefundProgressHasShopActivity)
 class RefundProgressHasShopActivity :
-    BaseActivity<ActivityRefundProgressBinding, RefundViewModel>(), OnRefreshListener {
+    BaseActivity<ActivityRefundProgressHasBinding, RefundViewModel>(), OnRefreshListener {
 
 
     companion object {
@@ -47,12 +49,12 @@ class RefundProgressHasShopActivity :
         }
     }
 
-    val refundProgressAdapter: RefundProgressAdapter by lazy {
+    private val refundProgressAdapter: RefundProgressAdapter by lazy {
         RefundProgressAdapter(viewModel)
     }
 
     //
-    val refundImgsAdapter: RefundImgsAdapter by lazy {
+    private val refundImgsAdapter: RefundImgsAdapter by lazy {
         RefundImgsAdapter()
     }
 
@@ -99,7 +101,7 @@ class RefundProgressHasShopActivity :
 
     }
 
-    fun showFooterAndHeader(refundProgressBean: RefundProgressBean) {
+    private fun showFooterAndHeader(refundProgressBean: RefundProgressBean) {
         headNewBinding?.let {
             viewModel.StatusEnum("MallRefundStatusEnum", refundProgressBean.refundStatus, it.tvTips)
             when (refundProgressBean.refundStatus) {
@@ -151,26 +153,26 @@ class RefundProgressHasShopActivity :
             when (refundProgressBean.refundMethod) {
                 "ONLY_COST" -> { // 仅退款
                     binding.tobBar.setTitle("退款进度")
-                    ft.tvInputOrder.visibility = View.GONE
+                    binding.tvInputOrder.visibility = View.GONE
                     ft.layoutRefundInfo.tvRefundType.text = "仅退款"
                 }
                 "CONTAIN_GOODS" -> {
                     binding.tobBar.setTitle("退款进度")
-                    ft.tvInputOrder.visibility = View.VISIBLE
+                    binding.tvInputOrder.visibility = View.VISIBLE
                     ft.layoutRefundInfo.tvRefundType.text = "退货退款"
                 }
 
             }
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
-                    ft.tvHandle.visibility = View.VISIBLE
-                    ft.tvInputOrder.visibility = View.VISIBLE
-                    ft.tvHandle.text = "撤销退款申请"
-                    ft.tvHandle.setOnClickListener {
+                    binding.tvHandle.visibility = View.VISIBLE
+                    binding.tvInputOrder.visibility = View.VISIBLE
+                    binding.tvHandle.text = "撤销退款申请"
+                    binding.tvHandle.setOnClickListener {
                         // 撤销退款申请
                         viewModel.cancelRefund(refundProgressBean.mallMallRefundId)
                     }
-                    ft.tvInputOrder.setOnClickListener {
+                    binding.tvInputOrder.setOnClickListener {
                         // 填写物流信息
                         val intent = Intent()
                         intent.putExtra("value", refundProgressBean.mallMallRefundId)
@@ -182,20 +184,20 @@ class RefundProgressHasShopActivity :
                     }
                     when (refundProgressBean.refundDetailStatus) {
                         "WAIT_CHECK", "OVERTIME" -> {
-                            ft.tvInputOrder.visibility = View.GONE
+                            binding.tvInputOrder.visibility = View.GONE
                         }
                         "CANCELD_REFUND", "WAIT_RECEIVE_RETURNS" -> {
-                            ft.tvInputOrder.visibility = View.GONE
-                            ft.tvHandle.visibility = View.GONE
+                            binding.tvInputOrder.visibility = View.GONE
+                            binding.tvHandle.visibility = View.GONE
                         }
                     }
                 }
 
                 "CLOSED" -> { // 退款关闭
-                    ft.tvInputOrder.visibility = View.GONE
-                    ft.tvHandle.visibility = View.VISIBLE
-                    ft.tvHandle.text = "申请售后"
-                    ft.tvHandle.setOnClickListener {
+                    binding.tvInputOrder.visibility = View.GONE
+                    binding.tvHandle.visibility = View.VISIBLE
+                    binding.tvHandle.text = "申请售后"
+                    binding.tvHandle.setOnClickListener {
                         if (refundProgressBean.busSource == "WB" && refundProgressBean.sku == null) {//如果是维保订单，并且没有退过，直接跳转仅退款。历史愿意跳转到了这里
                             val toJson = "{\"orderNo\":\"${refundProgressBean.orderNo}\",\"refundType\":\"allOrderRefund\"}"
                             JumpUtils.instans?.jump(121, toJson)
@@ -227,8 +229,7 @@ class RefundProgressHasShopActivity :
                     }
                 }
                 else -> {
-                    ft.tvInputOrder.visibility = View.GONE
-                    ft.tvHandle.visibility = View.GONE
+                    binding.llBottom.isVisible=false
                 }
             }
             if (refundProgressBean.sku == null) {
@@ -273,7 +274,7 @@ class RefundProgressHasShopActivity :
         }
     }
 
-    var headNewBinding: HeaderRefundProgressBinding? = null
+    private var headNewBinding: HeaderRefundProgressBinding? = null
     private fun addHeadView() {
         if (headNewBinding == null) {
             headNewBinding = DataBindingUtil.inflate(
@@ -288,7 +289,7 @@ class RefundProgressHasShopActivity :
         }
     }
 
-    var footerBinding: FooterRefundProgressHasShopBinding? = null
+    private var footerBinding: FooterRefundProgressHasShopBinding? = null
     private fun addFooterView() {
         if (footerBinding == null) {
             footerBinding = DataBindingUtil.inflate(

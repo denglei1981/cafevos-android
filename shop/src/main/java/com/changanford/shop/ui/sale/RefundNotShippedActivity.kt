@@ -13,6 +13,7 @@ import com.changanford.common.bean.RefundBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.CustomImageSpanV2
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
@@ -28,7 +29,7 @@ import com.luck.picture.lib.tools.DoubleUtils
  * */
 @Route(path = ARouterShopPath.RefundNotShippedActivity)
 class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, RefundViewModel>() {
-    var backEnumBean:BackEnumBean?=null
+    var backEnumBean: BackEnumBean? = null
     override fun initView() {
         AppUtils.setStatusBarMarginTop(binding.layoutTop.root, this)
         binding.layoutTop.tvTitle.text = "退款"
@@ -36,16 +37,26 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
         binding.layoutTop.ivBack.setOnClickListener {
             onBackPressed()
         }
+        binding.layoutTop.ivRightMenu.setImageResource(R.mipmap.ic_order_d_back)
+        binding.layoutTop.ivRightMenu.setOnClickListener {
+            JumpUtils.instans?.jump(11)
+        }
         binding.tvReason.setOnClickListener {
             RefundResonDialog(this, object : RefundResonDialog.CallMessage {
                 override fun message(reson: BackEnumBean) {
                     binding.tvReason.text = reson.message
-                    backEnumBean=reson
+                    backEnumBean = reson
+                    binding.tvHandle.setBackgroundResource(R.drawable.bg_bord_1700f4_23)
+                    binding.tvHandle.setTextColor(
+                        ContextCompat.getColor(
+                            this@RefundNotShippedActivity,
+                            R.color.color_1700f4
+                        )
+                    )
                 }
             }).show()
         }
         binding.tvHandle.setOnClickListener {
-
             if (!DoubleUtils.isFastDoubleClick() && canRefund()) {
                 refundBean?.let {
                     viewModel.getRefund(it.orderNo, backEnumBean!!.code)
@@ -58,7 +69,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
     var reson: String = ""
     fun canRefund(): Boolean {
         reson = binding.tvReason.text.toString()
-        if (backEnumBean==null||TextUtils.isEmpty(reson)) {
+        if (backEnumBean == null || TextUtils.isEmpty(reson)) {
             "请选择退款原因".toast()
             return false
         }
@@ -80,7 +91,7 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
     override fun observe() {
         super.observe()
         viewModel.refundorderItemLiveData.observe(this, Observer {
-            refundBean =RefundBean(it.orderNo,it.payFb,it.payRmb,"allOrderRefund")
+            refundBean = RefundBean(it.orderNo, it.payFb, it.payRmb, "allOrderRefund")
             showTotalTag(binding.tvRefundMoney, refundBean!!)
         })
         viewModel.invoiceLiveData.observe(this) {

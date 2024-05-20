@@ -4,35 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="date"
             type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <androidx.appcompat.widget.AppCompatRadioButton
-            tools:layout_marginStart="@dimen/dp_20"
-            tools:layout_marginEnd="@dimen/dp_20"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/radioButton"
+            style="@style/rb_kill_date"
             android:text="@{date}"
-            style="@style/rb_kill_date"/>
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:layout_marginTop="@dimen/dp_10"
-            app:layout_constraintStart_toStartOf="@id/radioButton"
-            app:layout_constraintEnd_toEndOf="@id/radioButton"
-            app:layout_constraintTop_toBottomOf="@id/radioButton"
-            android:enabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_marginEnd="@dimen/dp_20"
+            tools:layout_marginStart="@dimen/dp_20" />
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/rb_dot"
-            android:background="@drawable/radiobutton_bt_kill_dot"
-            android:button="@null"
-            android:layout_width="@dimen/dp_5"
-            android:layout_height="@dimen/dp_5"/>
+            android:layout_width="@dimen/dp_15"
+            android:layout_height="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_9"
+            app:layout_constraintEnd_toEndOf="@id/radioButton"
+            app:layout_constraintStart_toStartOf="@id/radioButton"
+            app:layout_constraintTop_toBottomOf="@id/radioButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

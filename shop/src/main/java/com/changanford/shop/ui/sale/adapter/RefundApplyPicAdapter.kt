@@ -10,14 +10,16 @@ import com.changanford.shop.R
 import com.luck.picture.lib.entity.LocalMedia
 
 
-class RefundApplyPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.item_refund_apply_pic),
+class RefundApplyPicAdapter(private val type: Int) :
+    BaseQuickAdapter<LocalMedia, BaseViewHolder>(R.layout.item_refund_apply_pic),
     DraggableModule {
 
     init {
         addChildClickViewIds(R.id.iv_delete)
     }
+
     override fun getDefItemCount(): Int {
-        return super.getDefItemCount()+1
+        return super.getDefItemCount() + 1
     }
 
     override fun getItem(position: Int): LocalMedia {
@@ -40,18 +42,18 @@ class RefundApplyPicAdapter(private val type: Int) :BaseQuickAdapter<LocalMedia,
         if (holder.itemViewType == 0x9843) {
             holder.setImageResource(R.id.img, R.mipmap.icon_voucher)
             holder.setGone(R.id.fm_tv, true)
-            holder.setGone(R.id.iv_delete,true)
-            if (getDefItemCount()==11){
-                holder.itemView.visibility=View.GONE
-            }else{
-                holder.itemView.visibility=View.VISIBLE
+            holder.setGone(R.id.iv_delete, true)
+            if (getDefItemCount() == 11) {
+                holder.itemView.visibility = View.GONE
+            } else {
+                holder.itemView.visibility = View.VISIBLE
             }
-        }else{
+        } else {
             val path = PictureUtil.getFinallyPath(item)
             GlideUtils.loadRoundLocal(
                 path,
                 holder.getView(R.id.img),
-                5F,
+                12F,
                 R.mipmap.ic_def_square_img
             )
         }

@@ -27,7 +27,7 @@
             android:id="@+id/smart_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/cl_bottom"
+            app:layout_constraintBottom_toTopOf="@+id/ll_bottom"
             app:layout_constraintTop_toBottomOf="@+id/tob_bar"
             app:srlEnableLoadMore="false"
             app:srlEnableOverScrollDrag="true">
@@ -42,33 +42,45 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_bottom"
+        <LinearLayout
+            android:id="@+id/ll_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="horizontal"
+            android:paddingBottom="24dp"
+            android:paddingTop="16dp"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_handle"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_44"
-                android:layout_marginTop="18dp"
-                android:layout_marginBottom="24dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:background="@drawable/shape_00095b_20dp"
                 android:gravity="center"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.8"
-                tools:text="申请退款"
-                tools:visibility="visible" />
+                android:visibility="visible"
+                tools:text="申请退款" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_input_order"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/bord_00095b_1dp"
+                android:gravity="center"
+                android:text="填写物流信息"
+                android:textColor="@color/color_1700f4"
+                android:visibility="visible"
+                tools:text="撤销退款申请" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
