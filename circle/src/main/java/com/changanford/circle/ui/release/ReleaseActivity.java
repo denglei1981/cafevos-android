@@ -88,7 +88,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
@@ -533,7 +532,19 @@ public class ReleaseActivity extends BaseActivity<ActivityReleaseBinding, Releas
 
     private void StartBaduMap() {
         Permissions permissions = Permissions.build(Manifest.permission.ACCESS_FINE_LOCATION);
-        PermissionPopUtil.INSTANCE.checkPermissionAndPop(permissions, Objects.requireNonNull(successPer()), Objects.requireNonNull(failPer()));
+        PermissionPopUtil.INSTANCE.checkPermissionAndPop(permissions, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                successPer();
+                return null;
+            }
+        }, new Function0<Unit>() {
+            @Override
+            public Unit invoke() {
+                failPer();
+                return null;
+            }
+        }, this);
 //        SoulPermission.getInstance()
 //                .checkAndRequestPermission(
 //                        Manifest.permission.ACCESS_FINE_LOCATION,  //if you want do noting or no need all the callbacks you may use SimplePermissionAdapter instead

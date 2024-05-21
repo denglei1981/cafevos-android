@@ -1,6 +1,7 @@
 package com.changanford.common.utilext
 
 import android.Manifest
+import android.app.Activity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.util.MConstant
 import com.changanford.common.widget.pop.PermissionTipsPop
@@ -42,10 +43,11 @@ object PermissionPopUtil {
     fun checkPermissionAndPop(
         permissions: Permissions,
         success: () -> Unit,
-        fail: () -> Unit
+        fail: () -> Unit,
+        activity: Activity = BaseApplication.curActivity,
     ) {
 
-        val pop = PermissionTipsPop(BaseApplication.curActivity).apply {
+        val pop = PermissionTipsPop(activity).apply {
             setBackgroundColor(MColor.PERMISSION_BG)
         }
 
@@ -90,7 +92,7 @@ object PermissionPopUtil {
                         if (!pop.isShowing) {
                             pop.setTitle(useTitle)
                             pop.setContent(useTips)
-                            BaseApplication.curActivity.runOnUiThread {
+                            activity.runOnUiThread {
                                 pop.showPopupWindow()
                             }
                         }

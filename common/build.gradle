@@ -79,7 +79,7 @@ def versions_glide = "4.14.2"
 dependencies {
     api(project(":base"))
     api fileTree(include: ['*.jar'], dir: 'libs')
-    api project(path: ':picture_library')
+//    api project(path: ':picture_library')
     api project(path: ':videocompressor')
     api project(path: ':lansong')
     //aar文件，否则打包失败
@@ -279,6 +279,14 @@ dependencies {
     api 'com.github.ChinaLike:XUtils:1.1.1'
 
     api 'com.github.ome450901:SimpleRatingBar:1.5.1'
+
+    implementation "androidx.concurrent:concurrent-futures:1.1.0"
+    implementation "androidx.annotation:annotation-experimental:1.1.0"
+    implementation "androidx.exifinterface:exifinterface:1.3.3"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
+    implementation "androidx.camera:camera-view:1.0.0-alpha28"
+    implementation "androidx.camera:camera-lifecycle:1.0.0-beta03"
+    implementation "androidx.transition:transition:1.3.1"
 
     // GioKit
 //    debugImplementation "com.growingio.giokit:giokit:1.3.0"

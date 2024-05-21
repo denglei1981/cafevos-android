@@ -3,4 +3,8 @@
     <item type="id" name="statusbarutil_fake_status_bar_view" />
     <item type="id" name="statusbarutil_translucent_view" />
     <item name="tag_saved_child_recycler_view" type="id" />
+    <item name="view_tag" type="id" />
+    <item name="view_count_tag" type="id" />
+    <item name="view_index_tag" type="id" />
+    <item name="id_recycler" type="id" />
 </resources>

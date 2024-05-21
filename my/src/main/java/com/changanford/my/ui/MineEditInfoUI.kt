@@ -424,7 +424,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
         FordPaiBottomDialog(
             this,
             "请选择图片",
-            arrayListOf("打开相册", "从相册选择"),
+            arrayListOf("直接拍照", "从相册选择"),
             this,
         ) { adapter, view, position ->
             when (position) {

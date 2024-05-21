@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.target.ImageViewTarget;
+import com.changanford.common.R;
 import com.luck.picture.lib.engine.ImageEngine;
 import com.luck.picture.lib.listener.OnImageCompleteCallback;
 import com.luck.picture.lib.tools.MediaUtils;
@@ -166,7 +167,7 @@ public class GlideEngine implements ImageEngine {
                 .override(180, 180)
                 .centerCrop()
                 .sizeMultiplier(0.5f)
-                .apply(new RequestOptions().placeholder(com.luck.picture.lib.R.drawable.picture_image_placeholder))
+                .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(new BitmapImageViewTarget(imageView) {
                     @Override
                     protected void setResource(Bitmap resource) {
@@ -209,7 +210,7 @@ public class GlideEngine implements ImageEngine {
                 .load(url)
                 .override(200, 200)
                 .centerCrop()
-                .apply(new RequestOptions().placeholder(com.luck.picture.lib.R.drawable.picture_image_placeholder))
+                .apply(new RequestOptions().placeholder(R.drawable.picture_image_placeholder))
                 .into(imageView);
     }
 
