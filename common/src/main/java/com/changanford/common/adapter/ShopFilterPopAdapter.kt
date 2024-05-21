@@ -16,6 +16,9 @@ class ShopFilterPopAdapter :
     BaseQuickAdapter<ShopFilterPopBean, BaseDataBindingHolder<ItemPopShopPriceFilterBinding>>(
         R.layout.item_pop_shop_price_filter
     ) {
+
+    var selectPosition = 0
+
     override fun convert(
         holder: BaseDataBindingHolder<ItemPopShopPriceFilterBinding>,
         item: ShopFilterPopBean
@@ -30,7 +33,8 @@ class ShopFilterPopAdapter :
             ) else ContextCompat.getColor(context, R.color.color_d916)
             tvContent.setTextColor(txColor)
             tvContent.setOnClickListener {
-                selectTab(holder.layoutPosition,!item.isCheck)
+                selectTab(holder.layoutPosition, !item.isCheck)
+                selectPosition = holder.layoutPosition
             }
         }
     }

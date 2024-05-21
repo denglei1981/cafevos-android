@@ -13,6 +13,7 @@ import com.changanford.common.bean.GoodsListBean
 import com.changanford.common.bean.GoodsTypesItemBean
 import com.changanford.common.bean.OtherInfoBean
 import com.changanford.common.bean.SeckillSessionsBean
+import com.changanford.common.bean.ShopFilterSelectBean
 import com.changanford.common.bean.ShopHomeBean
 import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.net.ApiClient
@@ -161,6 +162,7 @@ class GoodsViewModel : BaseViewModel() {
         pageNo: Int,
         tagType: String? = null,
         pageSize: Int = this.pageSize,
+        filterPriceBean: ShopFilterSelectBean,
         ascOrDesc: String = "DESC",
         mallSortType: String = "COMPREHENSIVE"
     ) {
@@ -183,6 +185,12 @@ class GoodsViewModel : BaseViewModel() {
                     it["tagId"] = tagId
                     it["ascOrDesc"] = ascOrDesc
                     it["mallSortType"] = mallSortType
+                    if (filterPriceBean.starPrice != -1) {
+                        it["startPrice"] = filterPriceBean.starPrice
+                    }
+                    if (filterPriceBean.endPrice != -1) {
+                        it["endPrice"] = filterPriceBean.endPrice
+                    }
                 }
                 val randomKey = getRandomKey()
                 shopApiService.queryGoodsList(body.header(randomKey), body.body(randomKey))
@@ -612,6 +620,22 @@ class GoodsViewModel : BaseViewModel() {
                 .getAdList(body.header(rKey), body.body(rKey))
                 .onSuccess {
                     shopKingKongData.postValue(it)
+                }.onWithMsgFailure {
+
+                }
+        }
+    }
+
+    val actData = MutableLiveData<ArrayList<AdBean>?>()
+    fun getActData() {
+        launch(false) {
+            val body = HashMap<String, Any>()
+            val rKey = getRandomKey()
+            body["posCode"] = "mall_activity_ad"
+            ApiClient.createApi<NetWorkApi>()
+                .getAdList(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    actData.postValue(it)
                 }.onWithMsgFailure {
 
                 }

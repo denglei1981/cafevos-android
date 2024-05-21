@@ -66,8 +66,8 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) :
         if (states > statesTxt.size - 1 || states < 0) return
         btnStates = states
         when (states) {
-            //去抢购
-            0 -> {
+            //去抢购 提醒我
+            0,3 -> {
                 setBackgroundResource(R.drawable.btn_selector_kill)
                 setTextColor(ContextCompat.getColor(context, R.color.white))
                 isEnabled = true
@@ -75,16 +75,16 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) :
             //已抢光、已结束
             1, 2 -> {
                 setBackgroundResource(if (!isDetailkill) R.drawable.shadow_dd_15dp else R.drawable.shadow_dd_20dp)
-                setTextColor(ContextCompat.getColor(context, R.color.white))
+                setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
                 isEnabled = false
                 if (0 == btnSource) setBackgroundResource(R.drawable.shape_dd_20dp)
             }
-            //提醒我
-            3 -> {
-                setBackgroundResource(R.drawable.btn_selector_kill0)
-                setTextColor(ContextCompat.getColor(context, R.color.white))
-                isEnabled = true
-            }
+//            //提醒我
+//            3 -> {
+//                setBackgroundResource(R.drawable.btn_selector_kill0)
+//                setTextColor(ContextCompat.getColor(context, R.color.white))
+//                isEnabled = true
+//            }
             //取消提醒,已设置提醒
             4, 10 -> {
                 setBackgroundResource(R.drawable.shadow_dff6e9_15dp)

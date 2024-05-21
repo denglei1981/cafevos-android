@@ -7,11 +7,11 @@
 
     </data>
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:id="@+id/smartRl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlEnableLoadMore="false">
+<!--    <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
+<!--        android:id="@+id/smartRl"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:srlEnableLoadMore="false">-->
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -28,5 +28,5 @@
                 app:spanCount="2"
                 tools:listitem="@layout/item_goods" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+<!--    </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
 </layout>

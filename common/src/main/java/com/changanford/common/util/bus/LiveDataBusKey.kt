@@ -348,5 +348,8 @@ object LiveDataBusKey {
     const val DELETE_SHOP_DATA = "deleteShopData"
     const val SHOP_ORDER_SEARCH = "shopOrderSearch"
     const val ORDERS_GOODS_SHOW_EMPTY = "ordersGoodsShowEmpty"
+    const val FINISH_SHOP_REFRESH = "finishShopRefresh"
+    const val STAR_SHOP_REFRESH = "starShopRefresh"
+    const val FILTER_SHOP_REFRESH = "filterShopRefresh"
 }
 

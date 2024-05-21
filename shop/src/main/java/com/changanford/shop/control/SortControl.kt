@@ -1,13 +1,11 @@
 package com.changanford.shop.control
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import com.changanford.common.util.gio.GIOUtils
-import com.changanford.common.widget.pop.ShopFilterPricePop
 import com.changanford.shop.R
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -28,18 +26,7 @@ class SortControl(
     private val drawableEnd2 by lazy { ContextCompat.getDrawable(context, R.mipmap.ic_sort_2) }
     private var drawableEnd: Drawable? = null
     private val drawableNormal by lazy { ContextCompat.getDrawable(context, R.mipmap.ic_sort_0) }
-    private val drawableEndFilterSelected by lazy {
-        ContextCompat.getDrawable(
-            context,
-            R.mipmap.ic_shop_filter_selected
-        )
-    }
-    private val drawableEndFilter by lazy {
-        ContextCompat.getDrawable(
-            context,
-            R.mipmap.ic_shop_filter_select
-        )
-    }
+
     private var lastIndex: Int = -1
     private val mallSortTypeArr = arrayOf("COMPREHENSIVE", "SALES", "PRICE")
     private var ascOrDesc = "DESC"//ASC:正序、DESC:倒叙
@@ -76,11 +63,11 @@ class SortControl(
             updateUi(index, true)
         }
         lastIndex = index
-        if (index < 3) {
+//        if (index < 3) {
             listener.onSelectSortListener(mallSortTypeArr[index], ascOrDesc)
-        }else{
-            showFilterPop()
-        }
+//        }else{
+//            showFilterPop()
+//        }
     }
 
     private fun updateUi(index: Int, isSelected: Boolean) {
@@ -105,15 +92,15 @@ class SortControl(
                     setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
                     setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawableEnd, null)
                 }
-                if (index == 3) {
-                    setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
-                    setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        null,
-                        null,
-                        drawableEndFilterSelected,
-                        null
-                    )
-                }
+//                if (index == 3) {
+//                    setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
+//                    setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        null,
+//                        null,
+//                        drawableEndFilterSelected,
+//                        null
+//                    )
+//                }
             } else {
                 isChecked = false
 //                typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
@@ -126,15 +113,15 @@ class SortControl(
                         null
                     )
                 }
-                if (index == 3) {
-                    setTextColor(ContextCompat.getColor(context, R.color.color_9916))
-                    setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        null,
-                        null,
-                        drawableEndFilter,
-                        null
-                    )
-                }
+//                if (index == 3) {
+//                    setTextColor(ContextCompat.getColor(context, R.color.color_9916))
+//                    setCompoundDrawablesRelativeWithIntrinsicBounds(
+//                        null,
+//                        null,
+//                        drawableEndFilter,
+//                        null
+//                    )
+//                }
             }
         }
     }
@@ -154,19 +141,12 @@ class SortControl(
                 updateSort(2)
             }
 
-            R.id.rb_3 -> {
-                updateSort(3)
-            }
+//            R.id.rb_3 -> {
+//                updateSort(3)
+//            }
         }
     }
 
-    private fun showFilterPop() {
-        ShopFilterPricePop(context).run {
-            setBackgroundColor(Color.TRANSPARENT)
-            showPopupWindow(viewArr.get(3))
-            initShopData()
-        }
-    }
 
     interface OnSelectSortListener {
         fun onSelectSortListener(mallSortType: String, ascOrDesc: String)

@@ -12,6 +12,7 @@ import com.changanford.common.databinding.ItemCommonTwoPicsBinding
 import com.changanford.common.databinding.ItemShopKgOnePicsBinding
 import com.changanford.common.databinding.ItemShopKgThreePicsBinding
 import com.changanford.common.databinding.ItemShopKgTwoPicsBinding
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.ext.setCircular
 import com.changanford.common.utilext.GlideUtils.loadCompress
 
@@ -113,6 +114,9 @@ object ItemCommonPics {
                 ).apply {
                     ivPic.loadCompress(pics[0].getAdImgUrl())
                     ivPic.setCircular(12)
+                    ivPic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
+                    }
                     tvTitle.text = pics[0].adName
                 }
                 binding.clPics.addView(fourView.root)
@@ -132,6 +136,12 @@ object ItemCommonPics {
                     ivTwoPic.setCircular(12)
                     tvTitleOne.text = pics[0].adName
                     tvTitleTwo.text = pics[1].adName
+                    ivOnePic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
+                    }
+                    ivTwoPic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[1].jumpDataType,pics[1].jumpDataValue)
+                    }
                 }
                 binding.clPics.addView(fourView.root)
             }
@@ -153,6 +163,15 @@ object ItemCommonPics {
                     tvTitleOne.text = pics[0].adName
                     tvTitleTwo.text = pics[1].adName
                     tvTitleThree.text = pics[2].adName
+                    ivOnePic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
+                    }
+                    ivTwoPic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[1].jumpDataType,pics[1].jumpDataValue)
+                    }
+                    ivThreePic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[2].jumpDataType,pics[2].jumpDataValue)
+                    }
                 }
                 binding.clPics.addView(fourView.root)
             }
@@ -174,9 +193,19 @@ object ItemCommonPics {
                     tvTitleOne.text = pics[0].adName
                     tvTitleTwo.text = pics[1].adName
                     tvTitleThree.text = pics[2].adName
+                    ivOnePic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
+                    }
+                    ivTwoPic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[1].jumpDataType,pics[1].jumpDataValue)
+                    }
+                    ivThreePic.setOnClickListener {
+                        JumpUtils.instans?.jump(pics[2].jumpDataType,pics[2].jumpDataValue)
+                    }
                 }
                 binding.clPics.addView(fourView.root)
             }
         }
+
     }
 }

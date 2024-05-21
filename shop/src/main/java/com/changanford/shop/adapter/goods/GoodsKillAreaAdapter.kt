@@ -7,12 +7,12 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GoodsItemBean
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.MUtils
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.load
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsKillAreaBinding
-import com.changanford.shop.popupwindow.SetNoticPop
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.utils.WCommonUtil
 import com.changanford.shop.viewmodel.GoodsViewModel
@@ -86,6 +86,7 @@ class GoodsKillAreaAdapter(val viewModel: GoodsViewModel) :
         return killStates
     }
 
+    @SuppressLint("SetTextI18n")
     private fun clickBtn(dataBinding: ItemGoodsKillAreaBinding, item: GoodsItemBean) {
         when (dataBinding.btnStates.getStates()) {
             //去抢购
@@ -97,7 +98,22 @@ class GoodsKillAreaAdapter(val viewModel: GoodsViewModel) :
             }
             //设置提醒
             3 -> {
-                if (!WCommonUtil.isNotificationEnabled(context)) SetNoticPop(context).showPopupWindow()
+                if (!WCommonUtil.isNotificationEnabled(context)){
+                    val cannotUnbindPop = ConfirmTwoBtnPop(context)
+                    cannotUnbindPop.apply {
+                        contentText.text = "请在手机系统”设置-通知“中允许本App发送通知消息"
+                        btnCancel.text = "取消"
+                        btnConfirm.text = "去设置"
+                        btnCancel.setOnClickListener {
+                            dismiss()
+                        }
+                        btnConfirm.setOnClickListener {
+                            WCommonUtil.toSetNotice(context)
+                            dismiss()
+                        }
+                        showPopupWindow()
+                    }
+                }
                 else viewModel.setKillNotices("SET", item.mallMallSpuSeckillRangeId, object :
                     OnPerformListener {
                     @SuppressLint("NotifyDataSetChanged")

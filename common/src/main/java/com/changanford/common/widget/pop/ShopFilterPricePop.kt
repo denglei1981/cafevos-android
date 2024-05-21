@@ -7,7 +7,10 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.common.R
 import com.changanford.common.adapter.ShopFilterPopAdapter
 import com.changanford.common.bean.ShopFilterPopBean
+import com.changanford.common.bean.ShopFilterSelectBean
 import com.changanford.common.databinding.PopShopFilterPriceBinding
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import razerdp.basepopup.BasePopupWindow
 import razerdp.util.animation.AnimationHelper
 import razerdp.util.animation.Direction
@@ -71,6 +74,28 @@ class ShopFilterPricePop(context: Context) :
             ShopFilterPopBean("2000元以上"),
         )
         adapter.setList(list)
+        binding.tvConfirm.setOnClickListener {
+            val cusStarPrice = binding.etOne.text?.toString()
+            val cusEndPrice = binding.etTwo.text?.toString()
+            val filterPriceBean =
+                if (!cusStarPrice.isNullOrEmpty() || !cusEndPrice.isNullOrEmpty()) {
+                    val starPrice = if (cusStarPrice.isNullOrEmpty()) -1 else cusStarPrice.toInt()
+                    val endPrice = if (cusEndPrice.isNullOrEmpty()) -1 else cusEndPrice.toInt()
+                    ShopFilterSelectBean(starPrice, endPrice)
+                } else {
+                    when (adapter.selectPosition) {
+                        0 -> ShopFilterSelectBean(-1, -1)
+                        1 -> ShopFilterSelectBean(0, 100)
+                        2 -> ShopFilterSelectBean(101, 500)
+                        3 -> ShopFilterSelectBean(501, 1000)
+                        4 -> ShopFilterSelectBean(1001, 2000)
+                        5 -> ShopFilterSelectBean(2000, -1)
+                        else -> ShopFilterSelectBean(-1, -1)
+                    }
+                }
+            LiveDataBus.get().with(LiveDataBusKey.FILTER_SHOP_REFRESH).postValue(filterPriceBean)
+            dismiss()
+        }
     }
 
 }

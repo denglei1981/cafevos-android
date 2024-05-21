@@ -19,6 +19,7 @@ import com.changanford.common.web.AndroidBug5497Workaround
 import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.order.OrderEvaluationAdapter
+import com.changanford.shop.bean.PostEvaluationBean
 import com.changanford.shop.databinding.ActPostEvaluationBinding
 import com.changanford.shop.databinding.LayoutPostEvaluationBottomBinding
 import com.changanford.shop.listener.UploadPicCallback
@@ -27,6 +28,7 @@ import com.changanford.shop.viewmodel.UploadViewModel
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import org.jetbrains.anko.collections.forEachWithIndex
 import java.util.concurrent.TimeUnit
 
 /**
@@ -72,8 +74,18 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
             btnSubmit.clicks().throttleFirst(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val isComplete =
-                        mAdapter.postBean.filter { item -> !item.isComplete && item.getImageSize() > needPicNum && item.getContentSize() > needContentNum }
+                    val isComplete = ArrayList<PostEvaluationBean>()
+                    mAdapter.postBean.forEachWithIndex { i, item ->
+                        var itemPicSize =
+                            if (mAdapter.selectPicArr[i].selectPics.isNullOrEmpty()) 0 else mAdapter.selectPicArr[i].selectPics?.size
+                        if (itemPicSize == null) {
+                            itemPicSize = 0
+                        }
+                        if (item.isComplete && itemPicSize > needPicNum && item.getContentSize() > needContentNum) {
+                            isComplete.add(item)
+                        }
+                    }
+//
                     val allComplete = (isComplete.size == mAdapter.postBean.size)
                     if (!reviewEval && !allComplete) {//普通评价没全部写完给出弹窗提示
                         val cannotUnbindPop = ConfirmTwoBtnPop(this@PostEvaluationActivity)
@@ -104,7 +116,7 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
     }
 
     private fun addBottomView() {
-        if (bottomBinding == null && !reviewEval) {
+        if (bottomBinding == null) {
             bottomBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
                 R.layout.layout_post_evaluation_bottom,
@@ -122,6 +134,9 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                 ratingBar2.setOnRatingChangeListener { _, _, _ ->
                     tvScore2.text =
                         getEvalText(this@PostEvaluationActivity, ratingBar2.rating.toInt())
+                }
+                if (reviewEval) {
+                    clBottom.isVisible = false
                 }
             }
         }
@@ -199,15 +214,15 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
             //只提交已完成输入的商品
 //            val postBean = mAdapter.postBean.filter { it.isComplete }
             val postBean = mAdapter.postBean
-            if (!reviewEval) {
-                val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
-                val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
-                postBean.forEach {
-                    it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
-                    it.logisticsService = logisticsServiceNum
-                    it.serviceAttitude = serviceAttitudeNum
-                }
+//            if (!reviewEval) {
+            val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
+            val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
+            postBean.forEach {
+                it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
+                it.logisticsService = logisticsServiceNum
+                it.serviceAttitude = serviceAttitudeNum
             }
+//            }
             viewModel.postEvaluation(orderNo, postBean, reviewEval)
         } else {//评价 -先提交图片
             dialog.show()

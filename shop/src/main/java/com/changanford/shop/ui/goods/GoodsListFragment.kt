@@ -1,14 +1,20 @@
 package com.changanford.shop.ui.goods
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.basic.BaseFragment
 import com.changanford.common.bean.GoodsListBean
+import com.changanford.common.bean.ShopFilterSelectBean
 import com.changanford.common.buried.WBuriedUtil
+import com.changanford.common.util.bus.LiveDataBus
+import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
+import com.changanford.common.widget.pop.ShopFilterPricePop
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.GoodsAdapter
 import com.changanford.shop.control.SortControl
@@ -35,6 +41,20 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
         }
     }
 
+    private val drawableEndFilterSelected by lazy {
+        ContextCompat.getDrawable(
+            requireContext(),
+            R.mipmap.ic_shop_filter_selected
+        )
+    }
+    private val drawableEndFilter by lazy {
+        ContextCompat.getDrawable(
+            requireContext(),
+            R.mipmap.ic_shop_filter_select
+        )
+    }
+
+    private var filterPriceBean = ShopFilterSelectBean(-1, -1)
     private var headerBinding: InSortLayoutBinding? = null
     private var parentSmartRefreshLayout: SmartRefreshLayout? = null
     private var pageNo = 1
@@ -52,6 +72,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
             viewModel.getGoodsList(
                 tagId,
                 pageNo,
+                filterPriceBean = filterPriceBean,
                 tagType = tagType,
                 mallSortType = mallSortType,
                 ascOrDesc = ascOrDesc
@@ -68,21 +89,30 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
             viewModel.getGoodsList(
                 tagId,
                 pageNo,
+                filterPriceBean = filterPriceBean,
                 tagType = tagType,
                 mallSortType = mallSortType,
                 ascOrDesc = ascOrDesc
             )
         }
-        binding.smartRl.setOnLoadMoreListener {
-            pageNo++
-            viewModel.getGoodsList(
-                tagId,
-                pageNo,
-                tagType = tagType,
-                mallSortType = mallSortType,
-                ascOrDesc = ascOrDesc
-            )
+        LiveDataBus.get().with(LiveDataBusKey.STAR_SHOP_REFRESH).observe(this) {
+            refreshData(true)
         }
+        LiveDataBus.get().withs<ShopFilterSelectBean>(LiveDataBusKey.FILTER_SHOP_REFRESH)
+            .observe(this) {
+                filterPriceBean = it
+                refreshData()
+            }
+//        binding.smartRl.setOnLoadMoreListener {
+//            pageNo++
+//            viewModel.getGoodsList(
+//                tagId,
+//                pageNo,
+//                tagType = tagType,
+//                mallSortType = mallSortType,
+//                ascOrDesc = ascOrDesc
+//            )
+//        }
     }
 
     private fun addHead() {
@@ -93,11 +123,41 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
                 binding.recyclerView,
                 false
             )
-            headerBinding?.apply{
+            headerBinding?.apply {
                 headerBinding?.vLineThree?.isVisible = true
                 headerBinding?.rb3?.isVisible = true
+                rb3.setOnClickListener {
+                    if (rb3.isChecked) {
+                        rb3.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.color_1700f4
+                            )
+                        )
+                        rb3.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            null,
+                            null,
+                            drawableEndFilterSelected,
+                            null
+                        )
+                    } else {
+                        rb3.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.color_9916
+                            )
+                        )
+                        rb3.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            null,
+                            null,
+                            drawableEndFilter,
+                            null
+                        )
+                    }
+                    showFilterPop()
+                }
                 val viewArr =
-                    arrayOf(rb0, rb1, rb2, rb3)
+                    arrayOf(rb0, rb1, rb2)
                 sortControl = SortControl(requireContext(), viewArr, this@GoodsListFragment)
                 mAdapter.addHeaderView(root)
             }
@@ -125,7 +185,10 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
     private fun bindingData(it: GoodsListBean?) {
         if (1 == pageNo) {
             mAdapter.setList(it?.dataList)
-            parentSmartRefreshLayout?.finishRefresh()
+//            parentSmartRefreshLayout?.post {
+//                parentSmartRefreshLayout?.finishRefresh()
+//            }
+            LiveDataBus.get().with(LiveDataBusKey.FINISH_SHOP_REFRESH).postValue("")
         } else if (it?.dataList != null) mAdapter.addData(it.dataList)
         if (null == it || mAdapter.data.size >= it.total)
         //设置状态完成
@@ -151,10 +214,34 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
             viewModel.getGoodsList(
                 tagId,
                 pageNo,
+                filterPriceBean = filterPriceBean,
                 tagType = tagType,
                 mallSortType = mallSortType,
                 ascOrDesc = ascOrDesc
             )
+        }
+    }
+
+    private fun refreshData(resetFilter: Boolean = false) {
+        pageNo = 1
+        if (resetFilter) {
+            filterPriceBean = ShopFilterSelectBean(-1, -1)
+        }
+        viewModel.getGoodsList(
+            tagId,
+            pageNo,
+            tagType = tagType,
+            filterPriceBean = filterPriceBean,
+            mallSortType = mallSortType,
+            ascOrDesc = ascOrDesc
+        )
+    }
+
+    private fun showFilterPop() {
+        ShopFilterPricePop(requireContext()).run {
+            setBackgroundColor(Color.TRANSPARENT)
+            showPopupWindow(headerBinding?.rb3)
+            initShopData()
         }
     }
 
@@ -168,6 +255,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
         viewModel.getGoodsList(
             tagId,
             pageNo,
+            filterPriceBean = filterPriceBean,
             tagType = tagType,
             mallSortType = mallSortType,
             ascOrDesc = ascOrDesc

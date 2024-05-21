@@ -8,6 +8,7 @@
         android:id="@+id/smartRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:srlEnableLoadMore="false"
         android:paddingBottom="@dimen/dp_50">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,15 +80,37 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_acts"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="4dp"
+                android:padding="7dp"
+                android:scaleType="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/iv_to_top"
+                app:layout_constraintRight_toRightOf="@+id/iv_to_top"
+                app:shapeAppearanceOverlay="@style/circleImageStyle" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_delete_act"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_delete_shop_act"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="@+id/iv_acts"
+                app:layout_constraintRight_toRightOf="@+id/iv_acts" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_to_top"
                 android:layout_width="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:src="@mipmap/ic_shop_back_top"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="50dp"
-                android:layout_marginEnd="2dp"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_height="wrap_content"/>
+                android:src="@mipmap/ic_shop_back_top"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>

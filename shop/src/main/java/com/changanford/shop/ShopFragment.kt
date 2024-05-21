@@ -21,6 +21,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.image.ItemCommonPics
@@ -59,10 +60,16 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
         binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { appBarLayout: AppBarLayout, i: Int ->
-            binding.smartRl.isEnabled = i >= 0
             val absOffset = abs(i).toFloat() * 2.5F
             val absOffset2 = abs(i).toFloat() * 1.5F
-            binding.ivToTop.isVisible = absOffset2 > MConstant.deviceHeight
+            if (absOffset2 > MConstant.deviceHeight) {
+                binding.ivToTop.visibility = View.VISIBLE
+                binding.smartRl.isEnabled = false
+            } else {
+                binding.ivToTop.visibility = View.INVISIBLE
+                binding.smartRl.isEnabled = true
+            }
+
             //改变透明度
             if (absOffset <= appBarLayout.height) {
                 val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
@@ -144,6 +151,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             })
 
         }
+        LiveDataBus.get().withs<String>(LiveDataBusKey.FINISH_SHOP_REFRESH).observe(this) {
+            binding.smartRl.finishRefresh()
+        }
     }
 
     private fun scrollTop(appBarLayout: AppBarLayout) {
@@ -153,7 +163,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 val topAndBottomOffset = behavior.topAndBottomOffset
                 if (topAndBottomOffset != 0) {
                     behavior.setTopAndBottomOffset(0)
-                    binding.ivToTop.isVisible = false
+                    binding.ivToTop.visibility = View.INVISIBLE
                 }
             }
         }
@@ -221,12 +231,12 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
         for (it in tabs) {
             val fragment = GoodsListFragment.newInstance(it.mallMallTagId, it.tagType)
-            fragment.setParentSmartRefreshLayout(binding.smartRl)
+//            fragment.setParentSmartRefreshLayout(binding.smartRl)
             fragments.add(fragment)
         }
         binding.viewpager.apply {
             adapter = ViewPage2AdapterFragment(this@ShopFragment, fragments)
-            offscreenPageLimit = 10
+            offscreenPageLimit = 5
             isSaveEnabled = false
             TabLayoutMediator(binding.tabLayout, this) { tab, tabPosition ->
                 val itemHelpTabBinding = ItemShopTabBinding.inflate(layoutInflater)
@@ -313,15 +323,35 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         viewModel.getFB()
     }
 
-    private fun getData(showLoading: Boolean = false) {
+    private fun getData(showLoading: Boolean = false, isOnRefresh: Boolean = false) {
+        viewModel.getActData()
         viewModel.getShopKingKongData()
         viewModel.getBannerData()
-        viewModel.getShopHomeData(showLoading)
+        if (!isOnRefresh) {
+            viewModel.getShopHomeData(showLoading)
+        } else {
+            LiveDataBus.get().with(LiveDataBusKey.STAR_SHOP_REFRESH).postValue("")
+        }
         viewModel.getShopConfig()
 //        viewModel.getClassification()
     }
 
     private fun addObserve() {
+        viewModel.actData.observe(this) {
+            binding.ivActs.isVisible = !it.isNullOrEmpty()
+            binding.ivDeleteAct.isVisible = !it.isNullOrEmpty()
+            if (!it.isNullOrEmpty()) {
+                val item = it[0]
+                binding.ivActs.loadImage(item.adImg)
+                binding.ivActs.setOnClickListener {
+                    JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
+                }
+                binding.ivDeleteAct.setOnClickListener {
+                    binding.ivActs.isVisible = false
+                    binding.ivDeleteAct.isVisible = false
+                }
+            }
+        }
         viewModel.shopConfigBean.observe(this) {
             binding.inTop.apply {
                 val killIsVisible = it.seckill_area_off
@@ -426,7 +456,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {
-        getData()
+        getData(isOnRefresh = true)
 //        val currentItem=binding.viewpager.currentItem
 //        fragments[currentItem].startRefresh()
     }

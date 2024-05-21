@@ -15,6 +15,7 @@ import com.changanford.common.listener.OnPerformListener
 import com.changanford.common.util.MineUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateGoodsDetails
 import com.changanford.common.util.toast.ToastUtils
@@ -217,6 +218,13 @@ class GoodsDetailsControl(
                     activity.getString(R.string.str_productEvaluationX, dataBean.evalCount)
                 imgGoodsCommentAvatar.load(itemData.avater, R.mipmap.head_default)
                 it.evalTimeTxt = sfDate.format(it.evalTime ?: 0)
+                val commentPics = itemData.evalImgs?.filter { it != "" }
+                ivCommentPic.isVisible = !commentPics.isNullOrEmpty()
+                if (!commentPics.isNullOrEmpty()) {
+                    ivCommentPic.loadImage(commentPics[0])
+                    tvMorePic.isVisible = commentPics.size > 1
+                    tvMorePic.text = "+${commentPics.size - 1}"
+                }
 //                it.evalTimeTxt= DateTimeUtil.formatFriendly(it.evalTime?:0)
                 model = it
             }
