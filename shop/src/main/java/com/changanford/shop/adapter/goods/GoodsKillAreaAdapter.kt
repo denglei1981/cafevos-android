@@ -39,7 +39,7 @@ class GoodsKillAreaAdapter(val viewModel: GoodsViewModel) :
             imgCover.load(imgPath)
             val fbOfLine = item.fbOfLine
             tvOrIntegral.visibility = if (null != fbOfLine && fbOfLine != "0") {
-                tvOrIntegral.text = item.getRMB(item.fbOfLine)
+                tvOrIntegral.text = "¥${item.getRMB(item.fbOfLine)}"
                 View.VISIBLE
             } else View.GONE
             tvStockPlusSalesCount.setText("${item.stockPlusSalesCount}")

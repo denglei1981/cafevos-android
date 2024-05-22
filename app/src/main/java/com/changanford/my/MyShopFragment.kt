@@ -87,6 +87,7 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
             }
             viewModel.deleteHistory(5, list) {
+                pageSize = 1
                 initRefreshData(1)
             }
         }

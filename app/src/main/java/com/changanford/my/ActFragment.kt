@@ -93,6 +93,7 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                 }
             }
             viewModel.deleteHistory(2, list) {
+                pageSize = 1
                 initRefreshData(1)
             }
         }

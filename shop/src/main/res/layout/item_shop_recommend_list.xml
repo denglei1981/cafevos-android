@@ -54,7 +54,7 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/color_d916"
+            android:textColor="@color/color_1700f4"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
@@ -67,7 +67,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginBottom="2dp"
             android:text="起"
-            android:textColor="@color/color_66"
+            android:textColor="@color/color_1700f4"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_price"
             app:layout_constraintLeft_toRightOf="@+id/tv_price" />

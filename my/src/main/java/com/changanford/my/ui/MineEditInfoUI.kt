@@ -259,7 +259,10 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
 
             binding.editConstellation.setRightDesc(user.constellation)
 
-            binding.editEmail.setRightDesc(user.email)
+            if (!user.email.isNullOrEmpty()) {
+                binding.editEmail.rightDesc = user.email
+            }
+
             if (user.mobile.isNullOrEmpty()) {
                 binding.editContactContent.setText(user.phone)
             } else {

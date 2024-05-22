@@ -2,6 +2,7 @@ package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -36,7 +37,9 @@ class GoodsAdapter :
 //            }
 //            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
 //            inVip.model=item
-            tvSecondName.visibility=if (item.secondName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+            ivNoStock.isVisible = item.stock <= 0
+            tvSecondName.visibility =
+                if (item.secondName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             tvSecondName.text = item.secondName
             tvIntegral.visibility = View.VISIBLE
             item.getRMB(item.normalFb)
@@ -58,11 +61,13 @@ class GoodsAdapter :
 //                    setBackgroundResource(R.drawable.shadow_b305bad5_2dp)
 //                    "新品"
                 }
+
                 "HOT_SALE" -> {
                     setImageResource(R.mipmap.ic_shop_item_top_hot)
 //                    setBackgroundResource(R.drawable.shadow_b30459e6_2dp)
                     "热销"
                 }
+
                 "MEMBER_DISCOUNT" -> {
                     setImageResource(R.mipmap.ic_shop_item_top_discount)
                     item.getRMB(item.vipFb)
@@ -71,8 +76,9 @@ class GoodsAdapter :
 //                    dataBinding.tvIntegral.visibility=View.GONE
 //                    "会员折扣"
                 }
+
                 "MEMBER_EXCLUSIVE" -> {
-                    setImageResource(R.mipmap.ic_shop_item_top_discount)
+                    setImageResource(R.mipmap.ic_shop_item_top_zx)
                     item.getRMB(item.vipFb)
 //                    dataBinding.inVip.lLayoutVip.visibility=View.VISIBLE
 //                    dataBinding.tvIntegral.visibility=View.GONE
@@ -80,11 +86,13 @@ class GoodsAdapter :
 //                    dataBinding.inVip.tvVipTypeName.setText(if("MEMBER_DISCOUNT"==secondarySpuPageTagType)R.string.str_vipDiscount else R.string.str_vipExclusive)
 //                    "会员专享"
                 }
+
                 "SECKILL" -> {
-                    visibility=View.GONE
+                    visibility = View.GONE
 //                    setBackgroundResource(R.drawable.shadow_66fa863e_2dp)
 //                    "秒杀"
                 }
+
                 else -> {// MAINTENANCE 维保商品
                     visibility = View.GONE
                     ""

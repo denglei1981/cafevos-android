@@ -20,10 +20,10 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.ext.loadImage
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.image.ItemCommonPics
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.widget.pop.CircleMainMenuPop
@@ -334,7 +334,8 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             binding.ivDeleteAct.isVisible = !it.isNullOrEmpty()
             if (!it.isNullOrEmpty()) {
                 val item = it[0]
-                binding.ivActs.loadImage(item.adImg)
+                GlideUtils.loadCircle(item.adImg,binding.ivActs)
+//                binding.ivActs.loadImage(item.adImg)
                 binding.ivActs.setOnClickListener {
                     JumpUtils.instans?.jump(item.jumpDataType, item.jumpDataValue)
                 }

@@ -127,6 +127,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                 }
             }
             viewModel.deleteHistory(1, list) {
+                pageSize = 1
                 initRefreshData(1)
             }
         }
@@ -177,7 +178,7 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                         total = it
                     }
                     completeRefresh(reponse?.data?.dataList, infoAdapter, total)
-                    if ( infoAdapter.isManage) {
+                    if (infoAdapter.isManage) {
                         infoAdapter.checkIsAllCheck()
                     }
                 }

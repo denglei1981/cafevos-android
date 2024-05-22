@@ -60,7 +60,7 @@ class RecommendAskAdapter :
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         binding?.let {
             it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
-            it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
+            it.layoutAnswer.layoutCount.tvAskFb.text =  "+${item.fbReward}"
             it.layoutAnswer.layoutCount.tvCount.text =
                 "${item.answerCount}回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
             it.layoutAnswer.tvContent.isVisible = false

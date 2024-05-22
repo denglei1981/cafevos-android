@@ -25,20 +25,20 @@
             tools:background="@color/black"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title_one"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_one_pic"
-            app:layout_constraintRight_toRightOf="@+id/iv_one_pic"
-            app:layout_constraintTop_toTopOf="@+id/iv_one_pic" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_title_one"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginEnd="12dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="22sp"-->
+<!--            app:layout_constraintLeft_toLeftOf="@+id/iv_one_pic"-->
+<!--            app:layout_constraintRight_toRightOf="@+id/iv_one_pic"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_one_pic" />-->
 
         <View
             android:id="@+id/v_line"
@@ -63,20 +63,20 @@
             tools:background="@color/black"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title_two"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_two_pic"
-            app:layout_constraintRight_toRightOf="@+id/iv_two_pic"
-            app:layout_constraintTop_toTopOf="@+id/iv_two_pic" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_title_two"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginEnd="12dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintLeft_toLeftOf="@+id/iv_two_pic"-->
+<!--            app:layout_constraintRight_toRightOf="@+id/iv_two_pic"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_two_pic" />-->
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_three_pic"
@@ -92,19 +92,19 @@
             tools:background="@color/black"
             tools:visibility="visible" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_title_three"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintLeft_toLeftOf="@+id/iv_three_pic"
-            app:layout_constraintRight_toRightOf="@+id/iv_three_pic"
-            app:layout_constraintTop_toTopOf="@+id/iv_three_pic" />
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tv_title_three"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="12dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginEnd="12dp"-->
+<!--            android:ellipsize="end"-->
+<!--            android:maxLines="1"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="14sp"-->
+<!--            app:layout_constraintLeft_toLeftOf="@+id/iv_three_pic"-->
+<!--            app:layout_constraintRight_toRightOf="@+id/iv_three_pic"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/iv_three_pic" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

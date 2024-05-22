@@ -108,8 +108,8 @@ class QuestionListAdapter(
     @SuppressLint("SetTextI18n", "NewApi")
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: QuestionItemBean) {
         binding?.let {
-            it.layoutAnswer.layoutCount.tvAskFb.isVisible = true
-            it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
+            it.layoutAnswer.layoutCount.tvAskFb.text = "+${item.fbReward}"
             it.layoutAnswer.layoutCount.tvCount.text =
                 "${item.answerCount}回答  ${item.viewVal}浏览"
             it.layoutAnswer.tvContent.isVisible = false

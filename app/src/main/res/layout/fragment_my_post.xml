@@ -8,16 +8,17 @@
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
-        app:srlEnableLoadMore="false"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        android:layout_height="match_parent">
+        app:srlEnableLoadMore="false">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ry_post"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:paddingStart="16dp"
-            android:layout_height="match_parent"/>
+            android:paddingEnd="16dp" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 </layout>

@@ -154,7 +154,6 @@ class GoodsDetailsControl(
                 val secKillInfo = dataBean.secKillInfo
                 if (null != secKillInfo) {
 //                    headerBinding.inGoodsInfo.tvConsumption.visibility = View.VISIBLE
-                    binding.inBottom.cbCollect.isVisible = false
                     headerBinding.inVip.layoutVip.visibility = View.GONE
                     headerBinding.inKill.apply {
                         layoutKill.visibility = View.VISIBLE

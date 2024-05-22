@@ -170,7 +170,9 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_marginTop="20dp"
-        android:background="@color/alertdialog_line" />
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/color_26000000" />
 
     <LinearLayout
         android:id="@+id/ll_buttom"
@@ -213,7 +215,7 @@
             android:id="@+id/ll_act"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="16dp"
             android:visibility="gone"
             tools:visibility="visible">
 
@@ -295,7 +297,7 @@
             android:id="@+id/ll_jbs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="16dp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="4"

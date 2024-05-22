@@ -8,6 +8,8 @@
     <FrameLayout
         android:id="@+id/cl_pics"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp" />
 
 </layout>

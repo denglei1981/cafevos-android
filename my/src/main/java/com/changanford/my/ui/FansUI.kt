@@ -38,9 +38,9 @@ import razerdp.basepopup.QuickPopupConfig
 class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
     var type: Int = 1 //1 粉丝，2 关注
     var userId: String = ""
-    var followId: String = ""
+    private var followId: String = ""
 
-    val fanAdapter: FansAdapter by lazy {
+    private val fanAdapter: FansAdapter by lazy {
         FansAdapter()
     }
 
@@ -132,7 +132,7 @@ class FansUI : BaseMineUI<UiFansBinding, SignViewModel>() {
                     it.itemText.setBackgroundResource(R.drawable.bg_bord_80a6_23)
                     when (item.isMutualAttention) {
                         1 -> {
-                            it.itemText.text = "相互关注"
+                            it.itemText.text = "互相关注"
                             item.isEachOther = true
                         }
 

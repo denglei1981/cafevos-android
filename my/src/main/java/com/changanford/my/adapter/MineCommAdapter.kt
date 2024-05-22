@@ -57,7 +57,6 @@ import com.changanford.my.databinding.ItemSignmonthdayBinding
 import com.changanford.my.databinding.ItemUniUserBinding
 import com.changanford.my.ui.UserAuthUI
 import com.changanford.my.viewmodel.SignViewModel
-import com.donkingliang.labels.LabelsView
 import com.luck.picture.lib.entity.LocalMedia
 import kotlinx.coroutines.launch
 
@@ -125,17 +124,13 @@ object MineCommAdapter {
 
             holder.dataBinding?.let {
                 it.itemName.setLabels(
-                    item.list,
-                    object : LabelsView.LabelTextProvider<HobbyItem> {
-                        override fun getLabelText(
-                            label: TextView?,
-                            position: Int,
-                            data: HobbyItem?
-                        ): CharSequence {
-                            label?.text = data?.hobbyName
-                            return data?.hobbyName.toString()
-                        }
-                    })
+                    item.list
+                ) { label, position, data ->
+                    label?.text = data?.hobbyName
+                    label?.isSingleLine = true
+                    label?.ellipsize = TextUtils.TruncateAt.END
+                    data?.hobbyName.toString()
+                }
 
                 var selects = arrayListOf<Int>()
                 hobbyIds?.let { hobbyId ->
@@ -206,6 +201,8 @@ object MineCommAdapter {
                 ) { label, position, data ->
                     label?.let {
                         it.text = data?.industryName
+                        label.isSingleLine = true
+                        label.ellipsize = TextUtils.TruncateAt.END
                         label.tag = data?.industryId.toString()
                     }
                     data?.industryName.toString()

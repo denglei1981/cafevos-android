@@ -40,7 +40,7 @@ class MyPostUI : BaseMineUI<UiMyPostBinding, ActViewModel>() {
         title = "我的帖子页"
 //        "${MConstant.imgcdn}".logE()
 
-        binding.postToolbar.toolbarTitle.text = "我的帖子"
+        binding.postToolbar.toolbarTitle.text = "我的发布"
         binding.postToolbar.toolbarSave.text = "草稿"
         binding.postToolbar.toolbarSave.visibility = View.VISIBLE
         binding.postToolbar.toolbar.setNavigationOnClickListener { finish() }

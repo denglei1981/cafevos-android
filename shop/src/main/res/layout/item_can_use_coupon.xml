@@ -33,10 +33,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="13dp"
                 android:scaleType="fitStart"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@mipmap/head_default"
-                tools:visibility="visible" />
+                tools:src="@mipmap/head_default" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/img_goodsCover"

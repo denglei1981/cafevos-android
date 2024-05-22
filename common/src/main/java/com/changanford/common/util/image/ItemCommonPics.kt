@@ -117,7 +117,7 @@ object ItemCommonPics {
                     ivPic.setOnClickListener {
                         JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
                     }
-                    tvTitle.text = pics[0].adName
+//                    tvTitle.text = pics[0].adName
                 }
                 binding.clPics.addView(fourView.root)
             }
@@ -134,8 +134,8 @@ object ItemCommonPics {
                     ivTwoPic.loadCompress(pics[1].getAdImgUrl())
                     ivOnePic.setCircular(12)
                     ivTwoPic.setCircular(12)
-                    tvTitleOne.text = pics[0].adName
-                    tvTitleTwo.text = pics[1].adName
+//                    tvTitleOne.text = pics[0].adName
+//                    tvTitleTwo.text = pics[1].adName
                     ivOnePic.setOnClickListener {
                         JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
                     }
@@ -160,9 +160,9 @@ object ItemCommonPics {
                     ivOnePic.setCircular(12)
                     ivTwoPic.setCircular(12)
                     ivThreePic.setCircular(12)
-                    tvTitleOne.text = pics[0].adName
-                    tvTitleTwo.text = pics[1].adName
-                    tvTitleThree.text = pics[2].adName
+//                    tvTitleOne.text = pics[0].adName
+//                    tvTitleTwo.text = pics[1].adName
+//                    tvTitleThree.text = pics[2].adName
                     ivOnePic.setOnClickListener {
                         JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
                     }
@@ -190,9 +190,9 @@ object ItemCommonPics {
                     ivOnePic.setCircular(12)
                     ivTwoPic.setCircular(12)
                     ivThreePic.setCircular(12)
-                    tvTitleOne.text = pics[0].adName
-                    tvTitleTwo.text = pics[1].adName
-                    tvTitleThree.text = pics[2].adName
+//                    tvTitleOne.text = pics[0].adName
+//                    tvTitleTwo.text = pics[1].adName
+//                    tvTitleThree.text = pics[2].adName
                     ivOnePic.setOnClickListener {
                         JumpUtils.instans?.jump(pics[0].jumpDataType,pics[0].jumpDataValue)
                     }

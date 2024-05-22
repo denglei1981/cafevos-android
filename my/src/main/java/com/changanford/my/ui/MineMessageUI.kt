@@ -3,11 +3,7 @@ package com.changanford.my.ui
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -17,14 +13,19 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.MyApp
-import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.MessageBean
 import com.changanford.common.bean.MessageItemData
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
@@ -34,9 +35,13 @@ import com.changanford.common.util.launchWithCatch
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
+import com.changanford.common.wutil.ShowPopUtils
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
-import com.changanford.my.databinding.*
+import com.changanford.my.databinding.ActivityMinemessageuiHeaderBinding
+import com.changanford.my.databinding.ItemMineMessageBinding
+import com.changanford.my.databinding.ItemMineMessageInfoSysBinding
+import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import com.scwang.smart.refresh.layout.api.RefreshLayout
@@ -375,16 +380,21 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 
                         }
                         0, 99 -> {
-                            AlertDialog(context).builder()
-                                .setTitle(item.messageTitle)
-                                .setMsg(item.messageContent)
-                                .setMsgSize(12)
-                                .setTitleSize(15)
-                                .cancelTitleBold()
-                                .setMsgHeight()
-                                .setMsgGravity()
-                                .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
-                                .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
+                            ShowPopUtils.showFordPaiCirclePop(
+                                item.messageTitle,
+                                item.messageContent,
+                                "我知道了"
+                            )
+//                            AlertDialog(context).builder()
+//                                .setTitle(item.messageTitle)
+//                                .setMsg(item.messageContent)
+//                                .setMsgSize(12)
+//                                .setTitleSize(15)
+//                                .cancelTitleBold()
+//                                .setMsgHeight()
+//                                .setMsgGravity()
+//                                .setMsgColor(ContextCompat.getColor(context, R.color.color_66))
+//                                .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                             read(getItemPosition(item))
                         }
                         else -> {

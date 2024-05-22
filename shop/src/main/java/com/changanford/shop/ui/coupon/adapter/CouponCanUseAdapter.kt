@@ -31,6 +31,7 @@ class CouponCanUseAdapter() :
             GlideUtils.loadBD(item.img, imgGoodsCover)
             tvUseNow.text = "去使用"
             GlideUtils.loadBD(item.markImg, ivVipTips)
+            ivVipTips.isVisible = !item.markImg.isNullOrEmpty()
             tvMoney.text = item.getShowMoney()
             tvExtendsTips.text = item.getBottomTips()
             tvGoodsTitle.text = item.couponName

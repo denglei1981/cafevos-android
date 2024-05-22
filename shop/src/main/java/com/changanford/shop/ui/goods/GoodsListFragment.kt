@@ -30,6 +30,9 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  */
 class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>(),
     SortControl.OnSelectSortListener {
+
+    private var filterPop: ShopFilterPricePop? = null
+
     companion object {
         fun newInstance(itemId: String, tagType: String? = null): GoodsListFragment {
             val bundle = Bundle()
@@ -95,6 +98,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
                 ascOrDesc = ascOrDesc
             )
         }
+        mAdapter.headerWithEmptyEnable = true
         LiveDataBus.get().with(LiveDataBusKey.STAR_SHOP_REFRESH).observe(this) {
             refreshData(true)
         }
@@ -166,7 +170,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
 
     override fun initData() {
         binding.recyclerView.adapter = mAdapter
-        mAdapter.setEmptyView(R.layout.view_empty)
+        mAdapter.setEmptyView(R.layout.view_empty_top)
         mAdapter.setOnItemClickListener { _, _, position ->
             mAdapter.data[position].apply {
                 val price =
@@ -222,7 +226,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
         }
     }
 
-    fun scrollToTop(){
+    fun scrollToTop() {
         binding.recyclerView.scrollToPosition(0)
     }
 
@@ -242,11 +246,16 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
     }
 
     private fun showFilterPop() {
-        ShopFilterPricePop(requireContext()).run {
-            setBackgroundColor(Color.TRANSPARENT)
-            showPopupWindow(headerBinding?.rb3)
-            initShopData()
+        if (filterPop == null) {
+            filterPop = ShopFilterPricePop(requireContext()).apply {
+                setBackgroundColor(Color.TRANSPARENT)
+                showPopupWindow(headerBinding?.rb3)
+                initShopData()
+            }
+        } else {
+            filterPop?.showPopupWindow(headerBinding?.rb3)
         }
+
     }
 
     /**

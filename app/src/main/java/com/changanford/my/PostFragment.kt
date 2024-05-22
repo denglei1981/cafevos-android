@@ -132,6 +132,7 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                 }
             }
             viewModel.deleteHistory(3, list) {
+                pageSize = 1
                 initRefreshData(1)
             }
         }

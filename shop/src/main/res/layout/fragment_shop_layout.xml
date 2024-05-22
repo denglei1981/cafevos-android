@@ -8,8 +8,8 @@
         android:id="@+id/smartRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srlEnableLoadMore="false"
-        android:paddingBottom="@dimen/dp_50">
+        android:paddingBottom="@dimen/dp_50"
+        app:srlEnableLoadMore="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -90,8 +90,7 @@
                 android:scaleType="center"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/iv_to_top"
-                app:layout_constraintRight_toRightOf="@+id/iv_to_top"
-                app:shapeAppearanceOverlay="@style/circleImageStyle" />
+                app:layout_constraintRight_toRightOf="@+id/iv_to_top" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_delete_act"
@@ -99,8 +98,8 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_delete_shop_act"
                 android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@+id/iv_acts"
-                app:layout_constraintRight_toRightOf="@+id/iv_acts" />
+                app:layout_constraintRight_toRightOf="@+id/iv_acts"
+                app:layout_constraintTop_toTopOf="@+id/iv_acts" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_to_top"

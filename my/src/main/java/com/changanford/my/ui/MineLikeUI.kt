@@ -8,7 +8,7 @@ import com.changanford.common.utilext.toast
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
 import com.changanford.my.adapter.MineCommAdapter
-import com.changanford.my.databinding.*
+import com.changanford.my.databinding.UiMineLikeBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 
@@ -24,7 +24,7 @@ class MineLikeUI : BaseMineUI<UiMineLikeBinding, SignViewModel>() {
 
     var adapter = MineCommAdapter.LikeAdapter(R.layout.item_like_one)
 
-    var hobbyIds: String? = null
+    private var hobbyIds: String? = null
 
     override fun initView() {
         binding.mineToolbar.toolbarTitle.text = "兴趣爱好"

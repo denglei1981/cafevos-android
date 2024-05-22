@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:gravity="center"
+        android:layout_marginStart="12dp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -23,7 +23,9 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/color_9916"
             tools:text="申请加精" />
 
     </LinearLayout>

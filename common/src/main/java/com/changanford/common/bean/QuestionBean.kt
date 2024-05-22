@@ -145,7 +145,7 @@ data class QuestionItemBean(
     val conQaQuestionId: String? = null,
     val content: String = "",
     val createTime: Long = 0,
-    val fbReward: String? = null,
+    val fbReward: Int = 0,
     val imgs: String? = null,
     val jumpType: Int = 0,
     val jumpValue: String? = null,
