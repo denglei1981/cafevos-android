@@ -127,27 +127,29 @@ class QuestionListAdapter(
                         } else {
                             ""
                         }
-                    tvContent.addUrlTag {
-                        imageUrl =
-                            if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(
-                                answer.qaUserVO?.avater
-                            )
-                        isCircle = true
-                        imageHeight = 25.dp
-                        imageWidth = 25.dp
-                        drawableZoomType = DrawableZoomType.CUSTOM
-                        leftTopRadius = 50.dp.toFloat()
-                        rightPadding = 3.dp
-                        startGradientBackgroundColor = Color.parseColor("#F6D242")
-                        endGradientBackgroundColor = Color.parseColor("#FF52E5")
-                        position = 0
-                    }.addTextTag {
-                        leftPadding = 3.dp
-                        rightPadding = 2.dp
-                        text =
-                            " ${if (answer.qaUserVO == null) "" else answer.qaUserVO?.nickName}: "
-                        textColor = ContextCompat.getColor(context, R.color.color_9916)
-                        backgroundColor = ContextCompat.getColor(context, R.color.white)
+                    if (!tvContent.text.isNullOrEmpty()){
+                        tvContent.addUrlTag {
+                            imageUrl =
+                                if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(
+                                    answer.qaUserVO?.avater
+                                )
+                            isCircle = true
+                            imageHeight = 25.dp
+                            imageWidth = 25.dp
+                            drawableZoomType = DrawableZoomType.CUSTOM
+                            leftTopRadius = 50.dp.toFloat()
+                            rightPadding = 3.dp
+                            startGradientBackgroundColor = Color.parseColor("#F6D242")
+                            endGradientBackgroundColor = Color.parseColor("#FF52E5")
+                            position = 0
+                        }.addTextTag {
+                            leftPadding = 3.dp
+                            rightPadding = 2.dp
+                            text =
+                                " ${if (answer.qaUserVO == null) "" else answer.qaUserVO?.nickName}: "
+                            textColor = ContextCompat.getColor(context, R.color.color_9916)
+                            backgroundColor = ContextCompat.getColor(context, R.color.white)
+                        }
                     }
                 }
             }

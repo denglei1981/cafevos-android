@@ -46,7 +46,7 @@ object PermissionPopUtil {
         fail: () -> Unit,
         activity: Activity = BaseApplication.curActivity,
     ) {
-
+        var isDismiss = false
         val pop = PermissionTipsPop(activity).apply {
             setBackgroundColor(MColor.PERMISSION_BG)
         }
@@ -55,13 +55,15 @@ object PermissionPopUtil {
             .checkAndRequestPermissions(permissions,
                 object : CheckRequestPermissionsListener {
                     override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-                        pop.dismiss()
+                        isDismiss = true
                         success.invoke()
+                        pop.dismiss()
                     }
 
                     override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-                        pop.dismiss()
+                        isDismiss = true
                         fail.invoke()
+                        pop.dismiss()
                     }
 
                 })
@@ -93,7 +95,9 @@ object PermissionPopUtil {
                             pop.setTitle(useTitle)
                             pop.setContent(useTips)
                             activity.runOnUiThread {
-                                pop.showPopupWindow()
+                                if (!isDismiss) {
+                                    pop.showPopupWindow()
+                                }
                             }
                         }
                     }

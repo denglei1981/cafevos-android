@@ -19,6 +19,7 @@ import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 import com.zhpan.bannerview.constants.PageStyle
 
+//优惠券中间页
 @Route(path = ARouterShopPath.CouponMiddleActivity)
 class CouponMiddleActivity : BaseActivity<ActivityCouponmiddleBinding, CouponViewModel>() {
     override fun initView() {

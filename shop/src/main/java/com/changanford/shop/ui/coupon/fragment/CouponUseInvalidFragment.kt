@@ -12,7 +12,8 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
 
 
-class CouponUseInvalidFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, CouponViewModel>(),
+class CouponUseInvalidFragment :
+    BaseLoadSirFragment<BaseRecyclerViewGrayBinding, CouponViewModel>(),
     OnRefreshListener {
 
     private val couponCanUseAdapter: CouponUseInvaildAdapter by lazy {
@@ -44,15 +45,15 @@ class CouponUseInvalidFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding
             viewModel.getCouponList(true, 3)
         }
         couponCanUseAdapter.loadMoreModule.loadMoreView = customLoadMoreView
-        viewModel.getCouponList(false, 3)
+//        viewModel.getCouponList(false, 3)
     }
 
     override fun initData() {
-
+        viewModel.getCouponList(false, 3)
     }
+
     override fun onStart() {
         super.onStart()
-        viewModel.getCouponList(true, 3)
     }
 
     override fun observe() {
@@ -63,10 +64,9 @@ class CouponUseInvalidFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding
                     couponCanUseAdapter.loadMoreModule.loadMoreComplete()
                     it.data.dataList?.let { it1 -> couponCanUseAdapter.addData(it1) }
                 } else {
-
-                    if(it.data==null||it.data.dataList==null||it.data.dataList!!.size==0){
+                    if (it.data == null || it.data.dataList == null || it.data.dataList!!.size == 0) {
                         showEmpty()
-                    }else{
+                    } else {
                         showContent()
                     }
                     binding.smartLayout.finishRefresh()

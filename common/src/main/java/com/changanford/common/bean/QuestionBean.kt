@@ -161,7 +161,9 @@ data class QuestionItemBean(
         } else {
             val mList = ArrayList<String>()
             qaAnswer?.answerContents?.forEach {
-                mList.add(it.imgUrl)
+                if (!it.imgUrl.isNullOrEmpty()){
+                    mList.add(it.imgUrl)
+                }
             }
             return mList
         }

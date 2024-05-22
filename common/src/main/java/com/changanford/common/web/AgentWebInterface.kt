@@ -970,7 +970,7 @@ class AgentWebInterface(
             activity?.let {
                 PictureUtil.startUCrop(
                     it,
-                    file?.absolutePath.toString(), UCrop.REQUEST_CROP, 16f, 9f
+                    file?.absolutePath.toString(), UCrop.REQUEST_CROP, 1f, 1f
                 )
             }
         }

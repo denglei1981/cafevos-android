@@ -25,6 +25,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
+//优惠券
 @Route(path = ARouterShopPath.CouponActivity)
 class CouponActivity : BaseActivity<ActivityMyCouponBinding, BaseViewModel>() {
     private var fragmentList: ArrayList<Fragment> = arrayListOf()

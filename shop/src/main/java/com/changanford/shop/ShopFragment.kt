@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
@@ -39,7 +38,6 @@ import com.changanford.shop.ui.goods.GoodsListFragment
 import com.changanford.shop.ui.goods.RecommendActivity
 import com.changanford.shop.utils.ScreenUtils
 import com.changanford.shop.viewmodel.GoodsViewModel
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
@@ -57,9 +55,10 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
     private val recommendAdapter by lazy { ShopRecommendListAdapter1() }
     private var defaultTagName: String? = null
     private var oldPosition = 0
+    private var selectFragmentPosition = 0
     override fun initView() {
         //tab吸顶的时候禁止掉 SmartRefreshLayout或者有滑动冲突
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.BaseOnOffsetChangedListener { appBarLayout: AppBarLayout, i: Int ->
+        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, i ->
             val absOffset = abs(i).toFloat() * 2.5F
             val absOffset2 = abs(i).toFloat() * 1.5F
             if (absOffset2 > MConstant.deviceHeight) {
@@ -89,7 +88,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                     imgMenu.setImageResource(R.mipmap.shop_menu_b)
                 }
             }
-        } as AppBarLayout.BaseOnOffsetChangedListener<*>)
+        }
         AppUtils.setStatusBarPaddingTop(binding.toolbar, requireActivity())
         addLiveDataBus()
         addObserve()
@@ -115,7 +114,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
                 }
             }
             ivToTop.setOnClickListener {
-                scrollTop(appbarLayout)
+                scrollTop()
             }
         }
         binding.inTop.banner.apply {
@@ -156,17 +155,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         }
     }
 
-    private fun scrollTop(appBarLayout: AppBarLayout) {
-        if (appBarLayout.layoutParams is CoordinatorLayout.LayoutParams) {
-            val behavior = (appBarLayout.layoutParams as CoordinatorLayout.LayoutParams).behavior
-            if (behavior is AppBarLayout.Behavior) {
-                val topAndBottomOffset = behavior.topAndBottomOffset
-                if (topAndBottomOffset != 0) {
-                    behavior.setTopAndBottomOffset(0)
-                    binding.ivToTop.visibility = View.INVISIBLE
-                }
-            }
-        }
+    private fun scrollTop() {
+        fragments[selectFragmentPosition].scrollToTop()
+        binding.appbarLayout.setExpanded(true)
     }
 
 
@@ -180,6 +171,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
 //        )
         binding.viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                selectFragmentPosition = position
                 viewModel.classificationLiveData.value?.get(position)?.apply {
                     WBuriedUtil.clickShopType(tagName)
                 }

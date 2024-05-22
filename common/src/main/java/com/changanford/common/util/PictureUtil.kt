@@ -83,7 +83,7 @@ object PictureUtil {
         uCrop.withOptions(options)
         //设置裁剪图片的宽高比，比如16：9
         uCrop.withAspectRatio(aspectRatioX, aspectRatioY)
-        //uCrop.useSourceImageAspectRatio();
+        uCrop.useSourceImageAspectRatio();
         //跳转裁剪页面
         //uCrop.useSourceImageAspectRatio();
         //跳转裁剪页面

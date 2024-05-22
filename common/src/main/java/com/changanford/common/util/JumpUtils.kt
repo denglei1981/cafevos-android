@@ -965,6 +965,10 @@ class JumpUtils {
                 startARouter(ARouterHomePath.AgentWebActivity, bundle, true)
             }
 
+            144 -> {//优惠券中间页
+                startARouter(ARouterShopPath.CouponMiddleActivity, true)
+            }
+
             10000 -> {
                 //外部H5
                 if (!value.isNullOrEmpty()) {

@@ -31,7 +31,6 @@ class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, C
     }
     override fun onStart() {
         super.onStart()
-        viewModel.getCouponList(true, 2)
     }
 
     override fun initView() {
@@ -42,11 +41,11 @@ class CouponUseOverFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, C
         couponCanUseAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getCouponList(true, 2)
         }
-        viewModel.getCouponList(false, 2)
+//        viewModel.getCouponList(false, 2)
     }
 
     override fun initData() {
-
+        viewModel.getCouponList(false, 2)
     }
 
     override fun observe() {

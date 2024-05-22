@@ -21,6 +21,7 @@ import com.changanford.common.text.addUrlTag
 import com.changanford.common.text.annotation.DrawableZoomType
 import com.changanford.common.text.config.TagConfig
 import com.changanford.common.text.config.Type
+import com.changanford.common.util.CountUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.utilext.toIntPx
@@ -61,7 +62,7 @@ class RecommendAskAdapter :
             it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
             it.layoutAnswer.layoutCount.tvAskFb.text = item.fbReward.toString()
             it.layoutAnswer.layoutCount.tvCount.text =
-                "${item.answerCount}回答  ${item.viewVal}浏览"
+                "${item.answerCount}回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
             it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
                 it.layoutAnswer.apply {

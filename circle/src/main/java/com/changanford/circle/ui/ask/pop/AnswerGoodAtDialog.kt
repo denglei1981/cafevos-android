@@ -90,7 +90,7 @@ class AnswerGoodAtDialog(var acts: Context, private val lifecycleOwner: Lifecycl
         }
         mDatabind.labelsType.setOnLabelClickListener { label, data, position ->
             val selectLabelDatas = mDatabind.labelsType.getSelectLabelDatas<PostKeywordBean>()
-            if (selectLabelDatas.size >= 3) {
+            if (selectLabelDatas.size >= 4) {
                 toastShow("最多选择3个")
             }
         }

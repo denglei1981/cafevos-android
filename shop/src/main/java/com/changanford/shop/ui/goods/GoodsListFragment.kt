@@ -222,6 +222,10 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
         }
     }
 
+    fun scrollToTop(){
+        binding.recyclerView.scrollToPosition(0)
+    }
+
     private fun refreshData(resetFilter: Boolean = false) {
         pageNo = 1
         if (resetFilter) {

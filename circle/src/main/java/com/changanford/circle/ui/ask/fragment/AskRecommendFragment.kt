@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import com.changanford.circle.R
 import com.changanford.circle.adapter.BannerAskTopAdapter
-import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.moreJumpData
 import com.changanford.circle.databinding.FragmentAskRecommendBinding
 import com.changanford.circle.databinding.HeaderCircleAskRecommendBinding
@@ -76,6 +75,7 @@ class AskRecommendFragment :
 
     override fun initView() {
         addHeadView()
+        recommendAskAdapter.headerWithEmptyEnable = true
     }
 
     override fun initData() {
@@ -298,7 +298,7 @@ class AskRecommendFragment :
                 headerBinding?.llMyQues?.isVisible = false
             }
         })
-        viewModel.questionListLiveData.observe(this, Observer {
+        viewModel.questionListLiveData.observe(this) {
             try {
                 if (it.isSuccess) {
                     if (it.isLoadMore) {
@@ -307,10 +307,12 @@ class AskRecommendFragment :
                     } else {
                         binding.refreshLayout.finishRefresh()
                         if (it.data.dataList.size == 0) {
-                            val emptyList = arrayListOf<AskListMainData>()
-                            val askEmpty = AskListMainData(emptyType = 1)
-                            emptyList.add(askEmpty)
-                            recommendAskAdapter.setNewInstance(emptyList)
+//                            val emptyList = arrayListOf<AskListMainData>()
+//                            val askEmpty = AskListMainData(emptyType = 1)
+//                            emptyList.add(askEmpty)
+//                            recommendAskAdapter.setNewInstance(emptyList)
+                            recommendAskAdapter.setList(null)
+                            recommendAskAdapter.setEmptyView(R.layout.circle_empty_layout)
                         } else {
                             recommendAskAdapter.setNewInstance(it.data.dataList)
                             binding.refreshLayout.setEnableLoadMore(true)
@@ -328,7 +330,7 @@ class AskRecommendFragment :
                 e.printStackTrace()
             }
 
-        })
+        }
         LiveDataBus.get().with(LiveDataBusKey.CHANGE_TEACH_INFO).observe(this, Observer {
             viewModel.getInitQuestion()
         })

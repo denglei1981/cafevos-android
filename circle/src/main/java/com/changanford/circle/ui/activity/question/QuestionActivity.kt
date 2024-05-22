@@ -149,6 +149,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                         labelAdapter.setItems(user.imags)
                         rvUserTag.adapter = labelAdapter
 //                        tvCarOwner.isVisible = getIdentity() == 2
+                        tvCarOwner.isVisible = !user.modelName.isNullOrEmpty()
                         tvCarOwner.text = user.modelName.plus("车主")
                         tvEdit.isVisible = isOneself() && getIdentity() == 1
                         tvContent.text = introduction
@@ -208,7 +209,8 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     val labelAdapter = LabelAdapter(this@QuestionActivity, 15)
                     labelAdapter.setItems(user.imags)
                     rvUserTag.adapter = labelAdapter
-                    tvCarOwner.isVisible = getIdentity() == 2
+//                    tvCarOwner.isVisible = getIdentity() == 2
+                    tvCarOwner.isVisible = !user.modelName.isNullOrEmpty()
                     tvCarOwner.text = user.modelName.plus("车主")
                     tvEdit.isVisible = isOneself() && getIdentity() == 1
                     tvContent.text = introduction
@@ -365,7 +367,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
 
     private fun initAppbarLayout() {
         //处理滑动顶部效果
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
@@ -417,7 +419,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                 binding.inHeader.topBar.background.mutate().alpha = 255
 //                binding.tvTitle.alpha = 1.0F
             }
-        })
+        }
     }
 
     override fun onRefresh(refreshLayout: RefreshLayout) {

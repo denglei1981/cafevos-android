@@ -40,9 +40,6 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
         couponCanUseAdapter.loadMoreModule.setOnLoadMoreListener {
             viewModel.getCouponList(true, 1)
         }
-
-
-        viewModel.getCouponList(false, 1)
         couponCanUseAdapter.setOnItemChildClickListener { adapter, view, position ->
             when(view.id){
                 R.id.iv_extends->{
@@ -54,12 +51,12 @@ class CouponCanUseFragment : BaseLoadSirFragment<BaseRecyclerViewGrayBinding, Co
     }
 
     override fun initData() {
-
+        viewModel.getCouponList(false, 1)
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.getCouponList(true, 1)
+//        viewModel.getCouponList(true, 1)
     }
 
     override fun observe() {
