@@ -125,6 +125,8 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
             )
             bottomBinding?.apply {
                 mAdapter.addFooterView(root)
+                ratingBar.rating = 0f
+                ratingBar2.rating = 0f
                 tvScore.text = getEvalText(this@PostEvaluationActivity, ratingBar.rating.toInt())
                 tvScore2.text = getEvalText(this@PostEvaluationActivity, ratingBar2.rating.toInt())
                 ratingBar.setOnRatingChangeListener { _, _, _ ->
@@ -143,7 +145,9 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
     }
 
     override fun initData() {
-        viewModel.getShopConfig()
+        if (!reviewEval){
+            viewModel.getShopConfig()
+        }
         viewModel.shopConfigBean.observe(this) {
             intent.getStringExtra("info")?.apply {
                 "订单评价：${this}".wLogE("okhttp")

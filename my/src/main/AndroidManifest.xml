@@ -160,6 +160,10 @@
         <activity
             android:name=".ui.CarDeleteUI"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.SelectAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Picture.Theme.Translucent" />
 
     </application>
 </manifest>

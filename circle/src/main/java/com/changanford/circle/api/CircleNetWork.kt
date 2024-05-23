@@ -1,6 +1,5 @@
 package com.changanford.circle.api
 
-import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.ChooseCircleBean
 import com.changanford.circle.bean.ChoseCircleBean
 import com.changanford.circle.bean.CircleActivityBean
@@ -26,6 +25,7 @@ import com.changanford.circle.bean.PostsDetailBean
 import com.changanford.circle.bean.QuestionCreateBean
 import com.changanford.circle.bean.SugesstionTopicDetailBean
 import com.changanford.common.bean.AdBean
+import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.CirCleHotList
 import com.changanford.common.bean.CirceHomeBean
 import com.changanford.common.bean.LocationDataBean

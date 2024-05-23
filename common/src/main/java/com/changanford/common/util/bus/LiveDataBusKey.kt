@@ -351,5 +351,6 @@ object LiveDataBusKey {
     const val FINISH_SHOP_REFRESH = "finishShopRefresh"
     const val STAR_SHOP_REFRESH = "starShopRefresh"
     const val FILTER_SHOP_REFRESH = "filterShopRefresh"
+    const val SELECT_ADDRESS_BACK = "selectAddressBack"
 }
 

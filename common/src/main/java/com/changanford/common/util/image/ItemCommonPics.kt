@@ -10,6 +10,7 @@ import com.changanford.common.databinding.ItemCommonPicsBinding
 import com.changanford.common.databinding.ItemCommonThreePicsBinding
 import com.changanford.common.databinding.ItemCommonTwoPicsBinding
 import com.changanford.common.databinding.ItemShopKgOnePicsBinding
+import com.changanford.common.databinding.ItemShopKgPicsBinding
 import com.changanford.common.databinding.ItemShopKgThreePicsBinding
 import com.changanford.common.databinding.ItemShopKgTwoPicsBinding
 import com.changanford.common.util.JumpUtils
@@ -99,7 +100,7 @@ object ItemCommonPics {
     }
 
 
-    fun setItemShopPics(binding: ItemCommonPicsBinding, pics: List<AdBean>?) {
+    fun setItemShopPics(binding: ItemShopKgPicsBinding, pics: List<AdBean>?) {
         if (pics.isNullOrEmpty()) {
             return
         }

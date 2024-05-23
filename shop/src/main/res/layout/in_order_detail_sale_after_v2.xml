@@ -65,6 +65,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/bg_bord_80a6_23"
             android:gravity="center"
+            android:visibility="gone"
             android:minWidth="@dimen/dp_98"
             android:text="申请退款"
             android:textColor="@color/color_d916"

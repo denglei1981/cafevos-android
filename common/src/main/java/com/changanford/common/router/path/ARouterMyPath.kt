@@ -83,6 +83,7 @@ object ARouterMyPath {
     const val OrderPayUI = "/my/OrderPayUI" // 新版确认支付页面
 
     const val OrderPaySuccessUI = "/my/OrderPaySuccessUI"
+    const val SelectAddressActivity = "/my/SelectAddressActivity"//选择地址
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

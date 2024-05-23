@@ -10,65 +10,64 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
         <com.changanford.shop.view.TopBar
             android:id="@+id/topBar"
-            app:title_text="@string/str_goodsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <View
-            android:background="@color/color_ee"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_5"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edt_search"
-            android:imeOptions="actionSearch"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_35"
-            android:gravity="center_vertical"
-            android:background="@drawable/shape_f2_18dp"
-            android:layout_marginStart="@dimen/dp_20"
-            android:layout_marginEnd="@dimen/dp_20"
-            android:layout_marginTop="@dimen/dp_10"
-            android:paddingStart="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_10"
-            android:drawablePadding="@dimen/dp_5"
-            android:textColorHint="@color/color_cc"
-            android:textSize="@dimen/sp_13"
-            android:hint="@string/str_goodsNameSearch"
-            android:textColor="@color/color_33"
-            android:singleLine="true"
-            android:drawableStart="@mipmap/icon_common_gray_search"/>
-        <com.changanford.common.ui.view.WTextView
-            android:id="@+id/tv_couponsDes"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingEnd="@dimen/dp_20"
-            android:paddingTop="@dimen/dp_13"
-            android:paddingBottom="@dimen/dp_13"
-            android:layout_marginTop="@dimen/dp_16"
-            android:background="@color/color_F2F4F9"
-            android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:title_text="@string/str_goodsList" />
+
+        <com.changanford.common.ui.view.WTextView
+            android:id="@+id/tv_couponsDes"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/dp_6"
+            android:background="@color/circle_081700F4"
+            android:gravity="center"
             android:minHeight="@dimen/dp_38"
-            tools:text="限时促销：以下商品可使用满100000打8.8折优惠券，最多减100"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
             android:textColor="@color/color_1700f4"
-            android:textSize="@dimen/sp_12"/>
+            android:textSize="@dimen/sp_12"
+            tools:text="限时促销：以下商品可使用满100000打8.8折优惠券，最多减100" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:drawablePadding="@dimen/dp_5"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_081700f4_8"
+            android:drawableStart="@mipmap/ic_home_top_search"
+            android:hint="@string/str_goodsNameSearch"
+            android:imeOptions="actionSearch"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_10"
+            android:singleLine="true"
+            android:textColor="@color/color_16"
+            android:textColorHint="@color/color_4d16"
+            android:textSize="@dimen/sp_14" />
+
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/sml"
-            android:paddingTop="@dimen/dp_10"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/dp_20">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
-                android:paddingEnd="@dimen/dp_6"
-                android:paddingStart="@dimen/dp_20"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_goods"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_6"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"/>
+                app:spanCount="2"
+                tools:listitem="@layout/item_goods" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
     </LinearLayout>
 </layout>

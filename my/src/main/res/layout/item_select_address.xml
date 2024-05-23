@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_address"
+        android:layout_width="match_parent"
+        android:paddingStart="16dp"
+        android:textSize="16sp"
+        android:textColor="@color/color_16"
+        android:layout_marginBottom="24dp"
+        android:layout_height="wrap_content"/>
+
+</layout>

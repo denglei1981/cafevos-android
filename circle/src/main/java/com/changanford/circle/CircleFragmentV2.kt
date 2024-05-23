@@ -77,7 +77,7 @@ class CircleFragmentV2 : BaseFragment<FragmentCircleV2Binding, CircleViewModel>(
     private val askRecommendFragment: AskRecommendFragment by lazy {
         AskRecommendFragment.newInstance()
     }
-    var fragmentList: ArrayList<Fragment> = arrayListOf()
+    private var fragmentList: ArrayList<Fragment> = arrayListOf()
     private var currentPosition = 0
     private var isFirst = true
 

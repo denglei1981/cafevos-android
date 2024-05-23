@@ -9,8 +9,8 @@
 
         <TextView
             android:id="@+id/item_q"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_25"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_19"
             android:layout_marginStart="16dp"
             android:layout_marginTop="5dp"
             android:background="@mipmap/icon_feedback"
@@ -28,10 +28,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
             android:text=""
             android:textColor="@color/color_d916"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/item_q"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@+id/item_q"
             app:layout_constraintRight_toLeftOf="@+id/checkbox"

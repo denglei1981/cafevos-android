@@ -48,6 +48,7 @@ class OrderEvaluationAdapter(val activity: Activity, var reviewEval: Boolean = f
             } else {
                 edtContent.hint = context.getString(R.string.str_pleaseEnterComments)
             }
+//            ratingBar.rating = 0f
             model = item
             executePendingBindings()
             imgGoodsCover.load(item.skuImg)

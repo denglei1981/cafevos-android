@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_empty_xz"
+            android:alpha="0.3"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="113dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/color_8016"
+            android:layout_marginTop="24dp"
+            android:text="当前还未获得勋章，快去点亮勋章吧"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

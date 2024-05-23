@@ -406,12 +406,16 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     }
 
+    //固定金额支付方法的时候,是否支持开启现金支付
+    private var allCashOff = false
+
     //是否是固定金额支付
     private fun isMixPayRegular(): Boolean {
         return try {
             val json = JSON.parseObject(createOrderBean?.mallPayConfig)
             val mPayType = json.getInteger("pay_type")
             val mixPayType = json.getInteger("mix_pay_type")
+            allCashOff = json.getBooleanValue("all_cash")
             mPayType == 2 && mixPayType == 1
         } catch (e: java.lang.Exception) {
             false
@@ -496,6 +500,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             isMixPayRegular() -> {
                 maxFb
             }
+
             fbBalance >= maxFb -> maxFb
             minRmbProportion != 0f -> {
                 minFb = totalPayFb - fbBalance
@@ -825,6 +830,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                                 rbCustom.visibility = View.GONE
                                 rbFbAndRmb.isVisible = false
                                 clickPayWay(1, false)
+                            } else if (allCashOff && getRMB("$totalPayFb") != "0") {
+                                rbRmb.isVisible = true
+                                rbCustom.visibility = View.GONE
+                                rbFbAndRmb.isVisible = true
+                                clickPayWay(0, false)
                             } else {
                                 rbRmb.isVisible = false
                                 rbCustom.visibility = View.GONE
@@ -980,7 +990,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private fun updatePayCustom() {
         binding.inPayWay.apply {
-            rbRmb.visibility = if (minRmbProportion != 0f) View.VISIBLE else View.GONE
+            rbRmb.visibility =
+                if (minRmbProportion != 0f || (isMixPayRegular() && allCashOff && getRMB("$totalPayFb") != "0")) View.VISIBLE else View.GONE
             if (maxUseFb > 0 && minRmbProportion != 0f) {
                 //是否选中自定义支付
                 val isCheck = rbCustom.isChecked

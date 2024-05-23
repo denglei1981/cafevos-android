@@ -346,6 +346,7 @@ data class GoodsDetailBean(
     var orginPrice0: String? = "0",//原价
     var orginPrice: String? = null,//原价
     var fbLine: String? = "0",
+    var customizeVisibleLabels: String? = "0",
     var fbPrice: String = "0",
     var orFbPrice: String = "0",
     val imgs: ArrayList<String> = arrayListOf(),

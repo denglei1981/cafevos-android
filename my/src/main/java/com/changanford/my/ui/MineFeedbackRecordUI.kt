@@ -25,11 +25,12 @@ class MineFeedbackRecordUI :
     private var pageNo = 1
 
     private val mAdapter by lazy {
-        MineCommAdapter.MineFeedbackRecordAdapter(this,viewModel)
+        MineCommAdapter.MineFeedbackRecordAdapter(this, viewModel)
     }
 
 
     override fun initView() {
+        setLoadSir(binding.refreshLayout)
         binding.adToolbar.toolbarTitle.text = "反馈记录"
         binding.adToolbar.toolbar.setNavigationOnClickListener {
             back()
@@ -79,10 +80,15 @@ class MineFeedbackRecordUI :
     override fun initData() {
         pageNo = 1
         getData(true)
-        viewModel._feedbackMineListBean.observe(this,{
+        viewModel._feedbackMineListBean.observe(this) {
             val list = it.dataList as ArrayList
             if (isFresh) {
                 mAdapter.getItems()?.clear()
+                if (list.isNullOrEmpty()) {
+                    showEmptyLoadView()
+                } else {
+                    showContent()
+                }
                 mAdapter.setItems(list)
                 binding.refreshLayout.finishRefresh()
             } else {
@@ -92,7 +98,7 @@ class MineFeedbackRecordUI :
             mAdapter.notifyDataSetChanged()
             val canLoadMore = it.total > mAdapter.getItems()!!.size
             binding.refreshLayout.setEnableLoadMore(canLoadMore)
-        })
+        }
     }
 
     private fun getData(isFresh: Boolean) {

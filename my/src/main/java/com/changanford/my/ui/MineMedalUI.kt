@@ -90,6 +90,8 @@ class MineMedalUI : BaseMineUI<UiMineMedalBinding, SignViewModel>() {
                 if (it.size > 0) {
                     binding.btnWear.text = "确认佩戴"
                 } else {
+                    medalAdapter.data.clear()
+                    medalAdapter.setEmptyView(R.layout.layout_empty_medai)
                     binding.btnWear.text = "去点亮勋章"
                 }
             }

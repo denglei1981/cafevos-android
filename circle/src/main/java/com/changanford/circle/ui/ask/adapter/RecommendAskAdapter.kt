@@ -13,8 +13,8 @@ import androidx.databinding.DataBindingUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.changanford.circle.R
-import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
+import com.changanford.common.bean.AskListMainData
 import com.changanford.common.text.addTag
 import com.changanford.common.text.addTextTag
 import com.changanford.common.text.addUrlTag
@@ -72,7 +72,7 @@ class RecommendAskAdapter :
                         !answer.content.isNullOrEmpty() || !answer.answerContents.isNullOrEmpty()
                     tvContent.text =
                         if (!answer.content.isNullOrEmpty()) answer.content else if (!answer.answerContents.isNullOrEmpty()) {
-                            answer.answerContents[0].imgDesc
+                            answer.answerContents!![0].imgDesc
                         } else {
                             ""
                         }

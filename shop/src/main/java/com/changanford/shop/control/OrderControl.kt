@@ -12,6 +12,7 @@ import com.changanford.common.bean.OrderRefundItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.RefundBean
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.toast.ToastUtils
@@ -255,62 +256,110 @@ class OrderControl(val context: Context, val viewModel: OrderViewModel?) {
      * 确认收货
      * */
     fun confirmGoods(item: OrderItemBean, listener: OnPerformListener? = null) {
-        PublicPop(context).apply {
-            showPopupWindow(
-                context.getString(R.string.str_confirmReceiptGoods),
-                null,
-                null,
-                object :
-                    PublicPop.OnPopClickListener {
-                    override fun onLeftClick() {
+        val cannotUnbindPop = ConfirmTwoBtnPop(context)
+        cannotUnbindPop.apply {
+            contentText.text = "是否确认收货"
+            btnCancel.text = "取消"
+            btnConfirm.text = "确认"
+            btnCancel.setOnClickListener {
+                dismiss()
+            }
+            btnConfirm.setOnClickListener {
+                viewModel?.confirmReceipt(item.orderNo, object : OnPerformListener {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onFinish(code: Int) {
+                        ToastUtils.showShortToast(R.string.str_goodsSuccessfully, context)
+                        item.orderStatusName = ""
+                        item.orderStatus = "FINISH"
+                        item.evalStatus = "WAIT_EVAL"
+                        listener?.onFinish(0)
                         dismiss()
                     }
-
-                    override fun onRightClick() {
-                        viewModel?.confirmReceipt(item.orderNo, object : OnPerformListener {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun onFinish(code: Int) {
-                                ToastUtils.showShortToast(R.string.str_goodsSuccessfully, context)
-                                item.orderStatusName = ""
-                                item.orderStatus = "FINISH"
-                                item.evalStatus = "WAIT_EVAL"
-                                listener?.onFinish(0)
-                                dismiss()
-                            }
-                        })
-                    }
                 })
+            }
+            showPopupWindow()
         }
+//        PublicPop(context).apply {
+//            showPopupWindow(
+//                context.getString(R.string.str_confirmReceiptGoods),
+//                null,
+//                null,
+//                object :
+//                    PublicPop.OnPopClickListener {
+//                    override fun onLeftClick() {
+//                        dismiss()
+//                    }
+//
+//                    override fun onRightClick() {
+//                        viewModel?.confirmReceipt(item.orderNo, object : OnPerformListener {
+//                            @SuppressLint("NotifyDataSetChanged")
+//                            override fun onFinish(code: Int) {
+//                                ToastUtils.showShortToast(R.string.str_goodsSuccessfully, context)
+//                                item.orderStatusName = ""
+//                                item.orderStatus = "FINISH"
+//                                item.evalStatus = "WAIT_EVAL"
+//                                listener?.onFinish(0)
+//                                dismiss()
+//                            }
+//                        })
+//                    }
+//                })
+//        }
     }
 
     /**
      * 取消订单
      * */
     fun cancelOrder(item: OrderItemBean, listener: OnPerformListener? = null) {
-        PublicPop(context).apply {
-            showPopupWindow(context.getString(R.string.prompt_cancelOrder), null, null, object :
-                PublicPop.OnPopClickListener {
-                override fun onLeftClick() {
-                    dismiss()
-                }
-
-                override fun onRightClick() {
-                    viewModel?.orderCancel(item.orderNo, object : OnPerformListener {
-                        @SuppressLint("NotifyDataSetChanged")
-                        override fun onFinish(code: Int) {
-                            ToastUtils.showShortToast(
-                                R.string.str_orderCancelledSuccessfully,
-                                context
-                            )
-                            item.orderStatusName = ""
-                            item.orderStatus = "CLOSED"
-                            listener?.onFinish(0)
-                            dismiss()
-                        }
-                    })
-                }
-            })
+        val cannotUnbindPop = ConfirmTwoBtnPop(context)
+        cannotUnbindPop.apply {
+            contentText.text = context.getString(R.string.prompt_cancelOrder)
+            btnCancel.text = "取消"
+            btnConfirm.text = "确认"
+            btnCancel.setOnClickListener {
+                dismiss()
+            }
+            btnConfirm.setOnClickListener {
+                viewModel?.orderCancel(item.orderNo, object : OnPerformListener {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onFinish(code: Int) {
+                        ToastUtils.showShortToast(
+                            R.string.str_orderCancelledSuccessfully,
+                            context
+                        )
+                        item.orderStatusName = ""
+                        item.orderStatus = "CLOSED"
+                        listener?.onFinish(0)
+                        dismiss()
+                    }
+                })
+            }
+            showPopupWindow()
         }
+//        PublicPop(context).apply {
+//            showPopupWindow(context.getString(R.string.prompt_cancelOrder), null, null, object :
+//                PublicPop.OnPopClickListener {
+//                override fun onLeftClick() {
+//                    dismiss()
+//                }
+//
+//                override fun onRightClick() {
+//                    viewModel?.orderCancel(item.orderNo, object : OnPerformListener {
+//                        @SuppressLint("NotifyDataSetChanged")
+//                        override fun onFinish(code: Int) {
+//                            ToastUtils.showShortToast(
+//                                R.string.str_orderCancelledSuccessfully,
+//                                context
+//                            )
+//                            item.orderStatusName = ""
+//                            item.orderStatus = "CLOSED"
+//                            listener?.onFinish(0)
+//                            dismiss()
+//                        }
+//                    })
+//                }
+//            })
+//        }
     }
 
     /**

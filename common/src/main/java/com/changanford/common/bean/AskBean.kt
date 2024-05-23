@@ -1,6 +1,5 @@
 package com.changanford.common.bean
 
-import android.text.TextUtils
 import com.chad.library.adapter.base.entity.MultiItemEntity
 
 data class MechanicData(
@@ -46,13 +45,26 @@ data class AskListMainData(
     }
     override var itemType: Int = getItemTypeLocal()
 
-     fun getPicLists(): List<String>? {
-        if (imgs.isEmpty()) {
-            return pisList
+    fun getPicLists(): List<String>? {
+        if (qaAnswer?.answerContents.isNullOrEmpty()) {
+            return null
         } else {
-            return  imgs.split(",")
+            val mList = ArrayList<String>()
+            qaAnswer?.answerContents?.forEach {
+                if (!it.imgUrl.isNullOrEmpty()) {
+                    mList.add(it.imgUrl)
+                }
+            }
+            return mList
         }
     }
+//     fun getPicLists(): List<String>? {
+//        if (imgs.isEmpty()) {
+//            return pisList
+//        } else {
+//            return  imgs.split(",")
+//        }
+//    }
 
 
 }
@@ -63,7 +75,8 @@ data class QaAnswer(
     val conQaAnswerId: Int,
     val content: String,
     val qaUserVO: QaUserVO,
-    val replyCount: Int
+    val replyCount: Int,
+    val answerContents: ArrayList<AnswerContentsData>?
 )
 
 data class QaUserVO(

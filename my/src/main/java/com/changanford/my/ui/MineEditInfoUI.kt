@@ -14,6 +14,7 @@ import com.changanford.common.bean.UserInfoBean
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.FordPaiBottomDialog
 import com.changanford.common.ui.dialog.LoadDialog
@@ -39,6 +40,7 @@ import com.changanford.common.widget.picker.entity.CountyEntity
 import com.changanford.common.widget.picker.entity.ProvinceEntity
 import com.changanford.my.BaseMineUI
 import com.changanford.my.R
+import com.changanford.my.bean.SelectAllAddressBean
 import com.changanford.my.databinding.UiMineEditInfoBinding
 import com.changanford.my.interf.UploadPicCallback
 import com.changanford.my.viewmodel.SignViewModel
@@ -216,10 +218,11 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             map["nickname"] = it.toString()
             saveUserInfo(true, map)
         })
+        addressBack()
     }
 
     override fun initData() {
-        viewModel.getAllCity()
+
     }
 
     private fun full(user: UserInfoBean?) {
@@ -372,15 +375,16 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             )
 
             R.id.edit_address -> {
-                when {
-                    cityBean.isNullOrEmpty() -> {
-                        "请稍后再试".toast()
-                    }
-
-                    else -> {
-                        picker?.show()
-                    }
-                }
+                startARouter(ARouterMyPath.SelectAddressActivity)
+//                when {
+//                    cityBean.isNullOrEmpty() -> {
+//                        "请稍后再试".toast()
+//                    }
+//
+//                    else -> {
+//                        picker?.show()
+//                    }
+//                }
             }
 
             R.id.edit_industry -> {
@@ -652,7 +656,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     /**
      * 选择生日
      */
-    var datePicker: DatePicker? = null
+    private var datePicker: DatePicker? = null
 
     private fun selectBirthDay() {
         var bTime = "2000-01-01"
@@ -694,7 +698,7 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
     /**
      * 编辑昵称
      */
-    fun editNickname() {
+    private fun editNickname() {
         startActivity(
             Intent(this, EditNickNameUI::class.java).putExtra(
                 "nickName",
@@ -754,6 +758,35 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
                 full(userInfoBean)
             }
         })
+    }
+
+    private fun addressBack() {
+        LiveDataBus.get().withs<SelectAllAddressBean>(LiveDataBusKey.SELECT_ADDRESS_BACK)
+            .observe(this) {
+                val map = HashMap<String, String>()
+                var cityA: String = ""
+                    body["province"] = it.province
+                    body["provinceName"] = "${it.provinceName}"
+                    cityA = it.provinceName
+
+                    map["province"] = it.province
+                    map["provinceName"] = "${it.provinceName}"
+                    body["city"] = it.city
+                    body["cityName"] = "${it.cityName}"
+                    cityA += it.cityName
+
+                    map["city"] = it.city
+                    map["cityName"] = "${it.cityName}"
+                    body["district"] = it.district
+                    body["districtName"] = "${it.districtName}"
+                    cityA += it.districtName
+
+                    map["district"] = it.district
+                    map["districtName"] = "${it.districtName}"
+                binding.editAddress.rightDesc = cityA
+
+                saveUserInfo(false, map)
+            }
     }
 
     override fun onAddressPicked(

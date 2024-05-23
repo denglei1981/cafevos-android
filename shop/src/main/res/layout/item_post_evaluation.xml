@@ -64,7 +64,7 @@
             app:srb_drawableEmpty="@mipmap/shop_order_star_0"
             app:srb_drawableFilled="@mipmap/shop_order_star_1"
             app:srb_minimumStars="1"
-            app:srb_rating="5"
+            app:srb_rating="0"
             app:srb_starHeight="24dp"
             app:srb_starPadding="4dp"
             app:srb_starWidth="24dp" />

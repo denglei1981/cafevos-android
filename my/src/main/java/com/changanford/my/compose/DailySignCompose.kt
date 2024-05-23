@@ -33,6 +33,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.bean.DaySignBean
 import com.changanford.common.bean.Sign7DayBean
@@ -247,9 +249,11 @@ fun signOneDay(bean: Sign7DayBean? = null, hasGift: Boolean = true) {
                         }
                 )
             } else {
-                Box(modifier = Modifier
-                    .padding(bottom = 2.dp)
-                    .size(32.dp, 26.dp))
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 2.dp)
+                        .size(32.dp, 26.dp)
+                )
             }
         }
         Box(
@@ -347,9 +351,40 @@ fun showTimePicker(result: (String, String) -> Unit) {
         setOnTimePickedListener { hour, minute, second ->
             result("$hour", "$minute")
         }
+        wheelLayout.setIndicatorColor(ContextCompat.getColor(context, R.color.transparent))
+        wheelLayout.setSelectedTextColor(
+            ContextCompat.getColor(
+                topLineView.context,
+                R.color.color_1700F4
+            )
+        )
+        titleView.post {
+            titleView.text = "每日提醒时间"
+            titleView.textSize = 16f
+            titleView.setTextColor(
+                ContextCompat.getColor(
+                    topLineView.context,
+                    R.color.color_1700F4
+                )
+            )
+        }
+        topLineView.post {
+            headerView.setBackgroundColor(
+                ContextCompat.getColor(
+                    topLineView.context,
+                    R.color.white
+                )
+            )
+            topLineView.isVisible = false
+            okView.setTextColor(ContextCompat.getColor(topLineView.context, R.color.color_1700F4))
+            cancelView.setTextColor(
+                ContextCompat.getColor(
+                    topLineView.context,
+                    R.color.color_1700F4
+                )
+            )
+        }
         show()
     }
-    timePicker.titleView.post {
-        timePicker.titleView.text = "每日提醒时间"
-    }
+
 }

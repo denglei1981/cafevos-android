@@ -3,6 +3,7 @@ package com.changanford.home.adapter
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -19,11 +20,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.changanford.circle.databinding.ItemRecommendAskNoAnswerBinding
 import com.changanford.circle.ui.release.LocationMMapActivity
 import com.changanford.common.MyApp
 import com.changanford.common.adapter.CarHomeHistoryAdapter
 import com.changanford.common.adapter.LabelAdapter
 import com.changanford.common.basic.BaseApplication
+import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.AuthorBaseVo
 import com.changanford.common.bean.InfoFlowTopicVoBean
 import com.changanford.common.bean.PostDataBean
@@ -42,7 +45,12 @@ import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
+import com.changanford.common.text.addTag
+import com.changanford.common.text.addTextTag
+import com.changanford.common.text.addUrlTag
+import com.changanford.common.text.annotation.DrawableZoomType
+import com.changanford.common.text.config.TagConfig
+import com.changanford.common.text.config.Type
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.CountUtils
 import com.changanford.common.util.DisplayUtil
@@ -56,13 +64,16 @@ import com.changanford.common.util.image.ItemCommonPics
 import com.changanford.common.util.imageAndTextView
 import com.changanford.common.util.launchWithCatch
 import com.changanford.common.util.request.actionLike
+import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.GlideUtils.loadCompress
+import com.changanford.common.utilext.GlideUtils.loadCompress2
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.setDrawableLeft
 import com.changanford.common.utilext.setDrawableNull
 import com.changanford.common.utilext.setDrawableRight
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.home.R
@@ -71,7 +82,8 @@ import com.changanford.home.databinding.ItemHomeRecommendAdsBinding
 import com.changanford.home.databinding.ItemHomeRecommendItemsOneBinding
 import com.changanford.home.databinding.ItemRecommendHomeSpecialBinding
 import com.changanford.home.util.LoginUtil
-import com.qw.soul.permission.SoulPermission
+import com.core.util.dp
+import com.core.util.sp
 import com.qw.soul.permission.bean.Permissions
 
 
@@ -89,6 +101,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         addItemType(5, R.layout.item_recommend_home_special)
         //广告位
         addItemType(6, R.layout.item_home_recommend_ads)
+        //问答
+        addItemType(7, com.changanford.circle.R.layout.item_recommend_ask_no_answer)
         loadMoreModule.preLoadNumber = preLoadNumber
     }
 
@@ -138,6 +152,9 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         )
                     }
                 }
+            }
+            7->{//问答
+                item.questionRecord?.let { noAnswer(holder.itemView, it) }
             }
         }
     }
@@ -765,5 +782,113 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
         }
     }
 
+    @SuppressLint("SetTextI18n", "NewApi")
+    private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
+        binding?.let {
+            it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
+            it.layoutAnswer.layoutCount.tvAskFb.text =  "+${item.fbReward}"
+            it.layoutAnswer.layoutCount.tvCount.text =
+                "${item.answerCount}回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
+            it.layoutAnswer.tvContent.isVisible = false
+            item.qaAnswer?.let { answer ->
+                it.layoutAnswer.apply {
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
+//                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
+                    tvContent.isVisible =
+                        !answer.content.isNullOrEmpty() || !answer.answerContents.isNullOrEmpty()
+                    tvContent.text =
+                        if (!answer.content.isNullOrEmpty()) answer.content else if (!answer.answerContents.isNullOrEmpty()) {
+                            answer.answerContents!![0].imgDesc
+                        } else {
+                            ""
+                        }
+                    if (tvContent.text.isEmpty()){
+                        return@let
+                    }
+                    tvContent.addUrlTag {
+                        imageUrl =
+                            if (answer.qaUserVO?.avater == null) "111" else GlideUtils.handleImgUrl(
+                                answer.qaUserVO.avater
+                            )
+                        isCircle = true
+                        imageHeight = 25.dp
+                        imageWidth = 25.dp
+                        drawableZoomType = DrawableZoomType.CUSTOM
+                        leftTopRadius = 50.dp.toFloat()
+                        rightPadding = 3.dp
+                        startGradientBackgroundColor = Color.parseColor("#F6D242")
+                        endGradientBackgroundColor = Color.parseColor("#FF52E5")
+                        position = 0
+                    }.addTextTag {
+                        leftPadding = 3.dp
+                        rightPadding = 2.dp
+                        text = " ${if (answer.qaUserVO == null) "" else answer.qaUserVO.nickName}: "
+                        textColor = ContextCompat.getColor(context, com.changanford.circle.R.color.color_9916)
+                        backgroundColor = ContextCompat.getColor(context, com.changanford.circle.R.color.white)
+                    }
+                }
+            }
+        }
+    }
 
+    private fun noAnswer(view: View, item: AskListMainData) {
+        val binding = DataBindingUtil.bind<ItemRecommendAskNoAnswerBinding>(view)
+        showNoQuestion(binding, item)
+
+    }
+
+    private fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
+        showAnswer(binding, item)
+        val picList = item.getPicLists()
+        if (picList?.isEmpty() == false) {
+            binding?.layoutAnswer?.clPic?.isVisible = true
+            when {
+                picList.size > 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = false
+                        ivTwoOnePic.isVisible = true
+                        ivTwoTwoPic.isVisible = true
+                        ivTwoOnePic.loadCompress2(picList[0])
+                        ivTwoTwoPic.loadCompress2(picList[1])
+                        tvPicNum.isVisible = picList.size > 2
+                        tvPicNum.text = "+${picList.size - 2}"
+                    }
+                }
+
+                picList.size == 1 -> {
+                    binding?.layoutAnswer?.apply {
+                        ivOnePic.isVisible = true
+                        ivTwoOnePic.isVisible = false
+                        ivTwoTwoPic.isVisible = false
+                        ivOnePic.loadCompress2(picList[0])
+                        tvPicNum.isVisible = picList.size > 2
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        } else {
+            binding?.layoutAnswer?.clPic?.isVisible = false
+            binding?.layoutAnswer?.tvPicNum?.isVisible = false
+        }
+        binding?.layoutAskInfo?.run {
+            tvTitle.text = item.title
+            if (!item.questionTypeName.isNullOrEmpty()) {
+                val tvConfig = TagConfig(Type.TEXT).apply {
+                    text = item.questionTypeName
+                    textColor = ContextCompat.getColor(context, com.changanford.circle.R.color.white)
+                    marginRight = 10.toIntPx()
+                    backgroundColor =
+                        ContextCompat.getColor(context, com.changanford.circle.R.color.color_1700F4)
+                    radius = 4.dp.toFloat()
+                    textSize = 10.sp.toFloat()
+                    topPadding = 2.dp
+                    bottomPadding = 2.dp
+                }
+                tvTitle.addTag(tvConfig)
+            }
+        }
+    }
 }

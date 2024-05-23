@@ -129,7 +129,7 @@
                 android:layout_marginTop="@dimen/dp_28"
                 android:text="@string/str_number"
                 android:textColor="@color/color_16"
-                android:textSize="@dimen/sp_15"
+                android:textSize="@dimen/sp_14"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

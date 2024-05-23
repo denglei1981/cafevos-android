@@ -59,6 +59,7 @@ class GoodsDetailsControl(
     @SuppressLint("SimpleDateFormat")
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     private var popupWindow: GoodsAttrsPop? = null//规格属性弹窗
+    @SuppressLint("SetTextI18n")
     fun bindingData(dataBean: GoodsDetailBean) {
         popupWindow = null
         this.dataBean = dataBean
@@ -135,14 +136,18 @@ class GoodsDetailsControl(
             //会员专享
             "MEMBER_EXCLUSIVE" -> {
                 memberExclusive(dataBean)
-                headerBinding.inVip.tvVipExclusive.visibility = View.VISIBLE
+//                headerBinding.inVip.tvVipExclusive.visibility = View.VISIBLE
+                headerBinding.inVip.tvVipExclusive.isVisible = !dataBean.customizeVisibleLabels.isNullOrEmpty()
+                headerBinding.inVip.tvVipExclusive.text = dataBean.customizeVisibleLabels
             }
             //会员折扣
             "MEMBER_DISCOUNT" -> {
                 headerBinding.inVip.apply {
-                    imgVip.visibility = View.VISIBLE
+//                    imgVip.visibility = View.VISIBLE
+                    imgVip.isVisible = !dataBean.customizeVisibleLabels.isNullOrEmpty()
+                    imgVip.text = dataBean.customizeVisibleLabels
                     tvOldPrice.isVisible = true
-                    tvOldPrice.text = "原价：¥${dataBean.orginPrice}"
+                    tvOldPrice.text = "原价：¥${dataBean.getRMB(dataBean.orginPrice)}"
 //                    val textColor = ContextCompat.getColor(activity, R.color.color_F21C44)
 //                    tvRmbPrice.setTextColor(textColor)
 //                    tvFbPrice.setTextColor(textColor)

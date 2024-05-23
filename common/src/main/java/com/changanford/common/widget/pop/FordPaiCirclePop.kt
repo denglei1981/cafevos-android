@@ -1,5 +1,6 @@
 package com.changanford.common.widget.pop
 
+import android.text.method.ScrollingMovementMethod
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.R
@@ -34,6 +35,7 @@ class FordPaiCirclePop :
 
     private fun initView() {
         viewDataBinding?.apply {
+            tvContent.movementMethod = ScrollingMovementMethod.getInstance()
             tvBottom.setOnClickListener {
                 dismiss()
             }

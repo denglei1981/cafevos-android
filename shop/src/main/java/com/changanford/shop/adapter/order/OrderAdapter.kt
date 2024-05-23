@@ -286,6 +286,7 @@ class OrderAdapter(
                         }
                         dataBinding.btnCancel.apply {
                             visibility = View.VISIBLE
+                            setText(R.string.str_cancelOrder)
                             //取消订单
                             setOnClickListener { cancelOrder(position, item) }
                         }

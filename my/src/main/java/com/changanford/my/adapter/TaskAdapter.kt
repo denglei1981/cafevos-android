@@ -190,14 +190,14 @@ fun GrowUpAndJifenViewHolder(
         if (isGrowUp) {
             if (item.growth < 0) {
                 it.num.text = "${item.growth}"
-                it.num.setTextColor(Color.parseColor("#1700f4"))
+                it.num.setTextColor(Color.parseColor("#D9161616"))
             } else {
                 it.num.text = "+${item.growth}"
                 it.num.setTextColor(Color.parseColor("#1700f4"))
             }
         } else {
             if (item.integral < 0) {
-                it.num.setTextColor(Color.parseColor("#1700f4"))
+                it.num.setTextColor(Color.parseColor("#D9161616"))
                 holder.dataBinding?.num?.text = "${item.integral}"
             } else {
                 holder.dataBinding?.num?.text = "+${item.integral}"

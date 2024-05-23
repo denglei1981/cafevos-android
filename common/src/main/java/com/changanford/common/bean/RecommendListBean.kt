@@ -85,6 +85,7 @@ data class RecommendData(
     val postsViewsCount: Long = 0,
     val rtype: Int = 0, // rtype 推荐业务类型 1 资讯 2 帖子 3 活动
     val authors: AuthorBaseVo? = null,
+    val questionRecord: AskListMainData? = null,
     val timeStr: String = "",
     val city: String = "",
     val addrName: String? = "",
@@ -126,6 +127,10 @@ data class RecommendData(
         //话题
         if (rtype == 21) {
             return 4
+        }
+        //问答
+        if (rtype == 4) {
+            return 7
         }
         if (!TextUtils.isEmpty(postsPics)) { // 不为空时逗号，分隔。
             if (postsType == 3) {

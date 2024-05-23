@@ -5,13 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.changanford.common.MyApp
@@ -284,13 +282,14 @@ open class GoodsAttrsPop(
                     viewDataBinding.imgCover.load(dataBean.skuImg)
                     val limitBuyNum: Int = dataBean.getLimitBuyNum()
                     val htmlStr =
-                        if (limitBuyNum != 0) "<font color=\"#1700f4\">限购${limitBuyNum}件</font> " else ""
+                        if (limitBuyNum != 0) "<font color=\"#99161616\">限购${limitBuyNum}件</font> " else ""
                     val nowStock = dataBean.stock
                     WCommonUtil.htmlToString(
                         viewDataBinding.tvStock,
-                        "（${htmlStr}库存${nowStock}件）"
+//                        "（${htmlStr}库存${nowStock}件）"
+                        "（${htmlStr}）"
                     )
-                    viewDataBinding.tvStock.visibility = View.INVISIBLE
+                    viewDataBinding.tvStock.isVisible = limitBuyNum != 0
                     var isLimitBuyNum = false//是否限购
                     val max: Int = if (limitBuyNum in 1..nowStock) {
                         isLimitBuyNum = true
@@ -298,7 +297,7 @@ open class GoodsAttrsPop(
                     } else nowStock
                     viewDataBinding.addSubtractView.setMax(max, isLimitBuyNum)
 
-                    if (nowStock == 0&&!control.isInvalidSelectAttrs(_skuCode)) {
+                    if (nowStock == 0 && !control.isInvalidSelectAttrs(_skuCode)) {
                         isOutStockSubscribe()
                     } else {
                         control.bindingBtn(

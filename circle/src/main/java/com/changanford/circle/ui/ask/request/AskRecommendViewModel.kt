@@ -2,11 +2,11 @@ package com.changanford.circle.ui.ask.request
 
 import androidx.lifecycle.MutableLiveData
 import com.changanford.circle.api.CircleNetWork
-import com.changanford.circle.bean.AskListMainData
 import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.MechanicData
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
+import com.changanford.common.bean.AskListMainData
 import com.changanford.common.bean.QuestionData
 import com.changanford.common.bean.QuestionInfoBean
 import com.changanford.common.net.ApiClient
