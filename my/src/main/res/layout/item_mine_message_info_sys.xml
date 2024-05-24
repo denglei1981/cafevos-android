@@ -27,88 +27,91 @@
         <com.mcxtzhang.swipemenulib.SwipeMenuLayout
             android:id="@+id/swipe_layout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:clickable="true"
-            android:focusable="true"
-            android:layout_height="wrap_content">
+            android:focusable="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:ellipsize="end"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:enabled="true"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:text="创建圈子审核结果"
-                android:textColor="#071726"
-                android:textSize="15sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/arrow_r"
-                app:layout_constraintTop_toTopOf="parent" />
-            <ImageView
-                android:id="@+id/message_status"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:background="@drawable/message_have_bg"
-                android:layout_marginRight="@dimen/dp_10"
-                app:layout_constraintRight_toLeftOf="@+id/arrow_r"
-                app:layout_constraintTop_toTopOf="@+id/arrow_r"
-                app:layout_constraintBottom_toBottomOf="@id/arrow_r"/>
-            <ImageView
-                android:id="@+id/arrow_r"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/dp_10"
-                android:src="@mipmap/arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/title"
-                app:layout_constraintLeft_toRightOf="@+id/title"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/title" />
+                android:background="@color/white"
+                android:padding="8dp">
 
-            <View
-                android:id="@+id/line"
-                style="@style/line"
-                android:layout_marginHorizontal="@dimen/dp_10"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:ellipsize="end"
+                    android:enabled="true"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="创建圈子审核结果"
+                    android:textColor="#071726"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/arrow_r"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/message_status"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/message_have_bg"
+                    app:layout_constraintBottom_toBottomOf="@id/arrow_r"
+                    app:layout_constraintRight_toLeftOf="@+id/arrow_r"
+                    app:layout_constraintTop_toTopOf="@+id/arrow_r" />
+
+                <ImageView
+                    android:id="@+id/arrow_r"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:src="@mipmap/arrow_right"
+                    app:layout_constraintBottom_toBottomOf="@+id/title"
+                    app:layout_constraintLeft_toRightOf="@+id/title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/title" />
+
+                <View
+                    android:id="@+id/line"
+                    style="@style/line"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
-            <TextView
-                android:id="@+id/message_des"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="left"
-                android:text="恭喜你创建的圈子审核通过，点击查看圈子详情"
-                android:textColor="#71747B"
-                android:textSize="13sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/message_des"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="left"
+                    android:text="恭喜你创建的圈子审核通过，点击查看圈子详情"
+                    android:textColor="#71747B"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/delete"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_ltlb_blue_corner10"
+                android:gravity="center"
                 android:text="删除"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_15"
-                android:gravity="center"
-                android:background="@drawable/bg_ltlb_blue_corner10"
-                android:layout_width="@dimen/dp_70"
-                android:layout_height="match_parent"/>
+                android:textSize="@dimen/sp_15" />
         </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
 
     </LinearLayout>

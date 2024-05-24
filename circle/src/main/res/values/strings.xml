@@ -37,7 +37,7 @@
     <string name="search_location">搜索地点</string>
     <string name="str_askQuestions">提问</string>
     <string name="str_myQuestionAndAnswer">我的问答</string>
-    <string name="str_taQuestionAndAnswer">问答红人信息</string>
+    <string name="str_taQuestionAndAnswer">TA的问答</string>
     <string name="str_technicianInformation">技师信息</string>
     <string name="question_title_tips">问题(5-20个字)</string>
     <string name="please_write">问题(5-20个字)</string>
@@ -50,7 +50,7 @@
     <string name="str_circleType">圈子分类</string>
     <string name="str_cancel">取消</string>
     <string name="str_determine">确定</string>
-    <string name="str_redskinsInformation">问答红人信息</string>
+    <string name="str_redskinsInformation">TA的问答</string>
     <string name="str_successfullyJoined">已成功加入</string>
     <string name="str_exit">退出</string>
     <string name="str_setIdentity">设置身份</string>

@@ -21,7 +21,7 @@ import razerdp.util.animation.TranslationConfig
  *Time on 2021/9/24
  *Purpose
  */
-class ShopFilterPricePop(context: Context) :
+class ShopFilterPricePop(context: Context,val type:String) :
     BasePopupWindow(context) {
 
     private var binding: PopShopFilterPriceBinding =
@@ -39,6 +39,7 @@ class ShopFilterPricePop(context: Context) :
     private fun initView() {
         binding.ryPrice.adapter = adapter
         binding.tvReset.setOnClickListener {
+            adapter.selectPosition = 0
             initShopData()
             binding.etOne.setText("")
             binding.etTwo.setText("")
@@ -93,7 +94,7 @@ class ShopFilterPricePop(context: Context) :
                         else -> ShopFilterSelectBean(-1, -1)
                     }
                 }
-            LiveDataBus.get().with(LiveDataBusKey.FILTER_SHOP_REFRESH).postValue(filterPriceBean)
+            LiveDataBus.get().with(LiveDataBusKey.FILTER_SHOP_REFRESH+type).postValue(filterPriceBean)
             dismiss()
         }
     }

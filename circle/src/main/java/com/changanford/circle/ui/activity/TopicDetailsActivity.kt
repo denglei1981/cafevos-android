@@ -20,8 +20,6 @@ import com.changanford.circle.ui.fragment.CircleDetailsFragmentV2
 import com.changanford.circle.viewmodel.CircleShareModel
 import com.changanford.circle.viewmodel.TopicDetailsViewModel
 import com.changanford.circle.widget.pop.CircleDetailsPop
-import com.changanford.circle.widget.titles.PostTransitionPagerTitleView
-import com.changanford.circle.widget.titles.ScaleTransitionPagerTitleView
 import com.changanford.circle.widget.titles.TopicTransitionPagerTitleView
 import com.changanford.common.adapter.TopicDetailCarAdapter
 import com.changanford.common.basic.BaseActivity
@@ -422,7 +420,20 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     )
                 }帖子, ${CountUtils.formatNum(it.viewsCount.toString(), false)}浏览"
                 tvType.text = it.name
-                tvContent.text = it.description
+                if (!it.description.isNullOrEmpty()) {
+                    tvContent.text = it.description
+                    tvContent.isVisible = true
+                    webView.isVisible = false
+                } else {
+                    webView.isVisible = true
+                    tvContent.isVisible = false
+                    it.descHtml?.let {
+                        webView.loadDataWithBaseURL(
+                            null,
+                            it, "text/html", "utf-8", null
+                        )
+                    }
+                }
             }
             binding.barTitleTv.text = it.name
 

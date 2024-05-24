@@ -70,7 +70,7 @@ class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>()
     override fun initData() {
         viewModel.getShopConfig()
         viewModel.shopConfigBean.observe(this) {
-            it.order_list_roll?.apply {
+            it?.order_list_roll?.apply {
                 //跑马灯
                 binding.topContent.apply {
                     isVisible = !content.isNullOrEmpty()

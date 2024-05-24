@@ -28,6 +28,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.ui.ConfirmPop
 import com.changanford.common.ui.dialog.AlertThreeFilletDialog
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.updateMainGio
@@ -119,6 +120,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         headerView.refreshRv.layoutManager = LinearLayoutManager(this)
         headerView.refreshRv.adapter = adapter
 
+        binding.mineRefresh.refreshRv.setItemViewCacheSize(200)
         binding.mineRefresh.refreshRv.layoutManager = LinearLayoutManager(this)
         binding.mineRefresh.refreshRv.adapter = adapter2
         adapter2.addHeaderView(headerView.root)
@@ -240,6 +242,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                     0 -> {
                         startARouter(ARouterMyPath.MineMessageSysInfoUI, bundle)
                     }
+
                     1, 2 -> {
                         bundle.putInt("value", holder.adapterPosition + 2)
                         startARouter(ARouterMyPath.MineMessageInfoUI, bundle)
@@ -258,6 +261,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
             1 -> {//有未读
                 binding.mineToolbar.toolbarSave.text = "全部已读"
             }
+
             0 -> {//其他
                 binding.mineToolbar.toolbarSave.isEnabled = false
                 binding.mineToolbar.toolbarSave.text = "全部已读"
@@ -331,6 +335,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
         ) {
 
             holder.dataBinding?.let {
+                MUtils.setTopMargin(it.root, 10, holder.absoluteAdapterPosition)
                 it.title.text = item.messageTitle
                 it.date.text = "${TimeUtils.InputTimetamp(item.sendTime.toString())}"
                 it.messageDes.text = item.messageContent
@@ -379,6 +384,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
                             }
 
                         }
+
                         0, 99 -> {
                             ShowPopUtils.showFordPaiCirclePop(
                                 item.messageTitle,
@@ -397,6 +403,7 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 //                                .setNegativeButton("我知道了", R.color.pop_1B3B89) { }.show()
                             read(getItemPosition(item))
                         }
+
                         else -> {
                             JumpUtils.instans?.jump(
                                 item.jumpDataType,

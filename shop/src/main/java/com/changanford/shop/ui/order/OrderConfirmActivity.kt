@@ -152,14 +152,14 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         orderConfirmType = infoBean.orderConfirmType ?: 0
         initObserve()
         edtCustomOnTextChanged()
-        formattingData()
+        formattingData(true)
         initOrderSkuItems()
     }
 
     /**
      * 格式化数据
      * */
-    private fun formattingData() {
+    private fun formattingData(isConfim: Boolean = false) {
         val skuItems = arrayListOf<ConfirmOrderInfoBean>()
         var totalBuyNum = 0
         var totalOriginalFb = 0
@@ -192,9 +192,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         infoBean.totalBuyNum = totalBuyNum
         infoBean.totalOriginalFb = totalOriginalFb
         infoBean.totalFb = totalFb
-        bindInfo()
-        //获取优惠券信息
-        viewModel.confirmOrder(orderConfirmType, skuItems)
+        if (isConfim) {
+            bindInfo()
+            //获取优惠券信息
+            viewModel.confirmOrder(orderConfirmType, skuItems)
+        }
     }
 
     private fun initOrderSkuItems() {
@@ -229,6 +231,16 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //优惠券、skuItems
         viewModel.createOrderBean.observe(this) {
             it?.let { it1 -> setDiscount(it1) }
+            it?.skuItems?.forEach { skuItems ->
+                dataListBean?.forEach { goods ->
+                    if (goods.skuId == skuItems.skuId) {
+                        skuItems.unitPriceFb?.let {
+                            goods.fbPrice = it
+                        }
+                    }
+                }
+            }
+            formattingData()
             createOrderBean = it
             infoBean.freightPrice = it?.freight ?: "0.00"
             binding.inOrderInfo.apply {

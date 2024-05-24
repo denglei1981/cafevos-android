@@ -36,7 +36,7 @@ class RefundOrderItemAdapter() :
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
             tvIntegral.text = "实付价￥${item.getMPayPrice()}"
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvOldPrice.text = "原价￥${item.price}"
+            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice)}"
 //            showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
@@ -65,7 +65,16 @@ class RefundOrderItemAdapter() :
         val fbNumber = item.price
 
 //        val str = "${WCommonUtil.getRMBBigDecimal("${(item.price?.toInt()?:0)/(item.buyNum?.toInt()?:1)}")}([icon] ${(item.price?.toInt()?:0)/(item.buyNum?.toInt()?:1)})"
-        val str = "${WCommonUtil.getRMBBigDecimal("${getHeatNum(item.price, 2).divide(BigDecimal(item.buyNum))}")}([icon] ${getHeatNum(item.price).divide(BigDecimal(item.buyNum))})"
+        val str = "${
+            WCommonUtil.getRMBBigDecimal(
+                "${
+                    getHeatNum(
+                        item.price,
+                        2
+                    ).divide(BigDecimal(item.buyNum))
+                }"
+            )
+        }([icon] ${getHeatNum(item.price).divide(BigDecimal(item.buyNum))})"
         //先设置原始文本
         text?.text = str
         //使用post方法，在TextView完成绘制流程后在消息队列中被调用

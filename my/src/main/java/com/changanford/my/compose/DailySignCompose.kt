@@ -361,12 +361,12 @@ fun showTimePicker(result: (String, String) -> Unit) {
         titleView.post {
             titleView.text = "每日提醒时间"
             titleView.textSize = 16f
-            titleView.setTextColor(
-                ContextCompat.getColor(
-                    topLineView.context,
-                    R.color.color_1700F4
-                )
-            )
+//            titleView.setTextColor(
+//                ContextCompat.getColor(
+//                    topLineView.context,
+//                    R.color.color_1700F4
+//                )
+//            )
         }
         topLineView.post {
             headerView.setBackgroundColor(
@@ -376,13 +376,13 @@ fun showTimePicker(result: (String, String) -> Unit) {
                 )
             )
             topLineView.isVisible = false
-            okView.setTextColor(ContextCompat.getColor(topLineView.context, R.color.color_1700F4))
-            cancelView.setTextColor(
-                ContextCompat.getColor(
-                    topLineView.context,
-                    R.color.color_1700F4
-                )
-            )
+//            okView.setTextColor(ContextCompat.getColor(topLineView.context, R.color.color_1700F4))
+//            cancelView.setTextColor(
+//                ContextCompat.getColor(
+//                    topLineView.context,
+//                    R.color.color_1700F4
+//                )
+//            )
         }
         show()
     }

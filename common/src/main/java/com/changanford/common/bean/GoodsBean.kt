@@ -761,6 +761,17 @@ data class OrderItemBean(
         return "${unit ?: ""}${rmbPrice ?: "0"}"
     }
 
+    fun getRMB2(fb: String? = fbCost, unit: String? = "¥"): String {
+        var   mRmbPrice=""
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            mRmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
+        }
+        return "${unit ?: ""}${mRmbPrice ?: "0"}"
+    }
+
     fun getTagList(): List<String> {
         if (!TextUtils.isEmpty(specifications)) {
             return specifications!!.split(",").filter { "" != it }
@@ -1174,6 +1185,7 @@ data class RefundOrderItemBean(
     var mallOrderSkuId: String,
     var buyNum: Int,
     var price: String,
+    var orginPrice: String,
     var singleRefundType: String,
     var sharedFb: Int,
     var sharedRmb: Double,
@@ -1187,6 +1199,17 @@ data class RefundOrderItemBean(
             return specifications.split(",").filter { "" != it }
         }
         return arrayListOf()
+    }
+
+    fun getRMB2(fb: String? , unit: String? = "¥"): String {
+        var   mRmbPrice=""
+        if (fb != null) {
+            val fbToFloat = fb.toFloat()
+            val remainder = fbToFloat % 100
+            mRmbPrice = if (remainder > 0) "${fbToFloat / 100}"
+            else "${fb.toInt() / 100}"
+        }
+        return "${unit ?: ""}${mRmbPrice ?: "0"}"
     }
 
     fun getMPayPrice(): String {
@@ -1208,6 +1231,7 @@ data class RefundOrderItemBean(
         }
         return "0"
     }
+
 
     fun getSaleNum(): String {
         return "申请数量: ".plus(refundNum)

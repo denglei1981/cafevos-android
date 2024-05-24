@@ -32,7 +32,9 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
 
         type = intent.getIntExtra("type", 1)
         intent.getStringExtra("content")?.let {
-            binding.nickInput.setText("${it}")
+            if (it != "请填写") {
+                binding.nickInput.setText("${it}")
+            }
             binding.inputHint.text = "${if (it.length > max) max else it.length}/${max}"
             inputValue = it
         }
@@ -44,6 +46,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
                 binding.nickInput.hint = "请填写个性签名"
 //                binding.nickNameTitle.text = "个性签名"
             }
+
             2 -> {
                 binding.mineToolbar.toolbarTitle.text = "修改邮箱"
                 binding.nickInput.hint = "请填写邮箱"
@@ -99,6 +102,7 @@ class InputUI : BaseMineUI<UiEditInputBinding, SignViewModel>() {
                     map["brief"] = nickName
                     saveUserInfo(true, map)
                 }
+
                 2 -> {
                     if (!MineUtils.isEmail(nickName)) {
                         "请输入正确的邮箱".toast()

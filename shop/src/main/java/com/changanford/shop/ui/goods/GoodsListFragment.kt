@@ -102,7 +102,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
         LiveDataBus.get().with(LiveDataBusKey.STAR_SHOP_REFRESH).observe(this) {
             refreshData(true)
         }
-        LiveDataBus.get().withs<ShopFilterSelectBean>(LiveDataBusKey.FILTER_SHOP_REFRESH)
+        LiveDataBus.get().withs<ShopFilterSelectBean>(LiveDataBusKey.FILTER_SHOP_REFRESH+tagId)
             .observe(this) {
                 filterPriceBean = it
                 refreshData()
@@ -247,7 +247,7 @@ class GoodsListFragment : BaseFragment<FragmentNewShopBinding, GoodsViewModel>()
 
     private fun showFilterPop() {
         if (filterPop == null) {
-            filterPop = ShopFilterPricePop(requireContext()).apply {
+            filterPop = ShopFilterPricePop(requireContext(), type = tagId).apply {
                 setBackgroundColor(Color.TRANSPARENT)
                 showPopupWindow(headerBinding?.rb3)
                 initShopData()

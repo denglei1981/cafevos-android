@@ -2,6 +2,7 @@ package com.changanford.circle.ui.ask.pop
 
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
@@ -20,6 +21,7 @@ import com.changanford.common.net.onSuccess
 import com.changanford.common.ui.dialog.BaseAppCompatDialog
 import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.launchWithCatch
+import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toastShow
 
 
@@ -117,6 +119,10 @@ class AnswerGoodAtDialog(var acts: Context, private val lifecycleOwner: Lifecycl
                         label?.let {
                             it.text = data?.dictLabel
                             label.tag = data?.dictValue
+                            label.isSingleLine = true
+                            label.minWidth = 80.toIntPx()
+                            label.maxWidth = 123.toIntPx()
+                            label.ellipsize = TextUtils.TruncateAt.END
                         }
                         data?.dictLabel.toString()
                     }

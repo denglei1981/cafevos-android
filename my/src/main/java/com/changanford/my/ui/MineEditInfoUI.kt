@@ -273,7 +273,9 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             }
 
             if (!user.provinceName.isNullOrEmpty()) {
-                binding.editAddress.setRightDesc("${user.provinceName}${user.cityName}${user.districtName}")
+                val address =
+                    "${user.provinceName}${user.cityName}${user.districtName}".replace("null", "")
+                binding.editAddress.rightDesc = address
                 body["province"] = "${user.province}"
                 body["city"] = "${user.city}"
                 body["district"] = "${user.district}"
@@ -765,24 +767,28 @@ class MineEditInfoUI : BaseMineUI<UiMineEditInfoBinding, SignViewModel>(),
             .observe(this) {
                 val map = HashMap<String, String>()
                 var cityA: String = ""
-                    body["province"] = it.province
-                    body["provinceName"] = "${it.provinceName}"
-                    cityA = it.provinceName
+                body["province"] = it.province
+                body["provinceName"] = "${it.provinceName}"
+                cityA = it.provinceName
+                map["province"] = it.province
+                map["provinceName"] = "${it.provinceName}"
 
-                    map["province"] = it.province
-                    map["provinceName"] = "${it.provinceName}"
+                if (it.city.isNotEmpty()) {
                     body["city"] = it.city
                     body["cityName"] = "${it.cityName}"
                     cityA += it.cityName
-
                     map["city"] = it.city
                     map["cityName"] = "${it.cityName}"
+                }
+
+                if (it.district.isNotEmpty()) {
                     body["district"] = it.district
                     body["districtName"] = "${it.districtName}"
                     cityA += it.districtName
-
                     map["district"] = it.district
                     map["districtName"] = "${it.districtName}"
+                }
+
                 binding.editAddress.rightDesc = cityA
 
                 saveUserInfo(false, map)

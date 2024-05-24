@@ -35,7 +35,8 @@ class SelectAddressActivity : BaseMineUI<ActivitySelectAddressBinding, SignViewM
 
     override fun initView() {
         setLoadSir(binding.ryAddress)
-        binding.toolbar.toolbarTitle.text = "选择地区"
+        binding.toolbarTop.toolbarTitle.text = "选择地区"
+        binding.toolbarTop.toolbar.setNavigationOnClickListener { finish() }
         binding.ryAddress.adapter = adapter
         adapter.setOnItemClickListener { _, view, position ->
             val item = adapter.getItem(position)
@@ -202,6 +203,15 @@ class SelectAddressActivity : BaseMineUI<ActivitySelectAddressBinding, SignViewM
             }
         }
         adapter.setList(useList)
+        if (useList.isEmpty()){
+            selectAllBean.city = ""
+            selectAllBean.cityName = ""
+            selectAllBean.district = ""
+            selectAllBean.districtName = ""
+            LiveDataBus.get().with(LiveDataBusKey.SELECT_ADDRESS_BACK)
+                .postValue(selectAllBean)
+            finish()
+        }
     }
 
     private fun findSelectDistrict(code: String) {
@@ -216,6 +226,13 @@ class SelectAddressActivity : BaseMineUI<ActivitySelectAddressBinding, SignViewM
             }
         }
         adapter.setList(useList)
+        if (useList.isEmpty()){
+            selectAllBean.district = ""
+            selectAllBean.districtName = ""
+            LiveDataBus.get().with(LiveDataBusKey.SELECT_ADDRESS_BACK)
+                .postValue(selectAllBean)
+            finish()
+        }
     }
 
     private fun cityList(cityBean: ArrayList<CityBeanItem>?) {

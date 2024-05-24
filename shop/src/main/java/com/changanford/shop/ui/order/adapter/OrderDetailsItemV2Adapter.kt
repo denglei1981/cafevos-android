@@ -53,7 +53,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
 
             tvIntegral.text = "实付价￥${item.getMPayPrice()}"
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvOldPrice.text = "原价￥${item.price}"
+            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice)}"
             val layoutManager = FlowLayoutManager(context, false, true)
             recyclerView.layoutManager = layoutManager
             val goodsAttributeAdapter = GoodsAttributeAdapter()

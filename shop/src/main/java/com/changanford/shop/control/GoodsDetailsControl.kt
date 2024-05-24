@@ -143,9 +143,9 @@ class GoodsDetailsControl(
             //会员折扣
             "MEMBER_DISCOUNT" -> {
                 headerBinding.inVip.apply {
-//                    imgVip.visibility = View.VISIBLE
-                    imgVip.isVisible = !dataBean.customizeVisibleLabels.isNullOrEmpty()
-                    imgVip.text = dataBean.customizeVisibleLabels
+                    imgVip.visibility = View.VISIBLE
+//                    imgVip.isVisible = !dataBean.customizeVisibleLabels.isNullOrEmpty()
+//                    imgVip.text = dataBean.customizeVisibleLabels
                     tvOldPrice.isVisible = true
                     tvOldPrice.text = "原价：¥${dataBean.getRMB(dataBean.orginPrice)}"
 //                    val textColor = ContextCompat.getColor(activity, R.color.color_F21C44)

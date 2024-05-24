@@ -210,7 +210,11 @@ class ActViewModel : ViewModel() {
                 var body = HashMap<String, Any>()
                 body["pageNo"] = pageNo
                 body["pageSize"] = "20"
-                body["queryParams"] = mapOf("userId" to userId, "isGood" to isGood)
+                if (isGood == null || isGood == 0) {
+                    body["queryParams"] = mapOf("userId" to userId)
+                } else {
+                    body["queryParams"] = mapOf("userId" to userId, "isGood" to isGood)
+                }
                 var rkey = getRandomKey()
                 apiService.queryMineSendPost(body.header(rkey), body.body(rkey))
             })

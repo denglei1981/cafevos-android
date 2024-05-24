@@ -29,5 +29,10 @@
             android:background="@color/color_1a4a" />
 
 
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="16dp"/>
     </LinearLayout>
 </layout>

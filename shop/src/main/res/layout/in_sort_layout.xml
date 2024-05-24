@@ -15,7 +15,7 @@
         android:paddingStart="@dimen/dp_16"
         android:paddingTop="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16"
-        android:paddingBottom="@dimen/dp_10">
+        android:paddingBottom="@dimen/dp_16">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_0"

@@ -143,9 +143,11 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inOrderInfo.tvOtherValue.visibility = View.GONE
         showShoppingInfo(dataBean)
         showTotalTag(binding.inGoodsInfo1.tvTotalPrice, dataBean)
+        val usePrice=if (dataBean.fbMemberDiscount.isNullOrEmpty()) dataBean.fbOfOrderPrice else (dataBean.fbOfOrderPrice.toInt()+dataBean.fbMemberDiscount!!.toInt()).toString()
         // 商品金额原价
         binding.inGoodsInfo1.tvIntegralGoods.text =
-            WCommonUtil.getRMBBigDecimal(dataBean.fbOfOrderPrice)
+//            WCommonUtil.getRMBBigDecimal((dataBean.fbOfOrderPrice.toInt()+dataBean.fbMemberDiscount?.toInt()).toString())
+            WCommonUtil.getRMBBigDecimal(usePrice)
         viewModel.getOrderStatus(orderStatus, evalStatus).apply {
             dataBean.orderStatusName = this
             when (this) {

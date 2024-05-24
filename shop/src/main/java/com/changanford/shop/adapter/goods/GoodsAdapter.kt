@@ -24,9 +24,11 @@ class GoodsAdapter :
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemGoodsBinding>, item: GoodsItemBean) {
         holder.dataBinding?.apply {
+            ivNoStock.isVisible = item.stock <= 0
             //维保商品数据需要转换处理
             item.mallWbGoodsId?.apply {
                 if ("0" != this) item.maintenanceToGoods()
+                ivNoStock.isVisible = false
             }
             imgGoodsCover.load(item.getImgPath())
 //            tvOrIntegral.apply {
@@ -37,7 +39,6 @@ class GoodsAdapter :
 //            }
 //            item.vipFb=WCommonUtil.getRMB(item.vipFb,"")
 //            inVip.model=item
-            ivNoStock.isVisible = item.stock <= 0
             tvSecondName.visibility =
                 if (item.secondName.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             tvSecondName.text = item.secondName

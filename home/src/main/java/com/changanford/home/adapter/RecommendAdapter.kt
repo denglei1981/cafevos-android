@@ -153,7 +153,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                     }
                 }
             }
-            7->{//问答
+
+            7 -> {//问答
                 item.questionRecord?.let { noAnswer(holder.itemView, it) }
             }
         }
@@ -786,9 +787,14 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         binding?.let {
             it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
-            it.layoutAnswer.layoutCount.tvAskFb.text =  "+${item.fbReward}"
+            it.layoutAnswer.layoutCount.tvAskFb.text = "+${item.fbReward}"
             it.layoutAnswer.layoutCount.tvCount.text =
-                "${item.answerCount}回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
+                "${
+                    CountUtils.formatNum(
+                        item.answerCount.toString(),
+                        false
+                    )
+                }回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
             it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
                 it.layoutAnswer.apply {
@@ -802,7 +808,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         } else {
                             ""
                         }
-                    if (tvContent.text.isEmpty()){
+                    if (tvContent.text.isEmpty()) {
                         return@let
                     }
                     tvContent.addUrlTag {
@@ -823,8 +829,12 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
                         leftPadding = 3.dp
                         rightPadding = 2.dp
                         text = " ${if (answer.qaUserVO == null) "" else answer.qaUserVO.nickName}: "
-                        textColor = ContextCompat.getColor(context, com.changanford.circle.R.color.color_9916)
-                        backgroundColor = ContextCompat.getColor(context, com.changanford.circle.R.color.white)
+                        textColor = ContextCompat.getColor(
+                            context,
+                            com.changanford.circle.R.color.color_9916
+                        )
+                        backgroundColor =
+                            ContextCompat.getColor(context, com.changanford.circle.R.color.white)
                     }
                 }
             }
@@ -833,12 +843,16 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
 
     private fun noAnswer(view: View, item: AskListMainData) {
         val binding = DataBindingUtil.bind<ItemRecommendAskNoAnswerBinding>(view)
+        binding?.vLine?.isVisible = true
         showNoQuestion(binding, item)
 
     }
 
     private fun showNoQuestion(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         showAnswer(binding, item)
+        binding?.root?.setOnClickListener {
+            JumpUtils.instans?.jump(item.jumpType.toIntOrNull(), item.jumpValue)
+        }
         val picList = item.getPicLists()
         if (picList?.isEmpty() == false) {
             binding?.layoutAnswer?.clPic?.isVisible = true
@@ -878,7 +892,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             if (!item.questionTypeName.isNullOrEmpty()) {
                 val tvConfig = TagConfig(Type.TEXT).apply {
                     text = item.questionTypeName
-                    textColor = ContextCompat.getColor(context, com.changanford.circle.R.color.white)
+                    textColor =
+                        ContextCompat.getColor(context, com.changanford.circle.R.color.white)
                     marginRight = 10.toIntPx()
                     backgroundColor =
                         ContextCompat.getColor(context, com.changanford.circle.R.color.color_1700F4)

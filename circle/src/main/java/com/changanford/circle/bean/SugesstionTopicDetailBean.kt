@@ -14,6 +14,7 @@ data class SugesstionTopicDetailBean(
     val likesCount: Int,
     val isBuyCarDiary: Int,
     val name: String,
+    val descHtml: String?,
     val heat: String,
     val pic: String,
     val postsCount: Int,
