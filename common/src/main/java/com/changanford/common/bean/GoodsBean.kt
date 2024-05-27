@@ -678,6 +678,7 @@ data class OrderItemBean(
     val jumpDataType: Int? = null,
     val jumpDataValue: String? = null,
     val orderBrief: String = "",
+    val jumpOfWb: JumpOfWb? = null,
     val orderImg: String = "",
     var orderStatusName: String? = "",
     val skuName: String? = null,
@@ -761,15 +762,15 @@ data class OrderItemBean(
         return "${unit ?: ""}${rmbPrice ?: "0"}"
     }
 
-    fun getRMB2(fb: String? = fbCost, unit: String? = "¥"): String {
-        var   mRmbPrice=""
+    fun getRMB2(fb: String? = fbCost): String {
+        var mRmbPrice = ""
         if (fb != null) {
             val fbToFloat = fb.toFloat()
             val remainder = fbToFloat % 100
             mRmbPrice = if (remainder > 0) "${fbToFloat / 100}"
             else "${fb.toInt() / 100}"
         }
-        return "${unit ?: ""}${mRmbPrice ?: "0"}"
+        return mRmbPrice ?: "0"
     }
 
     fun getTagList(): List<String> {
@@ -1201,15 +1202,15 @@ data class RefundOrderItemBean(
         return arrayListOf()
     }
 
-    fun getRMB2(fb: String? , unit: String? = "¥"): String {
-        var   mRmbPrice=""
+    fun getRMB2(fb: String?): String {
+        var mRmbPrice = ""
         if (fb != null) {
             val fbToFloat = fb.toFloat()
             val remainder = fbToFloat % 100
             mRmbPrice = if (remainder > 0) "${fbToFloat / 100}"
             else "${fb.toInt() / 100}"
         }
-        return "${unit ?: ""}${mRmbPrice ?: "0"}"
+        return mRmbPrice ?: "0"
     }
 
     fun getMPayPrice(): String {
@@ -1257,3 +1258,5 @@ data class RefundBean(
 ) {
 
 }
+
+data class JumpOfWb(val jumpCode: Int, val jumpVal: String)

@@ -2,46 +2,60 @@ package com.changanford.shop.ui.order.request
 
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.GoodsDetailBean
-import com.changanford.common.bean.GoodsItemBean
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.bean.InvoiceDetails
-import kotlinx.coroutines.launch
-import java.math.BigDecimal
-import java.nio.channels.NetworkChannel
 
 
 class GetInvoiceViewModel : BaseViewModel() {
 
 
-    var  invoiceLiveData: MutableLiveData<String> = MutableLiveData()
+    var invoiceLiveData: MutableLiveData<String> = MutableLiveData()
 
-    var  invoiceDetailsLiveData: MutableLiveData<InvoiceDetails> = MutableLiveData()
-    fun getUserInvoiceAdd(addressId:String,invoiceHeader:String,invoiceHeaderName:String,invoiceRmb:String,mallMallOrderId:String,mallMallOrderNo:String,taxpayerIdentifier:String="",memo:String="") {
-        launch(true,block = {
+    var invoiceDetailsLiveData: MutableLiveData<InvoiceDetails> = MutableLiveData()
+    fun getUserInvoiceAdd(
+        addressId: String,
+        invoiceHeader: String,
+        invoiceHeaderName: String,
+        invoiceRmb: String,
+        mallMallOrderId: String,
+        mallMallOrderNo: String,
+        email: String,
+        phone: String,
+        taxpayerIdentifier: String = "",
+        memo: String = ""
+    ) {
+        launch(true, block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            body["addressId"] =addressId
-            body["invoiceHeader"]=invoiceHeader
-            body["invoiceHeaderName"]=invoiceHeaderName
-            body["invoiceRmb"]=invoiceRmb
-            body["mallMallOrderId"]=mallMallOrderId
-            body["mallMallOrderNo"]=mallMallOrderNo
-            if(!TextUtils.isEmpty(taxpayerIdentifier)){
-                body["taxpayerIdentifier"]=taxpayerIdentifier
+//            body["addressId"] =addressId
+            body["invoiceHeader"] = invoiceHeader
+            body["invoiceHeaderName"] = invoiceHeaderName
+            body["invoiceRmb"] = invoiceRmb
+            body["email"] = email
+            if (phone.isNotEmpty()) {
+                body["phone"] = phone
             }
-            if(!TextUtils.isEmpty(memo)){
-                body["memo"]= memo
+            body["mallMallOrderId"] = mallMallOrderId
+            body["mallMallOrderNo"] = mallMallOrderNo
+            if (!TextUtils.isEmpty(taxpayerIdentifier)) {
+                body["taxpayerIdentifier"] = taxpayerIdentifier
+            }
+            if (!TextUtils.isEmpty(memo)) {
+                body["memo"] = memo
             }
 
             ApiClient.createApi<ShopNetWorkApi>()
@@ -56,14 +70,15 @@ class GetInvoiceViewModel : BaseViewModel() {
                 }
         })
     }
+
     /**
      *  查看发票详情
      * */
-    fun getUserInvoiceDetail(mallMallOrderNo:String){
+    fun getUserInvoiceDetail(mallMallOrderNo: String) {
         launch(block = {
             val body = MyApp.mContext.createHashMap()
             val rKey = getRandomKey()
-            body["mallMallOrderNo"] =mallMallOrderNo
+            body["mallMallOrderNo"] = mallMallOrderNo
 
             ApiClient.createApi<ShopNetWorkApi>()
                 .userInvoiceDetail(body.header(rKey), body.body(rKey))
@@ -75,7 +90,9 @@ class GetInvoiceViewModel : BaseViewModel() {
                 }
         })
     }
+
     var addressList: MutableLiveData<ArrayList<AddressBeanItem>?> = MutableLiveData()
+
     /**
      * 获取地址列表
      * */
@@ -94,8 +111,6 @@ class GetInvoiceViewModel : BaseViewModel() {
 
         })
     }
-
-
 
 
 }

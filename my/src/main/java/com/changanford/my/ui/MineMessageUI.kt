@@ -344,6 +344,17 @@ class MineMessageUI : BaseMineUI<RefreshLayoutWithTitleBinding, SignViewModel>()
 //                } else {
 //                    it.arrowR.visibility = View.VISIBLE
 //                }
+                if (item.itemHeight == null) {
+                    it.root.post {
+                        item.itemHeight = it.root.height
+                    }
+                } else {
+                    val layoutParams = it.llContent.layoutParams
+                    item.itemHeight?.let {
+                        layoutParams.height = item.itemHeight!!
+                    }
+                    it.llContent.layoutParams = layoutParams
+                }
                 it.messageStatus.isVisible = item.status == 0
                 it.delete.setOnClickListener { v ->
                     AlertThreeFilletDialog(mContext).builder().setMsg("是否确认删除本条消息？")

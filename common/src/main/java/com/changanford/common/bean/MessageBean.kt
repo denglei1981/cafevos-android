@@ -51,6 +51,7 @@ data class MessageItemData(
     val messageTitle: String,
     val sourceType: String?,
     val sendTime: Long,
+    var itemHeight:Int?=null,
     var status: Int,//消息状态 0 未读取， 1 已读取
     val userMessageId: Int,
     val messageFollowType: Int,// 0 其它消息 1 关注消息

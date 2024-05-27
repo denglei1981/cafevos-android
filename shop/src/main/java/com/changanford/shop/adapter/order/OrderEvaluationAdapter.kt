@@ -43,7 +43,7 @@ class OrderEvaluationAdapter(val activity: Activity, var reviewEval: Boolean = f
         holder.dataBinding?.apply {
             MUtils.setTopMargin(root, 15, holder.absoluteAdapterPosition)
             val position = holder.absoluteAdapterPosition
-            if (hintContent.isNotEmpty()) {
+            if (hintContent.isNotEmpty() && !reviewEval) {
                 edtContent.hint = hintContent
             } else {
                 edtContent.hint = context.getString(R.string.str_pleaseEnterComments)

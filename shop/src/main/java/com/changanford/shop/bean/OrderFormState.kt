@@ -48,11 +48,12 @@ data class PostEvaluationBean(
     var serviceAttitude: Int? = null//服务态度
 ) {
     /**
-     * 是否完成（评分、评价内容为必填项）
+     * 是否完成（评分+评价内容或者图片为必填项）
      * */
     fun updateStatus(reviewEval: Boolean = false): Boolean {
         isComplete =
-            !TextUtils.isEmpty(evalText) && (reviewEval || (evalScore != null && evalScore!! > 0))
+            if (reviewEval) !TextUtils.isEmpty(evalText) else
+            ( !TextUtils.isEmpty(evalText)||!imgUrls.isNullOrEmpty()) && (reviewEval || (evalScore != null && evalScore!! > 0))
         return isComplete
     }
 

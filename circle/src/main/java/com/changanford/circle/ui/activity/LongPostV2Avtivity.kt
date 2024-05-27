@@ -82,6 +82,7 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.tools.PictureFileUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import razerdp.basepopup.QuickPopupBuilder
@@ -757,6 +758,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 isCarHistory(true)
             }
             showLocaPostCity()
+
             if (locaPostEntity!!.longpostFmLocalMeadle.isNotEmpty()) {
                 try {
                     FMMeadia =
@@ -764,13 +766,21 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                             locaPostEntity!!.longpostFmLocalMeadle,
                             LocalMedia::class.java
                         )
-                    headBinding.ivFm.visibility = View.VISIBLE
-                    GlideUtils.loadRoundFilePath(
-                        PictureUtil.getFinallyPath(FMMeadia!!),
-                        headBinding.ivFm
-                    )
-                    headBinding.ivAddfm.visibility = View.GONE
-                    headBinding.tvFm.visibility = View.GONE
+                    FMMeadia?.let {
+                        val isExists = PictureFileUtils.isFileExists(it.realPath)
+                        if (!isExists) {
+                            FMMeadia = null
+                        } else {
+                            headBinding.ivFm.visibility = View.VISIBLE
+                            GlideUtils.loadRoundFilePath(
+                                PictureUtil.getFinallyPath(FMMeadia!!),
+                                headBinding.ivFm
+                            )
+                            headBinding.ivAddfm.visibility = View.GONE
+                            headBinding.tvFm.visibility = View.GONE
+                        }
+                    }
+
                 } catch (e: Exception) {
 
                 }

@@ -47,4 +47,8 @@ public class H5JsUtils {
     public static void addImageClickListener(WebView webView) {
         webView.loadUrl("javascript:".concat(JS_));
     }
+
+    public static void addImageClickListener2(com.tencent.smtt.sdk.WebView webView) {
+        webView.loadUrl("javascript:".concat(JS_));
+    }
 }

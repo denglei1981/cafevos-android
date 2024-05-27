@@ -128,11 +128,16 @@ class OrderControl(val context: Context, val viewModel: OrderViewModel?) {
     fun clickOrderItemJump(itemBean: OrderItemBean?) {
         itemBean?.apply {
             if (jumpDataType != null) JumpUtils.instans?.jump(jumpDataType, jumpDataValue)
-            else if ("WB" == busSource) JumpUtils.instans?.jump(
-                1,
-                String.format(MConstant.H5_SHOP_MAINTENANCE, orderNo)
-            )
-            else JumpUtils.instans?.jump(5, orderNo)
+            else if ("WB" == busSource) {
+                jumpOfWb?.let { wbJump ->
+                    JumpUtils.instans?.jump(
+                        wbJump.jumpCode,
+                        wbJump.jumpVal
+//                String.format(MConstant.H5_SHOP_MAINTENANCE, orderNo)
+                    )
+                }
+
+            } else JumpUtils.instans?.jump(5, orderNo)
         }
     }
 

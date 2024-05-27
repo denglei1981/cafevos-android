@@ -1,34 +1,24 @@
 package com.changanford.shop.ui.order
 
+import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.view.Gravity
 import android.view.View
-import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.AddressBeanItem
-import com.changanford.common.bean.OrderReceiveAddress
 import com.changanford.common.bean.ShopAddressInfoBean
-import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.manger.RouterManger
-import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.util.JumpUtils
-import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.bus.LiveDataBusKey.INVOICE_ADDRESS_SUCCESS
-import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
 import com.changanford.shop.R
 import com.changanford.shop.bean.InvoiceInfo
 import com.changanford.shop.databinding.ActivityInvoiceInfoBinding
-import com.changanford.shop.databinding.ActivityOrderDetailsBinding
 import com.changanford.shop.ui.order.request.GetInvoiceViewModel
 import com.changanford.shop.view.TopBar
-import com.changanford.shop.viewmodel.OrderViewModel
 import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -60,6 +50,8 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
     var taxpayerName: String = "" // 纳税人识别号
     var addressBeanItem: AddressBeanItem? = null
     lateinit var invoiceInfo: InvoiceInfo
+
+    @SuppressLint("CheckResult")
     override fun initData() {
         val invoiceInfoStr = intent.getStringExtra("value")
         val gson = Gson()
@@ -72,22 +64,36 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
             .subscribe({
                 if (canGetInvoice()) {
                     if (binding.rbPerson.isChecked) { // 选择的开个人票
-                        invoiceInfo.invoiceRmb?.let{rmb->
+                        invoiceInfo.invoiceRmb?.let { rmb ->
+                            val phone = binding.etPhone.text.toString()
+                            val email = binding.etEmail.text.toString()
+                            if (email.isNullOrEmpty()) {
+                                "请输入邮箱".toast()
+                                return@subscribe
+                            }
                             viewModel.getUserInvoiceAdd(
                                 invoiceInfo.addressId,
                                 "个人",
                                 personName,
                                 rmb,
                                 invoiceInfo.mallMallOrderId,
-                                invoiceInfo.mallMallOrderNo
+                                invoiceInfo.mallMallOrderNo,
+                                email = email,
+                                phone = phone,
                             )
 
                         }
 
                     }
                     if (binding.rbCompany.isChecked) {
+                        val phone = binding.etPhone.text.toString()
+                        val email = binding.etEmail.text.toString()
+                        if (email.isNullOrEmpty()) {
+                            "请输入邮箱".toast()
+                            return@subscribe
+                        }
                         // 选择的开单位票
-                        invoiceInfo.invoiceRmb?.let {rmb->
+                        invoiceInfo.invoiceRmb?.let { rmb ->
                             viewModel.getUserInvoiceAdd(
                                 invoiceInfo.addressId,
                                 "单位",
@@ -95,6 +101,8 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
                                 rmb,
                                 invoiceInfo.mallMallOrderId,
                                 invoiceInfo.mallMallOrderNo,
+                                email = email,
+                                phone = phone,
                                 taxpayerName
                             )
                         }
@@ -141,6 +149,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
                 binding.rbPerson.id -> {
                     showPerson()
                 }
+
                 binding.rbCompany.id -> {
                     showCompany()
                 }

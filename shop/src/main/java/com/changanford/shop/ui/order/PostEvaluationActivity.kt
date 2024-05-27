@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -81,8 +82,14 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                         if (itemPicSize == null) {
                             itemPicSize = 0
                         }
-                        if (item.isComplete && itemPicSize > needPicNum && item.getContentSize() > needContentNum) {
-                            isComplete.add(item)
+//                        if (item.isComplete && itemPicSize > needPicNum && item.getContentSize() > needContentNum) {
+//                        if (item.isComplete) {
+//                            isComplete.add(item)
+//                        }
+                        item.apply {
+                            if (!TextUtils.isEmpty(evalText) && itemPicSize > 0 && evalScore!! > 0) {
+                                isComplete.add(item)
+                            }
                         }
                     }
 //
@@ -132,10 +139,12 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                 ratingBar.setOnRatingChangeListener { _, _, _ ->
                     tvScore.text =
                         getEvalText(this@PostEvaluationActivity, ratingBar.rating.toInt())
+                    btnIsEnable()
                 }
                 ratingBar2.setOnRatingChangeListener { _, _, _ ->
                     tvScore2.text =
                         getEvalText(this@PostEvaluationActivity, ratingBar2.rating.toInt())
+                    btnIsEnable()
                 }
                 if (reviewEval) {
                     clBottom.isVisible = false
@@ -155,12 +164,12 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
                     evaluate_tip?.let {
                         mAdapter.hintContent = it
                     }
-                    commit_pic_num?.let {
-                        needPicNum = it
-                    }
-                    commit_word_num?.let {
-                        needContentNum = it
-                    }
+//                    commit_pic_num?.let {
+//                        needPicNum = it
+//                    }
+//                    commit_word_num?.let {
+//                        needContentNum = it
+//                    }
                 }
                 if (this.startsWith("{")) {
                     Gson().fromJson(this, OrderItemBean::class.java).let {
@@ -205,9 +214,25 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
 //                val isComplete = it.find { item -> item.isComplete }
 //                binding.btnSubmit.setBtnEnabled(isComplete != null)
 //            }
-            val isComplete = it.find { item -> item.isComplete }
-            binding.btnSubmit.setBtnEnabled(isComplete != null)
+//            val isComplete = it.find { item -> item.isComplete }
+//            binding.btnSubmit.setBtnEnabled(isComplete != null)
+            btnIsEnable()
         }
+    }
+
+    private fun btnIsEnable() {
+        var rating = 0f
+        var rating2 = 0f
+        bottomBinding?.ratingBar?.let {
+            rating = it.rating
+        }
+        bottomBinding?.ratingBar2?.let {
+            rating2 = it.rating
+        }
+        val isComplete = mAdapter.postBean.find { item -> item.isComplete }
+        val btnEnable =
+            if (reviewEval) isComplete != null else isComplete != null && rating > 0 && rating2 > 0
+        binding.btnSubmit.setBtnEnabled(btnEnable)
     }
 
     private fun submitEvaluation() {

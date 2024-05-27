@@ -41,6 +41,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.CircleMainMenuPop
+import com.changanford.common.widget.webview.CustomWebTXHelper
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -420,19 +421,24 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     )
                 }帖子, ${CountUtils.formatNum(it.viewsCount.toString(), false)}浏览"
                 tvType.text = it.name
-                if (!it.description.isNullOrEmpty()) {
-                    tvContent.text = it.description
-                    tvContent.isVisible = true
-                    webView.isVisible = false
-                } else {
+                if (!it.descHtml.isNullOrEmpty()) {
                     webView.isVisible = true
                     tvContent.isVisible = false
+                    CustomWebTXHelper(
+                        this@TopicDetailsActivity,
+                        webView
+                    )
+                    webView.setBackgroundColor(0)
                     it.descHtml?.let {
                         webView.loadDataWithBaseURL(
                             null,
                             it, "text/html", "utf-8", null
                         )
                     }
+                } else {
+                    tvContent.text = it.description
+                    tvContent.isVisible = true
+                    webView.isVisible = false
                 }
             }
             binding.barTitleTv.text = it.name

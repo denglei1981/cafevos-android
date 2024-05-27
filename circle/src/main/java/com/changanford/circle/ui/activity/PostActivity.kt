@@ -91,6 +91,7 @@ import com.google.gson.reflect.TypeToken
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.tools.PictureFileUtils
 import com.qw.soul.permission.bean.Permissions
 import com.yalantis.ucrop.UCrop
 import razerdp.basepopup.QuickPopupBuilder
@@ -778,11 +779,12 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
     var canEditVideo = true
 
     private fun jsonStr2obj(jonson: String) {
-        val media = JSON.parseArray(jonson, LocalMedia::class.java);
-        selectList.addAll(media)
-        postPicAdapter.setList(media)
+        val media = JSON.parseArray(jonson, LocalMedia::class.java)
+        val useList = media.filter { PictureFileUtils.isFileExists(it.realPath) }
+        selectList.addAll(useList)
+        postPicAdapter.setList(useList)
         postPicAdapter.notifyDataSetChanged()
-        postVideoAdapter.setList(media)
+        postVideoAdapter.setList(useList)
         postVideoAdapter.notifyDataSetChanged()
     }
 
@@ -1268,11 +1270,11 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
 //                            }
 //                        }).show()
 //                } else {
-                    val bundle = Bundle()
-                    bundle.putParcelableArrayList("picList", selectList)
-                    bundle.putInt("position", position)
-                    bundle.putInt("showEditType", -1)
-                    startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("picList", selectList)
+                bundle.putInt("position", position)
+                bundle.putInt("showEditType", -1)
+                startARouter(ARouterCirclePath.PictureeditlActivity, bundle)
 //                }
             }
         }
@@ -1642,6 +1644,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                 "请选择车型".toast()
                 return
             }
+
             content.isNullOrEmpty() -> {
                 "请输入正文内容".toast()
             }

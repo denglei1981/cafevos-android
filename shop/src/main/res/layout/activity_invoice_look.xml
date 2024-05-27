@@ -170,7 +170,7 @@
                     android:layout_marginTop="@dimen/dp_20"
                     android:layout_marginEnd="@dimen/dp_20"
                     android:lineSpacingMultiplier="1.2"
-                    android:text="1.开票金额为用户实际支付的金额（不含优惠券、福币抵扣）'\n2.暂时只支持纸质发票邮寄，不支持电子发票\n3.纸质发票在订单确认收货的15个工作日内开具并邮寄，收到后请妥善保管，如退换请将发票单独邮寄"
+                    android:text="1.开票金额为用户实际支付的现金金额\n2.开票后会将电子发票发送到您的邮箱，请注意查收"
                     android:textColor="#ff999999"
                     android:textSize="11sp" />
             </androidx.appcompat.widget.LinearLayoutCompat>

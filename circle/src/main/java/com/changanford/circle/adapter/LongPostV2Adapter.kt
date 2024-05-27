@@ -55,7 +55,7 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
         LiveDataBus.get().with(LiveDataBusKey.LONG_POST_CONTENT).postValue("")
     }
 
-  private  fun showImage(binding: ItemLongPostIvBinding, item: LongPostBean) {
+    private fun showImage(binding: ItemLongPostIvBinding, item: LongPostBean) {
         GlideUtils.loadRoundFilePath(
             PictureUtil.getFinallyPath(item.localMedias!!),
             binding.ivPic
@@ -97,11 +97,11 @@ class LongPostV2Adapter(var layoutManager: LinearLayoutManager) :
 
     }
 
-  private  fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
+    private fun showEtContent(binding: ItemLongPostIvBinding, item: LongPostBean) {
         binding.tvTex.visibility = View.VISIBLE
         binding.gPic.visibility = View.GONE
 //        binding.tvTex.isEnabled = true
-      val edtImgDesc=binding.tvTex
+        val edtImgDesc = binding.tvTex
 //      edtImgDesc.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
 //          override fun onViewAttachedToWindow(v: View) {
 //              edtImgDesc.setCursorVisible(false)

@@ -51,9 +51,9 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
 //            showTotalTag(tvIntegral, item)
 
-            tvIntegral.text = "实付价￥${item.getMPayPrice()}"
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice)}"
+            tvIntegral.text = "实付价￥${item.getMPayPrice().toFloat()/item.buyNum!!.toInt()}"
+            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice).toFloat()/item.buyNum!!.toInt()}"
             val layoutManager = FlowLayoutManager(context, false, true)
             recyclerView.layoutManager = layoutManager
             val goodsAttributeAdapter = GoodsAttributeAdapter()
@@ -190,7 +190,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
                         val gsonItem = Gson()
                         val gsonItemtoJson = gsonItem.toJson(item)
                         val refundOrderItemBean: RefundOrderItemBean =
-                            Gson().fromJson<RefundOrderItemBean>(
+                            Gson().fromJson(
                                 gsonItemtoJson,
                                 RefundOrderItemBean::class.java
                             )

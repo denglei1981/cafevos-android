@@ -34,9 +34,9 @@ class RefundOrderItemAdapter() :
     ) {
         holder.dataBinding?.apply {
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
-            tvIntegral.text = "实付价￥${item.getMPayPrice()}"
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice)}"
+            tvIntegral.text = "实付价￥${item.getMPayPrice().toFloat()/item.buyNum!!.toInt()}"
+            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice).toFloat()/item.buyNum!!.toInt()}"
 //            showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             goodsAttributeAdapter.setList(item.getTagList())
