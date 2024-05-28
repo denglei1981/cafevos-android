@@ -11,13 +11,15 @@ import com.changanford.shop.databinding.ItemAttributeBinding
 /**
  *  商品标签
  * */
-class GoodsAttributeAdapter : BaseQuickAdapter<String, BaseDataBindingHolder<ItemAttributeBinding>>(R.layout.item_attribute), LoadMoreModule {
-//    private val maxWidth by lazy { ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,160f) }
+class GoodsAttributeAdapter :
+    BaseQuickAdapter<String, BaseDataBindingHolder<ItemAttributeBinding>>(R.layout.item_attribute),
+    LoadMoreModule {
+    //    private val maxWidth by lazy { ScreenUtils.getScreenWidth(context)-ScreenUtils.dp2px(context,160f) }
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseDataBindingHolder<ItemAttributeBinding>, item: String) {
-        val dataBinding=holder.dataBinding
-        if(dataBinding!=null){
-            dataBinding.model=item
+        val dataBinding = holder.dataBinding
+        if (dataBinding != null) {
+            dataBinding.model = item
             dataBinding.executePendingBindings()
 //            dataBinding.tvAttribute.maxWidth=this.maxWidth
         }

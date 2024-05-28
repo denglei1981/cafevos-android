@@ -815,6 +815,13 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
         try {
             val longPostBean: ArrayList<LongPostBean> =
                 Gson().fromJson(jonson, object : TypeToken<ArrayList<LongPostBean>>() {}.type)
+            longPostBean.forEach {
+                if (it.localMedias != null) {
+                    if (!PictureFileUtils.isFileExists(it.localMedias!!.realPath)) {
+                        it.localMedias = null
+                    }
+                }
+            }
             longpostadapter.addData(longPostBean)
             longpostadapter.notifyDataSetChanged()
         } catch (e: Exception) {

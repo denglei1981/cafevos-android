@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.order.adapter
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -17,6 +18,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
@@ -42,6 +44,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
     var timestamp: String = ""
     var refundId: String = ""
     var busSource: String? = ""
+    @SuppressLint("SetTextI18n")
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
         item: OrderItemBean
@@ -52,8 +55,18 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
 //            showTotalTag(tvIntegral, item)
 
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvIntegral.text = "实付价￥${item.getMPayPrice().toFloat()/item.buyNum!!.toInt()}"
-            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice).toFloat()/item.buyNum!!.toInt()}"
+
+            tvIntegral.text = "实付价￥${
+                MUtils.divideAndRetainTwoDecimalPlaces(
+                    item.getMPayPrice().toDouble(),
+                    item.buyNum!!.toDouble()
+                )
+            }"
+            tvOldPrice.text = "原价￥${
+                MUtils.divideAndRetainTwoDecimalPlaces(
+                    item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
+                )
+            }"
             val layoutManager = FlowLayoutManager(context, false, true)
             recyclerView.layoutManager = layoutManager
             val goodsAttributeAdapter = GoodsAttributeAdapter()

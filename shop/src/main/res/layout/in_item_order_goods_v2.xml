@@ -72,6 +72,7 @@
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_5"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toStartOf="@id/tv_goods_number"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
             app:layout_constraintTop_toBottomOf="@id/tv_goods_title"
@@ -85,8 +86,8 @@
             android:layout_marginBottom="2dp"
             android:textColor="@color/color_4d16"
             android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="@+id/recyclerView"
             app:layout_constraintBottom_toTopOf="@+id/tv_integral"
+            app:layout_constraintLeft_toLeftOf="@+id/recyclerView"
             tools:text="原价￥130" />
 
         <com.changanford.shop.view.TypefaceTextView
@@ -108,9 +109,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_12"
-            app:start_txt="实付价￥"
             app:layout_constraintBottom_toBottomOf="@id/img_goods_cover"
             app:layout_constraintStart_toStartOf="@id/tv_goods_title"
+            app:start_txt="实付价￥"
             tools:text="1200(2000福币)" />
 
         <androidx.appcompat.widget.AppCompatTextView

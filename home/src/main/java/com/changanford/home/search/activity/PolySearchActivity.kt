@@ -418,10 +418,10 @@ class PolySearchActivity : BaseActivity<ActivityPolySearchBinding, PolySearchVie
 //        binding.recyclerViewHistory.setChildren(mViewList)
 //    }
 
-    fun isPs() {
-//        viewModel.getSearchContent(searchContent)
+    private fun isPs() {
+        viewModel.getSearchContent(searchContent)
         viewModel.insertRecord(this, searchContent) // 异步写入本地数据库。
-        jumpNomarl()
+//        jumpNomarl()
     }
 
     override fun initData() {

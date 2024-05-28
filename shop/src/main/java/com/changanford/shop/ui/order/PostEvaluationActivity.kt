@@ -229,9 +229,20 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         bottomBinding?.ratingBar2?.let {
             rating2 = it.rating
         }
-        val isComplete = mAdapter.postBean.find { item -> item.isComplete }
+        var isComplete = false
+        mAdapter.postBean.forEachWithIndex { i, postEvaluationBean ->
+            if (!postEvaluationBean.evalText.isNullOrEmpty()) {
+                isComplete = true
+                return@forEachWithIndex
+            } else {
+                if (!mAdapter.selectPicArr[i].selectPics.isNullOrEmpty()) {
+                    isComplete = true
+                    return@forEachWithIndex
+                }
+            }
+        }
         val btnEnable =
-            if (reviewEval) isComplete != null else isComplete != null && rating > 0 && rating2 > 0
+            if (reviewEval) isComplete else isComplete && rating > 0 && rating2 > 0
         binding.btnSubmit.setBtnEnabled(btnEnable)
     }
 
@@ -242,17 +253,27 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         if (find == null) {//追评或者没有选择图片则立即提交评价
             //只提交已完成输入的商品
 //            val postBean = mAdapter.postBean.filter { it.isComplete }
-            val postBean = mAdapter.postBean
+            val postBean = mAdapter.postBean.filter { it.evalScore != null && it.evalScore!! > 0 }
+            val upPostBean = ArrayList<PostEvaluationBean>()
+            postBean.forEachWithIndex { i, postEvaluationBean ->
+                if (!postEvaluationBean.evalText.isNullOrEmpty()) {
+                    upPostBean.add(postEvaluationBean)
+                } else {
+                    if (!mAdapter.selectPicArr[i].selectPics.isNullOrEmpty()) {
+                        upPostBean.add(postEvaluationBean)
+                    }
+                }
+            }
             if (!reviewEval) {
                 val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
                 val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
-                postBean.forEach {
+                upPostBean.forEach {
                     it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
                     it.logisticsService = logisticsServiceNum
                     it.serviceAttitude = serviceAttitudeNum
                 }
             }
-            viewModel.postEvaluation(orderNo, postBean, reviewEval)
+            viewModel.postEvaluation(orderNo, upPostBean, reviewEval)
         } else {//评价 -先提交图片
             dialog.show()
             uploadPic(0)
@@ -284,16 +305,35 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         upI++
         postBean[pos].imgUrls = files
         if (upI == postBean.size) {//图片以上传完成
+            val upPostBean = ArrayList<PostEvaluationBean>()
+            postBean.forEachWithIndex { i, postEvaluationBean ->
+                if (!postEvaluationBean.evalText.isNullOrEmpty()) {
+                    upPostBean.add(postEvaluationBean)
+                } else {
+                    if (!mAdapter.selectPicArr[i].selectPics.isNullOrEmpty()) {
+                        upPostBean.add(postEvaluationBean)
+                    }
+                }
+            }
             if (!reviewEval) {
                 val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
                 val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
-                postBean.forEach {
+                upPostBean.forEach {
                     it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
                     it.logisticsService = logisticsServiceNum
                     it.serviceAttitude = serviceAttitudeNum
                 }
             }
-            viewModel.postEvaluation(orderNo, postBean, reviewEval)
+//            if (!reviewEval) {
+//                val logisticsServiceNum = bottomBinding?.ratingBar?.rating?.toInt()
+//                val serviceAttitudeNum = bottomBinding?.ratingBar2?.rating?.toInt()
+//                postBean.forEach {
+//                    it.anonymous = if (binding.checkBox.isChecked) "YES" else "NO"
+//                    it.logisticsService = logisticsServiceNum
+//                    it.serviceAttitude = serviceAttitudeNum
+//                }
+//            }
+            viewModel.postEvaluation(orderNo, upPostBean, reviewEval)
             dialog.dismiss()
         } else uploadPic(pos + 1)
     }

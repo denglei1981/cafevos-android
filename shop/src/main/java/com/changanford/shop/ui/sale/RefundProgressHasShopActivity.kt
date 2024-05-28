@@ -114,6 +114,7 @@ class RefundProgressHasShopActivity :
                         false
                     )
                 }
+
                 else -> {
                     it.tvSubTips.visibility = View.GONE
 //                    showTotalTag(
@@ -156,6 +157,7 @@ class RefundProgressHasShopActivity :
                     binding.tvInputOrder.visibility = View.GONE
                     ft.layoutRefundInfo.tvRefundType.text = "仅退款"
                 }
+
                 "CONTAIN_GOODS" -> {
                     binding.tobBar.setTitle("退款进度")
                     binding.tvInputOrder.visibility = View.VISIBLE
@@ -167,6 +169,7 @@ class RefundProgressHasShopActivity :
                 "ON_GOING" -> {
                     binding.tvHandle.visibility = View.VISIBLE
                     binding.tvInputOrder.visibility = View.VISIBLE
+                    binding.tvHandle.isVisible = false
                     binding.tvHandle.text = "撤销退款申请"
                     binding.tvHandle.setOnClickListener {
                         // 撤销退款申请
@@ -186,6 +189,7 @@ class RefundProgressHasShopActivity :
                         "WAIT_CHECK", "OVERTIME" -> {
                             binding.tvInputOrder.visibility = View.GONE
                         }
+
                         "CANCELD_REFUND", "WAIT_RECEIVE_RETURNS" -> {
                             binding.tvInputOrder.visibility = View.GONE
                             binding.tvHandle.visibility = View.GONE
@@ -199,14 +203,20 @@ class RefundProgressHasShopActivity :
                     binding.tvHandle.text = "申请售后"
                     binding.tvHandle.setOnClickListener {
                         if (refundProgressBean.busSource == "WB" && refundProgressBean.sku == null) {//如果是维保订单，并且没有退过，直接跳转仅退款。历史愿意跳转到了这里
-                            val toJson = "{\"orderNo\":\"${refundProgressBean.orderNo}\",\"refundType\":\"allOrderRefund\"}"
+                            val toJson =
+                                "{\"orderNo\":\"${refundProgressBean.orderNo}\",\"refundType\":\"allOrderRefund\"}"
                             JumpUtils.instans?.jump(121, toJson)
                         } else {
                             var item = refundProgressBean.sku
                             item?.orderNo = refundProgressBean.orderNo
                             item?.price =
 //                                "${refundProgressBean.fbRefundApply.toInt() + refundProgressBean.rmbRefundApply.toInt() * 100}"
-                            "${refundProgressBean.fbRefundApply.toInt() + (getRoundedNum(refundProgressBean.rmbRefundApply,2) * BigDecimal(100)).intValueExact()}"
+                                "${
+                                    refundProgressBean.fbRefundApply.toInt() + (getRoundedNum(
+                                        refundProgressBean.rmbRefundApply,
+                                        2
+                                    ) * BigDecimal(100)).intValueExact()
+                                }"
                             val gsonItem = Gson()
                             val gsonItemtoJson = gsonItem.toJson(item)
                             val refundOrderItemBean: RefundOrderItemBean? =
@@ -228,8 +238,9 @@ class RefundProgressHasShopActivity :
                         }
                     }
                 }
+
                 else -> {
-                    binding.llBottom.isVisible=false
+                    binding.llBottom.isVisible = false
                 }
             }
             if (refundProgressBean.sku == null) {

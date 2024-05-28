@@ -424,16 +424,13 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 if (!it.descHtml.isNullOrEmpty()) {
                     webView.isVisible = true
                     tvContent.isVisible = false
-                    CustomWebTXHelper(
+                  val webHelper=  CustomWebTXHelper(
                         this@TopicDetailsActivity,
                         webView
                     )
                     webView.setBackgroundColor(0)
                     it.descHtml?.let {
-                        webView.loadDataWithBaseURL(
-                            null,
-                            it, "text/html", "utf-8", null
-                        )
+                        webHelper.loadDataWithBaseURL(it)
                     }
                 } else {
                     tvContent.text = it.description

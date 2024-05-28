@@ -931,6 +931,10 @@ class JumpUtils {
 
             }
 
+            132 -> {//全部圈子
+                startARouter(ARouterCirclePath.CircleListActivity)
+            }
+
             133 -> {//圈子分类页    value  = 圈子分类名称
                 startARouter(ARouterCirclePath.CircleListActivity, bundle)
             }
@@ -967,6 +971,26 @@ class JumpUtils {
 
             144 -> {//优惠券中间页
                 startARouter(ARouterShopPath.CouponMiddleActivity, true)
+            }
+
+            145 -> {//type 1跳动态  2跳文章  {"type":1, "topicId": 484,  "topicName": "提车日记测试话题"}
+                if (!TextUtils.isEmpty(value)) {
+                    JSON.parseObject(value)?.apply {
+                        val postType = getString("type")
+                        val topicId = getString("topicId")
+                        val topicName = getString("topicName")
+                        bundle.putString("topId", topicId)
+                        bundle.putBoolean("isTopPost", true)
+                        bundle.putString("topName", topicName)
+                        if (postType == "1") {
+//                            val bundle = Bundle()
+                            startARouter(ARouterCirclePath.PostActivity, bundle, true)
+                        } else {
+                            startARouter(ARouterCirclePath.LongPostAvtivity, bundle, true)
+                        }
+
+                    }
+                }
             }
 
             10000 -> {

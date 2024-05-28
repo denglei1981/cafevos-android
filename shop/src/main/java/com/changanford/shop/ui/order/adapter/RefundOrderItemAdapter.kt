@@ -1,5 +1,6 @@
 package com.changanford.shop.ui.order.adapter
 
+import android.annotation.SuppressLint
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
@@ -11,6 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.RefundOrderItemBean
 import com.changanford.common.util.CustomImageSpanV2
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
 import com.changanford.shop.R
@@ -28,6 +30,7 @@ class RefundOrderItemAdapter() :
 
     var orderStatus: String = ""
     var refundStatus: String = ""
+    @SuppressLint("SetTextI18n")
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
         item: RefundOrderItemBean
@@ -35,12 +38,23 @@ class RefundOrderItemAdapter() :
         holder.dataBinding?.apply {
             GlideUtils.loadBD(item.skuImg, imgGoodsCover)
             vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            tvIntegral.text = "实付价￥${item.getMPayPrice().toFloat()/item.buyNum!!.toInt()}"
-            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice).toFloat()/item.buyNum!!.toInt()}"
+//            tvIntegral.text = "实付价￥${item.getMPayPrice().toFloat()/item.buyNum!!.toInt()}"
+//            tvOldPrice.text = "原价￥${item.getRMB2(item.orginPrice).toFloat()/item.buyNum!!.toInt()}"
+            tvIntegral.text = "实付价￥${
+                MUtils.divideAndRetainTwoDecimalPlaces(
+                    item.getMPayPrice().toDouble(),
+                    item.buyNum!!.toDouble()
+                )
+            }"
+            tvOldPrice.text = "原价￥${
+                MUtils.divideAndRetainTwoDecimalPlaces(
+                    item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
+                )
+            }"
 //            showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
-            goodsAttributeAdapter.setList(item.getTagList())
             recyclerView.adapter = goodsAttributeAdapter
+            goodsAttributeAdapter.setList(item.getTagList())
             tvGoodsTitle.text = item.spuName
             tvGoodsNumber.text = "×".plus(item.buyNum)
             tvSaleHandler.visibility = View.GONE

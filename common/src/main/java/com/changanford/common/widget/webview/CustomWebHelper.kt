@@ -17,6 +17,7 @@ import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.AgentWebUtils
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebViewClient
+import java.net.URLDecoder
 
 /**
  * @Author: hpb
@@ -78,7 +79,7 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                     view: WebView?,
                     request: WebResourceRequest?
                 ): Boolean {
-                    val url = request?.url.toString()
+                    val url = URLDecoder.decode(request?.url.toString(), "UTF-8")
                     // 超链接跳转
                     if (url.contains("jumpDataType=")) {
                         try {

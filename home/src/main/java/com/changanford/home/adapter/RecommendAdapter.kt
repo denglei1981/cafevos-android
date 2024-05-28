@@ -844,6 +844,7 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
     private fun noAnswer(view: View, item: AskListMainData) {
         val binding = DataBindingUtil.bind<ItemRecommendAskNoAnswerBinding>(view)
         binding?.vLine?.isVisible = true
+        binding?.llContent?.setPadding(16.toIntPx(),0,16.toIntPx(),0)
         showNoQuestion(binding, item)
 
     }

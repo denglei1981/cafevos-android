@@ -13,6 +13,7 @@ import com.just.agentweb.AgentWebConfig
 import com.just.agentweb.AgentWebUtils
 import com.just.agentweb.DefaultWebClient
 import com.tencent.smtt.sdk.WebView
+import java.net.URLDecoder
 
 /**
  * @Des: WebView基础配置
@@ -72,7 +73,7 @@ class CustomWebTXHelper(activity: Activity, private var webView: WebView?, isMar
                     view: WebView?,
                     request: com.tencent.smtt.export.external.interfaces.WebResourceRequest?
                 ): Boolean {
-                    val url = request?.url.toString()
+                    val url = URLDecoder.decode(request?.url.toString(), "UTF-8")
                     // 超链接跳转
                     if (url.contains("jumpDataType=")) {
                         try {

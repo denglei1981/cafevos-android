@@ -127,7 +127,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             }
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
-                    binding.tvHandle.visibility = View.VISIBLE
+                    binding.tvHandle.visibility = View.GONE
                     binding.tvInputOrder.visibility = View.VISIBLE
                     binding.tvHandle.text = "撤销退款"
 
@@ -227,7 +227,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             "ON_GOING" -> {
                 tv.text = "退款中"
                 binding.tvInputOrder.visibility = View.VISIBLE
-                binding.tvHandle.visibility = View.VISIBLE
+                binding.tvHandle.visibility = View.GONE
                 binding.tvInputOrder.text = "填写物流"
                 binding.tvHandle.text = "撤销退款"
                 binding.tvHandle.setOnClickListener {

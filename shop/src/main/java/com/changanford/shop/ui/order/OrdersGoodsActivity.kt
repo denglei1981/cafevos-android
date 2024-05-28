@@ -2,6 +2,7 @@ package com.changanford.shop.ui.order
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,7 +27,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 /**
  * @Author : wenke
  * @Time : 2021/9/24
- * @Description : 商品订单
+ * @Description : 商城订单
  */
 @Route(path = ARouterShopPath.OrderGoodsActivity)
 class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>() {
@@ -64,6 +65,9 @@ class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>()
         initTab()
         LiveDataBus.get().withs<String>(LiveDataBusKey.ORDERS_GOODS_SHOW_EMPTY).observe(this) {
             binding.clEmpty.isVisible = true
+            binding.searchContent.isVisible = false
+            binding.tabLayout.isVisible = false
+            binding.viewPager2.visibility = View.INVISIBLE
         }
     }
 

@@ -160,6 +160,9 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
         binding.appbarLayout.setExpanded(true)
     }
 
+    private fun scrollToTab(){
+        binding.appbarLayout.setExpanded(false)
+    }
 
     private fun initTab() {
 //        WCommonUtil.setTabSelectStyle(
@@ -496,6 +499,7 @@ class ShopFragment : BaseFragment<FragmentShopLayoutBinding, GoodsViewModel>(), 
             val index = it.indexOfFirst { item -> item.tagName == tagName }
             if (index > -1) binding.viewpager.currentItem = index
             defaultTagName = null
+            scrollToTab()
         }
     }
 }

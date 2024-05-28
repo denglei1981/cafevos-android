@@ -142,6 +142,7 @@ class RefundProgressActivity : BaseActivity<ActivityRefundProgressBinding, Refun
             when (refundProgressBean.refundStatus) {
                 "ON_GOING" -> {
                     binding.clBottom.visibility = View.VISIBLE
+                    binding.tvHandle.isVisible = false
                     binding.tvHandle.text = "撤销退款申请"
                     binding.tvHandle.setOnClickListener {
                         // 撤销退款申请

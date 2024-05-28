@@ -81,7 +81,7 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
     override fun initView() {
         title = "订单详情页"
         binding.topBar.setActivity(this)
-        binding.topBar.setOnRightClickListener(object :TopBar.OnRightClickListener{
+        binding.topBar.setOnRightClickListener(object : TopBar.OnRightClickListener {
             override fun onRightClick() {
                 JumpUtils.instans?.jump(11)
             }
@@ -143,7 +143,8 @@ class OrderDetailsV2Activity : BaseActivity<ActivityOrderDetailsBinding, OrderVi
         binding.inOrderInfo.tvOtherValue.visibility = View.GONE
         showShoppingInfo(dataBean)
         showTotalTag(binding.inGoodsInfo1.tvTotalPrice, dataBean)
-        val usePrice=if (dataBean.fbMemberDiscount.isNullOrEmpty()) dataBean.fbOfOrderPrice else (dataBean.fbOfOrderPrice.toInt()+dataBean.fbMemberDiscount!!.toInt()).toString()
+        val usePrice =
+            if (dataBean.fbMemberDiscount.isNullOrEmpty()) dataBean.fbOfOrderPrice else (dataBean.fbOfOrderPrice.toInt() + dataBean.fbMemberDiscount!!.toInt()).toString()
         // 商品金额原价
         binding.inGoodsInfo1.tvIntegralGoods.text =
 //            WCommonUtil.getRMBBigDecimal((dataBean.fbOfOrderPrice.toInt()+dataBean.fbMemberDiscount?.toInt()).toString())

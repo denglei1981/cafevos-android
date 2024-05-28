@@ -28,6 +28,8 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.utilext.toIntPx
 import razerdp.basepopup.BasePopupWindow
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 object MUtils {
@@ -280,6 +282,13 @@ object MUtils {
 
         ssb.setSpan(imageSpan, ssb.length - 2, ssb.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         contentTextView.text = ssb
+    }
+
+    fun divideAndRetainTwoDecimalPlaces(dividend: Double, divisor: Double): String {
+        val bdDividend = BigDecimal(dividend.toString())
+        val bdDivisor = BigDecimal(divisor.toString())
+        val result: BigDecimal = bdDividend.divide(bdDivisor, 2, RoundingMode.UP)
+        return result.toString()
     }
 
 }

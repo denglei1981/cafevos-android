@@ -53,7 +53,7 @@ data class PostEvaluationBean(
     fun updateStatus(reviewEval: Boolean = false): Boolean {
         isComplete =
             if (reviewEval) !TextUtils.isEmpty(evalText) else
-            ( !TextUtils.isEmpty(evalText)||!imgUrls.isNullOrEmpty()) && (reviewEval || (evalScore != null && evalScore!! > 0))
+            ( !TextUtils.isEmpty(evalText)) && (reviewEval || (evalScore != null && evalScore!! > 0))
         return isComplete
     }
 
