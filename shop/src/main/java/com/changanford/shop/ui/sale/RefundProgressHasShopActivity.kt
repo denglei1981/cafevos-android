@@ -64,6 +64,11 @@ class RefundProgressHasShopActivity :
                 onBackPressed()
             }
         })
+        binding.tobBar.setOnRightClickListener(object : TopBar.OnRightClickListener {
+            override fun onRightClick() {
+                JumpUtils.instans?.jump(11)
+            }
+        })
         binding.recyclerView.adapter = refundProgressAdapter
         binding.smartLayout.setEnableLoadMore(false)
         binding.smartLayout.setOnRefreshListener(this)
@@ -81,13 +86,13 @@ class RefundProgressHasShopActivity :
 
     override fun observe() {
         super.observe()
-        viewModel.refundProgressLiveData.observe(this, Observer {
+        viewModel.refundProgressLiveData.observe(this) {
             binding.smartLayout.finishRefresh()
             refundProgressAdapter.refundStatus = it.refundStatus // 当前状态
             refundProgressAdapter.setNewInstance(it.refundList)
             showFooterAndHeader(it)
 
-        })
+        }
         viewModel.cancelRefundLiveData.observe(this, Observer {
             // 撤销退款申请成功
             this.finish()
@@ -107,6 +112,7 @@ class RefundProgressHasShopActivity :
             when (refundProgressBean.refundStatus) {
                 "FINISH" -> {
                     it.tvSubTips.visibility = View.VISIBLE
+                    it.llBack.isVisible = true
                     showTotalTag(
                         this,
                         it.tvSubTips,
@@ -117,6 +123,7 @@ class RefundProgressHasShopActivity :
 
                 else -> {
                     it.tvSubTips.visibility = View.GONE
+                    it.llBack.isVisible = false
 //                    showTotalTag(
 //                        this,
 //                        it.tvSubTips,

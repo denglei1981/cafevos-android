@@ -8,7 +8,6 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.R
 import com.changanford.common.bean.Topic
 import com.changanford.common.databinding.ItemSearchTopicBinding
-import com.changanford.common.utilext.toIntPx
 
 /**
  * @author: niubobo
@@ -36,14 +35,16 @@ class PolySearchTopicAdapter(private val isShowContent: Boolean = true) :
     fun setTopMargin(view: View, margin: Int, position: Int) {
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
         if (isOdd(position)) {
-            params.leftMargin = margin.toIntPx()
+            params.leftMargin = margin
         } else params.leftMargin = 0
     }
 
     private fun setMargin(binding: ItemSearchTopicBinding, item: Topic, position: Int) {
         binding.root.post {
+            val margin =
+                binding.clContent.width - (binding.tvContent.maxWidth + (binding.ivTag.width/2))
 //            val params = binding.tvTitle.layoutParams as ViewGroup.MarginLayoutParams
-            setTopMargin(binding.root,35,position)
+            setTopMargin(binding.root, margin, position)
 //            if (isOdd(position)) {
 //                val leftMargin =
 //                    binding.clContent.width  - binding.tvTitle.maxWidth - binding.ivTag.width - 4.toIntPx()

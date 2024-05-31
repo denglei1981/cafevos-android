@@ -20,24 +20,29 @@
         android:paddingTop="@dimen/dp_27"
         android:paddingBottom="@dimen/dp_17">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/top_content"
+        <HorizontalScrollView
+            android:id="@+id/hor_scroll"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@color/circle_081700F4"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:singleLine="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:textColor="@color/color_1700f4"
-            android:textSize="12sp"
+            android:nestedScrollingEnabled="true"
+            android:scrollbars="none"
             android:visibility="gone"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="晒单有礼:订单确认收货后，对所购商品进行评价晒单，即可获得晒"
-            tools:visibility="visible" />
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/top_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:textColor="@color/color_1700f4"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="晒单有礼:订单确认收货后，对所购商品进行评价晒单，即可获得晒" />
+
+        </HorizontalScrollView>
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_goodsCommentNumber"
@@ -50,7 +55,7 @@
             android:textSize="@dimen/sp_15"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_content"
+            app:layout_constraintTop_toBottomOf="@+id/hor_scroll"
             app:layout_goneMarginTop="0dp" />
 
         <com.changanford.shop.view.TypefaceTextView
@@ -159,13 +164,13 @@
             android:gravity="center"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
-            android:visibility="gone"
-            tools:visibility="visible"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/iv_comment_pic"
             app:layout_constraintRight_toRightOf="@+id/iv_comment_pic"
-            tools:text="+2" />
+            tools:text="+2"
+            tools:visibility="visible" />
 
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_noData"

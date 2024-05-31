@@ -55,7 +55,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
     override fun initData() {
         val invoiceInfoStr = intent.getStringExtra("value")
         val gson = Gson()
-        invoiceInfo = gson.fromJson<InvoiceInfo>(invoiceInfoStr, InvoiceInfo::class.java)
+        invoiceInfo = gson.fromJson(invoiceInfoStr, InvoiceInfo::class.java)
 
         showPerson()
 

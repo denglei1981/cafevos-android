@@ -150,7 +150,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                         rvUserTag.adapter = labelAdapter
 //                        tvCarOwner.isVisible = getIdentity() == 2
                         tvCarOwner.isVisible = !user.modelName.isNullOrEmpty()
-                        tvCarOwner.text = user.modelName.plus("车主")
+                        tvCarOwner.text = user.modelName
                         tvEdit.isVisible = isOneself() && getIdentity() == 1
                         tvContent.text = introduction
                         tvContent.isVisible = !introduction.isNullOrEmpty()
@@ -211,7 +211,7 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                     rvUserTag.adapter = labelAdapter
 //                    tvCarOwner.isVisible = getIdentity() == 2
                     tvCarOwner.isVisible = !user.modelName.isNullOrEmpty()
-                    tvCarOwner.text = user.modelName.plus("车主")
+                    tvCarOwner.text = user.modelName
                     tvEdit.isVisible = isOneself() && getIdentity() == 1
                     tvContent.text = introduction
                     tvContent.isVisible = !introduction.isNullOrEmpty()

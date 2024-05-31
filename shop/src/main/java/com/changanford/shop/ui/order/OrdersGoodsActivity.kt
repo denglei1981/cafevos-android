@@ -1,8 +1,12 @@
 package com.changanford.shop.ui.order
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -77,7 +81,7 @@ class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>()
             it?.order_list_roll?.apply {
                 //跑马灯
                 binding.topContent.apply {
-                    isVisible = !content.isNullOrEmpty()
+                    binding.horScroll.isVisible = !content.isNullOrEmpty()
                     text = content
                     isSelected = true
                     setOnClickListener {
@@ -88,9 +92,84 @@ class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>()
                         )
                         startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
                     }
+                    if (binding.horScroll.isVisible) {
+                        content?.let { it1 -> animtionOne(it1) }
+                    }
                 }
             }
         }
+    }
+
+    private fun animtionOne(text: String) {
+        val textPaint = binding.topContent.paint
+        val textPaintWidth = textPaint.measureText(text)
+        val screenWidth = windowManager.defaultDisplay.width
+        val animSet = AnimatorSet()
+        animSet.interpolator = LinearInterpolator()
+        val animOne = ObjectAnimator.ofFloat(
+            binding.topContent,
+            "translationX",
+            0f,
+            -(textPaintWidth)
+        )
+        animOne.duration = (textPaintWidth / screenWidth * 12000).toLong()
+        animOne.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                animtionTwo(text)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+
+        })
+        animSet.play(animOne)
+        animSet.start()
+    }
+
+    private fun animtionTwo(text: String) {
+        val textPaint = binding.topContent.paint
+        var textPaintWidth = textPaint.measureText(text)
+        val screenWidth = windowManager.defaultDisplay.width
+        val animSet = AnimatorSet()
+        animSet.interpolator = LinearInterpolator()
+        val animOne = ObjectAnimator.ofFloat(
+            binding.topContent,
+            "translationX",
+            screenWidth.toFloat(),
+            -textPaintWidth
+        )
+        animOne.duration = 20000
+        animOne.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                animtionTwo(text)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+
+
+        })
+        animSet.play(animOne)
+        animSet.start()
     }
 
     private fun initTab() {

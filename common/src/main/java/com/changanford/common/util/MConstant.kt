@@ -163,13 +163,15 @@ object MConstant {
 
     //H5活动
     private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" }
+    //砍价域名 https://evosh5qa.fuyu.club/fuyuapp/#/pages/bargaining/sku?goodsId=19992&mallMallHaggleActivityId=41
+    private val BARGAINING_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/fuyuapp/#/pages" else "https://evosh5.fuyu.club/fuyuapp/#/pages" else "https://evosh5.fuyu.club/fuyuapp/#/pages" }
 
     /**
      * %s
      *砍价商品详情地址 /bargaining/sku?goodsId=5&mallMallHaggleActivityId=1
      * */
 //    val H5_SHOP_BARGAINING ="${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s&mallMallHaggleActivityId=%s"
-    val H5_SHOP_BARGAINING = "${H5_BASE_URL_ACTIVITY}/bargaining/sku?goodsId=%s"
+    val H5_SHOP_BARGAINING = "${BARGAINING_URL}/bargaining/sku?goodsId=%s"
 
     /**
      * 维保商品订单详情 /order/#/maintain/maintainDetail?orderNo=

@@ -689,6 +689,7 @@ data class OrderItemBean(
     var totalIntegral: String? = null,
     var orderTypeName: String? = "",
     var orginPrice: String? = "0",
+    var refundNum: String? = "0",
     var hagglePrice: String? = null,//砍价的原价
     var canApplyServiceOfAfterSales: String? = null,//是否可以退货 YES  NO
     var rmbPrice: String? = null,

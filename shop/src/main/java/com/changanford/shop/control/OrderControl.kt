@@ -414,7 +414,7 @@ class OrderControl(val context: Context, val viewModel: OrderViewModel?) {
                         val invoiceInfo = InvoiceInfo(
                             mallMallOrderId = mallMallOrderId ?: "0",
                             mallMallOrderNo = orderNo,
-                            invoiceRmb = payRmb
+                            invoiceRmb = rmb
                         )
                         InvoiceActivity.start(invoiceInfo)
 //                        JumpUtils.instans?.jump(120, "{\"orderNo\":\"$orderNo\"}")

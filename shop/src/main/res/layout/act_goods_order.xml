@@ -39,25 +39,29 @@
                     app:contentScrim="@color/transparent"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/top_content"
+                    <HorizontalScrollView
+                        android:id="@+id/hor_scroll"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:background="@color/circle_081700F4"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:scrollHorizontally="true"
-                        android:singleLine="true"
-                        android:textColor="@color/color_1700f4"
-                        android:textSize="12sp"
+                        android:nestedScrollingEnabled="true"
+                        android:scrollbars="none"
                         android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="晒单有礼:订单确认收货后，对所购商品进行评价晒单，即可获得晒"
-                        tools:visibility="visible" />
+                        tools:visibility="visible">
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/top_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/color_1700f4"
+                            android:textSize="12sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="晒单有礼:订单确认收货后，对所购商品进行评价晒单，即可获得晒" />
+
+                    </HorizontalScrollView>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
                 <LinearLayout

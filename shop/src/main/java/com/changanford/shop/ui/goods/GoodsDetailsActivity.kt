@@ -1,11 +1,15 @@
 package com.changanford.shop.ui.goods
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
@@ -37,6 +41,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
 
 /**
  * @Author : wenke
@@ -193,7 +198,7 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
             it.pro_detail_roll?.apply {
                 //跑马灯
                 headerBinding.inComment.topContent.apply {
-                    isVisible = !content.isNullOrEmpty()
+                    headerBinding.inComment.horScroll.isVisible = !content.isNullOrEmpty()
                     text = content
                     isSelected = true
                     setOnClickListener {
@@ -203,6 +208,9 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
                             "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
                         )
                         startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                    }
+                    if (headerBinding.inComment.horScroll.isVisible) {
+                        content?.let { it1 -> animtionOne(it1) }
                     }
                 }
             }
@@ -218,6 +226,78 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
                 }
             )
         }
+    }
+
+    private fun animtionOne(text: String) {
+        val textPaint = headerBinding.inComment.topContent.paint
+        val textPaintWidth = textPaint.measureText(text)
+        val screenWidth = windowManager.defaultDisplay.width
+        val animSet = AnimatorSet()
+        animSet.interpolator = LinearInterpolator()
+        val animOne = ObjectAnimator.ofFloat(
+            headerBinding.inComment.topContent,
+            "translationX",
+            0f,
+            -(textPaintWidth)
+        )
+        animOne.duration = (textPaintWidth / screenWidth * 12000).toLong()
+        animOne.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                animtionTwo(text)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+
+        })
+        animSet.play(animOne)
+        animSet.start()
+    }
+
+    private fun animtionTwo(text: String) {
+        val textPaint = headerBinding.inComment.topContent.paint
+        var textPaintWidth = textPaint.measureText(text)
+        val screenWidth = windowManager.defaultDisplay.width
+        val animSet = AnimatorSet()
+        animSet.interpolator = LinearInterpolator()
+        val animOne = ObjectAnimator.ofFloat(
+            headerBinding.inComment.topContent,
+            "translationX",
+            screenWidth.toFloat(),
+            -textPaintWidth
+        )
+        animOne.duration = 20000
+        animOne.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                animtionTwo(text)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+
+
+        })
+        animSet.play(animOne)
+        animSet.start()
     }
 
     override fun onNewIntent(intent: Intent?) {

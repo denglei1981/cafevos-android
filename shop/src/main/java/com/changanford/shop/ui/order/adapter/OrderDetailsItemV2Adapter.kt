@@ -44,6 +44,7 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
     var timestamp: String = ""
     var refundId: String = ""
     var busSource: String? = ""
+
     @SuppressLint("SetTextI18n")
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
@@ -62,11 +63,15 @@ class OrderDetailsItemV2Adapter(var orderStatusListener: OrderStatusListener) :
                     item.buyNum!!.toDouble()
                 )
             }"
-            tvOldPrice.text = "原价￥${
-                MUtils.divideAndRetainTwoDecimalPlaces(
-                    item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
-                )
-            }"
+//            if (!item.orginPrice.isNullOrEmpty()) {
+//                tvOldPrice.text = "原价￥${
+//                    MUtils.divideAndRetainTwoDecimalPlaces(
+//                        item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
+//                    )
+//                }"
+//            } else {
+                tvOldPrice.text = "原价￥${item.getRMB2(item.fbOfUnitPrice)}"
+//            }
             val layoutManager = FlowLayoutManager(context, false, true)
             recyclerView.layoutManager = layoutManager
             val goodsAttributeAdapter = GoodsAttributeAdapter()

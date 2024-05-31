@@ -30,7 +30,6 @@ import com.changanford.common.ui.dialog.LoadDialog
 import com.changanford.common.util.AliYunOssUploadOrDownFileConfig
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.PictureUtil
-import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.showTotalTag
@@ -69,10 +68,10 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
     private var ossImageList: MutableList<String> = mutableListOf()
     var totalNum = 0//订单的总数量
     var newNum = 0//减退款数量时新的数量
-    val payShowBean = PayShowBean()
+    private val payShowBean = PayShowBean()
 
-    lateinit var orderItemBean: RefundOrderItemBean
-    val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
+    private lateinit var orderItemBean: RefundOrderItemBean
+    private val orderDetailsItemV2Adapter: RefundOrderItemAdapter by lazy {
         RefundOrderItemAdapter()
     }
     private val dialog by lazy {

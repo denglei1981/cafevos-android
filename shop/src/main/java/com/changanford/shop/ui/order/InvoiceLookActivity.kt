@@ -38,7 +38,7 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
             if (it != null) {
                 when (it.invoiceStatus) {
                     "YES" -> {
-                        binding.ivAddress.visibility = View.VISIBLE
+                        binding.ivAddress.visibility = View.GONE
                         binding.tvInvoiceStates.text = "已开票"
                         binding.tvInvoiceMoney.text = "开票金额: ￥${it.invoiceRmb}"
                         binding.llInvoiceTime.visibility = View.VISIBLE

@@ -30,6 +30,7 @@ class RefundOrderItemAdapter() :
 
     var orderStatus: String = ""
     var refundStatus: String = ""
+
     @SuppressLint("SetTextI18n")
     override fun convert(
         holder: BaseDataBindingHolder<InItemOrderGoodsV2Binding>,
@@ -46,11 +47,15 @@ class RefundOrderItemAdapter() :
                     item.buyNum!!.toDouble()
                 )
             }"
-            tvOldPrice.text = "原价￥${
-                MUtils.divideAndRetainTwoDecimalPlaces(
-                    item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
-                )
-            }"
+//            if (!item.orginPrice.isNullOrEmpty()) {
+//                tvOldPrice.text = "原价￥${
+//                    MUtils.divideAndRetainTwoDecimalPlaces(
+//                        item.getRMB2(item.orginPrice).toDouble(), item.buyNum!!.toDouble()
+//                    )
+//                }"
+//            } else {
+            tvOldPrice.text = "原价￥${item.getRMB2(item.fbOfUnitPrice)}"
+//            }
 //            showTotalTag(tvIntegral, item)
             val goodsAttributeAdapter = GoodsAttributeAdapter()
             recyclerView.adapter = goodsAttributeAdapter
