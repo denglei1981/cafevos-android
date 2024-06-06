@@ -62,6 +62,9 @@ object LiveDataBusKey {
     //自定义返回
     const val WEB_BACKEVENT = "agentWeb_setBackEvent"
 
+    //自定义x按钮
+    const val WEB_X_CLICK = "agentWeb_setCloseEvent"
+
     //关闭页面
     const val WEB_CLOSEPAGE = "agentWeb_closepage"
 

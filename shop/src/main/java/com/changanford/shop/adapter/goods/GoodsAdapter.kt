@@ -95,8 +95,9 @@ class GoodsAdapter :
                 }
 
                 else -> {// MAINTENANCE 维保商品
-                    visibility = View.GONE
-                    ""
+                    visibility =
+                        if (item.customizeVisibleLabels.isNullOrEmpty()) View.GONE else View.VISIBLE
+                    setImageResource(R.mipmap.ic_shop_item_top_zx)
                 }
             }
         }

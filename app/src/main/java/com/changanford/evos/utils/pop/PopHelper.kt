@@ -2,11 +2,9 @@ package com.changanford.evos.utils.pop
 
 import android.app.Dialog
 import androidx.lifecycle.MutableLiveData
-import com.changanford.common.ui.UpdateAgreePop
 import com.changanford.evos.MainActivity
 import com.changanford.evos.PopViewModel
 import com.changanford.home.request.HomeV2ViewModel
-import razerdp.basepopup.BasePopupWindow
 
 /**
  *Author lcw
@@ -35,6 +33,10 @@ object PopHelper {
             setContext(activity)
             setPopViewMode(popViewModel)
         }
+        val holdCircleJob = HoldCircleJob().apply {
+            setContext(activity)
+            setPopViewMode(popViewModel)
+        }
         val getFbPopJob = GetFbPopJob().apply {
             setContext(activity)
             setPopViewMode(popViewModel)
@@ -55,10 +57,11 @@ object PopHelper {
             setPopViewMode(popViewModel)
         }
         popJob[1] = updatePopJob
-        popJob[2] = updateAgreeJob
-        popJob[3] = receivePopJob
-        popJob[4] = getFbPopJob
-        popJob[5] = newEstOnePopJob
+        popJob[2] = holdCircleJob
+        popJob[3] = updateAgreeJob
+        popJob[4] = receivePopJob
+        popJob[5] = getFbPopJob
+        popJob[6] = newEstOnePopJob
         jobCurrent = 1
         jobState.value = jobCurrent
 

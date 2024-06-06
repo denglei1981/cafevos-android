@@ -1,14 +1,17 @@
 package com.changanford.shop.adapter.goods
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.ShopRecommendBean
 import com.changanford.common.util.gio.GIOUtils
+import com.changanford.common.wutil.ShadowDrawable
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemHomeRecommendList1Binding
 import com.changanford.shop.ui.goods.GoodsDetailsActivity
 import com.changanford.shop.ui.goods.RecommendActivity
+import com.core.util.dp
 
 class ShopRecommendListAdapter1 :
     BaseQuickAdapter<ShopRecommendBean, BaseDataBindingHolder<ItemHomeRecommendList1Binding>>(
@@ -20,6 +23,10 @@ class ShopRecommendListAdapter1 :
         item: ShopRecommendBean
     ) {
         holder.dataBinding?.apply {
+            ShadowDrawable.setShadowDrawable(
+                clContent, Color.parseColor("#FFFFFF"), 12.dp,
+                Color.parseColor("#1a000000"), 2.dp, 0, 0
+            )
             tvName.setText(item.kindName)
 
             val shopAdapter = ShopRecommendListAdapter2().apply {

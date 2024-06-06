@@ -65,6 +65,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{model.spuName}"
+            android:textStyle="bold"
             android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="parent"

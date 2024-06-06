@@ -43,6 +43,7 @@ object ARouterCirclePath {
     const val CreateCircleActivity = "/circle/CreateCircleActivity"
     const val CircleMemberManageActivity = "/circle/CircleMemberManageActivity"
     const val HotListActivity = "/circle/HotListActivity"
+    const val HoldCircleActivity = "/circle/HoldCircleActivity"
     const val QuestionActivity = "/circle/QuestionActivity"
     const val CreateQuestionActivity="/circle/CreateQuestionActivity"
     const val MechanicMainActivity="/circle/MechanicMainActivity"

@@ -84,6 +84,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private var loginAppCallBack = ""//登录App回调
     private var bindPhoneCallBack = ""//绑定手机号回调
     private var backEventCallBack = ""//自定义返回
+    private var closeEventCallBack = ""//自定义返回
     private var chooseAddressCallback = ""//选择地址回调
     private var h5OrderPayCallback = ""//h5订单支付
     private var h5BindDealerCallback = ""//绑定经销商
@@ -135,6 +136,9 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             }
         }
         headerView.findViewById<ImageView>(R.id.bar_img_close).setOnClickListener {
+            if (handleH5X()){
+                return@setOnClickListener
+            }
             finish()
         }
         registerLiveBus()
@@ -379,6 +383,10 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //自定义返回
         LiveDataBus.get().with(LiveDataBusKey.WEB_BACKEVENT).observe(this, Observer {
             backEventCallBack = it as String
+        })
+        //自定义x事件
+        LiveDataBus.get().with(LiveDataBusKey.WEB_X_CLICK).observe(this, Observer {
+            closeEventCallBack = it as String
         })
         //关闭页面
         LiveDataBus.get().with(LiveDataBusKey.WEB_CLOSEPAGE).observe(this, Observer {
@@ -690,6 +698,14 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private fun handleH5Back(): Boolean {
         if (!backEventCallBack.isNullOrEmpty()) {
             quickCallJs(backEventCallBack)
+            return true
+        }
+        return false
+    }
+
+    private fun handleH5X(): Boolean {
+        if (!closeEventCallBack.isNullOrEmpty()) {
+            quickCallJs(closeEventCallBack)
             return true
         }
         return false

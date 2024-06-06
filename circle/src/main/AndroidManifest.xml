@@ -111,5 +111,6 @@
         <activity android:name=".ui.activity.baoming.AvtivityFabuStep2" />
         <activity android:name=".ui.activity.toupiao.ActivityFabuToupiao" />
         <activity android:name=".ui.activity.ChooseCarActivity" />
+        <activity android:name=".ui.activity.circle.HoldCircleActivity" />
     </application>
 </manifest>

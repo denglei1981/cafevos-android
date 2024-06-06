@@ -65,13 +65,13 @@ class GoodsKillAreaTimeAdapter(var selectPos: Int, val listener: SelectTimeBackL
     ) {
         selectPos = position
         if (::lastBinding.isInitialized && itemBinding != lastBinding) {
-            itemBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_e8ebf3_5dp)
+            itemBinding.layoutRoot.setBackgroundResource(R.drawable.bg_081700f4_12)
             itemBinding.tvTime.setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
             itemBinding.tvState.setTextColor(ContextCompat.getColor(context, R.color.color_1700f4))
 
-            lastBinding.layoutRoot.setBackgroundResource(R.drawable.shadow_f9_5dp)
-            lastBinding.tvTime.setTextColor(ContextCompat.getColor(context, R.color.color_99))
-            lastBinding.tvState.setTextColor(ContextCompat.getColor(context, R.color.color_99))
+            lastBinding.layoutRoot.setBackgroundResource(R.drawable.bg_084a_12)
+            lastBinding.tvTime.setTextColor(ContextCompat.getColor(context, R.color.color_d916))
+            lastBinding.tvState.setTextColor(ContextCompat.getColor(context, R.color.color_d916))
             lastBinding = itemBinding
             listener.onSelectTimeBackListener(position, item)
         }

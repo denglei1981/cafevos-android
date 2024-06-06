@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
@@ -15,7 +16,9 @@ import com.changanford.common.bean.CircleItemBean
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
+import com.changanford.common.util.MUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
@@ -89,8 +92,30 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         circleAdapter.setOnItemChildClickListener { _, view, position ->
             val bean = circleAdapter.getItem(position)
             val useState = if (bean.star == "YES") "NO" else "YES"
-            if (view.id == R.id.img_star) {
-                viewModel.circleStar(bean.circleId, useState) { initRefreshData(1) }
+            when (view.id) {
+                R.id.img_star -> {
+                    if (bean.isGrounding == 1 && bean.star == "NO") {//下架不可点亮
+                        return@setOnItemChildClickListener
+                    }
+                    viewModel.circleStar(bean.circleId, useState) { initRefreshData(1) }
+                }
+
+                R.id.out_circle -> {
+                    ConfirmTwoBtnPop(requireContext()).apply {
+                        contentText.text = "是否确认退出该圈子?"
+                        btnConfirm.text = "确认退出"
+                        btnCancel.text = "我再想想"
+                        btnCancel.setOnClickListener {
+                            dismiss()
+                        }
+                        btnConfirm.setOnClickListener {
+                            viewModel.quitCircle(bean.circleId) {
+                                initRefreshData(1)
+                            }
+                            dismiss()
+                        }
+                    }.showPopupWindow()
+                }
             }
         }
     }
@@ -111,11 +136,11 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         super.initRefreshData(pageSize)
         when (index) {
             0 -> {
-                viewModel.myJoinCircle(searchKeys,pageSize)
+                viewModel.myJoinCircle(searchKeys, pageSize)
             }
 
             1 -> {
-                viewModel.myMangerCircle(searchKeys,pageSize)
+                viewModel.myMangerCircle(searchKeys, pageSize)
             }
         }
     }
@@ -137,17 +162,21 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
         init {
             addItemType(0, R.layout.item_join_circle)
             addItemType(1, R.layout.item_manger_circle)
-            addChildClickViewIds(R.id.img_star)
+            addChildClickViewIds(R.id.img_star, R.id.out_circle)
         }
 
         override fun convert(holder: BaseViewHolder, item: CircleItemBean) {
             when (getItemViewType(holder.layoutPosition)) {
                 0 -> {
+                    val rootView = holder.getView<ConstraintLayout>(R.id.cl_content)
                     val icon: ShapeableImageView = holder.getView(R.id.item_icon)
                     val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
                     val tvAddress: TextView = holder.getView(R.id.tv_address)
+                    val tvOut: TextView = holder.getView(R.id.out_circle)
+                    MUtils.setTopMargin(rootView, 15, holder.layoutPosition)
                     tvAddress.isVisible = !item.addrDesc.isNullOrEmpty()
                     tvAddress.text = item.addrDesc
+                    tvOut.isVisible = item.isJoined == 1
                     icon.load(item.pic)
                     holder.setText(R.id.item_title, item.name)
                     holder.setText(R.id.item_date, item.description)
@@ -160,6 +189,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                     //状态 状态 1待审核  2审核通过
                     val statusTv: TextView = holder.getView(R.id.status_text)
                     val status = item.status
+                    statusTv.setTextColor(ContextCompat.getColor(context, R.color.white))
                     when (status) {
                         "1" -> {
                             statusTv.visibility = View.VISIBLE
@@ -178,16 +208,31 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         } else View.GONE
                     }
                     holder.itemView.setOnClickListener {
-                        JumpUtils.instans?.jump(6, item.circleId)
+                        if (item.isGrounding != 1){
+                            JumpUtils.instans?.jump(6, item.circleId)
+                        }
+                    }
+                    if (item.isGrounding == 1) {//下架
+                        statusTv.visibility = View.VISIBLE
+                        statusTv.text = "已下架"
+                        statusTv.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
+                        statusTv.setDrawableColor(R.color.color_b8bbc2)
+                    }
+                    if (item.isGrounding == 1 && item.star == "NO") {
+                        holder.getView<ImageView>(R.id.img_star).isVisible=false
                     }
                 }
 
                 1 -> {
+                    val rootView = holder.getView<ConstraintLayout>(R.id.cl_content)
                     val title: AppCompatTextView = holder.getView(R.id.circle_user)
                     val ivAuth: AppCompatImageView = holder.getView(R.id.iv_auth)
                     val tvAddress: TextView = holder.getView(R.id.tv_address)
+                    val tvOut: TextView = holder.getView(R.id.out_circle)
+                    MUtils.setTopMargin(rootView, 15, holder.layoutPosition)
                     tvAddress.isVisible = !item.addrDesc.isNullOrEmpty()
                     tvAddress.text = item.addrDesc
+                    tvOut.isVisible = item.isJoined == 1
                     title.text = item.typeStr
                     title.visibility = if (item.isShowTitle) View.VISIBLE else View.GONE
 
@@ -220,6 +265,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             View.VISIBLE
                         } else View.GONE
                     }
+                    statusTV.setTextColor(ContextCompat.getColor(context, R.color.white))
                     //状态 1认证失败  2待审核 3审核通过
                     when (status) {
                         "2", "1" -> {
@@ -282,10 +328,15 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                             statusTV.visibility = View.GONE
                         }
                     }
-                    if (item.isGrounding == 1) {//下架隐藏星标
-                        holder.getView<ImageView>(R.id.img_star).visibility = View.GONE
+                    if (item.isGrounding == 1) {//下架
+                        statusTV.visibility = View.VISIBLE
+                        statusTV.text = "已下架"
+                        statusTV.setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
+                        statusTV.setDrawableColor(R.color.color_b8bbc2)
                     }
-
+                    if (item.isGrounding == 1 && item.star == "NO") {
+                        holder.getView<ImageView>(R.id.img_star).isVisible=false
+                    }
                 }
             }
         }

@@ -1650,4 +1650,22 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Any>
+
+    /**
+     * 退出圈子
+     */
+    @POST("con/circle/quitCircle")
+    suspend fun quitCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
+     * 保留圈子弹窗
+     */
+    @POST("con/movecircle/showwindow")
+    suspend fun showWindow(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Boolean>
 }

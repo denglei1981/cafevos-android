@@ -45,6 +45,7 @@ import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.PayWayBean
 import com.changanford.common.router.path.ARouterShopPath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.bus.LiveDataBus
@@ -97,6 +98,11 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
     //    private var orderInfoBean: OrderInfoBean?=null
     override fun initView() {
         binding.topBar.setOnBackClickListener(this)
+        binding.btnSubmit.setOnClickListener {
+            if (!FastClickUtils.isFastClick()) {
+                btnSubmit(it)
+            }
+        }
     }
 
     override fun initData() {
@@ -350,7 +356,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
         }
     }
 
-    fun btnSubmit(v: View) {
+    private fun btnSubmit(v: View) {
         dataBean?.apply {
             if (!isClickSubmit) {
                 isClickSubmit = true
@@ -600,18 +606,20 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 ) {
                     Button(
                         onClick = {
-                            if (isFromOrder) {
-                                payRmb?.let {
-                                    viewModel.rmbPayBatch(
-                                        orderNo,
-                                        it,
-                                        selectedTag.value
-                                    )
+                            if (!FastClickUtils.isFastClick()){
+                                if (isFromOrder) {
+                                    payRmb?.let {
+                                        viewModel.rmbPayBatch(
+                                            orderNo,
+                                            it,
+                                            selectedTag.value
+                                        )
+                                    }
+                                } else {
+                                    viewModel.rmbPay(orderNo, selectedTag.value)
                                 }
-                            } else {
-                                viewModel.rmbPay(orderNo, selectedTag.value)
+                                mSelectedTag = selectedTag.value
                             }
-                            mSelectedTag = selectedTag.value
                         },
                         enabled = selectedTag.value != "0" && countdown.value != timeStr,
                         shape = RoundedCornerShape(20.dp),
@@ -624,7 +632,9 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         Text(
                             stringResource(R.string.str_payConfirm),
                             fontSize = 15.sp,
-                            color =if (selectedTag.value != "0" && countdown.value != timeStr)  Color.White else colorResource(R.color.color_4d16)
+                            color = if (selectedTag.value != "0" && countdown.value != timeStr) Color.White else colorResource(
+                                R.color.color_4d16
+                            )
                         )
                     }
                 }

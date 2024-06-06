@@ -49,21 +49,25 @@ object WCommonUtil {
         tabLayout: TabLayout,
         size: Float,
         typeface: Typeface,
-        colorID: Int
+        colorID: Int,
+        isBord: Boolean = false
     ) {
-        val textView = TextView(context)
-        val selectedSize = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_PX,
-            size,
-            context.resources.displayMetrics
-        )
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
-        textView.setTextColor(ContextCompat.getColor(context, colorID))
-        textView.typeface = typeface
-        textView.gravity = Gravity.CENTER
         tabLayout.getTabAt(0)?.apply {
+            val textView = TextView(context)
+            val selectedSize = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_PX,
+                size,
+                context.resources.displayMetrics
+            )
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
+            textView.setTextColor(ContextCompat.getColor(context, colorID))
+            textView.typeface = typeface
+            textView.gravity = Gravity.CENTER
             customView = null
             textView.text = text
+            if (isBord) {
+                textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+            }
             customView = textView
         }
         tabLayout.addOnTabSelectedListener(object :
@@ -76,7 +80,20 @@ object WCommonUtil {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.apply {
                     customView = null
+                    val textView = TextView(context)
+                    val selectedSize = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_PX,
+                        size,
+                        context.resources.displayMetrics
+                    )
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, selectedSize)
+                    textView.setTextColor(ContextCompat.getColor(context, colorID))
+                    textView.typeface = typeface
+                    textView.gravity = Gravity.CENTER
                     textView.text = text
+                    if (isBord) {
+                        textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                    }
                     customView = textView
                 }
             }
@@ -106,12 +123,14 @@ object WCommonUtil {
                 intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
                 intent.putExtra("android.provider.extra.APP_PACKAGE", context.packageName)
             }
+
             Build.VERSION.SDK_INT >= 21 -> {
                 // android 5.0-7.0
                 intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
                 intent.putExtra("app_package", context.packageName)
                 intent.putExtra("app_uid", context.applicationInfo.uid)
             }
+
             else -> {
                 // 其他
                 intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
@@ -195,6 +214,7 @@ object WCommonUtil {
                 MImageGetter(textView, mActivity),
                 MyTagHandler(mActivity)
             )
+
             else -> Html.fromHtml(str, MImageGetter(textView, mActivity), MyTagHandler(mActivity))
         }
     }

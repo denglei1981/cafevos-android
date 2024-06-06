@@ -27,7 +27,7 @@ class GoodsKillAreaAdapter(val viewModel: GoodsViewModel) :
         item: GoodsItemBean
     ) {
         holder.dataBinding?.apply {
-            MUtils.setTopMargin(root, 15, holder.layoutPosition)
+            MUtils.setTopMargin(root, 16, holder.layoutPosition)
             btnStates.setStates(getKillStates(item))
             item.stockProportion = WCommonUtil.getPercentage(
                 item.salesCount.toDouble(),

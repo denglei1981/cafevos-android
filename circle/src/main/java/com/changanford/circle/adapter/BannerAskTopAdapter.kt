@@ -10,6 +10,7 @@ import com.changanford.common.bean.QuestionItemBean
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.wutil.ShadowDrawable
+import com.core.util.dp
 import com.zhpan.bannerview.BaseBannerAdapter
 import com.zhpan.bannerview.BaseViewHolder
 
@@ -30,8 +31,8 @@ class BannerAskTopAdapter : BaseBannerAdapter<QuestionItemBean>() {
         binding?.run {
             //设置阴影
             ShadowDrawable.setShadowDrawable(
-                binding.clContent, Color.parseColor("#FFFFFF"), 12,
-                Color.parseColor("#1a000000"), 6, 0, 0
+                binding.clContent, Color.parseColor("#FFFFFF"), 12.dp,
+                Color.parseColor("#1a000000"), 2.dp, 0, 0
             )
             root.setOnClickListener {
                 JumpUtils.instans?.jump(data.jumpType, data.jumpValue)

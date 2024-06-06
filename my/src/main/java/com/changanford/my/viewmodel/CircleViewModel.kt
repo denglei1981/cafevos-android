@@ -31,7 +31,7 @@ class CircleViewModel : ViewModel() {
      * 我管理的圈子
      */
     var mMangerCircle: MutableLiveData<ArrayList<CircleItemBean>> = MutableLiveData()
-    fun myMangerCircle(searchKeys: String,pageNo: Int) {
+    fun myMangerCircle(searchKeys: String, pageNo: Int) {
         val circleItemBeans: ArrayList<CircleItemBean> = ArrayList()
         viewModelScope.launch {
             fetchRequest {
@@ -85,7 +85,7 @@ class CircleViewModel : ViewModel() {
      */
     var mJoinCircle: MutableLiveData<CircleListBean> = MutableLiveData()
 
-    fun myJoinCircle(searchKeys: String,pageNo:Int) {
+    fun myJoinCircle(searchKeys: String, pageNo: Int) {
         viewModelScope.launch {
             fetchRequest {
                 val body = HashMap<String, Any>()
@@ -144,6 +144,21 @@ class CircleViewModel : ViewModel() {
         }
     }
 
+    fun quitCircle(circleId: String, block: () -> Unit) {
+        viewModelScope.launch {
+            fetchRequest {
+                val body = HashMap<String, Any>()
+                body["circleId"] = circleId
+                val rkey = getRandomKey()
+                apiService.quitCircle(body.header(rkey), body.body(rkey))
+            }.onSuccess {
+                block.invoke()
+            }.onWithMsgFailure {
+                it?.toast()
+            }
+        }
+
+    }
 
     var circleMember: MutableLiveData<CircleMemberBean> = MutableLiveData()
 

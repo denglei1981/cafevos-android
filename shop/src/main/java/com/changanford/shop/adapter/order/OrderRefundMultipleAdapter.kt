@@ -1,5 +1,6 @@
 package com.changanford.shop.adapter.order
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -60,6 +61,7 @@ class OrderRefundMultipleAdapter(private val baseViewModel: RefundViewModel) :
             recyclerView.adapter = refundProgressAdapter
 
             setFootView(layoutRefundInfo, item, this)
+            ivExpand.setColorFilter(Color.parseColor("#1700f4"))
             if (item.isExpand) {
                 refundProgressAdapter.setNewInstance(item.refundList)
                 layoutRefundInfo.root.visibility = View.VISIBLE

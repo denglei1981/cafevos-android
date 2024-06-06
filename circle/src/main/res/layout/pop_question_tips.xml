@@ -18,8 +18,8 @@
             style="@style/AppText.lineSpace"
             android:layout_width="242dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:padding="12dp"
+            android:layout_marginEnd="16dp"
+            android:padding="18dp"
             android:textColor="@color/color_16"
             android:textSize="@dimen/sp_12"
             tools:text="@string/pop_question_tips" />

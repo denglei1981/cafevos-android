@@ -31,6 +31,7 @@ data class CircleItemBean(
     val circleId: String = "0",
     val description: String = "",
     val userId: Int = 0,
+    val isJoined: Int = 0,//是否已加入圈子 0:否;1是
     val name: String = "",
     val nameColor: String? = "",
     val hotIcon: String = "",
@@ -60,7 +61,7 @@ data class CircleItemBean(
     //圈子认证V标
     val manualAuthImg: String? = null,
 
-) : MultiItemEntity, Serializable
+    ) : MultiItemEntity, Serializable
 
 
 data class CircleMemberBean(
@@ -105,7 +106,7 @@ data class CircleTagBean(
 
 data class Refuse(
     val type: String,
-    var isCheck:Boolean
+    var isCheck: Boolean
 )
 
 data class CircleUserBean(

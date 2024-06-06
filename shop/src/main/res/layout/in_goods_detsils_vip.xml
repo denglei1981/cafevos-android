@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{model.rmbPrice}"
                 android:textColor="@color/color_16"
+                android:textStyle="bold"
                 android:textSize="@dimen/sp_20"
                 app:start_txt="@string/str_rmb"
                 tools:text="0" />
@@ -84,10 +85,11 @@
                 android:layout_gravity="bottom"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_marginEnd="@dimen/dp_7"
-                android:drawableStart="@mipmap/ic_shop_fb_42"
+                android:drawableStart="@mipmap/ic_shop_de_price"
                 android:drawablePadding="@dimen/dp_3"
+                android:textStyle="bold"
                 android:text="@{model.fbPrice}"
-                android:textColor="@color/color_9916"
+                android:textColor="@color/color_16"
                 android:textSize="@dimen/sp_20"
                 tools:text="0" />
 

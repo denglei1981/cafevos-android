@@ -54,6 +54,7 @@
                 android:layout_marginTop="@dimen/dp_1"
                 android:layout_marginEnd="16dp"
                 android:ellipsize="end"
+                android:textStyle="bold"
                 android:maxLines="2"
                 android:text="@{model.spuName}"
                 android:textColor="@color/color_d916"

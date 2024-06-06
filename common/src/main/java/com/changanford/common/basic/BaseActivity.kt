@@ -22,22 +22,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
-import com.changanford.common.MyApp
+import com.changanford.common.R
 import com.changanford.common.basic.BaseApplication.Companion.curActivity
 import com.changanford.common.basic.BaseApplication.Companion.currentViewModelScope
-import com.changanford.common.net.*
 import com.changanford.common.util.FastClickUtils
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.launchWithCatch
-import com.changanford.common.utilext.createHashMap
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
 /**********************************************************************************
  * @Copyright (C), 2018-2020.
@@ -68,7 +66,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initView(savedInstanceState)
         initView()
 //        StatusBarUtil.setLightStatusBar(this, true)
-        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
+        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).navigationBarColor(R.color.white).init()
         if (savedInstanceState == null) {
             initData()
         } else {

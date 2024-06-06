@@ -37,7 +37,7 @@ class QuestionFragment : BaseFragment<FragmentQuestionBinding, QuestionViewModel
         }
     }
 
-    val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
+    private val mAdapter by lazy { QuestionListAdapter(requireActivity()) }
     private var conQaUjId = ""
     private var personalPageType = ""
     private var isOneself = true

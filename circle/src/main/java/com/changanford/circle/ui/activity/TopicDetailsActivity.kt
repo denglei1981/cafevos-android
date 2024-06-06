@@ -42,7 +42,6 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.CircleMainMenuPop
 import com.changanford.common.widget.webview.CustomWebTXHelper
-import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -104,7 +103,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         }
 
         //处理滑动顶部效果
-        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val absOffset = abs(verticalOffset).toFloat() * 2.5F
             //滑动到高度一半不是白色状态
             if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
@@ -130,7 +129,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 binding.toolbar.background.mutate().alpha = 255
                 binding.barTitleTv.alpha = 1.0F
             }
-        })
+        }
         initTabAndViewPager()
 
 //        PostDatabase.getInstance(this).getPostDao().findAll().observe(

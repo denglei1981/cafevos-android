@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.bumptech.glide.Glide
 import com.changanford.common.adapter.DealMuchImageAdapter
 import com.changanford.common.bean.ImageInfo
+import com.changanford.common.util.FastClickUtils
 import com.changanford.common.utilext.toPx
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
@@ -90,4 +91,12 @@ fun View.setDrawableColor(color: Int) {
     stateBg.setColor(
         ContextCompat.getColor(context, color)
     )
+}
+
+fun View.setOnFastClickListener(block: () -> Unit) {
+    setOnClickListener {
+        if (!FastClickUtils.isFastClick()) {
+            block.invoke()
+        }
+    }
 }

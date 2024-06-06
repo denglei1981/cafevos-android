@@ -165,7 +165,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         binding.llTaxpayer.visibility = View.VISIBLE
         binding.rbPerson.background =
             ContextCompat.getDrawable(this, R.drawable.shape_search_bg_gray_f4)
-        binding.rbCompany.background = ContextCompat.getDrawable(this, R.drawable.shape_bg_gray_e5)
+        binding.rbCompany.background = ContextCompat.getDrawable(this, R.drawable.bg_081700f4_23)
         binding.rbPerson.setTextColor(ContextCompat.getColor(this, R.color.black))
         binding.rbCompany.setTextColor(ContextCompat.getColor(this, R.color.color_1700f4))
     }
@@ -174,7 +174,7 @@ class InvoiceActivity : BaseActivity<ActivityInvoiceInfoBinding, GetInvoiceViewM
         binding.llPerson.visibility = View.VISIBLE
         binding.llCompany.visibility = View.GONE
         binding.llTaxpayer.visibility = View.GONE
-        binding.rbPerson.background = ContextCompat.getDrawable(this, R.drawable.shape_bg_gray_e5)
+        binding.rbPerson.background = ContextCompat.getDrawable(this, R.drawable.bg_081700f4_23)
         binding.rbCompany.background =
             ContextCompat.getDrawable(this, R.drawable.shape_search_bg_gray_f4)
         binding.rbPerson.setTextColor(ContextCompat.getColor(this, R.color.color_1700f4))

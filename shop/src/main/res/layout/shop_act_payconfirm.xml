@@ -76,7 +76,6 @@
             android:layout_marginBottom="24dp"
             android:background="@drawable/btn_selector"
             android:gravity="center"
-            android:onClick="btnSubmit"
             android:text="@string/str_payConfirm"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"

@@ -36,6 +36,8 @@ import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.load
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShadowDrawable
+import com.core.util.dp
 import com.google.android.material.appbar.AppBarLayout
 import com.gyf.immersionbar.ImmersionBar
 import com.luck.picture.lib.tools.ScreenUtils
@@ -104,6 +106,10 @@ class QuestionActivity : BaseActivity<ActivityQuestionBinding, QuestionViewModel
                 conQaUjId = this
             }
         }
+        ShadowDrawable.setShadowDrawable(
+            binding.layoutTopUser.clCard, Color.parseColor("#FFFFFF"), 12.dp,
+            Color.parseColor("#1a000000"), 8.dp, 0, 0
+        )
         MConstant.conQaUjId = conQaUjId
         if (TextUtils.isEmpty(conQaUjId)) {
             getString(R.string.str_parametersOfIllegal).toast()

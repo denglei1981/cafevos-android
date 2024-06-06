@@ -398,6 +398,15 @@ class AgentWebInterface(
         LiveDataBus.get().with(LiveDataBusKey.WEB_BACKEVENT).postValue(callback)
     }
 
+    /**
+     * 自定义x按钮事件
+     * @param jumpData 需json化 :  {"jumpDataType": x, "jumpDataValue": x}
+     * @param callback：回调方法名字 如果回调方法需要参数 请自己拼接好 e·g： xxxx(a)~~~~
+     */
+    @JavascriptInterface
+    fun setCloseEvent(callback: String) {
+        LiveDataBus.get().with(LiveDataBusKey.WEB_X_CLICK).postValue(callback)
+    }
 
     /**
      * H5选择地址，返回地址Josn数据

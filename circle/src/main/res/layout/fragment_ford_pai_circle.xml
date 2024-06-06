@@ -152,6 +152,7 @@
         <com.changanford.common.widget.TopLoadingView
             android:id="@+id/loading_view"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent"/>
 
 <!--        <include-->

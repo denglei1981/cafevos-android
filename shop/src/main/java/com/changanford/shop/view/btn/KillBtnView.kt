@@ -150,10 +150,10 @@ class KillBtnView(context: Context, attrs: AttributeSet? = null) :
             setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             if (btnSource == 0) {
                 setBackgroundResource(R.drawable.bg_bord_80a6_23)
-                setTextColor(ContextCompat.getColor(context, R.color.color_DD))
+                setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             } else if (btnSource == 1) {
                 setBackgroundResource(R.drawable.border1dp_round_20dp_dd)
-                setTextColor(ContextCompat.getColor(context, R.color.color_DD))
+                setTextColor(ContextCompat.getColor(context, R.color.color_4d16))
             }
         }
     }

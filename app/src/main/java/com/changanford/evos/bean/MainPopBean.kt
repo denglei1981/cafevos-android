@@ -18,5 +18,6 @@ data class MainPopBean(
     val coupons: MutableList<CouponsItemBean>?,
     val newEstOneBean: NewEstOneBean?,
     val bizCodeBean: BizCodeBean?,
-    val popRuleBean: NewEstRuleBean?
+    val popRuleBean: NewEstRuleBean?,
+    val holdCircleBean: Boolean?
 )

@@ -4,6 +4,18 @@ import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,6 +26,7 @@ import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
@@ -234,6 +247,7 @@ class OrderAdapter(
             val evalStatus = item.evalStatus
             val orderStatus = item.orderStatus
             dataBinding.viewN.isVisible = true
+            dataBinding.composeView.isVisible = false
             if ("FINISH" == orderStatus && null != evalStatus && "WAIT_EVAL" == evalStatus) {//待评价
                 dataBinding.apply {
                     btnCancel.apply {//申请售后
@@ -319,6 +333,26 @@ class OrderAdapter(
                             btnInvoice.visibility = View.GONE
                             btnConfirm.visibility = View.GONE
                             dataBinding.viewN.isVisible = false
+                            composeView.isVisible = true
+                            composeView.setContent {
+                                ItemCompose(item)
+                            }
+                            btnCancel.apply {//售后详情
+                                visibility = View.VISIBLE
+                                setText(R.string.str_afterDetails)
+                                setOnClickListener {
+                                    item.apply {
+                                        //整单退
+                                        if (refundType == "ALL_ORDER") JumpUtils.instans?.jump(
+                                            124,
+                                            mallMallRefundId
+                                        )
+                                        //单SKU退
+                                        else JumpUtils.instans?.jump(126, mallMallRefundId)
+
+                                    }
+                                }
+                            }
                         }
                     }
                     //待收货->可确认收货
@@ -451,7 +485,7 @@ class OrderAdapter(
                         dataBinding.btnInvoice.visibility = View.GONE
                         dataBinding.btnCancel.visibility = View.GONE
                         dataBinding.btnConfirm.visibility = View.GONE
-                        dataBinding.viewN.isVisible=false
+                        dataBinding.viewN.isVisible = false
                     }
                 }
             }
@@ -540,5 +574,30 @@ class OrderAdapter(
 
             }
         })
+    }
+
+    @Composable
+    private fun ItemCompose(item: OrderItemBean) {
+        item.apply {
+            var fbPrice = fbRefund ?: fbRefundApply ?: "0"
+            val rmbPrice = rmbRefund ?: rmbRefundApply ?: "0"
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "退款金额：", fontSize = 14.sp, color = colorResource(R.color.color_16))
+                val addStr = if (fbPrice != "0" && rmbPrice.toFloat() > 0f) "+" else ""
+                if (fbPrice == "0" && rmbPrice.toFloat() > 0f) fbPrice = ""
+                if (fbPrice != "") {
+                    Image(
+                        painter = painterResource(R.mipmap.ic_shop_fb_42),
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(2.dp))
+                }
+                Text(
+                    text = "$fbPrice$addStr${if (rmbPrice != "0") "￥$rmbPrice" else ""}",
+                    fontSize = 14.sp,
+                    color = colorResource(R.color.color_16)
+                )
+            }
+        }
     }
 }

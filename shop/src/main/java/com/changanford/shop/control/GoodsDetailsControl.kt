@@ -59,6 +59,7 @@ class GoodsDetailsControl(
     @SuppressLint("SimpleDateFormat")
     private val sfDate = SimpleDateFormat("yyyy.MM.dd")
     private var popupWindow: GoodsAttrsPop? = null//规格属性弹窗
+
     @SuppressLint("SetTextI18n")
     fun bindingData(dataBean: GoodsDetailBean) {
         popupWindow = null
@@ -137,7 +138,8 @@ class GoodsDetailsControl(
             "MEMBER_EXCLUSIVE" -> {
                 memberExclusive(dataBean)
 //                headerBinding.inVip.tvVipExclusive.visibility = View.VISIBLE
-                headerBinding.inVip.tvVipExclusive.isVisible = !dataBean.customizeVisibleLabels.isNullOrEmpty()
+                headerBinding.inVip.tvVipExclusive.isVisible =
+                    !dataBean.customizeVisibleLabels.isNullOrEmpty()
                 headerBinding.inVip.tvVipExclusive.text = dataBean.customizeVisibleLabels
             }
             //会员折扣
@@ -356,6 +358,9 @@ class GoodsDetailsControl(
             if (TextUtils.isEmpty(skuCodeTxt)) "\t\t\t未选择属性" else "\t\t\t已选：${skuCodeTxt}",
             "#333333"
         )
+        headerBinding.inGoodsInfo.apply {
+            tvGoodsDes.isVisible = !dataBean.secondName.isNullOrEmpty()
+        }
         headerBinding.inKill.model = dataBean
         headerBinding.inVip.model = dataBean
         headerBinding.inGoodsInfo.model = dataBean

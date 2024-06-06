@@ -18,6 +18,7 @@ import com.changanford.circle.bean.HomeDataListBean
 import com.changanford.circle.bean.HotPicBean
 import com.changanford.circle.bean.HotPicItemBean
 import com.changanford.circle.bean.MechanicData
+import com.changanford.circle.bean.MyJoinCircleBean
 import com.changanford.circle.bean.PlateBean
 import com.changanford.circle.bean.PostKeywordBean
 import com.changanford.circle.bean.PostTagData
@@ -682,4 +683,22 @@ interface CircleNetWork {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<CircleSquareSignBean>
+
+    /**
+     * 我加入的圈子
+     * */
+    @POST("/con/movecircle/getmyjoincarcircle")
+    suspend fun getMyJoinCarCircle(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<ArrayList<MyJoinCircleBean>>
+
+    /**
+     * 历史圈子处理
+     * */
+    @POST("/con/movecircle/movecirclehandler")
+    suspend fun moveCircleHandler(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

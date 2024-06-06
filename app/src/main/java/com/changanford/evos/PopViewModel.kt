@@ -3,7 +3,12 @@ package com.changanford.evos
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.changanford.common.net.*
+import com.changanford.common.net.CommonResponse
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.fetchRequest
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
 import com.changanford.common.util.MConstant
 import com.changanford.common.utilext.logE
 import com.changanford.evos.bean.MainPopBean
@@ -22,6 +27,7 @@ class PopViewModel : ViewModel() {
 
     fun getPopData(
         isUpdate: Boolean = true,
+        isHoldCircle: Boolean = true,
         isGetIntegral: Boolean = true,
         isReceiveList: Boolean = true,
         isNewEstOne: Boolean = true,
@@ -37,6 +43,24 @@ class PopViewModel : ViewModel() {
                         val rKey = getRandomKey()
                         fetchRequest {
                             apiService.getUpdateInfo(body.header(rKey), body.body(rKey))
+                        }
+                    } else {
+                        CommonResponse(data = null, msg = "", code = 1)
+                    }
+                }
+
+                val holdCirclePopInfo = async {
+                    if (MConstant.token.isEmpty()) return@async CommonResponse(
+                        data = false,
+                        msg = "",
+                        code = 1
+                    )
+                    if (isHoldCircle) {
+                        //保留圈子弹窗
+                        val body = HashMap<String, Any>()
+                        val rKey = getRandomKey()
+                        fetchRequest {
+                            apiService.showWindow(body.header(rKey), body.body(rKey))
                         }
                     } else {
                         CommonResponse(data = null, msg = "", code = 1)
@@ -85,7 +109,7 @@ class PopViewModel : ViewModel() {
 
                 val bizCode = async {
                     //隐私协议更新弹窗
-                    if(isBizCode){
+                    if (isBizCode) {
                         val ids = MConstant.agreementPrivacy + "," + MConstant.agreementRegister
                         val requestBody = HashMap<String, Any>()
                         requestBody["bizCodes"] = ids
@@ -94,21 +118,21 @@ class PopViewModel : ViewModel() {
                             createApi<NetWorkApi>()
                                 .bizCode(requestBody.header(rKey), requestBody.body(rKey))
                         }
-                    }else{
+                    } else {
                         CommonResponse(data = null, msg = "", code = 1)
                     }
                 }
 
                 val popRule = async {
                     //首页弹窗配置获取
-                    if(isNewEstOne){
+                    if (isNewEstOne) {
                         val requestBody = HashMap<String, Any>()
                         val rKey = getRandomKey()
                         fetchRequest {
                             createApi<HomeNetWork>()
                                 .popRule(requestBody.header(rKey), requestBody.body(rKey))
                         }
-                    }else{
+                    } else {
                         CommonResponse(data = null, msg = "", code = 1)
                     }
                 }
@@ -129,6 +153,7 @@ class PopViewModel : ViewModel() {
                 }
 
                 val updateResult = updateInfo.await()
+                val holdCircleResult = holdCirclePopInfo.await()
                 val integralResult = integral.await()
                 val receiveResult = receive.await()
                 val newEstOneResult = newEstOne.await()
@@ -141,7 +166,8 @@ class PopViewModel : ViewModel() {
                     receiveResult.data,
                     newEstOneResult.data,
                     bizCodeResult.data,
-                    popRuleResult.data
+                    popRuleResult.data,
+                    holdCircleResult.data
                 )
                 popBean.value = mainPopBean
             } catch (error: Throwable) {

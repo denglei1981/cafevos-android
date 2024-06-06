@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import com.changanford.circle.R
 import com.changanford.circle.databinding.PopQuestionTipsBinding
 import com.changanford.common.wutil.ShadowDrawable
+import com.core.util.dp
 import razerdp.basepopup.BasePopupWindow
 
 /**
@@ -24,8 +25,8 @@ class QuestionTipsPop(private val context: Context, private val listener: CheckP
         contentView = binding.root
         popupGravity = Gravity.BOTTOM or Gravity.END
         ShadowDrawable.setShadowDrawable(
-            binding.ryManagement, Color.parseColor("#FFFFFF"), 12,
-            Color.parseColor("#1a000000"), 6, 0, 0
+            binding.ryManagement, Color.parseColor("#FFFFFF"), 12.dp,
+            Color.parseColor("#1a000000"), 6.dp, 0, 0
         )
     }
 
