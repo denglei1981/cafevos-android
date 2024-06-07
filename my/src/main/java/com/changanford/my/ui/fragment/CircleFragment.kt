@@ -208,7 +208,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         } else View.GONE
                     }
                     holder.itemView.setOnClickListener {
-                        if (item.isGrounding != 1){
+                        if (item.isGrounding != 1) {
                             JumpUtils.instans?.jump(6, item.circleId)
                         }
                     }
@@ -219,7 +219,7 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         statusTv.setDrawableColor(R.color.color_b8bbc2)
                     }
                     if (item.isGrounding == 1 && item.star == "NO") {
-                        holder.getView<ImageView>(R.id.img_star).isVisible=false
+                        holder.getView<ImageView>(R.id.img_star).isVisible = false
                     }
                 }
 
@@ -319,9 +319,6 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                                     .param(RouterManger.KEY_TO_ID, item.circleId)
                                     .startARouter(ARouterMyPath.CircleMemberUI)
                             }
-                            holder.itemView.setOnClickListener {
-                                JumpUtils.instans?.jump(6, item.circleId)
-                            }
                         }
 
                         else -> {
@@ -335,7 +332,12 @@ class CircleFragment : BaseMineFM<FragmentCollectBinding, CircleViewModel>() {
                         statusTV.setDrawableColor(R.color.color_b8bbc2)
                     }
                     if (item.isGrounding == 1 && item.star == "NO") {
-                        holder.getView<ImageView>(R.id.img_star).isVisible=false
+                        holder.getView<ImageView>(R.id.img_star).isVisible = false
+                    }
+                    holder.itemView.setOnClickListener {
+                        if (item.isGrounding != 1) {
+                            JumpUtils.instans?.jump(6, item.circleId)
+                        }
                     }
                 }
             }

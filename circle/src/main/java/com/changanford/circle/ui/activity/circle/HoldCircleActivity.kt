@@ -76,7 +76,7 @@ class HoldCircleActivity : BaseLoadSirActivity<ActivityHoldCircleBinding, HoleCi
             binding.tvHold.setBackgroundResource(R.drawable.bg_shape_1700f4_23)
             binding.tvHold.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {
-            binding.tvHold.setBackgroundResource(R.drawable.bg_shape_80a6_23)
+            binding.tvHold.setBackgroundResource(R.drawable.bg_shape_d3_23)
             binding.tvHold.setTextColor(ContextCompat.getColor(this, R.color.color_4d16))
         }
         binding.tvHold.isEnabled = bottomEnable

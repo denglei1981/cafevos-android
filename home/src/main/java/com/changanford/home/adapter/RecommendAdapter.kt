@@ -798,7 +798,8 @@ class RecommendAdapter(var lifecycleOwner: LifecycleOwner) :
             it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
                 it.layoutAnswer.apply {
-                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible =
+                        "NO" == answer.adopt && item.fbReward > 0
 //                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
                     tvContent.isVisible =
                         !answer.content.isNullOrEmpty() || !answer.answerContents.isNullOrEmpty()

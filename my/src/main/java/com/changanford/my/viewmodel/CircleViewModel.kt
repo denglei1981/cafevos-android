@@ -15,6 +15,7 @@ import com.changanford.common.net.getRandomKey
 import com.changanford.common.net.header
 import com.changanford.common.net.onFailure
 import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithAllSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.utilext.toast
 import kotlinx.coroutines.launch
@@ -151,7 +152,8 @@ class CircleViewModel : ViewModel() {
                 body["circleId"] = circleId
                 val rkey = getRandomKey()
                 apiService.quitCircle(body.header(rkey), body.body(rkey))
-            }.onSuccess {
+            }.onWithAllSuccess {
+                it.msg.toast()
                 block.invoke()
             }.onWithMsgFailure {
                 it?.toast()

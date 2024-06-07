@@ -60,13 +60,19 @@ class RecommendAskAdapter :
     private fun showAnswer(binding: ItemRecommendAskNoAnswerBinding?, item: AskListMainData) {
         binding?.let {
             it.layoutAnswer.layoutCount.tvAskFb.isVisible = item.fbReward > 0
-            it.layoutAnswer.layoutCount.tvAskFb.text =  "+${item.fbReward}"
+            it.layoutAnswer.layoutCount.tvAskFb.text = "+${item.fbReward}"
             it.layoutAnswer.layoutCount.tvCount.text =
-                "${CountUtils.formatNum(item.answerCount.toString(), false)}回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
+                "${
+                    CountUtils.formatNum(
+                        item.answerCount.toString(),
+                        false
+                    )
+                }回答  ${CountUtils.formatNum(item.viewVal.toString(), false)}浏览"
             it.layoutAnswer.tvContent.isVisible = false
             item.qaAnswer?.let { answer ->
                 it.layoutAnswer.apply {
-                    it.layoutAnswer.layoutCount.tvAskFb.isVisible = "NO" == answer.adopt
+                    it.layoutAnswer.layoutCount.tvAskFb.isVisible =
+                        "NO" == answer.adopt && item.fbReward > 0
 //                    it.layoutAnswer.btnFollow.text = if ("NO" == answer.adopt) "采纳" else "已采纳"
                     tvContent.isVisible =
                         !answer.content.isNullOrEmpty() || !answer.answerContents.isNullOrEmpty()
@@ -76,7 +82,7 @@ class RecommendAskAdapter :
                         } else {
                             ""
                         }
-                    if (tvContent.text.isEmpty()){
+                    if (tvContent.text.isEmpty()) {
                         return@let
                     }
                     tvContent.addUrlTag {

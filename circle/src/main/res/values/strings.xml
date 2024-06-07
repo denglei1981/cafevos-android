@@ -56,4 +56,5 @@
     <string name="str_setIdentity">设置身份</string>
     <string name="str_remainingPlaces">剩余名额：</string>
     <string name="str_confirm">确认</string>
+    <string name="str_hold_title">1.每位车主用户仅能选择保留1个车友会圈\n2. 车主用户确认保留后，将自动退出其他车友会圈\n3. 若车主用户为车友会圈圈主，则只能选择保留圈主对应的圈子\n4. 用户2024年07月31日23:59:59前未选择保留的圈子，系统将根据以下规则，自动选择并保留1个车友会圈：\n1) 圈主用户：保留用户为【圈主】的车友会圈\n2) 普通用户：保留最近加入的车友会圈</string>
 </resources>
