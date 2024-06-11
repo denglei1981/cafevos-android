@@ -104,8 +104,13 @@ class HoldCircleActivity : BaseLoadSirActivity<ActivityHoldCircleBinding, HoleCi
         if (lordList != null) {//有圈主 只能选择圈主
             list.forEach {
                 it.canCheck = it.circleLord == true
+                it.isCheck = it.circleLord == true
+                if (it.isCheck) {
+                    checkCircleId = it.circleId.toString()
+                }
                 useList.add(it)
             }
+            setBottomColor(true)
         } else {//都能选择
             list.forEach {
                 it.canCheck = true

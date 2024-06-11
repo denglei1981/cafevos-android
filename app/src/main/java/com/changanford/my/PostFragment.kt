@@ -12,6 +12,7 @@ import com.changanford.common.manger.UserManger
 import com.changanford.common.net.onSuccess
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.gio.GioPageConstant
@@ -131,10 +132,20 @@ class PostFragment : BaseMineFM<FragmentPostBinding, ActViewModel>() {
                     list.add(it.postsId.toString())
                 }
             }
-            viewModel.deleteHistory(3, list) {
-                pageSize = 1
-                initRefreshData(1)
-            }
+            ConfirmTwoBtnPop(requireContext())
+                .apply {
+                    contentText.text = "确认删除${list.size}条足迹?"
+                    btnConfirm.setOnClickListener {
+                        dismiss()
+                        viewModel.deleteHistory(3, list) {
+                            pageSize = 1
+                            initRefreshData(1)
+                        }
+                    }
+                    btnCancel.setOnClickListener {
+                        dismiss()
+                    }
+                }.showPopupWindow()
         }
     }
 

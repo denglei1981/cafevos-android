@@ -16,6 +16,7 @@ import com.changanford.common.databinding.ItemFootTabBinding
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setOnFastClickListener
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
@@ -89,7 +90,7 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
         LiveDataBus.get().withs<Boolean>(LiveDataBusKey.FOOT_UI_CAN_DELETE).observe(this) {
             deleteCanCheck(it)
         }
-        binding.tvDelete.setOnClickListener {
+        binding.tvDelete.setOnFastClickListener {
             deleteSelectFragmentData()
         }
     }

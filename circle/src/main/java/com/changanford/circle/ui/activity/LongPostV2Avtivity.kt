@@ -70,6 +70,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.ext.setCircular
+import com.changanford.common.util.ext.setOnFastClickListener
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.util.image.ImageCompress.compressImage
 import com.changanford.common.utilext.GlideUtils
@@ -949,7 +950,7 @@ class LongPostV2Avtivity : BaseActivity<LongpostactivityBinding, PostViewModule>
                 }
             }
         }
-        binding.title.barTvOther.setOnClickListener {
+        binding.title.barTvOther.setOnFastClickListener {
             if (postViewType.value == 0) {
                 postViewType.value = 1
             } else {

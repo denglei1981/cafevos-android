@@ -79,6 +79,7 @@ import com.changanford.common.util.PictureUtil
 import com.changanford.common.util.TimeUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.ext.setOnFastClickListener
 import com.changanford.common.util.image.ImageCompress
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.logD
@@ -1022,7 +1023,7 @@ class PostActivity : BaseActivity<PostActivityBinding, PostViewModule>() {
                     }).show()
             }
         }
-        binding.title.barTvOther.setOnClickListener {
+        binding.title.barTvOther.setOnFastClickListener {
             ispost()
         }
         binding.bottom.ivHuati.setOnClickListener {

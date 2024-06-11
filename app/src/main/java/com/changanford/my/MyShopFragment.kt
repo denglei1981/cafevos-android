@@ -8,6 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.MyShopBean
 import com.changanford.common.manger.RouterManger
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MUtils
 import com.changanford.common.util.bus.LiveDataBus
@@ -86,10 +87,20 @@ class MyShopFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     list.add(it.mallMallSpuId)
                 }
             }
-            viewModel.deleteHistory(5, list) {
-                pageSize = 1
-                initRefreshData(1)
-            }
+            ConfirmTwoBtnPop(requireContext())
+                .apply {
+                    contentText.text = "确认删除${list.size}条足迹?"
+                    btnConfirm.setOnClickListener {
+                        dismiss()
+                        viewModel.deleteHistory(5, list) {
+                            pageSize = 1
+                            initRefreshData(1)
+                        }
+                    }
+                    btnCancel.setOnClickListener {
+                        dismiss()
+                    }
+                }.showPopupWindow()
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.View
 import com.changanford.common.databinding.ViewEmptyTopBinding
 import com.changanford.common.manger.RouterManger
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
@@ -126,10 +127,20 @@ class InformationFragment : BaseMineFM<FragmentInfomationBinding, ActViewModel>(
                     list.add(it.artId)
                 }
             }
-            viewModel.deleteHistory(1, list) {
-                pageSize = 1
-                initRefreshData(1)
-            }
+            ConfirmTwoBtnPop(requireContext())
+                .apply {
+                    contentText.text = "确认删除${list.size}条足迹?"
+                    btnConfirm.setOnClickListener {
+                        dismiss()
+                        viewModel.deleteHistory(1, list) {
+                            pageSize = 1
+                            initRefreshData(1)
+                        }
+                    }
+                    btnCancel.setOnClickListener {
+                        dismiss()
+                    }
+                }.showPopupWindow()
         }
     }
 

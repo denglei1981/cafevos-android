@@ -92,10 +92,20 @@ class ActFragment : BaseMineFM<FragmentActBinding, ActViewModel>() {
                     list.add(it.wonderfulId.toString())
                 }
             }
-            viewModel.deleteHistory(2, list) {
-                pageSize = 1
-                initRefreshData(1)
-            }
+            ConfirmTwoBtnPop(requireContext())
+                .apply {
+                    contentText.text = "确认删除${list.size}条足迹?"
+                    btnConfirm.setOnClickListener {
+                        dismiss()
+                        viewModel.deleteHistory(2, list) {
+                            pageSize = 1
+                            initRefreshData(1)
+                        }
+                    }
+                    btnCancel.setOnClickListener {
+                        dismiss()
+                    }
+                }.showPopupWindow()
         }
     }
 
