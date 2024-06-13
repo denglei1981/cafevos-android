@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.view.inputmethod.EditorInfo
@@ -91,6 +92,17 @@ class OrdersGoodsActivity : BaseActivity<ActGoodsOrderBinding, OrderViewModel>()
                             "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
                         )
                         startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                    }
+                    binding.horScroll.setOnTouchListener { view, motionEvent ->
+                        if (motionEvent.action.equals(MotionEvent.ACTION_UP)) {
+                            val bundle = Bundle()
+                            bundle.putString(
+                                "value",
+                                "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
+                            )
+                            startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                        }
+                        return@setOnTouchListener true
                     }
                     if (binding.horScroll.isVisible) {
                         content?.let { it1 -> animtionOne(it1) }

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
@@ -208,6 +209,17 @@ class GoodsDetailsActivity : BaseActivity<ActivityGoodsDetailsBinding, GoodsView
                             "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
                         )
                         startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                    }
+                    headerBinding.inComment.horScroll.setOnTouchListener { view, motionEvent ->
+                        if (motionEvent.action.equals(MotionEvent.ACTION_UP)) {
+                            val bundle = Bundle()
+                            bundle.putString(
+                                "value",
+                                "{\"title\": \"协议详情\",\"bizCode\": \"$protocol_code\"}"
+                            )
+                            startARouter(ARouterShopPath.RulDescriptionActivity, bundle)
+                        }
+                        return@setOnTouchListener true
                     }
                     if (headerBinding.inComment.horScroll.isVisible) {
                         content?.let { it1 -> animtionOne(it1) }

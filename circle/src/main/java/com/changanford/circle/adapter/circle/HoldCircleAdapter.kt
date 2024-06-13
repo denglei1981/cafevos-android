@@ -22,7 +22,7 @@ class HoldCircleAdapter :
         item: MyJoinCircleBean
     ) {
         holder.dataBinding?.apply {
-            val loadRes = if (item.isCheck) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0
+            val loadRes = if (item.canCheck) (if (item.isCheck) R.mipmap.shop_order_cb_1 else R.mipmap.shop_order_cb_0) else R.mipmap.shop_order_cb_cantcheck
             tvCircle.text = if (item.circleLord == true) " (圈主)" else ""
             llContent.post {
                 val tvContentMaxWidth =

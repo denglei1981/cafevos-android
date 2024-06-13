@@ -65,7 +65,7 @@ class InvoiceLookActivity : BaseActivity<ActivityInvoiceLookBinding, GetInvoiceV
                 binding.llInvoiceApply.setSecondText(TimeUtils.MillisToStr(it.applyTime?.toLong()))
                 when (it.invoiceType) {
                     1 -> {
-                        binding.llInvoiceType.setSecondText("增值税纸质普通发票")
+                        binding.llInvoiceType.setSecondText("增值税电子普通发票")
                     }
                 }
             }

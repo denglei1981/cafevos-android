@@ -16,12 +16,14 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_position"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp_30"
             android:layout_height="wrap_content"
             android:textColor="@color/color_8016"
+            android:gravity="center"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/iv_cover"
             app:layout_constraintTop_toTopOf="@+id/iv_cover"
             tools:text="12" />
 

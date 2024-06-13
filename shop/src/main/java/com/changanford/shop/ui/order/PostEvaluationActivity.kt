@@ -87,7 +87,7 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
 //                            isComplete.add(item)
 //                        }
                         item.apply {
-                            if (!TextUtils.isEmpty(evalText) && itemPicSize > 0 && evalScore!! > 0) {
+                            if ((!TextUtils.isEmpty(evalText) || itemPicSize > 0) && (if (reviewEval) true else evalScore!! > 0)) {
                                 isComplete.add(item)
                             }
                         }
@@ -253,7 +253,7 @@ class PostEvaluationActivity : BaseActivity<ActPostEvaluationBinding, OrderViewM
         if (find == null) {//追评或者没有选择图片则立即提交评价
             //只提交已完成输入的商品
 //            val postBean = mAdapter.postBean.filter { it.isComplete }
-            val postBean = mAdapter.postBean.filter { it.evalScore != null && it.evalScore!! > 0 }
+            val postBean = mAdapter.postBean.filter { if (reviewEval) true else (it.evalScore != null && it.evalScore!! > 0) }
             val upPostBean = ArrayList<PostEvaluationBean>()
             postBean.forEachWithIndex { i, postEvaluationBean ->
                 if (!postEvaluationBean.evalText.isNullOrEmpty()) {
