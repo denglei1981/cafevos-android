@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/dp_2"
             android:text="@{model.nickName}"
             android:textColor="@color/color_16"
-            android:textStyle="bold"
+            android:textStyle="normal"
             android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toEndOf="@id/img_avatar"
             app:layout_constraintTop_toTopOf="parent"

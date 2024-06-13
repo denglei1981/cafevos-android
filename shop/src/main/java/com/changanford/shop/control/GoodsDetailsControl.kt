@@ -261,7 +261,7 @@ class GoodsDetailsControl(
                     dataBean.killStates = 5
                     tvKillStates.setText(R.string.str_fromEnd)
                     binding.inBottom.btnBuy.apply {
-                        text = "立即兑换"
+                        text = "立即购买"
                         setBackgroundResource(R.drawable.bg_shape_1700f4_23)
                         setTextColor(ContextCompat.getColor(context, R.color.white))
                     }
