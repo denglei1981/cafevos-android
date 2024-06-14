@@ -35,7 +35,7 @@
                 app:layout_constraintDimensionRatio="w,1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/rounded5ImageStyle" />
+                app:shapeAppearanceOverlay="@style/rounded12ImageStyle" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tv_orderType"
