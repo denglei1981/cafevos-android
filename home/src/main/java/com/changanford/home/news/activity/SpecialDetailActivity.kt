@@ -284,7 +284,6 @@ class SpecialDetailActivity :
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 scrollHeight += dy
-                Log.e("asdasd", scrollHeight.toString())
                 val topHeight = headBinding?.collToolBar?.bottom?.times(0.3)
                 if (scrollHeight > topHeight!!) {
                     binding.layoutBar.conTitle.visibility = View.VISIBLE

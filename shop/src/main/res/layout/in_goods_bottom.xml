@@ -85,21 +85,22 @@
             tools:visibility="visible" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="42dp"
-            android:gravity="end"
+            android:layout_marginStart="15dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_cart"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.changanford.shop.view.btn.KillBtnView
                 android:id="@+id/btn_cart"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="@dimen/dp_40"
-                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/bg_bord_1700f4_23"
                 android:gravity="center"
-                android:minWidth="100dp"
                 android:onClick="onClick"
                 android:text="@string/str_addShoppingCart"
                 android:textColor="@color/color_1700f4"
@@ -107,11 +108,11 @@
 
             <com.changanford.shop.view.btn.KillBtnView
                 android:id="@+id/btn_buy"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="@dimen/dp_40"
                 android:background="@drawable/bg_shape_1700f4_23"
                 android:gravity="center"
-                android:minWidth="@dimen/dp_100"
                 android:onClick="onClick"
                 android:text="@string/str_immediatelyChange"
                 android:textColor="@color/white"

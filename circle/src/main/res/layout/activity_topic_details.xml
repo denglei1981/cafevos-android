@@ -9,8 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -26,7 +26,6 @@
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:contentScrim="@color/transparent"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <include
@@ -62,10 +61,10 @@
                                 android:ellipsize="end"
                                 android:maxWidth="200dp"
                                 android:maxLines="1"
-                                tools:text="话题详情"
-                                android:textStyle="bold"
                                 android:textColor="@color/color_00"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:text="话题详情" />
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/share_img"
@@ -94,18 +93,19 @@
                 android:id="@+id/view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_post_bar"
             android:layout_width="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginBottom="130dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="17dp"
+            android:layout_marginBottom="130dp"
             android:src="@mipmap/circle_post_bar_icon"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

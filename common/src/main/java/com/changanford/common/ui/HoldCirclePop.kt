@@ -30,6 +30,7 @@ class HoldCirclePop(context: Context) :
 
     private fun initView() {
         viewDataBinding?.let {
+            viewDataBinding.ivBg.adjustViewBounds = true
             viewDataBinding.ivBg.setImageResource(R.mipmap.ic_hold_circle_pop)
             it.ivClose.setOnClickListener { dismiss() }
             it.ivBg.setOnClickListener {

@@ -84,7 +84,6 @@ class CircleRecommendAdapterV2(context: Context, private val lifecycleOwner: Lif
     override fun convert(holder: BaseViewHolder, item: PostDataBean) {
         val binding = DataBindingUtil.bind<ItemCircleMainBottomV2Binding>(holder.itemView)
         val activity = BaseApplication.curActivity
-        Log.e("asdasd","circle${holder.layoutPosition}")
 //        setTopMargin(binding?.root, 15, holder.layoutPosition)
         binding?.let {
             if (item.isLike == 1) {

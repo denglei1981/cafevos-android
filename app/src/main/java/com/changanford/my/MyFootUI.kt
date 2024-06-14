@@ -77,11 +77,12 @@ class MyFootUI : BaseMineUI<UiCollectBinding, EmptyViewModel>() {
                 manageType.value = 0
             }
         }
-        binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            deleteCanCheck(isChecked)
-        }
+//        binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+//            deleteCanCheck(isChecked)
+//        }
         binding.checkbox.setOnClickListener {
             refreshBottomDataFragment(nowPosition, binding.checkbox.isChecked)
+            deleteCanCheck(binding.checkbox.isChecked)
         }
         //底部是否全选
         LiveDataBus.get().withs<Boolean>(LiveDataBusKey.REFRESH_FOOT_CHECK).observe(this) {

@@ -41,7 +41,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.utilext.toIntPx
 import com.changanford.common.widget.pop.CircleMainMenuPop
-import com.changanford.common.widget.webview.CustomWebTXHelper
+import com.changanford.common.widget.webview.CustomWebHelper
 import com.gyf.immersionbar.ImmersionBar
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -74,13 +74,18 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
     private var carModelIds: String? = null
     private var carOutModelId: String? = null
     private var carModelName: String? = null
+    private var isAddScroll = false
 
     //    private var postEntity: ArrayList<PostEntity>? = null//草稿
     private val carListAdapter by lazy {
         TopicDetailCarAdapter()
     }
-
+    private lateinit var webHelper: CustomWebHelper
     override fun initView() {
+        webHelper = CustomWebHelper(
+            this@TopicDetailsActivity,
+            binding.topContent.webView
+        )
         title = "话题详情页"
         isDarkFont = false
         initMagicIndicator()
@@ -101,35 +106,6 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
             AppUtils.setStatusBarPaddingTop(binding.topContent.clOne, this@TopicDetailsActivity)
             backImg.setOnClickListener { finish() }
         }
-
-        //处理滑动顶部效果
-        binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val absOffset = abs(verticalOffset).toFloat() * 2.5F
-            //滑动到高度一半不是白色状态
-            if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
-                binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
-                binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
-                isWhite = true
-                ImmersionBar.with(this).statusBarDarkFont(false).init()
-            }
-            //超过高度一半是白色状态
-            else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
-                binding.backImg.setColorFilter(Color.parseColor("#000000"))
-                //图片变色
-                binding.shareImg.setColorFilter(Color.parseColor("#000000"))
-                isWhite = false
-                ImmersionBar.with(this).statusBarDarkFont(true).init()
-            }
-            //改变透明度
-            if (absOffset <= appBarLayout.height) {
-                val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
-                binding.toolbar.background.mutate().alpha = mAlpha
-                binding.barTitleTv.alpha = mAlpha / 255.0F
-            } else {
-                binding.toolbar.background.mutate().alpha = 255
-                binding.barTitleTv.alpha = 1.0F
-            }
-        }
         initTabAndViewPager()
 
 //        PostDatabase.getInstance(this).getPostDao().findAll().observe(
@@ -139,6 +115,40 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 //        }
         LiveDataBus.get().with(LiveDataBusKey.IS_CHECK_PERSONAL).observe(this) {
             isCheckPerson = true
+        }
+    }
+
+    private fun addScroll() {
+        if (!isAddScroll) {
+            //处理滑动顶部效果
+            binding.appbarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+                val absOffset = abs(verticalOffset).toFloat() * 2.5F
+                //滑动到高度一半不是白色状态
+                if (absOffset < appBarLayout.height * 0.6F && !isWhite) {
+                    binding.backImg.setColorFilter(Color.parseColor("#ffffff"))
+                    binding.shareImg.setColorFilter(Color.parseColor("#ffffff"))
+                    isWhite = true
+                    ImmersionBar.with(this).statusBarDarkFont(false).init()
+                }
+                //超过高度一半是白色状态
+                else if (absOffset > appBarLayout.height * 0.6F && isWhite) {
+                    binding.backImg.setColorFilter(Color.parseColor("#000000"))
+                    //图片变色
+                    binding.shareImg.setColorFilter(Color.parseColor("#000000"))
+                    isWhite = false
+                    ImmersionBar.with(this).statusBarDarkFont(true).init()
+                }
+                //改变透明度
+                if (absOffset <= appBarLayout.height) {
+                    val mAlpha = ((absOffset / appBarLayout.height) * 255).toInt()
+                    binding.toolbar.background.mutate().alpha = mAlpha
+                    binding.barTitleTv.alpha = mAlpha / 255.0F
+                } else {
+                    binding.toolbar.background.mutate().alpha = 255
+                    binding.barTitleTv.alpha = 1.0F
+                }
+            }
+            isAddScroll = true
         }
     }
 
@@ -337,8 +347,19 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        webHelper.onPause()
+    }
+
+    override fun onDestroy() {
+        webHelper.onDestroy()
+        super.onDestroy()
+    }
+
     override fun onResume() {
         super.onResume()
+        webHelper.onResume()
         if (isCheckDetails) {
             GIOUtils.topicDetailPageView(
                 topicId,
@@ -376,7 +397,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
 
     private val topGioBean = MutableLiveData<SugesstionTopicDetailBean>()
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SuspiciousIndentation")
     override fun observe() {
         super.observe()
         viewModel.carListBean.observe(this) {
@@ -423,10 +444,6 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                 if (!it.descHtml.isNullOrEmpty()) {
                     webView.isVisible = true
                     tvContent.isVisible = false
-                  val webHelper=  CustomWebTXHelper(
-                        this@TopicDetailsActivity,
-                        webView
-                    )
                     webView.setBackgroundColor(0)
                     it.descHtml?.let {
                         webHelper.loadDataWithBaseURL(it)
@@ -450,6 +467,7 @@ class TopicDetailsActivity : BaseActivity<ActivityTopicDetailsBinding, TopicDeta
                     null
                 )
             }
+            addScroll()
         }
     }
 

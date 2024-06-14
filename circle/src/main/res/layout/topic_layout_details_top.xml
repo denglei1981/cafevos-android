@@ -91,15 +91,15 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
                     android:visibility="gone"
+                    android:textSize="14sp"
                     tools:text="当代年轻人喜欢什么样的车呢？科技？实用？炫酷？那我们就来讨论一下。" />
 
-                <com.tencent.smtt.sdk.WebView
+                <WebView
                     android:id="@+id/web_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
