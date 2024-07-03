@@ -3,10 +3,12 @@ package com.changanford.common.web
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,7 +24,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.bumptech.glide.Glide
-import com.changanford.common.R
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.ShareBean
 import com.changanford.common.databinding.ActivityWebveiwBinding
@@ -49,6 +50,7 @@ import com.just.agentweb.AgentWebConfig
 import com.qw.soul.permission.bean.Permissions
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback
 import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.sdk.WebChromeClient
 import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.yalantis.ucrop.UCrop
@@ -97,6 +99,10 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private var getAccessCodeCallBack = ""//h5授权回调
     private var clientId = ""
     private var redirectUrl = ""
+    private val REQUEST_CODE_FILE_CHOOSER = 1
+
+    private var mUploadCallbackForLowApi: ValueCallback<Uri>? = null
+    private var mUploadCallbackForHighApi: ValueCallback<Array<Uri>>? = null
 
     private var setNavTitleKey: String = System.currentTimeMillis().toString()
     private var localWebNum = -1
@@ -121,11 +127,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             createViewModel(PayViewModule::class.java)
 
         val isGoneTitle = intent.getBooleanExtra("isGoneTitle", false)
-        headerView = findViewById(R.id.title_bar)
+        headerView = findViewById(com.changanford.common.R.id.title_bar)
         if (isGoneTitle) {
             headerView.isVisible = false
         }
-        headerView.findViewById<ImageView>(R.id.bar_img_back).setOnClickListener {
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_back).setOnClickListener {
             if (handleH5Back()) {
                 return@setOnClickListener
             }
@@ -135,7 +141,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 finish()
             }
         }
-        headerView.findViewById<ImageView>(R.id.bar_img_close).setOnClickListener {
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_close).setOnClickListener {
             if (handleH5X()){
                 return@setOnClickListener
             }
@@ -607,10 +613,10 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 if (binding.webView.canGoBack()) {
-                    headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
+                    headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_close).visibility =
                         View.VISIBLE
                 } else {
-                    headerView.findViewById<ImageView>(R.id.bar_img_close).visibility =
+                    headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_close).visibility =
                         View.GONE
                 }
                 loadingDialog?.dismiss()
@@ -692,6 +698,65 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
         }
 
+        override fun onShowFileChooser(
+            webView: WebView?,
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: FileChooserParams?
+        ): Boolean {
+            mUploadCallbackForHighApi = filePathCallback
+            val intent = fileChooserParams!!.createIntent()
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            try {
+                startActivityForResult(intent, REQUEST_CODE_FILE_CHOOSER)
+            } catch (e: ActivityNotFoundException) {
+                mUploadCallbackForHighApi = null
+                return false
+            }
+            return true
+
+        }
+
+        override fun openFileChooser(p0: ValueCallback<Uri>?, p1: String?, p2: String?) {
+            p0?.let { openFilerChooser(it) }
+        }
+
+    }
+
+    private fun afterFileChooseGoing(resultCode: Int, data: Intent?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (mUploadCallbackForHighApi == null) {
+                return
+            }
+            mUploadCallbackForHighApi?.onReceiveValue(
+                WebChromeClient.FileChooserParams.parseResult(
+                    resultCode,
+                    data
+                )
+            )
+            mUploadCallbackForHighApi = null
+        } else {
+            if (mUploadCallbackForLowApi == null) {
+                return
+            }
+            val result = data?.data
+            mUploadCallbackForLowApi?.onReceiveValue(result)
+            mUploadCallbackForLowApi = null
+        }
+    }
+
+
+    private fun openFilerChooser(uploadMsg: ValueCallback<Uri>) {
+        mUploadCallbackForLowApi = uploadMsg
+        startActivityForResult(
+            Intent.createChooser(getFilerChooserIntent(), "File Chooser"),
+            REQUEST_CODE_FILE_CHOOSER
+        )
+    }
+
+    private fun getFilerChooserIntent(): Intent {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        return intent
     }
 
 
@@ -820,7 +885,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
      * 设置标题
      */
     private fun setHeadTitle(title: String?) {
-        headerView.findViewById<TextView>(R.id.bar_tv_title).text = title
+        headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_title).text = title
     }
 
     /**
@@ -843,8 +908,8 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         try {
             style = JSONObject.parseObject(jsonStr)
         } catch (e: Exception) {
-            headerView.findViewById<TextView>(R.id.bar_tv_other).visibility = View.GONE
-            headerView.findViewById<ImageView>(R.id.bar_img_more).visibility = View.GONE
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
+            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
             return
         }
         if (style.isNullOrEmpty())
@@ -855,30 +920,30 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         if (text.isNullOrEmpty()) {
             if (!image.isNullOrEmpty()) {
                 //设置图片
-                headerView.findViewById<TextView>(R.id.bar_tv_other).visibility = View.GONE
-                headerView.findViewById<ImageView>(R.id.bar_img_more).visibility = View.VISIBLE
+                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
+                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.VISIBLE
                 Glide.with(headerView).load(image)
-                    .into(headerView.findViewById<ImageView>(R.id.bar_img_more))
+                    .into(headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more))
             } else {
-                headerView.findViewById<TextView>(R.id.bar_tv_other).visibility = View.GONE
-                headerView.findViewById<ImageView>(R.id.bar_img_more).visibility = View.GONE
+                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
+                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
             }
         } else {
-            headerView.findViewById<TextView>(R.id.bar_tv_other).visibility = View.VISIBLE
-            headerView.findViewById<ImageView>(R.id.bar_img_more).visibility = View.GONE
-            headerView.findViewById<TextView>(R.id.bar_tv_other).text = text
-            headerView.findViewById<TextView>(R.id.bar_tv_other)
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.VISIBLE
+            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).text = text
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other)
                 .setTextColor(Color.parseColor(color))
         }
         bindListener()
     }
 
     private fun bindListener() {
-        headerView.findViewById<TextView>(R.id.bar_tv_other).setOnClickListener {
+        headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).setOnClickListener {
 //            toastShow("点击文字")
             quickCallJs(subcallback)
         }
-        headerView.findViewById<ImageView>(R.id.bar_img_more).setOnClickListener {
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).setOnClickListener {
 //            toastShow("点击图标")
             quickCallJs(subcallback)
         }
@@ -886,6 +951,10 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_FILE_CHOOSER && (resultCode == RESULT_OK || resultCode == RESULT_CANCELED)) {
+            afterFileChooseGoing(resultCode, data)
+            return
+        }
         if (resultCode == Activity.RESULT_OK) {
             val bundle = Bundle()
             bundle.putInt("index", 0)//权限
