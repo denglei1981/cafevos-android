@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.viewpager.widget.ViewPager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.adapter.PhotoImageAdapter
@@ -32,6 +33,10 @@ class PhotoViewActivity : BaseActivity<PhotoviewActivityBinding, EmptyViewModel>
         mbundle = intent?.extras!!
         pics = mbundle.getSerializable("imgList") as ArrayList<MediaListBean>
         currentPosition = mbundle.getInt("count")
+        val canSve = mbundle.getInt("canSave", 0)
+        if (canSve == 1) {
+            binding.tvSaveImagePhoto.isVisible = false
+        }
         if (currentPosition == 0 && !TextUtils.isEmpty(pics[0].videoUrl)) {
             binding.tvSaveImagePhoto.visibility = View.GONE
         }

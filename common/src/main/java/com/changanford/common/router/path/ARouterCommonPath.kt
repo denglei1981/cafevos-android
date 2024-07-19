@@ -8,4 +8,5 @@ package com.changanford.common.router.path
 object ARouterCommonPath {
     const val FordAlbumActivity="/common/FordAlbumActivity"
     const val FordAlbumDetailsActivity="/common/FordAlbumDetailsActivity"
+    const val DocumentActivity="/common/DocumentActivity"
 }

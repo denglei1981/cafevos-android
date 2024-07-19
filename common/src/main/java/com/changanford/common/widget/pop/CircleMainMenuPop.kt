@@ -11,6 +11,8 @@ import com.changanford.common.adapter.CircleMainMenuAdapter
 import com.changanford.common.basic.adapter.OnRecyclerViewItemClickListener
 import com.changanford.common.bean.CircleMainMenuBean
 import com.changanford.common.databinding.PopCircleMainMenuBinding
+import com.changanford.common.router.path.ARouterCommonPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.gio.updateMainGio
@@ -66,7 +68,8 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
             CircleMainMenuBean(R.mipmap.ic_shop_menu_coupon, "优惠券"),
             CircleMainMenuBean(R.mipmap.ic_shop_menu_order, "我的订单"),
             CircleMainMenuBean(R.mipmap.ic_shop_menu_line, "在线客服"),
-            CircleMainMenuBean(R.mipmap.ic_shop_menu_cart, "购物车")
+            CircleMainMenuBean(R.mipmap.ic_shop_menu_cart, "购物车"),
+            CircleMainMenuBean(R.mipmap.ic_document_icon, "证照信息")
         )
 
         adapter.setItems(list)
@@ -88,6 +91,10 @@ class CircleMainMenuPop(private val context: Context, private val listener: Chec
 
                     3 -> {
                         JumpUtils.instans?.jump(119)
+                    }
+
+                    4 -> {
+                        startARouter(ARouterCommonPath.DocumentActivity)
                     }
                 }
                 dismiss()

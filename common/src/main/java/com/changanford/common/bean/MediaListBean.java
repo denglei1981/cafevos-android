@@ -17,6 +17,16 @@ public class MediaListBean implements Serializable {
     private String img_url;
     private Bitmap bitmap;
 
+    public Integer getLocality() {
+        return locality;
+    }
+
+    public void setLocality(Integer locality) {
+        this.locality = locality;
+    }
+
+    private Integer locality;
+
     public MediaListBean(String img_url, Bitmap bitmap, String videoUrl) {
         this.img_url = img_url;
         this.bitmap = bitmap;
@@ -25,6 +35,10 @@ public class MediaListBean implements Serializable {
 
     public MediaListBean(String img_url) {
         this.img_url = img_url;
+    }
+
+    public MediaListBean(Integer img_url) {
+        this.locality = img_url;
     }
 
     public MediaListBean() {

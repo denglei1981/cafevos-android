@@ -3,7 +3,6 @@ package com.changanford.common.adapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.changanford.common.bean.MediaListBean;
 import com.changanford.common.utilext.GlideUtils;
-import com.danikula.videocache.HttpProxyCacheServer;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -63,7 +61,17 @@ public class PhotoImageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         String url = imageUrls.get(position).getImg_url();
-        if (url.contains(".gif")) {
+        if (url == null || url.isEmpty()) {
+            SubsamplingScaleImageView s = new SubsamplingScaleImageView(activity);
+            Bitmap resource = BitmapFactory.decodeResource(container.getResources(), imageUrls.get(position).getLocality());
+            imageUrls.get(position).setBitmap(resource);
+            float initImageScale = getInitImageScale(resource);
+            s.setMaxScale(initImageScale + 2.0f);//最大显示比例
+            s.setImage(ImageSource.bitmap(resource), new ImageViewState(initImageScale, new PointF(0, 0), 0));
+            s.setOnClickListener(view -> activity.finish());
+            container.addView(s);
+            return s;
+        } else if (url.contains(".gif")) {
             GifImageView gifImageView = new GifImageView(activity);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.gravity = Gravity.CENTER;
@@ -73,7 +81,7 @@ public class PhotoImageAdapter extends PagerAdapter {
             Glide.with(activity).asGif().load(GlideUtils.INSTANCE.handleImgUrl(url)).apply(requestOptions).into(gifImageView);
             Glide.with(activity).asBitmap().load(GlideUtils.INSTANCE.handleImgUrl(url)).into(new SimpleTarget<Bitmap>() {
                 @Override
-                public void onResourceReady(@NonNull Bitmap resource,  Transition<? super Bitmap> transition) {
+                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                     imageUrls.get(position).setBitmap(resource);
                 }
             });
@@ -104,7 +112,7 @@ public class PhotoImageAdapter extends PagerAdapter {
             SubsamplingScaleImageView s = new SubsamplingScaleImageView(activity);
             Glide.with(activity).asBitmap().load(GlideUtils.INSTANCE.handleImgUrl(url)).into(new SimpleTarget<Bitmap>() {
                 @Override
-                public void onResourceReady(@NonNull Bitmap resource,  Transition<? super Bitmap> transition) {
+                public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                     imageUrls.get(position).setBitmap(resource);
                     float initImageScale = getInitImageScale(resource);
                     s.setMaxScale(initImageScale + 2.0f);//最大显示比例
@@ -121,7 +129,6 @@ public class PhotoImageAdapter extends PagerAdapter {
             return s;
         }
     }
-
 
 
     @Override

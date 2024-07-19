@@ -44,30 +44,33 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!--日历提醒-->
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <!--    银商支付-->
 
-    <uses-permission
-        android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
+
     <uses-feature
         android:name="android.hardware.nfc.hce"
-        android:required="true"/>
+        android:required="true" />
     <application>
-        <activity android:name=".ui.CaptureActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.CaptureActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".sharelib.activity.SinaShareActivity" />
         <activity
             android:name=".web.AgentWebActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true" />
-        <activity android:name=".ui.PhotoViewActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.NothingActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.PhotoViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.NothingActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".sharelib.activity.QqShareActivity" />
         <activity android:name=".sharelib.activity.WxShareCallBackActivity" />
 
@@ -90,8 +93,9 @@
         </receiver>
         <activity
             android:name=".receiver.MyMessageHelpReceiver"
-            android:taskAffinity="com.changanford.evos"
-            android:exported="true"/>
+            android:exported="true"
+            android:taskAffinity="com.changanford.evos" />
+
         <service
             android:name=".receiver.MyMessageIntentService"
             android:exported="false">
@@ -105,13 +109,15 @@
                 <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="com.baidu.location.f"
+        <service
+            android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
+            android:process=":remote" />
         <!--银商支付 START-->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
         <meta-data
             android:name="CurrentEnvironment"
             android:value="PROD"> <!-- PROD or TEST -->
@@ -140,11 +146,11 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.activity.FordAlbumActivity" />
         <activity android:name=".ui.activity.FordAlbumDetailsActivity" />
+
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt" >
-        </service>
+            android:process=":dexopt"></service>
         <!--银商支付 END-->
 
         <provider
@@ -194,6 +200,9 @@
             android:theme="@style/Base.Theme.NoActionBar" />
         <activity
             android:name="com.yalantis.ucrop.PictureMultiCuttingActivity"
+            android:theme="@style/Base.Theme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.DocumentActivity"
             android:theme="@style/Base.Theme.NoActionBar" />
     </application>
 

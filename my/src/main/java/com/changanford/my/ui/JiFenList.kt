@@ -26,7 +26,7 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout
  *  文件名：JiFenList
  *  创建者: zcy
  *  创建日期：2021/9/13 17:27
- *  描述: TODO
+ *  描述: 我的福币
  *  修改描述：TODO
  */
 @Route(path = ARouterMyPath.MineIntegralUI)
