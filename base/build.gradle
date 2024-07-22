@@ -69,13 +69,13 @@ dependencies {
     //tencent
     api "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+"
     //阿里云推送push
-    api "com.aliyun.ams:alicloud-android-push:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push-huawei:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push-meizu:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push-vivo:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push-xiaomi:3.4.0"
-    api "com.aliyun.ams:alicloud-android-third-push-oppo:3.4.0"
+    api "com.aliyun.ams:alicloud-android-push:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push-huawei:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push-meizu:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push-vivo:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push-xiaomi:$aliyun_push"
+    api "com.aliyun.ams:alicloud-android-third-push-oppo:$aliyun_push"
     //阿里云oss
     api "com.aliyun.dpa:oss-android-sdk:2.9.6"
     //发布问卷选择器

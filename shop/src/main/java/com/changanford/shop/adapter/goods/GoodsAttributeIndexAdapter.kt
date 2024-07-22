@@ -11,7 +11,7 @@ import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.adapter.FlowLayoutManager
 import com.changanford.shop.databinding.ItemGoodsAttributeIndexBinding
-import com.xiaomi.push.it
+
 
 
 class GoodsAttributeIndexAdapter(

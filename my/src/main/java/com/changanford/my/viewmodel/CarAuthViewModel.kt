@@ -15,7 +15,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
-import com.xiaomi.push.it
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable

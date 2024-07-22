@@ -18,7 +18,7 @@ import com.changanford.home.news.request.SpecialListViewModel
 import com.scwang.smart.refresh.layout.api.RefreshLayout
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener
-import com.xiaomi.push.it
+
 
 @Route(path = ARouterHomePath.SpecialListActivity)
 class SpecialListActivity :

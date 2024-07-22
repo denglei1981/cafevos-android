@@ -15,7 +15,7 @@ import com.changanford.common.bean.SkuVo
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ItemGoodsAttributeBinding
 import com.changanford.shop.utils.ScreenUtils
-import com.xiaomi.push.it
+
 
 
 class GoodsAttributeAdapter(

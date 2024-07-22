@@ -141,6 +141,9 @@
             android:name="com.vivo.push.api_key"
             android:value="6babd1d6f310777c9532d2b96e128f39" />
         <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="gwuTZYK647CVUpGD7pWF3Zt3VLNd7nZ6" />
+        <meta-data
             android:name="com.vivo.push.app_id"
             android:value="105514947" />
         <!--        <activity-->

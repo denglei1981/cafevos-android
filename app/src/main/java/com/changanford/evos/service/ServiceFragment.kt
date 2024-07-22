@@ -260,7 +260,7 @@ class ServiceFragment : BaseFragment<FragmentServiceWebBinding, AgentWebViewModl
         val mWebSettings = binding.webView.settings
         mWebSettings.setJavaScriptEnabled(true)
         mWebSettings.javaScriptCanOpenWindowsAutomatically = true
-        mWebSettings.allowFileAccess = true
+        mWebSettings.allowFileAccess = false
         mWebSettings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
         mWebSettings.setSupportZoom(true)
         mWebSettings.builtInZoomControls = true

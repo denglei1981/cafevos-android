@@ -12,7 +12,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.xiaomi.push.it
+
 import org.jetbrains.anko.sp
 
 /**

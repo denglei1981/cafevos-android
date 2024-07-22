@@ -23,7 +23,7 @@ import com.changanford.my.R
 import com.changanford.my.databinding.UiAllVipBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.google.gson.Gson
-import com.xiaomi.push.it
+
 
 /**
  *  文件名：UserVipUI

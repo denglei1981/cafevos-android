@@ -5,7 +5,6 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.R
 import com.changanford.common.bean.ShareEditBean
 import com.changanford.common.databinding.ItemShareEditeBinding
-import com.xiaomi.push.it
 
 /**
  *Author lcw

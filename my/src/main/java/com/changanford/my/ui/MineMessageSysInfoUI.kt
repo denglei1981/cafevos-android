@@ -27,7 +27,7 @@ import com.changanford.my.databinding.ItemMineMessageInfoSysBinding
 import com.changanford.my.databinding.RefreshLayoutWithTitleBinding
 import com.changanford.my.viewmodel.SignViewModel
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
-import com.xiaomi.push.it
+
 import me.leolin.shortcutbadger.ShortcutBadger
 
 /**

@@ -25,7 +25,7 @@ import com.changanford.common.utilext.toIntDp
 import com.changanford.common.utilext.toIntPx
 import com.changanford.evos.R
 import com.changanford.evos.databinding.ItemMysJoinTopicMoreBinding
-import com.xiaomi.push.it
+
 
 
 class MyJoinTopicMoreAdapter :

@@ -4,6 +4,7 @@
 buildscript {
     ext{
         kotlin_version = "1.7.10"
+        aliyun_push = "3.9.0"
         nav_version = "2.3.5"
         compileSDKVersion = 33
         buildToolsVersion = "30.0.3"

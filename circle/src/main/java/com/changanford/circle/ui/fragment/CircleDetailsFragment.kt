@@ -13,7 +13,7 @@ import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import com.changanford.common.util.bus.CircleLiveBusKey
 import com.changanford.common.util.bus.LiveDataBus
-import com.xiaomi.push.it
+
 import java.lang.reflect.Method
 
 /**

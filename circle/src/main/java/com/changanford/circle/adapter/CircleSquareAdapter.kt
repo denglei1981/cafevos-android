@@ -26,7 +26,7 @@ import com.changanford.common.router.startARouter
 import com.changanford.common.util.gio.GIOUtils
 import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.utilext.toIntPx
-import com.xiaomi.push.it
+
 import com.youth.banner.util.BannerUtils
 import com.zhpan.bannerview.constants.PageStyle
 import net.lucode.hackware.magicindicator.ViewPagerHelper

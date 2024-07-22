@@ -44,7 +44,7 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
                 it.loadsImagesAutomatically = true
                 it.setSupportMultipleWindows(false)
                 it.blockNetworkImage = false
-                it.allowFileAccess = true
+                it.allowFileAccess = false
                 it.domStorageEnabled = true
                 it.setNeedInitialFocus(true)
                 it.defaultTextEncodingName = "utf-8"

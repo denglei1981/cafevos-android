@@ -39,7 +39,7 @@ import com.google.gson.Gson
 import com.jakewharton.rxbinding4.view.clicks
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.util.*

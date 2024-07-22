@@ -7,7 +7,7 @@ import com.changanford.common.net.*
 import com.changanford.home.api.HomeNetWork
 import com.changanford.home.base.response.UpdateUiState
 import com.changanford.home.news.data.SpecialDetailData
-import com.xiaomi.push.it
+
 
 /**
  *  专题详情

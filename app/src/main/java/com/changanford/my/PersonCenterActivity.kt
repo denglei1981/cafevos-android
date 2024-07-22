@@ -42,7 +42,7 @@ import com.changanford.widget.ScaleTransitionPagerTitleView
 import com.google.android.material.appbar.AppBarLayout
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.xiaomi.push.it
+
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
