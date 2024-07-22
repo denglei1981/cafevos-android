@@ -35,7 +35,6 @@ import com.changanford.common.constant.SearchTypeConstant
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.startARouter
-import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.CommentUtils
 import com.changanford.common.util.JumpUtils
@@ -59,7 +58,6 @@ import com.changanford.common.widget.ReplyDialog
 import com.changanford.common.widget.webview.CustomWebHelper
 import com.changanford.common.wutil.ShowPopUtils
 import com.gyf.immersionbar.ImmersionBar
-import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permissions
 import com.zhpan.bannerview.constants.IndicatorGravity
 import java.util.Timer
@@ -788,6 +786,11 @@ class PostImageDetailsFragment(private val mData: PostsDetailBean) :
 
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        webHelper?.onDestroy()
     }
 
     private fun startBaduMap() {

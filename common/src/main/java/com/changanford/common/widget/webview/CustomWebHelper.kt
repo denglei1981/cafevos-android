@@ -153,12 +153,12 @@ class CustomWebHelper(activity: Activity, private var webView: WebView?, isMargi
     }
 
     fun onPause() {
-        webView?.let {
-            if (Build.VERSION.SDK_INT >= 21) {
-                it.onPause()
-            }
-            it.pauseTimers()
-        }
+//        webView?.let {
+//            if (Build.VERSION.SDK_INT >= 21) {
+//                it.onPause()
+//            }
+//            it.pauseTimers()
+//        }
     }
 
     fun onDestroy() {
