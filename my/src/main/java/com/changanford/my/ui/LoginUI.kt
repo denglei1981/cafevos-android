@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.view.SurfaceHolder
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.R
 import com.changanford.common.manger.RouterManger
@@ -26,9 +25,7 @@ import com.changanford.common.util.gio.GioPageConstant
 import com.changanford.common.util.gio.updateMainGio
 import com.changanford.common.util.request.GetRequestResult
 import com.changanford.common.util.request.getBizCode
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.logE
-import com.changanford.common.utilext.toast
 import com.changanford.common.utilext.toastShow
 import com.changanford.my.BaseMineUI
 import com.changanford.my.databinding.UiLoginBinding
@@ -54,12 +51,7 @@ import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.functions.Function3
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -466,10 +458,6 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         subscribe?.let {
             it.dispose()
         }
-        timer?.cancel()
-        timerTask?.cancel()
-        timer = null
-        timerTask = null
         mPlayer.let {
             try {
                 if (it.isPlaying)
@@ -482,47 +470,18 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         captcha?.destroy()
     }
 
-    var isForeground = true
-    var timer: Timer? = null
-    var timerTask: MyTimerTask? = null
-    var isOnResume = false
-    var isOnStop = false
-    var isloaded = false
 
-    inner class MyTimerTask : TimerTask() {
-        override fun run() {
-            if (!isAppOnForeground()) {
-                //由前台切换到后台
-                isForeground = false
-                lifecycleScope.launch(Dispatchers.Main) {
-                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
-                }
-                timer?.cancel()
-                timer = null
-                timerTask?.cancel()
-                timerTask = null
-            }
-        }
-    }
+    var isloaded = false
 
     override fun onResume() {
         super.onResume()
         try {
-            isOnStop = false
-            isOnResume = true
-            if (!isForeground) {
-                //由后台切换到前台
-                isForeground = true
-            }
             if (isloaded) {
                 viewModel.loginBgPath.value?.let { play(it) }
             } else {
                 viewModel.downLoginBgUrl()
             }
 //            mPlayer.start()
-            timer = Timer()
-            timerTask = MyTimerTask()
-            timer?.schedule(timerTask, 50, 50)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -530,15 +489,6 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
 
     override fun onPause() {
         super.onPause()
-        isOnResume = false
-        lifecycleScope.launch(Dispatchers.IO) {
-            delay(2000)
-            if (!isFinishing && !isOnResume && !isOnStop) {
-                withContext(Dispatchers.Main) {
-                    ToastUtils.reToast("${resources.getString(R.string.app_name)}App已经进入后台")
-                }
-            }
-        }
         if (mPlayer.isPlaying) {
             mPlayer.pause()
             binding.loginVideo.visibility = View.VISIBLE
@@ -546,8 +496,4 @@ class LoginUI : BaseMineUI<UiLoginBinding, SignViewModel>() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        isOnStop = true
-    }
 }

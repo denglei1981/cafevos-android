@@ -60,6 +60,7 @@ object MyApplicationUtil {
         initBaiduSdk()
         // 在SDK初始化时捕获抛出的异常
         try {
+            SDKInitializer.setApiKey("gwuTZYK647CVUpGD7pWF3Zt3VLNd7nZ6")
             // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
             SDKInitializer.initialize(applicationContext)
         } catch (e: BaiduMapSDKException) {

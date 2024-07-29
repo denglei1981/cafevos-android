@@ -30,9 +30,13 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.util.toast.ToastUtils
+import com.changanford.common.utilext.toast
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.reflect.ParameterizedType
 import java.util.Timer
 import java.util.TimerTask
@@ -51,6 +55,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     lateinit var viewModel: VM
     var isDarkFont = true
     var isPortrait: Boolean = true
+    var isOnResume = false
+    var isOnStop = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +72,8 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         initView(savedInstanceState)
         initView()
 //        StatusBarUtil.setLightStatusBar(this, true)
-        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).navigationBarColor(R.color.white).init()
+        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).navigationBarColor(R.color.white)
+            .init()
         if (savedInstanceState == null) {
             initData()
         } else {
@@ -98,12 +105,14 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     override fun onResume() {
         super.onResume()
         curActivity = this
+        isOnStop = false
+        isOnResume = true
         try {
             currentViewModelScope = (curActivity as BaseActivity<*, *>).viewModel.viewModelScope
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean){
+        if (SPUtils.getParam(this, "isPopAgreement", true) as Boolean) {
             return
         }
         //全局监听回到前台
@@ -235,7 +244,33 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
         return false
     }
 
-    companion object{
+    override fun onPause() {
+        super.onPause()
+        isOnResume = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            delay(2000)
+            if (!isFinishing && !isOnResume && !isOnStop) {
+                withContext(Dispatchers.Main) {
+                    ToastUtils.reToast("${resources.getString(R.string.app_name)}App已经进入后台")
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isOnStop = true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer_b?.cancel()
+        timerTask_b?.cancel()
+        timer_b = null
+        timerTask_b = null
+    }
+
+    companion object {
         //全局监听后台运行
         var isForeground_b = true
         var timer_b: Timer? = null
@@ -260,13 +295,14 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             }
             return false
         }
+
         class MyTimerTask : TimerTask() {
             override fun run() {
                 if (!isAppOnForeground()) {
                     //由前台切换到后台
                     isForeground_b = false
                     curActivity.lifecycleScope.launch(Dispatchers.Main) {
-//                        "${curActivity.resources.getString(R.string.app_name)}App已经进入后台".toast()
+                        "${curActivity.resources.getString(R.string.app_name)}App已经进入后台".toast()
                     }
                     timer_b?.cancel()
                     timer_b = null
