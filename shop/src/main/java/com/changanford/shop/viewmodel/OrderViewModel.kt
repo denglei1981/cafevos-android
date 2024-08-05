@@ -132,7 +132,7 @@ class OrderViewModel : BaseViewModel() {
      * [freight]运费
      * [payBfb]支付现金百分比
      * payType:支付方式(0纯积分/1纯现金/2混合支付)
-     *
+     *dealerId,经销商id
      * */
     fun createOrder(
         orderConfirmType: Int = 0,
@@ -144,7 +144,8 @@ class OrderViewModel : BaseViewModel() {
         couponId: String? = null,
         couponRecordId: String? = "0",
         freight: String? = "0",
-        payBfb: String? = null
+        payBfb: String? = null,
+        dealerId: String? = null
     ) {
         body.clear()
         if (skuItems == null || skuItems.size < 1) return
@@ -172,6 +173,9 @@ class OrderViewModel : BaseViewModel() {
                 couponId?.let {
                     body["couponId"] = it
                     body["couponRecordId"] = couponRecordId ?: "0"
+                }
+                dealerId?.let {
+                    body["dealerId"] = dealerId
                 }
                 val randomKey = getRandomKey()
                 shopApiService.orderCreate(body.header(randomKey), body.body(randomKey))
@@ -282,7 +286,7 @@ class OrderViewModel : BaseViewModel() {
         var typeI = orderStatus + 1
         if (typeI < 0 || typeI >= queryType.size) typeI = 0
         if (typeI == 5) {
-            getShopOrderRefundList(pageNo, pageSize, searchContent,showLoading)
+            getShopOrderRefundList(pageNo, pageSize, searchContent, showLoading)
             return
         }
         viewModelScope.launch {
@@ -292,7 +296,7 @@ class OrderViewModel : BaseViewModel() {
                 body["pageSize"] = pageSize
                 body["queryParams"] = HashMap<String, Any>().also {
                     it["queryType"] = queryType[typeI]
-                    if (searchContent.isNotEmpty()){
+                    if (searchContent.isNotEmpty()) {
                         it["keyWord"] = searchContent
                     }
                 }
@@ -316,7 +320,7 @@ class OrderViewModel : BaseViewModel() {
     fun getShopOrderRefundList(
         pageNo: Int,
         pageSize: Int = this.pageSize,
-        searchContent: String="",
+        searchContent: String = "",
         showLoading: Boolean = false
     ) {
         viewModelScope.launch {
@@ -324,7 +328,7 @@ class OrderViewModel : BaseViewModel() {
                 body.clear()
                 body["pageNo"] = pageNo
                 body["pageSize"] = pageSize
-                if (searchContent.isNotEmpty()){
+                if (searchContent.isNotEmpty()) {
                     body["keyWord"] = searchContent
                 }
                 val randomKey = getRandomKey()

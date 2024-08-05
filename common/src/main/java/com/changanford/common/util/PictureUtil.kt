@@ -578,7 +578,7 @@ object PictureUtil {
         val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
         if (uri != null) {
             resolver.openOutputStream(uri).use {
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                bm.compress(Bitmap.CompressFormat.PNG, 100, it)
                 "保存成功".toast()
             }
         }

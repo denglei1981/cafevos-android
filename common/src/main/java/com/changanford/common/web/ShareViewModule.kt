@@ -3,10 +3,10 @@ package com.changanford.common.web
 import android.Manifest
 import android.app.Activity
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alibaba.fastjson.JSON
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -26,12 +26,8 @@ import com.changanford.common.util.MTextUtil
 import com.changanford.common.utilext.GlideUtils
 import com.changanford.common.utilext.PermissionPopUtil
 import com.changanford.common.utilext.toastShow
-import com.qw.soul.permission.SoulPermission
-import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
-import com.qw.soul.permission.callbcak.CheckRequestPermissionListener
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 
 /**********************************************************************************
@@ -45,12 +41,13 @@ import java.io.ByteArrayOutputStream
  */
 class ShareViewModule : ViewModel() {
 
-    var shareto :String = ""
+    var shareto: String = ""
+
     /**
      * 分享回调
      */
-    fun shareBack(shareBean: ShareBean?){
-        if (shareBean!=null){
+    fun shareBack(shareBean: ShareBean?) {
+        if (shareBean != null) {
             val body = HashMap<String, Any>()
             body["type"] = shareBean.type
             body["bizId"] = shareBean.bizId
@@ -62,34 +59,111 @@ class ShareViewModule : ViewModel() {
             val rkey = getRandomKey()
             viewModelScope.launch {
                 fetchRequest {
-                    apiService.ShareBack(body.header(rkey),body.body(rkey))
+                    apiService.ShareBack(body.header(rkey), body.body(rkey))
                 }
             }
         }
     }
-    fun share(activity: Activity,shareBean: ShareBean) {
+
+    fun shareImage(activity: Activity, json: String) {
+        val sharejson =
+            JSON.parseObject(json)
+        val data1 = SharePlamFormData()
+        val imgUrl = sharejson.getString("shareImg")
+        val shareType = sharejson.getString("shareType")
+        val list = shareType.split("|")
+        val permissions = Permissions.build(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        )
+        val success = {
+            getBitmap2Share(imgUrl) { bitmap ->
+                list.forEach { shareName ->
+                    when (shareName) {
+                        "WeChatSession" -> {
+                            data1.withWxChatMessageBuilder(
+                                SharePlamFormData.WxChatMessageBuilder()
+                                    .buildedrImageMessage(imgUrl, bitmap)
+                            )
+                        }
+
+                        "WeChatTimeline" -> {
+                            data1.withWxMomentMessageBuilder(
+                                SharePlamFormData.WxMomentMessageBuilder()
+                                    .buildedrImageMessage(imgUrl, bitmap)
+                            )
+                        }
+
+                        "QQfriends" -> {
+                            data1.withQqMessageBuilder(
+                                SharePlamFormData.QQMessageBuilder()
+                                    .buildedrImageMessage(imgUrl, bitmap)
+                            )
+                        }
+
+                        "QQspace" -> {
+                            data1.withQqMessageBuilder(
+                                SharePlamFormData.QQMessageBuilder()
+                                    .buildedrImageMessagezoom(imgUrl, bitmap)
+                            )
+                        }
+
+                        "Weibo" -> {
+                            data1.withSinaMessageBuilder(
+                                SharePlamFormData.SinaMessageBuilder()
+                                    .buildedrImageMessage(imgUrl, bitmap)
+                            )
+                        }
+
+                        "ClipBoard" -> {//复制
+                            data1.withSinaMessageBuilder(
+                                SharePlamFormData.SinaMessageBuilder()
+                                    .buildedrCopyMessage(imgUrl, bitmap)
+                            )
+                        }
+                    }
+                }
+                showShareDialog(activity, data1)
+//                data1.withQqMessageBuilder(
+//                    SharePlamFormData.QQMessageBuilder()
+//                        .buildedrImageMessagezoom(imgUrl, bitmap)
+//                )
+//                        showShareDialog(activity,shareBean,data1)
+            }
+        }
+        val fail = {
+            toastShow("没有权限")
+        }
+        PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
+    }
+
+    fun share(activity: Activity, shareBean: ShareBean) {
         val data1 = SharePlamFormData()
 //        toastShow("调起分享")
         if (shareBean.isimg == "1") {
             val permissions = Permissions.build(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
             )
-            val success={
-                getBitmap2Share(shareBean.imageUrl) { bitmap->
-                    data1.withSinaMessageBuilder(
-                        SharePlamFormData.SinaMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                    )
-                    data1.withQqMessageBuilder(
-                        SharePlamFormData.QQMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-                    )
-                    data1.withQqMessageBuilder(
-                        SharePlamFormData.QQMessageBuilder().buildedrImageMessagezoom(shareBean.imageUrl,bitmap)
-                    )
+            val success = {
+                getBitmap2Share(shareBean.imageUrl) { bitmap ->
                     data1.withWxChatMessageBuilder(
-                        SharePlamFormData.WxChatMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                        SharePlamFormData.WxChatMessageBuilder()
+                            .buildedrImageMessage(shareBean.imageUrl, bitmap)
                     )
                     data1.withWxMomentMessageBuilder(
-                        SharePlamFormData.WxMomentMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
+                        SharePlamFormData.WxMomentMessageBuilder()
+                            .buildedrImageMessage(shareBean.imageUrl, bitmap)
+                    )
+                    data1.withQqMessageBuilder(
+                        SharePlamFormData.QQMessageBuilder()
+                            .buildedrImageMessage(shareBean.imageUrl, bitmap)
+                    )
+                    data1.withQqMessageBuilder(
+                        SharePlamFormData.QQMessageBuilder()
+                            .buildedrImageMessagezoom(shareBean.imageUrl, bitmap)
+                    )
+                    data1.withSinaMessageBuilder(
+                        SharePlamFormData.SinaMessageBuilder()
+                            .buildedrImageMessage(shareBean.imageUrl, bitmap)
                     )
 //                        showShareDialog(activity,shareBean,data1)
                 }
@@ -98,59 +172,7 @@ class ShareViewModule : ViewModel() {
                 toastShow("没有权限")
             }
             PermissionPopUtil.checkPermissionAndPop(permissions, success, fail)
-//            SoulPermission.getInstance().checkAndRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,object:CheckRequestPermissionListener{
-//                override fun onPermissionOk(permission: Permission?) {
-//                    getBitmap2Share(shareBean.imageUrl) { bitmap->
-//                        data1.withSinaMessageBuilder(
-//                            SharePlamFormData.SinaMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-//                        )
-//                        data1.withQqMessageBuilder(
-//                            SharePlamFormData.QQMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-//                        )
-//                        data1.withQqMessageBuilder(
-//                            SharePlamFormData.QQMessageBuilder().buildedrImageMessagezoom(shareBean.imageUrl,bitmap)
-//                        )
-//                        data1.withWxChatMessageBuilder(
-//                            SharePlamFormData.WxChatMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-//                        )
-//                        data1.withWxMomentMessageBuilder(
-//                            SharePlamFormData.WxMomentMessageBuilder().buildedrImageMessage(shareBean.imageUrl,bitmap)
-//                        )
-////                        showShareDialog(activity,shareBean,data1)
-//                    }
-//                }
-//
-//                override fun onPermissionDenied(permission: Permission?) {
-//                    toastShow("没有权限")
-//                }
-//
-//            })
-
-        }else{
-            data1.withSinaMessageBuilder(
-                SharePlamFormData.SinaMessageBuilder().buidWebMessage(
-                    shareBean.targetUrl,
-                    GlideUtils.handleImgUrl(shareBean.imageUrl),
-                    shareBean.title,
-                    shareBean.content
-                )
-            )
-            data1.withQqMessageBuilder(
-                SharePlamFormData.QQMessageBuilder().buidWebMessagezoom(
-                    shareBean.targetUrl,
-                    GlideUtils.handleImgUrl(shareBean.imageUrl),
-                    shareBean.title,
-                    shareBean.content
-                )
-            )
-            data1.withQqMessageBuilder(
-                SharePlamFormData.QQMessageBuilder().buidWebMessage(
-                    shareBean.targetUrl,
-                    GlideUtils.handleImgUrl(shareBean.imageUrl),
-                    shareBean.title,
-                    shareBean.content
-                )
-            )
+        } else {
             data1.withWxChatMessageBuilder(
                 SharePlamFormData.WxChatMessageBuilder().buidWebMessage(
                     shareBean.targetUrl,
@@ -167,11 +189,47 @@ class ShareViewModule : ViewModel() {
                     shareBean.content
                 )
             )
-            showShareDialog(activity,shareBean,data1)
+            data1.withQqMessageBuilder(
+                SharePlamFormData.QQMessageBuilder().buidWebMessage(
+                    shareBean.targetUrl,
+                    GlideUtils.handleImgUrl(shareBean.imageUrl),
+                    shareBean.title,
+                    shareBean.content
+                )
+            )
+            data1.withQqMessageBuilder(
+                SharePlamFormData.QQMessageBuilder().buidWebMessagezoom(
+                    shareBean.targetUrl,
+                    GlideUtils.handleImgUrl(shareBean.imageUrl),
+                    shareBean.title,
+                    shareBean.content
+                )
+            )
+            data1.withSinaMessageBuilder(
+                SharePlamFormData.SinaMessageBuilder().buidWebMessage(
+                    shareBean.targetUrl,
+                    GlideUtils.handleImgUrl(shareBean.imageUrl),
+                    shareBean.title,
+                    shareBean.content
+                )
+            )
+
+            data1.withWxMomentMessageBuilder(
+                SharePlamFormData.WxMomentMessageBuilder().buidCopyMessage(
+                    shareBean.targetUrl,
+                    GlideUtils.handleImgUrl(shareBean.imageUrl),
+                    shareBean.title,
+                    shareBean.content
+                )
+            )
+            showShareDialog(activity, shareBean, data1)
         }
     }
 
-    private fun showShareDialog(activity: Activity, shareBean: ShareBean, data1: SharePlamFormData){
+    private fun showShareDialog(
+        activity: Activity,
+        data1: SharePlamFormData
+    ) {
         ShareManager<IMediaObject>(activity, 0, false)
             .withPlamFormData(data1.plamFormDatas as MutableList<IMediaObject>?)
             .withPlamformClickListener { view, plamForm ->
@@ -191,6 +249,7 @@ class ShareViewModule : ViewModel() {
                         //                                            ""
                         //                                        )
                     }
+
                     1 -> {
                         shareto = "2";
                         //                                        SPUtils.saveBuried(
@@ -206,6 +265,7 @@ class ShareViewModule : ViewModel() {
                         //                                            ""
                         //                                        )
                     }
+
                     2 -> {
                         shareto = "4";
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.SINA)
@@ -222,6 +282,7 @@ class ShareViewModule : ViewModel() {
                         //                                            ""
                         //                                        )
                     }
+
                     3 -> {
                         shareto = "3";
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQ)
@@ -238,6 +299,7 @@ class ShareViewModule : ViewModel() {
                         //                                            ""
                         //                                        )
                     }
+
                     4 -> {
                         shareto = "6";
                         //                                        MobclickAgent.onEvent(activity, UmengUtils.QQZOOM)
@@ -254,56 +316,182 @@ class ShareViewModule : ViewModel() {
                         //                                            ""
                         //                                        )
                     }
+
                     5 -> {
                         toastShow("举报")
                     }
+
                     6 -> {
                         toastShow("不喜欢")
                     }
+
                     7 -> {
                         toastShow("结束发布")
                     }
+
                     8 -> {
                         toastShow("点击海报")
                     }
+
+//                    9 -> {
+//                        MTextUtil.copystr(BaseApplication.INSTANT, shareBean.targetUrl)
+//                    }
+                }
+//                buriedShare(shareBean, shareto)
+            }
+            .open()
+    }
+
+    private fun showShareDialog(
+        activity: Activity,
+        shareBean: ShareBean,
+        data1: SharePlamFormData
+    ) {
+        ShareManager<IMediaObject>(activity, 0, false)
+            .withPlamFormData(data1.plamFormDatas as MutableList<IMediaObject>?)
+            .withPlamformClickListener { view, plamForm ->
+                when (plamForm) {
+                    0 -> {
+                        shareto = "1";
+                        //                                        SPUtils.saveBuried(
+                        //                                            "share",
+                        //                                            "微信好友分享",
+                        //                                            UmengUtils.WXPY,
+                        //                                            "",
+                        //                                            "微信好友分享",
+                        //                                            "",
+                        //                                            "",
+                        //                                            "微信好友",
+                        //                                            "",
+                        //                                            ""
+                        //                                        )
+                    }
+
+                    1 -> {
+                        shareto = "2";
+                        //                                        SPUtils.saveBuried(
+                        //                                            "share",
+                        //                                            "微信朋友圈分享",
+                        //                                            UmengUtils.WXPYQ,
+                        //                                            "",
+                        //                                            "微信朋友圈分享",
+                        //                                            "",
+                        //                                            "",
+                        //                                            "微信朋友圈",
+                        //                                            "",
+                        //                                            ""
+                        //                                        )
+                    }
+
+                    2 -> {
+                        shareto = "4";
+                        //                                        MobclickAgent.onEvent(activity, UmengUtils.SINA)
+                        //                                        SPUtils.saveBuried(
+                        //                                            "share",
+                        //                                            "新浪分享",
+                        //                                            UmengUtils.SINA,
+                        //                                            "",
+                        //                                            "新浪分享",
+                        //                                            "",
+                        //                                            "",
+                        //                                            "微信好友",
+                        //                                            "",
+                        //                                            ""
+                        //                                        )
+                    }
+
+                    3 -> {
+                        shareto = "3";
+                        //                                        MobclickAgent.onEvent(activity, UmengUtils.QQ)
+                        //                                        SPUtils.saveBuried(
+                        //                                            "share",
+                        //                                            "QQ好友分享",
+                        //                                            UmengUtils.QQ,
+                        //                                            "",
+                        //                                            "QQ好友分享",
+                        //                                            "",
+                        //                                            "",
+                        //                                            "微信好友",
+                        //                                            "",
+                        //                                            ""
+                        //                                        )
+                    }
+
+                    4 -> {
+                        shareto = "6";
+                        //                                        MobclickAgent.onEvent(activity, UmengUtils.QQZOOM)
+                        //                                        SPUtils.saveBuried(
+                        //                                            "share",
+                        //                                            "QQ朋友圈分享",
+                        //                                            UmengUtils.QQZOOM,
+                        //                                            "",
+                        //                                            "QQ朋友圈分享",
+                        //                                            "",
+                        //                                            "",
+                        //                                            "微信好友",
+                        //                                            "",
+                        //                                            ""
+                        //                                        )
+                    }
+
+                    5 -> {
+                        toastShow("举报")
+                    }
+
+                    6 -> {
+                        toastShow("不喜欢")
+                    }
+
+                    7 -> {
+                        toastShow("结束发布")
+                    }
+
+                    8 -> {
+                        toastShow("点击海报")
+                    }
+
                     9 -> {
                         MTextUtil.copystr(BaseApplication.INSTANT, shareBean.targetUrl)
                     }
                 }
-                buriedShare(shareBean,shareto)
+                buriedShare(shareBean, shareto)
             }
             .open()
     }
-    fun getBitmap2Share(url:String,callBack:(Bitmap)->Unit){
+
+    fun getBitmap2Share(url: String, callBack: (Bitmap) -> Unit) {
         var bytes = ByteArray(0)
-        var bitmap :Bitmap? = null
+        var bitmap: Bitmap? = null
         Glide.with(MyApp.mContext).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                bitmap = resource
-                val baos = ByteArrayOutputStream()
-                bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                if (baos.toByteArray().size / 1024 > 32) {
-                    baos.reset()
-                    bitmap?.compress(Bitmap.CompressFormat.JPEG, 50, baos)
-                }
-                bytes = baos.toByteArray()
-                callBack(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+//                bitmap = resource
+//                val baos = ByteArrayOutputStream()
+//                bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//                if (baos.toByteArray().size / 1024 > 32) {
+//                    baos.reset()
+//                    bitmap?.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+//                }
+//                bytes = baos.toByteArray()
+//                callBack(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                callBack(resource)
             }
+
             override fun onLoadCleared(placeholder: Drawable?) {
                 super.onLoadCleared(placeholder)
             }
         })
     }
-    private fun buriedShare(shareBean: ShareBean,type:String){
+
+    private fun buriedShare(shareBean: ShareBean, type: String) {
         shareBean.shareWithType?.apply {
             //爱车海报分享
-            if("love_car_poster"==this){
-                when(type){
-                    "1"->WBuriedUtil.clickCarShareWX()
-                    "2"->WBuriedUtil.clickCarShareWXMoments()
-                    "3"->WBuriedUtil.clickCarShareQQ()
-                    "4"->WBuriedUtil.clickCarShareWB()
-                    "6"->WBuriedUtil.clickCarShareQQZone()
+            if ("love_car_poster" == this) {
+                when (type) {
+                    "1" -> WBuriedUtil.clickCarShareWX()
+                    "2" -> WBuriedUtil.clickCarShareWXMoments()
+                    "3" -> WBuriedUtil.clickCarShareQQ()
+                    "4" -> WBuriedUtil.clickCarShareWB()
+                    "6" -> WBuriedUtil.clickCarShareQQZone()
                 }
             }
         }

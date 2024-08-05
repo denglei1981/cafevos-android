@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.text.TextUtils
 import android.view.View
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,11 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,6 +52,7 @@ import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.wLogE
 import com.changanford.shop.R
 import com.changanford.shop.adapter.goods.ConfirmOrderGoodsInfoAdapter
+import com.changanford.shop.bean.OrderCarItem
 import com.changanford.shop.databinding.ActOrderConfirmBinding
 import com.changanford.shop.utils.WCommonUtil.onTextChanged
 import com.changanford.shop.utils.WConstant
@@ -187,6 +187,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             if (WConstant.maintenanceType == spuPageType && TextUtils.isEmpty(infoBean.vinCode)) {
                 infoBean.vinCode = it.vinCode
                 infoBean.models = it.models
+                infoBean.dealerId = it.dealerId
+                infoBean.dealerName = it.dealerName
             }
         }
         infoBean.totalBuyNum = totalBuyNum
@@ -714,7 +716,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 couponId = couponsItem?.couponId,
                 couponRecordId = couponsItem?.couponRecordId,
                 freight = infoBean.freightPrice,
-                payBfb = createOrderBean?.payBfb
+                payBfb = createOrderBean?.payBfb,
+                dealerId = infoBean.dealerId
             )
 //            dataBean.apply {
 //                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
@@ -763,6 +766,19 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
      * */
     @Composable
     private fun MaintenanceCompose() {
+        val carList = ArrayList<OrderCarItem>()
+        carList.add(OrderCarItem(resources.getString(R.string.str_vinCode), infoBean.vinCode ?: ""))
+        carList.add(OrderCarItem(resources.getString(R.string.str_models), infoBean.models ?: ""))
+        if (!infoBean.dealerId.isNullOrEmpty()) {
+            val useContent =  infoBean.dealerName
+            carList.add(
+                OrderCarItem(
+                    resources.getString(R.string.str_dealName),
+                    useContent ?: ""
+                )
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -775,29 +791,36 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     .height(10.dp)
                     .background(colorResource(R.color.color_F4))
             )
-            for (i in 0..1) {//0 vin码 1车型
-                Row(
-                    verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+            carList.forEachWithIndex { i, orderCarItem ->
+                Row(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp, top = if (0 == i) 19.dp else 29.dp)
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = if (i != carList.size - 1) 19.dp else 19.dp
+                        ),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = stringResource(if (0 == i) R.string.str_vinCode else R.string.str_models),
+                        text = orderCarItem.title,
                         color = colorResource(R.color.color_33),
                         fontSize = 14.sp,
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(end = 10.dp)
+                            .padding(end = 20.dp)
                     )
                     Text(
-                        text = if (0 == i) infoBean.vinCode ?: "" else infoBean.models ?: "",
+                        text = orderCarItem.content,
                         color = colorResource(R.color.color_33),
                         fontSize = 14.sp,
                         overflow = TextOverflow.Ellipsis,
-                        maxLines = 1
-                    )
+                        maxLines = 2,
+
+                        )
                 }
             }
+//            for (i in 0..1) {//0 vin码 1车型
+//
+//            }
         }
     }
 

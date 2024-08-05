@@ -131,22 +131,24 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         if (isGoneTitle) {
             headerView.isVisible = false
         }
-        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_back).setOnClickListener {
-            if (handleH5Back()) {
-                return@setOnClickListener
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_back)
+            .setOnClickListener {
+                if (handleH5Back()) {
+                    return@setOnClickListener
+                }
+                if (binding.webView.canGoBack()) {
+                    binding.webView.goBack()
+                } else {
+                    finish()
+                }
             }
-            if (binding.webView.canGoBack()) {
-                binding.webView.goBack()
-            } else {
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_close)
+            .setOnClickListener {
+                if (handleH5X()) {
+                    return@setOnClickListener
+                }
                 finish()
             }
-        }
-        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_close).setOnClickListener {
-            if (handleH5X()){
-                return@setOnClickListener
-            }
-            finish()
-        }
         registerLiveBus()
         initObserver()
     }
@@ -345,7 +347,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         //分享
         LiveDataBus.get().with(LiveDataBusKey.WX_SHARE_BACK).observe(this, Observer {
             if (it == 0) {
-                quickCallJs(shareCallBack, it.toString()) {}
+                quickCallJs(shareCallBack, MConstant.shareClickType) {}
                 shareViewModule.shareBack(shareBean)
             }
         })
@@ -842,7 +844,7 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             val shareTitle = sharejson["shareTitle"] as String?
             val shareDesc = sharejson["shareDesc"] as String?
             val shareUrl = sharejson["shareUrl"] as String?
-            val shareType = sharejson["shareType"]
+            val shareType = sharejson["shareType"] as String?
             val liknId = sharejson["liknId"]
             val shareActType = sharejson["shareActType"]
             val results = sharejson["results"]
@@ -875,7 +877,11 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
                 }
             }
             shareBean?.shareWithType = shareWithType
-            shareBean?.let { shareViewModule.share(this, shareBean = it) }
+            if (shareType.isNullOrEmpty()) {
+                shareBean?.let { shareViewModule.share(this, shareBean = it) }
+            } else {
+                shareViewModule.shareImage(this, jsonStr)
+            }
         } catch (e: Exception) {
 
         }
@@ -908,8 +914,10 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         try {
             style = JSONObject.parseObject(jsonStr)
         } catch (e: Exception) {
-            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
-            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility =
+                View.GONE
+            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility =
+                View.GONE
             return
         }
         if (style.isNullOrEmpty())
@@ -920,17 +928,23 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
         if (text.isNullOrEmpty()) {
             if (!image.isNullOrEmpty()) {
                 //设置图片
-                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
-                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.VISIBLE
+                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility =
+                    View.GONE
+                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility =
+                    View.VISIBLE
                 Glide.with(headerView).load(image)
                     .into(headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more))
             } else {
-                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.GONE
-                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
+                headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility =
+                    View.GONE
+                headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility =
+                    View.GONE
             }
         } else {
-            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility = View.VISIBLE
-            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility = View.GONE
+            headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).visibility =
+                View.VISIBLE
+            headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).visibility =
+                View.GONE
             headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).text = text
             headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other)
                 .setTextColor(Color.parseColor(color))
@@ -939,14 +953,16 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     }
 
     private fun bindListener() {
-        headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other).setOnClickListener {
+        headerView.findViewById<TextView>(com.changanford.common.R.id.bar_tv_other)
+            .setOnClickListener {
 //            toastShow("点击文字")
-            quickCallJs(subcallback)
-        }
-        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more).setOnClickListener {
+                quickCallJs(subcallback)
+            }
+        headerView.findViewById<ImageView>(com.changanford.common.R.id.bar_img_more)
+            .setOnClickListener {
 //            toastShow("点击图标")
-            quickCallJs(subcallback)
-        }
+                quickCallJs(subcallback)
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

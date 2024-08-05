@@ -580,7 +580,10 @@ class OrderAdapter(
     private fun ItemCompose(item: OrderItemBean) {
         item.apply {
             var fbPrice = fbRefund ?: fbRefundApply ?: "0"
-            val rmbPrice = rmbRefund ?: rmbRefundApply ?: "0"
+            var rmbPrice = rmbRefund ?: rmbRefundApply ?: "0"
+            if (rmbPrice.isNullOrEmpty()) {
+                rmbPrice = "0"
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "退款金额：", fontSize = 14.sp, color = colorResource(R.color.color_16))
                 val addStr = if (fbPrice != "0" && rmbPrice.toFloat() > 0f) "+" else ""

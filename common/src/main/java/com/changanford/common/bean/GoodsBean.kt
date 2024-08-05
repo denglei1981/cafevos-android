@@ -257,6 +257,8 @@ data class ConfirmOrderBean(
     var freightPrice: String? = "0.00",//运费
     var vinCode: String? = null,//维保商品 VIN码
     var models: String? = null,//车型
+    var dealerId: String? = null,//经销商id
+    var dealerName: String? = null,//经销商name
     var dataList: ArrayList<GoodsDetailBean>? = null,
     var totalPayFbPrice: Int = 0,//单位福币
     var totalPayFb: Int = 0,
@@ -393,6 +395,8 @@ data class GoodsDetailBean(
     var isUpdateBuyNum: Boolean = true,//是否可以更改购买数量
     var vinCode: String? = null,//维保商品 VIN码
     var models: String? = null,//车型
+    var dealerId: String? = null,//经销商id
+    var dealerName: String? = null,//经销商name
     var busSourse: String? = null,
     var mallMallWbVinSpuId: String? = null,
     var recommend: ArrayList<GoodsItemBean>? = null,//推荐

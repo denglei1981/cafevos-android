@@ -4,7 +4,12 @@ import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.alibaba.fastjson.JSON
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.sharelib.bean.IMediaObject
@@ -47,16 +52,16 @@ object HomeShareModel {
     ) {
         if (activity == null || shareBean == null) return
         val data1 = SharePlamFormData()
-        data1.withSinaMessageBuilder(
-            SharePlamFormData.SinaMessageBuilder().buidWebMessage(
+        data1.withWxChatMessageBuilder(
+            SharePlamFormData.WxChatMessageBuilder().buidWebMessage(
                 shareBean.shareUrl,
                 GlideUtils.handleImgUrl(shareBean.shareImg),
                 shareBean.shareTitle,
                 shareBean.shareDesc
             )
         )
-        data1.withQqMessageBuilder(
-            SharePlamFormData.QQMessageBuilder().buidWebMessagezoom(
+        data1.withWxMomentMessageBuilder(
+            SharePlamFormData.WxMomentMessageBuilder().buidWebMessage(
                 shareBean.shareUrl,
                 GlideUtils.handleImgUrl(shareBean.shareImg),
                 shareBean.shareTitle,
@@ -71,8 +76,16 @@ object HomeShareModel {
                 shareBean.shareDesc
             )
         )
-        data1.withWxChatMessageBuilder(
-            SharePlamFormData.WxChatMessageBuilder().buidWebMessage(
+        data1.withQqMessageBuilder(
+            SharePlamFormData.QQMessageBuilder().buidWebMessagezoom(
+                shareBean.shareUrl,
+                GlideUtils.handleImgUrl(shareBean.shareImg),
+                shareBean.shareTitle,
+                shareBean.shareDesc
+            )
+        )
+        data1.withSinaMessageBuilder(
+            SharePlamFormData.SinaMessageBuilder().buidWebMessage(
                 shareBean.shareUrl,
                 GlideUtils.handleImgUrl(shareBean.shareImg),
                 shareBean.shareTitle,
@@ -80,7 +93,7 @@ object HomeShareModel {
             )
         )
         data1.withWxMomentMessageBuilder(
-            SharePlamFormData.WxMomentMessageBuilder().buidWebMessage(
+            SharePlamFormData.WxMomentMessageBuilder().buidCopyMessage(
                 shareBean.shareUrl,
                 GlideUtils.handleImgUrl(shareBean.shareImg),
                 shareBean.shareTitle,
@@ -127,6 +140,7 @@ object HomeShareModel {
 //                                })
 //                        )
                     }
+
                     1 -> {
                         shareto = "1"
                         GioPageConstant.infoShareType = "朋友圈"
@@ -162,6 +176,7 @@ object HomeShareModel {
 //                                })
 //                        )
                     }
+
                     2 -> {
                         shareto = "4"
                         GioPageConstant.infoShareType = "微博"
@@ -198,6 +213,7 @@ object HomeShareModel {
 //                                })
 //                        )
                     }
+
                     3 -> {
                         shareto = "3"
                         GioPageConstant.infoShareType = "QQ好友"
@@ -234,6 +250,7 @@ object HomeShareModel {
 //                                })
 //                        )
                     }
+
                     4 -> {
                         shareto = "6"
                         GioPageConstant.infoShareType = "QQ空间"
@@ -270,6 +287,7 @@ object HomeShareModel {
 //                                })
 //                        )
                     }
+
                     5 -> {
                         if (MConstant.userId.isNotEmpty()) {
                             ReportDialog(activity as AppCompatActivity, body).show()
@@ -277,6 +295,7 @@ object HomeShareModel {
                             startARouter(ARouterMyPath.SignUI)//跳转登录
                         }
                     }
+
                     6 -> {
                         if (MConstant.userId.isNotEmpty()) {
                             DislikeDialog(activity as AppCompatActivity, body).show()
@@ -284,15 +303,19 @@ object HomeShareModel {
                             startARouter(ARouterMyPath.SignUI)//跳转登录
                         }
                     }
+
                     7 -> {
                         toastShow("结束发布")
                     }
+
                     8 -> {
                         toastShow("点击海报")
                     }
+
                     9 -> {
                         MTextUtil.copystr(activity, shareBean.shareUrl)
                     }
+
                     10 -> {//加精
 //                        if (is_good == 2) {
 //                            HomeApi.postSetGood(shareBean.bizId,
@@ -309,11 +332,13 @@ object HomeShareModel {
 //                                })
 //                        }
                     }
+
                     11 -> {//编辑
 //                        val bundle = Bundle()
 //                        bundle.putString("postsId", shareBean.bizId)
 //                        startARouter(ARouterHomePath.EditPostActivity, bundle)
                     }
+
                     12 -> {//删除
 //                        HomeApi.postDelete(
 //                            arrayOf(shareBean.bizId),
@@ -328,6 +353,7 @@ object HomeShareModel {
 //                                }
 //                            })
                     }
+
                     13 -> {//屏蔽
 //                        HomeApi.postPrivate(
 //                            shareBean.bizId,
@@ -402,9 +428,11 @@ fun shareBackUpHttp(lifecycleOwner: LifecycleOwner, shareBean: Shares?, type: In
             }
 
         }
+
         1 -> {
             toastShow("分享失败")
         }
+
         2 -> {
             toastShow("分享失败")
         }

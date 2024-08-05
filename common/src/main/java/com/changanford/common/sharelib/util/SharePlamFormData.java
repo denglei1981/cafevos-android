@@ -116,6 +116,11 @@ public class SharePlamFormData {
             return this;
         }
 
+        public WxMomentMessageBuilder buidCopyMessage(String targetUrl, String imageUrl, String title, String content) {
+            data = new ShareWeb(PlamForm.COPY, targetUrl, imageUrl, title, content);
+            return this;
+        }
+
         public WxMomentMessageBuilder buildedrImageMessage(String imageUrl, Bitmap originBitmap) {
             data = new ShareImage(PlamForm.WX_MOUMENT, imageUrl, originBitmap);
             return this;
@@ -144,6 +149,11 @@ public class SharePlamFormData {
 
         public SinaMessageBuilder buildedrImageMessage(String imageUrl, Bitmap originBitmap) {
             data = new ShareImage(PlamForm.SINA, imageUrl, originBitmap);
+            return this;
+        }
+
+        public SinaMessageBuilder buildedrCopyMessage(String imageUrl, Bitmap originBitmap) {
+            data = new ShareImage(PlamForm.COPY, imageUrl, originBitmap);
             return this;
         }
 

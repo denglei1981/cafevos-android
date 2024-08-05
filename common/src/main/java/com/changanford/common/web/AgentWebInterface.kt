@@ -269,7 +269,14 @@ class AgentWebInterface(
      */
     @JavascriptInterface
     fun shareTo(jsonStr: String, shareCallBack: String) {
-//        toastShow("分享的内容".plus(jsonStr))
+        val map = HashMap<String, String>()
+        map["jsonStr"] = jsonStr
+        map["shareCallBack"] = shareCallBack
+        LiveDataBus.get().with(LiveDataBusKey.WEB_SHARE).postValue(map)
+    }
+
+    @JavascriptInterface
+    fun shareToWithConfig(jsonStr: String, shareCallBack: String) {
         val map = HashMap<String, String>()
         map["jsonStr"] = jsonStr
         map["shareCallBack"] = shareCallBack

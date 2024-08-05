@@ -163,6 +163,7 @@ object MConstant {
 
     //H5活动
     private val H5_BASE_URL_ACTIVITY by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" else "https://evosh5.fuyu.club/activity/#" }
+
     //砍价域名 https://evosh5qa.fuyu.club/fuyuapp/#/pages/bargaining/sku?goodsId=19992&mallMallHaggleActivityId=41
     private val BARGAINING_URL by lazy { if (isCanQeck) if (isDebug) "https://evosh5qa.fuyu.club/fuyuapp/#/pages" else "https://evosh5.fuyu.club/fuyuapp/#/pages" else "https://evosh5.fuyu.club/fuyuapp/#/pages" }
 
@@ -265,4 +266,6 @@ object MConstant {
     var mainTabSelectPosition = 0
 
     var carpWebCallBack = ""
+
+    var shareClickType = ""
 }
