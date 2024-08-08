@@ -122,7 +122,7 @@ class ShareViewModule : ViewModel() {
                         }
                     }
                 }
-                showShareDialog(activity, data1)
+                showShareDialog(activity, data1, imgUrl)
 //                data1.withQqMessageBuilder(
 //                    SharePlamFormData.QQMessageBuilder()
 //                        .buildedrImageMessagezoom(imgUrl, bitmap)
@@ -228,7 +228,8 @@ class ShareViewModule : ViewModel() {
 
     private fun showShareDialog(
         activity: Activity,
-        data1: SharePlamFormData
+        data1: SharePlamFormData,
+        imgUrl: String? = null
     ) {
         ShareManager<IMediaObject>(activity, 0, false)
             .withPlamFormData(data1.plamFormDatas as MutableList<IMediaObject>?)
@@ -333,9 +334,11 @@ class ShareViewModule : ViewModel() {
                         toastShow("点击海报")
                     }
 
-//                    9 -> {
-//                        MTextUtil.copystr(BaseApplication.INSTANT, shareBean.targetUrl)
-//                    }
+                    9 -> {
+                        imgUrl?.let {
+                            MTextUtil.copystr(BaseApplication.INSTANT, it)
+                        }
+                    }
                 }
 //                buriedShare(shareBean, shareto)
             }

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.changanford.common.R;
+import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.sharelib.ModuleConfigureConstant;
 import com.changanford.common.sharelib.activity.QqShareActivity;
 import com.changanford.common.sharelib.base.BaseShareManager;
@@ -22,10 +23,12 @@ import com.changanford.common.sharelib.download.IShareImageDownLoad;
 import com.changanford.common.sharelib.event.RxBus;
 import com.changanford.common.sharelib.event.ShareEventMessage;
 import com.changanford.common.sharelib.event.ShareResultType;
-import com.changanford.common.sharelib.util.BitmapUtil;
 import com.changanford.common.sharelib.util.MediaType;
 import com.changanford.common.sharelib.util.ShareImageDataUtil;
 import com.changanford.common.sharelib.util.StringUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -39,14 +42,14 @@ import io.reactivex.functions.BiFunction;
  * @date 2018/3/7
  */
 
-public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
+public class QQShareManager<T extends IMediaObject> extends BaseShareManager {
 
     private final String TAG = "QQShareManager";
 
     private String imageUrl; // 图片地址链接 可以是网络地址 也可以是本地地址
     private int mediaType; // 内容类型
     private Observable mExtralBitmapObservable; // 额外图片
-    private BiFunction<Bitmap,Bitmap,Bitmap> mBitmapOpreatorFuncation; // 额外操作
+    private BiFunction<Bitmap, Bitmap, Bitmap> mBitmapOpreatorFuncation; // 额外操作
     private IShareImageDownLoad mShareImageDownLoad; // 下载模式
 
     /**
@@ -64,7 +67,7 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
      * @param bitmapOpreatorFuncation
      * @return
      */
-    public QQShareManager withExtraOpration(Observable extralBitmapObservable, BiFunction<Bitmap,Bitmap,Bitmap> bitmapOpreatorFuncation) {
+    public QQShareManager withExtraOpration(Observable extralBitmapObservable, BiFunction<Bitmap, Bitmap, Bitmap> bitmapOpreatorFuncation) {
         mExtralBitmapObservable = extralBitmapObservable;
         mBitmapOpreatorFuncation = bitmapOpreatorFuncation;
         return this;
@@ -108,11 +111,11 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
         }
         // 如果传入的是网络地址 并且不需要额外操作 并且是webpage模式 直接传入网络图片地址给qq分享
         if (bitmap == null && mExtralBitmapObservable == null && mBitmapOpreatorFuncation == null && mediaType == MediaType.MEDIA_TYPE_WEB) {
-            QqShareActivity.skipTo(false,mContext,title,content,targetUrl,imageUrl,mediaType);
+            QqShareActivity.skipTo(false, mContext, title, content, targetUrl, imageUrl, mediaType);
             return;
         }
 
-        ShareImageData shareImageData = ShareImageDataUtil.create(imageUrl,shareData.getPlamform(),shareData.getMediaType(),bitmap);
+        ShareImageData shareImageData = ShareImageDataUtil.create(imageUrl, shareData.getPlamform(), shareData.getMediaType(), bitmap);
         Observer<ShareImageData> result = new Observer<ShareImageData>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -139,10 +142,10 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
 
         if (isPoster) { // 海报模式传入额外操作
             new ContentManager<ShareImageData>(mContext).getShareContent(shareImageData, result
-                    ,mShareImageDownLoad,mExtralBitmapObservable,mBitmapOpreatorFuncation);
+                    , mShareImageDownLoad, mExtralBitmapObservable, mBitmapOpreatorFuncation);
         } else {
             new ContentManager<ShareImageData>(mContext).getShareContent(shareImageData
-                    , result,mShareImageDownLoad);
+                    , result, mShareImageDownLoad);
         }
     }
 
@@ -174,11 +177,11 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
         }
         // 如果传入的是网络地址 并且不需要额外操作 并且是webpage模式 直接传入网络图片地址给qq分享
         if (bitmap == null && mExtralBitmapObservable == null && mBitmapOpreatorFuncation == null && mediaType == MediaType.MEDIA_TYPE_WEB) {
-            QqShareActivity.skipTo(true,mContext,title,content,targetUrl,imageUrl,mediaType);
+            QqShareActivity.skipTo(true, mContext, title, content, targetUrl, imageUrl, mediaType);
             return;
         }
 
-        ShareImageData shareImageData = ShareImageDataUtil.create(imageUrl,shareData.getPlamform(),shareData.getMediaType(),bitmap);
+        ShareImageData shareImageData = ShareImageDataUtil.create(imageUrl, shareData.getPlamform(), shareData.getMediaType(), bitmap);
         Observer<ShareImageData> result = new Observer<ShareImageData>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -205,10 +208,10 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
 
         if (isPoster) { // 海报模式传入额外操作
             new ContentManager<ShareImageData>(mContext).getShareContent(shareImageData, result
-                    ,mShareImageDownLoad,mExtralBitmapObservable,mBitmapOpreatorFuncation);
+                    , mShareImageDownLoad, mExtralBitmapObservable, mBitmapOpreatorFuncation);
         } else {
             new ContentManager<ShareImageData>(mContext).getShareContent(shareImageData
-                    , result,mShareImageDownLoad);
+                    , result, mShareImageDownLoad);
         }
     }
 
@@ -223,7 +226,7 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
             //判断是否有这个权限
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 //2、申请权限: 参数二：权限的数组；参数三：请求码
-                Toast.makeText(mContext, R.string.write_peromision_miss,Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, R.string.write_peromision_miss, Toast.LENGTH_LONG).show();
                 hasePermission = false;
             } else {
                 hasePermission = true;
@@ -241,30 +244,43 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
      * @param bmp Bitmap
      */
     private void saveBitmap(Bitmap bmp) {
-        Observer result = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                showProgressDialog(false);
-            }
+//        Observer result = new Observer<String>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                showProgressDialog(false);
+//            }
+//
+//            @Override
+//            public void onNext(String picPath) {
+//                imageUrl = picPath;
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                hideProgressDialog();
+//                RxBus.getIntanceBus().post(new ShareEventMessage(ShareResultType.SHARE_FAIL));
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                hideProgressDialog(false);
+//                QqShareActivity.skipTo(false,mContext,title,content,targetUrl,imageUrl,mediaType);
+//            }
+//        };
+//        new BitmapUtil().saveBitmapAsFile(bmp,result);
+        shareBitmapToQQ(bmp, false);
+    }
 
-            @Override
-            public void onNext(String picPath) {
-                imageUrl = picPath;
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                hideProgressDialog();
-                RxBus.getIntanceBus().post(new ShareEventMessage(ShareResultType.SHARE_FAIL));
-            }
-
-            @Override
-            public void onComplete() {
-                hideProgressDialog(false);
-                QqShareActivity.skipTo(false,mContext,title,content,targetUrl,imageUrl,mediaType);
-            }
-        };
-        new BitmapUtil().saveBitmapAsFile(bmp,result);
+    public void shareBitmapToQQ(Bitmap bitmap, Boolean isZoom) {
+        try {
+            File outputFile = new File(BaseApplication.curActivity.getExternalCacheDir(), "share_image.png");
+            FileOutputStream out = new FileOutputStream(outputFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+            QqShareActivity.skipTo(isZoom, mContext, title, content, targetUrl, outputFile.getPath(), mediaType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -273,30 +289,31 @@ public class QQShareManager <T extends IMediaObject> extends BaseShareManager {
      * @param bmp Bitmap
      */
     private void saveBitmapzoom(Bitmap bmp) {
-        Observer result = new Observer<String>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                showProgressDialog(false);
-            }
-
-            @Override
-            public void onNext(String picPath) {
-                imageUrl = picPath;
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                hideProgressDialog();
-                RxBus.getIntanceBus().post(new ShareEventMessage(ShareResultType.SHARE_FAIL));
-            }
-
-            @Override
-            public void onComplete() {
-                hideProgressDialog(false);
-                QqShareActivity.skipTo(true,mContext,title,content,targetUrl,imageUrl,mediaType);
-            }
-        };
-        new BitmapUtil().saveBitmapAsFile(bmp,result);
+//        Observer result = new Observer<String>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//                showProgressDialog(false);
+//            }
+//
+//            @Override
+//            public void onNext(String picPath) {
+//                imageUrl = picPath;
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                hideProgressDialog();
+//                RxBus.getIntanceBus().post(new ShareEventMessage(ShareResultType.SHARE_FAIL));
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                hideProgressDialog(false);
+//                QqShareActivity.skipTo(true,mContext,title,content,targetUrl,imageUrl,mediaType);
+//            }
+//        };
+//        new BitmapUtil().saveBitmapAsFile(bmp,result);
+        shareBitmapToQQ(bmp, true);
     }
 
 }

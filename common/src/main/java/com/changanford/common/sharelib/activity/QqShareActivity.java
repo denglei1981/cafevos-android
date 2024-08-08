@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.changanford.common.basic.BaseApplication;
 import com.changanford.common.sharelib.ModuleConfigureConstant;
 import com.changanford.common.sharelib.event.RxBus;
 import com.changanford.common.sharelib.event.ShareEventMessage;
@@ -104,7 +105,7 @@ public class QqShareActivity extends AppCompatActivity implements IUiListener {
      * QQ的注册
      */
     private void registerToQq() {
-        mTencent = Tencent.createInstance(ModuleConfigureConstant.QQ_APPID, this);
+        mTencent = Tencent.createInstance(ModuleConfigureConstant.QQ_APPID, this, BaseApplication.INSTANT.getPackageName() + ".luckProvider");
     }
 
     @Override

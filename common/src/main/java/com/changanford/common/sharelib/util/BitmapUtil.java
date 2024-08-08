@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import com.changanford.common.basic.BaseApplication;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -188,23 +190,27 @@ public class BitmapUtil {
         Observable.create(new ObservableOnSubscribe<Object>() {
             @Override
             public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
-                File sdCardFl;
-                if (BitmapUtil.this.isHaveSDCard()) {
-                    sdCardFl = Environment.getExternalStorageDirectory();
-                } else {
-                    sdCardFl = Environment.getDataDirectory();
-                }
-                File savePicFl = new File(sdCardFl.getPath() + "/SharePicFile/");
-                if (!savePicFl.isDirectory()) {
-                    savePicFl.delete();
-                    savePicFl.mkdirs();
-                }
-                if (!savePicFl.exists()) {
-                    savePicFl.mkdirs();
-                }
-                String picPath = savePicFl.getPath() + "/pic.jpg"; // 保存的图片路径
-                BitmapUtil.this.writeBitmap(savePicFl.getPath(), "/pic.jpg", bitmap);
-                emitter.onNext(picPath);
+//                File sdCardFl;
+//                if (BitmapUtil.this.isHaveSDCard()) {
+//                    sdCardFl = Environment.getExternalStorageDirectory();
+//                } else {
+//                    sdCardFl = Environment.getDataDirectory();
+//                }
+//                File savePicFl = new File(sdCardFl.getPath() + "/SharePicFile/");
+//                if (!savePicFl.isDirectory()) {
+//                    savePicFl.delete();
+//                    savePicFl.mkdirs();
+//                }
+//                if (!savePicFl.exists()) {
+//                    savePicFl.mkdirs();
+//                }
+//                String picPath = savePicFl.getPath() + "/pic.jpg"; // 保存的图片路径
+//                BitmapUtil.this.writeBitmap(savePicFl.getPath(), "/pic.jpg", bitmap);
+                File outputFile = new File(BaseApplication.curActivity.getExternalCacheDir(), "share_image.png");
+                FileOutputStream out = new FileOutputStream(outputFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.close();
+                emitter.onNext(outputFile.getPath());
                 emitter.onComplete();
             }
         }).compose(RxSchedulersHelper.io_main())

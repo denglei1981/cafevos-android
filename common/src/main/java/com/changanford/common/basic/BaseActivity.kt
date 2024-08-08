@@ -30,7 +30,6 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
 import com.gyf.immersionbar.ImmersionBar
 import kotlinx.coroutines.Dispatchers
@@ -251,7 +250,7 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
             delay(2000)
             if (!isFinishing && !isOnResume && !isOnStop) {
                 withContext(Dispatchers.Main) {
-                    ToastUtils.reToast("${resources.getString(R.string.app_name)}App已经进入后台")
+                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
                 }
             }
         }

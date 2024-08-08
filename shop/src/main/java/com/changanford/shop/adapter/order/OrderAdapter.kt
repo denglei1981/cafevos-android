@@ -26,7 +26,6 @@ import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.SnapshotOfAttrOption
 import com.changanford.common.buried.WBuriedUtil
 import com.changanford.common.listener.OnPerformListener
-import com.changanford.common.util.JumpUtils
 import com.changanford.common.wutil.ScreenUtils
 import com.changanford.shop.R
 import com.changanford.shop.control.OrderControl
@@ -325,7 +324,7 @@ class OrderAdapter(
                             }
                         }
                     }
-                    //退款中
+                    //待发货
                     "WAIT_SYS_REGIST" -> {
                         dataBinding.apply {
                             btnCancel.visibility = View.GONE
@@ -333,26 +332,26 @@ class OrderAdapter(
                             btnInvoice.visibility = View.GONE
                             btnConfirm.visibility = View.GONE
                             dataBinding.viewN.isVisible = false
-                            composeView.isVisible = true
-                            composeView.setContent {
-                                ItemCompose(item)
-                            }
-                            btnCancel.apply {//售后详情
-                                visibility = View.VISIBLE
-                                setText(R.string.str_afterDetails)
-                                setOnClickListener {
-                                    item.apply {
-                                        //整单退
-                                        if (refundType == "ALL_ORDER") JumpUtils.instans?.jump(
-                                            124,
-                                            mallMallRefundId
-                                        )
-                                        //单SKU退
-                                        else JumpUtils.instans?.jump(126, mallMallRefundId)
-
-                                    }
-                                }
-                            }
+                            composeView.isVisible = false
+//                            composeView.setContent {
+//                                ItemCompose(item)
+//                            }
+//                            btnCancel.apply {//售后详情
+//                                visibility = View.VISIBLE
+//                                setText(R.string.str_afterDetails)
+//                                setOnClickListener {
+//                                    item.apply {
+//                                        //整单退
+//                                        if (refundType == "ALL_ORDER") JumpUtils.instans?.jump(
+//                                            124,
+//                                            mallMallRefundId
+//                                        )
+//                                        //单SKU退
+//                                        else JumpUtils.instans?.jump(126, mallMallRefundId)
+//
+//                                    }
+//                                }
+//                            }
                         }
                     }
                     //待收货->可确认收货
