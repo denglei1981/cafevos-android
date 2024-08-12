@@ -61,6 +61,7 @@ class DKRecyclerPlayerHelper(
         mController.addControlComponent(ErrorView(context))
         mController.addControlComponent(CompleteView(context))
         mController.addControlComponent(VodControlView(context))
+        mController.addControlComponent(VodControlViewBig(context))
         mVideoView.setVideoController(mController)
 
         recyclerView.addOnChildAttachStateChangeListener(object :

@@ -3,7 +3,6 @@ package com.changanford.common.web
 
 import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -101,8 +100,8 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
     private var redirectUrl = ""
     private val REQUEST_CODE_FILE_CHOOSER = 1
 
-    private var mUploadCallbackForLowApi: ValueCallback<Uri>? = null
-    private var mUploadCallbackForHighApi: ValueCallback<Array<Uri>>? = null
+    private var uploadMessage: ValueCallback<Uri>? = null
+    private var uploadMessageAboveL: ValueCallback<Array<Uri>>? = null
 
     private var setNavTitleKey: String = System.currentTimeMillis().toString()
     private var localWebNum = -1
@@ -705,50 +704,82 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
             filePathCallback: ValueCallback<Array<Uri>>?,
             fileChooserParams: FileChooserParams?
         ): Boolean {
-            mUploadCallbackForHighApi = filePathCallback
-            val intent = fileChooserParams!!.createIntent()
-            intent.addCategory(Intent.CATEGORY_OPENABLE)
-            try {
-                startActivityForResult(intent, REQUEST_CODE_FILE_CHOOSER)
-            } catch (e: ActivityNotFoundException) {
-                mUploadCallbackForHighApi = null
-                return false
-            }
-            return true
-
+//            uploadMessageAboveL = filePathCallback
+//            val intent = fileChooserParams!!.createIntent()
+//            intent.addCategory(Intent.CATEGORY_OPENABLE)
+//            try {
+//                startActivityForResult(intent, REQUEST_CODE_FILE_CHOOSER)
+//            } catch (e: ActivityNotFoundException) {
+//                uploadMessageAboveL = null
+//                return false
+//            }
+//            return true
+            uploadMessageAboveL = filePathCallback;
+            openImageChooserActivity();
+            return true;
         }
 
         override fun openFileChooser(p0: ValueCallback<Uri>?, p1: String?, p2: String?) {
-            p0?.let { openFilerChooser(it) }
+//            p0?.let { openFilerChooser(it) }
+            uploadMessage = p0;
+            openImageChooserActivity();
         }
 
     }
 
     private fun afterFileChooseGoing(resultCode: Int, data: Intent?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (mUploadCallbackForHighApi == null) {
+            if (uploadMessageAboveL == null) {
                 return
             }
-            mUploadCallbackForHighApi?.onReceiveValue(
+            uploadMessageAboveL?.onReceiveValue(
                 WebChromeClient.FileChooserParams.parseResult(
                     resultCode,
                     data
                 )
             )
-            mUploadCallbackForHighApi = null
+            uploadMessageAboveL = null
         } else {
-            if (mUploadCallbackForLowApi == null) {
+            if (uploadMessage == null) {
                 return
             }
             val result = data?.data
-            mUploadCallbackForLowApi?.onReceiveValue(result)
-            mUploadCallbackForLowApi = null
+            uploadMessage?.onReceiveValue(result)
+            uploadMessage = null
         }
     }
 
+    private fun openImageChooserActivity() {
+        val i = Intent(Intent.ACTION_GET_CONTENT)
+        i.addCategory(Intent.CATEGORY_OPENABLE)
+        i.setType("image/*")
+        startActivityForResult(Intent.createChooser(i, "Image Chooser"), REQUEST_CODE_FILE_CHOOSER)
+    }
+
+    private fun onActivityResultAboveL(requestCode: Int, resultCode: Int, intent: Intent?) {
+        if (requestCode != REQUEST_CODE_FILE_CHOOSER || uploadMessageAboveL == null) return
+        var results: Array<Uri>? = null
+        if (resultCode == RESULT_OK) {
+            if (intent != null) {
+                val dataString = intent.dataString
+                val clipData = intent.clipData
+                if (clipData != null) {
+                    results = arrayOf()
+                    for (i in 0 until clipData.itemCount) {
+                        val item = clipData.getItemAt(i)
+                        results.plus(item.uri)
+//                        results[i] = item.uri
+                    }
+                }
+                if (dataString != null) results = arrayOf(Uri.parse(dataString))
+            }
+        }
+        uploadMessageAboveL?.onReceiveValue(results)
+        uploadMessageAboveL = null
+    }
 
     private fun openFilerChooser(uploadMsg: ValueCallback<Uri>) {
-        mUploadCallbackForLowApi = uploadMsg
+        uploadMessage = uploadMsg
         startActivityForResult(
             Intent.createChooser(getFilerChooserIntent(), "File Chooser"),
             REQUEST_CODE_FILE_CHOOSER
@@ -967,10 +998,21 @@ class AgentWebActivity : BaseActivity<ActivityWebveiwBinding, AgentWebViewModle>
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_FILE_CHOOSER && (resultCode == RESULT_OK || resultCode == RESULT_CANCELED)) {
-            afterFileChooseGoing(resultCode, data)
-            return
+        if (requestCode == REQUEST_CODE_FILE_CHOOSER) {
+            if (null == uploadMessage && null == uploadMessageAboveL) return
+            val result: Uri? =
+                if (data == null || resultCode !== RESULT_OK) null else data.getData()
+            if (uploadMessageAboveL != null) {
+                onActivityResultAboveL(requestCode, resultCode, data)
+            } else if (uploadMessage != null) {
+                uploadMessage!!.onReceiveValue(result)
+                uploadMessage = null
+            }
         }
+//        if (requestCode == REQUEST_CODE_FILE_CHOOSER && (resultCode == RESULT_OK || resultCode == RESULT_CANCELED)) {
+//            afterFileChooseGoing(resultCode, data)
+//            return
+//        }
         if (resultCode == Activity.RESULT_OK) {
             val bundle = Bundle()
             bundle.putInt("index", 0)//权限
