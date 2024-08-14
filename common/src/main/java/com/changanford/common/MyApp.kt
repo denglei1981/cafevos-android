@@ -13,6 +13,7 @@ import com.changanford.common.loadsir.ErrorCallback
 import com.changanford.common.loadsir.LoadingCallback
 import com.changanford.common.loadsir.TimeoutCallback
 import com.changanford.common.manger.UserManger
+import com.changanford.common.util.HijackingPrevent
 import com.changanford.common.util.KeyboardVisibilityObserver
 import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
@@ -127,7 +128,9 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
      */
     private fun isRunInBackGround() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                HijackingPrevent.getInstance().removeNotify();
+            }
             override fun onActivityStarted(activity: Activity) {
                 mFinalCount++
                 if (mFinalCount == 1 && isRunBack) { //说明从后台回到了前台
@@ -136,9 +139,13 @@ class MyApp : BaseApplication(), CameraXConfig.Provider {
             }
 
             override fun onActivityResumed(activity: Activity) {
+                HijackingPrevent.getInstance().removeNotify();
             }
 
-            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {
+                // 延时通知
+                HijackingPrevent.getInstance().delayNotify(activity);
+            }
             override fun onActivityStopped(activity: Activity) {
                 mFinalCount--
                 //如果mFinalCount ==0，说明是前台到后台

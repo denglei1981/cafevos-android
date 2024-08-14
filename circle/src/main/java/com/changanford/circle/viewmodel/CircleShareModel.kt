@@ -11,7 +11,12 @@ import com.changanford.circle.widget.dialog.ReportDialog
 import com.changanford.common.MyApp
 import com.changanford.common.bean.CircleShareBean
 import com.changanford.common.manger.RouterManger
-import com.changanford.common.net.*
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
@@ -84,6 +89,14 @@ object CircleShareModel {
         )
         data1.withWxMomentMessageBuilder(
             SharePlamFormData.WxMomentMessageBuilder().buidWebMessage(
+                shareBean.shareUrl,
+                GlideUtils.handleImgUrl(shareBean.shareImg),
+                shareBean.shareTitle,
+                shareBean.shareDesc
+            )
+        )
+        data1.withWxMomentMessageBuilder(
+            SharePlamFormData.WxMomentMessageBuilder().buidCopyMessage(
                 shareBean.shareUrl,
                 GlideUtils.handleImgUrl(shareBean.shareImg),
                 shareBean.shareTitle,

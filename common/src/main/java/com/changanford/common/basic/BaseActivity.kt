@@ -19,7 +19,6 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.viewbinding.ViewBinding
 import com.changanford.common.R
@@ -30,12 +29,7 @@ import com.changanford.common.util.MConstant
 import com.changanford.common.util.SPUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
-import com.changanford.common.utilext.toast
 import com.gyf.immersionbar.ImmersionBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.reflect.ParameterizedType
 import java.util.Timer
 import java.util.TimerTask
@@ -246,14 +240,14 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
     override fun onPause() {
         super.onPause()
         isOnResume = false
-        lifecycleScope.launch(Dispatchers.IO) {
-            delay(2000)
-            if (!isFinishing && !isOnResume && !isOnStop) {
-                withContext(Dispatchers.Main) {
-                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
-                }
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.IO) {
+//            delay(2000)
+//            if (!isFinishing && !isOnResume && !isOnStop) {
+//                withContext(Dispatchers.Main) {
+//                    "${resources.getString(R.string.app_name)}App已经进入后台".toast()
+//                }
+//            }
+//        }
     }
 
     override fun onStop() {
@@ -300,9 +294,9 @@ abstract class BaseActivity<VB : ViewBinding, VM : ViewModel> : AppCompatActivit
                 if (!isAppOnForeground()) {
                     //由前台切换到后台
                     isForeground_b = false
-                    curActivity.lifecycleScope.launch(Dispatchers.Main) {
-                        "${curActivity.resources.getString(R.string.app_name)}App已经进入后台".toast()
-                    }
+//                    curActivity.lifecycleScope.launch(Dispatchers.Main) {
+//                        "${curActivity.resources.getString(R.string.app_name)}App已经进入后台".toast()
+//                    }
                     timer_b?.cancel()
                     timer_b = null
                     timerTask_b?.cancel()

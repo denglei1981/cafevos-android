@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.animation.Animation
 import androidx.databinding.DataBindingUtil
 import com.changanford.common.R
-import com.changanford.common.databinding.PopNewEstOneBinding
+import com.changanford.common.databinding.PopHoldCircleBinding
 import com.changanford.common.router.path.ARouterCirclePath
 import com.changanford.common.router.startARouter
 import razerdp.basepopup.BasePopupWindow
@@ -19,8 +19,8 @@ import razerdp.util.animation.TranslationConfig
 class HoldCirclePop(context: Context) :
     BasePopupWindow(context) {
 
-    val viewDataBinding: PopNewEstOneBinding? =
-        DataBindingUtil.bind(createPopupById(R.layout.pop_new_est_one))
+    val viewDataBinding: PopHoldCircleBinding? =
+        DataBindingUtil.bind(createPopupById(R.layout.pop_hold_circle))
 
     init {
         contentView = viewDataBinding?.root

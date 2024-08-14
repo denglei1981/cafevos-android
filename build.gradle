@@ -17,10 +17,13 @@ buildscript {
         //TODO
     }
     repositories {
-        gradlePluginPortal()
+        maven {
+            url "https://bintray.com/wechat-sdk-team/maven"
+        }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+        gradlePluginPortal()
         maven { url 'https://repo1.maven.org/maven2/' }//友盟
         maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}//阿里云推送
         maven {url 'https://developer.huawei.com/repo/'}//华为扫码、华为推送
@@ -45,10 +48,13 @@ allprojects {
         flatDir {
             dirs '../common/libs'
         }
-        gradlePluginPortal()
+        maven {
+            url "https://bintray.com/wechat-sdk-team/maven"
+        }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
+        gradlePluginPortal()
         maven {url 'https://developer.huawei.com/repo/'}//华为扫码
         maven { url 'https://www.jitpack.io' }
         maven { url 'https://repo1.maven.org/maven2/' }//友盟
