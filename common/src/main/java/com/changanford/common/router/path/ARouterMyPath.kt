@@ -84,6 +84,7 @@ object ARouterMyPath {
 
     const val OrderPaySuccessUI = "/my/OrderPaySuccessUI"
     const val SelectAddressActivity = "/my/SelectAddressActivity"//选择地址
+    const val JFExpireUI = "/my/JFExpireUI"
     ////////////////////  Fragment路由  /////////////////
 
     ////////////////////  其他类路由  /////////////////

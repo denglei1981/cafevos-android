@@ -48,6 +48,7 @@ import com.changanford.common.bean.HobbyBeanItem
 import com.changanford.common.bean.HotPicBean
 import com.changanford.common.bean.IndustryBeanItem
 import com.changanford.common.bean.InfoBean
+import com.changanford.common.bean.JFExpireBean
 import com.changanford.common.bean.JoinCircleCheckBean
 import com.changanford.common.bean.JumpDataBean
 import com.changanford.common.bean.ListMainBean
@@ -1668,4 +1669,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<Boolean>
+
+    /**
+     * 福币临期展示和详情接口
+     */
+    @POST("integralExpireNotice/getIntegralExpireDetails")
+    suspend fun getIntegralExpireDetails(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<JFExpireBean>
 }

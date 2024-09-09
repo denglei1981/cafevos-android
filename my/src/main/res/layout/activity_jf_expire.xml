@@ -8,6 +8,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -59,88 +60,41 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="21dp"
-                android:src="@mipmap/ic_task_jife_new"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_my_jf"
+                android:src="@mipmap/ic_expire_u_le"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_hint"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_my_jf" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_get_more"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/shape_white_24dp"
-                android:gravity="center"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:text="获取更多福币"
-                android:textColor="@color/color_16"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_title_right"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/iv_jf" />
+                app:layout_constraintTop_toTopOf="@+id/tv_hint" />
 
             <TextView
-                android:id="@+id/tv_my_jf"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_hint"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="10dp"
-                android:text="我的福币"
+                android:layout_marginEnd="20dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintLeft_toRightOf="@+id/iv_jf"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="在2024年6月27日内将有1000福币即将过期" />
 
             <TextView
-                android:id="@+id/my_jifen_num"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="10dp"
-                android:text="333"
-                android:textColor="@color/white"
-                android:textSize="26sp"
-                app:layout_constraintLeft_toLeftOf="@+id/iv_jf"
-                app:layout_constraintRight_toLeftOf="@+id/tv_get_more"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_jf" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title_right"
+                android:id="@+id/tv_filter"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="福币规则 >"
-                android:textColor="@color/white_b2"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="@+id/my_jifen_num"
-                app:layout_constraintTop_toBottomOf="@+id/my_jifen_num" />
-
-            <RelativeLayout
-                android:id="@+id/rl_expire"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_jifen_expire"
-                android:gravity="center_vertical"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_title_right"
-                app:layout_constraintRight_toRightOf="@+id/tv_get_more"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_right">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_expire_hint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:drawableStart="@mipmap/ic_jf_expire_le"
-                    android:drawableEnd="@mipmap/ic_jf_expire_ri"
-                    android:drawablePadding="10dp"
-                    android:textColor="#B1B6E0"
-                    android:textSize="12sp"
-                    tools:text="您在7天内有1000福币即将过期" />
-
-            </RelativeLayout>
+                android:layout_height="26dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_whit15_bg"
+                android:drawableStart="@mipmap/ic_expire_filter"
+                android:drawablePadding="6.5dp"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="筛选"
+                android:textColor="@color/color_16"
+                android:textSize="14sp"
+                app:layout_constraintLeft_toLeftOf="@+id/iv_jf"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hint" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

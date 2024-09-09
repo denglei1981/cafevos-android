@@ -1,6 +1,7 @@
 package com.changanford.my.ui
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -9,6 +10,7 @@ import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
 import com.changanford.common.bean.GrowUpItem
 import com.changanford.common.manger.UserManger
 import com.changanford.common.router.path.ARouterMyPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
@@ -48,6 +50,9 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
         binding.tvGetMore.setOnClickListener {
             JumpUtils.instans?.jump(16)
         }
+        binding.rlExpire.setOnClickListener {
+            startARouter(ARouterMyPath.JFExpireUI)
+        }
         binding.tvTitleRight.setOnClickListener {
             JumpUtils.instans?.jump(1, MConstant.H5_MINE_FORD_AGREEMENT)
 //            SelectDialog(
@@ -80,6 +85,8 @@ class JiFenList : BaseMineUI<UiJifenBinding, SignViewModel>() {
             } else {
                 it.extend?.let {
 //                    binding.multiple.text = "${it.multiple}倍加速"
+                    binding.rlExpire.isVisible = it.totalScore != 0
+                    binding.tvExpireHint.text = it.integralExpireMes
                     rulesDesc = "${it.rulesDesc}"
                 }
 

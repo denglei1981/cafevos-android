@@ -164,6 +164,7 @@
             android:name=".ui.SelectAddressActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Picture.Theme.Translucent" />
+        <activity android:name=".ui.JFExpireUI" />
 
     </application>
 </manifest>

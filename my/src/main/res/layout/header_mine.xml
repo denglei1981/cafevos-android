@@ -238,9 +238,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="任务中心"
-                android:drawablePadding="3dp"
                 android:drawableEnd="@mipmap/ic_mine_task_right"
+                android:drawablePadding="3dp"
+                android:text="任务中心"
                 android:textColor="@color/color_16"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -380,7 +380,28 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/rl_expire"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_my_expire"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/ll_up">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_expire_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_my_expire_le"
+                    android:drawablePadding="10dp"
+                    android:drawableEnd="@mipmap/ic_my_expire_ri"
+                    tools:text="您在7天内有1000福币即将过期"
+                    android:textColor="#DAB57B"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

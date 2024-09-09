@@ -172,6 +172,9 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
             h.llFb.setOnClickListener {
                 JumpUtils.instans?.jump(30)
             }
+            h.rlExpire.setOnClickListener {
+                startARouter(ARouterMyPath.JFExpireUI)
+            }
             h.llUp.setOnClickListener {
                 JumpUtils.instans?.jump(32)
             }
@@ -201,6 +204,8 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         headNewBinding?.let { h ->
             if (userInfoBean != null) {
                 GlideUtils.loadBD(userInfoBean.avatar, h.ivHead, R.mipmap.head_default)
+                h.rlExpire.isVisible = userInfoBean.totalScore != 0
+                h.tvExpireHint.text = userInfoBean.integralExpireMes
                 h.tvNickname.text = userInfoBean.nickname
                 h.ddPublish.setPageTitleText(userInfoBean.count.releases.toString())
                 h.ddFans.setPageTitleText(userInfoBean.count.fans.toString())
