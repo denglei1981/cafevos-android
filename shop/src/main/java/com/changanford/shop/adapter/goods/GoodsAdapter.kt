@@ -57,6 +57,10 @@ class GoodsAdapter :
             visibility = View.VISIBLE
 //            setBackgroundResource(R.drawable.shadow_b300095b_2dp)
             when (tagType) {
+                "NORMAL" -> {
+                    visibility = View.GONE
+                }
+
                 "NEW_PRODUCTS" -> {
                     setImageResource(R.mipmap.ic_shop_item_top_new)
 //                    setBackgroundResource(R.drawable.shadow_b305bad5_2dp)

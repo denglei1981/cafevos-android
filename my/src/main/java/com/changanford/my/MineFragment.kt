@@ -204,7 +204,10 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
         headNewBinding?.let { h ->
             if (userInfoBean != null) {
                 GlideUtils.loadBD(userInfoBean.avatar, h.ivHead, R.mipmap.head_default)
-                h.rlExpire.isVisible = userInfoBean.totalScore != 0
+                h.rlExpire.isVisible = false
+                userInfoBean.totalScore?.let {
+                    h.rlExpire.isVisible = it > 0
+                }
                 h.tvExpireHint.text = userInfoBean.integralExpireMes
                 h.tvNickname.text = userInfoBean.nickname
                 h.ddPublish.setPageTitleText(userInfoBean.count.releases.toString())
@@ -246,6 +249,7 @@ class MineFragment : BaseFragment<FragmentMineV2Binding, MineViewModel>(), OnRef
                 h.tvNotLogin.visibility = View.GONE
                 h.tvNextPerson.visibility = View.VISIBLE
             } else {
+                h.rlExpire.isVisible = false
                 h.tvNickname.text = ""
                 h.tvNickname.visibility = View.GONE
                 h.tvNotLogin.visibility = View.VISIBLE
