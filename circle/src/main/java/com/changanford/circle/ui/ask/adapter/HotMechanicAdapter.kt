@@ -45,7 +45,7 @@ class HotMechanicAdapter :
             it.tvUserFocus.isVisible = item.userId != MConstant.userId
 
             it.tvUserFocus.setOnClickListener {
-                val type = if (item.isFollow == 1) 0 else 1
+                val type = if (item.isFollow == 1) 2 else 1
                 followOrCancelFollow(context as AppCompatActivity, item.userId, type) {
                     item.isFollow = type
                     notifyItemChanged(holder.layoutPosition)
