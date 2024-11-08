@@ -384,6 +384,7 @@
                 android:id="@+id/rl_expire"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                tools:visibility="visible"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_my_expire"
                 android:gravity="center"

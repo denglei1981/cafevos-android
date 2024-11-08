@@ -99,7 +99,7 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginRight="14dp"
-                    android:text="上传图片"
+                    android:text="上传凭证"
                     android:textColor="@color/text_color_08"
                     android:textSize="@dimen/text_size_mid"
                     app:layout_constraintLeft_toLeftOf="parent"

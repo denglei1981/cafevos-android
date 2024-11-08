@@ -17,9 +17,6 @@ buildscript {
         //TODO
     }
     repositories {
-        maven {
-            url "https://bintray.com/wechat-sdk-team/maven"
-        }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
@@ -28,6 +25,15 @@ buildscript {
         maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}//阿里云推送
         maven {url 'https://developer.huawei.com/repo/'}//华为扫码、华为推送
         maven { url "https://jitpack.io" }//cymadapter
+        maven {
+            url "https://mirrors.tencent.com/nexus/repository/maven-public/"
+        }
+        maven {
+            url "https://mirrors.tencent.com/repository/maven/tencent_public/"
+        }
+        maven {
+            url "https://bintray.com/wechat-sdk-team/maven"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.2'
@@ -48,9 +54,6 @@ allprojects {
         flatDir {
             dirs '../common/libs'
         }
-        maven {
-            url "https://bintray.com/wechat-sdk-team/maven"
-        }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
@@ -62,6 +65,15 @@ allprojects {
         maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/'}//阿里云推送
         maven {url 'https://developer.huawei.com/repo/'}//华为扫码、华为推送
         maven { url "https://jitpack.io" }//cymadapter
+        maven {
+            url "https://mirrors.tencent.com/nexus/repository/maven-public/"
+        }
+        maven {
+            url "https://mirrors.tencent.com/repository/maven/tencent_public/"
+        }
+        maven {
+            url "https://bintray.com/wechat-sdk-team/maven"
+        }
     }
 }
 

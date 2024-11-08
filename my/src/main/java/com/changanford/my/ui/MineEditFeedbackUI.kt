@@ -267,7 +267,7 @@ class MineEditFeedbackUI : BaseMineUI<UiEditFeedbackBinding, SignViewModel>() {
      * 选择图片
      */
     fun pic() {
-        PictureUtils.openGarlly(this@MineEditFeedbackUI, 9 - datas.size, object :
+        PictureUtils.openAllGarlly(this@MineEditFeedbackUI, 9 - datas.size, object :
             OnResultCallbackListener<LocalMedia?> {
             override fun onResult(result: List<LocalMedia?>) {
                 result?.forEach {
