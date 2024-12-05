@@ -10,9 +10,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
+import com.changanford.common.util.ext.setOnFastClickListener
 import com.changanford.common.utilext.GlideUtils
-import com.changanford.common.utilext.GlideUtils.loadBD
-import com.changanford.common.utilext.load
 import com.changanford.evos.R
 import me.majiajie.pagerbottomtabstrip.internal.RoundMessageView
 import me.majiajie.pagerbottomtabstrip.item.BaseTabItem
@@ -144,5 +143,6 @@ class SpecialJsonTab @JvmOverloads constructor(
         mTitle = findViewById<View>(R.id.title) as TextView
         mMessages = findViewById<View>(R.id.messages) as RoundMessageView
         mMessage = findViewById(R.id.icon_msg)
+        mMessage.setOnFastClickListener {  }
     }
 }

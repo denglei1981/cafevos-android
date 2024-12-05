@@ -285,8 +285,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 )
                 addItem(
                     jsonItem(
-                        outNavigateBean.btFour,
-                        outNavigateBean.jsonFourth,
+                        outNavigateBean.btTwo,
+                        outNavigateBean.jsonSecond,
                         "商城",
                     )
                 )
@@ -299,8 +299,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 )
                 addItem(
                     jsonItem(
-                        outNavigateBean.btTwo,
-                        outNavigateBean.jsonSecond,
+                        outNavigateBean.btFour,
+                        outNavigateBean.jsonFourth,
                         "服务",
                     )
                 )
