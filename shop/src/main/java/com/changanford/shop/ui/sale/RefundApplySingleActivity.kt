@@ -36,6 +36,7 @@ import com.changanford.common.util.showTotalTag
 import com.changanford.common.utilext.logD
 import com.changanford.common.utilext.logE
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShowPopUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityOnlyRefundBinding
 import com.changanford.shop.ui.order.adapter.RefundOrderItemAdapter
@@ -119,7 +120,7 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
 
         val number = binding.addSubtractView.getNumber()
         val refundDescText = binding.llRefundNotes.etContent.text.toString()
-        viewModel.getSingleRefund(
+        viewModel.refundSingleFbCheck(
             orderItemBean.orderNo,
             resonCode,
             orderItemBean.mallOrderSkuId,
@@ -127,9 +128,19 @@ class RefundApplySingleActivity : BaseActivity<ActivityOnlyRefundBinding, Refund
             number.toString(),
             refundDescText,
             ossImageList
-        )
-
-
+        ) {
+            ShowPopUtils.showFBExpirePop {
+                viewModel.getSingleRefund(
+                    orderItemBean.orderNo,
+                    resonCode,
+                    orderItemBean.mallOrderSkuId,
+                    orderItemBean.singleRefundType,
+                    number.toString(),
+                    refundDescText,
+                    ossImageList
+                )
+            }
+        }
     }
 
     fun canHandle(): Boolean {

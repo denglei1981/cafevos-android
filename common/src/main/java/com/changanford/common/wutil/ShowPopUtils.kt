@@ -39,7 +39,9 @@ object ShowPopUtils {
         cancelContent: String? = null,
         sureListener: (() -> Unit?)? = null,
         cancelListener: (() -> Unit?)? = null,
-        title: String? = null
+        title: String? = null,
+        smTips: String? = null,
+        topTips: String? = null,
     ) {
         FordTipsPop(
             content,
@@ -48,7 +50,9 @@ object ShowPopUtils {
             cancelContent,
             sureListener,
             cancelListener,
-            title
+            title,
+            smTips,
+            topTips
         ).apply {
             setBackground(R.color.m_pop_bg)
             showPopupWindow()
@@ -62,6 +66,18 @@ object ShowPopUtils {
             setBackground(R.color.m_pop_bg2)
             showPopupWindow()
         }
+    }
+
+    fun showFBExpirePop(sureListener: () -> Unit) {
+        showFordTipsPop(
+            "您本次下单使用了福币支付，但存在部分福币已过期。如您仍然希望继续退款，已过期的福币将不会返还。请确认是否继续退款?",
+            "确认，继续退款",
+            true,
+            sureListener = sureListener,
+            title = "积分过期提醒",
+            smTips = "可进入“我的-福币”查看福币规则。",
+            topTips = "积分过期提醒"
+        )
     }
 
     fun showNoAddressLocationPop() {

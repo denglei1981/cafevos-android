@@ -262,6 +262,7 @@ data class ConfirmOrderBean(
     var dataList: ArrayList<GoodsDetailBean>? = null,
     var totalPayFbPrice: Int = 0,//单位福币
     var totalPayFb: Int = 0,
+    var isSSP: Boolean = false,//是否是ssp维保
 ) {
     /**
      * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
@@ -360,6 +361,7 @@ data class GoodsDetailBean(
     var salesCount: Int = 0,
     var totalStock: Int? = 0,//总库存
     val secKillInfo: SecKillInfo? = null,
+    var isSSP: Boolean = false,//是否是ssp维保
     val secondName: String = "",
     val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",

@@ -2,22 +2,24 @@ package com.changanford.shop.ui.sale.request
 
 import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.changanford.common.MyApp
 import com.changanford.common.basic.BaseViewModel
 import com.changanford.common.bean.OrderItemBean
 import com.changanford.common.bean.STSBean
-import com.changanford.common.net.*
-import com.changanford.common.util.bus.LiveDataBus
-import com.changanford.common.util.bus.LiveDataBusKey
+import com.changanford.common.net.ApiClient
+import com.changanford.common.net.NetWorkApi
+import com.changanford.common.net.body
+import com.changanford.common.net.getRandomKey
+import com.changanford.common.net.header
+import com.changanford.common.net.onFailure
+import com.changanford.common.net.onSuccess
+import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.utilext.createHashMap
 import com.changanford.common.utilext.toast
 import com.changanford.shop.api.ShopNetWorkApi
 import com.changanford.shop.bean.RefundProgressBean
 import com.changanford.shop.bean.RefundProgressMultipleBean
 import com.changanford.shop.bean.RefundStautsBean
-
-import kotlinx.coroutines.launch
 
 
 class RefundViewModel : BaseViewModel() {
@@ -30,6 +32,24 @@ class RefundViewModel : BaseViewModel() {
     var refundSingleLiveData: MutableLiveData<String> = MutableLiveData()
     val stsBean = MutableLiveData<STSBean>()
 
+    fun refundFbCheck(orderNo: String, refundReason: String, block: () -> Unit) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            body["orderNo"] = orderNo
+
+            ApiClient.createApi<ShopNetWorkApi>()
+                .refundFbCheck(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    if (it == false) {
+                        getRefund(orderNo, refundReason)
+                    } else {
+                        block.invoke()
+                    }
+                }
+
+        })
+    }
 
     fun getRefund(orderNo: String, refundReason: String) {
         // 退款
@@ -133,6 +153,41 @@ class RefundViewModel : BaseViewModel() {
                 .onFailure {
 
                 }
+        })
+    }
+
+    fun refundSingleFbCheck(
+        orderNo: String,
+        refundReason: String,
+        mallMallOrderSkuId: String,
+        refundMethod: String,
+        refundNum: String,
+        refundDescText: String = "",
+        refundDescImgs: MutableList<String>, block: () -> Unit
+    ) {
+        launch(block = {
+            val body = MyApp.mContext.createHashMap()
+            val rKey = getRandomKey()
+            body["orderNo"] = orderNo
+
+            ApiClient.createApi<ShopNetWorkApi>()
+                .refundFbCheck(body.header(rKey), body.body(rKey))
+                .onSuccess {
+                    if (it == false) {
+                        getSingleRefund(
+                            orderNo,
+                            refundReason,
+                            mallMallOrderSkuId,
+                            refundMethod,
+                            refundNum,
+                            refundDescText,
+                            refundDescImgs
+                        )
+                    } else {
+                        block.invoke()
+                    }
+                }
+
         })
     }
 
@@ -250,7 +305,7 @@ class RefundViewModel : BaseViewModel() {
             }
             ApiClient.createApi<ShopNetWorkApi>()
                 .getProgressList(body.header(rKey), body.body(rKey))
-                .onSuccess {data->
+                .onSuccess { data ->
                     data?.forEach {
                         // 组装数据
                         val list: MutableList<RefundStautsBean> = mutableListOf()

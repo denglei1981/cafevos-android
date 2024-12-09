@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:title_text="@string/str_orderConfirm" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -42,6 +42,12 @@
                     android:id="@+id/composeView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/layout_ssp"
+                    android:visibility="gone"
+                    layout="@layout/in_order_confirm_ssp"/>
+
                 <!--                订单信息-->
                 <include
                     android:id="@+id/in_orderInfo"
@@ -55,7 +61,7 @@
                     android:id="@+id/in_payWay"
                     layout="@layout/in_order_pay_way" />
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"

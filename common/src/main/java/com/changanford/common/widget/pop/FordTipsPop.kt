@@ -20,9 +20,11 @@ class FordTipsPop(
     private val bottomContent: String,
     private val isShowBottomTwo: Boolean,
     private val cancelContent: String? = null,
-    private val sureListener: (() -> Unit?)? =null,
-    private val cancelListener: (() -> Unit?)? =null,
-    private val title:String?=null
+    private val sureListener: (() -> Unit?)? = null,
+    private val cancelListener: (() -> Unit?)? = null,
+    private val title: String? = null,
+    private val smTips: String? = null,
+    private val topTips: String? = null
 ) :
     BasePopupWindow(BaseApplication.curActivity) {
 
@@ -40,10 +42,17 @@ class FordTipsPop(
             tvContent.text = content
             tvAu.text = bottomContent
             title?.let {
-                tvTips.text=it
+                tvTips.text = it
             }
             cancelContent?.let {
                 tvNoAu.text = it
+            }
+            topTips?.let {
+                tvTips.text = it
+            }
+            tvSmTips.isVisible = !smTips.isNullOrEmpty()
+            smTips?.let {
+                tvSmTips.text = smTips
             }
             tvNoAu.isVisible = isShowBottomTwo
             tvAu.setOnClickListener {

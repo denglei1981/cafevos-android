@@ -13,6 +13,7 @@
         <!-- 订单确认-->
         <activity
             android:name=".ui.order.OrderConfirmActivity"
+            android:windowSoftInputMode="stateHidden|adjustNothing"
             android:screenOrientation="portrait" />
         <!-- 确认支付-->
         <activity

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.changanford.common.util.MConstant;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.evos.BuildConfig;
@@ -61,6 +62,9 @@ public class AlipayMiniProgramCallbackActivity extends AppCompatActivity {
                 tv.setText("Scheme url="+url+"\n ------------ \n" + str );
                 if(BuildConfig.DEBUG) Log.e("PayUtils","Scheme url="+url+"\n ------------ \n" + str);
                 boolean isSuccess= errCode.equals("0000");
+                if (!isSuccess){
+                    MConstant.INSTANCE.setPayErrorCode(errCode);
+                }
                 LiveDataBus.get().with(LiveDataBusKey.ALIPAY_RESULT).postValue(isSuccess);
                 finish();
             }catch (Exception e){

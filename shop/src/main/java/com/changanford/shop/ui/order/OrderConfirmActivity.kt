@@ -58,6 +58,8 @@ import com.changanford.shop.utils.WCommonUtil.onTextChanged
 import com.changanford.shop.utils.WConstant
 import com.changanford.shop.viewmodel.OrderViewModel
 import com.faendir.rhino_android.RhinoAndroidHelper
+import com.github.gzuliyujiang.wheelpicker.DatePicker
+import com.github.gzuliyujiang.wheelpicker.entity.DateEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
@@ -121,6 +123,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
     private var isAgree: Boolean = false//是否同意协议
     private var couponsItem: CouponsItemBean? = null
     private var createOrderBean: CreateOrderBean? = null
+    private var isSSP: Boolean = false//是否ssp维保商品
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -154,6 +157,9 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         edtCustomOnTextChanged()
         formattingData(true)
         initOrderSkuItems()
+        binding.layoutSsp.tvBxDaySelect.setOnClickListener {
+            selectDay()
+        }
     }
 
     /**
@@ -188,6 +194,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 infoBean.vinCode = it.vinCode
                 infoBean.models = it.models
                 infoBean.dealerId = it.dealerId
+                infoBean.isSSP = it.isSSP
                 infoBean.dealerName = it.dealerName
             }
         }
@@ -756,6 +763,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         binding.apply {
             //维保商品不需要收货地址
             inAddress.layoutAddress.visibility = View.GONE
+            layoutSsp.root.isVisible = infoBean.isSSP
+            isSSP = infoBean.isSSP
             composeView.setContent { MaintenanceCompose() }
         }
 
@@ -770,7 +779,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         carList.add(OrderCarItem(resources.getString(R.string.str_vinCode), infoBean.vinCode ?: ""))
         carList.add(OrderCarItem(resources.getString(R.string.str_models), infoBean.models ?: ""))
         if (!infoBean.dealerId.isNullOrEmpty()) {
-            val useContent =  infoBean.dealerName
+            val useContent = infoBean.dealerName
             carList.add(
                 OrderCarItem(
                     resources.getString(R.string.str_dealName),
@@ -792,7 +801,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     .background(colorResource(R.color.color_F4))
             )
             carList.forEachWithIndex { i, orderCarItem ->
-                Row(modifier = Modifier
+                Row(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(
                             start = 20.dp,
@@ -1106,5 +1116,30 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             .setMsgColor(ContextCompat.getColor(this, R.color.color_33))
             .setNegativeButton("好的", R.color.color_01025C) { JumpUtils.instans?.jump(20, "1") }
             .show()
+    }
+
+    private var datePicker: DatePicker? = null
+
+    private fun selectDay() {
+        var bTime = "2024-01-01"
+        val bb: List<String> = bTime.split('-')
+
+        datePicker = DatePicker(this).apply {
+            wheelLayout.setDateLabel("年", "月", "日")
+            wheelLayout.setRange(DateEntity.target(1900, 1, 1), DateEntity.today())
+            if (null != bb && bb.size == 3) {
+                wheelLayout.setDefaultValue(
+                    DateEntity.target(
+                        bb[0].toInt(),
+                        bb[1].toInt(),
+                        bb[2].toInt()
+                    )
+                )
+            }
+        }
+        datePicker?.setOnDatePickedListener { year, month, day ->
+            binding.layoutSsp.tvBxDaySelect.text = "$year-$month-$day"
+        }
+        datePicker?.show()
     }
 }

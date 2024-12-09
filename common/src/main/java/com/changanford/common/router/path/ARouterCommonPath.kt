@@ -10,4 +10,5 @@ object ARouterCommonPath {
     const val FordAlbumDetailsActivity="/common/FordAlbumDetailsActivity"
     const val DocumentActivity="/common/DocumentActivity"
     const val SignatureActivity="/common/SignatureActivity"
+    const val SLAActivity="/common/SLAActivity"
 }

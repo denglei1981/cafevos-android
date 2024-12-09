@@ -268,4 +268,6 @@ object MConstant {
     var carpWebCallBack = ""
 
     var shareClickType = ""
+
+    var payErrorCode=""
 }

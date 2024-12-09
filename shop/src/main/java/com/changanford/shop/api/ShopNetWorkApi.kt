@@ -455,6 +455,15 @@ interface ShopNetWorkApi {
 
 
     /**
+     * 退款前福币验证
+     * */
+    @POST("/mall/refundFbCheck")
+    suspend fun refundFbCheck(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Boolean>
+
+    /**
      * 申请退款
      * */
     ///mall/refund

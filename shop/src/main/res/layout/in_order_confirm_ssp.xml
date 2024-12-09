@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bord_f4_t_10dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="@dimen/dp_10">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:text="您选择的维保服务类型需补充以下信息，请真实填写。经销商将在服务前验证您填写的信息。"
+            android:textColor="@color/color_E67400"
+            android:textSize="11sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bc_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="补充车辆信息"
+            android:textColor="@color/color_16"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_tips"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_x_k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="10dp"
+            android:text="*"
+            android:textColor="@color/color_cc3333"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bc_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_km_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="行驶里程"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_x_k"
+            app:layout_constraintTop_toTopOf="@+id/tv_x_k" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="km"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_km_tips" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/bg_white_8"
+            android:hint="请填写公里数"
+            android:inputType="number"
+            android:gravity="right"
+            android:maxLength="12"
+            android:textColor="@color/color_d916"
+            android:textColorHint="@color/color_4d16"
+            android:textSize="14sp"
+            app:layout_constraintRight_toLeftOf="@+id/tv_km"
+            app:layout_constraintTop_toTopOf="@+id/tv_km" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_F4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_km_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="补充保险信息"
+            android:textColor="@color/color_16"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/v_line" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_day_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="10dp"
+            android:text="*"
+            android:textColor="@color/color_cc3333"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bx_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="商业险生效日期"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_bx_day_tips"
+            app:layout_constraintTop_toTopOf="@+id/tv_bx_day_tips" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_day_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:drawableEnd="@mipmap/right_99"
+            android:drawablePadding="@dimen/dp_5"
+            android:text="请选择"
+            android:textColor="@color/color_4d16"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_bx_day" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_num_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="商业险保单号"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_bx_day"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bx_day" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_bx_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_white_8"
+            android:gravity="right"
+            android:hint="请填写保单号"
+            android:inputType="text"
+            android:textColor="@color/color_d916"
+            android:textColorHint="@color/color_4d16"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bx_num_tips"
+            app:layout_constraintLeft_toRightOf="@+id/tv_bx_num_tips"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_bx_cp_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="商业险承保公司"
+            android:textColor="@color/color_d916"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_bx_day"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bx_num_tips" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_cp_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_white_8"
+            android:gravity="right"
+            android:hint="请填写保险公司名称"
+            android:inputType="text"
+            android:textColor="@color/color_d916"
+            android:textColorHint="@color/color_4d16"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bx_cp_tips"
+            app:layout_constraintLeft_toRightOf="@+id/tv_bx_cp_tips"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

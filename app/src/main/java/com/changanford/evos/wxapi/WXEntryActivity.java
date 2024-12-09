@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.fastjson.JSONObject;
 import com.changanford.common.sharelib.event.ShareResultType;
 import com.changanford.common.util.ConfigUtils;
+import com.changanford.common.util.MConstant;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.common.util.toast.ToastUtils;
@@ -95,7 +96,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     public void onResp(BaseResp resp) {
         int errorCode = resp.errCode;
         int type = resp.getType();
-        if(BuildConfig.DEBUG)Log.e("wenke","errorCode:"+errorCode+">>>type:"+type);
+        if (BuildConfig.DEBUG) Log.e("wenke", "errorCode:" + errorCode + ">>>type:" + type);
         switch (type) {
             case RETURN_MSG_TYPE_LOGIN:
                 switch (errorCode) {
@@ -146,21 +147,22 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             case ConstantsAPI.COMMAND_LAUNCH_WX_MINIPROGRAM://小程序
                 WXLaunchMiniProgram.Resp launchMiniProResp = (WXLaunchMiniProgram.Resp) resp;
                 String extraData = launchMiniProResp.extMsg;
-                if(BuildConfig.DEBUG){
-                     //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
-                    Log.d("WXEntryActivity","onResp   ---   " + extraData);
+                if (BuildConfig.DEBUG) {
+                    //对应小程序组件 <button open-type="launchApp"> 中的 app-parameter 属性
+                    Log.d("WXEntryActivity", "onResp   ---   " + extraData);
                     String msg = "onResp   ---   errStr：" + resp.errStr + " --- errCode： " + resp.errCode + " --- transaction： "
                             + resp.transaction + " --- openId：" + resp.openId + " --- extMsg：" + launchMiniProResp.extMsg;
-                    Log.d("WXEntryActivity",msg);
+                    Log.d("WXEntryActivity", msg);
                 }
-                if(extraData.startsWith("{")){
-                    JSONObject json=JSONObject.parseObject(extraData);
-                    String errCode=json.getString("errCode");
-                    if("0000".equals(errCode)){
+                if (extraData.startsWith("{")) {
+                    JSONObject json = JSONObject.parseObject(extraData);
+                    String errCode = json.getString("errCode");
+                    if ("0000".equals(errCode)) {
                         LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(0);
-                    }else if("1000".equals(errCode)){
+                    } else if ("1000".equals(errCode)) {
                         LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(2);
-                    }else {
+                    } else {
+                        MConstant.INSTANCE.setPayErrorCode(errCode);
                         LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(1);
                     }
                 }

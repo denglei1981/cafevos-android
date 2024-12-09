@@ -17,6 +17,7 @@ import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShowPopUtils
 import com.changanford.shop.R
 import com.changanford.shop.databinding.ActivityRefundNoShippedBinding
 import com.changanford.shop.ui.sale.request.RefundViewModel
@@ -59,9 +60,12 @@ class RefundNotShippedActivity : BaseActivity<ActivityRefundNoShippedBinding, Re
         binding.tvHandle.setOnClickListener {
             if (!DoubleUtils.isFastDoubleClick() && canRefund()) {
                 refundBean?.let {
-                    viewModel.getRefund(it.orderNo, backEnumBean!!.code)
+                    viewModel.refundFbCheck(it.orderNo, backEnumBean!!.code) {
+                        ShowPopUtils.showFBExpirePop {
+                            viewModel.getRefund(it.orderNo, backEnumBean!!.code)
+                        }
+                    }
                 }
-
             }
         }
     }

@@ -184,7 +184,7 @@
     <string name="str_bargainingFavorable">砍价优惠</string>
     <string name="str_models">车型</string>
     <string name="str_vinCode">VIN码</string>
-    <string name="str_dealName">经销商</string>
+    <string name="str_dealName">推荐经销商</string>
     <string name="str_shareFailure">分享失败</string>
     <string name="str_comprehensiveRanking">综合排序</string>
     <string name="str_sales">销量</string>

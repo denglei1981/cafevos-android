@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
@@ -347,6 +348,11 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 null,
                 null
             )
+            if (!isPaySuccessful) {
+                tvErrorCode.isVisible = MConstant.payErrorCode.isNotEmpty()
+                tvErrorCode.text = "错误代码: ${MConstant.payErrorCode}"
+                MConstant.payErrorCode = ""
+            }
         }
         binding.btnSubmit.visibility = View.VISIBLE
         if (isPaySuccessful) {
@@ -606,7 +612,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                 ) {
                     Button(
                         onClick = {
-                            if (!FastClickUtils.isFastClick()){
+                            if (!FastClickUtils.isFastClick()) {
                                 if (isFromOrder) {
                                     payRmb?.let {
                                         viewModel.rmbPayBatch(

@@ -51,6 +51,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center"
+                android:textSize="14sp"
                 android:textColor="@color/color_9916"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -58,20 +59,35 @@
                 tools:text="只有探险者、新蒙迪欧车主才能加圈，请认证车主" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_sm_tips"
+                android:layout_width="0dp"
+                android:textSize="10sp"
+                android:textColor="@color/color_00095b"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                tools:text="可进入“我的-福币”查看福币规则。"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_content"
+                app:layout_constraintLeft_toLeftOf="@id/tv_content"
+                app:layout_constraintRight_toRightOf="@+id/tv_content"
+                android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_au"
                 android:layout_width="0dp"
                 android:layout_height="39dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="7dp"
                 android:gravity="center"
                 android:text="认证车主"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:textColor="@color/white"
                 android:textSize="16sp"
+                app:layout_goneMarginTop="24dp"
                 android:background="@drawable/bg_1700f4_18"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_content" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_sm_tips" />
 
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -39,5 +39,15 @@
             android:textColor="@color/color_9916"
             android:textSize="@dimen/sp_14"
             tools:text="asdsadads" />
+
+        <com.changanford.shop.view.TypefaceTextView
+            android:id="@+id/tv_error_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/color_9916"
+            android:textSize="@dimen/sp_14"
+            tools:text="asdsadads" />
     </LinearLayout>
 </layout>

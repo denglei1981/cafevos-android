@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.changanford.common.util.ConfigUtils;
+import com.changanford.common.util.MConstant;
 import com.changanford.common.util.bus.LiveDataBus;
 import com.changanford.common.util.bus.LiveDataBusKey;
 import com.changanford.evos.BuildConfig;
@@ -58,6 +59,7 @@ public class WXPayEntryActivity extends AppCompatActivity implements IWXAPIEvent
 //                EventScreen eventScreen = new EventScreen(Constant.WXPAYSUCCESS, "true");
 //                EventUtils.getDefault().forward(eventScreen);
             } else if (resp.errCode == -1) {
+                MConstant.INSTANCE.setPayErrorCode(String.valueOf(resp.errCode));
                 LiveDataBus.get().with(LiveDataBusKey.WXPAY_RESULT).postValue(1);
 //                EventScreen eventScreen = new EventScreen(Constant.WXPAYSUCCESS, "false");
 //                EventUtils.getDefault().forward(eventScreen);

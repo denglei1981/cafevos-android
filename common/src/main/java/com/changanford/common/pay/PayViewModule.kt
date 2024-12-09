@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.alipay.sdk.app.PayTask
 import com.changanford.common.util.AppUtils
 import com.changanford.common.util.ConfigUtils
+import com.changanford.common.util.MConstant.payErrorCode
 import com.changanford.common.util.bus.LiveDataBus
 import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.utilext.toastShow
@@ -119,6 +120,7 @@ open class PayViewModule : ViewModel() {
         } else {
             // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
             //TODO 回调失败
+            payErrorCode = resultStatus
             LiveDataBus.get().with(LiveDataBusKey.ALIPAY_RESULT).postValue(false)
 //            if (mWxCallBackEventpay != null) {
 //                mAgentWebX5.getJsEntraceAccess()

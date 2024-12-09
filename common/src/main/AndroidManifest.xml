@@ -204,6 +204,9 @@
         <activity
             android:name=".ui.activity.SignatureActivity"
             android:theme="@style/Base.Theme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.SLAActivity"
+            android:theme="@style/Base.Theme.NoActionBar" />
     </application>
 
 </manifest>
