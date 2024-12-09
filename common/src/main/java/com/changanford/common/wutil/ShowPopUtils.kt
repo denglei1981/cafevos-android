@@ -4,6 +4,7 @@ import com.changanford.common.R
 import com.changanford.common.widget.pop.FordPaiCirclePop
 import com.changanford.common.widget.pop.FordTipsPop
 import com.changanford.common.widget.pop.JoinCircleAuPop
+import com.changanford.common.widget.pop.LoadingIosPop
 import com.qw.soul.permission.SoulPermission
 
 /**
@@ -54,7 +55,16 @@ object ShowPopUtils {
         }
     }
 
-    fun showNoAddressLocationPop(){
+    fun showIosPopLoading(): LoadingIosPop {
+        return LoadingIosPop().apply {
+            setOutSideDismiss(false)
+            setBackPressEnable(false)
+            setBackground(R.color.m_pop_bg2)
+            showPopupWindow()
+        }
+    }
+
+    fun showNoAddressLocationPop() {
         showFordTipsPop(
             "您已禁止了定位权限，请到设置中心去打开",
             "确认",
@@ -63,6 +73,7 @@ object ShowPopUtils {
             sureListener = {
                 SoulPermission.getInstance().goApplicationSettings()
             },
-            title="提示")
+            title = "提示"
+        )
     }
 }

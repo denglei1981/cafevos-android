@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/dp_71"
+        android:layout_marginEnd="@dimen/dp_71"
+        android:background="@drawable/shape_black_trans_12"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_loading"
+            android:layout_width="30dp"
+            android:scaleType="center"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="30dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:text="正在验证您的车辆信息..."
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="25dp"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</layout>

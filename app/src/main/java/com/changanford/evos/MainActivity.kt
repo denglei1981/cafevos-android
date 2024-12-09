@@ -28,7 +28,9 @@ import com.changanford.common.bean.GioPreBean
 import com.changanford.common.buried.BuriedUtil
 import com.changanford.common.constant.HawkKey
 import com.changanford.common.manger.UserManger
+import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.path.ARouterHomePath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.UpdateAlertDialog
 import com.changanford.common.ui.dialog.UpdatingAlertDialog
 import com.changanford.common.util.APKDownload
@@ -139,6 +141,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         })
         AssNineGridView.setImageLoader(GlideImageLoader())
+        startARouter(ARouterCommonPath.SignatureActivity)
     }
 
     private var gioPreBean = GioPreBean()
