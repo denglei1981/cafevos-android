@@ -234,6 +234,8 @@ object MConstant {
 
     //服务地址
     val TAB_SERVICE_ADDRESS = "${H5_BASE_URL_CSCIR2}fuyuapp/#/pages/main/views/service/Service"
+    //维保服务协议
+    val SLA_RULE_URL = "${H5_BASE_URL_CSCIR2}fuyuapp/#/pages/mallSec/views/serviceAgreementRichText/serviceAgreementRichText"
 
     var conQaUjId = ""
 

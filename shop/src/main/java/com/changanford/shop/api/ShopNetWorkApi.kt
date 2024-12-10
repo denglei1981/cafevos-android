@@ -379,6 +379,15 @@ interface ShopNetWorkApi {
     ): CommonResponse<CreateOrderBean>
 
     /**
+     * 维保商品ESB验证
+     * */
+    @POST("/mall/esbCheck")
+    suspend fun esbCheck(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
+
+    /**
      *  购物车详情
      * */
     @POST("/mall/userSkuIndex")

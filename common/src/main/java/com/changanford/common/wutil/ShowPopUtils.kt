@@ -41,7 +41,6 @@ object ShowPopUtils {
         cancelListener: (() -> Unit?)? = null,
         title: String? = null,
         smTips: String? = null,
-        topTips: String? = null,
     ) {
         FordTipsPop(
             content,
@@ -52,7 +51,6 @@ object ShowPopUtils {
             cancelListener,
             title,
             smTips,
-            topTips
         ).apply {
             setBackground(R.color.m_pop_bg)
             showPopupWindow()
@@ -76,7 +74,15 @@ object ShowPopUtils {
             sureListener = sureListener,
             title = "积分过期提醒",
             smTips = "可进入“我的-福币”查看福币规则。",
-            topTips = "积分过期提醒"
+        )
+    }
+
+    fun showESBNOPop(msg:String) {
+        showFordTipsPop(
+            msg,
+            "关闭",
+            false,
+            title = "您的爱车\n不符合本商品购买件!",
         )
     }
 

@@ -1,6 +1,7 @@
 package com.changanford.shop.ui.order
 
 import android.annotation.SuppressLint
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.compose.foundation.background
@@ -33,7 +34,9 @@ import com.changanford.common.bean.CouponsItemBean
 import com.changanford.common.bean.CreateOrderBean
 import com.changanford.common.bean.GoodsDetailBean
 import com.changanford.common.bean.OrderConfirmSkuItems
+import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.path.ARouterShopPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.AlertDialog
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -266,7 +269,13 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             isClickSubmit = false
             productOrderCreate(it.orderNo)
             orderCreate(it.orderNo)
-            PayConfirmActivity.start(it)
+            if (isSSP) {
+                val bundle = Bundle()
+                bundle.putParcelable("orderInfoBean", it)
+                startARouter(ARouterCommonPath.SLAActivity, bundle, true)
+            } else {
+                PayConfirmActivity.start(it)
+            }
             LiveDataBus.get().with(LiveDataBusKey.SHOP_CREATE_ORDER_BACK, String::class.java)
                 .postValue("$orderConfirmType")
             this.finish()
@@ -669,7 +678,31 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
     fun onClick(v: View) {
         when (v.id) {
             //提交订单
-            R.id.btn_submit -> submitOrder()
+            R.id.btn_submit -> {
+                if (!isSSP) {
+                    submitOrder()
+                } else {
+                    val vinMileage = binding.layoutSsp.etKm.text.toString()
+                    val insurabceEffDate = binding.layoutSsp.tvBxDaySelect.text.toString()
+                    val insurabceBillNo = binding.layoutSsp.etBxNum.text.toString()
+                    val insurationName = binding.layoutSsp.etCpName.text.toString()
+                    if (vinMileage.isEmpty() || insurabceEffDate == "请选择") {
+                        "请完善补充信息".toast()
+                        return
+                    }
+                    viewModel.esbCheck(
+                        infoBean.dealerId,
+                        insurabceEffDate,
+                        infoBean.dataList?.get(0)?.skuId,
+                        infoBean.vinCode,
+                        vinMileage,
+                        insurabceBillNo,
+                        insurationName
+                    ) {
+                        submitOrder()
+                    }
+                }
+            }
             //选择地址
             R.id.in_address -> JumpUtils.instans?.jump(20, "1")
             //服务协议
@@ -726,9 +759,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 payBfb = createOrderBean?.payBfb,
                 dealerId = infoBean.dealerId
             )
-//            dataBean.apply {
-//                viewModel.orderCreate(skuId,addressId,spuPageType,buyNum,consumerMsg,mallMallSkuSpuSeckillRangeId,mallMallHaggleUserGoodsId,vinCode = vinCode,mallMallWbVinSpuId=mallMallWbVinSpuId)
-//            }
+
         }
         GlobalScope.launch {
             delay(3000L)
@@ -1120,14 +1151,15 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     private var datePicker: DatePicker? = null
 
+    @SuppressLint("SetTextI18n")
     private fun selectDay() {
-        var bTime = "2024-01-01"
+        val bTime = "2023-01-01"
         val bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
             wheelLayout.setDateLabel("年", "月", "日")
-            wheelLayout.setRange(DateEntity.target(1900, 1, 1), DateEntity.today())
-            if (null != bb && bb.size == 3) {
+            wheelLayout.setRange(DateEntity.target(2023, 1, 1), DateEntity.target(2050, 1, 1))
+            if (bb.size == 3) {
                 wheelLayout.setDefaultValue(
                     DateEntity.target(
                         bb[0].toInt(),

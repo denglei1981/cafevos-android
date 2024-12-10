@@ -3,6 +3,7 @@ package com.changanford.shop.control
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -12,6 +13,8 @@ import com.changanford.common.bean.OrderRefundItemBean
 import com.changanford.common.bean.OrderSkuItem
 import com.changanford.common.bean.RefundBean
 import com.changanford.common.listener.OnPerformListener
+import com.changanford.common.router.path.ARouterCommonPath
+import com.changanford.common.router.startARouter
 import com.changanford.common.util.ConfirmTwoBtnPop
 import com.changanford.common.util.JumpUtils
 import com.changanford.common.util.MConstant
@@ -223,7 +226,13 @@ class OrderControl(val context: Context, val viewModel: OrderViewModel?) {
      * */
     fun toPay(item: OrderItemBean) {
 //        PayConfirmActivity.start(Gson().toJson(OrderInfoBean(item.orderNo,item.fbCost)))
-        PayConfirmActivity.start(item.orderNo)
+        if (item.busSource == "WB" && item.servicePack == 0) {//维保商品去签名
+            val bundle = Bundle()
+            bundle.putString("orderNo", item.orderNo)
+            startARouter(ARouterCommonPath.SLAActivity, bundle)
+        } else {
+            PayConfirmActivity.start(item.orderNo)
+        }
     }
 
     /**

@@ -24,7 +24,6 @@ class FordTipsPop(
     private val cancelListener: (() -> Unit?)? = null,
     private val title: String? = null,
     private val smTips: String? = null,
-    private val topTips: String? = null
 ) :
     BasePopupWindow(BaseApplication.curActivity) {
 
@@ -46,9 +45,6 @@ class FordTipsPop(
             }
             cancelContent?.let {
                 tvNoAu.text = it
-            }
-            topTips?.let {
-                tvTips.text = it
             }
             tvSmTips.isVisible = !smTips.isNullOrEmpty()
             smTips?.let {

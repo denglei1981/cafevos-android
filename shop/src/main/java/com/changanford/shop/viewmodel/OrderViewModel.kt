@@ -15,6 +15,7 @@ import com.changanford.common.util.bus.LiveDataBusKey
 import com.changanford.common.util.room.UserDatabase
 import com.changanford.common.util.toast.ToastUtils
 import com.changanford.common.utilext.toast
+import com.changanford.common.wutil.ShowPopUtils
 import com.changanford.shop.R
 import com.changanford.shop.base.BaseViewModel
 import com.changanford.shop.base.ResponseBean
@@ -245,6 +246,49 @@ class OrderViewModel : BaseViewModel() {
             }.onSuccess {
                 formattingCouponsData(it)
 //                createOrderBean.postValue(it)
+            }
+        }
+    }
+
+    fun esbCheck(
+        dealerId: String?,
+        insurabceEffDate: String,
+        skuId: String?,
+        vin: String?,
+        vinMileage: String,
+        insurabceBillNo: String?,
+        insurationName: String?,
+        block: () -> Unit
+    ) {
+        val pop = ShowPopUtils.showIosPopLoading()
+        viewModelScope.launch {
+            fetchRequest(false) {
+                body.clear()
+                body["dealerId"] = dealerId.toString()
+                body["skuId"] = skuId.toString()
+                body["vin"] = vin.toString()
+                body["vinMileage"] = vinMileage //合同注册里程
+                body["insurabceEffDate"] = insurabceEffDate //车险商业险生效日期
+                insurabceBillNo?.let {
+                    //商业车险保单号
+                    body["insurabceBillNo"] = it
+                }
+                insurationName?.let {
+                    //商业车险承保公司
+                    body["insurationName"] = it
+                }
+                val randomKey = getRandomKey()
+                shopApiService.esbCheck(body.header(randomKey), body.body(randomKey))
+            }.onWithAllSuccess {
+                pop.dismiss()
+                if (it.code == 0) {
+                    block.invoke()
+                } else {
+                    ShowPopUtils.showESBNOPop("原因: ${it.msg}")
+                }
+            }.onWithMsgFailure {
+                pop.dismiss()
+                ShowPopUtils.showESBNOPop("原因: ${it.toString()}")
             }
         }
     }

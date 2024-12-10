@@ -141,6 +141,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
         })
         AssNineGridView.setImageLoader(GlideImageLoader())
+        startARouter(ARouterCommonPath.SLAActivity)
     }
 
     private var gioPreBean = GioPreBean()

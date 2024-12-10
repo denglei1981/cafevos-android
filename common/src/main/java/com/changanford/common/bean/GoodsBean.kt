@@ -664,6 +664,7 @@ data class OrderItemBean(
     val searchValue: String = "",
     val seckill: String = "",//是否秒杀
     val seckillFb: Int = 0,
+    val servicePack: Int = 0,
     val skuCode: String = "",
     var skuImg: String? = "",
     val snapshotOfAttrOption: String = "",

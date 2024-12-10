@@ -1678,4 +1678,13 @@ interface NetWorkApi {
         @HeaderMap headMap: Map<String, String>,
         @Body requestBody: RequestBody
     ): CommonResponse<JFExpireBean>
+
+    /**
+     * 维保订单签字
+     */
+    @POST("/mall/wb/addOrUpdateWbOrderSign")
+    suspend fun addOrUpdateWbOrderSign(
+        @HeaderMap headMap: Map<String, String>,
+        @Body requestBody: RequestBody
+    ): CommonResponse<Any>
 }

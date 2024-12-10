@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="温馨提示"
+                android:gravity="center"
                 android:textColor="@color/color_16"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
