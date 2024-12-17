@@ -1,7 +1,6 @@
 package com.changanford.common.ui.activity
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.changanford.common.basic.BaseActivity
 import com.changanford.common.bean.OrderInfoBean
@@ -102,18 +101,9 @@ class SLAActivity : BaseActivity<ActivitySlaBinding, SLAAViewModel>() {
     }
 
     private fun getDataFromWebPage() {
-
-        val jsCode = "javascript:\$getPageData();"
-        binding.webView.evaluateJavascript("javascript:getPageData();") { result ->
-            // Handle the result here
-            Log.e("asdasd", "获取的数据: $result")
+        binding.webView.evaluateJavascript("javascript:\$getPageData();") { result ->
+            content = result
         }
-//        binding.webView.evaluateJavascript(jsCode) { result ->
-//            // 处理返回的结果
-//            // result 是从网页中获取的数据
-//            // 例如，您可以将其转换为字符串并显示
-//            Log.e("asdasd", "获取的数据: $result")
-//        }
     }
 
     override fun initData() {

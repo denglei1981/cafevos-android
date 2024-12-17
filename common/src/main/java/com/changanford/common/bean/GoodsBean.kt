@@ -262,7 +262,7 @@ data class ConfirmOrderBean(
     var dataList: ArrayList<GoodsDetailBean>? = null,
     var totalPayFbPrice: Int = 0,//单位福币
     var totalPayFb: Int = 0,
-    var isSSP: Boolean = false,//是否是ssp维保
+    var wbType: String = "",//是否是ssp维保
 ) {
     /**
      * 获取福币总支付价格 总共支付 (商品金额+运费-优惠福币)
@@ -273,6 +273,14 @@ data class ConfirmOrderBean(
         val multiple = if (isFb) 1 else 100
         totalPayFbPrice = WCommonUtil.getHeatNumUP(
             "${(totalFb ?: 0) + ((freightPrice ?: "0").toFloat() * 100) - (couponsFb.toFloat() * multiple)}",
+            0
+        ).toInt()
+        return if (totalPayFbPrice > 0) totalPayFbPrice else 0
+    }
+
+    fun getAllFbPrice(): Int {
+        totalPayFbPrice = WCommonUtil.getHeatNumUP(
+            "${(totalFb ?: 0) + ((freightPrice ?: "0").toFloat() * 100)}",
             0
         ).toInt()
         return if (totalPayFbPrice > 0) totalPayFbPrice else 0
@@ -361,7 +369,7 @@ data class GoodsDetailBean(
     var salesCount: Int = 0,
     var totalStock: Int? = 0,//总库存
     val secKillInfo: SecKillInfo? = null,
-    var isSSP: Boolean = false,//是否是ssp维保
+    var wbType: String = "",//是否是ssp维保
     val secondName: String = "",
     val shareBeanVO: TaskShareBean? = null,
     val skuCodeRule: String = "",

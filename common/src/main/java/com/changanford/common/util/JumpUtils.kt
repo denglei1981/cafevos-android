@@ -28,6 +28,7 @@ import com.changanford.common.net.header
 import com.changanford.common.net.onSuccess
 import com.changanford.common.net.onWithMsgFailure
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.path.ARouterHomePath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.path.ARouterShopPath
@@ -991,6 +992,11 @@ class JumpUtils {
 
                     }
                 }
+            }
+
+            146 -> {
+                bundle.putString("orderNo", value)
+                startARouter(ARouterCommonPath.SLAActivity, bundle,true)
             }
 
             10000 -> {

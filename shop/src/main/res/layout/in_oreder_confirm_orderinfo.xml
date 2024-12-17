@@ -109,6 +109,20 @@
             app:layout_constraintTop_toTopOf="@id/tv_coupons"
             app:start_txt="@string/str_subtractRmb" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_coupons_tips"
+            android:layout_width="0dp"
+            android:layout_marginTop="17dp"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textSize="11sp"
+            android:textColor="@color/color_E67400"
+            tools:text="本次订单每件商品需支付 0.01元，系统会自动从您的优惠券中扣除，以符合订单支付规则。"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_coupons"
+            app:layout_constraintRight_toRightOf="@+id/tv_coupons_value"
+            app:layout_constraintTop_toBottomOf="@+id/tv_coupons"
+            android:layout_height="wrap_content" />
+
         <com.changanford.shop.view.TypefaceTextView
             android:id="@+id/tv_bargaining"
             android:layout_width="wrap_content"
@@ -119,7 +133,7 @@
             android:textSize="@dimen/sp_14"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_coupons"
+            app:layout_constraintTop_toBottomOf="@id/tv_coupons_tips"
             tools:visibility="visible" />
 
         <com.changanford.shop.view.TypefaceTextView
@@ -138,8 +152,8 @@
             android:id="@+id/view_divider"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"
-            android:visibility="invisible"
             android:background="@color/color_ED"
+            android:visibility="invisible"
             app:layout_constraintTop_toBottomOf="@id/tv_bargaining" />
 
         <com.changanford.shop.view.TypefaceTextView
@@ -149,9 +163,9 @@
             android:text="合计"
             android:textColor="@color/color_d916"
             android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_total"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_total"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_total"
             tools:visibility="visible" />
 
         <com.changanford.shop.view.TypefaceTextView

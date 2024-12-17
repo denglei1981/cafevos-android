@@ -27,6 +27,7 @@ import com.changanford.common.listener.OnDownBitmapListener
 import com.changanford.common.net.*
 import com.changanford.common.router.path.ARouterCarControlPath
 import com.changanford.common.router.path.ARouterCirclePath
+import com.changanford.common.router.path.ARouterCommonPath
 import com.changanford.common.router.path.ARouterMyPath
 import com.changanford.common.router.startARouter
 import com.changanford.common.ui.dialog.SelectPostDialog
@@ -981,7 +982,7 @@ class AgentWebInterface(
 
         }
         val success = {
-            MConstant.carpWebCallBack=callback
+            MConstant.carpWebCallBack = callback
             val file = saveImage(webView.context, img)
             activity?.let {
                 PictureUtil.startUCrop(
@@ -1060,5 +1061,17 @@ class AgentWebInterface(
     @JavascriptInterface
     fun getAccessCode(clientId: String, redirectUrl: String, callback: String) {
         activity?.getAccessCode(clientId, redirectUrl, callback)
+    }
+
+    /**
+     * 跳转到服务确认页面
+     */
+    @JavascriptInterface
+    fun jumpSLA(orderNo: String) {
+        webView.post {
+            val bundle = Bundle()
+            bundle.putString("orderNo", orderNo)
+            startARouter(ARouterCommonPath.SLAActivity, bundle)
+        }
     }
 }

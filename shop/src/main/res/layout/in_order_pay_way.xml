@@ -105,6 +105,7 @@
             android:button="@null"
             android:gravity="center"
             android:minWidth="@dimen/dp_140"
+            app:layout_goneMarginTop="@dimen/dp_64"
             android:onClick="onClick"
             android:paddingStart="@dimen/dp_24"
             android:paddingEnd="@dimen/dp_24"

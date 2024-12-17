@@ -19,6 +19,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.changanford.common.bean.PayShowBean
 import com.changanford.common.wutil.WCommonUtil.getHeatNum
+import com.changanford.common.wutil.WCommonUtil.getHeatNumUP
 import com.changanford.common.wutil.WCommonUtil.getRoundedNum
 import java.math.BigDecimal
 
@@ -121,10 +122,10 @@ fun showTotalTag(
                 }
             } else {
                 if (nuwNum == totalNum) {
-                    "$starStr[icon] ${item.payFb}+￥${item.payRmb}"
+                    "$starStr[icon] ${item.payFb}+￥${getHeatNumUP(item.payRmb,2)}"
                 } else {
-                    "$starStr[icon] ${getHeatNum("${onePayFb * nuwNum}", 0)}+￥${
-                        getHeatNum("${onePayRbm * nuwNum}", 2)
+                    "$starStr[icon] ${getHeatNum("${(getHeatNum(onePayFb.toString())).toInt() * nuwNum}", 0)}+￥${
+                        getHeatNumUP("${onePayRbm * nuwNum}", 2)
                     }"
                 }
             }
