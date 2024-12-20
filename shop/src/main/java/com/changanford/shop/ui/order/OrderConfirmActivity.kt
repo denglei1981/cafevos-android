@@ -3,7 +3,6 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -72,6 +71,8 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.collections.forEachWithIndex
 import org.mozilla.javascript.Scriptable
 import org.mozilla.javascript.Undefined
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 /**
  * @Author : wenke
@@ -128,6 +129,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
     private var couponsItem: CouponsItemBean? = null
     private var createOrderBean: CreateOrderBean? = null
     private var mWbType: String = ""//是否ssp维保商品
+    private var isWbShop: Boolean = false
     override fun initView() {
         AndroidBug5497Workaround.assistActivity(this)
         binding.topBar.setActivity(this)
@@ -491,7 +493,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
      * */
     @SuppressLint("SetTextI18n")
     private fun bindCoupon(itemCoupon: CouponsItemBean? = null) {
-        discountMin=0L
+        discountMin = 0L
         couponsItem = itemCoupon
         var couponsAmount = "0"//福币
         binding.inOrderInfo.tvCouponsValue.apply {
@@ -535,7 +537,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         var minFb = 0
         if (totalPayFb != 0 || isMixPayRegular()) {
             minFb = countMinFb(itemCoupon)
-            binding.inOrderInfo.tvCouponsTips.isVisible = isMixPayRegular() && itemCoupon != null
+            binding.inOrderInfo.tvCouponsTips.isVisible = isMixPayRegular() && discountMin != 0L
             if (discountMin != 0L) {
                 couponsAmount = "${itemCoupon?.discountsFb?.minus(discountMin)}"
             }
@@ -552,15 +554,17 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     )
                 }元，系统会自动从您的优惠券中扣除，以符合订单支付规则。"
             val useCoupons =
-                if (itemCoupon != null && isMixPayRegular() && itemCoupon.discountsFb > infoBean.getAllFbPrice()) (infoBean.getAllFbPrice() - totalPayFb).toString() else couponsAmount
-            var visibilityCoupons = WCommonUtil.getRMB(useCoupons, "")
-            if (visibilityCoupons == "0") {
-                visibilityCoupons = infoBean.getAllFbPrice().toString()
+                if (itemCoupon != null && isMixPayRegular() && itemCoupon.discountsFb > infoBean.getAllFbPrice()) (WCommonUtil.getRMB(
+                    (infoBean.getAllFbPrice() - totalPayFb).toString(), ""
+                )) else WCommonUtil.getRMB(couponsAmount, "")
+            var visibilityCoupons = useCoupons
+            if (visibilityCoupons == "0" && itemCoupon != null) {
+                visibilityCoupons = WCommonUtil.getRMB(infoBean.getAllFbPrice().toString(), "")
             }
             binding.inOrderInfo.tvCouponsValue.setText(visibilityCoupons)
             infoBean.totalPayFb = totalPayFb
             binding.inOrderInfo.tvTotal.setHtmlTxt(WCommonUtil.getRMB("$totalPayFb"), "#1700f4")
-            if (discountMin == totalPayFb.toLong()) {//抵扣为0
+            if (!canUseCoupons && itemCoupon != null) {//说明优惠券用不起(最小支付等于商品价格的时候会出现)
                 bindCoupon()
             }
         }
@@ -605,10 +609,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     //优惠券减少多少钱 混合支付固定支付的情况下会减少
     private var discountMin = 0L
+    private var canUseCoupons = false
 
     private fun countMinFb(itemCoupon: CouponsItemBean? = null): Int {
         var minFb = 0
         var useAddPreferential = 0
+        canUseCoupons = false
         discountMin = 0L
         if (!isMixPayRegular()) {//不是固定金额就取比例
             minFb = if (minRmbProportion > 0f) WCommonUtil.getHeatNumUP(
@@ -674,25 +680,34 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         "${needPayPb / goodsDetailBean.buyNum}",
                         0
                     )
-//                    Log.e("asdasd","${needPayPb}==${goodsDetailBean.buyNum}==${preferential}====${goodsDetailBean.fbPrice}")
+//                    Log.e(
+//                        "asdasd",
+//                        "${needPayPb}==${goodsDetailBean.buyNum}==${preferential}====${goodsDetailBean.fbPrice}"
+//                    )
                     if (onePayFb.toString() != "0") {
                         val oneMinFb =
                             getExpressionMoney(FBToRmb((onePayFb.toFloat()).toString()).toFloat())
-                        minFb += oneMinFb* goodsDetailBean.buyNum
+                        if (oneMinFb != goodsDetailBean.fbPrice.toInt()) {
+                            canUseCoupons = true
+                        }
+                        minFb += oneMinFb * goodsDetailBean.buyNum
                         //如果最小支付金额大于实际支付金额 就从优惠券里面扣除
                         if (oneMinFb > onePayFb.toInt() && onePayFb.toInt() > 0) {
-                            discountMin += (oneMinFb -onePayFb.toInt()) * goodsDetailBean.buyNum
-                            Log.e("asdasd11", "${oneMinFb}===${onePayFb}===${preferential}===${discountMin}")
+                            discountMin += (oneMinFb - onePayFb.toInt()) * goodsDetailBean.buyNum
+//                            Log.e("asdasd11", "${oneMinFb}===${onePayFb}===${preferential}===${discountMin}")
                         }
                     } else if (onePayFb.toString() == "0") {
                         val oneMinFb =
                             getExpressionMoney(FBToRmb((goodsDetailBean.fbPrice.toFloat()).toString()).toFloat()) * goodsDetailBean.buyNum
                         minFb += oneMinFb
+                        if (oneMinFb != goodsDetailBean.fbPrice.toInt()) {
+                            canUseCoupons = true
+                        }
                         discountMin += oneMinFb - ((goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum) - preferential)
-                        Log.e(
-                            "asdasd",
-                            "${oneMinFb}===${(goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum)}===${preferential}"
-                        )
+//                        Log.e(
+//                            "asdasd",
+//                            "${oneMinFb}===${(goodsDetailBean.fbPrice.toInt() * goodsDetailBean.buyNum)}===${preferential}"
+//                        )
                     }
                 }
             }
@@ -747,7 +762,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         when (v.id) {
             //提交订单
             R.id.btn_submit -> {
-                if (!(mWbType == "EW" || mWbType == "RWF" || mWbType == "SSP")) {
+                if (!isWbShop) {
                     submitOrder()
                 } else {
                     val vinMileage = binding.layoutSsp.etKm.text.toString()
@@ -767,7 +782,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         insurabceEffDate,
                         infoBean.dataList?.get(0)?.skuId,
                         infoBean.vinCode,
-                        vinMileage,
+                        vinMileage.ifEmpty { "1" },
                         insurabceBillNo,
                         insurationName
                     ) {
@@ -862,6 +877,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
      * 处理维保商品
      * */
     private fun manageMaintenance() {
+        isWbShop = false
         if (TextUtils.isEmpty(infoBean.vinCode)) return
         binding.apply {
             //维保商品不需要收货地址
@@ -876,6 +892,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 }
             }
             mWbType = infoBean.wbType
+            isWbShop = true
             composeView.setContent { MaintenanceCompose() }
         }
 
@@ -1233,12 +1250,15 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
 
     @SuppressLint("SetTextI18n")
     private fun selectDay() {
-        val bTime = "2023-01-01"
+        val bTime = getCurrentDate()
         val bb: List<String> = bTime.split('-')
 
         datePicker = DatePicker(this).apply {
             wheelLayout.setDateLabel("年", "月", "日")
-            wheelLayout.setRange(DateEntity.target(2023, 1, 1), DateEntity.target(2050, 1, 1))
+            wheelLayout.setRange(
+                DateEntity.target(bb[0].toInt() - 5, 1, 1),
+                DateEntity.target(bb[0].toInt(), bb[1].toInt(), bb[2].toInt())
+            )
             if (bb.size == 3) {
                 wheelLayout.setDefaultValue(
                     DateEntity.target(
@@ -1253,5 +1273,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             binding.layoutSsp.tvBxDaySelect.text = "$year-$month-$day"
         }
         datePicker?.show()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getCurrentDate(): String {
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        return format.format(Calendar.getInstance().time)
     }
 }

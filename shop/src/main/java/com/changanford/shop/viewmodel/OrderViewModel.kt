@@ -268,7 +268,9 @@ class OrderViewModel : BaseViewModel() {
                 body["skuId"] = skuId.toString()
                 body["vin"] = vin.toString()
                 body["vinMileage"] = vinMileage //合同注册里程
-                body["insurabceEffDate"] = insurabceEffDate //车险商业险生效日期
+                if (insurabceEffDate.isNotEmpty()) {
+                    body["insurabceEffDate"] = insurabceEffDate //车险商业险生效日期
+                }
                 insurabceBillNo?.let {
                     //商业车险保单号
                     body["insurabceBillNo"] = it
