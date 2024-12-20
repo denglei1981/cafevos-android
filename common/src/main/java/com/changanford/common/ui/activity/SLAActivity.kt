@@ -40,7 +40,7 @@ class SLAActivity : BaseActivity<ActivitySlaBinding, SLAAViewModel>() {
             orderNo = it
         }
         intent.getParcelableExtra<OrderInfoBean>("orderInfoBean")?.let {
-            orderNo = it.orderNo
+            orderNo = it.orderNo.toString()
         }
         binding.run {
             title.toolbar.initTitleBar(

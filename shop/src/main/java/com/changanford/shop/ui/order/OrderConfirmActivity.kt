@@ -270,8 +270,8 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //下单回调
         viewModel.orderInfoLiveData.observe(this) {
             isClickSubmit = false
-            productOrderCreate(it.orderNo)
-            orderCreate(it.orderNo)
+            productOrderCreate(it.privatePayNo)
+            orderCreate(it.privatePayNo)
             if (mWbType == "EW" || mWbType == "RWF" || mWbType == "SSP") {
                 val bundle = Bundle()
                 bundle.putParcelable("orderInfoBean", it)
@@ -833,6 +833,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             if (ruleId.isNotEmpty()) {
                 addRecord(ruleId)
             }
+            val vinMileage = binding.layoutSsp.etKm.text.toString()
+            val insurabceEffDate = binding.layoutSsp.tvBxDaySelect.text.toString()
+            val insurabceBillNo = binding.layoutSsp.etBxNum.text.toString()
+            val insurationName = binding.layoutSsp.etCpName.text.toString()
+
             viewModel.createOrder(
                 orderConfirmType = orderConfirmType,
                 payFb = payFb,
@@ -844,7 +849,11 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                 couponRecordId = couponsItem?.couponRecordId,
                 freight = infoBean.freightPrice,
                 payBfb = createOrderBean?.payBfb,
-                dealerId = infoBean.dealerId
+                dealerId = infoBean.dealerId,
+                insurabceEffDate = insurabceEffDate,
+                insurabceBillNo = insurabceBillNo,
+                insurationName = insurationName,
+                vinMileage = vinMileage.ifEmpty { "1" }
             )
 
         }

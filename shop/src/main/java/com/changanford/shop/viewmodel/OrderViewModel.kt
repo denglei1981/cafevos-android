@@ -146,7 +146,11 @@ class OrderViewModel : BaseViewModel() {
         couponRecordId: String? = "0",
         freight: String? = "0",
         payBfb: String? = null,
-        dealerId: String? = null
+        dealerId: String? = null,
+        insurabceEffDate: String = "",
+        vinMileage: String = "",
+        insurabceBillNo: String = "",
+        insurationName: String = "",
     ) {
         body.clear()
         if (skuItems == null || skuItems.size < 1) return
@@ -171,6 +175,18 @@ class OrderViewModel : BaseViewModel() {
                 body["payType"] = payType
                 body["addressId"] = addressId ?: 0
                 body["skuItems"] = skuItems
+                if (insurabceEffDate.isNotEmpty()) {
+                    body["businessInsureEffectDate"] = insurabceEffDate
+                }
+                if (vinMileage.isNotEmpty()) {
+                    body["driveDistance"] = vinMileage
+                }
+                if (insurabceBillNo.isNotEmpty()) {
+                    body["businessInsureNo"] = insurabceBillNo
+                }
+                if (insurationName.isNotEmpty()) {
+                    body["businessInsureCompany"] = insurationName
+                }
                 couponId?.let {
                     body["couponId"] = it
                     body["couponRecordId"] = couponRecordId ?: "0"

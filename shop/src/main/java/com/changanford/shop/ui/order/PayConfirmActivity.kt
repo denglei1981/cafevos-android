@@ -114,7 +114,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
             intent.getStringExtra("orderInfo")?.apply {
                 if (this.startsWith("{")) {
                     orderInfoBean = Gson().fromJson(this, OrderInfoBean::class.java)
-                    orderNo = orderInfoBean?.orderNo
+                    orderNo = orderInfoBean?.privatePayNo
                 }
             }
         }
@@ -139,7 +139,7 @@ class PayConfirmActivity : BaseActivity<ShopActPayconfirmBinding, OrderViewModel
                         payRmb = orderBean.payRmb,
                         payType = orderBean.payType.toString(),
                         totalIntegral = it.integral.toInt().toString(),
-                        orderNo = orderBean.orderNo
+                        orderNo = orderBean.privatePayNo.toString()
                     )
                     isFromOrder = true
                     bindingOrderData()

@@ -10,7 +10,6 @@ import com.changanford.common.util.SpannableStringUtils
 import com.changanford.common.wutil.WCommonUtil
 import com.changanford.common.wutil.WConstant
 import com.changanford.common.wutil.wLogE
-import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -874,8 +873,9 @@ data class OrderReceiveAddress(
 
 @Parcelize
 data class OrderInfoBean(
-    @SerializedName("privatePayNo")
-    val orderNo: String,//订单号
+//    @SerializedName("privatePayNo")
+    val orderNo: String?="",//订单号
+    val privatePayNo: String?="",//支付订单号
     val cost: String? = "0",
     val waitPayDuration: Long? = 0,
     var accountFb: String? = "",//账号余额
