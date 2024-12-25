@@ -83,7 +83,7 @@ object ShowPopUtils {
             msg,
             "关闭",
             false,
-            title = "您的爱车\n不符合本商品购买件!",
+            title = "您的爱车\n不符合本商品购买条件!",
         )
     }
 
