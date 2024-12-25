@@ -16,6 +16,7 @@ import com.changanford.common.util.ext.setOnFastClickListener
 import com.changanford.common.util.toolbar.Builder
 import com.changanford.common.util.toolbar.initTitleBar
 import com.changanford.common.viewmodel.SLAAViewModel
+import com.changanford.common.web.SlAAInterface
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +42,13 @@ class SLAActivity : BaseActivity<ActivitySlaBinding, SLAAViewModel>() {
         }
         intent.getParcelableExtra<OrderInfoBean>("orderInfoBean")?.let {
             orderNo = it.orderNo.toString()
+        }
+        binding.webView.apply {
+            addJavascriptInterface(
+                SlAAInterface(
+                    this,
+                ), "FORDApp"
+            )
         }
         binding.run {
             title.toolbar.initTitleBar(

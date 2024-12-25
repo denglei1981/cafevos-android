@@ -3,6 +3,7 @@ package com.changanford.shop.ui.order
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -272,7 +273,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             isClickSubmit = false
             productOrderCreate(it.privatePayNo)
             orderCreate(it.privatePayNo)
-            if (mWbType == "EW" || mWbType == "RWF" || mWbType == "SSP") {
+            if (isWbShop) {
                 val bundle = Bundle()
                 bundle.putParcelable("orderInfoBean", it)
                 startARouter(ARouterCommonPath.SLAActivity, bundle, true)
@@ -554,9 +555,12 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                     )
                 }元，系统会自动从您的优惠券中扣除，以符合订单支付规则。"
             val useCoupons =
-                if (itemCoupon != null && isMixPayRegular() && itemCoupon.discountsFb > infoBean.getAllFbPrice()) (WCommonUtil.getRMB(
-                    (infoBean.getAllFbPrice() - totalPayFb).toString(), ""
-                )) else WCommonUtil.getRMB(couponsAmount, "")
+                if (itemCoupon != null && isMixPayRegular() && itemCoupon.discountsFb > infoBean.getAllFbPrice()) {
+                    binding.inOrderInfo.tvCouponsTips.isVisible = true
+                    (WCommonUtil.getRMB(
+                        (infoBean.getAllFbPrice() - totalPayFb).toString(), ""
+                    ))
+                } else WCommonUtil.getRMB(couponsAmount, "")
             var visibilityCoupons = useCoupons
             if (visibilityCoupons == "0" && itemCoupon != null) {
                 visibilityCoupons = WCommonUtil.getRMB(infoBean.getAllFbPrice().toString(), "")
@@ -577,16 +581,15 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
         //最大可使用福币
         maxUseFb = when {
             createOrderBean?.getPayType() == 1 -> 0
-            isMixPayRegular() -> {
-                maxFb
-            }
-
             fbBalance >= maxFb -> maxFb
             minRmbProportion != 0f -> {
                 minFb = totalPayFb - fbBalance
                 fbBalance
             }
 
+            isMixPayRegular() -> {
+                if ( fbBalance >= maxFb )maxFb else fbBalance
+            }
             else -> {
                 minFb = 0
                 fbBalance
@@ -680,10 +683,10 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
                         "${needPayPb / goodsDetailBean.buyNum}",
                         0
                     )
-//                    Log.e(
-//                        "asdasd",
-//                        "${needPayPb}==${goodsDetailBean.buyNum}==${preferential}====${goodsDetailBean.fbPrice}"
-//                    )
+                    Log.e(
+                        "asdasd",
+                        "${needPayPb}==${goodsDetailBean.buyNum}==${preferential}====${goodsDetailBean.fbPrice}"
+                    )
                     if (onePayFb.toString() != "0") {
                         val oneMinFb =
                             getExpressionMoney(FBToRmb((onePayFb.toFloat()).toString()).toFloat())
@@ -810,7 +813,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             //福币+人民币支付
             R.id.rb_fbAndRmb -> clickPayWay(0)
             //人民币支付
-            R.id.rb_rmb -> clickPayWay(1, false)
+            R.id.rb_rmb -> clickPayWay(1)
             //自定义支付
             R.id.rb_custom -> clickPayWay(2)
             //选择优惠券

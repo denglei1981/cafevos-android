@@ -74,6 +74,7 @@ object ShowPopUtils {
             sureListener = sureListener,
             title = "积分过期提醒",
             smTips = "可进入“我的-福币”查看福币规则。",
+            cancelContent = "返回"
         )
     }
 
