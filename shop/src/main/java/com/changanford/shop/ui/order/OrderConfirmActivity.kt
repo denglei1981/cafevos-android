@@ -602,7 +602,7 @@ class OrderConfirmActivity : BaseActivity<ActOrderConfirmBinding, OrderViewModel
             minRmb = getRMB("$minFb")
             minRmb = if (minRmb.toFloat() > 0f) "+¥$minRmb" else ""
             rbFbAndRmb.text =
-                if (minRmbProportion != 0f || isMixPayRegular()) "$maxUseFb$minRmb" else "$totalPayFb"
+                if (minRmbProportion != 0f || isMixPayRegular()) "${totalPayFb-minFb}$minRmb" else "$totalPayFb"
             rbRmb.text = "¥${getRMB("$totalPayFb")}"
         }
         ("totalPayFb:$totalPayFb>>>minRmbProportion:$minRmbProportion>>>>minFb:$minFb>>>>maxFb:$maxFb>>>maxUseFb:$maxUseFb>>>>" +
