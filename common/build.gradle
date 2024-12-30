@@ -182,7 +182,7 @@ dependencies {
 
     api 'androidx.camera:camera-camera2:1.0.0-beta03'
     api 'androidx.camera:camera-core:1.0.0-beta03'
-    api 'com.gyf.immersionbar:immersionbar:3.0.0'
+    api 'com.geyifeng.immersionbar:immersionbar:3.2.2'
     //SmartRefresh
 //    api "com.scwang.smart:refresh-layout-kernel:$versions_smart"
 //    api "com.scwang.smart:refresh-header-classics:$versions_smart"

@@ -53,7 +53,7 @@ dependencies {
     //华为扫码
     api "com.huawei.hms:scan:2.11.0.300"
     //澄清状态栏
-    api "com.gyf.immersionbar:immersionbar:3.0.0"
+    api "com.geyifeng.immersionbar:immersionbar:3.2.2"
     //权限
     api "com.qw:soulpermission:1.1.8"
     //AgentWeb

@@ -4,7 +4,7 @@
 buildscript {
     ext{
         kotlin_version = "1.7.10"
-        aliyun_push = "3.9.0"
+        aliyun_push = "3.9.2"
         nav_version = "2.3.5"
         compileSDKVersion = 33
         buildToolsVersion = "30.0.3"
@@ -17,6 +17,22 @@ buildscript {
         //TODO
     }
     repositories {
+        exclusiveContent {
+            forRepository {
+                maven {url 'https://maven.aliyun.com/nexus/content/repositories/jcenter/' }
+            }
+            filter {
+                includeGroup 'com.novoda'
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/' }
+            }
+            filter {
+                includeGroup 'com.aliyun.ams'
+            }
+        }
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
@@ -51,6 +67,22 @@ buildscript {
 
 allprojects {
     repositories {
+        exclusiveContent {
+            forRepository {
+                maven {url 'https://maven.aliyun.com/nexus/content/repositories/jcenter/' }
+            }
+            filter {
+                includeGroup 'com.novoda'
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {url 'https://maven.aliyun.com/nexus/content/repositories/releases/' }
+            }
+            filter {
+                includeGroup 'com.aliyun.ams'
+            }
+        }
         flatDir {
             dirs '../common/libs'
         }
