@@ -2,6 +2,9 @@ package com.changanford.common.utilext
 
 import android.Manifest
 import android.app.Activity
+import android.os.Handler
+import android.os.Looper
+import androidx.fragment.app.FragmentActivity
 import com.changanford.common.basic.BaseApplication
 import com.changanford.common.util.MConstant
 import com.changanford.common.widget.pop.PermissionTipsPop
@@ -51,22 +54,28 @@ object PermissionPopUtil {
             setBackgroundColor(MColor.PERMISSION_BG)
         }
 
-        SoulPermission.getInstance()
-            .checkAndRequestPermissions(permissions,
-                object : CheckRequestPermissionsListener {
-                    override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
-                        isDismiss = true
-                        success.invoke()
-                        pop.dismiss()
-                    }
+        val handler = Handler(Looper.getMainLooper())
+        handler.post {
+            SoulPermission.getInstance()
+                .checkAndRequestPermissions(permissions,
+                    object : CheckRequestPermissionsListener {
+                        override fun onAllPermissionOk(allPermissions: Array<out Permission>?) {
+                            if (!activity.isFinishing && (activity is FragmentActivity && !activity.supportFragmentManager.isStateSaved)) {
+                                isDismiss = true
+                                success.invoke()
+                                pop.dismiss()
+                            }
+                        }
 
-                    override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
-                        isDismiss = true
-                        fail.invoke()
-                        pop.dismiss()
-                    }
-
-                })
+                        override fun onPermissionDenied(refusedPermissions: Array<out Permission>?) {
+                            if (!activity.isFinishing && (activity is FragmentActivity && !activity.supportFragmentManager.isStateSaved)) {
+                                isDismiss = true
+                                fail.invoke()
+                                pop.dismiss()
+                            }
+                        }
+                    })
+        }
 
         permissions.permissions.forEach {
             val permissionName = it.permissionName
